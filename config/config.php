@@ -1,9 +1,9 @@
 <?php
 
 // ocean back end module
-$GLOBALS['BE_MOD']['system']['oceanCatalog'] = array(
+$GLOBALS['BE_MOD']['system']['catalog-maker'] = array(
 
-    'name' => 'oceanCatalog',
+    'name' => 'catalog-maker',
 
     'tables' => [
         

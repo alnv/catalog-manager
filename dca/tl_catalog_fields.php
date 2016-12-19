@@ -32,6 +32,13 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'operations' => [
 
+            'edit' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['edit'],
+                'href' => 'act=edit',
+                'icon' => 'edit.gif'
+            ],
+
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['delete'],
@@ -108,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'OceanCatalog\tl_catalog_fields',
+                'CatalogMaker\tl_catalog_fields',
                 'getFieldTypes'
             ],
 
@@ -195,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'OceanCatalog\tl_catalog_fields',
+                'CatalogMaker\tl_catalog_fields',
                 'getInputTypes'
             ],
 

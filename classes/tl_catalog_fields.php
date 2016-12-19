@@ -1,6 +1,6 @@
 <?php
 
-namespace OceanCatalog;
+namespace CatalogMaker;
 
 class tl_catalog_fields extends \Backend {
 

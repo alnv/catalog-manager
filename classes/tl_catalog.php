@@ -1,5 +1,5 @@
 <?php
 
-namespace OceanCatalog;
+namespace CatalogMaker;
 
 class tl_catalog extends \Backend {}

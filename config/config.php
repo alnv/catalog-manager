@@ -1,6 +1,5 @@
 <?php
 
-// ocean back end module
 $GLOBALS['BE_MOD']['system']['catalog-maker'] = array(
 
     'name' => 'catalog-maker',
@@ -11,3 +10,6 @@ $GLOBALS['BE_MOD']['system']['catalog-maker'] = array(
         'tl_catalog_fields'
     ]
 );
+
+$GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
+$GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';

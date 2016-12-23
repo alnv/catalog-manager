@@ -1,3 +1,3 @@
 <?php
 
-class CatalogMaker {}
+class CatalogManager {}

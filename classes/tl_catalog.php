@@ -1,5 +1,5 @@
 <?php
 
-namespace CatalogMaker;
+namespace CatalogManager;
 
 class tl_catalog extends \Backend {}

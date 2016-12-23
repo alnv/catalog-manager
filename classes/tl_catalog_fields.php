@@ -1,6 +1,6 @@
 <?php
 
-namespace CatalogMaker;
+namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 

@@ -1,8 +1,8 @@
 <?php
 
-$GLOBALS['BE_MOD']['system']['catalog-maker'] = array(
+$GLOBALS['BE_MOD']['system']['catalog-manager'] = array(
 
-    'name' => 'catalog-maker',
+    'name' => 'catalog-manager',
 
     'tables' => [
         

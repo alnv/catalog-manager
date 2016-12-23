@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'child_record_callback' => [
 
-                'CatalogMaker\tl_catalog_fields',
+                'CatalogManager\tl_catalog_fields',
                 'getCatalogFieldList'
             ]
         ],
@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'CatalogMaker\tl_catalog_fields',
+                'CatalogManager\tl_catalog_fields',
                 'getFieldTypes'
             ],
 
@@ -324,7 +324,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'CatalogMaker\tl_catalog_fields',
+                'CatalogManager\tl_catalog_fields',
                 'getRichTextEditor'
             ],
 
@@ -467,7 +467,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'CatalogMaker\tl_catalog_fields',
+                'CatalogManager\tl_catalog_fields',
                 'getRGXPTypes'
             ],
             
@@ -490,7 +490,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'options_callback' => [
 
-                'CatalogMaker\tl_catalog_fields',
+                'CatalogManager\tl_catalog_fields',
                 'getSQLStatements'
             ],
 

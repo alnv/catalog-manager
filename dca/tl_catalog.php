@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => 'name'
+        'default' => '{table_settings},name,table,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPlace'
     ],
 
     'fields' => [
@@ -86,12 +86,233 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'maxlength' => 255,
                 'tl_class' => 'w50',
-                'maxlength' => 255
             ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'description' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['description'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'long clr',
+                'maxlength' => 512
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(512) NOT NULL default ''"
+        ],
+
+        'table' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['table'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'mandatory' => true,
+                'maxlength' => 64,
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
+        'mode' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['mode'],
+            'inputType' => 'select',
+            'default' => '0',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'submitOnChange' => true
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getModeTypes'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(2) NOT NULL default ''"
+        ],
+
+
+        'pTable' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['pTable'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\CatalogManager',
+                'getAllCatalogs'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'cTables' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['cTables'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'multiple' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\CatalogManager',
+                'getAllCatalogs'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'flag' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['flag'],
+            'inputType' => 'select',
+            'default' => '2',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getFlagTypes'
+            ],
+
+            'exclude' => true,
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['flag'],
+            'sql' => "varchar(2) NOT NULL default ''"
+        ],
+
+        'headerFields' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['headerFields'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'multiple' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getParentFields'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(2) NOT NULL default ''"
+        ],
+
+        'fields' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['fields'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'multiple' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getDataContainerFields'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
+        'showColumns' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['showColumns'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'm12 w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'navArea' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navArea'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getNavigationAreas'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(32) NOT NULL default ''"
+        ],
+
+        'navPlace' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navPlace'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getNavigationPlace'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(2) NOT NULL default ''"
         ]
     ]
 ];

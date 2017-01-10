@@ -10,6 +10,7 @@ if ( class_exists( 'NamespaceClassLoader' ) ) {
     NamespaceClassLoader::addClassMap([
 
         'CatalogManager\tl_catalog' => 'system/modules/catalog-manager/classes/tl_catalog.php',
+        'CatalogManager\CatalogManager' => 'system/modules/catalog-manager/library/alnv/CatalogManager.php',
         'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
     ]);
 }

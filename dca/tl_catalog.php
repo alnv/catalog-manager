@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,table,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPlace'
+        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPlace'
     ],
 
     'fields' => [
@@ -86,12 +86,12 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'maxlength' => 255,
+                'maxlength' => 128,
                 'tl_class' => 'w50',
             ],
 
             'exclude' => true,
-            'sql' => "varchar(255) NOT NULL default ''"
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'description' => [
@@ -109,20 +109,20 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(512) NOT NULL default ''"
         ],
 
-        'table' => [
+        'tablename' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['table'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['tablename'],
             'inputType' => 'text',
 
             'eval' => [
 
-                'mandatory' => true,
-                'maxlength' => 64,
-                'tl_class' => 'w50'
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true
             ],
 
             'exclude' => true,
-            'sql' => "varchar(64) NOT NULL default ''"
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'mode' => [
@@ -277,6 +277,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navArea'],
             'inputType' => 'select',
+            'default' => 'system',
 
             'eval' => [
 
@@ -298,6 +299,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navPlace'],
             'inputType' => 'select',
+            'default' => '0',
 
             'eval' => [
 

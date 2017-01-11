@@ -483,9 +483,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'chosen' => true,
-                'mandatory' => true,
                 'tl_class' => 'w50',
-                'maxlength' => 255
+                'maxlength' => 255,
+                'mandatory' => true
             ],
 
             'options_callback' => [

@@ -4,6 +4,16 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
+    public function onSubmit() {
+
+        //
+    }
+
+    public function onDelete() {
+
+        //
+    }
+
     public function getFieldTypes() {
 
         return [

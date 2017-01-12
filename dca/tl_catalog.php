@@ -8,6 +8,16 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'ctable' => [ 'tl_catalog_fields' ],
 
+        'onsubmit_callback' => [
+
+            [ 'CatalogManager\tl_catalog', 'onSubmit' ]
+        ],
+
+        'ondelete_callback' => [
+
+            [ 'CatalogManager\tl_catalog', 'onDelete' ]
+        ],
+
         'sql' => [
 
             'keys' => [
@@ -64,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPlace'
+        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPosition'
     ],
 
     'fields' => [
@@ -295,9 +305,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "char(32) NOT NULL default ''"
         ],
 
-        'navPlace' => [
+        'navPosition' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navPlace'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navPosition'],
             'inputType' => 'select',
             'default' => '0',
 
@@ -310,7 +320,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [
 
                 'CatalogManager\tl_catalog',
-                'getNavigationPlace'
+                'getNavigationPosition'
             ],
 
             'exclude' => true,

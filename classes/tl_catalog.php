@@ -4,36 +4,32 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
+    public function onSubmit( \DataContainer $dc ) {
+
+        if ( !$dc->id || !$dc->activeRecord->tablename ) {
+
+            return null;
+        }
+
+        if ( !$this->Database->tableExists( $dc->activeRecord->tablename ) ) {
+
+            // create new table
+        }
+    }
+
+    public function onDelete() {
+
+        // delete table
+    }
+
     public function getModeTypes () {
 
-        return [
-
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5'
-        ];
+        return [ '0', '1', '2', '3', '4', '5' ];
     }
 
     public function getFlagTypes() {
 
-        return [
-
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12'
-        ];
+        return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
     }
 
     public function getDataContainerFields() {
@@ -58,7 +54,7 @@ class tl_catalog extends \Backend {
 
         foreach ( $arrModules as $strName => $arrModule ) {
 
-            $arrLabel = $GLOBALS['TL_LANG']['MOD'][$strName];
+            $arrLabel = $GLOBALS['TL_LANG']['MOD'][ $strName ];
             $strModuleName = $strName;
 
             if ( $arrLabel && is_array( $arrLabel ) ) {
@@ -71,13 +67,13 @@ class tl_catalog extends \Backend {
                 $strModuleName = $arrLabel;
             }
 
-            $arrReturn[$strName] = $strModuleName;
+            $arrReturn[ $strName ] = $strModuleName;
         }
 
         return $arrReturn;
     }
 
-    public function getNavigationPlace() {
+    public function getNavigationPosition() {
 
         return [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ];
     }

@@ -8,6 +8,16 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'ptable' => 'tl_catalog',
 
+        'onsubmit_callback' => [
+
+            [ 'CatalogManager\tl_catalog_fields', 'onSubmit' ]
+        ],
+
+        'ondelete_callback' => [
+
+            [ 'CatalogManager\tl_catalog_fields', 'onDelete' ]
+        ],
+
         'sql' => [
 
             'keys' => [

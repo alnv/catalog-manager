@@ -24,7 +24,7 @@ class InitializeSystem {
 
             $arrCatalog = $objCatalogManagerDB->row();
             $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
-            $strNavigationPosition = $arrCatalog['navPlace'] ? intval( $arrCatalog['navPlace'] ) : 0;
+            $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
             if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) {
 
@@ -76,7 +76,7 @@ class InitializeSystem {
 
                 continue;
             }
-            
+
             //
         }
     }

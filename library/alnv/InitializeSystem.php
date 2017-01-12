@@ -70,6 +70,14 @@ class InitializeSystem {
         while ( $objCatalogFieldsDB->next() ) {
 
             $arrField = $objCatalogFieldsDB->row();
+            $arrDCAField = DCABuilder::createDCAField( $arrField );
+
+            if ( is_null( $arrDCAField ) ) {
+
+                continue;
+            }
+            
+            //
         }
     }
 }

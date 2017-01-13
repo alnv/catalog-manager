@@ -4,14 +4,55 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
-    public function onSubmit() {
+    public function createFieldOnSubmit( \DataContainer $dc ) {
 
-        //
+        $strID = $dc->activeRecord->pid;
+        $objSQLBuilder = new SQLBuilder();
+        $strIndex = $dc->activeRecord->useIndex;
+        $strStatement = DCABuilder::$arrSQLStatements[ $dc->activeRecord->statement ];
+        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
+        
+        if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
+
+            if ( in_array( $dc->activeRecord->type , DCABuilder::$arrForbiddenInputTypesMap ) ) {
+
+                return null;
+            }
+
+            $objSQLBuilder->alterTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
+            $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
+        }
+
+        else {
+
+            if ( in_array( $dc->activeRecord->type , DCABuilder::$arrForbiddenInputTypesMap ) ) {
+
+                $this->dropFieldOnDelete( $dc );
+
+                return null;
+            }
+
+            $arrColumns = $objSQLBuilder->showColumns( $arrCatalog['tablename'] );
+
+            if ( !$arrColumns[ $dc->activeRecord->fieldname ] ) {
+
+                return null;
+            }
+
+            if ( $arrColumns[ $dc->activeRecord->fieldname ]['statement'] !== $strStatement ) {
+
+                $objSQLBuilder->modifyTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
+            }
+        }
     }
 
-    public function onDelete() {
+    public function dropFieldOnDelete( \DataContainer $dc ) {
 
-        //
+        $strID = $dc->activeRecord->pid;
+        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
+
+        $objSQLBuilder = new SQLBuilder();
+        $objSQLBuilder->dropTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
     }
 
     public function getFieldTypes() {
@@ -31,6 +72,11 @@ class tl_catalog_fields extends \Backend {
             'fieldsetStart',
             'fieldsetStop'
         ];
+    }
+
+    public function getIndexes() {
+
+        return [ 'index', 'unique' ];
     }
 
     public function getRGXPTypes( \DataContainer $dc ) {

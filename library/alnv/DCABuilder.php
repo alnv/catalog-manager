@@ -105,15 +105,11 @@ class DCABuilder {
         ];
     }
 
-    public static function createDCAPalettes( $arrCatalog, $objDbFields ) {
+    public static function createDCAPalettes( $objDbFields ) {
 
-        $strLegend = 'general_legend';
-
-        $arrDCAPalette = [
-
-            'general_legend' => [ 'title', 'alias' ]
-        ];
-
+        $strPalette = '';
+        $strLegendPointer = 'general_legend';
+        $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
         $arrSkipThisFieldTypes = [ 'fieldsetStart', 'fieldsetStop', 'message' ];
 
         while ( $objDbFields->next() ) {
@@ -125,7 +121,7 @@ class DCABuilder {
 
             if ( $objDbFields->title && $objDbFields->type == 'fieldsetStart' ) {
 
-                $strLegend = $objDbFields->title;
+                $strLegendPointer = $objDbFields->title;
             }
 
             if ( !$objDbFields->fieldname || in_array( $objDbFields->type, $arrSkipThisFieldTypes ) ) {
@@ -133,15 +129,17 @@ class DCABuilder {
                 continue;
             }
 
-            $arrDCAPalette[ $strLegend ][] = $objDbFields->fieldname;
+            $arrDCAPalette[ $strLegendPointer ][] = $objDbFields->fieldname;
         }
 
-        // @todo sub palettes ?
+        $arrLegends = array_keys( $arrDCAPalette );
 
-        return [
+        foreach ( $arrLegends as $strLegend ) {
 
-            'default' => '{general_legend},title,alias;'
-        ];
+            $strPalette .= sprintf( '{%s},%s;', $strLegend, implode(',', $arrDCAPalette[ $strLegend ] ) );
+        }
+
+        return [ 'default' => $strPalette ];
     }
 
     public static function createLabelDCA( $arrCatalog ) {

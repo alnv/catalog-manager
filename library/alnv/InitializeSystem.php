@@ -102,7 +102,7 @@ class InitializeSystem {
                 'operations' => DCABuilder::createDCAOperations( $arrCatalog ),
             ],
 
-            'palettes' => DCABuilder::createDCAPalettes( $arrCatalog, $objCatalogFieldsDB ),
+            'palettes' => DCABuilder::createDCAPalettes( $objCatalogFieldsDB ),
 
             'fields' => $arrFields
         ];

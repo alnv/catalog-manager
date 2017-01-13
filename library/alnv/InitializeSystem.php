@@ -96,14 +96,11 @@ class InitializeSystem {
             'list' => [
 
                 'label' => DCABuilder::createLabelDCA( $arrCatalog ),
-
                 'sorting' => DCABuilder::createDCASorting( $arrCatalog ),
-
                 'operations' => DCABuilder::createDCAOperations( $arrCatalog ),
             ],
 
             'palettes' => DCABuilder::createDCAPalettes( $objCatalogFieldsDB ),
-
             'fields' => $arrFields
         ];
     }

@@ -70,7 +70,7 @@ class InitializeSystem {
     private function createCatalogManagerDCA( $arrCatalog ) {
 
         $objDatabase = \Database::getInstance();
-        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $arrCatalog['id'] );
+        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
 
         $arrFields = DCABuilder::getDefaultDCAFields( $arrCatalog );
 
@@ -87,6 +87,8 @@ class InitializeSystem {
             $arrFields[ $arrField['fieldname'] ] = $arrDCAField;
         }
 
+        $objCatalogFieldsDB->reset();
+
         $GLOBALS['TL_DCA'][ $arrCatalog['tablename'] ] = [
 
             'config' => DCABuilder::createConfigDCA( $arrCatalog ),
@@ -100,7 +102,7 @@ class InitializeSystem {
                 'operations' => DCABuilder::createDCAOperations( $arrCatalog ),
             ],
 
-            'palettes' => DCABuilder::createDCAPalettes( $arrCatalog ),
+            'palettes' => DCABuilder::createDCAPalettes( $arrCatalog, $objCatalogFieldsDB ),
 
             'fields' => $arrFields
         ];

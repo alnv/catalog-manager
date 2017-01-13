@@ -4,6 +4,13 @@ namespace CatalogManager;
 
 class DCABuilder {
 
+    public static $arrForbiddenInputTypesMap = [
+
+        'message',
+        'fieldsetStart',
+        'fieldsetStop'
+    ];
+
     public static $arrInputTypeMap = [
 
         'text' => 'text',
@@ -15,13 +22,6 @@ class DCABuilder {
         'upload' => 'fileTree',
         'textarea' => 'textarea',
         'checkbox' => 'checkbox'
-    ];
-
-    public static $arrForbiddenInputTypesMap = [
-
-        'message',
-        'fieldsetStart',
-        'fieldsetStop'
     ];
 
     public static $arrSQLStatements = [
@@ -41,24 +41,156 @@ class DCABuilder {
         'i10' => "int(10) unsigned NOT NULL default '0'"
     ];
 
-    public static function createConfigDCA() {
+    public static function createConfigDCA( $arrCatalog ) {
 
-        return [];
+        $arrReturn = [
+
+            'dataContainer' => 'Table',
+
+            'sql' => [
+
+                'keys' => [
+
+                    'id' => 'primary'
+                ]
+            ]
+        ];
+
+        if ( $arrCatalog['pTable'] ) {
+
+            $arrReturn['ptable'] = $arrCatalog['pTable'];
+        }
+
+        if ( $arrCatalog['cTables'] ) {
+
+            $arrReturn['ctable'] = $arrCatalog['cTables'];
+        }
+
+        return $arrReturn;
     }
 
-    public static function createDCASorting() {
+    public static function createDCASorting( $arrCatalog ) {
 
-        return [];
+        return [
+
+            'mode' => 0
+        ];
     }
 
-    public static function createDCAOperations() {
+    public static function createDCAOperations( $arrCatalog ) {
 
-        return [];
+        return [
+
+            'edit' => [
+
+                'label' => ['…', '…'],
+                'href' => 'act=edit',
+                'icon' => 'header.gif'
+            ],
+
+            'delete' => [
+
+                'label' => ['…', '…'],
+                'href' => 'act=delete',
+                'icon' => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
+            ],
+
+            'show' => [
+
+                'label' => ['…', '…'],
+                'href' => 'act=show',
+                'icon' => 'show.gif'
+            ]
+        ];
     }
 
-    public static function createDCAPalettes() {
+    public static function createDCAPalettes( $arrCatalog ) {
 
-        return [];
+        return [
+
+            'default' => '{general_legend},title,alias;'
+        ];
+    }
+
+    public static function createLabelDCA( $arrCatalog ) {
+
+        return [
+
+            'fields' => [ 'title' ],
+        ];
+    }
+
+    public static function getDefaultDCAFields( $arrCatalog ) {
+
+        $arrReturn = [
+
+            'id' => [
+
+                'sql' => "int(10) unsigned NOT NULL auto_increment"
+            ],
+
+            'tstamp' => [
+
+                'sql' => "int(10) unsigned NOT NULL default '0'"
+            ],
+
+            'title' => [
+
+                'label' => ['…', '…'],
+                'inputType' => 'text',
+
+                'eval' => [
+
+                    'maxlength' => 128,
+                    'tl_class' => 'w50',
+                ],
+
+                'exclude' => true,
+                'sql' => "varchar(128) NOT NULL default ''"
+            ],
+
+            'alias' => [
+
+                'label' => ['…', '…'],
+                'inputType' => 'text',
+
+                'eval' => [
+
+                    'maxlength' => 128,
+                    'tl_class' => 'w50',
+                ],
+
+                'exclude' => true,
+                'sql' => "varchar(128) NOT NULL default ''"
+            ]
+        ];
+
+        if ( $arrCatalog['mode'] == '4' ) {
+
+            $arrReturn['sorting'] = [
+
+                'sql' => "int(10) unsigned NOT NULL default '0'"
+            ];
+        }
+
+        if ( $arrCatalog['pTable'] ) {
+
+            $arrReturn['pid'] = [
+
+                'foreignKey' => sprintf( '%s.id', $arrCatalog['pTable'] ),
+
+                'relation' => [
+
+                    'type' => 'belongsTo',
+                    'load' => 'eager'
+                ],
+
+                'sql' => "int(10) unsigned NOT NULL default '0'",
+            ];
+        }
+
+        return $arrReturn;
     }
 
     public static function createDCAField( $arrField ) {

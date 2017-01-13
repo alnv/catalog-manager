@@ -26,11 +26,6 @@ class InitializeSystem {
             $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
             $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
-            if ( !$arrCatalog['isBackendModule'] ) {
-
-                continue;
-            }
-
             if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) {
 
                 continue;
@@ -41,6 +36,11 @@ class InitializeSystem {
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
 
             $this->createCatalogManagerDCA( $arrCatalog );
+
+            if ( !$arrCatalog['isBackendModule'] ) {
+
+                continue;
+            }
 
             array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
         }
@@ -72,6 +72,8 @@ class InitializeSystem {
         $objDatabase = \Database::getInstance();
         $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $arrCatalog['id'] );
 
+        $arrFields = DCABuilder::getDefaultDCAFields( $arrCatalog );
+
         while ( $objCatalogFieldsDB->next() ) {
 
             $arrField = $objCatalogFieldsDB->row();
@@ -82,7 +84,25 @@ class InitializeSystem {
                 continue;
             }
 
-            //
+            $arrFields[ $arrField['fieldname'] ] = $arrDCAField;
         }
+
+        $GLOBALS['TL_DCA'][ $arrCatalog['tablename'] ] = [
+
+            'config' => DCABuilder::createConfigDCA( $arrCatalog ),
+
+            'list' => [
+
+                'label' => DCABuilder::createLabelDCA( $arrCatalog ),
+
+                'sorting' => DCABuilder::createDCASorting( $arrCatalog ),
+
+                'operations' => DCABuilder::createDCAOperations( $arrCatalog ),
+            ],
+
+            'palettes' => DCABuilder::createDCAPalettes( $arrCatalog ),
+
+            'fields' => $arrFields
+        ];
     }
 }

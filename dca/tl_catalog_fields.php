@@ -75,23 +75,23 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'default' => '{type_legend},type',
 
-        'text' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},tablename,statement',
+        'text' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
 
-        'number' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},min,max,step,rgxp,placeholder,readonly;{catalog_settings_legend},tablename,statement',
+        'number' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},min,max,step,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
 
-        'hidden' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},tablename,statement',
+        'hidden' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
 
-        'date' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},tType,rgxp,placeholder,readonly;{catalog_settings_legend},tablename,statement',
+        'date' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},tType,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
 
-        'textarea' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rte,cols,rows,placeholder,readonly;{catalog_settings_legend},tablename,statement',
+        'textarea' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rte,cols,rows,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
 
-        'select' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},multiple,disabled;{catalog_settings_legend},tablename,statement',
+        'select' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},multiple,disabled;{catalog_settings_legend},fieldname,statement',
 
-        'radio' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},tablename,statement',
+        'radio' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement',
 
-        'checkbox' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},tablename,statement',
+        'checkbox' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement',
 
-        'upload' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},extensions,maxsize;{catalog_settings_legend},tablename,statement',
+        'upload' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},extensions,maxsize;{catalog_settings_legend},fieldname,statement',
 
         'message' => '{type_legend},type,title,label,description',
 
@@ -216,9 +216,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'sql' => "varchar(255) NOT NULL default ''"
         ],
 
-        'tablename' => [
+        'fieldname' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['tablename'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['fieldname'],
             'inputType' => 'text',
 
             'eval' => [

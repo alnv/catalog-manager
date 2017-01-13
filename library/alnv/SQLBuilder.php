@@ -11,6 +11,11 @@ class SQLBuilder extends \Backend {
 
     public function createSQLCreateStatement( $strTable, $arrFields ) {
 
+        if ( !$strTable ) {
+
+            return null;
+        }
+
         $strFieldStatements = [];
 
         foreach ( $arrFields as $strField => $strSQLStatement ) {
@@ -27,12 +32,22 @@ class SQLBuilder extends \Backend {
 
     public function createSQLDropTableStatement( $strTable ) {
 
+        if ( !$strTable ) {
+
+            return null;
+        }
+
         $strDropTableStatement = sprintf( 'DROP TABLE %s;', $strTable );
 
         $this->Database->prepare( $strDropTableStatement )->execute();
     }
 
     public function alterTableField( $strTable, $strField, $strSQLStatement ) {
+
+        if ( !$strTable || !$strField || !$strSQLStatement ) {
+
+            return null;
+        }
 
         if ( !$this->Database->fieldExists( $strField, $strTable ) ) {
 
@@ -44,11 +59,99 @@ class SQLBuilder extends \Backend {
 
     public function dropTableField( $strTable, $strField ) {
 
+        if ( !$strTable || !$strField ) {
+
+            return null;
+        }
+
         if ( $this->Database->fieldExists( $strField, $strTable ) ) {
 
             $strDropFieldStatement = sprintf( 'ALTER TABLE %s DROP COLUMN `%s`', $strTable, $strField );
 
             $this->Database->prepare( $strDropFieldStatement )->execute();
         }
+    }
+
+    public function modifyTableField( $strTable, $strField, $strSQLStatement ) {
+
+        if ( !$strTable || !$strField || !$strSQLStatement ) {
+
+            return null;
+        }
+
+        if ( $this->Database->fieldExists( $strField, $strTable ) ) {
+
+            $strAlterFieldStatement = sprintf( 'ALTER TABLE %s MODIFY COLUMN %s %s', $strTable, $strField, $strSQLStatement );
+
+            $this->Database->prepare( $strAlterFieldStatement )->execute();
+        }
+    }
+
+    public function addIndex( $strTable, $strField, $strIndex ) {
+
+        $strAddIndexStatement = '';
+
+        if ( !$strTable || !$strField ) {
+
+            return null;
+        }
+
+        if ( !$this->Database->fieldExists( $strField, $strTable ) ) {
+
+            return null;
+        }
+
+        if ( $strIndex == 'index' ) {
+
+            $strAddIndexStatement = sprintf( 'ALTER TABLE %s ADD KEY `%s` (`%s`)', $strTable, $strField, $strField );
+        }
+
+        if ( $strIndex == 'unique' ) {
+
+            $strAddIndexStatement = sprintf( 'ALTER TABLE %s ADD UNIQUE KEY (`%s`)', $strTable, $strField );
+        }
+
+        if ( $strAddIndexStatement ) {
+
+            $this->Database->prepare( $strAddIndexStatement )->execute();
+        }
+    }
+
+    public function showColumns( $strTable ) {
+
+        $arrReturn = [];
+        $objColumn = $this->Database->prepare( sprintf( 'SHOW COLUMNS FROM %s', $strTable ) )->execute();
+
+        while ( $objColumn->next() ) {
+
+            $arrReturn[ $objColumn->Field ] = [
+
+                'fieldname' => $objColumn->Field,
+                'statement' => $objColumn->Type . ' ' . $this->getNullStatement( $objColumn->Null ) . ' ' . $this->getDefaultStatement( $objColumn->Default ),
+                'index' => ''
+            ];
+        }
+
+        return $arrReturn;
+    }
+
+    private function getNullStatement( $strNull ) {
+
+        if ( !$strNull ) {
+
+            return '';
+        }
+
+        return $strNull == 'NO' ? 'NOT NULL' : 'NULL';
+    }
+
+    private function getDefaultStatement( $strDefault ) {
+
+        if ( is_null( $strDefault ) ) {
+
+            return '';
+        }
+
+        return sprintf( "default '%s'", $strDefault );
     }
 }

@@ -10,12 +10,12 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'onsubmit_callback' => [
 
-            [ 'CatalogManager\tl_catalog', 'onSubmit' ]
+            [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ]
         ],
 
         'ondelete_callback' => [
 
-            [ 'CatalogManager\tl_catalog', 'onDelete' ]
+            [ 'CatalogManager\tl_catalog', 'dropTableOnDelete' ]
         ],
 
         'sql' => [
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPosition'
+        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPosition'
     ],
 
     'fields' => [
@@ -135,6 +135,20 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(128) NOT NULL default ''"
         ],
 
+        'isBackendModule' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['isBackendModule'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
         'mode' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['mode'],
@@ -167,13 +181,15 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [
 
-                'CatalogManager\CatalogManager',
-                'getAllCatalogs'
+                'CatalogManager\tl_catalog',
+                'getAllTables'
             ],
 
             'exclude' => true,
@@ -189,13 +205,15 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [
 
-                'CatalogManager\CatalogManager',
-                'getAllCatalogs'
+                'CatalogManager\tl_catalog',
+                'getAllTables'
             ],
 
             'exclude' => true,
@@ -234,7 +252,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [
@@ -256,7 +276,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [

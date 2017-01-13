@@ -110,7 +110,6 @@ class DCABuilder {
         $strPalette = '';
         $strLegendPointer = 'general_legend';
         $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
-        $arrSkipThisFieldTypes = [ 'fieldsetStart', 'fieldsetStop', 'message' ];
 
         while ( $objDbFields->next() ) {
 
@@ -124,7 +123,7 @@ class DCABuilder {
                 $strLegendPointer = $objDbFields->title;
             }
 
-            if ( !$objDbFields->fieldname || in_array( $objDbFields->type, $arrSkipThisFieldTypes ) ) {
+            if ( !$objDbFields->fieldname || in_array( $objDbFields->type, static::$arrForbiddenInputTypesMap ) ) {
 
                 continue;
             }
@@ -333,8 +332,6 @@ class DCABuilder {
         }
 
         $strDescription = $arrField['description'] ? $arrField['description'] : '';
-
-        // @todo i18n
 
         return [ $strTitle, $strDescription ];
     }

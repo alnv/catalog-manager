@@ -10,12 +10,12 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'onsubmit_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'onSubmit' ]
+            [ 'CatalogManager\tl_catalog_fields', 'createFieldOnSubmit' ]
         ],
 
         'ondelete_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'onDelete' ]
+            [ 'CatalogManager\tl_catalog_fields', 'dropFieldOnDelete' ]
         ],
 
         'sql' => [
@@ -75,23 +75,23 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'default' => '{type_legend},type',
 
-        'text' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
+        'text' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'number' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},min,max,step,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
+        'number' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},min,max,step,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'hidden' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
+        'hidden' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'date' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},tType,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
+        'date' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},tType,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'textarea' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rte,cols,rows,placeholder,readonly;{catalog_settings_legend},fieldname,statement',
+        'textarea' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rte,cols,rows,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'select' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},multiple,disabled;{catalog_settings_legend},fieldname,statement',
+        'select' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},multiple,disabled;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'radio' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement',
+        'radio' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'checkbox' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement',
+        'checkbox' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement,useIndex',
 
-        'upload' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},extensions,maxsize;{catalog_settings_legend},fieldname,statement',
+        'upload' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},extensions,maxsize;{catalog_settings_legend},fieldname,statement,useIndex',
 
         'message' => '{type_legend},type,title,label,description',
 
@@ -506,6 +506,29 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'useIndex' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['useIndex'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'tl_class' => 'w50',
+                'includeBlankOption'=>true,
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog_fields',
+                'getIndexes'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(10) NOT NULL default ''"
         ]
     ]
 ];

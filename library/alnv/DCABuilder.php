@@ -105,7 +105,38 @@ class DCABuilder {
         ];
     }
 
-    public static function createDCAPalettes( $arrCatalog ) {
+    public static function createDCAPalettes( $arrCatalog, $objDbFields ) {
+
+        $strLegend = 'general_legend';
+
+        $arrDCAPalette = [
+
+            'general_legend' => [ 'title', 'alias' ]
+        ];
+
+        $arrSkipThisFieldTypes = [ 'fieldsetStart', 'fieldsetStop', 'message' ];
+
+        while ( $objDbFields->next() ) {
+
+            if ( !$objDbFields->type ) {
+
+                continue;
+            }
+
+            if ( $objDbFields->title && $objDbFields->type == 'fieldsetStart' ) {
+
+                $strLegend = $objDbFields->title;
+            }
+
+            if ( !$objDbFields->fieldname || in_array( $objDbFields->type, $arrSkipThisFieldTypes ) ) {
+
+                continue;
+            }
+
+            $arrDCAPalette[ $strLegend ][] = $objDbFields->fieldname;
+        }
+
+        // @todo sub palettes ?
 
         return [
 

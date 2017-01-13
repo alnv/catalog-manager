@@ -26,6 +26,11 @@ class InitializeSystem {
             $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
             $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
+            if ( !$arrCatalog['isBackendModule'] ) {
+
+                continue;
+            }
+
             if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) {
 
                 continue;

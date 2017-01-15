@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class Date {
+class DateInput {
 
     public static function generate( $arrDCAField, $arrField ) {
 

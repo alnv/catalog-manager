@@ -267,7 +267,7 @@ class DCABuilder {
 
             case 'date':
 
-                $arrDCAField = Date::generate( $arrDCAField, $arrField );
+                $arrDCAField = DateInput::generate( $arrDCAField, $arrField );
 
                 break;
 

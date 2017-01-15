@@ -1,6 +1,6 @@
 <?php
 
-$GLOBALS['BE_MOD']['system']['catalog-manager'] = array(
+$GLOBALS['BE_MOD']['system']['catalog-manager'] = [
 
     'name' => 'catalog-manager',
 
@@ -9,9 +9,9 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = array(
         'tl_catalog',
         'tl_catalog_fields'
     ]
-);
+];
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
 
-$GLOBALS['TL_HOOKS']['initializeSystem'][] = array( 'CatalogManager\InitializeSystem', 'initialize' );
+$GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\InitializeCatalogManager', 'initialize' ];

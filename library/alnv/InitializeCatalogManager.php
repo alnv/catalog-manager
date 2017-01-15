@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class InitializeSystem {
+class InitializeCatalogManager {
 
     public function initialize() {
 

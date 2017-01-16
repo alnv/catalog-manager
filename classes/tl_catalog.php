@@ -27,12 +27,12 @@ class tl_catalog extends \Backend {
 
             $objSQLBuilder = new SQLBuilder();
             
-            if ( $dc->activeRecord->mode !== '4' ) {
+            if ( !in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 unset( $this->arrRequiredTableFields['sorting'] );
             }
 
-            if ( !$dc->activeRecord->pTable ) {
+            if ( !$dc->activeRecord->pTable || !in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 unset( $this->arrRequiredTableFields['pid'] );
             }
@@ -40,6 +40,7 @@ class tl_catalog extends \Backend {
             $objSQLBuilder->createSQLCreateStatement( $dc->activeRecord->tablename, $this->arrRequiredTableFields );
         }
 
+        /*
         else {
 
             $objSQLBuilder = new SQLBuilder();
@@ -64,13 +65,19 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->dropTableField( $dc->activeRecord->tablename , 'pid' );
             }
         }
+        */
+    }
+
+    public function getPanelLayouts() {
+
+        return [ 'filter', 'search', 'limit', 'sort' ];
     }
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
         if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
 
-            throw new \Exception('this mode required ptable.');
+            throw new \Exception('this mode required ptable.'); // @todo i18n
         }
 
         return $varValue;

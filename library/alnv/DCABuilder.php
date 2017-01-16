@@ -35,13 +35,13 @@ class DCABuilder {
         'c512' => "varchar(512) NOT NULL default ''",
         'c1024' => "varchar(1024) NOT NULL default ''",
         'c2048' => "varchar(2048) NOT NULL default ''",
+        'i5' => "smallint(5) unsigned NOT NULL default '0'",
+        'i10' => "int(10) unsigned NOT NULL default '0'",
         'text' => "text NULL",
         'blob' => "blob NULL",
-        'i5' => "smallint(5) unsigned NOT NULL default '0'",
-        'i10' => "int(10) unsigned NOT NULL default '0'"
     ];
 
-    public static function createConfigDCA( $arrCatalog ) {
+    public static function createConfigDCA( $arrCatalog, $arrFields ) {
 
         $arrReturn = [
 
@@ -66,31 +66,33 @@ class DCABuilder {
             $arrReturn['ctable'] = $arrCatalog['cTables'];
         }
 
+        foreach ( $arrFields as $arrField ) {
+
+            if ( !$arrField['useIndex'] ) {
+
+                continue;
+            }
+
+            $arrReturn['sql']['keys'][ $arrField['fieldname'] ] = $arrField['useIndex'];
+        }
+
         return $arrReturn;
-    }
-
-    public static function createDCASorting( $arrCatalog ) {
-
-        return [
-
-            'mode' => 0
-        ];
     }
 
     public static function createDCAOperations( $arrCatalog ) {
 
-        return [
+        $arrReturn = [
 
             'edit' => [
 
-                'label' => ['…', '…'],
+                // 'label' => [ '…', '…' ],
                 'href' => 'act=edit',
                 'icon' => 'header.gif'
             ],
 
             'delete' => [
 
-                'label' => ['…', '…'],
+                // 'label' => [ '…', '…' ],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
@@ -98,37 +100,114 @@ class DCABuilder {
 
             'show' => [
 
-                'label' => ['…', '…'],
+                // 'label' => [ '…', '…' ],
                 'href' => 'act=show',
                 'icon' => 'show.gif'
             ]
         ];
+
+        foreach ( $arrCatalog['cTables'] as $arrCTable ) {
+
+            $arrChildTable = [];
+            $strOperationName = sprintf( 'go_to_%s', $arrCTable );
+
+            $arrChildTable[ $strOperationName ] = [
+
+                //'label' => [ '…', '…' ],
+                'href' => sprintf( 'table=%s', $arrCTable ),
+                'icon' => 'edit.gif'
+            ];
+
+            array_insert( $arrReturn, 1, $arrChildTable );
+        }
+
+        return $arrReturn;
     }
 
-    public static function createDCAPalettes( $objDbFields ) {
+    public static function createDCAGlobalOperations( $arrCatalog ) {
+
+        return [
+
+            'all' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
+            )
+        ];
+    }
+
+    public static function createDCASorting( $arrCatalog ) {
+
+        $arrFields = $arrCatalog['fields'];
+        $headerFields = $arrCatalog['headerFields'];
+
+        if ( $arrCatalog['mode'] == '4' && empty( $arrCatalog['fields'] ) ) {
+
+            $arrFields = [ 'sorting' ];
+        }
+
+        if ( empty( $arrCatalog['fields'] ) ) {
+
+            $arrFields = [ 'title' ];
+        }
+
+        if ( empty( $headerFields ) ) {
+
+            $headerFields = [ 'id', 'title', 'alias' ];
+        }
+
+        return [
+
+            'mode' => $arrCatalog['mode'],
+            'flag' => $arrCatalog['flag'],
+            'panelLayout' => 'filter;search,limit',
+            'child_record_callback' => [ 'DCABuilder', 'createRowView' ],
+            'fields' => $arrFields,
+            'headerFields' => $headerFields
+        ];
+    }
+
+    public function createRowView( $arrRow ) {
+
+        // @todo hook
+        return sprintf( '<span>%s</span>', $arrRow['title'] );
+    }
+
+    public static function createLabelDCA( $arrCatalog ) {
+
+        return [
+
+            'fields' => empty( $arrCatalog['fields'] ) ? [ 'title' ] : $arrCatalog['fields'],
+            'showColumns' => $arrCatalog['showColumns'] ? true : false
+        ];
+    }
+
+    public static function createDCAPalettes( $arrFields ) {
 
         $strPalette = '';
         $strLegendPointer = 'general_legend';
         $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
 
-        while ( $objDbFields->next() ) {
+       foreach ( $arrFields as $arrField ) {
 
-            if ( !$objDbFields->type ) {
-
-                continue;
-            }
-
-            if ( $objDbFields->title && $objDbFields->type == 'fieldsetStart' ) {
-
-                $strLegendPointer = $objDbFields->title;
-            }
-
-            if ( !$objDbFields->fieldname || in_array( $objDbFields->type, static::$arrForbiddenInputTypesMap ) ) {
+            if ( !$arrField['type'] ) {
 
                 continue;
             }
 
-            $arrDCAPalette[ $strLegendPointer ][] = $objDbFields->fieldname;
+            if ( $arrField['title'] && $arrField['type'] == 'fieldsetStart' ) {
+
+                $strLegendPointer = $arrField['title'];
+            }
+
+            if ( !$arrField['fieldname'] || in_array( $arrField['type'], static::$arrForbiddenInputTypesMap ) ) {
+
+                continue;
+            }
+
+            $arrDCAPalette[ $strLegendPointer ][] = $arrField['fieldname'];
         }
 
         $arrLegends = array_keys( $arrDCAPalette );
@@ -139,14 +218,6 @@ class DCABuilder {
         }
 
         return [ 'default' => $strPalette ];
-    }
-
-    public static function createLabelDCA( $arrCatalog ) {
-
-        return [
-
-            'fields' => [ 'title' ],
-        ];
     }
 
     public static function getDefaultDCAFields( $arrCatalog ) {
@@ -165,7 +236,7 @@ class DCABuilder {
 
             'title' => [
 
-                'label' => ['…', '…'],
+                // 'label' => ['…', '…'],
                 'inputType' => 'text',
 
                 'eval' => [
@@ -180,7 +251,7 @@ class DCABuilder {
 
             'alias' => [
 
-                'label' => ['…', '…'],
+                // 'label' => ['…', '…'],
                 'inputType' => 'text',
 
                 'eval' => [

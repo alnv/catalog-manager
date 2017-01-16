@@ -33,6 +33,7 @@ class InitializeCatalogManager {
 
             $arrCatalog['fields'] = Toolkit::parseStringToArray( $arrCatalog['fields'] );
             $arrCatalog['cTables'] = Toolkit::parseStringToArray( $arrCatalog['cTables'] );
+            $arrCatalog['panelLayout'] = Toolkit::parseStringToArray( $arrCatalog['panelLayout'] );
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
 
             $this->createCatalogManagerDCA( $arrCatalog );

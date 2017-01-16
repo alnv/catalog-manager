@@ -20,7 +20,11 @@ class tl_catalog_fields extends \Backend {
             }
 
             $objSQLBuilder->alterTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
-            $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
+
+            if ( $strIndex ) {
+
+                $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
+            }
         }
 
         else {
@@ -42,6 +46,12 @@ class tl_catalog_fields extends \Backend {
             if ( $arrColumns[ $dc->activeRecord->fieldname ]['statement'] !== $strStatement ) {
 
                 $objSQLBuilder->modifyTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
+            }
+
+            if ( $strIndex && $strIndex !== $arrColumns[ $dc->activeRecord->fieldname ]['index'] ) {
+
+                $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
+                $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
             }
         }
     }

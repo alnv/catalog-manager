@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,headerFields,showColumns;{navigation_settings},navArea,navPosition'
+        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},showColumns,fields,headerFields,format;{panel_layout_legend},panelLayout;{navigation_settings},navArea,navPosition'
     ],
 
     'fields' => [
@@ -248,6 +248,21 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(2) NOT NULL default ''"
         ],
 
+        'format' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['format'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'long'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
         'headerFields' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['headerFields'],
@@ -303,11 +318,32 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'tl_class' => 'm12 w50'
+                //
             ],
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+
+        'panelLayout' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'multiple' => true
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog',
+                'getPanelLayouts'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
         ],
 
         'navArea' => [

@@ -69,14 +69,16 @@ class InitializeCatalogManager {
 
     private function createCatalogManagerDCA( $arrCatalog ) {
 
+        $arrInputFields = [];
         $objDatabase = \Database::getInstance();
-        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
-
         $arrFields = DCABuilder::getDefaultDCAFields( $arrCatalog );
+        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
 
         while ( $objCatalogFieldsDB->next() ) {
 
             $arrField = $objCatalogFieldsDB->row();
+
+            $arrInputFields[] = $arrField;
             $arrDCAField = DCABuilder::createDCAField( $arrField );
 
             if ( is_null( $arrDCAField ) ) {
@@ -87,20 +89,19 @@ class InitializeCatalogManager {
             $arrFields[ $arrField['fieldname'] ] = $arrDCAField;
         }
 
-        $objCatalogFieldsDB->reset();
-
         $GLOBALS['TL_DCA'][ $arrCatalog['tablename'] ] = [
 
-            'config' => DCABuilder::createConfigDCA( $arrCatalog ),
+            'config' => DCABuilder::createConfigDCA( $arrCatalog, $arrInputFields ),
 
             'list' => [
 
                 'label' => DCABuilder::createLabelDCA( $arrCatalog ),
                 'sorting' => DCABuilder::createDCASorting( $arrCatalog ),
                 'operations' => DCABuilder::createDCAOperations( $arrCatalog ),
+                'global_operations' => DCABuilder::createDCAGlobalOperations( $arrCatalog ),
             ],
 
-            'palettes' => DCABuilder::createDCAPalettes( $objCatalogFieldsDB ),
+            'palettes' => DCABuilder::createDCAPalettes( $arrInputFields ),
             'fields' => $arrFields
         ];
     }

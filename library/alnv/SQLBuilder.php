@@ -91,16 +91,6 @@ class SQLBuilder extends \Backend {
 
         $strAddIndexStatement = '';
 
-        if ( !$strTable || !$strField ) {
-
-            return null;
-        }
-
-        if ( !$this->Database->fieldExists( $strField, $strTable ) ) {
-
-            return null;
-        }
-
         if ( $strIndex == 'index' ) {
 
             $strAddIndexStatement = sprintf( 'ALTER TABLE %s ADD KEY `%s` (`%s`)', $strTable, $strField, $strField );
@@ -117,6 +107,11 @@ class SQLBuilder extends \Backend {
         }
     }
 
+    public function dropIndex( $strTable, $strField ) {
+
+        $this->Database->prepare( sprintf( 'ALTER TABLE %s DROP INDEX %s', $strTable, $strField ) )->execute();
+    }
+
     public function showColumns( $strTable ) {
 
         $arrReturn = [];
@@ -127,12 +122,27 @@ class SQLBuilder extends \Backend {
             $arrReturn[ $objColumn->Field ] = [
 
                 'fieldname' => $objColumn->Field,
-                'statement' => $objColumn->Type . ' ' . $this->getNullStatement( $objColumn->Null ) . ' ' . $this->getDefaultStatement( $objColumn->Default ),
-                'index' => ''
+                'index' => $this->getSQLKey( $objColumn->Key ),
+                'statement' => $objColumn->Type . ' ' . $this->getNullStatement( $objColumn->Null ) . ' ' . $this->getDefaultStatement( $objColumn->Default )
             ];
         }
 
         return $arrReturn;
+    }
+
+    private function getSQLKey( $strKey ) {
+        
+        if ( $strKey == 'UNI' ) {
+
+            return 'unique';
+        }
+
+        if ( $strKey == 'MUL' ) {
+
+            return 'index';
+        }
+
+        return '';
     }
 
     private function getNullStatement( $strNull ) {

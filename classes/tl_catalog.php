@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
+    private $arrCreateSortingFieldOn = [ '4', '5' ];
+
     private $arrRequiredTableFields = [
 
         'title' => "varchar(255) NOT NULL default ''",
@@ -42,7 +44,7 @@ class tl_catalog extends \Backend {
 
             $objSQLBuilder = new SQLBuilder();
 
-            if ( $dc->activeRecord->mode == '4' ) {
+            if ( in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'sorting' , $this->arrRequiredTableFields['sorting'] );
             }
@@ -52,7 +54,7 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->dropTableField( $dc->activeRecord->tablename , 'sorting' );
             }
 
-            if ( $dc->activeRecord->pTable ) {
+            if ( $dc->activeRecord->pTable || $dc->activeRecord->mode === '5' ) {
 
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'pid' , $this->arrRequiredTableFields['pid'] );
             }
@@ -62,6 +64,16 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->dropTableField( $dc->activeRecord->tablename , 'pid' );
             }
         }
+    }
+
+    public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
+
+        if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
+
+            throw new \Exception('this mode required ptable.');
+        }
+
+        return $varValue;
     }
 
     public function dropTableOnDelete( \DataContainer $dc ) {
@@ -78,6 +90,18 @@ class tl_catalog extends \Backend {
     public function getFlagTypes() {
 
         return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
+    }
+
+    public function getParentDataContainerFields( \DataContainer $dc ) {
+
+        $strPTable = $dc->activeRecord->pTable;
+
+        if ( !$strPTable ) return [];
+
+        $objSQLBuilder = new SQLBuilder();
+        $arrFields = array_keys( $objSQLBuilder->showColumns( $strPTable ) );
+
+        return $arrFields;
     }
 
     public function getDataContainerFields( \DataContainer $dc ) {

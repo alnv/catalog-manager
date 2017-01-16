@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,showColumns;{navigation_settings},navArea,navPosition'
+        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},fields,headerFields,showColumns;{navigation_settings},navArea,navPosition'
     ],
 
     'fields' => [
@@ -158,14 +158,18 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50',
-                'submitOnChange' => true
+                'tl_class' => 'w50'
             ],
 
             'options_callback' => [
 
                 'CatalogManager\tl_catalog',
                 'getModeTypes'
+            ],
+
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'checkModeTypeRequirements' ]
             ],
 
             'exclude' => true,
@@ -182,6 +186,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'tl_class' => 'w50',
+                'submitOnChange' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],
@@ -260,11 +265,11 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [
 
                 'CatalogManager\tl_catalog',
-                'getParentFields'
+                'getParentDataContainerFields'
             ],
 
             'exclude' => true,
-            'sql' => "varchar(2) NOT NULL default ''"
+            'sql' => "varchar(64) NOT NULL default ''"
         ],
 
         'fields' => [

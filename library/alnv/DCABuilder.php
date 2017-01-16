@@ -142,6 +142,7 @@ class DCABuilder {
 
         $arrFields = $arrCatalog['fields'];
         $headerFields = $arrCatalog['headerFields'];
+        $strPanelLayout = implode( ',', $arrCatalog['panelLayout'] );
 
         if ( $arrCatalog['mode'] == '4' && empty( $arrCatalog['fields'] ) ) {
 
@@ -158,14 +159,19 @@ class DCABuilder {
             $headerFields = [ 'id', 'title', 'alias' ];
         }
 
+        if ( strpos( $strPanelLayout, 'filter' ) !== false ) {
+
+            $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
+        }
+
         return [
 
+            'fields' => $arrFields,
             'mode' => $arrCatalog['mode'],
             'flag' => $arrCatalog['flag'],
-            'panelLayout' => 'filter;search,limit',
+            'headerFields' => $headerFields,
+            'panelLayout' => $strPanelLayout,
             'child_record_callback' => [ 'DCABuilder', 'createRowView' ],
-            'fields' => $arrFields,
-            'headerFields' => $headerFields
         ];
     }
 
@@ -177,11 +183,13 @@ class DCABuilder {
 
     public static function createLabelDCA( $arrCatalog ) {
 
-        return [
+        $arrReturn = [
 
+            'showColumns' => $arrCatalog['showColumns'] ? true : false,
             'fields' => empty( $arrCatalog['fields'] ) ? [ 'title' ] : $arrCatalog['fields'],
-            'showColumns' => $arrCatalog['showColumns'] ? true : false
         ];
+
+        return $arrReturn;
     }
 
     public static function createDCAPalettes( $arrFields ) {

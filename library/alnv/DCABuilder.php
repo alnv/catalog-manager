@@ -222,7 +222,7 @@ class DCABuilder {
 
         foreach ( $arrLegends as $strLegend ) {
 
-            $strPalette .= sprintf( '{%s},%s;', $strLegend, implode(',', $arrDCAPalette[ $strLegend ] ) );
+            $strPalette .= sprintf( '{%s},%s;', $strLegend, implode( ',', $arrDCAPalette[ $strLegend ] ) );
         }
 
         return [ 'default' => $strPalette ];

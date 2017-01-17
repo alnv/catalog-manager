@@ -81,6 +81,28 @@ class DCABuilder {
 
     public static function createDCAOperations( $arrCatalog ) {
 
+        $strMode = 'default';
+
+        $arrModes = [
+
+            'cut' => [
+
+                'default' => 'act=paste&mode=cut',
+                'extend' => 'act=paste&mode=cut'
+            ],
+
+            'copy' => [
+
+                'default' => 'act=copy',
+                'extend' => 'act=paste&mode=copy'
+            ]
+        ];
+
+        if ( in_array( $arrCatalog['mode'] , [ '4', '5' ] ) ) {
+
+            $strMode = 'extend';
+        }
+
         $arrReturn = [
 
             'edit' => [
@@ -88,6 +110,23 @@ class DCABuilder {
                 // 'label' => [ '…', '…' ],
                 'href' => 'act=edit',
                 'icon' => 'header.gif'
+            ],
+
+
+            'copy' => [
+
+                // 'label' => ['…', '…'],
+                'icon' => 'copy.gif',
+                'href' => $arrModes['copy'][ $strMode ],
+                'attributes' => 'onclick="Backend.getScrollOffset();"',
+            ],
+
+            'cut' => [
+
+                // 'label' => ['…', '…'],
+                'icon' => 'cut.gif',
+                'href' => $arrModes['cut'][ $strMode ],
+                'attributes' => 'onclick="Backend.getScrollOffset();"',
             ],
 
             'delete' => [

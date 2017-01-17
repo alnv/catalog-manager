@@ -73,7 +73,7 @@ class InitializeCatalogManager {
         $arrInputFields = [];
         $objDatabase = \Database::getInstance();
         $arrFields = DCABuilder::getDefaultDCAFields( $arrCatalog );
-        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
+        $objCatalogFieldsDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? ORDER BY `sorting`' )->execute( $arrCatalog['id'] );
 
         while ( $objCatalogFieldsDB->next() ) {
 

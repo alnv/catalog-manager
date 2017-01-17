@@ -38,7 +38,7 @@ class InitializeCatalogManager {
 
             $this->createCatalogManagerDCA( $arrCatalog );
 
-            if ( !$arrCatalog['isBackendModule'] ) {
+            if ( !$arrCatalog['isBackendModule'] || $arrCatalog['pTable'] ) {
 
                 continue;
             }

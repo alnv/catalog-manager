@@ -56,7 +56,7 @@ class DCABuilder {
             ]
         ];
 
-        if ( $arrCatalog['pTable'] ) {
+        if ( $arrCatalog['pTable'] && !$arrCatalog['isBackendModule'] ) {
 
             $arrReturn['ptable'] = $arrCatalog['pTable'];
         }
@@ -164,7 +164,7 @@ class DCABuilder {
             $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
         }
 
-        return [
+        $arrReturn = [
 
             'fields' => $arrFields,
             'mode' => $arrCatalog['mode'],
@@ -173,12 +173,20 @@ class DCABuilder {
             'panelLayout' => $strPanelLayout,
             'child_record_callback' => [ 'DCABuilder', 'createRowView' ],
         ];
+
+        if ( $arrCatalog['mode'] === '5' ) {
+
+            unset( $arrReturn['flag'] );
+            unset( $arrReturn['headerFields'] );
+        }
+
+        return $arrReturn;
     }
 
     public function createRowView( $arrRow ) {
 
         // @todo hook
-        return sprintf( '<span>%s</span>', $arrRow['title'] );
+        return sprintf( '%s', $arrRow['title'] );
     }
 
     public static function createLabelDCA( $arrCatalog ) {
@@ -188,6 +196,11 @@ class DCABuilder {
             'showColumns' => $arrCatalog['showColumns'] ? true : false,
             'fields' => empty( $arrCatalog['fields'] ) ? [ 'title' ] : $arrCatalog['fields'],
         ];
+
+        if ( $arrCatalog['format'] ) {
+
+            $arrReturn['format'] = $arrCatalog['format'];
+        }
 
         return $arrReturn;
     }
@@ -295,6 +308,12 @@ class DCABuilder {
 
                 'sql' => "int(10) unsigned NOT NULL default '0'",
             ];
+
+            if ( $arrCatalog['mode'] === '5' ) {
+
+                unset( $arrReturn['pid']['relation'] );
+                unset( $arrReturn['pid']['foreignKey'] );
+            }
         }
 
         return $arrReturn;

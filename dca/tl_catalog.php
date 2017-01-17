@@ -206,7 +206,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [
 
                 'CatalogManager\tl_catalog',
-                'getAllTables'
+                'getAllPTables'
             ],
 
             'save_callback' => [
@@ -235,7 +235,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [
 
                 'CatalogManager\tl_catalog',
-                'getAllTables'
+                'getAllCTables'
             ],
 
             'exclude' => true,

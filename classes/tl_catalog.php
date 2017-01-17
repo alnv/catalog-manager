@@ -91,7 +91,7 @@ class tl_catalog extends \Backend {
 
         $strPTable = $dc->activeRecord->pTable;
 
-        if ( !$strPTable ) return [];
+        if ( !$strPTable || !$this->Database->tableExists( $strPTable ) ) return [];
 
         $objSQLBuilder = new SQLBuilder();
         $arrFields = array_keys( $objSQLBuilder->showColumns( $strPTable ) );
@@ -103,7 +103,7 @@ class tl_catalog extends \Backend {
 
         $strID = \Input::get('id');
         $arrDefaultFields = [ 'id', 'title', 'alias', 'tstamp' ];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $strID );
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ?' )->execute( $strID );
 
         while ( $objCatalogFields->next() ) {
 
@@ -115,7 +115,7 @@ class tl_catalog extends \Backend {
             $arrDefaultFields[] = $objCatalogFields->fieldname;
         }
 
-        if ( $this->Database->fieldExists( 'sorting', $dc->activeRecord->tablename ) ) {
+        if ( $this->Database->tableExists( $dc->activeRecord->tablename ) && $this->Database->fieldExists( 'sorting', $dc->activeRecord->tablename ) ) {
 
             $arrDefaultFields[] = 'sorting';
         }
@@ -123,7 +123,30 @@ class tl_catalog extends \Backend {
         return $arrDefaultFields;
     }
 
-    public function getAllTables( \DataContainer $dc ) {
+    public function getAllCTables( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename`, `pTable` FROM tl_catalog' )->execute();
+
+        while ( $objCatalogTables->next() ) {
+
+            if ( $dc->activeRecord->tablename && $dc->activeRecord->tablename == $objCatalogTables->tablename ) {
+
+                continue;
+            }
+            
+            if ( !$objCatalogTables->pTable && $objCatalogTables->pTable !== $dc->activeRecord->tablename ) {
+
+                continue;
+            }
+
+            $arrReturn[] = $objCatalogTables->tablename;
+        }
+
+        return $arrReturn;
+    }
+
+    public function getAllPTables( \DataContainer $dc ) {
 
         $arrReturn = [];
         $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename` FROM tl_catalog' )->execute();
@@ -158,11 +181,6 @@ class tl_catalog extends \Backend {
         if ( $varValue && $dc->activeRecord->pTable ) {
 
             throw new \Exception('you can not generate backend module with ptable attribute.'); // @todo i18n
-        }
-
-        if ( $varValue && in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
-
-            throw new \Exception('you can not generate backend module with this mode.'); // @todo i18n
         }
 
         return $varValue;

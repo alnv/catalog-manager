@@ -28,7 +28,7 @@ class tl_catalog_fields extends \Backend {
         }
 
         else {
-
+            
             if ( in_array( $dc->activeRecord->type , DCABuilder::$arrForbiddenInputTypesMap ) ) {
 
                 $this->dropFieldOnDelete( $dc );

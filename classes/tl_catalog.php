@@ -67,6 +67,11 @@ class tl_catalog extends \Backend {
         return [ 'filter', 'search', 'limit', 'sort' ];
     }
 
+    public function getOperations() {
+
+        return [ 'cut', 'copy', 'toggle' ];
+    }
+
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
         if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
@@ -134,7 +139,7 @@ class tl_catalog extends \Backend {
 
                 continue;
             }
-            
+
             if ( !$objCatalogTables->pTable && $objCatalogTables->pTable !== $dc->activeRecord->tablename ) {
 
                 continue;

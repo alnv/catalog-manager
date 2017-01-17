@@ -56,7 +56,7 @@ class DCABuilder {
             ]
         ];
 
-        if ( $arrCatalog['pTable'] && !$arrCatalog['isBackendModule'] ) {
+        if ( static::usePTable( $arrCatalog ) ) {
 
             $arrReturn['ptable'] = $arrCatalog['pTable'];
         }
@@ -298,21 +298,17 @@ class DCABuilder {
 
             $arrReturn['pid'] = [
 
-                'foreignKey' => sprintf( '%s.id', $arrCatalog['pTable'] ),
-
-                'relation' => [
-
-                    'type' => 'belongsTo',
-                    'load' => 'eager'
-                ],
-
                 'sql' => "int(10) unsigned NOT NULL default '0'",
             ];
 
-            if ( $arrCatalog['mode'] === '5' ) {
+            if ( !static::usePTable( $arrCatalog ) ) {
 
-                unset( $arrReturn['pid']['relation'] );
-                unset( $arrReturn['pid']['foreignKey'] );
+                $arrReturn['pid']['foreignKey'] = sprintf( '%s.id', $arrCatalog['pTable'] );
+                $arrReturn['pid']['relation'] = [
+
+                    'type' => 'belongsTo',
+                    'load' => 'eager'
+                ];
             }
         }
 
@@ -437,5 +433,25 @@ class DCABuilder {
     public static function setInputType( $arrField ) {
 
         return static::$arrInputTypeMap[ $arrField['type'] ] ? static::$arrInputTypeMap[ $arrField['type'] ] : 'text';
+    }
+
+    private static function usePTable( $arrCatalog ) {
+
+        if ( !$arrCatalog['pTable'] ) {
+
+            return false;
+        }
+
+        if ( $arrCatalog['isBackendModule'] ) {
+
+            return false;
+        }
+
+        if ( in_array( $arrCatalog['mode'], [ '4', '5' ] ) ) {
+
+            return false;
+        }
+
+        return true;
     }
 }

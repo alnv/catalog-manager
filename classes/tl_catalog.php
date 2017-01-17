@@ -18,7 +18,7 @@ class tl_catalog extends \Backend {
 
     public function createTableOnSubmit( \DataContainer $dc ) {
 
-        if ( !$dc->id || !$dc->activeRecord->tablename ) {
+        if ( !$dc->activeRecord->tablename ) {
 
             return null;
         }
@@ -26,7 +26,7 @@ class tl_catalog extends \Backend {
         if ( !$this->Database->tableExists( $dc->activeRecord->tablename ) ) {
 
             $objSQLBuilder = new SQLBuilder();
-            
+
             if ( !in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 unset( $this->arrRequiredTableFields['sorting'] );
@@ -40,7 +40,6 @@ class tl_catalog extends \Backend {
             $objSQLBuilder->createSQLCreateStatement( $dc->activeRecord->tablename, $this->arrRequiredTableFields );
         }
 
-        /*
         else {
 
             $objSQLBuilder = new SQLBuilder();
@@ -50,22 +49,17 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'sorting' , $this->arrRequiredTableFields['sorting'] );
             }
 
-            else {
-
-                $objSQLBuilder->dropTableField( $dc->activeRecord->tablename , 'sorting' );
-            }
-
-            if ( $dc->activeRecord->pTable || $dc->activeRecord->mode === '5' ) {
+            if ( $dc->activeRecord->pTable || in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'pid' , $this->arrRequiredTableFields['pid'] );
             }
-
-            else {
-
-                $objSQLBuilder->dropTableField( $dc->activeRecord->tablename , 'pid' );
-            }
         }
-        */
+    }
+
+    public function dropTableOnDelete( \DataContainer $dc ) {
+
+        $objSQLBuilder = new SQLBuilder();
+        $objSQLBuilder->createSQLDropTableStatement( $dc->activeRecord->tablename );
     }
 
     public function getPanelLayouts() {
@@ -83,15 +77,9 @@ class tl_catalog extends \Backend {
         return $varValue;
     }
 
-    public function dropTableOnDelete( \DataContainer $dc ) {
-
-        $objSQLBuilder = new SQLBuilder();
-        $objSQLBuilder->createSQLDropTableStatement( $dc->activeRecord->tablename );
-    }
-
     public function getModeTypes () {
 
-        return [ '0', '1', '2', '3', '4', '5' ];
+        return [ '0', '1', '2', '4', '5' ];
     }
 
     public function getFlagTypes() {
@@ -114,7 +102,7 @@ class tl_catalog extends \Backend {
     public function getDataContainerFields( \DataContainer $dc ) {
 
         $strID = \Input::get('id');
-        $arrDefaultFields = [ 'id', 'title', 'alias' ];
+        $arrDefaultFields = [ 'id', 'title', 'alias', 'tstamp' ];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $strID );
 
         while ( $objCatalogFields->next() ) {
@@ -153,10 +141,47 @@ class tl_catalog extends \Backend {
         return $arrReturn;
     }
 
+    public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
+
+        $arrNotAllowedModeTypes = [ '4', '5' ];
+
+        if ( $varValue && in_array( $dc->activeRecord->mode , $arrNotAllowedModeTypes ) ) {
+
+            throw new \Exception('you can not use format in this mode'); // @todo i18n
+        }
+
+        return $varValue;
+    }
+
+    public function checkModeTypeForPTableAndModes( $varValue, \DataContainer $dc ) {
+
+        if ( $varValue && $dc->activeRecord->pTable ) {
+
+            throw new \Exception('you can not generate backend module with ptable attribute.'); // @todo i18n
+        }
+
+        if ( $varValue && in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
+
+            throw new \Exception('you can not generate backend module with this mode.'); // @todo i18n
+        }
+
+        return $varValue;
+    }
+
+    public function checkModeTypeForBackendModule( $varValue, \DataContainer $dc ) {
+
+        if ( $varValue && $dc->activeRecord->isBackendModule ) {
+
+            throw new \Exception('you can not use ptable for backend module.'); // @todo i18n
+        }
+
+        return $varValue;
+    }
+
     public function getNavigationAreas() {
 
-        $arrModules = $GLOBALS['BE_MOD'] ? $GLOBALS['BE_MOD'] : [];
         $arrReturn = [];
+        $arrModules = $GLOBALS['BE_MOD'] ? $GLOBALS['BE_MOD'] : [];
 
         if ( !is_array( $arrModules ) ) {
 

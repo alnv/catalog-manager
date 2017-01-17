@@ -7,7 +7,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'dataContainer' => 'Table',
 
         'ctable' => [ 'tl_catalog_fields' ],
-
+        
         'onsubmit_callback' => [
 
             [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ]
@@ -74,7 +74,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        'default' => '{table_settings},name,tablename,description,isBackendModule;{sorting_settings},mode,flag,cTables,pTable;{label_settings},showColumns,fields,headerFields,format;{panel_layout_legend},panelLayout;{navigation_settings},navArea,navPosition'
+        '__selector__' => [ 'isBackendModule' ],
+        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},showColumns,fields,headerFields,format;{panel_layout_legend},panelLayout;{navigation_settings},isBackendModule;'
+    ],
+
+    'subpalettes' => [
+
+        'isBackendModule' => 'navArea,navPosition'
     ],
 
     'fields' => [
@@ -142,9 +148,14 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-
+                'submitOnChange' => true,
             ],
 
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'checkModeTypeForPTableAndModes' ]
+            ],
+            
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
         ],
@@ -158,7 +169,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'submitOnChange' => true,
             ],
 
             'options_callback' => [
@@ -195,6 +207,11 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'CatalogManager\tl_catalog',
                 'getAllTables'
+            ],
+
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ]
             ],
 
             'exclude' => true,
@@ -256,7 +273,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'maxlength' => 128,
-                'tl_class' => 'long'
+                'tl_class' => 'long',
+                'allowHtml' => true
+            ],
+
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'checkModeTypeForFormat' ]
             ],
 
             'exclude' => true,

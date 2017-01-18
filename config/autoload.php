@@ -8,6 +8,7 @@ ClassLoader::addClasses([
     'CatalogManager\tl_catalog' => 'system/modules/catalog-manager/classes/tl_catalog.php',
     'CatalogManager\Text' => 'system/modules/catalog-manager/library/alnv/fields/Text.php',
     'CatalogManager\Radio' => 'system/modules/catalog-manager/library/alnv/fields/Radio.php',
+    'CatalogManager\DCAHelper' => 'system/modules/catalog-manager/library/alnv/DCAHelper.php',
     'CatalogManager\Select' => 'system/modules/catalog-manager/library/alnv/fields/Select.php',
     'CatalogManager\Upload' => 'system/modules/catalog-manager/library/alnv/fields/Upload.php',
     'CatalogManager\Number' => 'system/modules/catalog-manager/library/alnv/fields/Number.php',

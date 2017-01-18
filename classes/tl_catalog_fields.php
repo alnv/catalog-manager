@@ -9,12 +9,12 @@ class tl_catalog_fields extends \Backend {
         $strID = $dc->activeRecord->pid;
         $objSQLBuilder = new SQLBuilder();
         $strIndex = $dc->activeRecord->useIndex;
-        $strStatement = DCABuilder::$arrSQLStatements[ $dc->activeRecord->statement ];
+        $strStatement = DCAHelper::$arrSQLStatements[ $dc->activeRecord->statement ];
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
         
         if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
 
-            if ( in_array( $dc->activeRecord->type , DCABuilder::$arrForbiddenInputTypesMap ) ) {
+            if ( in_array( $dc->activeRecord->type , DCAHelper::$arrForbiddenInputTypes ) ) {
 
                 return null;
             }
@@ -29,7 +29,7 @@ class tl_catalog_fields extends \Backend {
 
         else {
             
-            if ( in_array( $dc->activeRecord->type , DCABuilder::$arrForbiddenInputTypesMap ) ) {
+            if ( in_array( $dc->activeRecord->type , DCAHelper::$arrForbiddenInputTypes ) ) {
 
                 $this->dropFieldOnDelete( $dc );
 
@@ -67,21 +67,7 @@ class tl_catalog_fields extends \Backend {
 
     public function getFieldTypes() {
 
-        return [
-
-            'text',
-            'date',
-            'radio',
-            'hidden',
-            'number',
-            'select',
-            'upload',
-            'message',
-            'checkbox',
-            'textarea',
-            'fieldsetStart',
-            'fieldsetStop'
-        ];
+        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'fieldsetStart', 'fieldsetStop' ];
     }
 
     public function getIndexes() {
@@ -101,41 +87,17 @@ class tl_catalog_fields extends \Backend {
             return [ 'date', 'time', 'datim' ];
         }
 
-        return [
-
-            'url',
-            'time',
-            'date',
-            'alias',
-            'alnum',
-            'alpha',
-            'datim',
-            'digit',
-            'email',
-            'extnd',
-            'phone',
-            'prcnt',
-            'locale',
-            'emails',
-            'natural',
-            'friendly',
-            'language',
-            'folderalias',
-        ];
+        return [ 'url', 'time', 'date', 'alias', 'alnum', 'alpha', 'datim', 'digit', 'email', 'extnd', 'phone', 'prcnt', 'locale', 'emails', 'natural', 'friendly', 'language', 'folderalias' ];
     }
 
     public function getRichTextEditor() {
 
-        return [
-
-            'tinyMCE',
-            'tinyFlash'
-        ];
+        return [ 'tinyMCE', 'tinyFlash' ];
     }
 
     public function getSQLStatements() {
 
-        return DCABuilder::$arrSQLStatements;
+        return DCAHelper::$arrSQLStatements;
     }
 
     public function getCatalogFieldList( $arrRow ) {

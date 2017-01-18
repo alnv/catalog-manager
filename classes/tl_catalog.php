@@ -140,11 +140,7 @@ class tl_catalog extends \Backend {
                 continue;
             }
 
-            if ( !$objCatalogTables->pTable && $objCatalogTables->pTable !== $dc->activeRecord->tablename ) {
-
-                continue;
-            }
-
+            
             $arrReturn[] = $objCatalogTables->tablename;
         }
 

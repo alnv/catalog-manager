@@ -46,3 +46,7 @@ Fields:
         - max size
         - accepted mime types
         - multiple
+
+
+CATALOG
+    - allow to rename db table

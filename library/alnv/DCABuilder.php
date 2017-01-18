@@ -76,6 +76,29 @@ class DCABuilder {
             $arrReturn['sql']['keys'][ $arrField['fieldname'] ] = $arrField['useIndex'];
         }
 
+        if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $arrCatalog['name'] ) {
+
+            $objReviseRelatedTables = new ReviseRelatedTables();
+
+            if ( $objReviseRelatedTables->reviseCatalogTables( $arrCatalog['tablename'] , $arrCatalog['pTable'], $arrCatalog['cTables'] ) ) {
+
+                foreach ( $objReviseRelatedTables->getErrorTables() as $strTable ) {
+
+                    \Message::addError( sprintf( "This table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable ) );
+
+                    if ( $strTable == $arrReturn['ptable'] ) {
+
+                        unset( $arrReturn['ptable'] );
+                    }
+
+                    if ( in_array( $strTable , $arrReturn['ctable'] ) ) {
+
+                        unset( $arrReturn['ctable'] );
+                    }
+                }
+            }
+        }
+
         return $arrReturn;
     }
 

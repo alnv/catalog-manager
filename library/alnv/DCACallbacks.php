@@ -4,7 +4,7 @@ namespace CatalogManager;
 
 class DCACallbacks extends \Backend{
 
-    public function createRowView( $arrRow, $strHref, $strLabel, $strTitle, $strIcon, $strAttributes ) {
+    public function createRowView( $arrRow ) {
 
         // @todo hook
         return sprintf( '%s', $arrRow['title'] );

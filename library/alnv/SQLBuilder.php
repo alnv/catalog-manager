@@ -25,7 +25,7 @@ class SQLBuilder extends \Backend {
 
         $strFieldStatements[] = 'PRIMARY KEY  (`id`)';
 
-        $strCreateStatement = sprintf( 'CREATE TABLE `%s` ( %s ) ENGINE=MyISAM DEFAULT CHARSET=UTF8', $strTable, implode( ',', $strFieldStatements ) );
+        $strCreateStatement = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` ( %s ) ENGINE=MyISAM DEFAULT CHARSET=UTF8', $strTable, implode( ',', $strFieldStatements ) );
 
         $this->Database->prepare( $strCreateStatement )->execute();
     }
@@ -40,6 +40,18 @@ class SQLBuilder extends \Backend {
         $strDropTableStatement = sprintf( 'DROP TABLE %s;', $strTable );
 
         $this->Database->prepare( $strDropTableStatement )->execute();
+    }
+
+    public function createSQLRenameTableStatement( $strTable, $strOldTable ) {
+
+        if ( !$strTable ) {
+
+            return null;
+        }
+
+        $strRenameTableStatement = sprintf( 'RENAME TABLE %s TO %s', $strOldTable, $strTable );
+
+        $this->Database->prepare( $strRenameTableStatement )->execute();
     }
 
     public function alterTableField( $strTable, $strField, $strSQLStatement ) {
@@ -115,6 +127,7 @@ class SQLBuilder extends \Backend {
     public function showColumns( $strTable ) {
 
         $arrReturn = [];
+
         $objColumn = $this->Database->prepare( sprintf( 'SHOW COLUMNS FROM %s', $strTable ) )->execute();
 
         while ( $objColumn->next() ) {
@@ -128,6 +141,32 @@ class SQLBuilder extends \Backend {
         }
 
         return $arrReturn;
+    }
+
+    public function updateTableFieldByID( $stID, $strTable, $arrValues ) {
+
+        $arrUpdateSet = [];
+
+        if ( !$stID || !$strTable ) {
+
+            return null;
+        }
+
+        foreach ( $arrValues as $strFieldname => $strValue ){
+
+            $arrUpdateSet[] = "`{$strFieldname}` = '{$strValue}'";
+        }
+
+        if ( !empty( $arrUpdateSet ) && is_array( $arrUpdateSet ) ) {
+
+            $strUpdateFieldStatement = sprintf( 'UPDATE %s SET %s WHERE id = ?', $strTable, implode( ',', $arrUpdateSet  ) );
+            $this->Database->prepare( $strUpdateFieldStatement )->execute( $stID );
+        }
+    }
+
+    private function getPreparePlaceholder( $arrValues ) {
+
+        return implode( ', ', array_fill( 0, count( $arrValues ), '?' ) );
     }
 
     private function getSQLKey( $strKey ) {

@@ -64,10 +64,4 @@ class DCAHelper {
         
         return static::$arrInputTypes[ $arrField['type'] ] ? static::$arrInputTypes[ $arrField['type'] ] : 'text';
     }
-
-    public function createRowView( $arrRow ) {
-
-        // @todo hook
-        return sprintf( '%s', $arrRow['title'] );
-    }
 }

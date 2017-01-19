@@ -17,6 +17,7 @@ ClassLoader::addClasses([
     'CatalogManager\DCABuilder' => 'system/modules/catalog-manager/library/alnv/DCABuilder.php',
     'CatalogManager\Checkbox' => 'system/modules/catalog-manager/library/alnv/fields/Checkbox.php',
     'CatalogManager\Textarea' => 'system/modules/catalog-manager/library/alnv/fields/Textarea.php',
+    'CatalogManager\DCACallbacks' => 'system/modules/catalog-manager/library/alnv/DCACallbacks.php',
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/fields/DateInput.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',

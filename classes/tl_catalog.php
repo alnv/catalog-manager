@@ -8,6 +8,7 @@ class tl_catalog extends \Backend {
 
     private $arrRequiredTableFields = [
 
+        'invisible' => "char(1) NOT NULL default ''",
         'title' => "varchar(255) NOT NULL default ''",
         'alias' => "varchar(255) NOT NULL default ''",
         'pid' => "int(10) unsigned NOT NULL default '0'",
@@ -18,16 +19,28 @@ class tl_catalog extends \Backend {
 
     public function createTableOnSubmit( \DataContainer $dc ) {
 
+        $blnVisibleField = false;
+
         if ( !$dc->activeRecord->tablename ) {
 
             return null;
+        }
+
+        if ( $dc->activeRecord->operations ) {
+
+            $arrOperations = deserialize( $dc->activeRecord->operations );
+
+            if ( !empty( $arrOperations ) && is_array( $arrOperations ) ) {
+
+                $blnVisibleField = in_array( 'invisible' , $arrOperations );
+            }
         }
 
         if ( !$this->Database->tableExists( $dc->activeRecord->tablename ) ) {
 
             $objSQLBuilder = new SQLBuilder();
 
-            if ( !in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
+            if ( in_array( $dc->activeRecord->mode, [ '0' ] ) ) {
 
                 unset( $this->arrRequiredTableFields['sorting'] );
             }
@@ -37,6 +50,11 @@ class tl_catalog extends \Backend {
                 unset( $this->arrRequiredTableFields['pid'] );
             }
 
+            if ( !$blnVisibleField ) {
+
+                unset( $this->arrRequiredTableFields['invisible'] );
+            }
+
             $objSQLBuilder->createSQLCreateStatement( $dc->activeRecord->tablename, $this->arrRequiredTableFields );
         }
 
@@ -44,7 +62,7 @@ class tl_catalog extends \Backend {
 
             $objSQLBuilder = new SQLBuilder();
 
-            if ( in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
+            if ( !in_array( $dc->activeRecord->mode, [ '0' ] ) ) {
 
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'sorting' , $this->arrRequiredTableFields['sorting'] );
             }
@@ -52,6 +70,11 @@ class tl_catalog extends \Backend {
             if ( $dc->activeRecord->pTable || in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
 
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'pid' , $this->arrRequiredTableFields['pid'] );
+            }
+
+            if ( $blnVisibleField ) {
+
+                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'invisible' , $this->arrRequiredTableFields['invisible'] );
             }
         }
     }
@@ -69,7 +92,7 @@ class tl_catalog extends \Backend {
 
     public function getOperations() {
 
-        return [ 'cut', 'copy', 'toggle' ];
+        return [ 'cut', 'copy', 'invisible' ];
     }
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {

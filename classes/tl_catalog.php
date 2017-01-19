@@ -79,10 +79,64 @@ class tl_catalog extends \Backend {
         }
     }
 
+    public function renameTable( $varValue, \DataContainer $dc ) {
+
+        if ( !$varValue || !$dc->activeRecord->tablename || $dc->activeRecord->tablename == $varValue ) {
+
+            return $varValue;
+        }
+
+        if ( !$this->Database->tableExists( $varValue ) ) {
+
+            $objSQLBuilder = new SQLBuilder();
+            $objSQLBuilder->createSQLRenameTableStatement( $varValue, $dc->activeRecord->tablename );
+
+            $this->renameAllTableDependencies( $dc->id, $varValue, $dc->activeRecord->tablename );
+        }
+
+        return $varValue;
+    }
+
     public function dropTableOnDelete( \DataContainer $dc ) {
 
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLDropTableStatement( $dc->activeRecord->tablename );
+    }
+
+    public function renameAllTableDependencies( $strID, $strTable, $strOldTable ) {
+
+        $objSQLBuilder = new SQLBuilder();
+        $objCatalogDb = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id != ?')->execute( $strID );
+
+        while ( $objCatalogDb->next() ) {
+
+            $arrItem = $objCatalogDb->row();
+
+            if ( $arrItem['cTables'] ) {
+
+                $arrCTables = deserialize( $arrItem['cTables'] );
+
+                foreach ( $arrCTables as $intIndex => $strCTable ) {
+
+                    if ( $strCTable == $strOldTable ) {
+
+                        $arrCTables[ $intIndex ] = $strTable;
+                    }
+                }
+
+                $arrItem['cTables'] = serialize( $arrCTables );
+            }
+
+            if ( $arrItem['pTable'] ) {
+
+                if ( $arrItem['pTable'] == $strOldTable ) {
+
+                    $arrItem['pTable'] = $strTable;
+                }
+            }
+
+            $objSQLBuilder->updateTableFieldByID( $arrItem['id'], 'tl_catalog', $arrItem );
+        }
     }
 
     public function getPanelLayouts() {
@@ -143,9 +197,12 @@ class tl_catalog extends \Backend {
             $arrDefaultFields[] = $objCatalogFields->fieldname;
         }
 
-        if ( $this->Database->tableExists( $dc->activeRecord->tablename ) && $this->Database->fieldExists( 'sorting', $dc->activeRecord->tablename ) ) {
+        if ( $this->Database->tableExists( $dc->activeRecord->tablename ) ) {
 
-            $arrDefaultFields[] = 'sorting';
+            if ( $this->Database->fieldExists( 'sorting', $dc->activeRecord->tablename ) ) {
+
+                $arrDefaultFields[] = 'sorting';
+            }
         }
 
         return $arrDefaultFields;

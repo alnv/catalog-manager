@@ -132,13 +132,18 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'unique' => true,
+                'rgxp' => 'alpha',
                 'maxlength' => 128,
                 'tl_class' => 'w50',
-                'mandatory' => true
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'spaceToUnderscore' => true,
             ],
 
             'save_callback' => [
 
+                [ 'CatalogManager\tl_catalog', 'checkTablename' ],
                 [ 'CatalogManager\tl_catalog', 'renameTable' ]
             ],
 

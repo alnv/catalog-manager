@@ -149,16 +149,6 @@ class tl_catalog extends \Backend {
         return [ 'cut', 'copy', 'invisible' ];
     }
 
-    public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
-
-        if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
-
-            throw new \Exception('this mode required ptable.'); // @todo i18n
-        }
-
-        return $varValue;
-    }
-
     public function getModeTypes () {
 
         return [ '0', '1', '2', '4', '5' ];
@@ -167,6 +157,21 @@ class tl_catalog extends \Backend {
     public function getFlagTypes() {
 
         return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
+    }
+
+    public function checkTablename( $varValue ) {
+
+        return str_replace( '-', '_', $varValue );
+    }
+
+    public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
+
+        if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
+
+            throw new \Exception('this mode required ptable.'); // @todo i18n
+        }
+
+        return $varValue;
     }
 
     public function getParentDataContainerFields( \DataContainer $dc ) {

@@ -13,7 +13,14 @@ class DCABuilder {
     private $arrCatalog = [];
 
     private $arrErrorTables = [];
-    
+
+    private $arrOperations = [
+
+        'cut' => false,
+        'copy' => false,
+        'invisible' => false
+    ];
+
     public function __construct( $arrCatalog ) {
 
         $this->arrCatalog = $arrCatalog;
@@ -52,6 +59,24 @@ class DCABuilder {
         }
     }
 
+    private function determineOperations() {
+
+        $arrOperations = [];
+
+        if ( $this->arrCatalog['operations'] ) {
+
+            $arrOperations = deserialize( $this->arrCatalog['operations'] );
+        }
+
+        if ( !empty( $arrOperations ) && is_array($arrOperations) ) {
+
+            foreach ( $arrOperations as $strOperation ) {
+
+                $this->arrOperations[ $strOperation ] = isset( $this->arrOperations[ $strOperation ] );
+            }
+        }
+    }
+
     private function getDCAFields() {
 
         $objCatalogFieldsDb = \Database::getInstance()->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? ORDER BY `sorting`' )->execute( $this->strID );
@@ -63,6 +88,8 @@ class DCABuilder {
     }
 
     public function createDCA() {
+
+        $this->determineOperations();
 
         $this->getDCAFields();
 
@@ -118,6 +145,16 @@ class DCABuilder {
                 if ( $arrField['value'] ) {
 
                     $arrDCAField['default'] = $arrField['value'];
+                }
+
+                if ( $arrField['useIndex'] ) {
+
+                    $arrDCAField['eval']['doNotCopy'] = true;
+
+                    if ( $arrField['useIndex'] == 'unique' ) {
+
+                        $arrDCAField['eval']['unique'] = true;
+                    }
                 }
 
                 switch ( $arrField['type'] ) {
@@ -222,12 +259,25 @@ class DCABuilder {
 
                     'maxlength' => 128,
                     'tl_class' => 'w50',
+                    'doNotCopy' => true,
                 ],
 
                 'exclude' => true,
                 'sql' => "varchar(128) NOT NULL default ''"
+            ],
+
+            'invisible' => [
+
+                // @todo label
+                'inputType' => 'checkbox',
+                'sql' => "char(1) NOT NULL default ''"
             ]
         ];
+
+        if ( !$this->arrOperations['invisible'] ) {
+
+            unset( $arrReturn['invisible'] );
+        }
 
         if ( $this->arrCatalog['mode'] == '4' ) {
 
@@ -342,7 +392,7 @@ class DCABuilder {
             'panelLayout' => $strPanelLayout,
             'mode' => $this->arrCatalog['mode'],
             'flag' => $this->arrCatalog['flag'],
-            'child_record_callback' => [ 'DCAHelper', 'createRowView' ],
+            'child_record_callback' => [ 'DCACallbacks', 'createRowView' ],
         ];
 
         if ( $this->arrCatalog['mode'] === '5' ) {
@@ -365,12 +415,36 @@ class DCABuilder {
                 'icon' => 'header.gif'
             ],
 
+            'copy' => [
+
+                // @todo label
+                'href' => 'act=copy',
+                'icon' => 'copy.gif'
+            ],
+
+            'cut' => [
+
+                // @todo label
+                'href' => 'act=paste&amp;mode=cut',
+                'icon' => 'cut.gif',
+                'attributes' => 'onclick="Backend.getScrollOffset()"'
+            ],
+
             'delete' => [
 
                 // @todo label
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
+            ],
+
+            'toggle' => [
+
+                // @todo label
+                'icon' => 'visible.gif',
+                'href' => sprintf( 'table=%s', $this->strTable ),
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", $this->strTable ) .' )"',
+                'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
             ],
 
             'show' => [
@@ -380,6 +454,31 @@ class DCABuilder {
                 'icon' => 'show.gif'
             ]
         ];
+
+        if ( in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
+
+            $arrReturn['copy']['href'] = 'act=paste&amp;mode=copy';
+        }
+
+        else {
+            
+            unset( $arrReturn['cut'] );
+        }
+
+        foreach ( $this->arrOperations as $strOperation => $blnActive ) {
+
+            if ( $strOperation == 'invisible' && !$blnActive ) {
+
+                unset( $arrReturn[ 'toggle' ] );
+
+                continue;
+            }
+
+            if ( !$blnActive && isset( $arrReturn[ $strOperation ] ) ) {
+
+                unset( $arrReturn[ $strOperation ] );
+            }
+        }
 
         foreach ( $this->arrCatalog['cTables'] as $arrCTable ) {
 
@@ -419,7 +518,11 @@ class DCABuilder {
 
         $strPalette = '';
         $strLegendPointer = 'general_legend';
-        $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
+
+        $arrDCAPalette = [
+
+            'general_legend' => [ 'title', 'alias' ]
+        ];
 
         foreach ( $this->arrFields as $arrField ) {
 
@@ -433,6 +536,11 @@ class DCABuilder {
             if ( !$arrField['fieldname'] || in_array( $arrField['type'], DCAHelper::$arrForbiddenInputTypes ) ) continue;
 
             $arrDCAPalette[ $strLegendPointer ][] = $arrField['fieldname'];
+        }
+
+        if ( $this->arrOperations['invisible'] ) {
+
+            $arrDCAPalette['invisible_legend'] = [ 'invisible' ];
         }
 
         $arrLegends = array_keys( $arrDCAPalette );
@@ -457,7 +565,7 @@ class DCABuilder {
             return false;
         }
 
-        if ( in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
 
             return false;
         }

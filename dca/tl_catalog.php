@@ -137,6 +137,11 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'mandatory' => true
             ],
 
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'renameTable' ]
+            ],
+
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],

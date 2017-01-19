@@ -53,6 +53,11 @@ class tl_catalog_fields extends \Backend {
                 $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
                 $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
             }
+
+            if ( !$strIndex && $arrColumns[ $dc->activeRecord->fieldname ]['index'] ) {
+
+                $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
+            }
         }
     }
 

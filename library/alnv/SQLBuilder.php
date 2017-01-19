@@ -164,9 +164,9 @@ class SQLBuilder extends \Backend {
         }
     }
 
-    private function getPreparePlaceholder( $arrValues ) {
+    private function getPlaceholders( $arrValues, $strPlaceholder = '?' ) {
 
-        return implode( ', ', array_fill( 0, count( $arrValues ), '?' ) );
+        return implode( ', ', array_fill( 0, count( $arrValues ), $strPlaceholder ) );
     }
 
     private function getSQLKey( $strKey ) {

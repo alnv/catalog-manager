@@ -105,6 +105,11 @@ class tl_catalog_fields extends \Backend {
         return [ 'w50', 'long', 'm12', 'clr' ];
     }
 
+    public function getFieldFlags() {
+
+        return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
+    }
+
     public function getSQLStatements() {
 
         return DCAHelper::$arrSQLStatements;

@@ -142,7 +142,7 @@ class DCABuilder {
                         'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
                         'tl_class' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
                         'trailingSlash' => Toolkit::getBooleanByValue( $arrField['trailingSlash'] ),
-                        'doNotSaveEmpty' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
+                        'doNotSaveEmpty' => Toolkit::getBooleanByValue( $arrField['doNotSaveEmpty'] ),
                         'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),
                     ],
 
@@ -150,9 +150,13 @@ class DCABuilder {
                     'search' => Toolkit::getBooleanByValue( $arrField['search'] ),
                     'filter' => Toolkit::getBooleanByValue( $arrField['filter'] ),
                     'exclude' => Toolkit::getBooleanByValue( $arrField['exclude'] ),
-
                     'sql' => DCAHelper::$arrSQLStatements[ $arrField['statement'] ]
                 ];
+
+                if ( $arrField['flag'] ) {
+
+                    $arrDCAField['default'] = $arrField['flag'];
+                }
 
                 if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
 

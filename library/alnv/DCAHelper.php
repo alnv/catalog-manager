@@ -41,11 +41,6 @@ class DCAHelper {
         'blob' => "blob NULL",
     ];
     
-    public static function setMandatory( $arrField ) {
-
-        return $arrField['mandatory'] ? true : false;
-    }
-
     public static function setFieldLabel( $arrField ) {
 
         $strTitle = $arrField['label'] ? $arrField['label'] : '';

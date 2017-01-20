@@ -100,6 +100,11 @@ class tl_catalog_fields extends \Backend {
         return [ 'tinyMCE', 'tinyFlash' ];
     }
 
+    public function getTLClasses() {
+
+        return [ 'w50', 'long', 'm12', 'clr' ];
+    }
+
     public function getSQLStatements() {
 
         return DCAHelper::$arrSQLStatements;

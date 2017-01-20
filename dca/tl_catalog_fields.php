@@ -81,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,doNotSaveEmpty,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag',
 
-        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
+        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
 
         'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
 
@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
 
-        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
+        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
 
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,extensions,maxsize',
 
@@ -313,7 +313,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'm12 w50'
+                'tl_class' => 'w50'
             ],
 
             'exclude' => true,
@@ -328,8 +328,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'chosen' => true,
+                'tl_class' => 'w50 m12',
+                'blankOptionLabel' => '-',
                 'includeBlankOption'=>true,
-                'tl_class' => 'w50 m12'
             ],
 
             'options_callback' => [
@@ -442,6 +443,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'maxlength' => 255,
                 'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
                 'includeBlankOption'=>true,
             ],
 
@@ -488,6 +490,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'maxlength' => 255,
                 'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
                 'includeBlankOption'=>true,
             ],
 
@@ -786,8 +789,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'chosen' => true,
-                'multiple' => true,
                 'tl_class' => 'w50 clr',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=> true,
             ],
 
             'options_callback' => [
@@ -798,6 +802,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(2) NOT NULL default ''"
+        ],
+
+        'tstampAsDefault' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['timestampAsDefault'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
         ]
     ]
 ];

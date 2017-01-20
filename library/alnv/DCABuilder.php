@@ -135,19 +135,31 @@ class DCABuilder {
 
                     'eval' => [
 
-                        'mandatory' => DCAHelper::setMandatory( $arrField )
+                        'unique' => Toolkit::getBooleanByValue( $arrField['unique'] ),
+                        'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
+                        'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
+                        'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),
+                        'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
+                        'tl_class' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
+                        'trailingSlash' => Toolkit::getBooleanByValue( $arrField['trailingSlash'] ),
+                        'doNotSaveEmpty' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
+                        'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),
                     ],
 
-                    'exclude' => true,
+                    'sorting' => Toolkit::getBooleanByValue( $arrField['sort'] ),
+                    'search' => Toolkit::getBooleanByValue( $arrField['search'] ),
+                    'filter' => Toolkit::getBooleanByValue( $arrField['filter'] ),
+                    'exclude' => Toolkit::getBooleanByValue( $arrField['exclude'] ),
+
                     'sql' => DCAHelper::$arrSQLStatements[ $arrField['statement'] ]
                 ];
 
-                if ( $arrField['value'] ) {
+                if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
 
                     $arrDCAField['default'] = $arrField['value'];
                 }
 
-                if ( $arrField['useIndex'] ) {
+                if ( Toolkit::isDefined( $arrField['useIndex'] ) ) {
 
                     $arrDCAField['eval']['doNotCopy'] = true;
 

@@ -10,6 +10,7 @@ ClassLoader::addClasses([
     'CatalogManager\Radio' => 'system/modules/catalog-manager/library/alnv/fields/Radio.php',
     'CatalogManager\DCAHelper' => 'system/modules/catalog-manager/library/alnv/DCAHelper.php',
     'CatalogManager\Select' => 'system/modules/catalog-manager/library/alnv/fields/Select.php',
+    'CatalogManager\Hidden' => 'system/modules/catalog-manager/library/alnv/fields/Hidden.php',
     'CatalogManager\Upload' => 'system/modules/catalog-manager/library/alnv/fields/Upload.php',
     'CatalogManager\Number' => 'system/modules/catalog-manager/library/alnv/fields/Number.php',
     'CatalogManager\CSVBuilder' => 'system/modules/catalog-manager/library/alnv/CSVBuilder.php',

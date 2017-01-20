@@ -6,10 +6,10 @@ class Checkbox {
 
     public static function generate( $arrDCAField, $arrField ) {
 
-        if ( $arrField['disabled'] ) {
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
+        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
 
-            $arrDCAField['eval']['disabled'] = $arrField['disabled'] ? true : false;
-        }
+        // $arrDCAField['options'] = [];
 
         return $arrDCAField;
     }

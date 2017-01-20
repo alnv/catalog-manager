@@ -6,10 +6,15 @@ class Radio {
 
     public static function generate( $arrDCAField, $arrField ) {
 
-        if ( $arrField['disabled'] ) {
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
+        $arrDCAField['eval']['includeBlankOption'] =  Toolkit::getBooleanByValue( $arrField['includeBlankOption'] );
 
-            $arrDCAField['eval']['disabled'] = $arrField['disabled'] ? true : false;
+        if ( $arrField['blankOptionLabel'] && is_string( $arrField['blankOptionLabel'] ) ) {
+
+            $arrDCAField['eval']['blankOptionLabel'] = $arrField['blankOptionLabel'];
         }
+
+        $arrDCAField['options'] = [];
 
         return $arrDCAField;
     }

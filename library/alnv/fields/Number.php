@@ -6,26 +6,29 @@ class Number {
 
     public static function generate( $arrDCAField, $arrField ) {
 
-        if ( $arrField['max'] ) {
+        $arrDCAField['eval']['rgxp'] = static::setRGXP( $arrField['rgxp'] );
+        $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
 
-            $arrDCAField['eval']['maxval'] = intval(  $arrField['max'] );
+        if ( $arrField['minval'] ) {
+
+            $arrDCAField['eval']['minval'] = intval(  $arrField['minval'] );
         }
 
-        if ( $arrField['min'] ) {
+        if ( $arrField['maxval'] ) {
 
-            $arrDCAField['eval']['minval'] = intval(  $arrField['min'] );
-        }
-
-        if ( $arrField['readonly'] ) {
-
-            $arrDCAField['eval']['readonly'] = $arrField['readonly'] ? true : false;
-        }
-
-        if ( $arrField['rgxp'] ) {
-
-            $arrDCAField['eval']['rgxp'] = $arrField['rgxp'];
+            $arrDCAField['eval']['maxval'] = intval(  $arrField['maxval'] );
         }
 
         return $arrDCAField;
+    }
+
+    private static function setRGXP( $strRGXP ) {
+
+        if ( !$strRGXP ) {
+
+            return 'natural';
+        }
+
+        return $strRGXP;
     }
 }

@@ -73,31 +73,31 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         '__selector__' => [ 'type' ],
 
-        'default' => '{type_legend},type',
+        'default' => '{general_legend},type',
 
-        'text' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
+        'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class',
 
-        'number' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},min,max,step,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
+        'number' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class',
 
-        'hidden' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
+        'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,doNotSaveEmpty,minlength,maxlength,rgxp',
 
-        'date' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},tType,rgxp,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
+        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,rgxp,tl_class',
 
-        'textarea' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},rte,cols,rows,placeholder,readonly;{catalog_settings_legend},fieldname,statement,useIndex',
+        'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class',
 
-        'select' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},multiple,disabled;{catalog_settings_legend},fieldname,statement,useIndex',
+        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class',
 
-        'radio' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement,useIndex',
+        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,disabled,includeBlankOption,blankOptionLabel,tl_class',
 
-        'checkbox' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},disabled;{catalog_settings_legend},fieldname,statement,useIndex',
+        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,disabled,includeBlankOption,blankOptionLabel,tl_class',
 
-        'upload' => '{type_legend},type,title,label,description,value,mandatory,tabindex,cssID;{field_settings_legend},extensions,maxsize;{catalog_settings_legend},fieldname,statement,useIndex',
+        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,extensions,maxsize',
 
-        'message' => '{type_legend},type,title,label,description',
+        'message' => '{general_legend},type,title,label,description',
 
-        'fieldsetStart' => '{type_legend},type,title,cssID',
+        'fieldsetStart' => '{general_legend},type,title,cssID',
 
-        'fieldsetStop' => '{type_legend},type,title'
+        'fieldsetStop' => '{general_legend},type,title'
     ],
 
     'subpalettes' => [],
@@ -189,16 +189,16 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'description' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['description'],
-            'inputType' => 'textarea',
+            'inputType' => 'text',
 
             'eval' => [
 
-                'tl_class' => 'clr',
-                'maxlength' => 2048
+                'tl_class' => 'clr long',
+                'maxlength' => 512
             ],
 
             'exclude' => true,
-            'sql' => "varchar(2048) NOT NULL default ''"
+            'sql' => "varchar(512) NOT NULL default ''"
         ],
 
         'placeholder' => [
@@ -255,7 +255,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'clr'
+                'tl_class' => 'w50',
             ],
 
             'exclude' => true,
@@ -299,7 +299,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'm12 w50'
+                'tl_class' => 'w50'
             ],
 
             'exclude' => true,
@@ -329,7 +329,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'chosen' => true,
                 'includeBlankOption'=>true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'options_callback' => [
@@ -340,36 +340,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"
-        ],
-
-        'min' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['min'],
-            'inputType' => 'text',
-
-            'eval' => [
-
-                'tl_class' => 'w50',
-                'rgxp' => 'digit'
-            ],
-
-            'exclude' => true,
-            'sql' => "smallint(5) unsigned NOT NULL default '0'"
-        ],
-
-        'max' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['max'],
-            'inputType' => 'text',
-
-            'eval' => [
-
-                'tl_class' => 'w50',
-                'rgxp' => 'natural'
-            ],
-
-            'exclude' => true,
-            'sql' => "smallint(5) unsigned NOT NULL default '0'"
         ],
 
         'extensions' => [
@@ -455,7 +425,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50 m12',
+                'tl_class' => 'w50',
             ],
 
             'exclude' => true,
@@ -529,6 +499,227 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(10) NOT NULL default ''"
+        ],
+
+        'maxlength' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'minlength' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['minlength'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'tl_class' => 'w50 clr',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'maxval' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'minval' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['minval'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50 clr',
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'nospace' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['nospace'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'allowHtml' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['allowHtml'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'doNotSaveEmpty' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['doNotSaveEmpty'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'spaceToUnderscore' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'unique' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['unique'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'trailingSlash' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'includeBlankOption' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'blankOptionLabel' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['blankOptionLabel'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'chosen' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['chosen'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'doNotCopy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'tl_class' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'multiple' => true,
+                'tl_class' => 'w50',
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog_fields',
+                'getTLClasses'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
         ]
     ]
 ];

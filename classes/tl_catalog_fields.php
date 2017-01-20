@@ -61,6 +61,12 @@ class tl_catalog_fields extends \Backend {
         }
     }
 
+    public function renameFieldname( $varValue, \DataContainer $dc ) {
+
+        // @todo
+        return $varValue;
+    }
+
     public function dropFieldOnDelete( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;

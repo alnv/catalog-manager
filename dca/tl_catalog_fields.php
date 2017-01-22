@@ -60,6 +60,15 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
             ],
 
+            'toggle' => [
+
+                // @todo label
+                'icon' => 'visible.gif',
+                'href' => sprintf( 'table=%s', 'tl_catalog_fields' ),
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", 'tl_catalog_fields' ) .' )"',
+                'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
+            ],
+
             'show' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['show'],
@@ -74,18 +83,18 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         '__selector__' => [ 'type' ],
 
         'default' => '{general_legend},type',
-        'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'number' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag',
-        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude',
-        'message' => '{general_legend},type,title,label,description',
-        'fieldsetStart' => '{general_legend},type,title,cssID',
-        'fieldsetStop' => '{general_legend},type,title'
+        'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'number' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
+        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
+        'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
+        'fieldsetStart' => '{general_legend},type,title,cssID;{invisible_legend},invisible',
+        'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
     ],
 
     'subpalettes' => [],
@@ -836,6 +845,13 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             ],
 
             'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'invisible' => [
+
+            // @todo label
+            'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''"
         ]
     ]

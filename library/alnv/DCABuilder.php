@@ -79,7 +79,7 @@ class DCABuilder {
 
     private function getDCAFields() {
 
-        $objCatalogFieldsDb = \Database::getInstance()->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? ORDER BY `sorting`' )->execute( $this->strID );
+        $objCatalogFieldsDb = \Database::getInstance()->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
 
         while ( $objCatalogFieldsDb->next() ) {
 
@@ -100,11 +100,8 @@ class DCABuilder {
             'list' => [
 
                 'label' => $this->createLabelDataArray(),
-
                 'sorting' => $this->createSortingDataArray(),
-
                 'operations' => $this->createOperationDataArray(),
-
                 'global_operations' => $this->createGlobalOperationDataArray(),
             ],
 

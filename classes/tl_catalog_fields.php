@@ -63,7 +63,27 @@ class tl_catalog_fields extends \Backend {
 
     public function renameFieldname( $varValue, \DataContainer $dc ) {
 
-        // @todo
+        if ( !$varValue || !$dc->activeRecord->fieldname || $dc->activeRecord->fieldname == $varValue ) {
+
+            return $varValue;
+        }
+
+        $strStatement = DCAHelper::$arrSQLStatements[ $dc->activeRecord->statement ];
+        $objCatalog = $this->Database->prepare( 'SELECT tablename FROM tl_catalog WHERE id = ? LIMIT 1' )->execute( $dc->activeRecord->pid );
+
+        if ( !$objCatalog->count() ) {
+
+            return $varValue;
+        }
+
+        $strTable = $objCatalog->row()['tablename'];
+
+        if ( $this->Database->tableExists( $strTable ) ) {
+
+            $objSQLBuilder = new SQLBuilder();
+            $objSQLBuilder->createSQLRenameFieldnameStatement( $strTable, $dc->activeRecord->fieldname, $varValue, $strStatement );
+        }
+
         return $varValue;
     }
 

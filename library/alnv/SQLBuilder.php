@@ -54,6 +54,18 @@ class SQLBuilder extends \Backend {
         $this->Database->prepare( $strRenameTableStatement )->execute();
     }
 
+    public function createSQLRenameFieldnameStatement( $strTable, $strOldFieldname, $strNewFieldname, $strStatement ) {
+
+        if ( !$strTable ) {
+
+            return null;
+        }
+
+        $strRenameTableStatement = sprintf( 'ALTER TABLE %s CHANGE `%s` `%s` %s', $strTable, $strOldFieldname, $strNewFieldname, $strStatement );
+
+        $this->Database->prepare( $strRenameTableStatement )->execute();
+    }
+
     public function alterTableField( $strTable, $strField, $strSQLStatement ) {
 
         if ( !$strTable || !$strField || !$strSQLStatement ) {

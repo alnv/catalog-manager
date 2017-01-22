@@ -19,6 +19,11 @@ class Toolkit {
         return [];
     }
 
+    public static function parseConformSQLValue( $varValue ) {
+
+        return str_replace( '-', '_', $varValue );
+    }
+
     public static function getBooleanByValue( $varValue ) {
 
         if ( !$varValue ) {

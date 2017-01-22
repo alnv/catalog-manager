@@ -133,7 +133,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'unique' => true,
-                'rgxp' => 'alpha',
+                'rgxp' => 'extnd',
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,

@@ -1,52 +1,5 @@
-Fields:
-
-    - general attributes
-        - title
-        - description
-        - name
-        - id
-        - class
-        - default
-        - unique
-        - regex
-        - value
-
-    - text attributes:
-         - placeholder
-         - readonly
-         - types
-           - text
-           - date
-           - email
-           - number
-           - range
-
-    - text ( number type only ) attributes:
-        - min
-        - max
-        - range
-
-    - textarea attributes:
-        - placeholder
-        - cols
-        - rows
-        - tinyMCE (BE-Only)
-
-    - select attributes:
-        - multiple
-        - disabled
-
-    - radio attributes:
-        - disabled
-
-    - checkbox attribute:
-        - disabled
-
-    - upload attributes
-        - max size
-        - accepted mime types
-        - multiple
-
-
-CATALOG
-    - allow to rename db table
+todo
+ - do not set minus char in fieldname
+ - translation
+ - permissions
+ - alias generator

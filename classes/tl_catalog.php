@@ -161,7 +161,7 @@ class tl_catalog extends \Backend {
 
     public function checkTablename( $varValue ) {
 
-        return str_replace( '-', '_', $varValue );
+        return Toolkit::parseConformSQLValue( $varValue );
     }
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {

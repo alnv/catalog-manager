@@ -87,6 +87,11 @@ class tl_catalog_fields extends \Backend {
         return $varValue;
     }
 
+    public function checkFieldname( $varValue ) {
+
+        return Toolkit::parseConformSQLValue( $varValue );
+    }
+
     public function dropFieldOnDelete( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;

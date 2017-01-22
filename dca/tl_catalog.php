@@ -161,10 +161,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'submitOnChange' => true,
             ],
 
-            'save_callback' => [
-
-                [ 'CatalogManager\tl_catalog', 'checkModeTypeForPTableAndModes' ]
-            ],
+            'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForPTableAndModes' ] ],
             
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
@@ -183,21 +180,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'submitOnChange' => true,
             ],
 
-            'options_callback' => [
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getModeTypes' ],
 
-                'CatalogManager\tl_catalog',
-                'getModeTypes'
-            ],
-
-            'save_callback' => [
-
-                [ 'CatalogManager\tl_catalog', 'checkModeTypeRequirements' ]
-            ],
+            'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeRequirements' ] ],
 
             'exclude' => true,
             'sql' => "varchar(2) NOT NULL default ''"
         ],
-
 
         'pTable' => [
 
@@ -213,16 +202,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllPTables' ],
 
-                'CatalogManager\tl_catalog',
-                'getAllPTables'
-            ],
-
-            'save_callback' => [
-
-                [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ]
-            ],
+            'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ] ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -242,11 +224,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getAllCTables'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllCTables' ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -264,11 +242,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getFlagTypes'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getFlagTypes' ],
 
             'exclude' => true,
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['flag'],
@@ -287,10 +261,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'allowHtml' => true
             ],
 
-            'save_callback' => [
-
-                [ 'CatalogManager\tl_catalog', 'checkModeTypeForFormat' ]
-            ],
+            'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForFormat' ] ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -310,11 +281,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getParentDataContainerFields'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getParentDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
@@ -334,11 +301,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getDataContainerFields'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
@@ -349,10 +312,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['showColumns'],
             'inputType' => 'checkbox',
 
-            'eval' => [
-
-                //
-            ],
+            'eval' => [],
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
@@ -368,11 +328,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'multiple' => true
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getPanelLayouts'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getPanelLayouts' ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -388,11 +344,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'multiple' => true
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getOperations'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getOperations' ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -410,11 +362,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getNavigationAreas'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getNavigationAreas' ],
 
             'exclude' => true,
             'sql' => "char(32) NOT NULL default ''"
@@ -432,11 +380,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [
-
-                'CatalogManager\tl_catalog',
-                'getNavigationPosition'
-            ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getNavigationPosition' ],
 
             'exclude' => true,
             'sql' => "char(2) NOT NULL default ''"

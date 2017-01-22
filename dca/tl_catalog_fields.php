@@ -855,7 +855,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'invisible' => [
 
-            // @todo label
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible'],
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''"
         ]

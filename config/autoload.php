@@ -22,5 +22,6 @@ ClassLoader::addClasses([
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/fields/DateInput.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
+    'CatalogManager\i18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/i18nCatalogTranslator.php',
     'CatalogManager\InitializeCatalogManager' => 'system/modules/catalog-manager/library/alnv/InitializeCatalogManager.php'
 ]);

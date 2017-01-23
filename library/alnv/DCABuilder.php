@@ -137,7 +137,7 @@ class DCABuilder extends CatalogSystem {
 
                 $arrDCAField = [
 
-                    'label' => DCAHelper::setFieldLabel( $arrField ),
+                    'label' => $this->i18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
                     'inputType' => DCAHelper::setInputType( $arrField ),
 
                     'eval' => [

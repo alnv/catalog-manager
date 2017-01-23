@@ -32,6 +32,20 @@ class i18nCatalogTranslator {
         return $arrLabel;
     }
 
+    public function getLegendLabel( $strI18nKey ) {
+
+        $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strI18nKey ];
+
+        if ( !$strLegend ) {
+
+            $strLegend = $strI18nKey;
+        }
+
+        // @todo yaml
+
+        return $strLegend;
+    }
+
     public function getYamlLanguageFile( $strType, $strI18nKey ) {
 
         return [];

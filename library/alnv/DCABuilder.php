@@ -285,6 +285,8 @@ class DCABuilder extends CatalogSystem {
                     'doNotCopy' => true,
                 ],
 
+                'save_callback' => [ [ 'DCACallbacks', 'generateAlias' ] ],
+
                 'exclude' => true,
                 'sql' => "varchar(128) NOT NULL default ''"
             ],

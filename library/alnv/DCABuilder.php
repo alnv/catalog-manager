@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class DCABuilder {
+class DCABuilder extends CatalogSystem {
 
     private $strID;
 
@@ -22,6 +22,9 @@ class DCABuilder {
     ];
 
     public function __construct( $arrCatalog ) {
+
+        $this->import( 'Database' );
+        $this->import( 'i18nCatalogTranslator' );
 
         $this->arrCatalog = $arrCatalog;
 
@@ -59,6 +62,11 @@ class DCABuilder {
         }
     }
 
+    public function initializeI18n() {
+
+        $this->i18nCatalogTranslator->initialize();
+    }
+
     private function determineOperations() {
 
         $arrOperations = [];
@@ -79,7 +87,7 @@ class DCABuilder {
 
     private function getDCAFields() {
 
-        $objCatalogFieldsDb = \Database::getInstance()->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
+        $objCatalogFieldsDb = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
 
         while ( $objCatalogFieldsDb->next() ) {
 
@@ -88,6 +96,8 @@ class DCABuilder {
     }
 
     public function createDCA() {
+
+        $this->initializeI18n();
 
         $this->determineOperations();
 
@@ -250,7 +260,7 @@ class DCABuilder {
 
             'title' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'],
                 'inputType' => 'text',
 
                 'eval' => [
@@ -265,7 +275,7 @@ class DCABuilder {
 
             'alias' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'],
                 'inputType' => 'text',
 
                 'eval' => [
@@ -281,7 +291,7 @@ class DCABuilder {
 
             'invisible' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'],
                 'inputType' => 'checkbox',
                 'sql' => "char(1) NOT NULL default ''"
             ]
@@ -423,21 +433,21 @@ class DCABuilder {
 
             'edit' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'header.gif'
             ],
 
             'copy' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
                 'href' => 'act=copy',
                 'icon' => 'copy.gif'
             ],
 
             'cut' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
                 'href' => 'act=paste&amp;mode=cut',
                 'icon' => 'cut.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
@@ -445,7 +455,7 @@ class DCABuilder {
 
             'delete' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
@@ -453,7 +463,7 @@ class DCABuilder {
 
             'toggle' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
                 'icon' => 'visible.gif',
                 'href' => sprintf( 'table=%s', $this->strTable ),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", $this->strTable ) .' )"',
@@ -462,7 +472,7 @@ class DCABuilder {
 
             'show' => [
 
-                // @todo label
+                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['show'],
                 'href' => 'act=show',
                 'icon' => 'show.gif'
             ]
@@ -502,7 +512,7 @@ class DCABuilder {
 
             $arrChildTable[ $strOperationName ] = [
 
-                // @todo label
+                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
                 'href' => sprintf( 'table=%s', $arrCTable ),
                 'icon' => 'edit.gif'
             ];

@@ -30,3 +30,37 @@ $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalo
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Show details', 'Show the details of catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['editFields'] = [ 'Edit catalog fields', 'Edit the fields of catalog ID "%s".' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['sort'] = 'Sort';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['limit'] = 'Limit';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['search'] = 'Search';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['filter'] = 'Filter';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['cut'] = 'Move';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['copy'] = 'Copy';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['invisible'] = 'Disable/Enable';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['flag'] = [
+
+    '1' => 'Sort by initial letter ascending',
+    '2' => 'Sort by initial letter descending',
+    '3' => 'Sort by initial two letters ascending',
+    '4' => 'Sort by initial two letters descending',
+    '5' => 'Sort by day ascending',
+    '6' => 'Sort by day descending',
+    '7' => 'Sort by month ascending',
+    '8' => 'Sort by month descending',
+    '9' => 'Sort by year ascending',
+    '10' => 'Sort by year descending',
+    '11' => 'Sort ascending',
+    '12' => 'Sort descending'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
+
+    '0' => 'Records are not sorted',
+    '1' => 'Records are sorted by a fixed field',
+    '2' => 'Records are sorted by a switchable field',
+    '4' => 'Displays the child records of a parent record',
+    '5' => 'Records are displayed as tree'
+];

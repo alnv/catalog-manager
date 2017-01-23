@@ -30,3 +30,37 @@ $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Katalog löschen', 'Katalog mit
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Katalog bearbeiten', 'Katalog mit der ID %s bearbeiten.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Katalog details anzeigen', 'Die Details des Katalogs mit der ID %s anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['editFields'] = [ 'Katalog Felder bearbeiten', 'Die Felder des Katalogs mit der ID %s bearbeiten.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['limit'] = 'Limit';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['search'] = 'Suche';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['filter'] = 'Filter';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['sort'] = 'Sortierung';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['cut'] = 'Verschieben';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['copy'] = 'Duplizieren';
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['invisible'] = 'Aus/Einblenden';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['flag'] = [
+
+    '1' => 'Aufsteigende Sortierung nach Anfangsbuchstabe',
+    '2' => 'Absteigende Sortierung nach Anfangsbuchstabe',
+    '3' => 'Aufsteigende Sortierung nach den ersten beiden Buchstaben',
+    '4' => 'Absteigende Sortierung nach den ersten beiden Buchstaben',
+    '5' => 'Aufsteigende Sortierung nach Tag',
+    '6' => 'Absteigende Sortierung nach Tag',
+    '7' => 'Aufsteigende Sortierung nach Monat',
+    '8' => 'Absteigende Sortierung nach Monat',
+    '9' => 'Aufsteigende Sortierung nach Jahr',
+    '10' => 'Absteigende Sortierung nach Jahr',
+    '11' => 'Aufsteigende Sortierung',
+    '12' => 'Absteigende Sortierung'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
+
+    '0' => 'Keine Sortierung',
+    '1' => 'Sortierung nach einem festen Feld',
+    '2' => 'Sortierung nach einem variablen Feld',
+    '4' => 'Darstellung der Kinddatensätze eines Elterndatensatzes',
+    '5' => 'Darstellung als Baum'
+];

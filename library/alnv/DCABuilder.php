@@ -116,7 +116,6 @@ class DCABuilder extends CatalogSystem {
             ],
 
             'palettes' => $this->createPaletteDataArray(),
-
             'fields' => $this->parseDCAFields()
         ];
     }

@@ -77,7 +77,7 @@ class DCACallbacks extends \Backend{
             $varValue = \StringUtil::generateAlias( $dc->activeRecord->{$strField} );
         }
 
-        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE alias = ? ', $strTable ) )->execute( $varValue );
+        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTable ) )->execute( $varValue );
 
         if ( $objCatalogs->numRows > 1 && !$blnAutoAlias ) {
 

@@ -570,7 +570,9 @@ class DCABuilder extends CatalogSystem {
 
         foreach ( $arrLegends as $strLegend ) {
 
-            $strPalette .= sprintf( '{%s},%s;', $strLegend, implode( ',', $arrDCAPalette[ $strLegend ] ) );
+            $strI18nLegend = $this->i18nCatalogTranslator->getLegendLabel( $strLegend );
+            
+            $strPalette .= sprintf( '{%s},%s;', $strI18nLegend, implode( ',', $arrDCAPalette[ $strLegend ] ) );
         }
 
         return [ 'default' => $strPalette ];

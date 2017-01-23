@@ -2,7 +2,12 @@
 
 namespace CatalogManager;
 
-class SQLBuilder extends \Backend {
+class SQLBuilder extends CatalogSystem {
+
+    public function __construct() {
+
+        $this->import( 'Database' );
+    }
 
     public function parseCreateFieldStatement( $strField, $strSQLStatement ) {
 

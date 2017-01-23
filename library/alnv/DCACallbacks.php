@@ -60,4 +60,35 @@ class DCACallbacks extends \Backend{
 
         $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `invisible` = ? WHERE `id` = ?", $strTable, time() ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
     }
+
+    public function generateAlias( $varValue, \DataContainer $dc, $strField = 'title', $strTable = '' ) {
+
+        $blnAutoAlias = false;
+        $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : $strTable;
+
+        if ( !$strTable ) {
+
+            return $varValue . uniqid( '_' );
+        }
+
+        if ( !$varValue ) {
+
+            $blnAutoAlias = true;
+            $varValue = \StringUtil::generateAlias( $dc->activeRecord->{$strField} );
+        }
+
+        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE alias = ? ', $strTable ) )->execute( $varValue );
+
+        if ( $objCatalogs->numRows > 1 && !$blnAutoAlias ) {
+
+            throw new \Exception( sprintf( $GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue ) );
+        }
+
+        if ( $objCatalogs->numRows && $blnAutoAlias ) {
+
+            $varValue .= '_' . $dc->activeRecord->id;
+        }
+
+        return $varValue;
+    }
 }

@@ -1,1 +1,124 @@
 <?php
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Feld anlegen', 'Hier können Sie ein neues Feld erstellen.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbank Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Eingabefeld verstecken';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluationsarray Einstellungen';
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['step'] = [ 'Interval', 'Bitte geben Sie den Interval ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['unique'] = [ 'Einzigartig', 'Der Wert muss einzigartig sein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useIndex'] = [ 'Index', 'Hier können Sie die Spalte indexieren.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['rows'] = [ 'Zeilen', 'Bitte geben Sie die Anzahl an Zeilen ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['cols'] = [ 'Spalten', 'Bitte geben Sie die Anzahl an Spalten ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['filesOnly'] = [ 'Nur Dateien', 'Es sind nur Datei Uploads erlaubt.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie den Typ des Formularfelds.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mandatory'] = [ 'Pflichtfeld', 'Dieses Feld zum Pflichtfeld machen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disabled'] = [ 'Ausblenden', 'Dieses Feld kann nicht ausgewählt werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['readonly'] = [ 'Nur lesen', 'Dieses Feld darf nicht beschrieben werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['placeholder'] = [ 'Platzhalter', 'Bitte geben Sie einen Platzhalter ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['rgxp'] = [ 'Eingabeprüfung', 'Hier können Sie eine Validierung auswählen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['label'] = [ 'Feldbezeichnung', 'Bitte geben Sie eine Feldbezeichnung ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['rte'] = [ 'Rich Text Editor', 'Bitte wählen Sie Ihren Rich Text Editor aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['statement'] = [ 'SQL Datentyp', 'Bitte wählen Sie einen SQL Datentypen aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['nospace'] = [ 'Keine Leerzeichen', 'Es dürfen keine Leerzeichen verwendet werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['search'] = [ 'Suchbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Back end CSS-Klassen', 'Bitte geben Sie Ihre Back end CSS-Klassen ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['minlength'] = [ 'Minimale Zeichenlänge', 'Hier können Sie die Zeichenlänge beschränken.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximale Zeichenlänge', 'Hier können Sie die Zeichenlänge beschränken.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['sort'] = [ 'Sortierbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['filter'] = [ 'Filterbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['flag'] = [ 'Sortierreihenfolge', 'Hier können Sie die Feld Sortierreihenfolge festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['allowHtml'] = [ 'HTML erlauben', 'Dieser Eingefeld erlaubt das hinzufügen von HTML Tags.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['value'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['minval'] = [ 'Minimaler Zahlenwert', 'Hier können Sie den Minimalen Zahlenwert festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'] = [ 'Maximaler Zahlenwert', 'Hier können Sie den Maximalen Zahlenwert festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['extensions'] = [ 'Erlaubte Dateitypen', 'Eine kommagetrennte Liste gültiger Dateiendungen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Zeitstempel', 'Der Zeitstempel wird als der Standard-Wert verwendet.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['path'] = [ 'Zielverzeichnis', 'Bitte wählen Sie das Zielverzeichnis aus der Dateiübersicht.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Wert nicht duplizieren', 'Beim duplizieren wird der Wert nicht übertragen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['blankOptionLabel'] = [ 'Leeres Zeichen ersetzen', 'Hier kannst du ein leere Auswahl eingeben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['chosen'] = [ 'Chosen-Select verwenden', 'Hier können Sie die Chosen-Select Library verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['maxsize'] = [ 'Maximale Eingabelänge', 'Hier können Sie die maximale Anzahl an Bytes festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fieldname'] = [ 'Feldname', 'Der Feldname ist ein eindeutiger Name zur Identifizierung des Feldes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['doNotSaveEmpty'] = [ 'Leere Werte nicht abspeichern', 'Verhindert das Speichern des leeren Feldes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Zeichenlänge', 'Bitte geben Sie die Zeichenlänge für die Sortierreihenfolge ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Leerzeichen umwandeln', 'Leerzeichen werden zu Unterstrich ( _ ) umgewandelt.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hinzufügen', 'Hier können Sie am Ende des Feldwertes ein Schrägstrich hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Feld löschen', 'Feld mit der ID %s löschen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Feld bearbeiten', 'Feld mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Feld ausblenden', 'Feld mit der ID %s ein/ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Feld Details anziegen', 'Die Details des Feldes mit der ID %s anzeigen.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [
+
+    'clr' => 'clear both',
+    'w50' => 'float left',
+    'm12' => 'margin-top 12px',
+    'long' => 'width 100%'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
+
+    'text' => 'Textfeld',
+    'hidden' => 'Verstecktes Feld',
+    'number' => 'Nummernfeld',
+    'radio' => 'Radio-Menü',
+    'select' => 'Select-Menü',
+    'checkbox' => 'Checkbox-Menü',
+    'date' => 'Datumsfeld',
+    'upload' => 'Datei-Upload',
+    'textarea' => 'Textarea',
+    'message' => 'Erklärung',
+    'fieldsetStart' => 'Palette öffnen',
+    'fieldsetStop' => 'Palette schließen'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['flag'] = [
+
+    '1' => 'Aufsteigende Sortierung nach Anfangsbuchstabe',
+    '2' => 'Absteigende Sortierung nach Anfangsbuchstabe',
+    '3' => 'Aufsteigende Sortierung nach den ersten X Buchstaben.',
+    '4' => 'Absteigende Sortierung nach den ersten X Buchstaben.',
+    '5' => 'Aufsteigende Sortierung nach Tag',
+    '6' => 'Absteigende Sortierung nach Tag',
+    '7' => 'Aufsteigende Sortierung nach Monat',
+    '8' => 'Absteigende Sortierung nach Monat',
+    '9' => 'Aufsteigende Sortierung nach Jahr',
+    '10' => 'Absteigende Sortierung nach Jahr',
+    '11' => 'Aufsteigende Sortierung',
+    '12' => 'Absteigende Sortierung'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['rgxp'] = [
+
+    'url' => 'Gültige URL.',
+    'time' => 'Gültige Uhrzeit.',
+    'date' => 'Gültiges Datum.',
+    'alias' => 'Gültiges Alias.',
+    'alnum' => 'Alphanumerische Zeichen.',
+    'alpha' => 'Alphabetische Zeichen.',
+    'datim' => 'Datum mit Uhrzeit.' ,
+    'digit' => 'Numerische Zeichen.',
+    'email' => 'Gültige E-Mail-Adresse.' ,
+    'extnd' => 'Alles außer "#&()/<=>"',
+    'phone' => 'Gültige Telefonnummer.',
+    'prcnt' => 'Gültige Prozentzahlen.',
+    'locale' => 'Gültige Länderkürzel.',
+    'emails' => 'Gültigen E-Mail-Adressen.',
+    'natural' => 'Keine negativen Zahlen.',
+    'friendly' => 'Gültige E-Mail-Adresse im "friendly name format"',
+    'language' => 'Gültige Sprachkürzel.',
+    'folderalias' => 'Gültiges Ordner-URL Alias.'
+];

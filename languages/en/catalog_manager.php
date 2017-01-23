@@ -1,5 +1,8 @@
 <?php
 
+$GLOBALS['TL_LANG']['catalog_manager']['legends']['invisible_legend'] = 'Hide entity';
+$GLOBALS['TL_LANG']['catalog_manager']['legends']['general_legend'] = 'General Settings';
+
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'] = [ 'Move Entity', 'Move entity ID %s.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'] = [ 'Copy Entity', 'Copy entity ID %s.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'] = [ 'Edit Entity', 'Edit entity ID %s.' ];

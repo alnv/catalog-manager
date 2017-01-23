@@ -16,6 +16,7 @@ ClassLoader::addClasses([
     'CatalogManager\CSVBuilder' => 'system/modules/catalog-manager/library/alnv/CSVBuilder.php',
     'CatalogManager\SQLBuilder' => 'system/modules/catalog-manager/library/alnv/SQLBuilder.php',
     'CatalogManager\DCABuilder' => 'system/modules/catalog-manager/library/alnv/DCABuilder.php',
+    'CatalogManager\YAMLParser' => 'system/modules/catalog-manager/library/alnv/YAMLParser.php',
     'CatalogManager\Checkbox' => 'system/modules/catalog-manager/library/alnv/fields/Checkbox.php',
     'CatalogManager\Textarea' => 'system/modules/catalog-manager/library/alnv/fields/Textarea.php',
     'CatalogManager\DCACallbacks' => 'system/modules/catalog-manager/library/alnv/DCACallbacks.php',

@@ -41,20 +41,6 @@ class DCAHelper {
         'blob' => "blob NULL",
     ];
     
-    public static function setFieldLabel( $arrField ) {
-
-        $strTitle = $arrField['label'] ? $arrField['label'] : '';
-
-        if ( !$strTitle ) {
-
-            $strTitle = $arrField['title'];
-        }
-
-        $strDescription = $arrField['description'] ? $arrField['description'] : '';
-
-        return [ $strTitle, $strDescription ];
-    }
-
     public static function setInputType( $arrField ) {
         
         return static::$arrInputTypes[ $arrField['type'] ] ? static::$arrInputTypes[ $arrField['type'] ] : 'text';

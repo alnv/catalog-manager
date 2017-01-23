@@ -264,6 +264,8 @@ class DCABuilder extends CatalogSystem {
 
                 'eval' => [
 
+                    'unique' => true,
+                    'rgxp' => 'alias',
                     'maxlength' => 128,
                     'tl_class' => 'w50',
                 ],

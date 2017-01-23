@@ -153,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'isBackendModule' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['isBackendModule'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'],
             'inputType' => 'checkbox',
 
             'eval' => [
@@ -219,9 +219,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50',
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'tl_class' => 'w50'
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllCTables' ],
@@ -239,7 +237,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getFlagTypes' ],
@@ -257,7 +257,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'maxlength' => 128,
-                'tl_class' => 'long',
+                'tl_class' => 'long clr',
                 'allowHtml' => true
             ],
 
@@ -309,7 +309,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'showColumns' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['showColumns'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['showColumns'],
             'inputType' => 'checkbox',
 
             'eval' => [],
@@ -320,7 +320,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'panelLayout' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['panelLayout'],
             'inputType' => 'checkbox',
 
             'eval' => [
@@ -336,7 +336,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'operations' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['operations'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['operations'],
             'inputType' => 'checkbox',
 
             'eval' => [
@@ -352,7 +352,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'navArea' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navArea'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['navArea'],
             'inputType' => 'select',
             'default' => 'system',
 
@@ -370,7 +370,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'navPosition' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['navPosition'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['navPosition'],
             'inputType' => 'select',
             'default' => '0',
 

@@ -11,7 +11,10 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
     ]
 ];
 
-$GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\InitializeCatalogManager', 'initialize' ];
+$GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
+
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
+$GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';

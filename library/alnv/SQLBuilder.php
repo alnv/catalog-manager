@@ -2,9 +2,11 @@
 
 namespace CatalogManager;
 
-class SQLBuilder extends CatalogSystem {
+class SQLBuilder extends CatalogController {
 
     public function __construct() {
+
+        parent::__construct();
 
         $this->import( 'Database' );
     }

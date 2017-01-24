@@ -266,8 +266,6 @@ class DCABuilder extends CatalogController {
 
                 'eval' => [
 
-                    'unique' => true,
-                    'rgxp' => 'alias',
                     'maxlength' => 128,
                     'tl_class' => 'w50',
                 ],
@@ -283,12 +281,19 @@ class DCABuilder extends CatalogController {
 
                 'eval' => [
 
+                    'unique' => true,
+                    'rgxp' => 'alias',
                     'maxlength' => 128,
                     'tl_class' => 'w50',
                     'doNotCopy' => true,
                 ],
 
-                'save_callback' => [ [ 'DCACallbacks', 'generateAlias' ] ],
+                'save_callback' => [ function( $varValue, \DataContainer $dc ) {
+
+                    $objDCACallbacks = new DCACallbacks();
+
+                    return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
+                }],
 
                 'exclude' => true,
                 'sql' => "varchar(128) NOT NULL default ''"

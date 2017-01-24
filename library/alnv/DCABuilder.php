@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class DCABuilder extends CatalogSystem {
+class DCABuilder extends CatalogController {
 
     private $strID;
 
@@ -22,6 +22,8 @@ class DCABuilder extends CatalogSystem {
     ];
 
     public function __construct( $arrCatalog ) {
+
+        parent::__construct();
 
         $this->import( 'Database' );
         $this->import( 'i18nCatalogTranslator' );

@@ -1,4 +1,5 @@
 todo
- - permissions
+ - add labels for user and user group
+ - delete user and user group columns
  - options
  - yaml parser

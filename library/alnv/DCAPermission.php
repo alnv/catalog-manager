@@ -17,38 +17,12 @@ class DCAPermission extends CatalogController {
         $strID = \Input::get( 'id' );
         $strAct = \Input::get( 'act' );
 
-        if ( $this->User->isAdmin ) {
+        if ( $this->isAdmin() ) {
 
             return null;
         }
 
-        if ( !is_array( $this->User->{$strFieldname} ) || empty( $this->User->{$strFieldname} ) ) {
-
-            $arrRoot = [0];
-        }
-
-        else {
-
-            $arrRoot = $this->User->{$strFieldname};
-        }
-
-        $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root'] = $arrRoot;
-
-        if ( !$this->User->hasAccess( 'create', $strFieldPermissions ) ) {
-
-            $GLOBALS['TL_DCA'][$strTable]['config']['closed'] = true;
-        }
-
-        if ( !$this->User->hasAccess( 'delete', $strFieldPermissions ) ) {
-
-            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['copy'] );
-            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['delete'] );
-        }
-
-        if ( !$this->User->hasAccess( 'edit', $strFieldPermissions ) ) {
-
-            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['edit'] );
-        }
+        $arrRoot = $this->checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions );
 
         // @todo add hook
 
@@ -98,5 +72,62 @@ class DCAPermission extends CatalogController {
 
                 break;
         }
+    }
+
+    public function checkPermissionByParent( $strTable, $strFieldname, $strFieldPermissions ) {
+
+        if ( $this->isAdmin() ) {
+
+            return null;
+        }
+
+        $arrRoot = $this->getRoot( $strFieldname );
+
+        //
+    }
+
+    private function checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions ) {
+
+        $arrRoot = $this->getRoot( $strFieldname );
+
+        $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root'] = $arrRoot;
+
+        if ( !$this->User->hasAccess( 'create', $strFieldPermissions ) ) {
+
+            $GLOBALS['TL_DCA'][$strTable]['config']['closed'] = true;
+        }
+
+        if ( !$this->User->hasAccess( 'delete', $strFieldPermissions ) ) {
+
+            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['copy'] );
+            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['delete'] );
+        }
+
+        if ( !$this->User->hasAccess( 'edit', $strFieldPermissions ) ) {
+
+            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['edit'] );
+        }
+
+        return $arrRoot;
+    }
+
+    private function getRoot( $strFieldname ) {
+
+        if ( !is_array( $this->User->{$strFieldname} ) || empty( $this->User->{$strFieldname} ) ) {
+
+            $arrRoot = [0];
+        }
+
+        else {
+
+            $arrRoot = $this->User->{$strFieldname};
+        }
+
+        return $arrRoot;
+    }
+
+    private function isAdmin() {
+
+        return $this->User->isAdmin;
     }
 }

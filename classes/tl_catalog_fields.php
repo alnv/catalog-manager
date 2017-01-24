@@ -4,6 +4,12 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
+    public function checkPermission() {
+
+        $objDCAPermission = new DCAPermission();
+        $objDCAPermission->checkPermissionByParent( 'tl_catalog_fields' , 'catalog', 'catalogp' );
+    }
+
     public function createFieldOnSubmit( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;

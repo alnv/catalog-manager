@@ -8,6 +8,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'ptable' => 'tl_catalog',
 
+        'onload_callback' => [
+
+            [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ]
+        ],
+
         'onsubmit_callback' => [
 
             [ 'CatalogManager\tl_catalog_fields', 'createFieldOnSubmit' ]

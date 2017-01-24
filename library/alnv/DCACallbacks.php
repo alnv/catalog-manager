@@ -4,6 +4,11 @@ namespace CatalogManager;
 
 class DCACallbacks extends \Backend{
 
+    public function __construct() {
+
+        parent::__construct();
+    }
+
     public function createRowView( $arrRow ) {
 
         // @todo hook

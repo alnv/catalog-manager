@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class InitializeCatalogManager {
+class CatalogManagerInitializer {
 
     public function initialize() {
 
@@ -44,7 +44,20 @@ class InitializeCatalogManager {
             }
 
             array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
+
+            if ( !$arrCatalog['pTable'] ) {
+
+                $this->createPermissions( $arrCatalog['tablename'] );
+            }
         }
+    }
+
+    private function createPermissions( $strPermissionName ) {
+
+        $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
+        $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName . 'p';
+        
+        $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = $strPermissionName;
     }
 
     private function createBackendModule( $arrCatalog ) {

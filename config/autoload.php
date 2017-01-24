@@ -26,5 +26,6 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\i18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/i18nCatalogTranslator.php',
-    'CatalogManager\InitializeCatalogManager' => 'system/modules/catalog-manager/library/alnv/InitializeCatalogManager.php'
+    'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
+    'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php'
 ]);

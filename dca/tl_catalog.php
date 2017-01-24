@@ -7,7 +7,12 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'dataContainer' => 'Table',
 
         'ctable' => [ 'tl_catalog_fields' ],
-        
+
+        'onload_callback' => [
+
+            [ 'CatalogManager\tl_catalog', 'checkPermission' ]
+        ],
+
         'onsubmit_callback' => [
 
             [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ]

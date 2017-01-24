@@ -4,7 +4,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace( 'fop;'
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['catalog'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['catalog'],
+    'label' => &$GLOBALS['TL_LANG']['tl_user_group']['catalog'],
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_catalog.name',
 
@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['catalog'] = [
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['catalogp'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['catalogp'],
+    'label' => &$GLOBALS['TL_LANG']['tl_user_group']['catalogp'],
     'inputType' => 'checkbox',
 
     'options' => [
@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['catalogp'] = [
         'multiple' => true
     ],
 
-    'reference' => &$GLOBALS['TL_LANG']['tl_user']['reference'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_user_group']['reference'],
 
     'exclude' => true,
     'sql' => "blob NULL"

@@ -17,6 +17,12 @@ class tl_catalog extends \Backend {
         'sorting' => "int(10) unsigned NOT NULL default '0'",
     ];
 
+    public function checkPermission() {
+
+        $objDCAPermission = new DCAPermission();
+        $objDCAPermission->checkPermission( 'tl_catalog' , 'catalog', 'catalogp' );
+    }
+
     public function createTableOnSubmit( \DataContainer $dc ) {
 
         $blnVisibleField = false;

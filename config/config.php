@@ -15,3 +15,6 @@ $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\InitializeCatalogM
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
+
+$GLOBALS['TL_PERMISSIONS'][] = 'catalog';
+$GLOBALS['TL_PERMISSIONS'][] = 'catalogp';

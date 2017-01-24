@@ -347,6 +347,8 @@ class DCABuilder extends CatalogController {
 
             'dataContainer' => 'Table',
 
+            'onload_callback' => [],
+
             'sql' => [
 
                 'keys' => [
@@ -371,6 +373,24 @@ class DCABuilder extends CatalogController {
         if ( !empty( $this->arrCatalog['cTables'] ) && is_array( $this->arrCatalog['cTables'] ) ) {
 
             $arrReturn['ctable'] = $this->arrCatalog['cTables'];
+        }
+
+        if ( $this->arrCatalog['pTable'] ) {
+
+            $arrReturn['onload_callback'][] = function() {
+
+                $objDCAPermission = new DCAPermission();
+                $objDCAPermission->checkPermissionByParent( $this->strTable, $this->arrCatalog['pTable'], $this->arrCatalog['pTable'], $this->arrCatalog['pTable'] . 'p' );
+            };
+        }
+
+        else {
+
+            $arrReturn['onload_callback'][] = function(){
+
+                $objDCAPermission = new DCAPermission();
+                $objDCAPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p' );
+            };
         }
 
         return $arrReturn;

@@ -18,11 +18,35 @@ class i18nCatalogTranslator {
         return $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en';
     }
 
+    public function getModuleLabel( $strFieldname, $strAdditionalString = '' ) {
+
+        $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ];
+
+        if ( !isset( $arrLabel ) && empty( $arrLabel ) && !is_array( $arrLabel ) ) {
+
+            $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] ?
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] : '';
+
+            $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] ?
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] : '';
+
+            $arrLabel = [ $strName, $strDescription ];
+        }
+
+
+        if ( isset( $strAdditionalString ) && $strAdditionalString != '' ) {
+
+            $arrLabel[0] .= ' ' . $strAdditionalString;
+        }
+
+        return $arrLabel;
+    }
+
     public function getFieldLabel( $strI18nKey, $strTitle = '', $strDescription = '' ) {
 
         $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strI18nKey ];
 
-        if ( empty( $arrLabel ) && !is_array( $arrLabel ) ) {
+        if ( !isset( $arrLabel ) && empty( $arrLabel ) && !is_array( $arrLabel ) ) {
 
             $arrLabel = [ $strTitle, $strDescription ];
         }

@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type' ],
+        '__selector__' => [ 'type', 'optionsType' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -93,16 +93,21 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
-        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
+        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
+        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
+        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,cssID;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
     ],
 
-    'subpalettes' => [],
+    'subpalettes' => [
+
+        'optionsType_useOptions' => 'options',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
+        'optionsType_useForeignKey' => 'foreignKeyTable,foreignKeyField',
+    ],
 
     'fields' => [
 
@@ -883,7 +888,137 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible'],
             'inputType' => 'checkbox',
+            'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'optionsType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'maxlength' => 16,
+                'tl_class' => 'clr',
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true,
+            ],
+
+            'options' => [
+
+                'useOptions',
+                'useDbOptions',
+                'useForeignKey',
+            ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
+        ],
+
+        'options' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['options'],
+            'inputType' => 'keyValueWizard',
+            'exclude' => true,
+
+            'eval' => [
+
+                'doNotCopy' => true,
+                'mandatory' => true
+            ],
+
+            'sql' => "blob NULL"
+        ],
+
+        'foreignKeyTable' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'foreignKeyField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTable' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTableKey' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTableValue' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ]
     ]
 ];

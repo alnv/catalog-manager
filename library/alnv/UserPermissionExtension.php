@@ -7,6 +7,8 @@ class UserPermissionExtension extends CatalogController {
     public function __construct() {
 
         parent::__construct();
+
+        $this->import( 'i18nCatalogTranslator' );
     }
 
     public function initialize( $strDCAName ) {
@@ -26,20 +28,22 @@ class UserPermissionExtension extends CatalogController {
 
     private function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
 
+        $arrLabels = $this->i18nCatalogTranslator->getModuleLabel( $strCatalogname );
+
         if ( $strDCAName == 'tl_user' ) {
 
-            $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace( 'fop;', sprintf( 'fop;{%s_legend},%s,%s;', $strCatalogname, $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] );
-            $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace( 'fop;', sprintf( 'fop;{%s_legend},%s,%s;', $strCatalogname, $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] );
+            $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] );
+            $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] );
         }
 
         else {
 
-            $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace( 'fop;', sprintf( 'fop;{%s_legend},%s,%s;', $strCatalogname, $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] );
+            $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] );
         }
 
         $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname ] = [
 
-            'label' => [],
+            'label' => $arrLabels,
             'inputType' => 'checkbox',
             'foreignKey' => sprintf( '%s.title', $strCatalogname ),
 
@@ -54,7 +58,7 @@ class UserPermissionExtension extends CatalogController {
 
         $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname . 'p' ] = [
 
-            'label' => [],
+            'label' => $this->i18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
             'inputType' => 'checkbox',
 
             'options' => [
@@ -69,7 +73,7 @@ class UserPermissionExtension extends CatalogController {
                 'multiple' => true
             ],
 
-            'reference' => [],
+            'reference' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'],
 
             'exclude' => true,
             'sql' => "blob NULL"

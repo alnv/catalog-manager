@@ -107,6 +107,59 @@ class tl_catalog_fields extends \Backend {
         $objSQLBuilder->dropTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
     }
 
+    public function getTables() {
+
+        return $this->Database->listTables( null, true );
+    }
+
+    public function getColumnsByForeignKeyTable( \DataContainer $dc ) {
+
+        $strTable = $dc->activeRecord->foreignKeyTable;
+
+        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+
+            $arrColumns = $this->Database->listFields( $strTable, true );
+            
+            return $this->parseColumns( $arrColumns );
+        }
+
+        return [];
+    }
+
+    public function getColumnsByDbTable( \DataContainer $dc ) {
+
+        $strTable = $dc->activeRecord->dbTable;
+
+        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+
+            $arrColumns = $this->Database->listFields( $strTable, true );
+
+            return $this->parseColumns( $arrColumns );
+        }
+
+        return [];
+    }
+
+    private function parseColumns( $arrColumns ) {
+
+        $arrReturn = [];
+
+        if ( !empty( $arrColumns ) && is_array( $arrColumns ) ) {
+
+            foreach ( $arrColumns as $arrColumn ) {
+
+                if ( $arrColumn['name'] == 'PRIMARY' ) {
+
+                    continue;
+                }
+
+                $arrReturn[ $arrColumn['name'] ] = $arrColumn['name'];
+            }
+        }
+
+        return $arrReturn;
+    }
+
     public function getFieldTypes() {
 
         return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'fieldsetStart', 'fieldsetStop' ];

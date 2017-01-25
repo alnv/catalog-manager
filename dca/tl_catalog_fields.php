@@ -941,12 +941,17 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
-                'submitOnChange' => true
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true,
             ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTables' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -959,11 +964,14 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
             ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByForeignKeyTable' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -976,12 +984,17 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
-                'submitOnChange' => true
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true,
             ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTables' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -994,12 +1007,15 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
             ],
 
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByDbTable' ],
+            
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -1011,12 +1027,15 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
             ],
 
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByDbTable' ],
+            
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ]

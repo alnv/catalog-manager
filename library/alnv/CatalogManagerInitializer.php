@@ -18,37 +18,42 @@ class CatalogManagerInitializer {
     private function createBackendModules() {
 
         $objDatabase = \Database::getInstance();
-        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog' )->execute();
+        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC LIMIT 100' )->execute();
+        
+        $objI18nCatalogTranslator = new i18nCatalogTranslator();
         
         while ( $objCatalogManagerDB->next() ) {
 
             $arrCatalog = $objCatalogManagerDB->row();
-            $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
-            $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
-            if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) {
-
-                continue;
-            }
+            if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) continue;
 
             $arrCatalog['fields'] = Toolkit::parseStringToArray( $arrCatalog['fields'] );
             $arrCatalog['cTables'] = Toolkit::parseStringToArray( $arrCatalog['cTables'] );
             $arrCatalog['panelLayout'] = Toolkit::parseStringToArray( $arrCatalog['panelLayout'] );
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
 
+            $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
+            $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->getModuleLabel( $arrCatalog['tablename'] );
+
             $this->createCatalogManagerDCA( $arrCatalog );
 
-            if ( !$arrCatalog['isBackendModule'] || $arrCatalog['pTable'] ) {
+            if ( !$arrCatalog['isBackendModule'] || $arrCatalog['pTable'] ) continue;
 
-                continue;
-            }
+            $this->createBackendModuleWithPermissions( $arrCatalog );
+        }
+    }
 
-            array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
+    private function createBackendModuleWithPermissions( $arrCatalog ) {
 
-            if ( !$arrCatalog['pTable'] ) {
+        $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
+        $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
-                $this->createPermissions( $arrCatalog['tablename'] );
-            }
+        array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
+
+        if ( !$arrCatalog['pTable'] ) {
+
+            $this->createPermissions( $arrCatalog['tablename'] );
         }
     }
 
@@ -71,7 +76,7 @@ class CatalogManagerInitializer {
             $arrTables[] = $strTablename;
         }
 
-        $arrBackendModule[ $arrCatalog['name'] ] = [
+        $arrBackendModule[ $arrCatalog['tablename'] ] = [
 
             'name' => $arrCatalog['name'],
             'tables' => $arrTables

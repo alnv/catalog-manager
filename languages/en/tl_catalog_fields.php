@@ -3,6 +3,7 @@
 $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Create new field', 'Here you can create new field.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Hide Field';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Option Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'General Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Database Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Settings';
@@ -55,6 +56,14 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximum characters', 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Do not copy value', 'The current field will not be duplicated if the record is duplicated.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Space to Underscore', 'Any whitespace character will be replaced by an underscore.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Key column', 'Please select a key column.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Enable options', 'Here you can enable options.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Table', 'Please select table for the foreign key.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Column', 'Please select column for the foreign key.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Delete field', 'Delete field ID "%s".' ];
@@ -121,4 +130,11 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['rgxp'] = [
     'friendly' => 'Valid E-Mail Address "friendly name format".',
     'language' => 'Valid language code.',
     'folderalias' => 'Valid folder URL alias.'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'] = [
+
+    'useOptions' => 'Options',
+    'useDbOptions' => 'Database options',
+    'useForeignKey' => 'Foreign key options',
 ];

@@ -6,6 +6,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Einstell
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbank Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Eingabefeld verstecken';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Auswahlliste Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluationsarray Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
@@ -55,6 +56,14 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Leere Auswah
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Leerzeichen umwandeln', 'Leerzeichen werden zu Unterstrich ( _ ) umgewandelt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hinzufügen', 'Hier können Sie am Ende des Feldwertes ein Schrägstrich hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Wertspalte', 'Bitte wählen Sie eine Spalte für den Wert aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Schlüsselspalte', 'Bitte wählen Sie eine Tabelle für den Schlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Auswahlliste einbinden', 'Hier können Sie eine Auswahlliste an Werten erstellen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Feld löschen', 'Feld mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Feld bearbeiten', 'Feld mit der ID %s bearbeiten.' ];
@@ -121,4 +130,11 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['rgxp'] = [
     'friendly' => 'Gültige E-Mail-Adresse im "friendly name format"',
     'language' => 'Gültige Sprachkürzel.',
     'folderalias' => 'Gültiges Ordner-URL Alias.'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'] = [
+
+    'useOptions' => 'Auswahlliste',
+    'useDbOptions' => 'Datenbank Auswahlliste',
+    'useForeignKey' => 'Fremdschlüssel Auswahlliste',
 ];

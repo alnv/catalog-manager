@@ -14,7 +14,22 @@ class Radio {
             $arrDCAField['eval']['blankOptionLabel'] = $arrField['blankOptionLabel'];
         }
 
-        $arrDCAField['options'] = [];
+        $objOptionGetter = new OptionsGetter( $arrField );
+
+        if ( $objOptionGetter->isForeignKey() ) {
+
+            $strForeignKey = $objOptionGetter->getForeignKey();
+
+            if ( $strForeignKey ) {
+
+                $arrDCAField['foreignKey'] = $strForeignKey;
+            }
+        }
+
+        else {
+
+            $arrDCAField['options'] = $objOptionGetter->getOptions();
+        }
 
         return $arrDCAField;
     }

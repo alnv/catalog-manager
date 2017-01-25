@@ -5,11 +5,8 @@ namespace CatalogManager;
 class ModuleUniversalView extends \Module {
 
     private $strCatalogID;
-
     private $arrCatalog = [];
-
     private $arrCatalogFields =[];
-
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
@@ -27,7 +24,7 @@ class ModuleUniversalView extends \Module {
         $strAutoItem = \Input::get( 'auto_item' );
 
         $this->CatalogView = new CatalogView();
-
+        
         $this->arrCatalog = $this->CatalogView->getCatalogByTablename( $this->catalogTablename );
 
         $this->strCatalogID = $this->arrCatalog['id'];

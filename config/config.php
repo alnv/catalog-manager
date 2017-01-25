@@ -11,6 +11,14 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
     ]
 ];
 
+array_insert( $GLOBALS['FE_MOD'], 3, [
+
+    'catalog-manager' => [
+
+        'catalogUniversalView' => 'ModuleUniversalView'
+    ]
+]);
+
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 

@@ -18,6 +18,8 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
+        $objCatalogView = new CatalogView();
+
         //
     }
 }

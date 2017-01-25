@@ -15,6 +15,7 @@ $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionEx
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
+$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';

@@ -8,7 +8,7 @@ class CatalogView extends CatalogController {
 
         parent::__construct();
 
-        $this->import( 'Database' );
+        $this->import( 'SQLQueryBuilder' );
     }
 
     public function getCatalogByTablename( $strTablename ) {
@@ -18,7 +18,26 @@ class CatalogView extends CatalogController {
             return [];
         }
 
-        return $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $strTablename )->row();
+        return $this->SQLQueryBuilder->execute([
+
+            'table' => 'tl_catalog',
+
+            'pagination' => [
+
+                'limit' => 1,
+                'offset' => 0,
+            ],
+
+            'where' => [
+
+                [
+                    'field' => 'tablename',
+                    'value' => $strTablename,
+                    'operator' => 'equal'
+                ]
+            ]
+
+        ])->row();
     }
 
     public function getCatalogFieldsByCatalogID( $strID ) {
@@ -30,7 +49,26 @@ class CatalogView extends CatalogController {
             return $arrFields;
         }
 
-        $objFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $strID );
+        $objFields = $this->SQLQueryBuilder->execute([
+
+            'table' => 'tl_catalog_fields',
+
+            'orderBY' => [
+
+                'order' => 'DESC',
+                'field' => 'sorting'
+            ],
+
+            'where' => [
+
+                [
+                    'field' => 'pid',
+                    'value' => $strID,
+                    'operator' => 'equal'
+                ],
+            ]
+
+        ]);
 
         while ( $objFields->next() ) {
 
@@ -42,22 +80,18 @@ class CatalogView extends CatalogController {
 
     public function getCatalogDataByTable( $strTable, $arrOptions = [] ) {
 
-        if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
+        if ( !$this->SQLQueryBuilder->tableExist( $strTable ) ) {
 
             return [];
         }
 
-        if ( !$arrOptions['table'] ) {
-
-            $arrOptions['table'] = $strTable;
-        }
+        if ( !$arrOptions['table'] ) $arrOptions['table'] = $strTable;
 
         $arrCatalogData = [];
-        $objSQLQueryBuilder = new SQLQueryBuilder();
-        $objQueryBuilderResults = $objSQLQueryBuilder->execute( $arrOptions );
+        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrOptions );
 
         while ( $objQueryBuilderResults->next() ) {
-            
+
             $arrCatalogData[ $objQueryBuilderResults->id ] = $objQueryBuilderResults->row();
         }
         

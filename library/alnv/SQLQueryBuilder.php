@@ -18,6 +18,7 @@ class SQLQueryBuilder extends CatalogController {
 
     public function getQuery( $arrQuery ) {
 
+        $this->arrValues = [];
         $this->arrQuery = $arrQuery;
         $this->strTable = $arrQuery['table'];
 
@@ -112,7 +113,7 @@ class SQLQueryBuilder extends CatalogController {
             if ( !empty( $arrQueries[ $intIndex ] ) && is_array( $arrQueries[ $intIndex ] ) ) {
 
                 $intOrIndex = 0;
-                $strWhereStatement .= '(';
+                if ( $intIndex ) $strWhereStatement .= '(';
 
                 foreach ( $arrQueries as $strKey => $varValue ) {
 
@@ -127,7 +128,7 @@ class SQLQueryBuilder extends CatalogController {
                     $intOrIndex++;
                 }
 
-                $strWhereStatement .= ')';
+                if ( $intIndex ) $strWhereStatement .= ')';
             }
 
             else {
@@ -159,8 +160,8 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createOrderByStatement() {
 
-        $arrAllowedModes = [ 'DESC', 'ASC' ];
         $arrOrderByStatements = [];
+        $arrAllowedModes = [ 'DESC', 'ASC' ];
 
         if ( !$this->arrQuery['orderBy'] || empty( $this->arrQuery['orderBy'] ) || !is_array( $this->arrQuery['orderBy'] ) ) {
 

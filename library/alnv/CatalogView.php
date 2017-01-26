@@ -31,9 +31,9 @@ class CatalogView extends CatalogController {
             'where' => [
 
                 [
+                    'operator' => 'equal',
                     'field' => 'tablename',
-                    'value' => $strTablename,
-                    'operator' => 'equal'
+                    'value' => $strTablename
                 ]
             ]
 
@@ -65,7 +65,7 @@ class CatalogView extends CatalogController {
                     'field' => 'pid',
                     'value' => $strID,
                     'operator' => 'equal'
-                ],
+                ]
             ]
 
         ]);
@@ -78,23 +78,39 @@ class CatalogView extends CatalogController {
         return $arrFields;
     }
 
-    public function getCatalogDataByTable( $strTable, $arrOptions = [] ) {
+    public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {
 
-        if ( !$this->SQLQueryBuilder->tableExist( $strTable ) ) {
+        $objTemplate = null;
+        $arrCatalogData = [ 'view' => '', 'data' => [] ];
 
-            return [];
+        if ( !$this->SQLQueryBuilder->tableExist( $strTable ) ) return [];
+
+        if ( !$arrQuery['table'] ) $arrQuery['table'] = $strTable;
+
+        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        if ( $arrView['useTemplate'] ) {
+
+            $objTemplate = new \FrontendTemplate( $arrView['template'] );
         }
-
-        if ( !$arrOptions['table'] ) $arrOptions['table'] = $strTable;
-
-        $arrCatalogData = [];
-        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrOptions );
 
         while ( $objQueryBuilderResults->next() ) {
 
-            $arrCatalogData[ $objQueryBuilderResults->id ] = $objQueryBuilderResults->row();
+            $arrCatalog = $objQueryBuilderResults->row();
+
+            $arrCatalog['link2View'] = 'catalog.html';
+            $arrCatalog['link2Master'] = sprintf( 'catalog/%s', $arrCatalog['alias'] ) . '.html';
+
+            if ( $objTemplate !== null ) {
+
+                $objTemplate->setData( $arrCatalog );
+
+                $arrCatalogData['view'] .= $objTemplate->parse();
+            }
+
+            $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
         }
-        
+
         return $arrCatalogData;
     }
 }

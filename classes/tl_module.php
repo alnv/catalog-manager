@@ -18,4 +18,9 @@ class tl_module extends \Backend {
 
         return $arrReturn;
     }
+
+    public function getCatalogTemplates() {
+
+        return $this->getTemplateGroup('catalog_');
+    }
 }

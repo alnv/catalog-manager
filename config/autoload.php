@@ -26,6 +26,7 @@ ClassLoader::addClasses([
     'CatalogManager\DCAPermission' => 'system/modules/catalog-manager/library/alnv/DCAPermission.php',
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
+    'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\i18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/i18nCatalogTranslator.php',
@@ -36,5 +37,7 @@ ClassLoader::addClasses([
 
 TemplateLoader::addFiles([
 
+    'catalog_teaser' => 'system/modules/catalog-manager/templates',
+    'catalog_master' => 'system/modules/catalog-manager/templates',
     'mod_catalog_view' => 'system/modules/catalog-manager/templates'
 ]);

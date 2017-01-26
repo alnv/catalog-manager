@@ -65,15 +65,15 @@ class ModuleUniversalView extends \Module {
         $arrView = [
 
             'useTemplate' => true,
+            'masterPage' => $this->catalogMasterPage,
+            'useMasterPage' => $this->catalogUseMasterPage ? true : false,
             'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
         ];
 
         $arrQuery = [
 
             'where' => [],
-
             'orderBy' => [],
-
             'pagination' => []
         ];
 
@@ -87,6 +87,8 @@ class ModuleUniversalView extends \Module {
         $arrView = [
 
             'useTemplate' => true,
+            'viewPage' => $this->catalogViewPage,
+            'useViewPage' => $this->catalogUseViewPage ? true : false,
             'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
         ];
 
@@ -120,7 +122,7 @@ class ModuleUniversalView extends \Module {
     }
 
     private function determineEditFormView() {
-
+        
         //
     }
 

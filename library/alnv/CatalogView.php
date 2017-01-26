@@ -42,22 +42,25 @@ class CatalogView extends CatalogController {
 
     public function getCatalogDataByTable( $strTable, $arrOptions = [] ) {
 
-        $arrCatalogData = [];
-
         if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
 
             return [];
         }
 
-        $strSQLStatement = sprintf( 'SELECT * FROM %s', $strTable );
+        if ( !$arrOptions['table'] ) {
 
-        $objCatalogData = $this->Database->prepare( $strSQLStatement )->execute();
-
-        while ( $objCatalogData->next() ) {
-
-            $arrCatalogData[ $objCatalogData->id ] = $objCatalogData->row();
+            $arrOptions['table'] = $strTable;
         }
 
+        $arrCatalogData = [];
+        $objSQLQueryBuilder = new SQLQueryBuilder();
+        $objQueryBuilderResults = $objSQLQueryBuilder->execute( $arrOptions );
+
+        while ( $objQueryBuilderResults->next() ) {
+            
+            $arrCatalogData[ $objQueryBuilderResults->id ] = $objQueryBuilderResults->row();
+        }
+        
         return $arrCatalogData;
     }
 }

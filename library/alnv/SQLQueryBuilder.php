@@ -33,14 +33,24 @@ class SQLQueryBuilder extends CatalogController {
         return $this->Database->prepare( $this->strQuery )->execute( $this->arrValues );
     }
 
+    public function tableExist( $strTable ) {
+
+        if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
+
+            return false;
+        }
+
+        return true;
+    }
+
     protected function createSelectQuery() {
 
         $this->strQuery = sprintf( 'SELECT * FROM %s %s %s %s',
 
             $this->strTable,
             $this->createWhereStatement(),
-            $this->createPaginationStatement(),
-            $this->createOrderByStatement()
+            $this->createOrderByStatement(),
+            $this->createPaginationStatement()
         );
     }
 
@@ -112,7 +122,7 @@ class SQLQueryBuilder extends CatalogController {
 
                     $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
 
-                    $this->arrValues[] = $varValue['value'];
+                    $this->setValue( $varValue['value'] );
 
                     $intOrIndex++;
                 }
@@ -126,7 +136,7 @@ class SQLQueryBuilder extends CatalogController {
 
                     $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] );
 
-                    $this->arrValues[] = $arrQueries['value'];
+                    $this->setValue( $arrQueries['value'] );
                 }
             }
         }
@@ -136,11 +146,57 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createPaginationStatement() {
 
-        return '';
+        if ( !$this->arrQuery['pagination'] || empty( $this->arrQuery['pagination'] ) || !is_array( $this->arrQuery['pagination'] ) ) {
+
+            return '';
+        }
+
+        $strOffset = $this->arrQuery['pagination']['offset'] ? intval( $this->arrQuery['pagination']['offset'] ) : 0;
+        $strLimit = $this->arrQuery['pagination']['limit'] ? intval( $this->arrQuery['pagination']['limit'] ) : 1000;
+
+        return sprintf( 'LIMIT %s, %s', $strOffset, $strLimit );
     }
 
     protected function createOrderByStatement() {
 
-        return '';
+        $arrAllowedModes = [ 'DESC', 'ASC' ];
+        $arrOrderByStatements = [];
+
+        if ( !$this->arrQuery['orderBy'] || empty( $this->arrQuery['orderBy'] ) || !is_array( $this->arrQuery['orderBy'] ) ) {
+
+            return '';
+        }
+
+        foreach ( $this->arrQuery['orderBy'] as $intIndex => $arrOrderBy ) {
+
+            if ( !$arrOrderBy['order'] ) $arrOrderBy['order'] = 'DESC';
+
+            if ( !$arrOrderBy['field'] || !in_array( $arrOrderBy['order'] , $arrAllowedModes )) continue;
+
+            $arrOrderByStatements[] = sprintf( '`%s` %s', $arrOrderBy['field'], $arrOrderBy['order'] );
+        }
+
+        if ( empty( $arrOrderByStatements ) ) {
+
+            return '';
+        }
+
+        return 'ORDER BY ' . implode( ',', $arrOrderByStatements );
+    }
+
+    private function setValue( $varValue ) {
+
+        if ( is_array( $varValue ) ) {
+
+            foreach ( $varValue as $strValue ) {
+
+                $this->arrValues[] = $strValue;
+            }
+        }
+
+        else {
+
+            $this->arrValues[] = $varValue;
+        }
     }
 }

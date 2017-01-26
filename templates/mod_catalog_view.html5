@@ -1,1 +1,3 @@
-<h1>Hello, Catalog Universal View</h1>
+<div>
+   <?= $this->catalogs; ?>
+</div>

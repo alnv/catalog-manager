@@ -5,6 +5,7 @@ namespace CatalogManager;
 class ModuleUniversalView extends \Module {
 
     private $strCatalogID;
+    private $strMasterAlias;
     private $arrCatalog = [];
     private $arrCatalogFields =[];
     protected $strTemplate = 'mod_catalog_view';
@@ -21,17 +22,13 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
-        $strAutoItem = \Input::get( 'auto_item' );
-
+        $this->strMasterAlias = \Input::get( 'auto_item' );
         $this->CatalogView = new CatalogView();
-        
         $this->arrCatalog = $this->CatalogView->getCatalogByTablename( $this->catalogTablename );
-
         $this->strCatalogID = $this->arrCatalog['id'];
-
         $this->arrCatalogFields = $this->CatalogView->getCatalogFieldsByCatalogID( $this->strCatalogID );
 
-        if ( $strAutoItem ) {
+        if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
 
             $this->determineMasterView();
         }
@@ -56,30 +53,73 @@ class ModuleUniversalView extends \Module {
 
                 default:
 
-                    $this->cdetermineCatalogView();
+                    $this->determineCatalogView();
 
                     break;
             }
         }
     }
 
-    private function cdetermineCatalogView() {
+    private function determineCatalogView() {
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, [] );
+        $arrView = [
 
-        //
+            'useTemplate' => true,
+            'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
+        ];
+
+        $arrQuery = [
+
+            'where' => [],
+
+            'orderBy' => [],
+
+            'pagination' => []
+        ];
+
+        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, $arrView, $arrQuery );
+
+        $this->Template->catalogs = $arrCatalogs['view'];
     }
 
     private function determineMasterView() {
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, [] );
+        $arrView = [
 
-        //
+            'useTemplate' => true,
+            'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
+        ];
+
+        $arrQuery = [
+
+            'where' => [
+
+                [
+                    [
+                        'field' => 'id',
+                        'operator' => 'equal',
+                        'value' => $this->strMasterAlias
+                    ],
+
+                    [
+                        'field' => 'alias',
+                        'operator' => 'equal',
+                        'value' => $this->strMasterAlias
+                    ]
+                ]
+            ],
+
+            'orderBy' => [],
+
+            'pagination' => []
+        ];
+
+        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, $arrView, $arrQuery );
+
+        $this->Template->catalogs = $arrCatalogs['view'];
     }
 
     private function determineEditFormView() {
-
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, [] );
 
         //
     }

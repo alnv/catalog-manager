@@ -1,3 +1,9 @@
-<div>
-   <h2>Hello, Catalog</h2>
+<div class="catalog_teaser">
+
+   <h2><?= $this->title; ?></h2>
+
+   <?php if( $this->link2Master ): ?>
+      <a href="<?= $this->link2Master ?>"><?= $this->title; ?></a>
+   <?php endif; ?>
+
 </div>

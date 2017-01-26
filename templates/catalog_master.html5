@@ -1,3 +1,9 @@
 <div>
-   <h2>Hi, Catalog Master</h2>
+
+   <h2><?= $this->title; ?></h2>
+
+   <?php if( $this->link2View ): ?>
+      <a href="<?= $this->link2View ?>">Go back</a>
+   <?php endif; ?>
+
 </div>

@@ -80,12 +80,16 @@ class CatalogView extends CatalogController {
 
     public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {
 
-        $objTemplate = null;
-        $arrCatalogData = [ 'view' => '', 'data' => [] ];
-
         if ( !$this->SQLQueryBuilder->tableExist( $strTable ) ) return [];
 
         if ( !$arrQuery['table'] ) $arrQuery['table'] = $strTable;
+
+        global $objPage;
+
+        $objTemplate = null;
+        $objViewPage = null;
+        $objMasterPage = $objPage->row();
+        $arrCatalogData = [ 'view' => '', 'data' => [] ];
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
@@ -94,12 +98,22 @@ class CatalogView extends CatalogController {
             $objTemplate = new \FrontendTemplate( $arrView['template'] );
         }
 
+        if ( $arrView['useMasterPage'] && $arrView['masterPage'] !== '0' ) {
+
+            $objMasterPage = $this->getPageModel( $arrView['masterPage'] );
+        }
+
+        if ( $arrView['useViewPage'] && $arrView['viewPage'] !== '0' ) {
+
+            $objViewPage = $this->getPageModel( $arrView['viewPage'] );
+        }
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
 
-            $arrCatalog['link2View'] = 'catalog.html';
-            $arrCatalog['link2Master'] = sprintf( 'catalog/%s', $arrCatalog['alias'] ) . '.html';
+            $arrCatalog['link2View'] = $this->generateUrl( $objViewPage, '' );
+            $arrCatalog['link2Master'] = $this->generateUrl( $objMasterPage, $arrCatalog['alias'] );
 
             if ( $objTemplate !== null ) {
 
@@ -112,5 +126,36 @@ class CatalogView extends CatalogController {
         }
 
         return $arrCatalogData;
+    }
+
+    private function generateUrl( $objPage, $strAlias ) {
+
+        if ( $objPage == null ) return '';
+
+        return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
+    }
+
+    private function getPageModel( $strID ) {
+
+        return $this->SQLQueryBuilder->execute([
+
+            'table' => 'tl_page',
+
+            'pagination' => [
+
+                'limit' => 1,
+                'offset' => 0
+            ],
+
+            'where' => [
+
+                [
+                    'field' => 'id',
+                    'value' => $strID,
+                    'operator' => 'equal'
+                ]
+            ]
+
+        ])->row();
     }
 }

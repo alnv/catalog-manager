@@ -135,7 +135,7 @@ class CatalogView extends CatalogController {
 
                 $arrCatalogData['view'] .= $objTemplate->parse();
             }
-            
+
             $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
         }
 

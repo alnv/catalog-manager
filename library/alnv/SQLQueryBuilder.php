@@ -108,17 +108,17 @@ class SQLQueryBuilder extends CatalogController {
 
         $strSelectionStatement = sprintf( '%s.*,', $this->strTable );
 
-        foreach ( $this->arrQuery['joins'] as $arrJoin ) {
+        foreach ( $this->arrQuery['joins'] as $intIndex => $arrJoin ) {
 
             $arrColumnAliases = [];
             $arrForeignColumns = $this->getForeignColumnsByTablename( $arrJoin['onTable'] );
 
             foreach ( $arrForeignColumns as $strForeignColumn ) {
 
-                $arrColumnAliases[] = sprintf( '%s.%s AS %s', $arrJoin['onTable'], $strForeignColumn, $arrJoin['onTable']. ( ucfirst( $strForeignColumn ) ) );
+                $arrColumnAliases[] = sprintf( '%s.`%s` AS %s', $arrJoin['onTable'], $strForeignColumn, $arrJoin['onTable']. ( ucfirst( $strForeignColumn ) ) );
             }
 
-            $strSelectionStatement .= implode( ',' , $arrColumnAliases );
+            $strSelectionStatement .= ( $intIndex ? ',' : '' ) . implode( ',' , $arrColumnAliases );
         }
 
         return $strSelectionStatement;
@@ -133,7 +133,7 @@ class SQLQueryBuilder extends CatalogController {
             return $strJoinStatement;
         }
 
-        foreach ( $this->arrQuery['joins'] as $arrJoin ) {
+        foreach ( $this->arrQuery['joins'] as $intIndex => $arrJoin ) {
 
             if ( !$arrJoin['table'] || !$arrJoin['field'] ) {
 
@@ -145,7 +145,7 @@ class SQLQueryBuilder extends CatalogController {
                 continue;
             }
 
-            $strJoinStatement .= sprintf( 'INNER JOIN %s ON %s.%s = %s.%s', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
+            $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . 'INNER JOIN %s ON %s.`%s` = %s.`%s`', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
         }
 
         return $strJoinStatement;

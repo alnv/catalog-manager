@@ -4,10 +4,7 @@ namespace CatalogManager;
 
 class ModuleUniversalView extends \Module {
 
-    private $strCatalogID;
     private $strMasterAlias;
-    private $arrCatalog = [];
-    private $arrCatalogFields =[];
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
@@ -22,11 +19,9 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
+        $this->import( 'CatalogView' );
+
         $this->strMasterAlias = \Input::get( 'auto_item' );
-        $this->CatalogView = new CatalogView();
-        $this->arrCatalog = $this->CatalogView->getCatalogByTablename( $this->catalogTablename );
-        $this->strCatalogID = $this->arrCatalog['id'];
-        $this->arrCatalogFields = $this->CatalogView->getCatalogFieldsByCatalogID( $this->strCatalogID );
 
         if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
 
@@ -67,6 +62,7 @@ class ModuleUniversalView extends \Module {
             'useTemplate' => true,
             'masterPage' => $this->catalogMasterPage,
             'useMasterPage' => $this->catalogUseMasterPage ? true : false,
+            'joins' => Toolkit::parseStringToArray( $this->catalogRelation ),
             'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
         ];
 
@@ -89,6 +85,7 @@ class ModuleUniversalView extends \Module {
             'useTemplate' => true,
             'viewPage' => $this->catalogViewPage,
             'useViewPage' => $this->catalogUseViewPage ? true : false,
+            'joins' => Toolkit::parseStringToArray( $this->catalogRelation ),
             'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
         ];
 

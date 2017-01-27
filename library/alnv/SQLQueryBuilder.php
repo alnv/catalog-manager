@@ -230,7 +230,7 @@ class SQLQueryBuilder extends CatalogController {
 
             if ( !$arrOrderBy['field'] || !in_array( $arrOrderBy['order'] , $arrAllowedModes )) continue;
 
-            $arrOrderByStatements[] = sprintf( '`%s` %s', $arrOrderBy['field'], $arrOrderBy['order'] );
+            $arrOrderByStatements[] = sprintf( '%s.`%s` %s', $this->strTable, $arrOrderBy['field'], $arrOrderBy['order'] );
         }
 
         if ( empty( $arrOrderByStatements ) ) {

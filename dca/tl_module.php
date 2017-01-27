@@ -1,9 +1,11 @@
 <?php
 
+$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{relation_legend},catalogRelation;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
@@ -20,6 +22,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
         'tl_class' => 'w50',
         'mandatory' => true,
         'doNotCopy' => true,
+        'submitOnChange' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption'=>true,
     ],
@@ -205,19 +208,75 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPerPage'] = [
     'sql' => "smallint(5) unsigned NOT NULL default '0'"
 ];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelation'] = [
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinFields'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelation'],
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogJoinFields'],
     'inputType' => 'checkbox',
 
     'eval' => [
 
         'multiple' => true,
         'maxlength' => 255,
-        'tl_class' => 'clr',
+        'tl_class' => 'w50',
+        'doNotCopy' => true,
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getJoinAbleFields' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogJoinParentTable'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12',
+        'doNotCopy' => true,
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'multiple' => true,
+        'maxlength' => 255,
+        'tl_class' => 'w50',
+        'doNotCopy' => true,
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getChildTables' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedParentTable'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 255,
+        'doNotCopy' => true,
+        'tl_class' => 'w50 m12',
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=>true,
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getParentTable' ],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"

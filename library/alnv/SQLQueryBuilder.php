@@ -46,9 +46,11 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createSelectQuery() {
 
-        $this->strQuery = sprintf( 'SELECT * FROM %s %s %s %s',
+        $this->strQuery = sprintf( 'SELECT %s FROM %s %s %s %s %s',
 
+            $this->createSelectionStatement(),
             $this->strTable,
+            $this->createJoinStatement(),
             $this->createWhereStatement(),
             $this->createOrderByStatement(),
             $this->createPaginationStatement()
@@ -57,42 +59,96 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function equal( $strField ) {
 
-        return sprintf( '`%s` = ?', $strField );
+        return sprintf( '%s.`%s` = ?', $this->strTable, $strField );
     }
 
     protected function regexp( $strField ) {
 
-        return sprintf( 'LOWER(CAST(`%s` AS CHAR)) REGEXP LOWER(?)', $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)', $this->strTable, $strField );
     }
 
     protected function gt( $strField ) {
 
-        return sprintf( 'LOWER(CAST(`%s` AS SIGNED)) > ?', $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) > ?', $this->strTable, $strField );
     }
 
     protected function gte( $strField ) {
 
-        return sprintf( 'LOWER(CAST(`%s` AS SIGNED)) >= ?', $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) >= ?', $this->strTable, $strField );
     }
 
     protected function lt( $strField ) {
 
-        return sprintf( 'LOWER(CAST(`%s` AS SIGNED)) < ?', $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) < ?', $this->strTable, $strField );
     }
 
     protected function lte( $strField ) {
 
-        return sprintf( 'LOWER(CAST(`%s` AS SIGNED)) <= ?', $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) <= ?', $this->strTable, $strField );
     }
 
     protected function contain( $strField ) {
 
-        return sprintf( 'LOWER(`%s`) IN (?)', $strField );
+        return sprintf( 'LOWER(%s.`%s`) IN (?)', $this->strTable, $strField );
     }
 
     protected function between( $strField ) {
 
-        return sprintf( 'LOWER(`%s`) BETWEEN ? AND ?', $strField );
+        return sprintf( 'LOWER(%s.`%s`) BETWEEN ? AND ?', $this->strTable, $strField );
+    }
+
+    protected function createSelectionStatement() {
+
+        $strSelectionStatement = '*';
+
+        if ( !$this->arrQuery['joins'] || empty( $this->arrQuery['joins'] ) || !is_array( $this->arrQuery['joins'] ) ) {
+
+            return $strSelectionStatement;
+        }
+
+        $strSelectionStatement = sprintf( '%s.*,', $this->strTable );
+
+        foreach ( $this->arrQuery['joins'] as $arrJoin ) {
+
+            $arrColumnAliases = [];
+            $arrForeignColumns = $this->getForeignColumnsByTablename( $arrJoin['onTable'] );
+
+            foreach ( $arrForeignColumns as $strForeignColumn ) {
+
+                $arrColumnAliases[] = sprintf( '%s.%s AS %s', $arrJoin['onTable'], $strForeignColumn, $arrJoin['onTable']. ( ucfirst( $strForeignColumn ) ) );
+            }
+
+            $strSelectionStatement .= implode( ',' , $arrColumnAliases );
+        }
+
+        return $strSelectionStatement;
+    }
+
+    protected function createJoinStatement() {
+
+        $strJoinStatement = '';
+
+        if ( !$this->arrQuery['joins'] || empty( $this->arrQuery['joins'] ) || !is_array( $this->arrQuery['joins'] ) ) {
+
+            return $strJoinStatement;
+        }
+
+        foreach ( $this->arrQuery['joins'] as $arrJoin ) {
+
+            if ( !$arrJoin['table'] || !$arrJoin['field'] ) {
+
+                continue;
+            }
+
+            if ( !$arrJoin['onTable'] || !$arrJoin['onField'] ) {
+
+                continue;
+            }
+
+            $strJoinStatement .= sprintf( 'INNER JOIN %s ON %s.%s = %s.%s', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
+        }
+
+        return $strJoinStatement;
     }
 
     protected function createWhereStatement() {
@@ -199,5 +255,15 @@ class SQLQueryBuilder extends CatalogController {
 
             $this->arrValues[] = $varValue;
         }
+    }
+
+    private function getForeignColumnsByTablename( $strTable ) {
+
+        if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
+
+            return [];
+        }
+
+        return Toolkit::parseColumns( $this->Database->listFields( $strTable ) );
     }
 }

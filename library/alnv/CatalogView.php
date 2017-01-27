@@ -135,7 +135,7 @@ class CatalogView extends CatalogController {
 
                 $arrCatalogData['view'] .= $objTemplate->parse();
             }
-
+            
             $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
         }
 
@@ -160,10 +160,16 @@ class CatalogView extends CatalogController {
                 continue;
             }
 
+            $arrRelatedJoinData['multiple'] = false;
             $arrRelatedJoinData['table'] = $this->strTable;
             $arrRelatedJoinData['field'] = $this->arrCatalogFields[ $strFieldJoinID ]['fieldname'];
             $arrRelatedJoinData['onTable'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTable'];
             $arrRelatedJoinData['onField'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTableKey'];
+
+            if ( $this->arrCatalogFields[ $strFieldJoinID ]['multiple'] || $this->arrCatalogFields[ $strFieldJoinID ]['type'] == 'checkbox' ) {
+
+                $arrRelatedJoinData['multiple'] = true;
+            }
 
             $arrReturn[] = $arrRelatedJoinData;
         }

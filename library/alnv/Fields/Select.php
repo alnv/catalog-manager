@@ -33,6 +33,11 @@ class Select {
             $arrDCAField['options'] = $objOptionGetter->getOptions();
         }
 
+        if ( $arrDCAField['eval']['multiple'] ) {
+
+            $arrDCAField['eval']['csv'] = ',';
+        }
+
         return $arrDCAField;
     }
 }

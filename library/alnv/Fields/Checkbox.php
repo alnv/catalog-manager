@@ -31,6 +31,8 @@ class Checkbox {
             }
         }
 
+        $arrDCAField['eval']['csv'] = ',';
+
         return $arrDCAField;
     }
 }

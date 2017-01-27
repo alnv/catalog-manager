@@ -30,3 +30,5 @@ $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
 
 $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
+
+$GLOBALS['BE_FFL']['catalogWizard'] = 'CatalogManager\CatalogWizard';

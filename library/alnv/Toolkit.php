@@ -70,4 +70,24 @@ class Toolkit {
 
         return false;
     }
+
+    public static function parseColumns( $arrColumns ) {
+
+        $arrReturn = [];
+
+        if ( !empty( $arrColumns ) && is_array( $arrColumns ) ) {
+
+            foreach ( $arrColumns as $arrColumn ) {
+
+                if ( $arrColumn['name'] == 'PRIMARY' ) {
+
+                    continue;
+                }
+
+                $arrReturn[ $arrColumn['name'] ] = $arrColumn['name'];
+            }
+        }
+
+        return $arrReturn;
+    }
 }

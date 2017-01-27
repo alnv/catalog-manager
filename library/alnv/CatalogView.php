@@ -4,6 +4,10 @@ namespace CatalogManager;
 
 class CatalogView extends CatalogController {
 
+    private $strTable = '';
+    private $arrCatalog = [];
+    private $arrCatalogFields = [];
+
     public function __construct() {
 
         parent::__construct();
@@ -72,7 +76,7 @@ class CatalogView extends CatalogController {
 
         while ( $objFields->next() ) {
 
-            $arrFields[ $objFields->fieldname ] = $objFields->row();
+            $arrFields[ $objFields->id ] = $objFields->row();
         }
 
         return $arrFields;
@@ -80,9 +84,11 @@ class CatalogView extends CatalogController {
 
     public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {
 
-        if ( !$this->SQLQueryBuilder->tableExist( $strTable ) ) return [];
+        $this->strTable = $strTable;
 
-        if ( !$arrQuery['table'] ) $arrQuery['table'] = $strTable;
+        if ( !$this->SQLQueryBuilder->tableExist( $this->strTable ) ) return [];
+
+        if ( !$arrQuery['table'] ) $arrQuery['table'] = $this->strTable;
 
         global $objPage;
 
@@ -90,6 +96,14 @@ class CatalogView extends CatalogController {
         $objViewPage = null;
         $objMasterPage = $objPage->row();
         $arrCatalogData = [ 'view' => '', 'data' => [] ];
+
+        $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
+        $this->arrCatalogFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
+
+        if ( $arrView['joins'] ) {
+
+            $arrQuery['joins'] = $this->prepareRelationData( $arrView['joins'] );
+        }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
@@ -121,11 +135,40 @@ class CatalogView extends CatalogController {
 
                 $arrCatalogData['view'] .= $objTemplate->parse();
             }
-
+            
             $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
         }
 
         return $arrCatalogData;
+    }
+
+    private function prepareRelationData ( $arrJoins ) {
+
+        $arrReturn = [];
+
+        if ( empty( $arrJoins ) || !is_array( $arrJoins ) ) {
+
+            return $arrReturn;
+        }
+
+        foreach ( $arrJoins as $strFieldJoinID ) {
+
+            $arrRelatedJoinData = [];
+
+            if ( !$this->arrCatalogFields[ $strFieldJoinID ] ) {
+
+                continue;
+            }
+
+            $arrRelatedJoinData['table'] = $this->strTable;
+            $arrRelatedJoinData['field'] = $this->arrCatalogFields[ $strFieldJoinID ]['fieldname'];
+            $arrRelatedJoinData['onTable'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTable'];
+            $arrRelatedJoinData['onField'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTableKey'];
+
+            $arrReturn[] = $arrRelatedJoinData;
+        }
+
+        return $arrReturn;
     }
 
     private function generateUrl( $objPage, $strAlias ) {

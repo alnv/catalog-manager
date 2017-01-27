@@ -106,9 +106,13 @@ class SQLQueryBuilder extends CatalogController {
             return $strSelectionStatement;
         }
 
-        $strSelectionStatement = sprintf( '%s.*,', $this->strTable );
+        $strSelectionStatement = sprintf( '%s.*', $this->strTable );
 
         foreach ( $this->arrQuery['joins'] as $intIndex => $arrJoin ) {
+
+            if ( empty( $arrJoin ) ) continue;
+
+            if ( !$intIndex ) $strSelectionStatement .= ',';
 
             $arrColumnAliases = [];
             $arrForeignColumns = $this->getForeignColumnsByTablename( $arrJoin['onTable'] );

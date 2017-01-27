@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'optionsType_useOptions' => 'options',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
-        'optionsType_useForeignKey' => 'foreignKeyTable,foreignKeyField',
+        'optionsType_useForeignKey' => 'dbTable,dbTableKey',
     ],
 
     'fields' => [
@@ -932,49 +932,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             ],
 
             'sql' => "blob NULL"
-        ],
-
-        'foreignKeyTable' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'maxlength' => 128,
-                'tl_class' => 'w50',
-                'mandatory' => true,
-                'doNotCopy' => true,
-                'submitOnChange' => true,
-                'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTables' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
-        ],
-
-        'foreignKeyField' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'maxlength' => 128,
-                'tl_class' => 'w50',
-                'mandatory' => true,
-                'doNotCopy' => true,
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByForeignKeyTable' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'dbTable' => [

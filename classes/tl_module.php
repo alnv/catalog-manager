@@ -19,6 +19,27 @@ class tl_module extends \Backend {
         return $arrReturn;
     }
 
+    public function disableNotRequiredFields( \DataContainer $dc ) {
+
+        $arrModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute( $dc->id )->row();
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrModule['catalogTablename'] ];
+
+        if ( !$arrCatalog ) return null;
+
+        if ( !$arrCatalog['pTable'] ) {
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable']['eval']['disabled'] = true;
+        }
+
+        if ( empty( $arrCatalog['cTables'] ) ) {
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables']['eval']['disabled'] = true;
+        }
+    }
+
     public function getCatalogTemplates() {
 
         return $this->getTemplateGroup('catalog_');
@@ -31,8 +52,7 @@ class tl_module extends \Backend {
 
         if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
 
-        $strID = $arrCatalog['id'];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $strID );
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $arrCatalog['id'] );
 
         while ( $objCatalogFields->next() ) {
 
@@ -50,5 +70,25 @@ class tl_module extends \Backend {
         }
 
         return $arrReturn;
+    }
+
+    public function getChildTables( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+
+        if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
+
+        return ( is_array( $arrCatalog['cTables'] ) ? $arrCatalog['cTables'] : deserialize( $arrCatalog['cTables'] ) );
+    }
+
+    public function getParentTable( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+
+        if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
+
+        return [ ( $arrCatalog['pTable'] ? $arrCatalog['pTable'] : '' ) ];
     }
 }

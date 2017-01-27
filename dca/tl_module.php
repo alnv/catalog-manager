@@ -3,7 +3,7 @@
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{relation_legend},catalogRelation;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
@@ -203,4 +203,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPerPage'] = [
 
     'exclude' => true,
     'sql' => "smallint(5) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelation'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelation'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'multiple' => true,
+        'maxlength' => 255,
+        'tl_class' => 'clr',
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getJoinAbleFields' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
 ];

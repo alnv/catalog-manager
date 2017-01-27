@@ -4,14 +4,21 @@ namespace CatalogManager;
 
 class ModuleUniversalView extends \Module {
 
+    private $strCatalogTable;
+
     private $strMasterAlias;
+
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
 
         if ( TL_MODE == 'BE' ) {
 
-            //
+            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . $this->name . ' ###';
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+
+            return $objTemplate->parse();
         }
 
         return parent::generate();
@@ -22,6 +29,11 @@ class ModuleUniversalView extends \Module {
         $this->import( 'CatalogView' );
 
         $this->strMasterAlias = \Input::get( 'auto_item' );
+
+        $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
+        $this->catalogRelatedChildTables = Toolkit::parseStringToArray( $this->catalogRelatedChildTables );
+
+        $this->setTable(); // @todo settings
 
         if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
 
@@ -60,10 +72,12 @@ class ModuleUniversalView extends \Module {
         $arrView = [
 
             'useTemplate' => true,
+            'joins' => $this->catalogJoinFields,
             'masterPage' => $this->catalogMasterPage,
+            'pTable' => $this->catalogRelatedParentTable,
+            'cTables' => $this->catalogRelatedChildTables,
             'joinPTable' => $this->catalogJoinParentTable ? true : false,
             'useMasterPage' => $this->catalogUseMasterPage ? true : false,
-            'joins' => Toolkit::parseStringToArray( $this->catalogJoinFields ),
             'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
         ];
 
@@ -74,7 +88,7 @@ class ModuleUniversalView extends \Module {
             'pagination' => []
         ];
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, $arrView, $arrQuery );
+        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
 
         $this->Template->catalogs = $arrCatalogs['view'];
     }
@@ -84,10 +98,12 @@ class ModuleUniversalView extends \Module {
         $arrView = [
 
             'useTemplate' => true,
+            'joins' => $this->catalogJoinFields,
             'viewPage' => $this->catalogViewPage,
+            'pTable' => $this->catalogRelatedParentTable,
+            'cTables' => $this->catalogRelatedChildTables,
             'useViewPage' => $this->catalogUseViewPage ? true : false,
             'joinPTable' => $this->catalogJoinParentTable ? true : false,
-            'joins' => Toolkit::parseStringToArray( $this->catalogJoinFields ),
             'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
         ];
 
@@ -111,11 +127,10 @@ class ModuleUniversalView extends \Module {
             ],
 
             'orderBy' => [],
-
             'pagination' => []
         ];
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->catalogTablename, $arrView, $arrQuery );
+        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
 
         $this->Template->catalogs = $arrCatalogs['view'];
     }
@@ -128,5 +143,20 @@ class ModuleUniversalView extends \Module {
     private function determineCreateFormView() {
 
         //
+    }
+
+    private function setTable() {
+
+        $strTable = \Input::get( 'table' );
+
+        $this->strCatalogTable = $this->catalogTablename;
+
+        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+
+            if ( in_array( $strTable, $this->catalogRelatedChildTables ) || $strTable == $this->catalogRelatedParentTable ) {
+
+                $this->strCatalogTable = $strTable;
+            }
+        }
     }
 }

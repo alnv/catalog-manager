@@ -102,7 +102,12 @@ class CatalogView extends CatalogController {
 
         if ( $arrView['joins'] ) {
 
-            $arrQuery['joins'] = $this->prepareRelationData( $arrView['joins'] );
+            $arrQuery['joins'] = $this->prepareFieldsJoinData( $arrView['joins'] );
+        }
+
+        if ( $arrView['joinPTable'] && $this->arrCatalog['pTable'] ) {
+
+            $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
@@ -135,14 +140,26 @@ class CatalogView extends CatalogController {
 
                 $arrCatalogData['view'] .= $objTemplate->parse();
             }
-            
+
             $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
         }
 
         return $arrCatalogData;
     }
 
-    private function prepareRelationData ( $arrJoins ) {
+    private function preparePTableJoinData () {
+
+        return [
+
+            'field' => 'pid',
+            'onField' => 'id',
+            'multiple' => false,
+            'table' => $this->strTable,
+            'onTable' => $this->arrCatalog['pTable']
+        ];
+    }
+
+    private function prepareFieldsJoinData ( $arrJoins ) {
 
         $arrReturn = [];
 

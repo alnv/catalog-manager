@@ -96,11 +96,11 @@ class OptionsGetter extends CatalogController {
 
     private function setForeignKey() {
 
-        if ( !$this->arrField['foreignKeyTable'] || !$this->arrField['foreignKeyField'] ) {
+        if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] ) {
 
             return '';
         }
 
-        return $this->arrField['foreignKeyTable'] . '.' . $this->arrField['foreignKeyField'];
+        return $this->arrField['dbTable'] . '.' . $this->arrField['dbTableKey'];
     }
 }

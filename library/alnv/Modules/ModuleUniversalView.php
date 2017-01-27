@@ -61,8 +61,9 @@ class ModuleUniversalView extends \Module {
 
             'useTemplate' => true,
             'masterPage' => $this->catalogMasterPage,
+            'joinPTable' => $this->catalogJoinParentTable ? true : false,
             'useMasterPage' => $this->catalogUseMasterPage ? true : false,
-            'joins' => Toolkit::parseStringToArray( $this->catalogRelation ),
+            'joins' => Toolkit::parseStringToArray( $this->catalogJoinFields ),
             'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
         ];
 
@@ -85,7 +86,8 @@ class ModuleUniversalView extends \Module {
             'useTemplate' => true,
             'viewPage' => $this->catalogViewPage,
             'useViewPage' => $this->catalogUseViewPage ? true : false,
-            'joins' => Toolkit::parseStringToArray( $this->catalogRelation ),
+            'joinPTable' => $this->catalogJoinParentTable ? true : false,
+            'joins' => Toolkit::parseStringToArray( $this->catalogJoinFields ),
             'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
         ];
 

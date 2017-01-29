@@ -30,7 +30,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogWizard.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
-    'CatalogManager\i18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/i18nCatalogTranslator.php',
+    'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php'

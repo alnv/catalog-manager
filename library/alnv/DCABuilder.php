@@ -26,7 +26,7 @@ class DCABuilder extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
-        $this->import( 'i18nCatalogTranslator' );
+        $this->import( 'I18nCatalogTranslator' );
 
         $this->arrCatalog = $arrCatalog;
 
@@ -66,7 +66,7 @@ class DCABuilder extends CatalogController {
 
     public function initializeI18n() {
 
-        $this->i18nCatalogTranslator->initialize();
+        $this->I18nCatalogTranslator->initialize();
     }
 
     private function determineOperations() {
@@ -100,9 +100,7 @@ class DCABuilder extends CatalogController {
     public function createDCA() {
 
         $this->initializeI18n();
-
         $this->determineOperations();
-
         $this->getDCAFields();
 
         $GLOBALS['TL_DCA'][ $this->strTable ] = [
@@ -138,7 +136,7 @@ class DCABuilder extends CatalogController {
 
                 $arrDCAField = [
 
-                    'label' => $this->i18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
+                    'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
                     'inputType' => DCAHelper::setInputType( $arrField ),
 
                     'eval' => [
@@ -600,7 +598,7 @@ class DCABuilder extends CatalogController {
 
         foreach ( $arrLegends as $strLegend ) {
 
-            $strI18nLegend = $this->i18nCatalogTranslator->getLegendLabel( $strLegend );
+            $strI18nLegend = $this->I18nCatalogTranslator->getLegendLabel( $strLegend );
             
             $strPalette .= sprintf( '{%s},%s;', $strI18nLegend, implode( ',', $arrDCAPalette[ $strLegend ] ) );
         }

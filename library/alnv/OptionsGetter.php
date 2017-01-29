@@ -13,6 +13,7 @@ class OptionsGetter extends CatalogController {
         $this->arrField = $arrField;
 
         $this->import( 'Database' );
+        $this->import( 'I18nCatalogTranslator' );
     }
 
     public function isForeignKey() {
@@ -68,7 +69,7 @@ class OptionsGetter extends CatalogController {
 
         while ( $objDbOptions->next() ) {
 
-            $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $objDbOptions->{$this->arrField['dbTableValue']};
+            $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->getOptionLabel( $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
         }
 
         return $arrOptions;
@@ -86,7 +87,7 @@ class OptionsGetter extends CatalogController {
 
                 foreach ( $arrFieldOptions as $arrOption ) {
 
-                    $arrOptions[ $arrOption['key'] ] = $arrOption['value'];
+                    $arrOptions[ $arrOption['key'] ] = $this->I18nCatalogTranslator->getOptionLabel( $arrOption['key'], $arrOption['value'] );
                 }
             }
         }

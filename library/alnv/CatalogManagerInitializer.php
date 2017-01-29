@@ -20,7 +20,7 @@ class CatalogManagerInitializer {
         $objDatabase = \Database::getInstance();
         $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC LIMIT 100' )->execute();
         
-        $objI18nCatalogTranslator = new i18nCatalogTranslator();
+        $objI18nCatalogTranslator = new I18nCatalogTranslator();
         
         while ( $objCatalogManagerDB->next() ) {
 

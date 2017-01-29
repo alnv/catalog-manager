@@ -8,7 +8,7 @@ class UserPermissionExtension extends CatalogController {
 
         parent::__construct();
 
-        $this->import( 'i18nCatalogTranslator' );
+        $this->import( 'I18nCatalogTranslator' );
     }
 
     public function initialize( $strDCAName ) {
@@ -28,7 +28,7 @@ class UserPermissionExtension extends CatalogController {
 
     private function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
 
-        $arrLabels = $this->i18nCatalogTranslator->getModuleLabel( $strCatalogname );
+        $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
         if ( $strDCAName == 'tl_user' ) {
 
@@ -58,7 +58,7 @@ class UserPermissionExtension extends CatalogController {
 
         $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname . 'p' ] = [
 
-            'label' => $this->i18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
+            'label' => $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
             'inputType' => 'checkbox',
 
             'options' => [

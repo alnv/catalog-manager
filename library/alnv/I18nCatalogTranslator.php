@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class i18nCatalogTranslator {
+class I18nCatalogTranslator {
 
     private $strConfigFile = TL_ROOT . '/' . 'system/config/i18nCatalogManager.yaml';
 
@@ -56,23 +56,28 @@ class i18nCatalogTranslator {
         return $arrLabel;
     }
 
+    public function getOptionLabel( $strI18nKey, $strGivenOption = '' ) {
+
+        $strOption = &$GLOBALS['TL_LANG']['catalog_manager']['options'][ $strI18nKey ];
+
+        if ( !$strOption ) return $strGivenOption;
+
+        if ( !$strGivenOption ) return $strI18nKey;
+
+        // @todo yaml
+
+        return $strOption;
+    }
+
     public function getLegendLabel( $strI18nKey ) {
 
         $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strI18nKey ];
 
-        if ( !$strLegend ) {
-
-            $strLegend = $strI18nKey;
-        }
+        if ( !$strLegend ) $strLegend = $strI18nKey;
 
         // @todo yaml
 
         return $strLegend;
-    }
-
-    public function getYamlLanguageFile( $strType, $strI18nKey ) {
-
-        return [];
     }
 
     private function createI18nCatalogConfigFile() {
@@ -85,5 +90,10 @@ class i18nCatalogTranslator {
 
             fclose( $objFile );
         }
+    }
+
+    public function getYamlLanguageFile( $strType, $strI18nKey ) {
+
+        return [];
     }
 }

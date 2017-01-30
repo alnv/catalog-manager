@@ -57,11 +57,7 @@ class DCABuilderHelper extends CatalogController {
 
         foreach ( $arrFields as $arrField ) {
 
-            if ( empty( $arrField ) && !is_array( $arrField ) ) continue;
-
-            if ( !$arrField['type'] ) continue;
-
-            if ( in_array( $arrField['type'], $this->arrForbiddenInputTypes ) ) continue;
+            if ( !$this->isValidField( $arrField ) ) continue;
 
             $arrDCAContainer[ $arrField['fieldname'] ] = $this->convertCatalogField2DCA( $arrField );
         }
@@ -182,11 +178,7 @@ class DCABuilderHelper extends CatalogController {
 
         foreach ( $this->getPredefinedFields() as $strFieldname => $arrField ) {
 
-            if ( empty( $arrField ) && !is_array( $arrField ) ) continue;
-
-            if ( !$arrField['type'] ) continue;
-
-            if ( in_array( $arrField['type'], $this->arrForbiddenInputTypes ) ) continue;
+            if ( !$this->isValidField( $arrField ) ) continue;
 
             $arrReturn[ $strFieldname ] = $this->convertCatalogField2DCA( $arrField );
         }
@@ -243,5 +235,16 @@ class DCABuilderHelper extends CatalogController {
                 'statement' => 'c1',
             ]
         ];
+    }
+
+    public function isValidField( $arrField ) {
+
+        if ( empty( $arrField ) && !is_array( $arrField ) ) return false;
+
+        if ( !$arrField['type'] ) return false;
+
+        if ( in_array( $arrField['type'], $this->arrForbiddenInputTypes ) ) return false;
+
+        return true;
     }
 }

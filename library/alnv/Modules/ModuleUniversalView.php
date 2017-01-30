@@ -87,7 +87,7 @@ class ModuleUniversalView extends \Module {
 
         $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
 
-        $this->Template->catalogs = $arrCatalogs['view'];
+        $this->Template->output = $arrCatalogs['view'];
     }
 
     private function determineMasterView() {
@@ -137,7 +137,8 @@ class ModuleUniversalView extends \Module {
     private function determineEditFormView() {
 
         $this->import( 'FrontendEditing' );
-        
+
+        $this->FrontendEditing->arrOptions = $this->arrData;
         $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 
@@ -145,6 +146,7 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
+        $this->FrontendEditing->arrOptions = $this->arrData;
         $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 

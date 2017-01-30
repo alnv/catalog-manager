@@ -92,6 +92,8 @@ class DCABuilderHelper extends CatalogController {
             'sql' => $this->arrSQLStatements[ $arrField['statement'] ]
         ];
 
+        $arrDCAField['_fieldname'] = $arrField['fieldname'];
+
         if ( $arrField['flag'] ) {
 
             $arrDCAField['default'] = $arrField['flag'];

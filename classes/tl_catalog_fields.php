@@ -4,6 +4,13 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
+    public function __construct() {
+
+        parent::__construct();
+
+        $this->import( 'DCABuilderHelper' );
+    }
+
     public function checkPermission() {
 
         $objDCAPermission = new DCAPermission();
@@ -15,12 +22,12 @@ class tl_catalog_fields extends \Backend {
         $strID = $dc->activeRecord->pid;
         $objSQLBuilder = new SQLBuilder();
         $strIndex = $dc->activeRecord->useIndex;
-        $strStatement = DCAHelper::$arrSQLStatements[ $dc->activeRecord->statement ];
+        $strStatement = $this->DCABuilderHelper->arrSQLStatements[ $dc->activeRecord->statement ];
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
         
         if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
 
-            if ( in_array( $dc->activeRecord->type , DCAHelper::$arrForbiddenInputTypes ) ) {
+            if ( in_array( $dc->activeRecord->type , $this->DCABuilderHelper->arrForbiddenInputTypes ) ) {
 
                 return null;
             }
@@ -35,7 +42,7 @@ class tl_catalog_fields extends \Backend {
 
         else {
             
-            if ( in_array( $dc->activeRecord->type , DCAHelper::$arrForbiddenInputTypes ) ) {
+            if ( in_array( $dc->activeRecord->type , $this->DCABuilderHelper->arrForbiddenInputTypes ) ) {
 
                 $this->dropFieldOnDelete( $dc );
 
@@ -74,7 +81,7 @@ class tl_catalog_fields extends \Backend {
             return $varValue;
         }
 
-        $strStatement = DCAHelper::$arrSQLStatements[ $dc->activeRecord->statement ];
+        $strStatement = $this->DCABuilderHelper->arrSQLStatements[ $dc->activeRecord->statement ];
         $objCatalog = $this->Database->prepare( 'SELECT tablename FROM tl_catalog WHERE id = ? LIMIT 1' )->execute( $dc->activeRecord->pid );
 
         if ( !$objCatalog->count() ) {
@@ -109,7 +116,7 @@ class tl_catalog_fields extends \Backend {
 
     public function getTables() {
 
-        return $this->Database->listTables( null, true );
+        return $this->Database->listTables( null );
     }
 
     public function getColumnsByDbTable( \DataContainer $dc ) {
@@ -168,7 +175,7 @@ class tl_catalog_fields extends \Backend {
 
     public function getSQLStatements() {
 
-        return DCAHelper::$arrSQLStatements;
+        return $this->DCABuilderHelper->arrSQLStatements;
     }
 
     public function getCatalogFieldList( $arrRow ) {

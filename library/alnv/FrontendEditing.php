@@ -80,11 +80,7 @@ class FrontendEditing extends CatalogController {
 
     public function createDCField( $arrField, $intIndex, $intCount, $strFieldname ) {
 
-        if ( empty( $arrField ) && !is_array( $arrField ) ) return null;
-
-        if ( !$arrField['type'] ) return null;
-
-        if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) ) return null;
+        if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
 
         $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
 

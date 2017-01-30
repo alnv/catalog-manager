@@ -1,4 +1,6 @@
 Catalog Manager for Contao CMS
 ===============
 
-release date: tba
+Read about [Catalog Manager][2]
+
+[1]: https://www.alexandernaumov.de/blog/f-modul-2-0-aka-catalog-manager

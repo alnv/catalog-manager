@@ -13,73 +13,17 @@ class CatalogView extends CatalogController {
         parent::__construct();
 
         $this->import( 'SQLQueryBuilder' );
+        $this->import( 'SQLHelperQueries' );
     }
 
     public function getCatalogByTablename( $strTablename ) {
 
-        if ( !$strTablename ) {
-
-            return [];
-        }
-
-        return $this->SQLQueryBuilder->execute([
-
-            'table' => 'tl_catalog',
-
-            'pagination' => [
-
-                'limit' => 1,
-                'offset' => 0,
-            ],
-
-            'where' => [
-
-                [
-                    'operator' => 'equal',
-                    'field' => 'tablename',
-                    'value' => $strTablename
-                ]
-            ]
-
-        ])->row();
+        return $this->SQLHelperQueries->getCatalogByTablename( $strTablename );
     }
 
     public function getCatalogFieldsByCatalogID( $strID ) {
 
-        $arrFields = [];
-
-        if ( !$strID ) {
-
-            return $arrFields;
-        }
-
-        $objFields = $this->SQLQueryBuilder->execute([
-
-            'table' => 'tl_catalog_fields',
-
-            'orderBY' => [
-
-                'order' => 'DESC',
-                'field' => 'sorting'
-            ],
-
-            'where' => [
-
-                [
-                    'field' => 'pid',
-                    'value' => $strID,
-                    'operator' => 'equal'
-                ]
-            ]
-
-        ]);
-
-        while ( $objFields->next() ) {
-
-            $arrFields[ $objFields->id ] = $objFields->row();
-        }
-
-        return $arrFields;
+        return $this->SQLHelperQueries->getCatalogFieldsByCatalogID( $strID );
     }
 
     public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {

@@ -26,10 +26,7 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
-        $this->import( 'CatalogView' );
-
         $this->strMasterAlias = \Input::get( 'auto_item' );
-
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogRelatedChildTables = Toolkit::parseStringToArray( $this->catalogRelatedChildTables );
 
@@ -69,6 +66,8 @@ class ModuleUniversalView extends \Module {
 
     private function determineCatalogView() {
 
+        $this->import( 'CatalogView' );
+
         $arrView = [
 
             'useTemplate' => true,
@@ -94,6 +93,8 @@ class ModuleUniversalView extends \Module {
     }
 
     private function determineMasterView() {
+
+        $this->import( 'CatalogView' );
 
         $arrView = [
 
@@ -132,17 +133,21 @@ class ModuleUniversalView extends \Module {
 
         $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
 
-        $this->Template->catalogs = $arrCatalogs['view'];
+        $this->Template->output = $arrCatalogs['view'];
     }
 
     private function determineEditFormView() {
-        
-        //
+
+        $this->import( 'FrontendEditing' );
+
+        $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 
     private function determineCreateFormView() {
 
-        //
+        $this->import( 'FrontendEditing' );
+
+        $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 
     private function setTable() {

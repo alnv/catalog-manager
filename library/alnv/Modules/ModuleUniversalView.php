@@ -4,10 +4,8 @@ namespace CatalogManager;
 
 class ModuleUniversalView extends \Module {
 
-    private $strCatalogTable;
-
     private $strMasterAlias;
-
+    private $strCatalogTable;
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
@@ -139,7 +137,7 @@ class ModuleUniversalView extends \Module {
     private function determineEditFormView() {
 
         $this->import( 'FrontendEditing' );
-
+        
         $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 

@@ -37,23 +37,27 @@ class FrontendEditing extends CatalogController {
 
         if ( !$this->SQLQueryBuilder->tableExist( $strTablename ) ) return 'table do not exist.';
 
+        \System::loadLanguageFile('catalog_manager');
+
         $this->setOptions();
 
-        \System::loadLanguageFile('catalog_manager');
+        $strTemplate = $this->arrOptions['catalogFormTemplate'] ? $this->arrOptions['catalogFormTemplate'] : 'form_catalog_default';
 
         $intIndex = 0;
 
         $arrFieldsets = [
 
             'default' => []
-        ];
+        ]; // @todo
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
         $this->strTable = $strTablename;
         $this->strSubmitName = 'submit_' . $this->strTable;
-        $this->Template = new \FrontendTemplate( 'form_catalog_default' );
+
+        $this->Template = new \FrontendTemplate( $strTemplate );
         $this->Template->setData( $this->arrOptions );
+
         $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
         $this->arrFormFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
         $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
@@ -82,6 +86,7 @@ class FrontendEditing extends CatalogController {
         }
 
         $this->Template->method = 'POST';
+        $this->Template->formId = $this->strSubmitName;
         $this->Template->submitName = $this->strSubmitName;
         $this->Template->action = \Environment::get( 'indexFreeRequest' );
         $this->Template->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';

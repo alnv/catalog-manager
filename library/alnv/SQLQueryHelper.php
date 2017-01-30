@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class SQLHelperQueries extends CatalogController {
+class SQLQueryHelper extends CatalogController {
 
     public function __construct() {
 
@@ -74,7 +74,7 @@ class SQLHelperQueries extends CatalogController {
             if ( !empty( $arrCallback ) && is_array( $arrCallback ) ) {
 
                 $this->import( $arrCallback[0] );
-                $arrFields[ $objFields->id ] = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrFields[ $objFields->id ], $intIndex, $intCount, $objFields->fieldname );
+                $arrFields[ $objFields->id ] = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrFields[ $objFields->id ], $objFields->fieldname, $intIndex, $intCount );
             }
 
             if ( $arrFields[ $objFields->id ] == null ) {

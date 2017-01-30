@@ -42,5 +42,7 @@ TemplateLoader::addFiles([
 
     'catalog_teaser' => 'system/modules/catalog-manager/templates',
     'catalog_master' => 'system/modules/catalog-manager/templates',
-    'mod_catalog_view' => 'system/modules/catalog-manager/templates'
+    'mod_catalog_view' => 'system/modules/catalog-manager/templates',
+    'form_catalog_default' => 'system/modules/catalog-manager/templates',
+    'form_catalog_grouped' => 'system/modules/catalog-manager/templates'
 ]);

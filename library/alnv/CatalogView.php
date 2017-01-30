@@ -12,18 +12,18 @@ class CatalogView extends CatalogController {
 
         parent::__construct();
 
+        $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        $this->import( 'SQLHelperQueries' );
     }
 
     public function getCatalogByTablename( $strTablename ) {
 
-        return $this->SQLHelperQueries->getCatalogByTablename( $strTablename );
+        return $this->SQLQueryHelper->getCatalogByTablename( $strTablename );
     }
 
     public function getCatalogFieldsByCatalogID( $strID ) {
 
-        return $this->SQLHelperQueries->getCatalogFieldsByCatalogID( $strID );
+        return $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $strID );
     }
 
     public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {

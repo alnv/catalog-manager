@@ -45,6 +45,11 @@ class tl_module extends \Backend {
         return $this->getTemplateGroup('catalog_');
     }
 
+    public function getCatalogFormTemplates() {
+
+        return $this->getTemplateGroup('form_catalog_');
+    }
+
     public function getJoinAbleFields( \DataContainer $dc ) {
 
         $arrReturn = [];

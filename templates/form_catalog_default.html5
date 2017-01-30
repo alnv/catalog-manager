@@ -2,9 +2,7 @@
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>">
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
-
       <?php if ( !$this->tableless ): ?>
-
          <table>
             <?= $this->fields ?>
             <tr class="<?= $this->rowLast ?> row_last">
@@ -12,7 +10,6 @@
                <td class="col_1 col_last"><div class="submit_container"><input type="submit" class="<?= $this->submitName; ?>" value="create"></div></td>
             </tr>
          </table>
-
       <?php else: ?>
          <div class="fields_container">
             <?= $this->fields ?>

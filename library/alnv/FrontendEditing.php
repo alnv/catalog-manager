@@ -12,49 +12,48 @@ class FrontendEditing extends CatalogController {
     private $strSubmitName = '';
     private $blnHasUpload = false;
 
-    private $arrOptions = [
-
-        'tableless' => true,
-        'disableCaptcha' => false,
-        'formTemplate' => 'form_catalog_default'
-    ];
+    public $arrOptions = [];
 
     public function __construct() {
 
         parent::__construct();
 
+        $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        $this->import( 'SQLHelperQueries' );
         $this->import( 'DCABuilderHelper' );
     }
 
     public function getCatalogByTablename( $strTablename ) {
 
-        return $this->SQLHelperQueries->getCatalogByTablename( $strTablename );
+        return $this->SQLQueryHelper->getCatalogByTablename( $strTablename );
     }
 
     public function getCatalogFieldsByCatalogID( $strID ) {
 
-        return $this->SQLHelperQueries->getCatalogFieldsByCatalogID( $strID, [ 'FrontendEditing', 'createDCField' ] );
+        return $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $strID, [ 'FrontendEditing', 'createDCField' ] );
     }
 
-    public function getCatalogFormByTablename( $strTablename, $arrOptions = [] ) {
+    public function getCatalogFormByTablename( $strTablename ) {
 
-        $intIndex = 0;
-        $arrFieldsets = [ 'default' => [] ];
-        $this->strTable = $strTablename;
-        $this->strSubmitName = 'submit_' . $this->strTable;
+        if ( !$this->SQLQueryBuilder->tableExist( $strTablename ) ) return 'table do not exist.';
 
-        if ( !$this->SQLQueryBuilder->tableExist( $this->strTable ) ) return 'table do not exist.';
-
-        $this->setOptions( $arrOptions );
+        $this->setOptions();
 
         \System::loadLanguageFile('catalog_manager');
 
-        $this->Template = new \FrontendTemplate( $this->arrOptions['formTemplate'] );
+        $intIndex = 0;
+
+        $arrFieldsets = [
+
+            'default' => []
+        ];
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
+        $this->strTable = $strTablename;
+        $this->strSubmitName = 'submit_' . $this->strTable;
+        $this->Template = new \FrontendTemplate( 'form_catalog_default' );
+        $this->Template->setData( $this->arrOptions );
         $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
         $this->arrFormFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
         $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
@@ -76,7 +75,6 @@ class FrontendEditing extends CatalogController {
         if ( !$this->arrOptions['disableCaptcha'] ) {
 
             $objCaptcha = $this->getCaptcha();
-
             $objCaptcha->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
             $strCaptcha = $objCaptcha->parse();
 
@@ -85,7 +83,7 @@ class FrontendEditing extends CatalogController {
 
         $this->Template->method = 'POST';
         $this->Template->submitName = $this->strSubmitName;
-        $this->Template->tableless = $this->arrOptions['tableless'];
+        $this->Template->action = \Environment::get( 'indexFreeRequest' );
         $this->Template->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
         return $this->Template->parse();
@@ -93,11 +91,14 @@ class FrontendEditing extends CatalogController {
 
     public function createAndValidateForm( $arrField, $intIndex ) {
 
+        $arrField = $this->convertWidgetToField( $arrField );
+
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
 
         if ( $strClass == false ) return null;
 
         $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '', $this ) );
+        $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->storeValues = true;
         $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
@@ -155,6 +156,8 @@ class FrontendEditing extends CatalogController {
 
                     $varValue = \Encryption::encrypt( $varValue );
                 }
+
+                // …
             }
 
             $arrFiles = $_SESSION['FILES'];
@@ -171,7 +174,7 @@ class FrontendEditing extends CatalogController {
                     $strUuid = $arrFiles->uuid;
                 }
 
-                //
+                // …
             }
 
             if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) ) {
@@ -188,15 +191,25 @@ class FrontendEditing extends CatalogController {
         $this->Template->fields .= $objWidget->parse();
     }
 
-    public function createDCField( $arrField, $intIndex, $intCount, $strFieldname ) {
+    public function createDCField( $arrField, $strFieldname ) {
 
         if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
 
         $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
-
         $arrDCField['_fieldname'] = $strFieldname;
 
-        return $this->convertWidgetToField( $arrDCField );
+        return $arrDCField;
+    }
+
+    protected function setOptions() {
+
+        if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
+
+            foreach ( $this->arrOptions as $strKey => $varValue ) {
+
+                $this->{$strKey} = $varValue;
+            }
+        }
     }
 
     protected function decodeValue( $varValue ) {
@@ -212,17 +225,6 @@ class FrontendEditing extends CatalogController {
         }
 
         return $varValue;
-    }
-
-    protected function setOptions( $arrOptions ) {
-
-        if ( !empty( $arrOptions ) && is_array( $arrOptions ) ) {
-
-            foreach ( $arrOptions as $strKey => $strValue ) {
-
-                $this->arrOptions[ $strKey ] = $strValue;
-            }
-        }
     }
 
     protected function getCaptcha() {
@@ -271,7 +273,7 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'upload';
         }
 
-        $arrField['eval']['tableless'] = '';
+        $arrField['eval']['tableless'] = $this->arrOptions['tableless'];
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 
         return $arrField;

@@ -26,6 +26,7 @@ class DCABuilder extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
+        $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
 
         $this->arrCatalog = $arrCatalog;
@@ -122,188 +123,26 @@ class DCABuilder extends CatalogController {
 
     private function parseDCAFields() {
 
-        $arrDCAFields = $this->getDefaultDCAFields();
+        $arrDCAFields = $this->getDefaultDCFields();
 
         if ( !empty( $this->arrFields ) && is_array( $this->arrFields ) ) {
 
-            foreach ( $this->arrFields as $arrField ) {
-
-                if ( empty( $arrField ) && !is_array( $arrField ) ) continue;
-
-                if ( !$arrField['type'] ) continue;
-
-                if ( in_array( $arrField['type'], DCAHelper::$arrForbiddenInputTypes ) ) continue;
-
-                $arrDCAField = [
-
-                    'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
-                    'inputType' => DCAHelper::setInputType( $arrField ),
-
-                    'eval' => [
-
-                        'unique' => Toolkit::getBooleanByValue( $arrField['unique'] ),
-                        'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
-                        'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
-                        'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),
-                        'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
-                        'tl_class' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
-                        'trailingSlash' => Toolkit::getBooleanByValue( $arrField['trailingSlash'] ),
-                        'doNotSaveEmpty' => Toolkit::getBooleanByValue( $arrField['doNotSaveEmpty'] ),
-                        'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),
-                    ],
-
-                    'sorting' => Toolkit::getBooleanByValue( $arrField['sort'] ),
-                    'search' => Toolkit::getBooleanByValue( $arrField['search'] ),
-                    'filter' => Toolkit::getBooleanByValue( $arrField['filter'] ),
-                    'exclude' => Toolkit::getBooleanByValue( $arrField['exclude'] ),
-                    'sql' => DCAHelper::$arrSQLStatements[ $arrField['statement'] ]
-                ];
-
-                if ( $arrField['flag'] ) {
-
-                    $arrDCAField['default'] = $arrField['flag'];
-                }
-
-                if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
-
-                    $arrDCAField['default'] = $arrField['value'];
-                }
-
-                if ( Toolkit::isDefined( $arrField['useIndex'] ) ) {
-
-                    $arrDCAField['eval']['doNotCopy'] = true;
-
-                    if ( $arrField['useIndex'] == 'unique' ) {
-
-                        $arrDCAField['eval']['unique'] = true;
-                    }
-                }
-
-                switch ( $arrField['type'] ) {
-
-                    case 'text':
-
-                        $arrDCAField = Text::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'date':
-
-                        $arrDCAField = DateInput::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'hidden':
-
-                        $arrDCAField = Hidden::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'number':
-
-                        $arrDCAField = Number::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'textarea':
-
-                        $arrDCAField = Textarea::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'select':
-
-                        $arrDCAField = Select::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'radio':
-
-                        $arrDCAField = Radio::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'checkbox':
-
-                        $arrDCAField = Checkbox::generate( $arrDCAField, $arrField );
-
-                        break;
-
-                    case 'upload':
-
-                        $arrDCAField = Upload::generate( $arrDCAField, $arrField );
-
-                        break;
-                }
-
-                $arrDCAFields[ $arrField['fieldname'] ] = $arrDCAField;
-            }
+            $arrDCAFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrFields, $arrDCAFields );
         }
 
         return $arrDCAFields;
     }
 
-    private function getDefaultDCAFields() {
+    private function getDefaultDCFields() {
 
-        $arrReturn = [
+        $arrReturn = $this->DCABuilderHelper->getPredefinedDCFields();
 
-            'id' => [
+        $arrReturn['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
 
-                'sql' => "int(10) unsigned NOT NULL auto_increment"
-            ],
+            $objDCACallbacks = new DCACallbacks();
 
-            'tstamp' => [
-
-                'sql' => "int(10) unsigned NOT NULL default '0'"
-            ],
-
-            'title' => [
-
-                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'],
-                'inputType' => 'text',
-
-                'eval' => [
-
-                    'maxlength' => 128,
-                    'tl_class' => 'w50',
-                ],
-
-                'exclude' => true,
-                'sql' => "varchar(128) NOT NULL default ''"
-            ],
-
-            'alias' => [
-
-                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'],
-                'inputType' => 'text',
-
-                'eval' => [
-
-                    'unique' => true,
-                    'rgxp' => 'alias',
-                    'maxlength' => 128,
-                    'tl_class' => 'w50',
-                    'doNotCopy' => true,
-                ],
-
-                'save_callback' => [ function( $varValue, \DataContainer $dc ) {
-
-                    $objDCACallbacks = new DCACallbacks();
-
-                    return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
-                }],
-
-                'exclude' => true,
-                'sql' => "varchar(128) NOT NULL default ''"
-            ],
-
-            'invisible' => [
-
-                'label' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'],
-                'inputType' => 'checkbox',
-                'sql' => "char(1) NOT NULL default ''"
-            ]
-        ];
+            return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
+        }];
 
         if ( !$this->arrOperations['invisible'] ) {
 
@@ -584,7 +423,7 @@ class DCABuilder extends CatalogController {
                 $strLegendPointer = $arrField['title'];
             }
 
-            if ( !$arrField['fieldname'] || in_array( $arrField['type'], DCAHelper::$arrForbiddenInputTypes ) ) continue;
+            if ( !$arrField['fieldname'] || in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
 
             $arrDCAPalette[ $strLegendPointer ][] = $arrField['fieldname'];
         }

@@ -145,7 +145,7 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->Database->isUniqueValue( $this->strTable, $arrField['_fieldname'], $varValue ) ) {
+            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue( $this->strTable, $arrField['_fieldname'], $varValue ) ) {
 
                 $objWidget->addError( sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $arrField['_fieldname'] ) );
             }

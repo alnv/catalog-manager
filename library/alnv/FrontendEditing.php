@@ -6,12 +6,14 @@ class FrontendEditing extends CatalogController {
 
     private $Template;
     private $strTable = '';
+    private $arrValues = [];
     private $arrCatalog = [];
     private $blnNoSubmit = false;
     private $arrFormFields = [];
     private $strSubmitName = '';
     private $blnHasUpload = false;
 
+    public $strItemID;
     public $arrOptions = [];
 
     public function __construct() {
@@ -39,7 +41,10 @@ class FrontendEditing extends CatalogController {
 
         \System::loadLanguageFile('catalog_manager');
 
+        $this->strTable = $strTablename;
+
         $this->setOptions();
+        $this->setValues();
 
         $strTemplate = $this->arrOptions['catalogFormTemplate'] ? $this->arrOptions['catalogFormTemplate'] : 'form_catalog_default';
 
@@ -52,7 +57,6 @@ class FrontendEditing extends CatalogController {
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
-        $this->strTable = $strTablename;
         $this->strSubmitName = 'submit_' . $this->strTable;
 
         $this->Template = new \FrontendTemplate( $strTemplate );
@@ -103,8 +107,9 @@ class FrontendEditing extends CatalogController {
         if ( $strClass == false ) return null;
 
         $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '', $this ) );
-        $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->storeValues = true;
+        $objWidget->id = 'id_' . $arrField['_fieldname'];
+        $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
         $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
         if ( $arrField['inputType'] == 'upload' ) {
@@ -204,6 +209,22 @@ class FrontendEditing extends CatalogController {
         $arrDCField['_fieldname'] = $strFieldname;
 
         return $arrDCField;
+    }
+
+    protected function setValues() {
+
+        if ( $this->strItemID ) {
+            
+            $this->arrValues = $this->SQLQueryHelper->getCatalogTableItemByID( $this->strTable, $this->strItemID );
+        }
+
+        if ( empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
+
+            foreach ( $this->arrValues as $strKey => $varValue ) {
+
+                $this->arrValues[$strKey] = \Input::post( $strKey ) ? \Input::post( $strKey ) : $varValue;
+            }
+        }
     }
 
     protected function setOptions() {

@@ -37,19 +37,13 @@ class ModuleUniversalView extends \Module {
 
         else {
 
-            $strAct = \Input::get( 'act' . $this->id );
-
-            switch ( $strAct ) {
-
-                case 'edit':
-
-                    $this->determineEditFormView();
-
-                    break;
+            switch ( \Input::get( 'act' . $this->id ) ) {
 
                 case 'create':
+                case 'copy':
+                case 'edit':
 
-                    $this->determineCreateFormView();
+                    $this->determineFormView();
 
                     break;
 
@@ -111,32 +105,19 @@ class ModuleUniversalView extends \Module {
 
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
-
         $this->CatalogView->initialize();
 
         $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
     }
 
-    private function determineEditFormView() {
-
-        $this->import( 'FrontendEditing' );
-
-        $strItemID = \Input::get( 'id' );
-
-        if ( $strItemID ) {
-
-            $this->FrontendEditing->strItemID = $strItemID;
-            $this->FrontendEditing->arrOptions = $this->arrData;
-
-            $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
-        }
-    }
-
-    private function determineCreateFormView() {
+    private function determineFormView() {
 
         $this->import( 'FrontendEditing' );
 
         $this->FrontendEditing->arrOptions = $this->arrData;
+        $this->FrontendEditing->strItemID = \Input::get( 'id' );
+        $this->FrontendEditing->strAct =  \Input::get( 'act' . $this->id );
+
         $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
     }
 

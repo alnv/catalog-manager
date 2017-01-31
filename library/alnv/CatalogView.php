@@ -8,6 +8,9 @@ class CatalogView extends CatalogController {
     private $arrCatalog = [];
     private $arrCatalogFields = [];
 
+    public $strTemplate;
+    public $arrOptions = [];
+
     public function __construct() {
 
         parent::__construct();
@@ -26,7 +29,13 @@ class CatalogView extends CatalogController {
         return $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $strID );
     }
 
-    public function getCatalogDataByTable( $strTable, $arrView = [], $arrQuery = [] ) {
+    public function getCatalogViewByTable( $strTable, $arrQuery = [] ) {
+
+        global $objPage;
+
+        $objTemplate = null;
+        $objViewPage = null;
+        $strCatalogView = '';
 
         $this->strTable = $strTable;
 
@@ -34,41 +43,34 @@ class CatalogView extends CatalogController {
 
         if ( !$arrQuery['table'] ) $arrQuery['table'] = $this->strTable;
 
-        global $objPage;
-
-        $objTemplate = null;
-        $objViewPage = null;
+        $this->setOptions();
         $objMasterPage = $objPage->row();
-        $arrCatalogData = [ 'view' => '', 'data' => [] ];
 
         $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
+        $this->catalogItemOperations = deserialize( $this->catalogItemOperations );
         $this->arrCatalogFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
 
-        if ( $arrView['joins'] ) {
+        if ( $this->catalogJoinFields ) {
 
-            $arrQuery['joins'] = $this->prepareFieldsJoinData( $arrView['joins'] );
+            $this->catalogJoinFields = $this->prepareFieldsJoinData( $this->catalogJoinFields );
         }
 
-        if ( $arrView['joinPTable'] && $this->arrCatalog['pTable'] ) {
+        if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
 
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
+        $objTemplate = new \FrontendTemplate( $this->strTemplate );
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
-        if ( $arrView['useTemplate'] ) {
+        if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
 
-            $objTemplate = new \FrontendTemplate( $arrView['template'] );
+            $objMasterPage = $this->getPageModel( $this->catalogMasterPage );
         }
 
-        if ( $arrView['useMasterPage'] && $arrView['masterPage'] !== '0' ) {
+        if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
 
-            $objMasterPage = $this->getPageModel( $arrView['masterPage'] );
-        }
-
-        if ( $arrView['useViewPage'] && $arrView['viewPage'] !== '0' ) {
-
-            $objViewPage = $this->getPageModel( $arrView['viewPage'] );
+            $objViewPage = $this->getPageModel( $this->catalogViewPage );
         }
 
         while ( $objQueryBuilderResults->next() ) {
@@ -78,17 +80,47 @@ class CatalogView extends CatalogController {
             $arrCatalog['link2View'] = $this->generateUrl( $objViewPage, '' );
             $arrCatalog['link2Master'] = $this->generateUrl( $objMasterPage, $arrCatalog['alias'] );
 
-            if ( $objTemplate !== null ) {
+            if ( !empty( $this->catalogItemOperations ) ) {
 
-                $objTemplate->setData( $arrCatalog );
-
-                $arrCatalogData['view'] .= $objTemplate->parse();
+                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $objViewPage, $arrCatalog['id'] );
             }
 
-            $arrCatalogData['data'][ $objQueryBuilderResults->id ] = $arrCatalog;
+            $objTemplate->setData( $arrCatalog );
+
+            $strCatalogView .= $objTemplate->parse();
         }
 
-        return $arrCatalogData;
+        return $strCatalogView;
+    }
+
+    private function setOptions() {
+
+        if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
+
+            foreach ( $this->arrOptions as $strKey => $varValue ) {
+
+                $this->{$strKey} = $varValue;
+            }
+        }
+    }
+
+    private function generateOperationsLinks( $objViewPage, $strID ) {
+
+        $arrReturn = [];
+
+        if ( is_array( $this->catalogItemOperations ) ) {
+
+            foreach ( $this->catalogItemOperations as $strOperation ) {
+
+                if ( !$strOperation || $strOperation == 'create' ) continue;
+
+                $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
+
+                $arrReturn[ $strOperation ] = $this->generateUrl( $objViewPage, '' ) . $strActFragment;
+            }
+        }
+
+        return $arrReturn;
     }
 
     private function preparePTableJoinData () {

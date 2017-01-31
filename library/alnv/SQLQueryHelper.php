@@ -11,6 +11,13 @@ class SQLQueryHelper extends CatalogController {
         $this->import( 'SQLQueryBuilder' );
     }
 
+    public function getCatalogTableItemByID( $strTablename, $strID ) {
+        
+        if ( !$strTablename || !$strID ) return [];
+
+        return $this->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $strTablename ) )->limit( 1 )->execute( $strID )->row();
+    }
+
     public function getCatalogByTablename( $strTablename ) {
 
         if ( !$strTablename ) return [];

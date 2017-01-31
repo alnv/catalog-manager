@@ -46,7 +46,7 @@ class FrontendEditing extends CatalogController {
         $this->setOptions();
         $this->setValues();
 
-        $strTemplate = $this->arrOptions['catalogFormTemplate'] ? $this->arrOptions['catalogFormTemplate'] : 'form_catalog_default';
+        $strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
 
         $intIndex = 0;
 
@@ -80,7 +80,7 @@ class FrontendEditing extends CatalogController {
             }
         }
 
-        if ( !$this->arrOptions['disableCaptcha'] ) {
+        if ( !$this->disableCaptcha ) {
 
             $objCaptcha = $this->getCaptcha();
             $objCaptcha->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
@@ -101,12 +101,12 @@ class FrontendEditing extends CatalogController {
     public function createAndValidateForm( $arrField, $intIndex ) {
 
         $arrField = $this->convertWidgetToField( $arrField );
-
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
 
         if ( $strClass == false ) return null;
 
         $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '', $this ) );
+
         $objWidget->storeValues = true;
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
@@ -114,7 +114,16 @@ class FrontendEditing extends CatalogController {
 
         if ( $arrField['inputType'] == 'upload' ) {
 
-            //
+            if ( !$this->catalogStoreFile ) return null;
+
+            $objWidget->storeFile = $this->catalogStoreFile;
+            $objWidget->useHomeDir = $this->catalogUseHomeDir;
+            $objWidget->uploadFolder = $this->catalogUploadFolder;
+            $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
+            $objWidget->extensions = $arrField['eval']['extensions'];
+            $objWidget->maxlength = $arrField['eval']['maxsize'];
+            
+            $this->blnHasUpload = true;
         }
 
         if ( $objWidget instanceof \FormPassword ) {
@@ -127,8 +136,12 @@ class FrontendEditing extends CatalogController {
             $objWidget->validate();
 
             $varValue = $objWidget->value;
-            $varValue = $this->decodeValue( $varValue );
-            $varValue = $this->replaceInsertTags( $varValue );
+
+            if ( $varValue && is_string( $varValue ) ) {
+
+                $varValue = $this->decodeValue( $varValue );
+                $varValue = $this->replaceInsertTags( $varValue );
+            }
 
             $strRGXP = $arrField['eval']['rgxp'];
 
@@ -150,6 +163,34 @@ class FrontendEditing extends CatalogController {
                 $objWidget->addError( sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $arrField['_fieldname'] ) );
             }
 
+
+            if ( $objWidget->submitInput() && !$objWidget->hasErrors() && is_array( $arrField['save_callback'] ) ) {
+
+                foreach ( $arrField['save_callback'] as $arrCallback ) {
+
+                    try {
+
+                        if ( is_array( $arrCallback ) ) {
+
+                            $this->import( $arrCallback[0] );
+
+                            $varValue = $this->{$arrCallback[0]}->{$arrCallback[1]}( $varValue, null );
+                        }
+
+                        elseif( is_callable( $arrCallback ) ) {
+
+                            $varValue = $arrCallback( $varValue, null );
+                        }
+                    }
+
+                    catch  (\Exception $objError ) {
+
+                        $objWidget->class = 'error';
+                        $objWidget->addError( $objError->getMessage() );
+                    }
+                }
+            }
+
             if ( $objWidget->hasErrors() ) {
 
                 $this->blnNoSubmit = true;
@@ -167,35 +208,30 @@ class FrontendEditing extends CatalogController {
                     $varValue = \Encryption::encrypt( $varValue );
                 }
 
-                // …
+                $this->arrValues[ $arrField['_fieldname'] ] = $varValue;
             }
 
             $arrFiles = $_SESSION['FILES'];
 
-            if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) && $this->arrOptions['storeFile'] ) {
+            if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) && $this->catalogStoreFile ) {
 
                 $strRoot = TL_ROOT . '/';
                 $strUuid = $arrFiles[ $arrField['_fieldname'] ]['uuid'];
                 $strFile = substr( $arrFiles[ $arrField['_fieldname'] ]['tmp_name'], strlen( $strRoot ) );
-                $arrFiles = \FilesModel::findByPath($strFile);
+                $arrFiles = \FilesModel::findByPath( $strFile );
 
                 if ($arrFiles !== null) {
 
                     $strUuid = $arrFiles->uuid;
                 }
 
-                // …
+                $this->arrValues[ $arrField['_fieldname'] ] = $strUuid;
             }
 
             if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) ) {
 
                 unset( $_SESSION['FILES'][ $arrField['_fieldname'] ] );
             }
-        }
-
-        if ($objWidget instanceof \uploadable) {
-
-            $this->blnHasUpload = true;
         }
 
         $this->Template->fields .= $objWidget->parse();
@@ -240,7 +276,7 @@ class FrontendEditing extends CatalogController {
 
     private function decodeValue( $varValue ) {
 
-        if (class_exists('StringUtil')) {
+        if ( class_exists('StringUtil') ) {
 
             $varValue = \StringUtil::decodeEntities( $varValue );
         }
@@ -262,7 +298,7 @@ class FrontendEditing extends CatalogController {
             'type' => 'captcha',
             'mandatory' => true,
             'required' => true,
-            'tableless' => $this->arrOptions['tableless']
+            'tableless' => $this->tableless
         ];
 
         $strClass = $GLOBALS['TL_FFL']['captcha'];
@@ -299,7 +335,7 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'upload';
         }
 
-        $arrField['eval']['tableless'] = $this->arrOptions['tableless'];
+        $arrField['eval']['tableless'] = $this->tableless;
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 
         return $arrField;

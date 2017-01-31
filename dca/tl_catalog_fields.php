@@ -458,7 +458,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'rgxp' => 'natural',
-                'tl_class' => 'w50',
+                'tl_class' => 'w50'
             ],
 
             'exclude' => true,
@@ -490,7 +490,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 255,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption'=> true
             ],
 
             'options_callback' => [

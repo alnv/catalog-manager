@@ -50,6 +50,11 @@ class tl_module extends \Backend {
         return $this->getTemplateGroup('form_catalog_');
     }
 
+    public function getCatalogOperationItems() {
+
+        return [ 'create', 'edit', 'delete' ];
+    }
+
     public function getJoinAbleFields( \DataContainer $dc ) {
 
         $arrReturn = [];

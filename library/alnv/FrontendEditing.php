@@ -211,14 +211,14 @@ class FrontendEditing extends CatalogController {
         return $arrDCField;
     }
 
-    protected function setValues() {
+    private function setValues() {
 
         if ( $this->strItemID ) {
             
             $this->arrValues = $this->SQLQueryHelper->getCatalogTableItemByID( $this->strTable, $this->strItemID );
         }
 
-        if ( empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
+        if ( !empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
 
             foreach ( $this->arrValues as $strKey => $varValue ) {
 
@@ -227,7 +227,7 @@ class FrontendEditing extends CatalogController {
         }
     }
 
-    protected function setOptions() {
+    private function setOptions() {
 
         if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
 
@@ -238,7 +238,7 @@ class FrontendEditing extends CatalogController {
         }
     }
 
-    protected function decodeValue( $varValue ) {
+    private function decodeValue( $varValue ) {
 
         if (class_exists('StringUtil')) {
 
@@ -253,7 +253,7 @@ class FrontendEditing extends CatalogController {
         return $varValue;
     }
 
-    protected function getCaptcha() {
+    private function getCaptcha() {
 
         $arrCaptcha = [
 
@@ -287,7 +287,7 @@ class FrontendEditing extends CatalogController {
         return $objCaptcha;
     }
 
-    protected function convertWidgetToField( $arrField ) {
+    private function convertWidgetToField( $arrField ) {
 
         if ( $arrField['inputType'] == 'checkboxWizard' ) {
 
@@ -305,7 +305,7 @@ class FrontendEditing extends CatalogController {
         return $arrField;
     }
 
-    protected function fieldClassExist( $strInputType ) {
+    private function fieldClassExist( $strInputType ) {
 
         $strClass = $GLOBALS['TL_FFL'][$strInputType];
 

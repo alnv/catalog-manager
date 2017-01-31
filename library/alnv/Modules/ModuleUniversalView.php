@@ -76,7 +76,9 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
 
-        $this->Template->output = $this->CatalogView->getCatalogViewByTable( $this->strCatalogTable, $arrQuery );
+        $this->CatalogView->initialize();
+
+        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
     }
 
     private function determineMasterView() {
@@ -107,9 +109,11 @@ class ModuleUniversalView extends \Module {
         ];
 
         $this->CatalogView->arrOptions = $this->arrData;
-        $this->CatalogView->strTemplate =  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
-        
-        $this->Template->output = $this->CatalogView->getCatalogViewByTable( $this->strCatalogTable, $arrQuery );
+        $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
+
+        $this->CatalogView->initialize();
+
+        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
     }
 
     private function determineEditFormView() {

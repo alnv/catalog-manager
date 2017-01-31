@@ -5,7 +5,7 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManag
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},catalogFormTemplate,tableless;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},catalogFormTemplate,tableless,catalogItemOperations;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
@@ -299,4 +299,23 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormTemplate'] = [
 
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogItemOperations'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogItemOperations'],
+    'inputType' => 'checkbox',
+    'default' => 'form_catalog_default',
+
+    'eval' => [
+
+        'multiple' => true,
+        'maxlength' => 256,
+        'tl_class' => 'w50',
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogOperationItems' ],
+
+    'exclude' => true,
+    'sql' => "varchar(256) NOT NULL default ''"
 ];

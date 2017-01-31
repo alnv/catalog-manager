@@ -66,18 +66,6 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'CatalogView' );
 
-        $arrView = [
-
-            'useTemplate' => true,
-            'joins' => $this->catalogJoinFields,
-            'masterPage' => $this->catalogMasterPage,
-            'pTable' => $this->catalogRelatedParentTable,
-            'cTables' => $this->catalogRelatedChildTables,
-            'joinPTable' => $this->catalogJoinParentTable ? true : false,
-            'useMasterPage' => $this->catalogUseMasterPage ? true : false,
-            'template' =>  $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser'
-        ];
-
         $arrQuery = [
 
             'where' => [],
@@ -85,26 +73,15 @@ class ModuleUniversalView extends \Module {
             'pagination' => []
         ];
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
+        $this->CatalogView->arrOptions = $this->arrData;
+        $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
 
-        $this->Template->output = $arrCatalogs['view'];
+        $this->Template->output = $this->CatalogView->getCatalogViewByTable( $this->strCatalogTable, $arrQuery );
     }
 
     private function determineMasterView() {
 
         $this->import( 'CatalogView' );
-
-        $arrView = [
-
-            'useTemplate' => true,
-            'joins' => $this->catalogJoinFields,
-            'viewPage' => $this->catalogViewPage,
-            'pTable' => $this->catalogRelatedParentTable,
-            'cTables' => $this->catalogRelatedChildTables,
-            'useViewPage' => $this->catalogUseViewPage ? true : false,
-            'joinPTable' => $this->catalogJoinParentTable ? true : false,
-            'template' =>  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master'
-        ];
 
         $arrQuery = [
 
@@ -129,9 +106,10 @@ class ModuleUniversalView extends \Module {
             'pagination' => []
         ];
 
-        $arrCatalogs = $this->CatalogView->getCatalogDataByTable( $this->strCatalogTable, $arrView, $arrQuery );
-
-        $this->Template->output = $arrCatalogs['view'];
+        $this->CatalogView->arrOptions = $this->arrData;
+        $this->CatalogView->strTemplate =  $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
+        
+        $this->Template->output = $this->CatalogView->getCatalogViewByTable( $this->strCatalogTable, $arrQuery );
     }
 
     private function determineEditFormView() {

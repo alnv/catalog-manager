@@ -2,13 +2,15 @@
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},catalogFormTemplate,tableless,catalogItemOperations;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},catalogFormTemplate,tableless,catalogItemOperations,disableCaptcha,catalogStoreFile;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -311,11 +313,69 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogItemOperations'] = [
 
         'multiple' => true,
         'maxlength' => 256,
-        'tl_class' => 'w50',
+        'tl_class' => 'clr',
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogOperationItems' ],
 
     'exclude' => true,
     'sql' => "varchar(256) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogStoreFile'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogStoreFile'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogUploadFolder'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUploadFolder'],
+    'inputType' => 'fileTree',
+
+    'eval' => [
+
+        'fieldType' => 'radio',
+        'tl_class' => 'clr',
+        'mandatory' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "binary(16) NULL"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseHomeDir'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseHomeDir'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogDoNotOverwrite'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogDoNotOverwrite'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
 ];

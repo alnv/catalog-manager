@@ -1,3 +1,6 @@
 <div class="mod_catalog_view">
+   <?php if ( $this->createOperation ): ?>
+      <p><a href="<?= $this->createOperation ?>">create</a></p>
+   <?php endif; ?>
    <?= $this->output; ?>
 </div>

@@ -42,6 +42,16 @@ class CatalogView extends CatalogController {
         $this->catalogItemOperations = deserialize( $this->catalogItemOperations );
     }
 
+    public function getCreateOperation() {
+
+        if ( !empty( $this->catalogItemOperations ) && in_array( 'create', $this->catalogItemOperations ) ) {
+
+            return $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create', $this->id, 'create' );
+        }
+
+        return '';
+    }
+
     public function getCatalogView( $arrQuery ) {
 
         $strCatalogView = '';
@@ -87,7 +97,7 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->catalogItemOperations ) ) {
 
-                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $this->arrViewPage, $arrCatalog['id'] );
+                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $arrCatalog['id'] );
             }
 
             $objTemplate->setData( $arrCatalog );
@@ -175,7 +185,7 @@ class CatalogView extends CatalogController {
         return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
     }
 
-    private function generateOperationsLinks( $objViewPage, $strID ) {
+    private function generateOperationsLinks( $strID ) {
 
         $arrReturn = [];
 
@@ -187,7 +197,7 @@ class CatalogView extends CatalogController {
 
                 $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
 
-                $arrReturn[ $strOperation ] = $this->generateUrl( $objViewPage, '' ) . $strActFragment;
+                $arrReturn[ $strOperation ] = $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment;
             }
         }
 

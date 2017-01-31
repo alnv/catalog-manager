@@ -79,6 +79,7 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->initialize();
 
         $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+        $this->Template->createOperation = $this->CatalogView->getCreateOperation();
     }
 
     private function determineMasterView() {

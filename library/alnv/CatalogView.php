@@ -4,8 +4,9 @@ namespace CatalogManager;
 
 class CatalogView extends CatalogController {
 
-    private $strTable = '';
+    private $arrViewPage;
     private $arrCatalog = [];
+    private $arrMasterPage = [];
     private $arrCatalogFields = [];
 
     public $strTemplate;
@@ -19,40 +20,46 @@ class CatalogView extends CatalogController {
         $this->import( 'SQLQueryBuilder' );
     }
 
-    public function getCatalogByTablename( $strTablename ) {
-
-        return $this->SQLQueryHelper->getCatalogByTablename( $strTablename );
-    }
-
-    public function getCatalogFieldsByCatalogID( $strID ) {
-
-        return $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $strID );
-    }
-
-    public function getCatalogViewByTable( $strTable, $arrQuery = [] ) {
+    public function initialize() {
 
         global $objPage;
 
-        $objTemplate = null;
-        $objViewPage = null;
-        $strCatalogView = '';
-
-        $this->strTable = $strTable;
-
-        if ( !$this->SQLQueryBuilder->tableExist( $this->strTable ) ) return [];
-
-        if ( !$arrQuery['table'] ) $arrQuery['table'] = $this->strTable;
-
         $this->setOptions();
-        $objMasterPage = $objPage->row();
 
-        $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
+        if ( !$this->catalogTablename ) return null;
+
+        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
+
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
+
+        $this->arrMasterPage = $objPage->row();
+
+        if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
+
+            $this->arrViewPage = $this->getPageModel( $this->catalogViewPage );
+        }
+
         $this->catalogItemOperations = deserialize( $this->catalogItemOperations );
-        $this->arrCatalogFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
+    }
+
+    public function getCatalogView( $arrQuery ) {
+
+        $strCatalogView = '';
+        $objTemplate = new \FrontendTemplate( $this->strTemplate );
+
+        if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
+
+            return $strCatalogView;
+        }
+
+        if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
+
+            $this->arrMasterPage = $this->getPageModel( $this->catalogMasterPage );
+        }
 
         if ( $this->catalogJoinFields ) {
 
-            $this->catalogJoinFields = $this->prepareFieldsJoinData( $this->catalogJoinFields );
+            $arrQuery['joins'] = $this->prepareFieldsJoinData( $this->catalogJoinFields );
         }
 
         if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
@@ -60,29 +67,27 @@ class CatalogView extends CatalogController {
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
-        $objTemplate = new \FrontendTemplate( $this->strTemplate );
+        $arrQuery['table'] = $this->catalogTablename;
+
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-
-        if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
-
-            $objMasterPage = $this->getPageModel( $this->catalogMasterPage );
-        }
-
-        if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
-
-            $objViewPage = $this->getPageModel( $this->catalogViewPage );
-        }
 
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
 
-            $arrCatalog['link2View'] = $this->generateUrl( $objViewPage, '' );
-            $arrCatalog['link2Master'] = $this->generateUrl( $objMasterPage, $arrCatalog['alias'] );
+            if ( !empty( $this->arrViewPage ) ) {
+
+                $arrCatalog['link2View'] = $this->generateUrl( $this->arrViewPage, '' );
+            }
+
+            if ( !empty( $this->arrMasterPage ) ) {
+
+                $arrCatalog['link2Master'] = $this->generateUrl( $this->arrMasterPage, $arrCatalog['alias'] );
+            }
 
             if ( !empty( $this->catalogItemOperations ) ) {
 
-                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $objViewPage, $arrCatalog['id'] );
+                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $this->arrViewPage, $arrCatalog['id'] );
             }
 
             $objTemplate->setData( $arrCatalog );
@@ -102,6 +107,72 @@ class CatalogView extends CatalogController {
                 $this->{$strKey} = $varValue;
             }
         }
+    }
+
+    private function getPageModel( $strID ) {
+
+        return $this->SQLQueryBuilder->execute([
+
+            'table' => 'tl_page',
+
+            'pagination' => [
+
+                'limit' => 1,
+                'offset' => 0
+            ],
+
+            'where' => [
+
+                [
+                    'field' => 'id',
+                    'value' => $strID,
+                    'operator' => 'equal'
+                ]
+            ]
+
+        ])->row();
+    }
+
+    private function prepareFieldsJoinData ( $arrJoins ) {
+
+        $arrReturn = [];
+
+        if ( empty( $arrJoins ) || !is_array( $arrJoins ) ) {
+
+            return $arrReturn;
+        }
+
+        foreach ( $arrJoins as $strFieldJoinID ) {
+
+            $arrRelatedJoinData = [];
+
+            if ( !$this->arrCatalogFields[ $strFieldJoinID ] ) {
+
+                continue;
+            }
+
+            $arrRelatedJoinData['multiple'] = false;
+            $arrRelatedJoinData['table'] = $this->catalogTablename;
+            $arrRelatedJoinData['field'] = $this->arrCatalogFields[ $strFieldJoinID ]['fieldname'];
+            $arrRelatedJoinData['onTable'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTable'];
+            $arrRelatedJoinData['onField'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTableKey'];
+
+            if ( $this->arrCatalogFields[ $strFieldJoinID ]['multiple'] || $this->arrCatalogFields[ $strFieldJoinID ]['type'] == 'checkbox' ) {
+
+                $arrRelatedJoinData['multiple'] = true;
+            }
+
+            $arrReturn[] = $arrRelatedJoinData;
+        }
+
+        return $arrReturn;
+    }
+
+    private function generateUrl( $objPage, $strAlias ) {
+
+        if ( $objPage == null ) return '';
+
+        return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
     }
 
     private function generateOperationsLinks( $objViewPage, $strID ) {
@@ -130,74 +201,8 @@ class CatalogView extends CatalogController {
             'field' => 'pid',
             'onField' => 'id',
             'multiple' => false,
-            'table' => $this->strTable,
+            'table' => $this->strCatalogTable,
             'onTable' => $this->arrCatalog['pTable']
         ];
-    }
-
-    private function prepareFieldsJoinData ( $arrJoins ) {
-
-        $arrReturn = [];
-
-        if ( empty( $arrJoins ) || !is_array( $arrJoins ) ) {
-
-            return $arrReturn;
-        }
-
-        foreach ( $arrJoins as $strFieldJoinID ) {
-
-            $arrRelatedJoinData = [];
-
-            if ( !$this->arrCatalogFields[ $strFieldJoinID ] ) {
-
-                continue;
-            }
-
-            $arrRelatedJoinData['multiple'] = false;
-            $arrRelatedJoinData['table'] = $this->strTable;
-            $arrRelatedJoinData['field'] = $this->arrCatalogFields[ $strFieldJoinID ]['fieldname'];
-            $arrRelatedJoinData['onTable'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTable'];
-            $arrRelatedJoinData['onField'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTableKey'];
-
-            if ( $this->arrCatalogFields[ $strFieldJoinID ]['multiple'] || $this->arrCatalogFields[ $strFieldJoinID ]['type'] == 'checkbox' ) {
-
-                $arrRelatedJoinData['multiple'] = true;
-            }
-
-            $arrReturn[] = $arrRelatedJoinData;
-        }
-
-        return $arrReturn;
-    }
-
-    private function generateUrl( $objPage, $strAlias ) {
-
-        if ( $objPage == null ) return '';
-
-        return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
-    }
-
-    private function getPageModel( $strID ) {
-
-        return $this->SQLQueryBuilder->execute([
-
-            'table' => 'tl_page',
-
-            'pagination' => [
-
-                'limit' => 1,
-                'offset' => 0
-            ],
-
-            'where' => [
-
-                [
-                    'field' => 'id',
-                    'value' => $strID,
-                    'operator' => 'equal'
-                ]
-            ]
-
-        ])->row();
     }
 }

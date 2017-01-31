@@ -37,9 +37,9 @@ class ModuleUniversalView extends \Module {
 
         else {
 
-            $strMode = \Input::get( 'mode' . $this->id );
+            $strAct = \Input::get( 'act' . $this->id );
 
-            switch ( $strMode ) {
+            switch ( $strAct ) {
 
                 case 'edit':
 
@@ -47,7 +47,7 @@ class ModuleUniversalView extends \Module {
 
                     break;
 
-                case 'create' :
+                case 'create':
 
                     $this->determineCreateFormView();
 
@@ -138,8 +138,15 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
-        $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
+        $strItemID = \Input::get( 'id' );
+
+        if ( $strItemID ) {
+
+            $this->FrontendEditing->strItemID = $strItemID;
+            $this->FrontendEditing->arrOptions = $this->arrData;
+
+            $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
+        }
     }
 
     private function determineCreateFormView() {

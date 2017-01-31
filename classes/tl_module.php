@@ -52,7 +52,7 @@ class tl_module extends \Backend {
 
     public function getCatalogOperationItems() {
 
-        return [ 'create', 'edit', 'delete' ];
+        return [ 'create', 'copy', 'edit', 'delete' ];
     }
 
     public function getJoinAbleFields( \DataContainer $dc ) {

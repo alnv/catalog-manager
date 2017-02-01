@@ -21,6 +21,7 @@ array_insert( $GLOBALS['FE_MOD'], 3, [
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\FrontendEditingPermission', 'initialize' ];
 
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];

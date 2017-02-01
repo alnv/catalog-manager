@@ -6,7 +6,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFil
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},catalogFormTemplate,tableless,catalogItemOperations,disableCaptcha,catalogStoreFile;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},tableless,disableCaptcha,catalogFormTemplate,catalogFormRedirect,catalogItemOperations,catalogStoreFile;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
@@ -329,6 +329,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogStoreFile'] = [
 
     'eval' => [
 
+        'tl_class' => 'clr',
         'submitOnChange' => true
     ],
 
@@ -378,4 +379,29 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDoNotOverwrite'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['disableCaptcha']['eval']['tl_class'] = 'w50 m12';
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFormRedirect'],
+    'inputType' => 'pageTree',
+
+    'eval' => [
+
+        'tl_class' => 'w50',
+        'fieldType' => 'radio',
+    ],
+
+    'foreignKey' => 'tl_page.title',
+
+    'relation' => [
+
+        'load' => 'lazy',
+        'type' => 'hasOne'
+    ],
+
+    'exclude' => true,
+    'sql' => "int(10) unsigned NOT NULL default '0'"
 ];

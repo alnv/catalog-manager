@@ -216,7 +216,12 @@ class CatalogView extends CatalogController {
 
                 $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
 
-                $arrReturn[ $strOperation ] = $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment;
+                $arrReturn[] = [
+
+                    'label' => $strOperation,
+                    'href' => $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment,
+                    'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : ''
+                ];
             }
         }
 

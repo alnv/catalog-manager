@@ -1,5 +1,5 @@
 <div class="form_catalog_default">
-   <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>">
+   <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
       <?php if ( !$this->tableless ): ?>

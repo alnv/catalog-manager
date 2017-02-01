@@ -43,11 +43,11 @@ class FrontendEditing extends CatalogController {
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], [ 'FrontendEditing', 'createDCField' ] );
 
-        $this->arrCatalog['operations'] = deserialize( $this->arrCatalog['operations'] );
+        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
+        if ( in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
             $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
         }
@@ -107,6 +107,11 @@ class FrontendEditing extends CatalogController {
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
         $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
+
+        if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
+
+            $objWidget->value = '';
+        }
 
         if ( $arrField['inputType'] == 'upload' ) {
 
@@ -224,7 +229,6 @@ class FrontendEditing extends CatalogController {
 
                 unset( $_SESSION['FILES'][ $arrField['_fieldname'] ] );
             }
-
         }
 
         $this->objTemplate->fields .= $objWidget->parse();
@@ -240,6 +244,15 @@ class FrontendEditing extends CatalogController {
 
             case 'create':
 
+                if ( $this->arrCatalog['pTable'] ) {
+
+                    if ( !\Input::get('pid') ) return null;
+
+                    $this->arrValues['pid'] = \Input::get('pid');
+                }
+
+                $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
                 break;
 
             case 'edit':
@@ -249,6 +262,10 @@ class FrontendEditing extends CatalogController {
                 break;
 
             case 'copy':
+
+                unset( $this->arrValues['id'] );
+
+                $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
 
                 break;
         }

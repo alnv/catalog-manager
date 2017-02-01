@@ -8,79 +8,31 @@ class FrontendEditingPermission extends CatalogController {
 
         parent::__construct();
 
-        $this->import( 'SQLBuilder' );
-        $this->import( 'I18nCatalogTranslator' );
+        $this->import( 'FrontendUser', 'User' );
     }
 
-    public function initialize( $strDCAName ) {
+    public function initialize() {
 
-        if ( $strDCAName == 'tl_member' || $strDCAName == 'tl_member_group' ) {
-
-            $arrCatalogs = array_keys( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] );
-
-            if ( !empty( $arrCatalogs ) && is_array( $arrCatalogs ) ) {
-
-                foreach ( $arrCatalogs as $strCatalogname ) {
-
-                    $this->extendMemberGroupDCA( $strCatalogname );
-                    $this->createSQLColumns($strCatalogname);
-                }
-            }
-        }
+        $this->setAttributes();
     }
 
-    private function extendMemberGroupDCA( $strCatalogname ){
+    public function isAdmin() {
 
-        $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
-
-        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] = str_replace( 'isAdmin;', sprintf( 'isAdmin;{%s:hide},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] );
-
-        $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname ] = [
-
-            'label' => $arrLabels,
-            'inputType' => 'checkbox',
-
-            'eval' => [],
-
-            'exclude' => true,
-            'sql' => "char(1) NOT NULL default ''"
-        ];
-
-        $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname . 'p' ] = [
-
-            'label' => $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
-            'inputType' => 'checkbox',
-
-            'options' => [
-
-                'edit',
-                'create',
-                'delete'
-            ],
-
-            'eval' => [
-
-                'multiple' => true
-            ],
-
-            'reference' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'],
-
-            'exclude' => true,
-            'sql' => "varchar(512) NOT NULL default ''"
-        ];
+        return false;
     }
 
-    private function createSQLColumns( $strCatalogname ) {
+    public function hasAccess( $strMode, $strField ) {
 
-        $arrFields = [ $strCatalogname, $strCatalogname . 'p' ];
+        return false;
+    }
 
-        foreach ( $arrFields as $strField ) {
+    public function isOwnEntity( $strUserID ) {
 
-            $strSQLStatement =  $GLOBALS['TL_DCA']['tl_member_group']['fields'][$strField]['sql'];
+        return false;
+    }
 
-            if ( !$strSQLStatement ) continue;
+    private function setAttributes() {
 
-            $this->SQLBuilder->alterTableField( 'tl_member_group', $strField, $strSQLStatement );
-        }
+        //
     }
 }

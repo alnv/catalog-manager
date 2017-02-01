@@ -8,8 +8,8 @@
 
    <?php if ( !empty( $this->operationsLinks ) && is_array( $this->operationsLinks ) ): ?>
       <ul>
-         <?php foreach( $this->operationsLinks as $strOperationLabel => $strOperationLink ): ?>
-            <li><a href="<?= $strOperationLink ?>"><?= $strOperationLabel ?></a></li>
+         <?php foreach( $this->operationsLinks as $arrOperation ): ?>
+            <li><a href="<?= $arrOperation['href'] ?>" <?= $arrOperation['attributes'] ?> ><?= $arrOperation['label'] ?></a></li>
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>

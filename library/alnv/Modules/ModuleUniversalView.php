@@ -47,6 +47,13 @@ class ModuleUniversalView extends \Module {
 
                     break;
 
+
+                case 'delete':
+
+                    $this->deleteItemFromCatalog();
+
+                    break;
+
                 default:
 
                     $this->determineCatalogView();
@@ -54,6 +61,19 @@ class ModuleUniversalView extends \Module {
                     break;
             }
         }
+    }
+
+    private function deleteItemFromCatalog() {
+
+        $this->import( 'FrontendEditing' );
+
+        $this->FrontendEditing->arrOptions = $this->arrData;
+        $this->FrontendEditing->strItemID = \Input::get( 'id' );
+        $this->FrontendEditing->strAct = \Input::get( 'act' . $this->id );
+        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        $this->FrontendEditing->initialize();
+
+        $this->FrontendEditing->deleteEntity();
     }
 
     private function determineCatalogView() {

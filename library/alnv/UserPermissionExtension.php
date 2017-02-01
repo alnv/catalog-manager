@@ -8,6 +8,7 @@ class UserPermissionExtension extends CatalogController {
 
         parent::__construct();
 
+        $this->import( 'SQLBuilder' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -84,11 +85,9 @@ class UserPermissionExtension extends CatalogController {
 
         $arrColumnsToCreate = [ $strCatalogname, $strCatalogname . 'p' ];
 
-        $objSQLBuilder = new SQLBuilder();
-
         foreach ( $arrColumnsToCreate as $strFieldname ) {
 
-            $objSQLBuilder->alterTableField( $strDCAName, $strFieldname, 'blob NULL' );
+            $this->SQLBuilder->alterTableField( $strDCAName, $strFieldname, 'blob NULL' );
         }
     }
 }

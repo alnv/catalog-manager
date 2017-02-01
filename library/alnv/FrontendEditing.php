@@ -5,7 +5,7 @@ namespace CatalogManager;
 class FrontendEditing extends CatalogController {
 
     private $objTemplate;
-
+    private $strRedirectID;
     private $arrValues = [];
     private $arrCatalog = [];
     private $arrFormFields = [];
@@ -29,6 +29,8 @@ class FrontendEditing extends CatalogController {
 
     public function initialize() {
 
+        global $objPage;
+
         \System::loadLanguageFile('catalog_manager');
 
         $this->setOptions();
@@ -39,10 +41,8 @@ class FrontendEditing extends CatalogController {
         }
 
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
-
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], [ 'FrontendEditing', 'createDCField' ] );
-
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
@@ -55,6 +55,16 @@ class FrontendEditing extends CatalogController {
         unset( $arrPredefinedDCFields['invisible'] );
 
         array_insert( $this->arrFormFields, 0, $arrPredefinedDCFields );
+
+        if ( $this->catalogFormRedirect && $this->catalogFormRedirect !== '0' ) {
+
+            $this->strRedirectID = $this->catalogFormRedirect;
+        }
+
+        else {
+
+            $this->strRedirectID = $objPage->id;
+        }
     }
 
     public function getCatalogForm() {
@@ -241,6 +251,8 @@ class FrontendEditing extends CatalogController {
 
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
+
+        $this->redirectToFrontendPage( $this->strRedirectID );
     }
 
     private function saveEntity() {
@@ -261,6 +273,8 @@ class FrontendEditing extends CatalogController {
                 }
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                $this->redirectToFrontendPage( $this->strRedirectID );
 
                 break;
 

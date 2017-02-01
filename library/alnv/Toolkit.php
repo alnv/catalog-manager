@@ -50,6 +50,18 @@ class Toolkit {
         return $varValue;
     }
 
+    public static function deserialize( $strValue ) {
+
+        $strValue = deserialize( $strValue );
+
+        if ( !is_array( $strValue ) ) {
+
+            return [];
+        }
+
+        return $strValue;
+    }
+
     public static function getBooleanByValue( $varValue ) {
 
         if ( !$varValue ) {

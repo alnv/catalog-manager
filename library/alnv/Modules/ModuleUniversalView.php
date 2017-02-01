@@ -116,9 +116,11 @@ class ModuleUniversalView extends \Module {
 
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strItemID = \Input::get( 'id' );
-        $this->FrontendEditing->strAct =  \Input::get( 'act' . $this->id );
+        $this->FrontendEditing->strAct = \Input::get( 'act' . $this->id );
+        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        $this->FrontendEditing->initialize();
 
-        $this->Template->output = $this->FrontendEditing->getCatalogFormByTablename( $this->strCatalogTable );
+        $this->Template->output = $this->FrontendEditing->getCatalogForm();
     }
 
     private function setTable() {

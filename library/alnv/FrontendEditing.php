@@ -233,6 +233,16 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->fields .= $objWidget->parse();
     }
 
+    public function deleteEntity() {
+
+        $this->import( 'SQLBuilder' );
+
+        if (  $this->SQLBuilder->Database->tableExists( $this->catalogTablename ) ) {
+
+            $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
+        }
+    }
+
     private function saveEntity() {
 
         $this->import( 'SQLBuilder' );

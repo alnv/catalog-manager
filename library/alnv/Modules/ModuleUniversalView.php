@@ -24,6 +24,9 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
+        $this->import( 'FrontendEditingPermission' );
+
+        $this->FrontendEditingPermission->initialize();
         $this->strMasterAlias = \Input::get( 'auto_item' );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogRelatedChildTables = Toolkit::parseStringToArray( $this->catalogRelatedChildTables );

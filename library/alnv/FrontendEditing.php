@@ -155,11 +155,10 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue( $this->catalogTablename, $arrField['_fieldname'], $varValue, $this->strItemID ) ) {
+            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue( $this->catalogTablename, $arrField['_fieldname'], $varValue, ( $this->strAct == 'edit' ? $this->strItemID : null ) ) ) {
 
                 $objWidget->addError( sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $arrField['_fieldname'] ) );
             }
-
 
             if ( $objWidget->submitInput() && !$objWidget->hasErrors() && is_array( $arrField['save_callback'] ) ) {
 

@@ -39,17 +39,29 @@ class CatalogView extends CatalogController {
             $this->arrViewPage = $this->getPageModel( $this->catalogViewPage );
         }
 
-        $this->catalogItemOperations = deserialize( $this->catalogItemOperations );
+        $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
     }
 
     public function getCreateOperation() {
 
-        if ( !empty( $this->catalogItemOperations ) && in_array( 'create', $this->catalogItemOperations ) ) {
+        $strPTableFragment = '';
 
-            return $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create', $this->id, 'create' );
+        if ( empty( $this->catalogItemOperations ) || !in_array( 'create', $this->catalogItemOperations ) ) {
+
+            return '';
         }
 
-        return '';
+        if ( $this->arrCatalog['pTable'] && ( !\Input::get('pTable') || !\Input::get('pid' ) ) ) {
+
+            return '';
+        }
+
+        if ( $this->arrCatalog['pTable'] ) {
+
+            $strPTableFragment = sprintf( '&pTable=%s&pid=%s', \Input::get('pTable'), \Input::get('pid' ) );
+        }
+
+        return $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment );
     }
 
     public function getCatalogView( $arrQuery ) {
@@ -76,6 +88,13 @@ class CatalogView extends CatalogController {
 
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
+
+        /*
+        elseif ( is_array( $this->catalogItemOperations ) && in_array( 'create', $this->catalogItemOperations ) ) {
+
+            $arrQuery['joins'][] = $this->preparePTableJoinData();
+        }
+        */
 
         $arrQuery['table'] = $this->catalogTablename;
 
@@ -211,7 +230,7 @@ class CatalogView extends CatalogController {
             'field' => 'pid',
             'onField' => 'id',
             'multiple' => false,
-            'table' => $this->strCatalogTable,
+            'table' => $this->catalogTablename,
             'onTable' => $this->arrCatalog['pTable']
         ];
     }

@@ -4,17 +4,19 @@ namespace CatalogManager;
 
 class FrontendEditing extends CatalogController {
 
-    private $Template;
-    private $strTable = '';
+    private $objTemplate;
+
     private $arrValues = [];
     private $arrCatalog = [];
-    private $blnNoSubmit = false;
     private $arrFormFields = [];
     private $strSubmitName = '';
+    private $blnNoSubmit = false;
     private $blnHasUpload = false;
 
+    public $strAct;
     public $strItemID;
     public $arrOptions = [];
+    public $strTemplate = '';
 
     public function __construct() {
 
@@ -25,80 +27,74 @@ class FrontendEditing extends CatalogController {
         $this->import( 'DCABuilderHelper' );
     }
 
-    public function getCatalogByTablename( $strTablename ) {
-
-        return $this->SQLQueryHelper->getCatalogByTablename( $strTablename );
-    }
-
-    public function getCatalogFieldsByCatalogID( $strID ) {
-
-        return $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $strID, [ 'FrontendEditing', 'createDCField' ] );
-    }
-
-    public function getCatalogFormByTablename( $strTablename ) {
-
-        if ( !$this->SQLQueryBuilder->tableExist( $strTablename ) ) return 'table do not exist.';
+    public function initialize() {
 
         \System::loadLanguageFile('catalog_manager');
 
-        $this->strTable = $strTablename;
-
         $this->setOptions();
-        $this->setValues();
 
-        $strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        if ( $this->strItemID && $this->strAct && in_array( $this->strAct, [ 'copy', 'edit' ] ) ) {
 
-        $intIndex = 0;
+            $this->setValues();
+        }
 
-        $arrFieldsets = [
+        $this->strSubmitName = 'catalog_' . $this->catalogTablename;
 
-            'default' => []
-        ]; // @todo
+        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
+        $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], [ 'FrontendEditing', 'createDCField' ] );
+
+        $this->arrCatalog['operations'] = deserialize( $this->arrCatalog['operations'] );
 
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
-        $this->strSubmitName = 'submit_' . $this->strTable;
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
-        $this->Template = new \FrontendTemplate( $strTemplate );
-        $this->Template->setData( $this->arrOptions );
-
-        $this->arrCatalog = $this->getCatalogByTablename( $this->strTable );
-        $this->arrFormFields = $this->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
-        $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
+            $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
+        }
 
         unset( $arrPredefinedDCFields['invisible'] );
 
         array_insert( $this->arrFormFields, 0, $arrPredefinedDCFields );
+    }
+
+    public function getCatalogForm() {
+
+        $intIndex = 0;
+        $this->objTemplate = new \FrontendTemplate( $this->strTemplate );
+        $this->objTemplate->setData( $this->arrOptions );
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
             foreach ( $this->arrFormFields as $arrField ) {
 
-                $this->createAndValidateForm( $arrField, $intIndex );
-
+                $this->generateForm( $arrField, $intIndex );
                 $intIndex++;
             }
+        }
+
+        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
+
+            $this->saveEntity();
         }
 
         if ( !$this->disableCaptcha ) {
 
             $objCaptcha = $this->getCaptcha();
             $objCaptcha->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
-            $strCaptcha = $objCaptcha->parse();
 
-            $this->Template->fields .= $strCaptcha;
+            $this->objTemplate->fields .= $objCaptcha->parse();
         }
 
-        $this->Template->method = 'POST';
-        $this->Template->formId = $this->strSubmitName;
-        $this->Template->submitName = $this->strSubmitName;
-        $this->Template->action = \Environment::get( 'indexFreeRequest' );
-        $this->Template->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+        $this->objTemplate->method = 'POST';
+        $this->objTemplate->formId = $this->strSubmitName;
+        $this->objTemplate->submitName = $this->strSubmitName;
+        $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
+        $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
-        return $this->Template->parse();
+        return $this->objTemplate->parse();
     }
 
-    public function createAndValidateForm( $arrField, $intIndex ) {
+    private function generateForm( $arrField, $intIndex ) {
 
         $arrField = $this->convertWidgetToField( $arrField );
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
@@ -114,15 +110,13 @@ class FrontendEditing extends CatalogController {
 
         if ( $arrField['inputType'] == 'upload' ) {
 
-            if ( !$this->catalogStoreFile ) return null;
-
             $objWidget->storeFile = $this->catalogStoreFile;
             $objWidget->useHomeDir = $this->catalogUseHomeDir;
             $objWidget->uploadFolder = $this->catalogUploadFolder;
             $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
             $objWidget->extensions = $arrField['eval']['extensions'];
             $objWidget->maxlength = $arrField['eval']['maxsize'];
-            
+
             $this->blnHasUpload = true;
         }
 
@@ -143,13 +137,11 @@ class FrontendEditing extends CatalogController {
                 $varValue = $this->replaceInsertTags( $varValue );
             }
 
-            $strRGXP = $arrField['eval']['rgxp'];
-
             if ( $varValue != '' && in_array( $arrField, [ 'date', 'time', 'datim' ] ) ) {
 
                 try {
 
-                    $objDate = new \Date( $varValue, \Date::getFormatFromRgxp( $strRGXP ) );
+                    $objDate = new \Date( $varValue, \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] ) );
                     $varValue = $objDate->tstamp;
 
                 } catch ( \OutOfBoundsException $objError ) {
@@ -158,7 +150,7 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue( $this->strTable, $arrField['_fieldname'], $varValue ) ) {
+            if ( $arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue( $this->catalogTablename, $arrField['_fieldname'], $varValue ) ) {
 
                 $objWidget->addError( sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $arrField['_fieldname'] ) );
             }
@@ -218,11 +210,11 @@ class FrontendEditing extends CatalogController {
                 $strRoot = TL_ROOT . '/';
                 $strUuid = $arrFiles[ $arrField['_fieldname'] ]['uuid'];
                 $strFile = substr( $arrFiles[ $arrField['_fieldname'] ]['tmp_name'], strlen( $strRoot ) );
-                $arrFiles = \FilesModel::findByPath( $strFile );
+                $objFiles = \FilesModel::findByPath( $strFile );
 
-                if ($arrFiles !== null) {
+                if ( $objFiles !== null ) {
 
-                    $strUuid = $arrFiles->uuid;
+                    $strUuid = $objFiles->uuid;
                 }
 
                 $this->arrValues[ $arrField['_fieldname'] ] = $strUuid;
@@ -232,11 +224,36 @@ class FrontendEditing extends CatalogController {
 
                 unset( $_SESSION['FILES'][ $arrField['_fieldname'] ] );
             }
+
         }
 
-        $this->Template->fields .= $objWidget->parse();
+        $this->objTemplate->fields .= $objWidget->parse();
     }
 
+    private function saveEntity() {
+
+        $this->import( 'SQLBuilder' );
+
+        $this->arrValues = Toolkit::prepareValues4Db( $this->arrValues );
+
+        switch ( $this->strAct ) {
+
+            case 'create':
+
+                break;
+
+            case 'edit':
+
+                $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
+
+                break;
+
+            case 'copy':
+
+                break;
+        }
+    }
+    
     public function createDCField( $arrField, $strFieldname ) {
 
         if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
@@ -249,16 +266,16 @@ class FrontendEditing extends CatalogController {
 
     private function setValues() {
 
-        if ( $this->strItemID ) {
+        if ( $this->strItemID && $this->catalogTablename ) {
             
-            $this->arrValues = $this->SQLQueryHelper->getCatalogTableItemByID( $this->strTable, $this->strItemID );
+            $this->arrValues = $this->SQLQueryHelper->getCatalogTableItemByID( $this->catalogTablename, $this->strItemID );
         }
 
         if ( !empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
 
             foreach ( $this->arrValues as $strKey => $varValue ) {
 
-                $this->arrValues[$strKey] = \Input::post( $strKey ) ? \Input::post( $strKey ) : $varValue;
+                $this->arrValues[$strKey] = \Input::post( $strKey ) !== null ? \Input::post( $strKey ) : $varValue;
             }
         }
     }

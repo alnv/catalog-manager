@@ -24,6 +24,32 @@ class Toolkit {
         return str_replace( '-', '_', $varValue );
     }
 
+    public static function prepareValues4Db( $arrValues ) {
+
+        $arrReturn = [];
+
+        if ( !empty( $arrValues ) && is_array( $arrValues ) ) {
+
+            foreach ( $arrValues as $strKey => $varValue ) {
+
+                $arrReturn[ $strKey ] = static::prepareValue4Db( $varValue );
+            }
+        }
+
+        return $arrReturn;
+    }
+
+    public static function prepareValue4Db( $varValue ) {
+
+        if ( !static::isDefined( $varValue ) ) return $varValue;
+
+        if ( is_array( $varValue ) ) return implode( ',', $varValue );
+
+        if ( is_numeric( $varValue ) ) return intval( $varValue );
+
+        return $varValue;
+    }
+
     public static function getBooleanByValue( $varValue ) {
 
         if ( !$varValue ) {

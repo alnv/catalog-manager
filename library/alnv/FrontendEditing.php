@@ -4,19 +4,20 @@ namespace CatalogManager;
 
 class FrontendEditing extends CatalogController {
 
+    public $strAct;
+    public $strItemID;
+    public $strPageID;
+    public $strRedirectID;
+    public $arrOptions = [];
+    public $strTemplate = '';
+
     private $objTemplate;
-    private $strRedirectID;
     private $arrValues = [];
     private $arrCatalog = [];
     private $arrFormFields = [];
     private $strSubmitName = '';
     private $blnNoSubmit = false;
     private $blnHasUpload = false;
-
-    public $strAct;
-    public $strItemID;
-    public $arrOptions = [];
-    public $strTemplate = '';
 
     public function __construct() {
 
@@ -65,6 +66,8 @@ class FrontendEditing extends CatalogController {
 
             $this->strRedirectID = $objPage->id;
         }
+
+        $this->strPageID = $objPage->id;
     }
 
     public function checkPermission() {

@@ -4,13 +4,13 @@ namespace CatalogManager;
 
 class CatalogView extends CatalogController {
 
-    private $arrViewPage;
-    private $arrCatalog = [];
-    private $arrMasterPage = [];
-    private $arrCatalogFields = [];
-
+    public $arrViewPage;
     public $strTemplate;
     public $arrOptions = [];
+    public $arrMasterPage = [];
+    
+    private $arrCatalog = [];
+    private $arrCatalogFields = [];
 
     public function __construct() {
 

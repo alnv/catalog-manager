@@ -113,6 +113,9 @@ class tl_catalog extends \Backend {
 
         $objSQLBuilder->dropTableField( 'tl_user_group' , $dc->activeRecord->tablename );
         $objSQLBuilder->dropTableField( 'tl_user_group' , $dc->activeRecord->tablename . 'p' );
+
+        $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename );
+        $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename . 'p' );
     }
 
     public function renameAllTableDependencies( $strID, $strTable, $strOldTable ) {

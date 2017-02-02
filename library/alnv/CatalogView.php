@@ -42,9 +42,23 @@ class CatalogView extends CatalogController {
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
     }
 
+    public function checkPermission() {
+
+        $this->import( 'FrontendEditingPermission' );
+
+        $this->FrontendEditingPermission->initialize();
+        
+        return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
+    }
+
     public function getCreateOperation() {
 
         $strPTableFragment = '';
+
+        if ( !$this->FrontendEditingPermission->hasPermission( 'create', $this->catalogTablename ) ) {
+
+            return '';
+        }
 
         if ( empty( $this->catalogItemOperations ) || !in_array( 'create', $this->catalogItemOperations ) ) {
 
@@ -213,6 +227,11 @@ class CatalogView extends CatalogController {
             foreach ( $this->catalogItemOperations as $strOperation ) {
 
                 if ( !$strOperation || $strOperation == 'create' ) continue;
+
+                if ( !$this->FrontendEditingPermission->hasPermission( $strOperation, $this->catalogTablename ) ) {
+
+                    continue;
+                }
 
                 $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
 

@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType' ],
+        '__selector__' => [ 'type', 'optionsType', 'addImagePreview' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
+        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{image_preview_legend},addImagePreview;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,cssID;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
@@ -107,6 +107,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'optionsType_useOptions' => 'options',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey',
+
+        'addImagePreview' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption'
     ],
 
     'fields' => [
@@ -905,6 +907,133 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'addImagePreview' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['addImagePreview'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'clr m12',
+                'submitOnChange' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'size' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['size'],
+            'inputType' => 'imageSize',
+            'options' => \System::getImageSizes(),
+
+            'eval' => [
+
+                'maxlength' => 64,
+                'tl_class' => 'w50',
+            ],
+
+            'reference' => &$GLOBALS['TL_LANG']['MSC'],
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
+        'fullsize' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
+                'submitOnChange' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'imageTitle' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageTitle'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'imageAlt' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'imageCaption' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'imageURL' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'optionsType' => [

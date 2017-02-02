@@ -92,8 +92,16 @@ class ModuleUniversalView extends \Module {
 
         $this->CatalogView->initialize();
 
-        $this->Template->output = $this->CatalogView->checkPermission() ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+        $blnHasPermission = $this->CatalogView->checkPermission();
+
+        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
         $this->Template->createOperation = $this->CatalogView->getCreateOperation();
+
+        if ( !$blnHasPermission ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $this->CatalogView->arrViewPage['id'] );
+        }
     }
 
     private function determineMasterView() {
@@ -127,9 +135,15 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
 
-        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+        $blnHasPermission = $this->CatalogView->checkPermission();
 
-        // @todo 404 & 403
+        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+
+        if ( !$blnHasPermission ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
+        }
     }
 
     private function determineFormView() {
@@ -142,9 +156,15 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
-        $this->Template->output = $this->FrontendEditing->checkPermission() ? $this->FrontendEditing->getCatalogForm() : '';
+        $blnHasPermission = $this->FrontendEditing->checkPermission();
 
-        // @todo 404 & 403
+        $this->Template->output = $blnHasPermission ? $this->FrontendEditing->getCatalogForm() : '';
+
+        if ( !$blnHasPermission ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $this->FrontendEditing->strPageID );
+        }
     }
 
     private function setTable() {

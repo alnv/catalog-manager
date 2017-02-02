@@ -228,7 +228,7 @@ class CatalogView extends CatalogController {
 
                 if ( !$strOperation || $strOperation == 'create' ) continue;
 
-                if ( !$this->FrontendEditingPermission->hasPermission( $strOperation, $this->catalogTablename ) ) {
+                if ( !$this->FrontendEditingPermission->hasPermission( ( $strOperation === 'copy' ? 'create' : $strOperation  ), $this->catalogTablename ) ) {
 
                     continue;
                 }

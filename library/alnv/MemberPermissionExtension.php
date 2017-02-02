@@ -54,7 +54,6 @@ class MemberPermissionExtension extends CatalogController {
             'options' => [
 
                 'edit',
-                'copy',
                 'create',
                 'delete',
             ],

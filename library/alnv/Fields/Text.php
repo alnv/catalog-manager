@@ -23,6 +23,15 @@ class Text {
             $arrDCAField['eval']['maxlength'] = intval( $arrField['maxlength'] );
         }
 
+        if ( $arrField['pagePicker'] ) {
+
+            $arrDCAField['eval']['rgxp'] = 'url';
+            $arrDCAField['eval']['decodeEntities'] = true;
+            $arrDCAField['eval']['tl_class'] .= ' wizard';
+
+            $arrDCAField['wizard'][] = [ 'DCACallbacks', 'pagePicker' ];
+        }
+
         return $arrDCAField;
     }
 }

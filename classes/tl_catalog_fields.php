@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
+    private $arrFieldCache = [];
+
     public function __construct() {
 
         parent::__construct();
@@ -72,6 +74,32 @@ class tl_catalog_fields extends \Backend {
                 $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
             }
         }
+    }
+
+    public function getTextFieldsByParentID() {
+
+        $arrReturn = [ 'title' ];
+
+        if ( !empty( $this->arrFieldCache ) && is_array( $this->arrFieldCache ) ) {
+
+            return $this->arrFieldCache;
+        }
+
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( $objCatalogFields->type !== 'text' ) {
+
+                continue;
+            }
+
+            $arrReturn[] = $objCatalogFields->fieldname;
+        }
+
+        $this->arrFieldCache = $arrReturn;
+
+        return $arrReturn;
     }
 
     public function renameFieldname( $varValue, \DataContainer $dc ) {

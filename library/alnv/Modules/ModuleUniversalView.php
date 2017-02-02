@@ -128,6 +128,8 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->initialize();
 
         $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+
+        // @todo 404 & 403
     }
 
     private function determineFormView() {
@@ -140,7 +142,9 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
-        $this->Template->output = $this->FrontendEditing->getCatalogForm();
+        $this->Template->output = $this->FrontendEditing->checkPermission() ? $this->FrontendEditing->getCatalogForm() : '';
+
+        // @todo 404 & 403
     }
 
     private function setTable() {

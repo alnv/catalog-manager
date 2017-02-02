@@ -33,14 +33,19 @@ class MemberPermissionExtension extends CatalogController {
 
         $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
-        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] = str_replace( 'isAdmin;', sprintf( 'isAdmin;{%s:hide},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] );
+        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['__selector__'][] = $strCatalogname;
+        $GLOBALS['TL_DCA']['tl_member_group']['subpalettes'][$strCatalogname] = $strCatalogname . 'p';
+        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] = str_replace( 'isAdmin;', sprintf( 'isAdmin;{%s:hide},%s;', $arrLabels[0], $strCatalogname ), $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] );
 
         $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname ] = [
 
             'label' => $arrLabels,
             'inputType' => 'checkbox',
 
-            'eval' => [],
+            'eval' => [
+
+                'submitOnChange' => true,
+            ],
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"

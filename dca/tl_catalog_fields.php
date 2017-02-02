@@ -970,7 +970,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption'=>true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -990,7 +990,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption'=>true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1010,7 +1010,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption'=>true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1030,7 +1030,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption'=>true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldByParentID' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"

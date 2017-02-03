@@ -76,6 +76,11 @@ class tl_catalog_fields extends \Backend {
         }
     }
 
+    public function getFilesTypes() {
+
+        return [ 'image', 'file' ];
+    }
+
     public function getTextFieldsByParentID() {
 
         $arrReturn = [ 'title' ];

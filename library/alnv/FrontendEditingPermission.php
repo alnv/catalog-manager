@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class FrontendEditingPermission extends CatalogController {
 
+    public $blnDisablePermissions = false;
+
     private $arrGroups = [];
     private $arrCatalogManagerPermissions = [];
     
@@ -37,7 +39,7 @@ class FrontendEditingPermission extends CatalogController {
 
     public function hasPermission( $strMode, $strCatalogname ) {
 
-        if ( $this->isAdmin() ) {
+        if ( $this->isAdmin() || $this->blnDisablePermissions ) {
 
             return true;
         }
@@ -52,7 +54,7 @@ class FrontendEditingPermission extends CatalogController {
 
     public function hasAccess( $strCatalogname ) {
 
-        if ( $this->isAdmin() ) {
+        if ( $this->isAdmin() || $this->blnDisablePermissions ) {
 
             return true;
         }

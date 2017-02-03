@@ -74,6 +74,8 @@ class FrontendEditing extends CatalogController {
 
         $this->import( 'FrontendEditingPermission' );
 
+        $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
+        
         $this->FrontendEditingPermission->initialize();
 
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );

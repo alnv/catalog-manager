@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey',
 
-        'fileType_file' => 'disableFileRendering',
+        'fileType_file' => 'fileTitle,fileText,disableFileRendering',
         'fileType_image' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption,disableImageRendering',
     ],
 
@@ -1049,6 +1049,46 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'imageURL' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'fileTitle' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTitle'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'fileText' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'],
             'inputType' => 'select',
 
             'eval' => [

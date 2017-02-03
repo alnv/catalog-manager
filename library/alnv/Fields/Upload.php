@@ -119,13 +119,13 @@ class Upload {
 
             foreach ( $varValue as $strUuid ) {
 
-                $arrFiles[] = static::generateImage( static::createImageArray( $strUuid, $arrField, $arrCatalog ) );
+                $arrFiles[] = static::generateEnclosure( static::createEnclosureArray( $strUuid, $arrField, $arrCatalog ) );
             }
 
             return $arrFiles;
         }
 
-        return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ) );
+        return static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ) );
     }
 
     public static function createImageArray( $varValue, $arrField, $arrCatalog ) {
@@ -135,10 +135,21 @@ class Upload {
             'size' => $arrField['size'],
             'fullsize' => $arrField['fullsize'],
             'alt' => $arrCatalog[ $arrField['imageAlt'] ],
+            'href' => $arrCatalog[ $arrField['imageURL'] ],
             'singleSRC' => static::getImagePath( $varValue ),
             'title' => $arrCatalog[ $arrField['imageTitle'] ],
             'caption' => $arrCatalog[ $arrField['imageCaption'] ]
         ];
+    }
+
+    public static function createEnclosureArray( $varValue, $arrField, $arrCatalog ) {
+
+        $arrReturn = [
+
+            'enclosure' => [ $varValue ]
+        ];
+
+        return $arrReturn;
     }
 
     public static function getImagePath( $singleSRC ) {
@@ -169,7 +180,7 @@ class Upload {
 
         $objEnclosure = new \stdClass();
 
-        \Controller::addEnclosuresToTemplate( $objEnclosure, $arrEnclosure) ;
+        \Controller::addEnclosuresToTemplate( $objEnclosure, $arrEnclosure ) ;
 
         return $objEnclosure;
     }

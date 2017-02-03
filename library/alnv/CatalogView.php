@@ -11,6 +11,7 @@ class CatalogView extends CatalogController {
     
     private $arrCatalog = [];
     private $arrCatalogFields = [];
+    private $arrCatalogFieldnameAndIDMap = [];
 
     public function __construct() {
 
@@ -32,6 +33,19 @@ class CatalogView extends CatalogController {
 
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
 
+        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
+
+            foreach ( $this->arrCatalogFields as $strID => $arrField ) {
+
+                if ( !$arrField['fieldname'] ) {
+
+                    continue;
+                }
+
+                $this->arrCatalogFieldnameAndIDMap[ $arrField['fieldname'] ] = $strID;
+            }
+        }
+
         $this->arrMasterPage = $objPage->row();
 
         if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
@@ -47,7 +61,6 @@ class CatalogView extends CatalogController {
         $this->import( 'FrontendEditingPermission' );
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
-
         $this->FrontendEditingPermission->initialize();
         
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
@@ -97,7 +110,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogJoinFields ) {
 
-            $arrQuery['joins'] = $this->prepareFieldsJoinData( $this->catalogJoinFields );
+            $arrQuery['joins'] = $this->prepareJoinData( $this->catalogJoinFields );
         }
 
         if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
@@ -120,6 +133,14 @@ class CatalogView extends CatalogController {
 
             $arrCatalog = $objQueryBuilderResults->row();
 
+            if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
+
+                foreach ( $arrCatalog as $strFieldname => $varValue ) {
+
+                    $arrCatalog[$strFieldname] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
+                }
+            }
+
             if ( !empty( $this->arrViewPage ) ) {
 
                 $arrCatalog['link2View'] = $this->generateUrl( $this->arrViewPage, '' );
@@ -141,6 +162,23 @@ class CatalogView extends CatalogController {
         }
 
         return $strCatalogView;
+    }
+
+    public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
+
+        $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname];
+        $arrField = $this->arrCatalogFields[$strFieldID];
+        
+        switch ( $arrField['type'] ) {
+
+            case 'upload':
+
+                return Upload::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+        }
+
+        return $varValue;
     }
 
     private function setOptions() {
@@ -178,7 +216,7 @@ class CatalogView extends CatalogController {
         ])->row();
     }
 
-    private function prepareFieldsJoinData ( $arrJoins ) {
+    private function prepareJoinData ( $arrJoins ) {
 
         $arrReturn = [];
 

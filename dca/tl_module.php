@@ -5,12 +5,14 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManag
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAllowComments';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogLimit,catalogPerPage;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{catalog_comments_legend},catalogAllowComments;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'catalogCommentNotify,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -425,6 +427,130 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogEnableFrontendPermission'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogAllowComments'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogAllowComments'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr m12',
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentNotify'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentNotify'],
+    'inputType' => 'select',
+    'default' => 'notify_admin',
+
+    'eval' => [
+
+        'tl_class' => 'w50 clr'
+    ],
+
+    'options' => [ 'notify_admin', 'notify_author', 'notify_both' ],
+
+    'reference' => &$GLOBALS['TL_LANG']['MSC'],
+
+    'exclude' => true,
+    'sql' => "varchar(32) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentPerPage'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentPerPage'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'rgxp' => 'natural',
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentSortOrder'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentSortOrder'],
+    'inputType' => 'select',
+    'default' => 'ascending',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'options' => [ 'ascending', 'descending' ],
+
+    'reference' => &$GLOBALS['TL_LANG']['MSC'],
+
+    'exclude' => true,
+    'sql' => "varchar(32) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentModerate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentModerate'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentBBCode'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentBBCode'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentRequireLogin'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentRequireLogin'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentDisableCaptcha'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentDisableCaptcha'],
     'inputType' => 'checkbox',
 
     'eval' => [

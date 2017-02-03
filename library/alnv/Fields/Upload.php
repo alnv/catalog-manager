@@ -117,15 +117,20 @@ class Upload {
 
             $arrFiles = [];
 
-            foreach ( $varValue as $strUuid ) {
+            foreach ( $varValue as $intIndex => $strUuid ) {
 
-                $arrFiles[] = static::generateEnclosure( static::createEnclosureArray( $strUuid, $arrField, $arrCatalog ) );
+                $arrFiles[] = static::generateEnclosure( static::createEnclosureArray( $strUuid, $arrField, $arrCatalog ) )->enclosure[0];
             }
 
             return $arrFiles;
         }
 
-        return static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ) );
+        $objFile = static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ) );
+
+        $objFile->enclosure[0]['name'] = $arrCatalog[ $arrField['fileText'] ] ? $arrCatalog[ $arrField['fileText'] ] : $objFile->enclosure[0]['name'];
+        $objFile->enclosure[0]['title'] = $arrCatalog[ $arrField['fileTitle'] ] ? $arrCatalog[ $arrField['fileTitle'] ] : $objFile->enclosure[0]['title'];
+
+        return $objFile->enclosure[0];
     }
 
     public static function createImageArray( $varValue, $arrField, $arrCatalog ) {

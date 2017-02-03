@@ -46,6 +46,7 @@ class DCABuilderHelper extends CatalogController {
         'i10' => "int(10) unsigned NOT NULL default '0'",
         'text' => "text NULL",
         'blob' => "blob NULL",
+        'binary' => "binary(16) NULL"
     ];
     
     public function setInputType( $arrField ) {

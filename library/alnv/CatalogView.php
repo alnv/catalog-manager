@@ -6,6 +6,7 @@ class CatalogView extends CatalogController {
 
     public $arrViewPage;
     public $strTemplate;
+    public $objMainTemplate;
     public $arrOptions = [];
     public $arrMasterPage = [];
     
@@ -97,6 +98,11 @@ class CatalogView extends CatalogController {
     public function getCatalogView( $arrQuery ) {
 
         $strCatalogView = '';
+        $strPageID = 'page_e' . $this->id;
+        $intOffset = $this->catalogOffset;
+        $intPerPage = $this->catalogPerPage;
+        $intPagination = \Input::get( $strPageID );
+        $arrQuery['table'] = $this->catalogTablename;
         $objTemplate = new \FrontendTemplate( $this->strTemplate );
 
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
@@ -126,7 +132,24 @@ class CatalogView extends CatalogController {
         }
         */
 
-        $arrQuery['table'] = $this->catalogTablename;
+        $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s', $this->catalogTablename ) )->execute()->row()['COUNT(*)'];
+
+        if ( $this->catalogOffset ) {
+
+            $intTotal -= $intOffset;
+        }
+
+        if ( \Input::get( $strPageID ) && $this->catalogAddPagination ) {
+
+            $intOffset = $intPagination;
+
+            if ( $intPerPage > 0 && $this->catalogOffset ) {
+
+                $intOffset += round( $this->catalogOffset / $intPerPage );
+            }
+
+            $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
+        }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
@@ -162,6 +185,11 @@ class CatalogView extends CatalogController {
             $strCatalogView .= $objTemplate->parse();
         }
 
+        if ( $intPerPage > 0 && $this->catalogAddPagination ) {
+
+            $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, $this->arrViewPage['id'] );
+        }
+
         return $strCatalogView;
     }
 
@@ -182,11 +210,11 @@ class CatalogView extends CatalogController {
         return $varValue;
     }
 
-    public function getCommentForm( $objTemplate ) {
+    public function getCommentForm() {
 
         return $this->TemplateHelper->addComments(
 
-            $objTemplate,
+            $this->objMainTemplate,
             
             [
                 'template' => $this->com_template,

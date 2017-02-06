@@ -3,4 +3,12 @@
       <p><a href="<?= $this->createOperation ?>">create</a></p>
    <?php endif; ?>
    <?= $this->output; ?>
+   <?php if ($this->allowComments): ?>
+      <div class="ce_comments block">
+         <p class="add-comment"><?= $this->addComment; ?></p>
+         <?= implode('', $this->comments) ?>
+         <?= $this->pagination ?>
+         <?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
+      </div>
+   <?php endif; ?>
 </div>

@@ -84,13 +84,24 @@ class ModuleUniversalView extends \Module {
         $arrQuery = [
 
             'where' => [],
-            'orderBy' => [],
-            'pagination' => []
+            'orderBy' => [
+
+                [
+                    'order' => 'ASC',
+                    'field' => 'alias'
+                ]
+            ],
+
+            'pagination' => [
+
+                'limit' => $this->catalogPerPage,
+                'offset' => $this->catalogOffset
+            ]
         ];
 
         $this->CatalogView->arrOptions = $this->arrData;
+        $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
-
         $this->CatalogView->initialize();
 
         $blnHasPermission = $this->CatalogView->checkPermission();
@@ -126,16 +137,14 @@ class ModuleUniversalView extends \Module {
                         'value' => $this->strMasterAlias
                     ]
                 ]
-            ],
-
-            'orderBy' => [],
-            'pagination' => []
+            ]
         ];
 
         $this->CatalogView->arrOptions = $this->arrData;
+        $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
-        $this->CatalogView->getCommentForm( $this->Template );
+        $this->CatalogView->getCommentForm();
 
         $blnHasPermission = $this->CatalogView->checkPermission();
 

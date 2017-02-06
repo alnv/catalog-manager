@@ -12,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_le
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentNotify,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -465,25 +465,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogAllowComments'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentNotify'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogCommentNotify'],
-    'inputType' => 'select',
-    'default' => 'notify_admin',
-
-    'eval' => [
-
-        'tl_class' => 'w50 clr'
-    ],
-
-    'options' => [ 'notify_admin', 'notify_author', 'notify_both' ],
-
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-
-    'exclude' => true,
-    'sql' => "varchar(32) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentPerPage'] = [

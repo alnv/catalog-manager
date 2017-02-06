@@ -69,9 +69,11 @@ class I18nCatalogTranslator {
         return $strOption;
     }
 
-    public function getLegendLabel( $strI18nKey ) {
+    public function getLegendLabel( $strI18nKey, $strTitle = '' ) {
 
         $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strI18nKey ];
+
+        if ( !$strLegend ) $strLegend = $strTitle;
 
         if ( !$strLegend ) $strLegend = $strI18nKey;
 

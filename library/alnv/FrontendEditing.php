@@ -14,10 +14,12 @@ class FrontendEditing extends CatalogController {
     private $objTemplate;
     private $arrValues = [];
     private $arrCatalog = [];
+    private $arrPalettes = [];
     private $arrFormFields = [];
     private $strSubmitName = '';
     private $blnNoSubmit = false;
     private $blnHasUpload = false;
+    private $strTemporaryPalette = 'default';
 
     public function __construct() {
 
@@ -26,6 +28,7 @@ class FrontendEditing extends CatalogController {
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
+        $this->import( 'I18nCatalogTranslator' );
     }
 
     public function initialize() {
@@ -43,9 +46,24 @@ class FrontendEditing extends CatalogController {
 
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-        $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], [ 'FrontendEditing', 'createDCField' ] );
-        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
+        $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], function ( $arrField, $strFieldname ) {
 
+            if ( $arrField['type'] == 'fieldsetStart' ) {
+
+                $this->strTemporaryPalette = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+            }
+
+            if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
+
+            $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
+
+            $arrDCField['_fieldname'] = $strFieldname;
+            $arrDCField['_palette'] = $this->strTemporaryPalette;
+
+            return $arrDCField;
+        });
+
+        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
         if ( in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
@@ -75,7 +93,6 @@ class FrontendEditing extends CatalogController {
         $this->import( 'FrontendEditingPermission' );
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
-        
         $this->FrontendEditingPermission->initialize();
 
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
@@ -90,6 +107,8 @@ class FrontendEditing extends CatalogController {
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
             foreach ( $this->arrFormFields as $arrField ) {
+
+                if ( !$arrField ) continue;
 
                 $this->generateForm( $arrField, $intIndex );
                 $intIndex++;
@@ -111,6 +130,7 @@ class FrontendEditing extends CatalogController {
 
         $this->objTemplate->method = 'POST';
         $this->objTemplate->formId = $this->strSubmitName;
+        $this->objTemplate->categories = $this->arrPalettes;
         $this->objTemplate->submitName = $this->strSubmitName;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
@@ -255,7 +275,9 @@ class FrontendEditing extends CatalogController {
             }
         }
 
-        $this->objTemplate->fields .= $objWidget->parse();
+        $strWidget = $objWidget->parse();
+        $this->objTemplate->fields .= $strWidget;
+        $this->arrPalettes[ $arrField['_palette'] ][ $arrField['_fieldname'] ] = $strWidget;
     }
 
     public function deleteEntity() {
@@ -307,16 +329,6 @@ class FrontendEditing extends CatalogController {
 
                 break;
         }
-    }
-    
-    public function createDCField( $arrField, $strFieldname ) {
-
-        if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
-
-        $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
-        $arrDCField['_fieldname'] = $strFieldname;
-
-        return $arrDCField;
     }
 
     private function setValues() {

@@ -1,5 +1,5 @@
 todo
  - yaml parser
  - csv parser
- - form group by palettes
- - comments notifications
+ - set current mode
+ - set current master item id

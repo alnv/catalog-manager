@@ -32,7 +32,6 @@ class CatalogView extends CatalogController {
         if ( !$this->catalogTablename ) return null;
 
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {

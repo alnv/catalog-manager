@@ -1,4 +1,11 @@
+<!-- indexer::stop -->
 <div class="form_catalog_default">
+   <?php if ($this->headline): ?>
+      <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
+   <?php endif; ?>
+   <?php if ($this->message): ?>
+      <?= $this->message ?>
+   <?php endif; ?>
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
@@ -20,3 +27,4 @@
       <?php endif; ?>
    </form>
 </div>
+<!-- indexer::continue -->

@@ -1,0 +1,31 @@
+<!-- indexer::stop -->
+<div class="form_catalog_default">
+   <?php if ($this->headline): ?>
+      <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
+   <?php endif; ?>
+   <?php if ($this->message): ?>
+      <?= $this->message ?>
+   <?php endif; ?>
+   <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
+      <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
+      <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+      <?php foreach ( $this->categories as $legend => $category ): ?>
+         <?php if (!empty($category)): ?>
+            <fieldset>
+               <legend><?= $legend ?></legend>
+               <?php if (!$this->tableless): ?>
+               <table>
+                  <?php endif; ?>
+                  <?= implode('', $category) ?>
+                  <?php if (!$this->tableless): ?>
+               </table>
+               <?php endif; ?>
+            </fieldset>
+         <?php endif; ?>
+      <?php endforeach; ?>
+      <div class="submit_container">
+         <input type="submit" name="<?= $this->submitName; ?>" value="create">
+      </div>
+   </form>
+</div>
+<!-- indexer::continue -->

@@ -62,10 +62,12 @@ class SQLQueryHelper extends CatalogController {
 
             'table' => 'tl_catalog_fields',
 
-            'orderBY' => [
+            'orderBy' => [
 
-                'order' => 'DESC',
-                'field' => 'sorting'
+                [
+                    'order' => 'ASC',
+                    'field' => 'sorting'
+                ]
             ],
 
             'where' => [
@@ -74,6 +76,12 @@ class SQLQueryHelper extends CatalogController {
                     'field' => 'pid',
                     'value' => $strID,
                     'operator' => 'equal'
+                ],
+
+                [
+                    'value' => '',
+                    'operator' => 'equal',
+                    'field' => 'invisible'
                 ]
             ]
 
@@ -90,6 +98,11 @@ class SQLQueryHelper extends CatalogController {
 
                 $this->import( $arrCallback[0] );
                 $arrFields[ $objFields->id ] = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrFields[ $objFields->id ], $objFields->fieldname, $intIndex, $intCount );
+            }
+
+            elseif ( is_callable( $arrCallback ) ) {
+
+                $arrFields[ $objFields->id ] = $arrCallback( $arrFields[ $objFields->id ], $objFields->fieldname, $intIndex, $intCount );
             }
 
             if ( $arrFields[ $objFields->id ] == null ) {

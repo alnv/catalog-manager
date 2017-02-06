@@ -94,6 +94,7 @@ class DCABuilderHelper extends CatalogController {
         ];
 
         $arrDCAField['_fieldname'] = $arrField['fieldname'];
+        $arrDCAField['_palette'] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['_palette'] );
 
         if ( $arrField['flag'] ) {
 
@@ -210,6 +211,7 @@ class DCABuilderHelper extends CatalogController {
                 'maxlength' => '128',
                 'exclude' => '1',
                 'tl_class' => serialize( [ 'w50' ] ),
+                '_palette' => 'general_legend'
             ],
 
             'alias' => [
@@ -226,7 +228,8 @@ class DCABuilderHelper extends CatalogController {
                 'exclude' => '1',
                 'doNotCopy' => '1',
                 'rgxp' => 'alias',
-                'tl_class' => serialize( [ 'w50' ] )
+                'tl_class' => serialize( [ 'w50' ] ),
+                '_palette' => 'general_legend'
             ],
 
             'invisible' => [
@@ -236,6 +239,7 @@ class DCABuilderHelper extends CatalogController {
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1],
                 'statement' => 'c1',
+                '_palette' => 'invisible_legend'
             ]
         ];
     }

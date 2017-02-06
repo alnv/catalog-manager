@@ -6,6 +6,7 @@ class ModuleUniversalView extends \Module {
 
     private $strMasterAlias;
     private $strCatalogTable;
+
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
@@ -134,6 +135,7 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
+        $this->CatalogView->getCommentForm( $this->Template );
 
         $blnHasPermission = $this->CatalogView->checkPermission();
 

@@ -407,12 +407,16 @@ class DCABuilder extends CatalogController {
     private function createPaletteDataArray() {
 
         $strPalette = '';
-        $strLegendPointer = 'general_legend';
+        $strTemporaryPalette = 'general_legend';
 
-        $arrDCAPalette = [
+        $arrPaletteTranslationMap = [
 
-            'general_legend' => [ 'title', 'alias' ]
+            'general_legend' => '',
+            'invisible_legend' => ''
         ];
+
+        $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
+
 
         foreach ( $this->arrFields as $arrField ) {
 
@@ -420,12 +424,13 @@ class DCABuilder extends CatalogController {
 
             if ( $arrField['title'] && $arrField['type'] == 'fieldsetStart' ) {
 
-                $strLegendPointer = $arrField['title'];
+                $strTemporaryPalette = $arrField['title'];
+                $arrPaletteTranslationMap[ $arrField['title'] ] = $arrField['label'];
             }
 
             if ( !$arrField['fieldname'] || in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
 
-            $arrDCAPalette[ $strLegendPointer ][] = $arrField['fieldname'];
+            $arrDCAPalette[ $strTemporaryPalette ][] = $arrField['fieldname'];
         }
 
         if ( $this->arrOperations['invisible'] ) {
@@ -433,13 +438,11 @@ class DCABuilder extends CatalogController {
             $arrDCAPalette['invisible_legend'] = [ 'invisible' ];
         }
 
-        $arrLegends = array_keys( $arrDCAPalette );
+        $arrPalettes = array_keys( $arrDCAPalette );
 
-        foreach ( $arrLegends as $strLegend ) {
+        foreach ( $arrPalettes as $strPaletteTitle ) {
 
-            $strI18nLegend = $this->I18nCatalogTranslator->getLegendLabel( $strLegend );
-            
-            $strPalette .= sprintf( '{%s},%s;', $strI18nLegend, implode( ',', $arrDCAPalette[ $strLegend ] ) );
+            $strPalette .= sprintf( '{%s},%s;', $this->I18nCatalogTranslator->getLegendLabel( $strPaletteTitle, $arrPaletteTranslationMap[ $strPaletteTitle ] ), implode( ',', $arrDCAPalette[ $strPaletteTitle ] ) );
         }
 
         return [ 'default' => $strPalette ];

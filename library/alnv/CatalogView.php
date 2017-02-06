@@ -17,6 +17,7 @@ class CatalogView extends CatalogController {
 
         parent::__construct();
 
+        $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
     }
@@ -179,6 +180,30 @@ class CatalogView extends CatalogController {
         }
 
         return $varValue;
+    }
+
+    public function getCommentForm( $objTemplate ) {
+
+        return $this->TemplateHelper->addComments(
+
+            $objTemplate,
+            
+            [
+                'template' => $this->com_template,
+                'bbcode' => $this->catalogCommentBBCode,
+                'perPage' => $this->catalogCommentPerPage,
+                'order' => $this->catalogCommentSortOrder,
+                'moderate' => $this->catalogCommentModerate,
+                'requireLogin' => $this->catalogCommentRequireLogin,
+                'disableCaptcha' => $this->catalogCommentDisableCaptcha
+            ],
+
+            $this->catalogTablename,
+
+            '0',
+
+            []
+        );
     }
 
     private function setOptions() {

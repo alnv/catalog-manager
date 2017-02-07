@@ -16,7 +16,7 @@ class tl_catalog extends \Backend {
         'pid' => "int(10) unsigned NOT NULL default '0'",
         'id' => "int(10) unsigned NOT NULL auto_increment",
         'tstamp' => "int(10) unsigned NOT NULL default '0'",
-        'sorting' => "int(10) unsigned NOT NULL default '0'",
+        'sorting' => "int(10) unsigned NOT NULL default '0'"
     ];
 
     public function checkPermission() {

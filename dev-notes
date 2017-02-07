@@ -2,7 +2,7 @@ todo
  - yaml parser
  - csv parser
  - set current mode
- - implement tl_content table
+ - start time and end time
  - fieldname alias improve unique eval
  - improve parent child table relations
  - set current master item id

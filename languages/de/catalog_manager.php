@@ -13,4 +13,6 @@ $GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'] = [ 'Datensatz au
 
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'] = [ 'Alias', 'Bitte geben Sie ein Alias ein.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'] = [ 'Titel', 'Bitte geben Sie Ihren Titel ein.' ];
-$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'] = [ 'Verstecken', 'Hier können Sie Ihr Datensatz verstecken.' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'] = [ 'Anzeigen ab', 'Datensatz erst ab diesem Tag auf der Webseite anzeigen.' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'] = [ 'Anzeigen bis', 'Datensatz nur bis zu diesem Tag auf der Webseite anzeigen.' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'] = [ 'Datensatz verstecken', 'Hier können Sie diesen Datensatz auf der Webseite verstecken.' ];

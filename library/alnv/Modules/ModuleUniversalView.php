@@ -99,6 +99,7 @@ class ModuleUniversalView extends \Module {
             ]
         ];
 
+        $this->CatalogView->strMode = 'view';
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
@@ -140,6 +141,7 @@ class ModuleUniversalView extends \Module {
             ]
         ];
 
+        $this->CatalogView->strMode = 'master';
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
@@ -160,7 +162,7 @@ class ModuleUniversalView extends \Module {
     private function determineFormView() {
 
         $this->import( 'FrontendEditing' );
-
+        
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strItemID = \Input::get( 'id' );
         $this->FrontendEditing->strAct = \Input::get( 'act' . $this->id );

@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'isBackendModule' ],
-        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable;{label_settings},showColumns,fields,headerFields,format;{operations_legend},operations;{panel_layout_legend},panelLayout;{navigation_settings},isBackendModule;'
+        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{operations_legend},operations;{panel_layout_legend},panelLayout;{navigation_settings},isBackendModule;'
     ],
 
     'subpalettes' => [
@@ -396,6 +396,20 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "char(2) NOT NULL default ''"
+        ],
+        
+        'addContentElements' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['addContentElements'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
         ]
     ]
 ];

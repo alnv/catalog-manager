@@ -54,19 +54,19 @@ class DCABuilderHelper extends CatalogController {
         return $this->arrInputTypes[ $arrField['type'] ] ? $this->arrInputTypes[ $arrField['type'] ] : 'text';
     }
 
-    public function convertCatalogFields2DCA( $arrFields, $arrDCAContainer = [] ) {
+    public function convertCatalogFields2DCA( $arrFields, $arrDCAContainer = [], $arrCatalog = [] ) {
 
         foreach ( $arrFields as $arrField ) {
 
             if ( !$this->isValidField( $arrField ) ) continue;
 
-            $arrDCAContainer[ $arrField['fieldname'] ] = $this->convertCatalogField2DCA( $arrField );
+            $arrDCAContainer[ $arrField['fieldname'] ] = $this->convertCatalogField2DCA( $arrField, $arrCatalog );
         }
 
         return $arrDCAContainer;
     }
 
-    public function convertCatalogField2DCA( $arrField ) {
+    public function convertCatalogField2DCA( $arrField, $arrCatalog = [] ) {
 
         $arrDCAField = [
 
@@ -150,7 +150,7 @@ class DCABuilderHelper extends CatalogController {
 
             case 'select':
 
-                $arrDCAField = Select::generate( $arrDCAField, $arrField );
+                $arrDCAField = Select::generate( $arrDCAField, $arrField, $arrCatalog );
 
                 break;
 

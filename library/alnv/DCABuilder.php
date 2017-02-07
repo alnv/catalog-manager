@@ -127,7 +127,7 @@ class DCABuilder extends CatalogController {
 
         if ( !empty( $this->arrFields ) && is_array( $this->arrFields ) ) {
 
-            $arrDCAFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrFields, $arrDCAFields );
+            $arrDCAFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrFields, $arrDCAFields, $this->arrCatalog );
         }
 
         return $arrDCAFields;

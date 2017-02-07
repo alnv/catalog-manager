@@ -979,7 +979,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50 m12',
-                'submitOnChange' => true,
             ],
 
             'exclude' => true,

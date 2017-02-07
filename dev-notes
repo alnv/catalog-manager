@@ -2,4 +2,8 @@ todo
  - yaml parser
  - csv parser
  - set current mode
+ - implement tl_content table
+ - fieldname alias improve unique eval
+ - improve parent child table relations
  - set current master item id
+ - fix duplicate field problem in tl_member and tl_user

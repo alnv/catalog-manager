@@ -5,5 +5,4 @@ todo
  - start time and end time
  - fieldname alias improve unique eval
  - improve parent child table relations
- - set current master item id
  - fix duplicate field problem in tl_member and tl_user

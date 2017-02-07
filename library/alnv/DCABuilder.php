@@ -439,7 +439,7 @@ class DCABuilder extends CatalogController {
 
         if ( $this->arrOperations['invisible'] ) {
 
-            $arrDCAPalette['invisible_legend'] = [ 'invisible' ];
+            $arrDCAPalette['invisible_legend'] = [ 'invisible', 'start', 'stop' ];
         }
 
         $arrPalettes = array_keys( $arrDCAPalette );

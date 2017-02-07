@@ -4,7 +4,7 @@ namespace CatalogManager;
 
 class Select {
 
-    public static function generate( $arrDCAField, $arrField ) {
+    public static function generate( $arrDCAField, $arrField, $arrCatalog = [] ) {
 
         $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
@@ -37,7 +37,7 @@ class Select {
 
             $arrDCAField['eval']['csv'] = ',';
         }
-
+        
         return $arrDCAField;
     }
 }

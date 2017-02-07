@@ -8,6 +8,8 @@ class tl_catalog extends \Backend {
 
     private $arrRequiredTableFields = [
 
+        'stop' => "varchar(16) NOT NULL default ''",
+        'start' => "varchar(16) NOT NULL default ''",
         'invisible' => "char(1) NOT NULL default ''",
         'title' => "varchar(255) NOT NULL default ''",
         'alias' => "varchar(255) NOT NULL default ''",
@@ -59,6 +61,8 @@ class tl_catalog extends \Backend {
             if ( !$blnVisibleField ) {
 
                 unset( $this->arrRequiredTableFields['invisible'] );
+                unset( $this->arrRequiredTableFields['start'] );
+                unset( $this->arrRequiredTableFields['stop'] );
             }
 
             $objSQLBuilder->createSQLCreateStatement( $dc->activeRecord->tablename, $this->arrRequiredTableFields );

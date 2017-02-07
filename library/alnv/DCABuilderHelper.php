@@ -234,12 +234,41 @@ class DCABuilderHelper extends CatalogController {
 
             'invisible' => [
 
+                'exclude' => '1',
                 'type' => 'checkbox',
                 'fieldname' => 'invisible',
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1],
                 'statement' => 'c1',
                 '_palette' => 'invisible_legend'
+            ],
+
+            'start' => [
+
+                'type' => 'date',
+                'exclude' => '1',
+                'rgxp' => 'datim',
+                'statement' => 'c16',
+                'datepicker' => true,
+                'fieldname' => 'start',
+                '_palette' => 'invisible_legend',
+                'tl_class' =>  serialize( [ 'w50 wizard' ] ),
+                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
+                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1]
+            ],
+
+            'stop' => [
+
+                'type' => 'date',
+                'exclude' => '1',
+                'rgxp' => 'datim',
+                'statement' => 'c16',
+                'datepicker' => true,
+                'fieldname' => 'stop',
+                '_palette' => 'invisible_legend',
+                'tl_class' =>  serialize( [ 'w50 wizard' ] ),
+                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
+                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1]
             ]
         ];
     }

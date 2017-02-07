@@ -5,13 +5,9 @@ namespace CatalogManager;
 class DCABuilder extends CatalogController {
 
     private $strID;
-
     private $strTable;
-
     private $arrFields = [];
-
     private $arrCatalog = [];
-
     private $arrErrorTables = [];
 
     private $arrOperations = [
@@ -30,9 +26,7 @@ class DCABuilder extends CatalogController {
         $this->import( 'I18nCatalogTranslator' );
 
         $this->arrCatalog = $arrCatalog;
-
         $this->strID = $arrCatalog['id'];
-
         $this->strTable = $arrCatalog['tablename'];
 
         if ( !$this->strTable ) return null;
@@ -205,6 +199,16 @@ class DCABuilder extends CatalogController {
         if ( $this->shouldBeUsedParentTable() ) {
 
             $arrReturn['ptable'] = $this->arrCatalog['pTable'];
+        }
+
+        if ( $this->arrCatalog['addContentElements'] ) {
+
+            if ( !is_array( $this->arrCatalog['cTables'] ) ) {
+
+                $this->arrCatalog['cTables'] = [];
+            }
+
+            $this->arrCatalog['cTables'][] = 'tl_content';
         }
 
         if ( !empty( $this->arrCatalog['cTables'] ) && is_array( $this->arrCatalog['cTables'] ) ) {

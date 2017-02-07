@@ -76,6 +76,11 @@ class CatalogManagerInitializer {
             $arrTables[] = $strTablename;
         }
 
+        if ( $arrCatalog['addContentElements'] ) {
+
+            $arrTables[] = 'tl_content';
+        }
+
         $arrBackendModule[ $arrCatalog['tablename'] ] = [
 
             'name' => $arrCatalog['name'],

@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class CatalogView extends CatalogController {
 
+    public $strMode;
     public $arrViewPage;
     public $strTemplate;
     public $objMainTemplate;
@@ -55,6 +56,7 @@ class CatalogView extends CatalogController {
         }
 
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
+        $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
     }
 
     public function checkPermission() {
@@ -155,6 +157,8 @@ class CatalogView extends CatalogController {
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
+            
+            $arrCatalog['contentElements'] = '';
 
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
 
@@ -177,6 +181,19 @@ class CatalogView extends CatalogController {
             if ( !empty( $this->catalogItemOperations ) ) {
 
                 $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $arrCatalog['id'] );
+            }
+
+            if ( $this->strMode === 'master' && $this->arrCatalog['addContentElements'] ) {
+
+                $objContent = \ContentModel::findPublishedByPidAndTable( $arrCatalog['id'] , $this->catalogTablename );
+
+                if ( $objContent !== null ) {
+
+                    while ( $objContent->next() ) {
+
+                        $arrCatalog['contentElements'] .= $this->getContentElement( $objContent->current() );
+                    }
+                }
             }
 
             $objTemplate->setData( $arrCatalog );
@@ -211,7 +228,12 @@ class CatalogView extends CatalogController {
 
     public function getCommentForm() {
 
-        return $this->TemplateHelper->addComments(
+        if ( !in_array( 'comments', \ModuleLoader::getActive() ) ) {
+
+            return null;
+        }
+
+        $this->TemplateHelper->addComments(
 
             $this->objMainTemplate,
             

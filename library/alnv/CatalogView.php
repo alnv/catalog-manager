@@ -5,6 +5,7 @@ namespace CatalogManager;
 class CatalogView extends CatalogController {
 
     public $strMode;
+    public $strMasterID;
     public $arrViewPage;
     public $strTemplate;
     public $objMainTemplate;
@@ -126,13 +127,6 @@ class CatalogView extends CatalogController {
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
-        /*
-        elseif ( is_array( $this->catalogItemOperations ) && in_array( 'create', $this->catalogItemOperations ) ) {
-
-            $arrQuery['joins'][] = $this->preparePTableJoinData();
-        }
-        */
-
         $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s', $this->catalogTablename ) )->execute()->row()['COUNT(*)'];
 
         if ( $this->catalogOffset ) {
@@ -157,7 +151,12 @@ class CatalogView extends CatalogController {
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
-            
+
+            if ( $this->strMode === 'master' ) {
+
+                $this->strMasterID = $arrCatalog['id'];
+            }
+
             $arrCatalog['contentElements'] = '';
 
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {

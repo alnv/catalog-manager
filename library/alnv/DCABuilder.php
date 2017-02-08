@@ -31,7 +31,7 @@ class DCABuilder extends CatalogController {
 
         if ( !$this->strTable ) return null;
 
-        if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $this->arrCatalog['name'] ) {
+        if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $this->arrCatalog['tablename'] ) {
 
             $objReviseRelatedTables = new ReviseRelatedTables();
 
@@ -39,7 +39,7 @@ class DCABuilder extends CatalogController {
 
                 foreach ( $objReviseRelatedTables->getErrorTables() as $strTable ) {
 
-                    \Message::addError( sprintf( "This table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable ) );
+                    \Message::addError( sprintf( "Table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable ) );
 
                     $this->arrErrorTables[] = $strTable;
 

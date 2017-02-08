@@ -179,6 +179,7 @@ class DCABuilder extends CatalogController {
             'dataContainer' => 'Table',
 
             'onload_callback' => [],
+            'onsubmit_callback' => [],
 
             'sql' => [
 

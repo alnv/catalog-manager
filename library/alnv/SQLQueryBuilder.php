@@ -62,6 +62,11 @@ class SQLQueryBuilder extends CatalogController {
         return sprintf( '%s.`%s` = ?', $this->strTable, $strField );
     }
 
+    protected function not( $strField ) {
+
+        return sprintf( '%s.`%s` != ?', $this->strTable, $strField );
+    }
+
     protected function regexp( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)', $this->strTable, $strField );

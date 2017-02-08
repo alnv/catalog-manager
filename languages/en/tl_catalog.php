@@ -7,7 +7,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'View Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['navigation_settings'] = 'Navigation Settings';
+$GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation Settings';
 
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'View', 'Please select your view.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sorting', 'Please select your sorting.' ];

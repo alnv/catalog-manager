@@ -7,7 +7,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Tabellen Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'Ansicht Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog']['navigation_settings'] = 'Navigation Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Ansicht', 'Bitte wählen Sie eine Ansicht aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Modulname', 'Bitte geben Sie den Modulnamen ein.' ];

@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'optionsType_useForeignKey' => 'dbTable,dbTableKey',
 
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
-        'fileType_image' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption,disableImageRendering',
+        'fileType_image' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption,disableImageRendering'
     ],
 
     'fields' => [

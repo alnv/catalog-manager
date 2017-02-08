@@ -84,6 +84,7 @@ class ModuleUniversalView extends \Module {
         $arrQuery = [
 
             'where' => [],
+
             'orderBy' => [
 
                 [
@@ -98,7 +99,7 @@ class ModuleUniversalView extends \Module {
                 'offset' => $this->catalogOffset
             ]
         ];
-
+        
         $this->CatalogView->strMode = 'view';
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->objMainTemplate = $this->Template;

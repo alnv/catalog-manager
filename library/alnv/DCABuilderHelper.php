@@ -235,11 +235,11 @@ class DCABuilderHelper extends CatalogController {
             'invisible' => [
 
                 'exclude' => '1',
+                'statement' => 'c1',
                 'type' => 'checkbox',
                 'fieldname' => 'invisible',
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1],
-                'statement' => 'c1',
                 '_palette' => 'invisible_legend'
             ],
 

@@ -1,8 +1,7 @@
 todo
  - yaml parser
  - csv parser
- - set current mode
- - start time and end time
+ - date field
  - fieldname alias improve unique eval
  - improve parent child table relations
  - fix duplicate field problem in tl_member and tl_user

@@ -190,7 +190,7 @@ class CatalogView extends CatalogController {
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();

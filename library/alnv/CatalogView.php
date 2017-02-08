@@ -58,6 +58,7 @@ class CatalogView extends CatalogController {
 
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
+        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
     }
 
     public function checkPermission() {
@@ -144,6 +145,48 @@ class CatalogView extends CatalogController {
             }
 
             $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
+        }
+
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => ( $dteTime + 60 )
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );

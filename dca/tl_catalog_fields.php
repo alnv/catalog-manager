@@ -234,7 +234,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'unique' => true,
                 'rgxp' => 'extnd',
                 'maxlength' => 64,
                 'tl_class' => 'w50',
@@ -246,6 +245,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'save_callback' => [
 
                 [ 'CatalogManager\tl_catalog_fields', 'checkFieldname' ],
+                [ 'CatalogManager\tl_catalog_fields', 'checkUniqueValue' ],
                 [ 'CatalogManager\tl_catalog_fields', 'renameFieldname' ]
             ],
 

@@ -76,6 +76,18 @@ class tl_catalog_fields extends \Backend {
         }
     }
 
+    public function checkUniqueValue( $varValue, \DataContainer $dc ) {
+
+        $objFieldname = $this->Database->prepare('SELECT id, pid FROM tl_catalog_fields WHERE fieldname = ?')->limit(1)->execute( $varValue );
+
+        if ( $objFieldname->numRows > 0 && $objFieldname->pid == $dc->activeRecord->pid ) {
+
+            throw new \Exception('This fieldname already exist.');
+        }
+
+        return $varValue;
+    }
+
     public function getFilesTypes() {
 
         return [ 'image', 'file' ];

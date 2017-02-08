@@ -1,5 +1,4 @@
 todo
  - yaml parser
  - csv parser
- - improve parent child table relations
  - fix duplicate field problem in tl_member and tl_user

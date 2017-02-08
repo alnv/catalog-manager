@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
+    private $arrCatalogFieldCache = [];
     private $arrCreateSortingFieldOn = [ '4', '5' ];
 
     private $arrRequiredTableFields = [
@@ -87,6 +88,28 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'invisible' , $this->arrRequiredTableFields['invisible'] );
             }
         }
+    }
+
+    public function getCatalogFields( \DataContainer $dc ) {
+
+        if ( !empty( $this->arrCatalogFieldCache ) && is_array( $this->arrCatalogFieldCache ) ) {
+            
+            return $this->arrCatalogFieldCache;
+        }
+
+        $arrReturn = [];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $dc->activeRecord->id );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title;
+        }
+
+        $this->arrCatalogFieldCache = $arrReturn;
+
+        return $this->arrCatalogFieldCache;
     }
 
     public function renameTable( $varValue, \DataContainer $dc ) {

@@ -101,4 +101,47 @@ class DCACallbacks extends \Backend{
 
         return $varValue;
     }
+
+    public function generateGeoCords( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord ) return null;
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ \Input::get('do') ];
+
+        if ( !$arrCatalog ) return null;
+
+        $arrCords = [];
+        $objGeoCoding = new GeoCoding();
+        $strGeoInputType = $arrCatalog['addressInputType'];
+
+        switch ( $strGeoInputType ) {
+
+            case 'useSingleField':
+
+                $arrCords = $objGeoCoding->getCords( $dc->activeRecord->{$arrCatalog['geoAddress']}, 'en', true );
+
+                break;
+
+            case 'useMultipleFields':
+
+                $objGeoCoding->setCity( $dc->activeRecord->{$arrCatalog['geoCity']} );
+                $objGeoCoding->setStreet( $dc->activeRecord->{$arrCatalog['geoCity']} );
+                $objGeoCoding->setPostal( $dc->activeRecord->{$arrCatalog['geoPostal']} );
+                $objGeoCoding->setCountry( $dc->activeRecord->{$arrCatalog['geoCountry']} );
+                $objGeoCoding->setStreetNumber( $dc->activeRecord->{$arrCatalog['geoStreetNumber']} );
+
+                $arrCords = $objGeoCoding->getCords( '', 'en', true );
+
+                break;
+        }
+
+        if ( ( $arrCords['lat'] || $arrCords['lng'] ) && ( $arrCatalog['lngField'] && $arrCatalog['latField'] ) ) {
+
+            $arrSet = [];
+            $arrSet[ $arrCatalog['lngField'] ] = $arrCords['lng'];
+            $arrSet[ $arrCatalog['latField'] ] = $arrCords['lat'];
+
+            $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE id = ?' )->set($arrSet)->execute( $dc->id );
+        }
+    }
 }

@@ -146,7 +146,7 @@ class FrontendEditing extends CatalogController {
 
         if ( $strClass == false ) return null;
 
-        $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '', $this ) );
+        $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '' ) );
 
         $objWidget->storeValues = true;
         $objWidget->id = 'id_' . $arrField['_fieldname'];
@@ -295,6 +295,40 @@ class FrontendEditing extends CatalogController {
     private function saveEntity() {
 
         $this->import( 'SQLBuilder' );
+
+        if ( $this->arrCatalog['useGeoCoordinates'] ) {
+
+            $arrCords = [];
+            $objGeoCoding = new GeoCoding();
+            $strGeoInputType = $this->arrCatalog['addressInputType'];
+
+            switch ( $strGeoInputType ) {
+
+                case 'useSingleField':
+
+                    $arrCords = $objGeoCoding->getCords( $this->arrValues[ $this->arrCatalog['geoAddress'] ], 'en', true );
+
+                    break;
+
+                case 'useMultipleFields':
+
+                    $objGeoCoding->setCity( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
+                    $objGeoCoding->setStreet( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
+                    $objGeoCoding->setPostal( $this->arrValues[ $this->arrCatalog['geoPostal'] ] );
+                    $objGeoCoding->setCountry( $this->arrValues[ $this->arrCatalog['geoCountry'] ] );
+                    $objGeoCoding->setStreetNumber( $this->arrValues[ $this->arrCatalog['geoStreetNumber'] ] );
+
+                    $arrCords = $objGeoCoding->getCords( '', 'en', true );
+
+                    break;
+            }
+
+            if ( ( $arrCords['lat'] || $arrCords['lng'] ) && ( $this->arrCatalog['lngField'] && $this->arrCatalog['latField'] ) ) {
+
+                $this->arrValues[ $this->arrCatalog['lngField'] ] = $arrCords['lng'];
+                $this->arrValues[ $this->arrCatalog['latField'] ] = $arrCords['lat'];
+            }
+        }
 
         $this->arrValues = Toolkit::prepareValues4Db( $this->arrValues );
 

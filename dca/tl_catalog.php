@@ -88,8 +88,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'isBackendModule' => 'navArea,navPosition',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
 
-        'addressInputType_useSingleField' => 'geoAddressField',
-        'addressInputType_useMultipleFields' => 'geoStreet,geoPostal,geoCity,geoCountry',
+        'addressInputType_useSingleField' => 'geoAddress',
+        'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
     ],
 
     'fields' => [
@@ -423,7 +423,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'tl_class' => 'm12 clr',
+                'tl_class' => 'clr',
                 'submitOnChange' => true,
             ],
 
@@ -494,9 +494,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "char(128) NOT NULL default ''"
         ],
 
-        'geoAddressField' => [
+        'geoAddress' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoAddressField'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'],
             'inputType' => 'select',
 
             'eval' => [
@@ -524,7 +524,26 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'tl_class' => 'w50',
-                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoStreetNumber' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
@@ -545,7 +564,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'tl_class' => 'w50',
-                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
@@ -566,7 +584,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'tl_class' => 'w50',
-                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
@@ -587,7 +604,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'tl_class' => 'w50',
-                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true

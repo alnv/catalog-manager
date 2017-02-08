@@ -189,6 +189,11 @@ class DCABuilder extends CatalogController {
             ]
         ];
 
+        if ( $this->arrCatalog['useGeoCoordinates'] ) {
+
+            $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'generateGeoCords' ];
+        }
+
         foreach ( $this->arrFields as $arrField ) {
 
             if ( !$arrField['useIndex'] ) continue;

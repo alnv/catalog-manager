@@ -30,6 +30,7 @@ class CatalogManagerInitializer {
 
             $arrCatalog['fields'] = Toolkit::parseStringToArray( $arrCatalog['fields'] );
             $arrCatalog['cTables'] = Toolkit::parseStringToArray( $arrCatalog['cTables'] );
+            $arrCatalog['operations'] = Toolkit::parseStringToArray( $arrCatalog['operations'] );
             $arrCatalog['panelLayout'] = Toolkit::parseStringToArray( $arrCatalog['panelLayout'] );
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
 

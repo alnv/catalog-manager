@@ -26,7 +26,12 @@ class tl_catalog_fields extends \Backend {
         $strIndex = $dc->activeRecord->useIndex;
         $strStatement = $this->DCABuilderHelper->arrSQLStatements[ $dc->activeRecord->statement ];
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
-        
+
+        if ( in_array( $dc->activeRecord->fieldname , $this->DCABuilderHelper->arrReservedFields ) ) {
+
+            throw new \Exception( sprintf( 'Fieldname "%s" is not allowed.', $dc->activeRecord->fieldname ) );
+        }
+
         if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
 
             if ( in_array( $dc->activeRecord->type , $this->DCABuilderHelper->arrForbiddenInputTypes ) ) {
@@ -78,9 +83,9 @@ class tl_catalog_fields extends \Backend {
 
     public function checkUniqueValue( $varValue, \DataContainer $dc ) {
 
-        $objFieldname = $this->Database->prepare('SELECT id, pid FROM tl_catalog_fields WHERE fieldname = ?')->limit(1)->execute( $varValue );
+        $objFieldname = $this->Database->prepare('SELECT pid, id FROM tl_catalog_fields WHERE fieldname = ? AND id != ?')->limit(1)->execute( $varValue, $dc->activeRecord->id );
 
-        if ( $objFieldname->numRows > 0 && $objFieldname->pid == $dc->activeRecord->pid ) {
+        if ( $objFieldname->numRows && $objFieldname->pid == $dc->activeRecord->pid ) {
 
             throw new \Exception('This fieldname already exist.');
         }

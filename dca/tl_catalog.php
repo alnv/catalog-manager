@@ -79,13 +79,17 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'isBackendModule' ],
-        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{operations_legend},operations;{panel_layout_legend},panelLayout;{navigation_settings},isBackendModule;'
+        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType' ],
+        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{operations_legend},operations;{panel_layout_legend},panelLayout;{navigation_legend},isBackendModule;{geoCoordinates_legend},useGeoCoordinates'
     ],
 
     'subpalettes' => [
 
-        'isBackendModule' => 'navArea,navPosition'
+        'isBackendModule' => 'navArea,navPosition',
+        'useGeoCoordinates' => 'latField,lngField,addressInputType',
+
+        'addressInputType_useSingleField' => 'geoAddressField',
+        'addressInputType_useMultipleFields' => 'geoStreet,geoPostal,geoCity,geoCountry',
     ],
 
     'fields' => [
@@ -410,6 +414,189 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+        
+        'useGeoCoordinates' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'm12 clr',
+                'submitOnChange' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'latField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['latField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'lngField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['lngField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'addressInputType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'tl_class' => 'clr',
+                'doNotCopy' => true,
+                'mandatory' => true,
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options' => [ 'useSingleField', 'useMultipleFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoAddressField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoAddressField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoStreet' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoPostal' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoCity' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoCity'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'geoCountry' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
         ]
     ]
 ];

@@ -8,6 +8,7 @@ class GeoCoding extends CatalogController {
     private $strStreet;
     private $strPostal;
     private $strCountry;
+    private $strStreetNumber;
 
     private $arrGoogleMapsCache = [];
 
@@ -18,15 +19,11 @@ class GeoCoding extends CatalogController {
 
     public function getCords( $strAddress = '', $strLanguage = 'en', $blnServer = false ) {
 
-        $arrReturn = [
-
-            'lat' => '',
-            'lng' => ''
-        ];
+        $arrReturn = [ 'lat' => '', 'lng' => '' ];
 
         if ( !$strAddress ) {
 
-            $strAddress = sprintf( '%s %s %s %s', $this->strStreet, $this->strPostal, $this->strCity, $this->strCountry );
+            $strAddress = sprintf( '%s %s %s %s %s', $this->strStreet, $this->strStreetNumber, $this->strPostal, $this->strCity, $this->strCountry );
         }
 
         $strGoogleIDKey = '';
@@ -72,21 +69,26 @@ class GeoCoding extends CatalogController {
 
     public function setCity( $strCity ) {
 
-        $this->strCity = $strCity;
+        $this->strCity = $strCity ? $strCity : '';
     }
 
-    public function setStreet( $strCity ) {
+    public function setStreet( $strStreet ) {
 
-        $this->strStreet = $strCity;
+        $this->strStreet = $strStreet ? $strStreet : '';
     }
 
-    public function setPostal( $strCity ) {
+    public function setStreetNumber( $strStreetNumber ) {
 
-        $this->strPostal = $strCity;
+        $this->strStreetNumber = $strStreetNumber ? $strStreetNumber : '';
     }
 
-    public function setCountry( $strCity ) {
+    public function setPostal( $strPostal ) {
 
-        $this->strCountry = $strCity;
+        $this->strPostal = $strPostal ? $strPostal : '';
+    }
+
+    public function setCountry( $strCountry ) {
+
+        $this->strCountry = $strCountry ? $strCountry : '';
     }
 }

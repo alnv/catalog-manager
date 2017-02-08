@@ -43,7 +43,7 @@ class GeoCoding extends CatalogController {
             $strGoogleIDKey = sprintf( '&key=%s', $strGoogleID );
         }
 
-        $strGoogleMapsRequest = sprintf( 'https://maps.googleapis.com/maps/api/geocode/json?address=%s%s&language=%s&region=%s' , urlencode( $strAddress ),$strGoogleIDKey, urlencode( $strLanguage ), strlen( $strLanguage ) );
+        $strGoogleMapsRequest = sprintf( 'https://maps.googleapis.com/maps/api/geocode/json?address=%s%s&language=%s&region=%s', urlencode( $strAddress ), $strGoogleIDKey, urlencode( $strLanguage ), strlen( $strLanguage ) );
 
         $objRequest = new \Request();
         $objRequest->send( $strGoogleMapsRequest );

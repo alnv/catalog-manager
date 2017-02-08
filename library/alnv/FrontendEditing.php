@@ -19,7 +19,7 @@ class FrontendEditing extends CatalogController {
     private $strSubmitName = '';
     private $blnNoSubmit = false;
     private $blnHasUpload = false;
-    private $strTemporaryPalette = 'default';
+    private $strTemporaryPalette = 'general_legend';
 
     public function __construct() {
 
@@ -58,7 +58,7 @@ class FrontendEditing extends CatalogController {
             $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
 
             $arrDCField['_fieldname'] = $strFieldname;
-            $arrDCField['_palette'] = $this->strTemporaryPalette;
+            $arrDCField['_palette'] = $this->I18nCatalogTranslator->getLegendLabel( $this->strTemporaryPalette );
 
             return $arrDCField;
         });

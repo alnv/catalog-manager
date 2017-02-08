@@ -106,7 +106,7 @@ class DCABuilderHelper extends CatalogController {
 
         $arrDCAField['_fieldname'] = $arrField['fieldname'];
         $arrDCAField['_palette'] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['_palette'] );
-
+        
         if ( $arrField['flag'] ) {
 
             $arrDCAField['default'] = $arrField['flag'];

@@ -11,6 +11,17 @@ class DCABuilderHelper extends CatalogController {
         $this->import( 'I18nCatalogTranslator' );
     }
 
+    public $arrReservedFields = [
+
+        'id',
+        'pid',
+        'stop',
+        'start',
+        'title',
+        'alias',
+        'invisible'
+    ];
+
     public $arrForbiddenInputTypes = [
 
         'message',

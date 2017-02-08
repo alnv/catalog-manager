@@ -20,6 +20,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogView' => 'system/modules/catalog-manager/library/alnv/CatalogView.php',
     'CatalogManager\Checkbox' => 'system/modules/catalog-manager/library/alnv/Fields/Checkbox.php',
     'CatalogManager\Textarea' => 'system/modules/catalog-manager/library/alnv/Fields/Textarea.php',
+    'CatalogManager\GeoCoding' => 'system/modules/catalog-manager/library/alnv/Maps/GeoCoding.php',
     'CatalogManager\DCACallbacks' => 'system/modules/catalog-manager/library/alnv/DCACallbacks.php',
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/Fields/DateInput.php',
     'CatalogManager\DCAPermission' => 'system/modules/catalog-manager/library/alnv/DCAPermission.php',

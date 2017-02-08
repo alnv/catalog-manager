@@ -176,11 +176,12 @@ class SQLQueryBuilder extends CatalogController {
 
         foreach ( $this->arrQuery['where'] as $intIndex => $arrQueries ) {
 
-            if ( $intIndex )  $strWhereStatement .= ' AND ';
+            if ( $intIndex ) $strWhereStatement .= ' AND ';
 
-            if ( !empty( $arrQueries[ $intIndex ] ) && is_array( $arrQueries[ $intIndex ] ) ) {
+            if ( !empty( $arrQueries[0] ) && is_array( $arrQueries[0] ) ) {
 
                 $intOrIndex = 0;
+
                 if ( $intIndex ) $strWhereStatement .= '(';
 
                 foreach ( $arrQueries as $strKey => $varValue ) {

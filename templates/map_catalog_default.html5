@@ -33,12 +33,11 @@
 
          <?php endif;?>
 
-         <?php if ( $this->mapInfoBox == 'true' ): ?>
+         <?php if ( $this->addMapInfoBox == 'true' ): ?>
 
-            var strInfoBoxTemplate ='<div class="infobox"><p><strong>' + objCatalog.title + '</strong></p>' + (function () { if ( typeof objCatalog.href !== "undefined" && typeof objCatalog.more !== "undefined" ) { return '<p><a href="' + objCatalog.href + '" title="' + objCatalog.title + '">' + objCatalog.more + '</a></p>'; } return ''; })() + '</div>';
             var objInfoBox = new InfoBox({
 
-               content: strInfoBoxTemplate,
+               content: '<div class="infobox"><?= $this->mapInfoBoxContent; ?></div>',
 
                boxStyle: {
 

@@ -11,9 +11,10 @@ class CatalogView extends CatalogController {
     public $objMainTemplate;
     public $arrOptions = [];
     public $arrMasterPage = [];
-    
+
     private $arrCatalog = [];
     private $arrCatalogFields = [];
+    private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
     private $arrCatalogFieldnameAndIDMap = [];
 
@@ -253,7 +254,12 @@ class CatalogView extends CatalogController {
 
                         case 'map':
 
-                            $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField );
+                            if ( !$this->blnGoogleMapScript ) {
+
+                                $this->blnGoogleMapScript = true;
+                            }
+
+                            $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField, $arrCatalog );
 
                             break;
                     }
@@ -268,6 +274,11 @@ class CatalogView extends CatalogController {
         if ( $intPerPage > 0 && $this->catalogAddPagination ) {
 
             $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, $this->arrViewPage['id'] );
+        }
+
+        if ( $this->blnGoogleMapScript ) {
+
+            $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
         }
 
         return $strCatalogView;

@@ -125,7 +125,7 @@ class DCACallbacks extends \Backend{
             case 'useMultipleFields':
 
                 $objGeoCoding->setCity( $dc->activeRecord->{$arrCatalog['geoCity']} );
-                $objGeoCoding->setStreet( $dc->activeRecord->{$arrCatalog['geoCity']} );
+                $objGeoCoding->setStreet( $dc->activeRecord->{$arrCatalog['geoStreet']} );
                 $objGeoCoding->setPostal( $dc->activeRecord->{$arrCatalog['geoPostal']} );
                 $objGeoCoding->setCountry( $dc->activeRecord->{$arrCatalog['geoCountry']} );
                 $objGeoCoding->setStreetNumber( $dc->activeRecord->{$arrCatalog['geoStreetNumber']} );

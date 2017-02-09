@@ -101,4 +101,9 @@ class tl_module extends \Backend {
 
         return [ ( $arrCatalog['pTable'] ? $arrCatalog['pTable'] : '' ) ];
     }
+
+    public function getMapTemplates() {
+
+        return $this->getTemplateGroup('catalog_map_');
+    }
 }

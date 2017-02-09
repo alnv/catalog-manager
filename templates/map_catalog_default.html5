@@ -1,1 +1,59 @@
-<h1>Map</h1>
+<div id="id_<?= $this->id; ?>" class="map_catalog_default" style="width: 100%; height: 380px;">
+   <script async defer>
+      var CatalogManagerMaps = CatalogManagerMaps || [];
+      CatalogManagerMaps[CatalogManagerMaps.length] = function () {
+
+         var objCatalog = <?= json_encode( $this->catalog, 512 ); ?>;
+         var objLatLng = new google.maps.LatLng( "<?= $this->lat; ?>", "<?= $this->lng; ?>" );
+
+         var objGoogleMapOption = {
+
+            center: objLatLng,
+            zoom: <?= $this->mapZoom; ?>,
+            mapTypeId: google.maps.MapTypeId.<?= $this->mapType; ?>,
+            scrollwheel: <?= $this->mapScrollWheel; ?>
+         };
+
+         <?php if ( $this->mapStyle ): ?>
+
+            objGoogleMapOption['styles'] = <?= $this->mapStyle; ?>;
+
+         <?php endif; ?>
+
+         var objGoogleMap = new google.maps.Map( document.getElementById( "id_<?= $this->id; ?>" ), objGoogleMapOption );
+
+         <?php if ( $this->mapMarker == 'true' ): ?>
+
+            var objMarker = new google.maps.Marker({
+
+               map: objGoogleMap,
+               position: objLatLng,
+               title: objCatalog.title,
+            });
+
+         <?php endif;?>
+
+         <?php if ( $this->mapInfoBox == 'true' ): ?>
+
+            var strInfoBoxTemplate ='<div class="infobox"><p><strong>' + objCatalog.title + '</strong></p>' + (function () { if ( typeof objCatalog.href !== "undefined" && typeof objCatalog.more !== "undefined" ) { return '<p><a href="' + objCatalog.href + '" title="' + objCatalog.title + '">' + objCatalog.more + '</a></p>'; } return ''; })() + '</div>';
+            var objInfoBox = new InfoBox({
+
+               content: strInfoBoxTemplate,
+
+               boxStyle: {
+
+                  background: '#fff',
+                  width: "200px",
+                  padding: "10px"
+               }
+            });
+
+            google.maps.event.addListener( objMarker, 'click', function () {
+
+               objInfoBox.open( objGoogleMap, this );
+            });
+
+         <?php endif;?>
+      };
+   </script>
+</div>

@@ -2,17 +2,21 @@
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
 
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAddMapInfoBox';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAllowComments';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend},catalogUseViewPage;{orderBy_legend},catalogOrderBy;{pagination_legend},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend},catalogJoinFields,catalogJoinParentTable;{relation_legend},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{catalog_comments_legend},catalogAllowComments;{template_legend},catalogTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -252,8 +256,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50 m12',
         'doNotCopy' => true,
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,
@@ -555,4 +559,194 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentDisableCaptcha'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseMap'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseMap'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr m12',
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapAddress'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapAddress'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'long',
+    ],
+
+    'exclude' => true,
+    'sql' => "varchar(256) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLat'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapLat'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'w50',
+    ],
+
+    'exclude' => true,
+    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLng'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapLng'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'w50',
+    ],
+
+    'exclude' => true,
+    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapTemplate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapTemplate'],
+    'inputType' => 'select',
+    'default' => 'map_catalog_default',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 255,
+        'tl_class' => 'w50',
+        'mandatory' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getMapTemplates' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapZoom'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapZoom'],
+    'inputType' => 'select',
+    'default' => 10,
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50'
+    ],
+
+    'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+
+    'exclude' => true,
+    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapType'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapType'],
+    'inputType' => 'select',
+    'default' => 'HYBRID',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50'
+    ],
+
+    'options' => [ 'ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN' ],
+
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogMapType'],
+
+    'exclude' => true,
+    'sql' => "varchar(16) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapScrollWheel'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapScrollWheel'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapMarker'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapMarker'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapStyle'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapStyle'],
+    'inputType' => 'textarea',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'rte' => 'ace|html',
+        'allowHtml' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "text NULL"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogAddMapInfoBox'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogAddMapInfoBox'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12',
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapInfoBoxContent'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapInfoBoxContent'],
+    'inputType' => 'textarea',
+
+    'eval' => [
+
+        'rte' => 'ace|html',
+        'tl_class' => 'clr',
+        'allowHtml' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "text NULL"
 ];

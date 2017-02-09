@@ -4,7 +4,8 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
-    private $arrFieldCache = [];
+    private $arrFieldsCache = [];
+    private $arrTextFieldsCache = [];
 
     public function __construct() {
 
@@ -102,9 +103,9 @@ class tl_catalog_fields extends \Backend {
 
         $arrReturn = [ 'title' ];
 
-        if ( !empty( $this->arrFieldCache ) && is_array( $this->arrFieldCache ) ) {
+        if ( !empty( $this->arrTextFieldsCache ) && is_array( $this->arrTextFieldsCache ) ) {
 
-            return $this->arrFieldCache;
+            return $this->arrTextFieldsCache;
         }
 
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
@@ -119,9 +120,28 @@ class tl_catalog_fields extends \Backend {
             $arrReturn[] = $objCatalogFields->fieldname;
         }
 
-        $this->arrFieldCache = $arrReturn;
+        $this->arrTextFieldsCache = $arrReturn;
 
-        return $arrReturn;
+        return $this->arrTextFieldsCache;
+    }
+
+    public function getCatalogFieldsByParentID() {
+
+        if ( !empty( $this->arrFieldsCache ) && is_array( $this->arrFieldsCache ) ) {
+
+            return $this->arrFieldsCache;
+        }
+
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            $this->arrFieldsCache[] = $objCatalogFields->fieldname;
+        }
+
+        return $this->arrFieldsCache;
     }
 
     public function renameFieldname( $varValue, \DataContainer $dc ) {
@@ -185,7 +205,7 @@ class tl_catalog_fields extends \Backend {
 
     public function getFieldTypes() {
 
-        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'fieldsetStart', 'fieldsetStop' ];
+        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'map', 'fieldsetStart', 'fieldsetStop' ];
     }
 
     public function getIndexes() {
@@ -231,5 +251,10 @@ class tl_catalog_fields extends \Backend {
     public function getCatalogFieldList( $arrRow ) {
 
         return $arrRow['title'];
+    }
+
+    public function getMapTemplates() {
+
+        return $this->getTemplateGroup( 'map_catalog_' );
     }
 }

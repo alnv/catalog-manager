@@ -21,9 +21,10 @@ class Map {
 
     private static function prepareMapOptions( $arrField, $arrCatalog ) {
 
-        return [
+        $arrReturn = [
 
             'catalog' => $arrCatalog,
+            'mapInfoBoxContent' => '-',
             'title' => $arrField['title'],
             'fieldname' => $arrField['fieldname'],
             'description' => $arrField['description'],
@@ -32,12 +33,24 @@ class Map {
             'lng' => $arrCatalog[ $arrField['lngField'] ],
             'id' => static::createUniqueID( $arrField, $arrCatalog ),
             'mapMarker' => $arrField['mapMarker'] ? 'true' : 'false',
-            'mapInfoBox' => $arrField['mapInfoBox'] ? 'true' : 'false',
+            'addMapInfoBox' => $arrField['addMapInfoBox'] ? 'true' : 'false',
             'mapStyle' => $arrField['mapStyle'] ? $arrField['mapStyle'] : '',
             'mapScrollWheel' => $arrField['mapScrollWheel'] ? 'true' : 'false',
             'mapType' => $arrField['mapType'] ? $arrField['mapType'] : 'HYBRID',
             'mapZoom' => $arrField['mapZoom'] ? intval( $arrField['mapZoom'] ) : 10
         ];
+
+        if ( $arrField['mapInfoBoxContent'] ) {
+
+            $strInfoBox = \StringUtil::parseSimpleTokens( $arrField['mapInfoBoxContent'], $arrCatalog );
+            $strInfoBox = Toolkit::removeBreakLines( $strInfoBox );
+            $strInfoBox = Toolkit::removeApostrophe( $strInfoBox );
+            $strInfoBox = \StringUtil::toHtml5( $strInfoBox );
+
+            $arrReturn['mapInfoBoxContent'] = $strInfoBox;
+        }
+
+        return $arrReturn;
     }
 
     private static function createUniqueID( $arrField, $arrCatalog ) {

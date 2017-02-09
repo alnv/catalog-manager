@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType', 'fileType' ],
+        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -98,7 +98,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
-        'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,mapInfoBox,mapStyle;{invisible_legend},invisible',
+        'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
     ],
@@ -109,6 +109,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey',
 
+        'addMapInfoBox' => 'mapInfoBoxContent',
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
         'fileType_image' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption,disableImageRendering'
     ],
@@ -1294,7 +1295,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'mapType' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapType'],
-            'inputType' => 'radio',
+            'inputType' => 'select',
             'default' => 'HYBRID',
 
             'eval' => [
@@ -1339,20 +1340,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'sql' => "char(1) NOT NULL default ''"
         ],
 
-        'mapInfoBox' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBox'],
-            'inputType' => 'checkbox',
-
-            'eval' => [
-
-                'tl_class' => 'w50 m12'
-            ],
-
-            'exclude' => true,
-            'sql' => "char(1) NOT NULL default ''"
-        ],
-
         'mapStyle' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapStyle'],
@@ -1360,9 +1347,40 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'tl_class' => 'clr',
                 'rte' => 'ace|html',
-                'allowHtml' => true,
-                'tl_class' => 'clr'
+                'allowHtml' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
+        ],
+
+        'addMapInfoBox' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['addMapInfoBox'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'mapInfoBoxContent' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'],
+            'inputType' => 'textarea',
+
+            'eval' => [
+
+                'rte' => 'ace|html',
+                'tl_class' => 'clr',
+                'allowHtml' => true
             ],
 
             'exclude' => true,

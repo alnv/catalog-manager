@@ -4,6 +4,7 @@ ClassLoader::addNamespace( 'CatalogManager' );
 
 ClassLoader::addClasses([
 
+    'CatalogManager\Map' => 'system/modules/catalog-manager/library/alnv/Fields/Map.php',
     'CatalogManager\tl_module' => 'system/modules/catalog-manager/classes/tl_module.php',
     'CatalogManager\Toolkit' => 'system/modules/catalog-manager/library/alnv/Toolkit.php',
     'CatalogManager\tl_catalog' => 'system/modules/catalog-manager/classes/tl_catalog.php',

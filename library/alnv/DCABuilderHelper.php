@@ -24,6 +24,7 @@ class DCABuilderHelper extends CatalogController {
 
     public $arrForbiddenInputTypes = [
 
+        'map',
         'message',
         'fieldsetStart',
         'fieldsetStop'

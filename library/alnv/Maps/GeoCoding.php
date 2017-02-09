@@ -23,7 +23,19 @@ class GeoCoding extends CatalogController {
 
         if ( !$strAddress ) {
 
-            $strAddress = sprintf( '%s %s %s %s %s', $this->strStreet, $this->strStreetNumber, $this->strPostal, $this->strCity, $this->strCountry );
+            $arrAddress = [];
+
+            if ( $this->strStreet ) $arrAddress[] = $this->strStreet;
+
+            if ( $this->strStreetNumber ) $arrAddress[] = $this->strStreetNumber;
+
+            if ( $this->strPostal ) $arrAddress[] = $this->strPostal;
+
+            if ( $this->strCity ) $arrAddress[] = $this->strCity;
+
+            if ( $this->strCountry ) $arrAddress[] = $this->strCountry;
+            
+            $strAddress = implode( ',' , $arrAddress );
         }
 
         $strGoogleIDKey = '';

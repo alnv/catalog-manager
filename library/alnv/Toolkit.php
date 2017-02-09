@@ -19,6 +19,26 @@ class Toolkit {
         return [];
     }
 
+    public static function removeBreakLines( $strValue ) {
+
+        if ( !$strValue || !is_string( $strValue ) ) {
+
+            return $strValue;
+        }
+
+        return preg_replace( "/\r|\n/", "", $strValue );
+    }
+
+    public static function removeApostrophe( $strValue ) {
+
+        if ( !$strValue || !is_string( $strValue ) ) {
+
+            return $strValue;
+        }
+
+        return str_replace( "'", "", $strValue );
+    }
+
     public static function parseConformSQLValue( $varValue ) {
 
         return str_replace( '-', '_', $varValue );

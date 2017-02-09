@@ -14,6 +14,7 @@ class CatalogView extends CatalogController {
     
     private $arrCatalog = [];
     private $arrCatalogFields = [];
+    private $arrCatalogStaticFields = [];
     private $arrCatalogFieldnameAndIDMap = [];
 
     public function __construct() {
@@ -40,7 +41,11 @@ class CatalogView extends CatalogController {
 
             foreach ( $this->arrCatalogFields as $strID => $arrField ) {
 
-                if ( !$arrField['fieldname'] ) {
+                if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
+
+                if ( in_array( $arrField['type'], [ 'map' ] ) ) {
+
+                    $this->arrCatalogStaticFields[] = $strID;
 
                     continue;
                 }
@@ -190,7 +195,7 @@ class CatalogView extends CatalogController {
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -238,6 +243,23 @@ class CatalogView extends CatalogController {
                 }
             }
 
+            if ( !empty( $this->arrCatalogStaticFields ) && is_array( $this->arrCatalogStaticFields ) ) {
+
+                foreach ( $this->arrCatalogStaticFields as $strID ) {
+
+                    $arrField = $this->arrCatalogFields[$strID];
+
+                    switch ( $arrField['type'] ) {
+
+                        case 'map':
+
+                            $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField );
+
+                            break;
+                    }
+                }
+            }
+
             $objTemplate->setData( $arrCatalog );
 
             $strCatalogView .= $objTemplate->parse();
@@ -255,7 +277,7 @@ class CatalogView extends CatalogController {
 
         $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname];
         $arrField = $this->arrCatalogFields[$strFieldID];
-        
+
         switch ( $arrField['type'] ) {
 
             case 'upload':

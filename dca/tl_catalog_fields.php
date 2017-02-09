@@ -98,6 +98,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
+        'map' => '{general_legend},type,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,mapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
     ],
@@ -1208,6 +1209,164 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'latField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['latField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'lngField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['lngField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID' ],
+
+            'exclude' => true,
+            'sql' => "char(128) NOT NULL default ''"
+        ],
+
+        'mapTemplate' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapTemplate'],
+            'inputType' => 'select',
+            'default' => 'map_catalog_default',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'tl_class' => 'w50',
+                'mandatory' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getMapTemplates' ],
+            
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'mapZoom'=> [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapZoom'],
+            'inputType' => 'select',
+            'default' => 10,
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'mapType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapType'],
+            'inputType' => 'radio',
+            'default' => 'HYBRID',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options' => [ 'ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN' ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['mapType'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
+        ],
+
+        'mapScrollWheel' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapScrollWheel'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'mapMarker' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapMarker'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'mapInfoBox' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBox'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'mapStyle' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapStyle'],
+            'inputType' => 'textarea',
+
+            'eval' => [
+
+                'rte' => 'ace|html',
+                'allowHtml' => true,
+                'tl_class' => 'clr'
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
         ]
     ]
 ];

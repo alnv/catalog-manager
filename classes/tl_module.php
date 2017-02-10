@@ -4,7 +4,9 @@ namespace CatalogManager;
 
 class tl_module extends \Backend {
 
+
     private $arrCatalogFieldsCache = [];
+
 
     public function getCatalogs() {
 
@@ -20,6 +22,7 @@ class tl_module extends \Backend {
 
         return $arrReturn;
     }
+
 
     public function disableNotRequiredFields( \DataContainer $dc ) {
 
@@ -42,6 +45,7 @@ class tl_module extends \Backend {
         }
     }
 
+
     public function generateGeoCords( \DataContainer $dc ) {
 
         if ( !$dc->activeRecord->catalogMapAddress ) return null;
@@ -59,20 +63,28 @@ class tl_module extends \Backend {
         }
     }
 
+    public function getSystemCountries() {
+
+        return array_values( $this->getcountries() );
+    }
+
     public function getCatalogTemplates() {
 
         return $this->getTemplateGroup('catalog_');
     }
+
 
     public function getCatalogFormTemplates() {
 
         return $this->getTemplateGroup('form_catalog_');
     }
 
+
     public function getCatalogOperationItems() {
 
         return [ 'create', 'copy', 'edit', 'delete' ];
     }
+
 
     public function getJoinAbleFields( \DataContainer $dc ) {
 
@@ -101,6 +113,7 @@ class tl_module extends \Backend {
         return $arrReturn;
     }
 
+
     public function getChildTables( \DataContainer $dc ) {
 
         $arrReturn = [];
@@ -110,6 +123,7 @@ class tl_module extends \Backend {
 
         return ( is_array( $arrCatalog['cTables'] ) ? $arrCatalog['cTables'] : deserialize( $arrCatalog['cTables'] ) );
     }
+
 
     public function getParentTable( \DataContainer $dc ) {
 
@@ -121,15 +135,18 @@ class tl_module extends \Backend {
         return [ ( $arrCatalog['pTable'] ? $arrCatalog['pTable'] : '' ) ];
     }
 
+
     public function getMapTemplates() {
 
         return $this->getTemplateGroup('catalog_map_');
     }
 
+
     public function getMapViewTemplates(){
 
         return $this->getTemplateGroup('mod_catalog_map_');
     }
+
 
     public function getCatalogFieldsByTablename( \DataContainer $dc ) {
 

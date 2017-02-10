@@ -4,9 +4,9 @@ namespace CatalogManager;
 
 class ModuleUniversalView extends \Module {
 
+    private $strAct;
     private $strMasterAlias;
     private $strCatalogTable;
-
     protected $strTemplate = 'mod_catalog_view';
 
     public function generate() {
@@ -20,12 +20,19 @@ class ModuleUniversalView extends \Module {
             return $objTemplate->parse();
         }
 
+        $this->strAct = \Input::get( 'act' . $this->id );
+        $this->strMasterAlias = \Input::get( 'auto_item' );
+
+        if ( TL_MODE == 'FE' && $this->catalogUseMap && !$this->strMasterAlias ) {
+
+            $this->strTemplate = $this->catalogMapViewTemplate;
+        }
+
         return parent::generate();
     }
 
     protected function compile() {
 
-        $this->strMasterAlias = \Input::get( 'auto_item' );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogRelatedChildTables = Toolkit::parseStringToArray( $this->catalogRelatedChildTables );
 
@@ -38,7 +45,7 @@ class ModuleUniversalView extends \Module {
 
         else {
 
-            switch ( \Input::get( 'act' . $this->id ) ) {
+            switch ( $this->strAct  ) {
 
                 case 'create':
                 case 'copy':
@@ -68,9 +75,9 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
+        $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strItemID = \Input::get( 'id' );
-        $this->FrontendEditing->strAct = \Input::get( 'act' . $this->id );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
@@ -108,8 +115,9 @@ class ModuleUniversalView extends \Module {
 
         $blnHasPermission = $this->CatalogView->checkPermission();
 
-        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+        $this->Template->map = $this->CatalogView->getMapViewOptions();
         $this->Template->createOperation = $this->CatalogView->getCreateOperation();
+        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
 
         if ( !$blnHasPermission ) {
 
@@ -163,10 +171,10 @@ class ModuleUniversalView extends \Module {
     private function determineFormView() {
 
         $this->import( 'FrontendEditing' );
-        
+
+        $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strItemID = \Input::get( 'id' );
-        $this->FrontendEditing->strAct = \Input::get( 'act' . $this->id );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
@@ -184,7 +192,6 @@ class ModuleUniversalView extends \Module {
     private function setTable() {
 
         $strTable = \Input::get( 'table' );
-
         $this->strCatalogTable = $this->catalogTablename;
 
         if ( $strTable && $this->Database->tableExists( $strTable ) ) {

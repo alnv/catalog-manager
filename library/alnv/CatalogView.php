@@ -228,18 +228,57 @@ class CatalogView extends CatalogController {
             ];
         }
 
+        if ( $this->catalogUseRadiusSearch && $this->strMode == 'view' ) {
+
+            $arrRSValues = [];
+            $arrRSAttributes = [ 'rs_cty', 'rs_strt', 'rs_pstl', 'rs_cntry', 'rs_strtn' ];
+
+            foreach ( $arrRSAttributes as $strSRAttribute ) {
+
+                if ( \Input::get( $strSRAttribute ) && is_string( \Input::get( $strSRAttribute ) ) ) {
+
+                    $arrRSValues[ $strSRAttribute ] = \Input::get( $strSRAttribute );
+                }
+            }
+
+            if ( !empty( $arrRSValues ) && is_array( $arrRSValues ) ) {
+
+                if ( !$arrRSValues['rs_cntry'] && $this->catalogRadioSearchCountry ) {
+
+                    $arrRSValues['rs_cntry'] = $this->catalogRadioSearchCountry;
+                }
+
+                $objGeoCoding = new GeoCoding();
+                $objGeoCoding->setCity( $arrRSValues['rs_cty'] );
+                $objGeoCoding->setStreet( $arrRSValues['rs_strt'] );
+                $objGeoCoding->setPostal( $arrRSValues['rs_pstl'] );
+                $objGeoCoding->setCountry( $arrRSValues['rs_cntry'] );
+                $objGeoCoding->setStreetNumber( $arrRSValues['rs_strtn'] );
+
+                $arrCords = $objGeoCoding->getCords( '', 'en', true );
+
+                $arrQuery['distance'] = [
+
+                    'latCord' => $arrCords['lat'],
+                    'lngCord' => $arrCords['lng'],
+                    'latField' => $this->catalogFieldLat,
+                    'lngField' => $this->catalogFieldLng,
+                    'value' => \Input::get( 'rs_dstnc' ) ? \Input::get( 'rs_dstnc' ) : '50'
+                ];
+            }
+        }
+
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
+            $arrCatalog['contentElements'] = '';
 
             if ( $this->strMode === 'master' ) {
 
                 $this->strMasterID = $arrCatalog['id'];
             }
-
-            $arrCatalog['contentElements'] = '';
 
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
 

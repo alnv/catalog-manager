@@ -1,4 +1,5 @@
-<div class="mod_catalog_view">
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
    <?php if ( $this->createOperation ): ?>
       <p><a href="<?= $this->createOperation ?>">create</a></p>
    <?php endif; ?>
@@ -14,4 +15,4 @@
    <?php if ($this->catalogAddPagination): ?>
       <?= $this->pagination; ?>
    <?php endif; ?>
-</div>
+<?php $this->endblock(); ?>

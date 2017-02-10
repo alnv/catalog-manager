@@ -1,3 +1,43 @@
-<div id="" class="catalog_map_default">
-   <p>Hello</p>
-</div>
+<script async defer>
+
+   'use strict';
+
+   var CatalogManagerMaps = CatalogManagerMaps || [];
+
+   CatalogManagerMaps[CatalogManagerMaps.length] = function () {
+
+      var objLatLng = new google.maps.LatLng("<?= $this->map['locationLat']; ?>", "<?= $this->map['locationLng']; ?>");
+
+      <?php if ( $this->map['mapMarker'] == 'true' ): ?>
+
+         var objMarker = new google.maps.Marker({
+
+            map: objCatalogMapView_<?= $this->map['id'] ?>,
+            position: objLatLng
+         });
+
+      <?php endif;?>
+
+      <?php if ( $this->map['addMapInfoBox'] == 'true' ): ?>
+
+         var objInfoBox = new InfoBox({
+
+            content: '<div class="infobox"><?= $this->map["mapInfoBoxContent"]; ?></div>',
+
+            boxStyle: {
+
+               background: '#fff',
+               width: "200px",
+               padding: "10px"
+            }
+         });
+
+         google.maps.event.addListener( objMarker, 'click', function () {
+
+            objInfoBox.open( objCatalogMapView_<?= $this->map['id'] ?>, this );
+         });
+
+      <?php endif;?>
+   };
+
+</script>

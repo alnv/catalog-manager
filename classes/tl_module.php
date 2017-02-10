@@ -106,4 +106,9 @@ class tl_module extends \Backend {
 
         return $this->getTemplateGroup('catalog_map_');
     }
+
+    public function getMapViewTemplates(){
+
+        return $this->getTemplateGroup('mod_catalog_map_');
+    }
 }

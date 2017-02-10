@@ -1,6 +1,10 @@
 <div id="id_<?= $this->id; ?>" class="map_catalog_default" style="width: 100%; height: 380px;">
    <script async defer>
+
+      'use strict';
+
       var CatalogManagerMaps = CatalogManagerMaps || [];
+
       CatalogManagerMaps[CatalogManagerMaps.length] = function () {
 
          var objCatalog = <?= json_encode( $this->catalog, 512 ); ?>;

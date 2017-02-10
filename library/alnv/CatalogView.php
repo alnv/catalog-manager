@@ -14,9 +14,12 @@ class CatalogView extends CatalogController {
 
     private $arrCatalog = [];
     private $arrCatalogFields = [];
+    private $blnMapViewMode = false;
     private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
+    private $arrCatalogMapViewOptions = [];
     private $arrCatalogFieldnameAndIDMap = [];
+
 
     public function __construct() {
 
@@ -26,6 +29,7 @@ class CatalogView extends CatalogController {
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
     }
+
 
     public function initialize() {
 
@@ -62,10 +66,31 @@ class CatalogView extends CatalogController {
             $this->arrViewPage = $this->getPageModel( $this->catalogViewPage );
         }
 
+        if ( $this->catalogUseMap && $this->strMode == 'view' ) {
+
+            $this->arrCatalogMapViewOptions = Map::getMapViewOptions([
+
+                'id' => 'map_' . $this->id,
+                'lat' => $this->catalogMapLat,
+                'lng' => $this->catalogMapLng,
+                'mapZoom' => $this->catalogMapZoom,
+                'mapType' => $this->catalogMapType,
+                'mapStyle' => $this->catalogMapStyle,
+                'mapMarker' => $this->catalogMapMarker,
+                'mapScrollWheel' => $this->catalogMapScrollWheel,
+                'addMapInfoBox' => $this->catalogAddMapInfoBox
+            ]);
+
+            $this->blnMapViewMode = true;
+            $this->blnGoogleMapScript = true;
+            $this->strTemplate = $this->catalogMapTemplate;
+        }
+
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
     }
+
 
     public function checkPermission() {
 
@@ -76,6 +101,7 @@ class CatalogView extends CatalogController {
         
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
     }
+
 
     public function getCreateOperation() {
 
@@ -103,6 +129,13 @@ class CatalogView extends CatalogController {
 
         return $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment );
     }
+
+
+    public function getMapViewOptions() {
+
+        return $this->arrCatalogMapViewOptions;
+    }
+
 
     public function getCatalogView( $arrQuery ) {
 
@@ -244,7 +277,7 @@ class CatalogView extends CatalogController {
                 }
             }
 
-            if ( !empty( $this->arrCatalogStaticFields ) && is_array( $this->arrCatalogStaticFields ) ) {
+            if ( !empty( $this->arrCatalogStaticFields ) && is_array( $this->arrCatalogStaticFields ) && !$this->blnMapViewMode ) {
 
                 foreach ( $this->arrCatalogStaticFields as $strID ) {
 
@@ -266,8 +299,16 @@ class CatalogView extends CatalogController {
                 }
             }
 
-            $objTemplate->setData( $arrCatalog );
+            if ( $this->blnMapViewMode ) {
 
+                $this->arrCatalogMapViewOptions['mapInfoBoxContent'] = Map::parseInfoBoxContent( $this->catalogMapInfoBoxContent, $arrCatalog );
+                $this->arrCatalogMapViewOptions['locationLat'] = $arrCatalog[$this->catalogFieldLat];
+                $this->arrCatalogMapViewOptions['locationLng'] = $arrCatalog[$this->catalogFieldLng];
+
+                $arrCatalog['map'] = $this->arrCatalogMapViewOptions;
+            }
+
+            $objTemplate->setData( $arrCatalog );
             $strCatalogView .= $objTemplate->parse();
         }
 
@@ -283,6 +324,7 @@ class CatalogView extends CatalogController {
 
         return $strCatalogView;
     }
+
 
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
@@ -300,6 +342,7 @@ class CatalogView extends CatalogController {
 
         return $varValue;
     }
+
 
     public function getCommentForm() {
 
@@ -330,6 +373,7 @@ class CatalogView extends CatalogController {
         );
     }
 
+
     private function setOptions() {
 
         if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
@@ -340,6 +384,7 @@ class CatalogView extends CatalogController {
             }
         }
     }
+
 
     private function getPageModel( $strID ) {
 
@@ -364,6 +409,7 @@ class CatalogView extends CatalogController {
 
         ])->row();
     }
+
 
     private function prepareJoinData ( $arrJoins ) {
 
@@ -400,12 +446,14 @@ class CatalogView extends CatalogController {
         return $arrReturn;
     }
 
+
     private function generateUrl( $objPage, $strAlias ) {
 
         if ( $objPage == null ) return '';
 
         return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
     }
+
 
     private function generateOperationsLinks( $strID ) {
 
@@ -435,6 +483,7 @@ class CatalogView extends CatalogController {
 
         return $arrReturn;
     }
+
 
     private function preparePTableJoinData () {
 

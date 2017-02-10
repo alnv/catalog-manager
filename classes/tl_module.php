@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class tl_module extends \Backend {
 
+    private $arrCatalogFieldsCache = [];
+
     public function getCatalogs() {
 
         $arrReturn = [];
@@ -37,6 +39,23 @@ class tl_module extends \Backend {
         if ( empty( $arrCatalog['cTables'] ) ) {
 
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables']['eval']['disabled'] = true;
+        }
+    }
+
+    public function generateGeoCords( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->catalogMapAddress ) return null;
+
+        $arrSet = [];
+        $objGeoCoding = new GeoCoding();
+        $arrCords = $objGeoCoding->getCords( $dc->activeRecord->catalogMapAddress, 'en', true );
+
+        if ( ( $arrCords['lat'] || $arrCords['lng'] ) ) {
+
+            $arrSet['catalogMapLng'] = $arrCords['lng'];
+            $arrSet['catalogMapLat'] = $arrCords['lat'];
+
+            $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE id = ?' )->set( $arrSet )->execute( $dc->id );
         }
     }
 
@@ -110,5 +129,24 @@ class tl_module extends \Backend {
     public function getMapViewTemplates(){
 
         return $this->getTemplateGroup('mod_catalog_map_');
+    }
+
+    public function getCatalogFieldsByTablename( \DataContainer $dc ) {
+
+        $strTable = $dc->activeRecord->catalogTablename;
+
+        if ( !empty( $this->arrCatalogFieldsCache ) && is_array( $this->arrCatalogFieldsCache ) ) {
+
+            return $this->arrCatalogFieldsCache;
+        }
+
+        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+
+            $arrColumns = $this->Database->listFields( $strTable );
+
+            $this->arrCatalogFieldsCache = Toolkit::parseColumns( $arrColumns );
+        }
+
+        return $this->arrCatalogFieldsCache;
     }
 }

@@ -182,6 +182,12 @@ class FrontendEditing extends CatalogController {
             $this->blnHasUpload = true;
         }
 
+        if ( $arrField['eval']['rgxp'] && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+            $strDateFormat = \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] );
+            $objWidget->value = \Date::parse( $strDateFormat, $objWidget->value );
+        }
+
         if ( $objWidget instanceof \FormPassword ) {
 
             $objWidget->rowClassConfirm = 'row_' . ++$intIndex . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );

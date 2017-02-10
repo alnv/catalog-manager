@@ -4,10 +4,12 @@ namespace CatalogManager;
 
 class SQLQueryBuilder extends CatalogController {
 
+
     private $strQuery = '';
     private $strTable = '';
     private $arrQuery = [];
     private $arrValues = [];
+
 
     public function __construct() {
 
@@ -15,6 +17,7 @@ class SQLQueryBuilder extends CatalogController {
 
         $this->import( 'Database' );
     }
+
 
     public function getQuery( $arrQuery ) {
 
@@ -27,12 +30,14 @@ class SQLQueryBuilder extends CatalogController {
         return $this->strQuery;
     }
 
+
     public function execute( $arrQuery ) {
 
         $this->getQuery( $arrQuery );
 
         return $this->Database->prepare( $this->strQuery )->execute( $this->arrValues );
     }
+
 
     public function tableExist( $strTable ) {
 
@@ -44,63 +49,75 @@ class SQLQueryBuilder extends CatalogController {
         return true;
     }
 
+
     protected function createSelectQuery() {
 
-        $this->strQuery = sprintf( 'SELECT %s FROM %s %s %s %s %s',
+        $this->strQuery = sprintf( 'SELECT %s FROM %s%s%s%s%s%s',
 
             $this->createSelectionStatement(),
             $this->strTable,
             $this->createJoinStatement(),
             $this->createWhereStatement(),
+            $this->createHavingDistanceStatement(),
             $this->createOrderByStatement(),
             $this->createPaginationStatement()
         );
     }
+
 
     protected function equal( $strField ) {
 
         return sprintf( '%s.`%s` = ?', $this->strTable, $strField );
     }
 
+
     protected function not( $strField ) {
 
         return sprintf( '%s.`%s` != ?', $this->strTable, $strField );
     }
+
 
     protected function regexp( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)', $this->strTable, $strField );
     }
 
+
     protected function gt( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) > ?', $this->strTable, $strField );
     }
+
 
     protected function gte( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) >= ?', $this->strTable, $strField );
     }
 
+
     protected function lt( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) < ?', $this->strTable, $strField );
     }
+
 
     protected function lte( $strField ) {
 
         return sprintf( 'LOWER(CAST(%s.`%s` AS SIGNED)) <= ?', $this->strTable, $strField );
     }
 
+
     protected function contain( $strField ) {
 
         return sprintf( 'LOWER(%s.`%s`) IN (?)', $this->strTable, $strField );
     }
 
+
     protected function between( $strField ) {
 
         return sprintf( 'LOWER(%s.`%s`) BETWEEN ? AND ?', $this->strTable, $strField );
     }
+
 
     protected function createSelectionStatement() {
 
@@ -108,7 +125,7 @@ class SQLQueryBuilder extends CatalogController {
 
         if ( !$this->arrQuery['joins'] || empty( $this->arrQuery['joins'] ) || !is_array( $this->arrQuery['joins'] ) ) {
 
-            return $strSelectionStatement;
+            return $strSelectionStatement . $this->getDistanceField();
         }
 
         $strSelectionStatement = sprintf( '%s.*', $this->strTable );
@@ -130,8 +147,20 @@ class SQLQueryBuilder extends CatalogController {
             $strSelectionStatement .= ( $intIndex ? ',' : '' ) . implode( ',' , $arrColumnAliases );
         }
 
-        return $strSelectionStatement;
+        return $strSelectionStatement . $this->getDistanceField();
     }
+
+
+    protected function createHavingDistanceStatement() {
+
+        if ( !$this->arrQuery['distance'] || empty( $this->arrQuery['distance'] ) || !is_array( $this->arrQuery['distance'] ) ) {
+
+            return '';
+        }
+
+        return sprintf( ' HAVING _distance < %s', $this->arrQuery['distance']['value'] );
+    }
+
 
     protected function createJoinStatement() {
 
@@ -151,17 +180,18 @@ class SQLQueryBuilder extends CatalogController {
 
             if ( $arrJoin['multiple'] ) {
 
-                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . 'JOIN %s ON FIND_IN_SET(%s.`%s`,%s.`%s`)', $arrJoin['onTable'], $arrJoin['onTable'], $arrJoin['onField'], $arrJoin['table'], $arrJoin['field'] );
+                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' JOIN %s ON FIND_IN_SET(%s.`%s`,%s.`%s`)', $arrJoin['onTable'], $arrJoin['onTable'], $arrJoin['onField'], $arrJoin['table'], $arrJoin['field'] );
             }
 
             else {
 
-                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . 'JOIN %s ON %s.`%s` = %s.`%s`', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
+                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' JOIN %s ON %s.`%s` = %s.`%s`', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
             }
         }
 
         return $strJoinStatement;
     }
+
 
     protected function createWhereStatement() {
 
@@ -172,7 +202,7 @@ class SQLQueryBuilder extends CatalogController {
             return $strWhereStatement;
         }
 
-        $strWhereStatement .= 'WHERE ';
+        $strWhereStatement .= ' WHERE ';
 
         foreach ( $this->arrQuery['where'] as $intIndex => $arrQueries ) {
 
@@ -214,6 +244,7 @@ class SQLQueryBuilder extends CatalogController {
         return $strWhereStatement;
     }
 
+
     protected function createPaginationStatement() {
 
         if ( !$this->arrQuery['pagination'] || empty( $this->arrQuery['pagination'] ) || !is_array( $this->arrQuery['pagination'] ) ) {
@@ -224,8 +255,9 @@ class SQLQueryBuilder extends CatalogController {
         $strOffset = $this->arrQuery['pagination']['offset'] ? intval( $this->arrQuery['pagination']['offset'] ) : 0;
         $strLimit = $this->arrQuery['pagination']['limit'] ? intval( $this->arrQuery['pagination']['limit'] ) : 1000;
 
-        return sprintf( 'LIMIT %s, %s', $strOffset, $strLimit );
+        return sprintf( ' LIMIT %s, %s', $strOffset, $strLimit );
     }
+
 
     protected function createOrderByStatement() {
 
@@ -251,8 +283,9 @@ class SQLQueryBuilder extends CatalogController {
             return '';
         }
 
-        return 'ORDER BY ' . implode( ',', $arrOrderByStatements );
+        return ' ORDER BY ' . implode( ',', $arrOrderByStatements );
     }
+
 
     private function setValue( $varValue ) {
 
@@ -270,6 +303,7 @@ class SQLQueryBuilder extends CatalogController {
         }
     }
 
+
     private function getForeignColumnsByTablename( $strTable ) {
 
         if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
@@ -278,5 +312,25 @@ class SQLQueryBuilder extends CatalogController {
         }
 
         return Toolkit::parseColumns( $this->Database->listFields( $strTable ) );
+    }
+
+
+    private function getDistanceField() {
+
+        if ( !$this->arrQuery['distance'] || empty( $this->arrQuery['distance'] ) || !is_array( $this->arrQuery['distance'] ) ) {
+
+            return '';
+        }
+
+        return sprintf(
+
+            ",3956 * 1.6 * 2 * ASIN(SQRT(POWER(SIN((%s-abs(%s)) * pi()/180 / 2),2) + COS(%s * pi()/180) * COS(abs(%s) *  pi()/180) * POWER( SIN( (%s-%s) *  pi()/180 / 2 ), 2 ))) AS _distance",
+            $this->arrQuery['distance']['latCord'],
+            $this->arrQuery['distance']['latField'],
+            $this->arrQuery['distance']['latCord'],
+            $this->arrQuery['distance']['latField'],
+            $this->arrQuery['distance']['lngCord'],
+            $this->arrQuery['distance']['lngField']
+        );
     }
 }

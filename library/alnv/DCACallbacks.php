@@ -4,10 +4,12 @@ namespace CatalogManager;
 
 class DCACallbacks extends \Backend{
 
+
     public function __construct() {
 
         parent::__construct();
     }
+
 
     public function createRowView( $arrRow ) {
 
@@ -15,10 +17,12 @@ class DCACallbacks extends \Backend{
         return sprintf( '%s', $arrRow['title'] );
     }
 
+
     public function pagePicker( \DataContainer $dc ) {
 
         return ' <a href="' . ( ($dc->value == '' || strpos($dc->value, '{{link_url::') !== false) ? 'contao/page.php' : 'contao/file.php') . '?do=' . \Input::get('do') . '&amp;table=' . $dc->table . '&amp;field=' . $dc->field . '&amp;value=' . rawurlencode(str_replace(array('{{link_url::', '}}'), '', $dc->value)) . '&amp;switch=1' . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\'' . specialchars(str_replace("'", "\\'", $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['label'][0])) . '\',\'url\':this.href,\'id\':\'' . $dc->field . '\',\'tag\':\'ctrl_'. $dc->field . (( \Input::get('act') == 'editAll') ? '_' . $dc->id : '') . '\',\'self\':this});return false">' . \Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
     }
+
 
     public function toggleIcon( $arrRow, $strHref, $strLabel, $strTitle, $strIcon, $strAttributes ) {
 
@@ -41,6 +45,7 @@ class DCACallbacks extends \Backend{
 
         return '<a href="' . $this->addToUrl( $strHref ) . '" title="' . specialchars( $strTitle ) . '"' . $strAttributes . '>' . \Image::getHtml( $strIcon, $strLabel, 'data-state="' . ( $arrRow['invisible'] ? 0 : 1) . '"' ) . '</a> ';
     }
+
 
     public function toggleVisibility( $intId, $blnVisible, $strTable, \DataContainer $dc = null ) {
 
@@ -70,6 +75,7 @@ class DCACallbacks extends \Backend{
 
         $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `invisible` = ? WHERE `id` = ?", $strTable, time() ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
     }
+
 
     public function generateAlias( $varValue, \DataContainer $dc, $strField = 'title', $strTable = '' ) {
 
@@ -102,6 +108,7 @@ class DCACallbacks extends \Backend{
         return $varValue;
     }
 
+    
     public function generateGeoCords( \DataContainer $dc ) {
 
         if ( !$dc->activeRecord ) return null;

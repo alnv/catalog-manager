@@ -1,5 +1,6 @@
 <?php
 
+$GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = [ 'CatalogManager\tl_module', 'generateGeoCords' ];
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
@@ -16,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalo
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -601,7 +602,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLat'] = [
     ],
 
     'exclude' => true,
-    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+    'sql' => "varchar(256) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLng'] = [
@@ -615,7 +616,51 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLng'] = [
     ],
 
     'exclude' => true,
-    'sql' => "smallint(5) unsigned NOT NULL default '0'"
+    'sql' => "varchar(256) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLat'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFieldLat'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 128,
+        'mandatory' => true,
+        'tl_class' => 'w50',
+        'doNotCopy' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+
+    'exclude' => true,
+    'sql' => "char(128) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLng'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFieldLng'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 128,
+        'mandatory' => true,
+        'tl_class' => 'w50',
+        'doNotCopy' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+
+    'exclude' => true,
+    'sql' => "char(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapViewTemplate'] = [

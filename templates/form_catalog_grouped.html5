@@ -1,8 +1,5 @@
 <!-- indexer::stop -->
 <div class="form_catalog_default">
-   <?php if ($this->headline): ?>
-      <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
-   <?php endif; ?>
    <?php if ($this->message): ?>
       <?= $this->message ?>
    <?php endif; ?>

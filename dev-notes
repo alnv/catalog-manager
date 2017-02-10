@@ -1,6 +1,5 @@
 todo
  - yaml parser
  - csv parser
- - fix date output in fe
  - message field
  - fix duplicate field problem in tl_member and tl_user

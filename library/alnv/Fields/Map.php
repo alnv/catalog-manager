@@ -4,10 +4,12 @@ namespace CatalogManager;
 
 class Map {
 
+
     public static function generate( $arrDCAField, $arrField ) {
 
         return $arrDCAField;
     }
+
 
     public static function parseValue( $varValue, $arrField, $arrCatalog = [] ) {
 
@@ -19,12 +21,13 @@ class Map {
         return $objTemplate->parse();
     }
 
-    private static function prepareMapOptions( $arrField, $arrCatalog ) {
+
+    public static function prepareMapOptions( $arrField, $arrCatalog ) {
 
         $arrReturn = [
 
             'catalog' => $arrCatalog,
-            'mapInfoBoxContent' => '-',
+            'mapInfoBoxContent' => '',
             'title' => $arrField['title'],
             'fieldname' => $arrField['fieldname'],
             'description' => $arrField['description'],
@@ -42,21 +45,39 @@ class Map {
 
         if ( $arrField['mapInfoBoxContent'] ) {
 
-            $strInfoBox = \StringUtil::parseSimpleTokens( $arrField['mapInfoBoxContent'], $arrCatalog );
-            $strInfoBox = Toolkit::removeBreakLines( $strInfoBox );
-            $strInfoBox = Toolkit::removeApostrophe( $strInfoBox );
-            $strInfoBox = \StringUtil::toHtml5( $strInfoBox );
-
-            $arrReturn['mapInfoBoxContent'] = $strInfoBox;
+            $arrReturn['mapInfoBoxContent'] = static::parseInfoBoxContent( $arrField['mapInfoBoxContent'], $arrCatalog );
         }
 
         return $arrReturn;
     }
 
+
+    public static function parseInfoBoxContent( $strInfoBox, $arrData ) {
+
+        $strInfoBox = \StringUtil::parseSimpleTokens( $strInfoBox, $arrData );
+        $strInfoBox = Toolkit::removeBreakLines( $strInfoBox );
+        $strInfoBox = Toolkit::removeApostrophe( $strInfoBox );
+
+        return \StringUtil::toHtml5( $strInfoBox );
+    }
+
+    public static function getMapViewOptions( $arrOptions ) {
+
+        $arrOptions['mapMarker'] = $arrOptions['mapMarker'] ? 'true' : 'false';
+        $arrOptions['mapZoom'] = $arrOptions['mapZoom'] ? $arrOptions['mapZoom'] : 10;
+        $arrOptions['addMapInfoBox'] = $arrOptions['addMapInfoBox'] ? 'true' : 'false';
+        $arrOptions['mapScrollWheel'] = $arrOptions['mapScrollWheel'] ? 'true' : 'false';
+        $arrOptions['mapType'] = $arrOptions['mapType'] ? $arrOptions['mapType'] : 'HYBRID';
+
+        return $arrOptions;
+    }
+
+
     private static function createUniqueID( $arrField, $arrCatalog ) {
 
         return 'map_' . $arrField['fieldname'] . '_' . $arrCatalog['id'];
     }
+
 
     public static function generateGoogleMapJSInitializer() {
 

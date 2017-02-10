@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class DCAPermission extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
@@ -11,6 +12,7 @@ class DCAPermission extends CatalogController {
         $this->import( 'Database' );
         $this->import( 'BackendUser', 'User' );
     }
+
 
     public function checkPermission( $strTable, $strFieldname, $strFieldPermissions ) {
 
@@ -135,6 +137,7 @@ class DCAPermission extends CatalogController {
         }
     }
 
+
     public function checkPermissionByParent( $strTable, $strPTable, $strFieldname, $strFieldPermissions = '' ) {
 
         if ( $this->isAdmin() ) {
@@ -243,6 +246,7 @@ class DCAPermission extends CatalogController {
         }
     }
 
+
     private function checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions ) {
 
         $arrRoot = $this->getRoot( $strFieldname );
@@ -268,6 +272,7 @@ class DCAPermission extends CatalogController {
         return $arrRoot;
     }
 
+
     private function getRoot( $strFieldname ) {
 
         if ( !is_array( $this->User->{$strFieldname} ) || empty( $this->User->{$strFieldname} ) ) {
@@ -283,6 +288,7 @@ class DCAPermission extends CatalogController {
         return $arrRoot;
     }
 
+    
     private function isAdmin() {
 
         return $this->User->isAdmin;

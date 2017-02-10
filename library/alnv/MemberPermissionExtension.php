@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class MemberPermissionExtension extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
@@ -11,6 +12,7 @@ class MemberPermissionExtension extends CatalogController {
         $this->import( 'SQLBuilder' );
         $this->import( 'I18nCatalogTranslator' );
     }
+
 
     public function initialize( $strDCAName ) {
 
@@ -28,6 +30,7 @@ class MemberPermissionExtension extends CatalogController {
             }
         }
     }
+
 
     private function extendMemberGroupDCA( $strCatalogname ){
 
@@ -75,6 +78,7 @@ class MemberPermissionExtension extends CatalogController {
         ];
     }
 
+    
     private function createSQLColumns( $strCatalogname ) {
 
         $arrFields = [ $strCatalogname, $strCatalogname . 'p' ];

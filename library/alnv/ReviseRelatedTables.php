@@ -4,15 +4,18 @@ namespace CatalogManager;
 
 class ReviseRelatedTables extends \Controller {
 
+
     private $arrErrorTables = [];
+
 
     public function __construct() {
 
         $this->import('Database');
     }
 
-    public function reviseCatalogTables( $strTable, $strPTable, $arrCTables )
-    {
+
+    public function reviseCatalogTables( $strTable, $strPTable, $arrCTables ) {
+
         $objCatalogDb = $this->Database->prepare( 'SELECT id FROM tl_catalog WHERE tablename = ?' )->execute( $strTable );
 
         if ( !$objCatalogDb->count() ) {
@@ -74,6 +77,7 @@ class ReviseRelatedTables extends \Controller {
         return false;
     }
 
+    
     public function getErrorTables() {
 
         return $this->arrErrorTables;

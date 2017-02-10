@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Checkbox {
 
+    
     public static function generate( $arrDCAField, $arrField ) {
 
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );

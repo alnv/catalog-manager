@@ -4,10 +4,12 @@ namespace CatalogManager;
 
 class TemplateHelper extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
     }
+
 
     public function addComments( $objTemplate, $arrConfig, $strTablename, $strID, $arrNotifies = [] ) {
 
@@ -26,6 +28,7 @@ class TemplateHelper extends CatalogController {
         $this->Comments->addCommentsToTemplate( $objTemplate, $objCommentConfig, $strTablename, $strID, $arrNotifies );
     }
 
+    
     public function addPagination( $intTotal, $intPerPage, $strPageID, $pageID ) {
 
         $strPage = ( \Input::get( $strPageID ) !== null) ? \Input::get( $strPageID ) : 1;

@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Number {
 
+
     public static function generate( $arrDCAField, $arrField ) {
 
         $arrDCAField['eval']['rgxp'] = static::setRGXP( $arrField['rgxp'] );
@@ -22,6 +23,7 @@ class Number {
         return $arrDCAField;
     }
 
+    
     private static function setRGXP( $strRGXP ) {
 
         if ( !$strRGXP ) {

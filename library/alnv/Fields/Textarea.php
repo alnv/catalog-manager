@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Textarea {
 
+    
     public static function generate( $arrDCAField, $arrField ) {
 
         $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );

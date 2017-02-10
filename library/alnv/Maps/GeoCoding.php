@@ -12,10 +12,12 @@ class GeoCoding extends CatalogController {
 
     private $arrGoogleMapsCache = [];
 
+
     public function __construct() {
 
         parent::__construct();
     }
+
 
     public function getCords( $strAddress = '', $strLanguage = 'en', $blnServer = false ) {
 
@@ -79,25 +81,30 @@ class GeoCoding extends CatalogController {
         return $arrReturn;
     }
 
+
     public function setCity( $strCity ) {
 
         $this->strCity = $strCity ? $strCity : '';
     }
+
 
     public function setStreet( $strStreet ) {
 
         $this->strStreet = $strStreet ? $strStreet : '';
     }
 
+
     public function setStreetNumber( $strStreetNumber ) {
 
         $this->strStreetNumber = $strStreetNumber ? $strStreetNumber : '';
     }
 
+
     public function setPostal( $strPostal ) {
 
         $this->strPostal = $strPostal ? $strPostal : '';
     }
+
 
     public function setCountry( $strCountry ) {
 

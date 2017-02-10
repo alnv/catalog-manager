@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Radio {
 
+    
     public static function generate( $arrDCAField, $arrField ) {
 
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );

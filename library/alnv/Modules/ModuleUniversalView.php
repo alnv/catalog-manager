@@ -4,10 +4,12 @@ namespace CatalogManager;
 
 class ModuleUniversalView extends \Module {
 
+
     private $strAct;
     private $strMasterAlias;
     private $strCatalogTable;
     protected $strTemplate = 'mod_catalog_view';
+
 
     public function generate() {
 
@@ -30,6 +32,7 @@ class ModuleUniversalView extends \Module {
 
         return parent::generate();
     }
+
 
     protected function compile() {
 
@@ -71,6 +74,7 @@ class ModuleUniversalView extends \Module {
         }
     }
 
+
     private function deleteItemFromCatalog() {
 
         $this->import( 'FrontendEditing' );
@@ -83,6 +87,7 @@ class ModuleUniversalView extends \Module {
 
         $this->FrontendEditing->deleteEntity();
     }
+
 
     private function determineCatalogView() {
 
@@ -126,6 +131,7 @@ class ModuleUniversalView extends \Module {
         }
     }
 
+
     private function determineMasterView() {
 
         $this->import( 'CatalogView' );
@@ -168,6 +174,7 @@ class ModuleUniversalView extends \Module {
         }
     }
 
+
     private function determineFormView() {
 
         $this->import( 'FrontendEditing' );
@@ -189,6 +196,7 @@ class ModuleUniversalView extends \Module {
         }
     }
 
+    
     private function setTable() {
 
         $strTable = \Input::get( 'table' );

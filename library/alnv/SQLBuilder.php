@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class SQLBuilder extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
@@ -11,10 +12,12 @@ class SQLBuilder extends CatalogController {
         $this->import( 'Database' );
     }
 
+
     public function parseCreateFieldStatement( $strField, $strSQLStatement ) {
 
         return sprintf( '`%s` %s', $strField, $strSQLStatement );
     }
+
 
     public function createSQLCreateStatement( $strTable, $arrFields ) {
 
@@ -37,6 +40,7 @@ class SQLBuilder extends CatalogController {
         $this->Database->prepare( $strCreateStatement )->execute();
     }
 
+
     public function createSQLDropTableStatement( $strTable ) {
 
         if ( !$strTable ) {
@@ -48,6 +52,7 @@ class SQLBuilder extends CatalogController {
 
         $this->Database->prepare( $strDropTableStatement )->execute();
     }
+
 
     public function createSQLRenameTableStatement( $strTable, $strOldTable ) {
 
@@ -61,6 +66,7 @@ class SQLBuilder extends CatalogController {
         $this->Database->prepare( $strRenameTableStatement )->execute();
     }
 
+
     public function createSQLRenameFieldnameStatement( $strTable, $strOldFieldname, $strNewFieldname, $strStatement ) {
 
         if ( !$strTable ) {
@@ -72,6 +78,7 @@ class SQLBuilder extends CatalogController {
 
         $this->Database->prepare( $strRenameTableStatement )->execute();
     }
+
 
     public function alterTableField( $strTable, $strField, $strSQLStatement ) {
 
@@ -88,6 +95,7 @@ class SQLBuilder extends CatalogController {
         }
     }
 
+
     public function dropTableField( $strTable, $strField ) {
 
         if ( !$strTable || !$strField ) {
@@ -103,6 +111,7 @@ class SQLBuilder extends CatalogController {
         }
     }
 
+
     public function modifyTableField( $strTable, $strField, $strSQLStatement ) {
 
         if ( !$strTable || !$strField || !$strSQLStatement ) {
@@ -117,6 +126,7 @@ class SQLBuilder extends CatalogController {
             $this->Database->prepare( $strAlterFieldStatement )->execute();
         }
     }
+
 
     public function addIndex( $strTable, $strField, $strIndex ) {
 
@@ -138,10 +148,12 @@ class SQLBuilder extends CatalogController {
         }
     }
 
+
     public function dropIndex( $strTable, $strField ) {
 
         $this->Database->prepare( sprintf( 'ALTER TABLE %s DROP INDEX %s', $strTable, $strField ) )->execute();
     }
+
 
     public function showColumns( $strTable ) {
 
@@ -161,6 +173,7 @@ class SQLBuilder extends CatalogController {
 
         return $arrReturn;
     }
+
 
     public function updateTableFieldByID( $stID, $strTable, $arrValues ) {
 
@@ -183,10 +196,12 @@ class SQLBuilder extends CatalogController {
         }
     }
 
+
     private function getPlaceholders( $arrValues, $strPlaceholder = '?' ) {
 
         return implode( ', ', array_fill( 0, count( $arrValues ), $strPlaceholder ) );
     }
+
 
     private function getSQLKey( $strKey ) {
         
@@ -203,6 +218,7 @@ class SQLBuilder extends CatalogController {
         return '';
     }
 
+
     private function getNullStatement( $strNull ) {
 
         if ( !$strNull ) {
@@ -212,6 +228,7 @@ class SQLBuilder extends CatalogController {
 
         return $strNull == 'NO' ? 'NOT NULL' : 'NULL';
     }
+
 
     private function getDefaultStatement( $strDefault ) {
 

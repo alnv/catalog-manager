@@ -7,6 +7,7 @@ class tl_catalog extends \Backend {
     private $arrCatalogFieldCache = [];
     private $arrCreateSortingFieldOn = [ '4', '5' ];
 
+
     private $arrRequiredTableFields = [
 
         'stop' => "varchar(16) NOT NULL default ''",
@@ -20,11 +21,13 @@ class tl_catalog extends \Backend {
         'sorting' => "int(10) unsigned NOT NULL default '0'"
     ];
 
+
     public function checkPermission() {
 
         $objDCAPermission = new DCAPermission();
         $objDCAPermission->checkPermission( 'tl_catalog' , 'catalog', 'catalogp' );
     }
+
 
     public function createTableOnSubmit( \DataContainer $dc ) {
 
@@ -90,6 +93,7 @@ class tl_catalog extends \Backend {
         }
     }
 
+
     public function getCatalogFields( \DataContainer $dc ) {
 
         if ( !empty( $this->arrCatalogFieldCache ) && is_array( $this->arrCatalogFieldCache ) ) {
@@ -112,6 +116,7 @@ class tl_catalog extends \Backend {
         return $this->arrCatalogFieldCache;
     }
 
+
     public function renameTable( $varValue, \DataContainer $dc ) {
 
         if ( !$varValue || !$dc->activeRecord->tablename || $dc->activeRecord->tablename == $varValue ) {
@@ -130,6 +135,7 @@ class tl_catalog extends \Backend {
         return $varValue;
     }
 
+
     public function dropTableOnDelete( \DataContainer $dc ) {
 
         $objSQLBuilder = new SQLBuilder();
@@ -144,6 +150,7 @@ class tl_catalog extends \Backend {
         $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename );
         $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename . 'p' );
     }
+
 
     public function renameAllTableDependencies( $strID, $strTable, $strOldTable ) {
 
@@ -181,30 +188,36 @@ class tl_catalog extends \Backend {
         }
     }
 
+
     public function getPanelLayouts() {
 
         return [ 'filter', 'search', 'limit', 'sort' ];
     }
+
 
     public function getOperations() {
 
         return [ 'cut', 'copy', 'invisible' ];
     }
 
+
     public function getModeTypes () {
 
         return [ '0', '1', '2', '4', '5' ];
     }
+
 
     public function getFlagTypes() {
 
         return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
     }
 
+
     public function checkTablename( $varValue ) {
 
         return Toolkit::parseConformSQLValue( $varValue );
     }
+
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
@@ -215,6 +228,7 @@ class tl_catalog extends \Backend {
 
         return $varValue;
     }
+
 
     public function getParentDataContainerFields( \DataContainer $dc ) {
 
@@ -227,6 +241,7 @@ class tl_catalog extends \Backend {
 
         return $arrFields;
     }
+
 
     public function getDataContainerFields( \DataContainer $dc ) {
 
@@ -255,6 +270,7 @@ class tl_catalog extends \Backend {
         return $arrDefaultFields;
     }
 
+
     public function getAllCTables( \DataContainer $dc ) {
 
         $arrReturn = [];
@@ -274,6 +290,7 @@ class tl_catalog extends \Backend {
         return $arrReturn;
     }
 
+
     public function getAllPTables( \DataContainer $dc ) {
 
         $arrReturn = [];
@@ -292,6 +309,7 @@ class tl_catalog extends \Backend {
         return $arrReturn;
     }
 
+
     public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
 
         $arrNotAllowedModeTypes = [ '4', '5' ];
@@ -304,6 +322,7 @@ class tl_catalog extends \Backend {
         return $varValue;
     }
 
+
     public function checkModeTypeForPTableAndModes( $varValue, \DataContainer $dc ) {
 
         if ( $varValue && $dc->activeRecord->pTable ) {
@@ -314,6 +333,7 @@ class tl_catalog extends \Backend {
         return $varValue;
     }
 
+
     public function checkModeTypeForBackendModule( $varValue, \DataContainer $dc ) {
 
         if ( $varValue && $dc->activeRecord->isBackendModule ) {
@@ -323,6 +343,7 @@ class tl_catalog extends \Backend {
 
         return $varValue;
     }
+
 
     public function getNavigationAreas() {
 
@@ -354,6 +375,7 @@ class tl_catalog extends \Backend {
 
         return $arrReturn;
     }
+    
 
     public function getNavigationPosition() {
 

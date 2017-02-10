@@ -5,7 +5,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
     'config' => [
 
         'dataContainer' => 'Table',
-
         'ptable' => 'tl_catalog',
 
         'onload_callback' => [

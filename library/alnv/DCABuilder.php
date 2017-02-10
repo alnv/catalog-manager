@@ -4,11 +4,13 @@ namespace CatalogManager;
 
 class DCABuilder extends CatalogController {
 
+
     private $strID;
     private $strTable;
     private $arrFields = [];
     private $arrCatalog = [];
     private $arrErrorTables = [];
+
 
     private $arrOperations = [
 
@@ -16,6 +18,7 @@ class DCABuilder extends CatalogController {
         'copy' => false,
         'invisible' => false
     ];
+
 
     public function __construct( $arrCatalog ) {
 
@@ -59,10 +62,12 @@ class DCABuilder extends CatalogController {
         }
     }
 
+
     public function initializeI18n() {
 
         $this->I18nCatalogTranslator->initialize();
     }
+
 
     private function determineOperations() {
 
@@ -82,6 +87,7 @@ class DCABuilder extends CatalogController {
         }
     }
 
+
     private function getDCAFields() {
 
         $objCatalogFieldsDb = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
@@ -91,6 +97,7 @@ class DCABuilder extends CatalogController {
             $this->arrFields[] = $objCatalogFieldsDb->row();
         }
     }
+
 
     public function createDCA() {
 
@@ -115,6 +122,7 @@ class DCABuilder extends CatalogController {
         ];
     }
 
+
     private function parseDCAFields() {
 
         $arrDCAFields = $this->getDefaultDCFields();
@@ -126,6 +134,7 @@ class DCABuilder extends CatalogController {
 
         return $arrDCAFields;
     }
+
 
     private function getDefaultDCFields() {
 
@@ -171,6 +180,7 @@ class DCABuilder extends CatalogController {
 
         return $arrReturn;
     }
+
 
     private function createConfigDataArray() {
 
@@ -243,6 +253,7 @@ class DCABuilder extends CatalogController {
         return $arrReturn;
     }
 
+
     private function createLabelDataArray() {
 
         $arrReturn = [
@@ -258,6 +269,7 @@ class DCABuilder extends CatalogController {
 
         return $arrReturn;
     }
+
 
     private function createSortingDataArray() {
 
@@ -303,6 +315,7 @@ class DCABuilder extends CatalogController {
 
         return $arrReturn;
     }
+
 
     private function createOperationDataArray() {
 
@@ -400,6 +413,7 @@ class DCABuilder extends CatalogController {
         return $arrReturn;
     }
 
+
     private function createGlobalOperationDataArray() {
 
         return [
@@ -413,6 +427,7 @@ class DCABuilder extends CatalogController {
             )
         ];
     }
+
 
     private function createPaletteDataArray() {
 
@@ -458,6 +473,7 @@ class DCABuilder extends CatalogController {
         return [ 'default' => $strPalette ];
     }
 
+    
     private function shouldBeUsedParentTable() {
 
         if ( !$this->arrCatalog['pTable'] ) {

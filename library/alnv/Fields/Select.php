@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Select {
 
+    
     public static function generate( $arrDCAField, $arrField, $arrCatalog = [] ) {
 
         $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );

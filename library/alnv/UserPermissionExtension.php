@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class UserPermissionExtension extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
@@ -11,6 +12,7 @@ class UserPermissionExtension extends CatalogController {
         $this->import( 'SQLBuilder' );
         $this->import( 'I18nCatalogTranslator' );
     }
+
 
     public function initialize( $strDCAName ) {
 
@@ -26,6 +28,7 @@ class UserPermissionExtension extends CatalogController {
             }
         }
     }
+
 
     private function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
 
@@ -81,6 +84,7 @@ class UserPermissionExtension extends CatalogController {
         ];
     }
 
+    
     private function createSQLColumns( $strCatalogname, $strDCAName ) {
 
         $arrColumnsToCreate = [ $strCatalogname, $strCatalogname . 'p' ];

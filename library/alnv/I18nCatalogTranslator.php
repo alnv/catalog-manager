@@ -4,8 +4,10 @@ namespace CatalogManager;
 
 class I18nCatalogTranslator {
 
+    
     private $strConfigFile = TL_ROOT . '/' . 'system/config/i18nCatalogManager.yaml';
 
+    
     public function initialize() {
 
         \Controller::loadLanguageFile( 'catalog_manager', $this->getCurrentLanguageIsoCode() );
@@ -13,11 +15,13 @@ class I18nCatalogTranslator {
         $this->createI18nCatalogConfigFile();
     }
 
+    
     public function getCurrentLanguageIsoCode() {
 
         return $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en';
     }
 
+    
     public function getModuleLabel( $strFieldname, $strAdditionalString = '' ) {
 
         $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ];
@@ -42,6 +46,7 @@ class I18nCatalogTranslator {
         return $arrLabel;
     }
 
+    
     public function getFieldLabel( $strI18nKey, $strTitle = '', $strDescription = '' ) {
 
         $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strI18nKey ];
@@ -56,6 +61,7 @@ class I18nCatalogTranslator {
         return $arrLabel;
     }
 
+    
     public function getOptionLabel( $strI18nKey, $strGivenOption = '' ) {
 
         $strOption = &$GLOBALS['TL_LANG']['catalog_manager']['options'][ $strI18nKey ];
@@ -69,6 +75,7 @@ class I18nCatalogTranslator {
         return $strOption;
     }
 
+    
     public function getLegendLabel( $strI18nKey, $strTitle = '' ) {
 
         $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strI18nKey ];
@@ -82,6 +89,7 @@ class I18nCatalogTranslator {
         return $strLegend;
     }
 
+    
     private function createI18nCatalogConfigFile() {
 
         if ( !file_exists( $this->strConfigFile ) ) {
@@ -94,6 +102,7 @@ class I18nCatalogTranslator {
         }
     }
 
+    
     public function getYamlLanguageFile( $strType, $strI18nKey ) {
 
         return [];

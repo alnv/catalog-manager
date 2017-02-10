@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Upload {
 
+
     public static function generate( $arrDCAField, $arrField ) {
 
         $blnMultiple = Toolkit::getBooleanByValue( $arrField['multiple'] );
@@ -34,6 +35,7 @@ class Upload {
 
         return $arrDCAField;
     }
+
 
     public static function parseValue ( $varValue, $arrField, $arrCatalog = [] ) {
 
@@ -74,6 +76,7 @@ class Upload {
         }
     }
 
+
     public static function renderDefaultFileValue( $varValue ) {
 
         if ( is_array( $varValue ) ) {
@@ -94,6 +97,7 @@ class Upload {
         }
     }
 
+
     public static function renderImage( $varValue, $arrField, $arrCatalog ) {
 
         if ( is_array( $varValue ) ) {
@@ -110,6 +114,7 @@ class Upload {
 
         return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ) );
     }
+
 
     public static function renderFile( $varValue, $arrField, $arrCatalog ) {
 
@@ -133,6 +138,7 @@ class Upload {
         return $objFile->enclosure[0];
     }
 
+
     public static function createImageArray( $varValue, $arrField, $arrCatalog ) {
 
         return [
@@ -147,6 +153,7 @@ class Upload {
         ];
     }
 
+
     public static function createEnclosureArray( $varValue, $arrField, $arrCatalog ) {
 
         $arrReturn = [
@@ -156,6 +163,7 @@ class Upload {
 
         return $arrReturn;
     }
+
 
     public static function getImagePath( $singleSRC ) {
 
@@ -172,6 +180,7 @@ class Upload {
         return $singleSRC;
     }
 
+
     public static function generateImage( $arrImage ) {
 
         $objPicture = new \stdClass();
@@ -181,6 +190,7 @@ class Upload {
         return $objPicture;
     }
 
+    
     public static function generateEnclosure( $arrEnclosure ) {
 
         $objEnclosure = new \stdClass();

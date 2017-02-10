@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class FrontendEditing extends CatalogController {
 
+
     public $strAct;
     public $strItemID;
     public $strPageID;
@@ -21,6 +22,7 @@ class FrontendEditing extends CatalogController {
     private $blnHasUpload = false;
     private $strTemporaryPalette = 'general_legend';
 
+
     public function __construct() {
 
         parent::__construct();
@@ -30,6 +32,7 @@ class FrontendEditing extends CatalogController {
         $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
     }
+
 
     public function initialize() {
 
@@ -88,6 +91,7 @@ class FrontendEditing extends CatalogController {
         $this->strPageID = $objPage->id;
     }
 
+
     public function checkPermission() {
 
         $this->import( 'FrontendEditingPermission' );
@@ -97,6 +101,7 @@ class FrontendEditing extends CatalogController {
 
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
     }
+
 
     public function getCatalogForm() {
 
@@ -138,6 +143,7 @@ class FrontendEditing extends CatalogController {
 
         return $this->objTemplate->parse();
     }
+
 
     private function generateForm( $arrField, $intIndex ) {
 
@@ -280,6 +286,7 @@ class FrontendEditing extends CatalogController {
         $this->arrPalettes[ $arrField['_palette'] ][ $arrField['_fieldname'] ] = $strWidget;
     }
 
+
     public function deleteEntity() {
 
         $this->import( 'SQLBuilder' );
@@ -291,6 +298,7 @@ class FrontendEditing extends CatalogController {
 
         $this->redirectToFrontendPage( $this->strRedirectID );
     }
+
 
     private function saveEntity() {
 
@@ -365,6 +373,7 @@ class FrontendEditing extends CatalogController {
         }
     }
 
+
     private function setValues() {
 
         if ( $this->strItemID && $this->catalogTablename ) {
@@ -381,6 +390,7 @@ class FrontendEditing extends CatalogController {
         }
     }
 
+
     private function setOptions() {
 
         if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
@@ -391,6 +401,7 @@ class FrontendEditing extends CatalogController {
             }
         }
     }
+
 
     private function decodeValue( $varValue ) {
 
@@ -406,6 +417,7 @@ class FrontendEditing extends CatalogController {
 
         return $varValue;
     }
+
 
     private function getCaptcha() {
 
@@ -441,6 +453,7 @@ class FrontendEditing extends CatalogController {
         return $objCaptcha;
     }
 
+
     private function convertWidgetToField( $arrField ) {
 
         if ( $arrField['inputType'] == 'checkboxWizard' ) {
@@ -459,6 +472,7 @@ class FrontendEditing extends CatalogController {
         return $arrField;
     }
 
+    
     private function fieldClassExist( $strInputType ) {
 
         $strClass = $GLOBALS['TL_FFL'][$strInputType];

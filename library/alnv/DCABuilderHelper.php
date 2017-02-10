@@ -4,12 +4,14 @@ namespace CatalogManager;
 
 class DCABuilderHelper extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
 
         $this->import( 'I18nCatalogTranslator' );
     }
+
 
     public $arrReservedFields = [
 
@@ -22,6 +24,7 @@ class DCABuilderHelper extends CatalogController {
         'invisible'
     ];
 
+
     public $arrForbiddenInputTypes = [
 
         'map',
@@ -29,6 +32,7 @@ class DCABuilderHelper extends CatalogController {
         'fieldsetStart',
         'fieldsetStop'
     ];
+
 
     public $arrInputTypes = [
 
@@ -42,6 +46,7 @@ class DCABuilderHelper extends CatalogController {
         'textarea' => 'textarea',
         'checkbox' => 'checkbox'
     ];
+
 
     public $arrSQLStatements = [
 
@@ -60,11 +65,13 @@ class DCABuilderHelper extends CatalogController {
         'blob' => "blob NULL",
         'binary' => "binary(16) NULL"
     ];
-    
+
+
     public function setInputType( $arrField ) {
         
         return $this->arrInputTypes[ $arrField['type'] ] ? $this->arrInputTypes[ $arrField['type'] ] : 'text';
     }
+
 
     public function convertCatalogFields2DCA( $arrFields, $arrDCAContainer = [], $arrCatalog = [] ) {
 
@@ -77,6 +84,7 @@ class DCABuilderHelper extends CatalogController {
 
         return $arrDCAContainer;
     }
+
 
     public function convertCatalogField2DCA( $arrField, $arrCatalog = [] ) {
 
@@ -188,6 +196,7 @@ class DCABuilderHelper extends CatalogController {
         return $arrDCAField;
     }
 
+
     public function getPredefinedDCFields() {
 
         $arrReturn = [];
@@ -201,6 +210,7 @@ class DCABuilderHelper extends CatalogController {
 
         return $arrReturn;
     }
+
 
     public function getPredefinedFields() {
 
@@ -285,6 +295,7 @@ class DCABuilderHelper extends CatalogController {
         ];
     }
 
+    
     public function isValidField( $arrField ) {
 
         if ( empty( $arrField ) && !is_array( $arrField ) ) return false;

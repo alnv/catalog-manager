@@ -4,15 +4,18 @@ namespace CatalogManager;
 
 class CSVBuilder {
 
+
     private $arrRows = [];
     private $strDelimiter = '/*';
     private $blnShowColumns = false;
     private $strCSVDestinationPath = TL_ROOT . '/files/';
 
+
     public function showColumns() {
 
         $this->blnShowColumns = true;
     }
+
 
     public function readRows( $arrRow ) {
 
@@ -27,6 +30,7 @@ class CSVBuilder {
         }
     }
 
+
     public function create( $strCSVName ) {
 
         $objCSVHandle = fopen( $this->strCSVDestinationPath . $strCSVName . '.csv' , 'w' );
@@ -38,6 +42,7 @@ class CSVBuilder {
 
         fclose( $objCSVHandle );
     }
+
 
     public function readCSV( $strCSVFile ) {
 

@@ -4,11 +4,13 @@ namespace CatalogManager;
 
 class FrontendEditingPermission extends CatalogController {
 
+
     public $blnDisablePermissions = false;
 
     private $arrGroups = [];
     private $arrCatalogManagerPermissions = [];
-    
+
+
     public function __construct() {
 
         parent::__construct();
@@ -16,6 +18,7 @@ class FrontendEditingPermission extends CatalogController {
         $this->import( 'SQLQueryHelper' );
         $this->import( 'FrontendUser', 'User' );
     }
+
 
     public function initialize() {
 
@@ -32,10 +35,12 @@ class FrontendEditingPermission extends CatalogController {
         $this->setMemberGroup();
     }
 
+
     public function isAdmin() {
 
         return $this->isAdmin ? true : false;
     }
+
 
     public function hasPermission( $strMode, $strCatalogname ) {
 
@@ -52,6 +57,7 @@ class FrontendEditingPermission extends CatalogController {
         return false;
     }
 
+
     public function hasAccess( $strCatalogname ) {
 
         if ( $this->isAdmin() || $this->blnDisablePermissions ) {
@@ -61,6 +67,7 @@ class FrontendEditingPermission extends CatalogController {
 
         return $this->{$strCatalogname} ? true : false;
     }
+
 
     private function setCatalogManagerPermissionFields() {
 
@@ -72,6 +79,7 @@ class FrontendEditingPermission extends CatalogController {
             $this->arrCatalogManagerPermissions[] = $objCatalogs->tablename . 'p';
         }
     }
+
 
     private function setAttributes() {
 
@@ -85,6 +93,7 @@ class FrontendEditingPermission extends CatalogController {
             }
         }
     }
+
 
     private function setMemberGroup() {
 

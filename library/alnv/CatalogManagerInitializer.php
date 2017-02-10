@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class CatalogManagerInitializer {
 
+    
     public function initialize() {
 
         if ( TL_MODE == 'BE' ) {
@@ -15,6 +16,7 @@ class CatalogManagerInitializer {
         }
     }
 
+    
     private function createBackendModules() {
 
         $objDatabase = \Database::getInstance();
@@ -45,6 +47,7 @@ class CatalogManagerInitializer {
         }
     }
 
+    
     private function createBackendModuleWithPermissions( $arrCatalog ) {
 
         $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
@@ -58,6 +61,7 @@ class CatalogManagerInitializer {
         }
     }
 
+    
     private function createPermissions( $strPermissionName ) {
 
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
@@ -66,6 +70,7 @@ class CatalogManagerInitializer {
         $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = $strPermissionName;
     }
 
+    
     private function createBackendModule( $arrCatalog ) {
 
         $arrTables = [];
@@ -91,6 +96,7 @@ class CatalogManagerInitializer {
         return $arrBackendModule;
     }
 
+    
     private function createCatalogManagerDCA( $arrCatalog ) {
 
         $objDCABuilder = new DCABuilder( $arrCatalog );

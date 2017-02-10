@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class DateInput {
 
+
     public static function generate( $arrDCAField, $arrField ) {
 
         $arrDCAField['eval']['datepicker'] = true;
@@ -24,6 +25,7 @@ class DateInput {
         return $arrDCAField;
     }
 
+    
     private static function setRGXP( $strRgxp ) {
 
         if ( !$strRgxp ) {

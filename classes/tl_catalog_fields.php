@@ -7,6 +7,7 @@ class tl_catalog_fields extends \Backend {
     private $arrFieldsCache = [];
     private $arrTextFieldsCache = [];
 
+    
     public function __construct() {
 
         parent::__construct();
@@ -14,12 +15,14 @@ class tl_catalog_fields extends \Backend {
         $this->import( 'DCABuilderHelper' );
     }
 
+    
     public function checkPermission() {
 
         $objDCAPermission = new DCAPermission();
         $objDCAPermission->checkPermissionByParent( 'tl_catalog_fields' , 'tl_catalog', 'catalog', 'catalogp' );
     }
 
+    
     public function createFieldOnSubmit( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;
@@ -82,6 +85,7 @@ class tl_catalog_fields extends \Backend {
         }
     }
 
+    
     public function checkUniqueValue( $varValue, \DataContainer $dc ) {
 
         $objFieldname = $this->Database->prepare('SELECT pid, id FROM tl_catalog_fields WHERE fieldname = ? AND id != ?')->limit(1)->execute( $varValue, $dc->activeRecord->id );
@@ -94,11 +98,13 @@ class tl_catalog_fields extends \Backend {
         return $varValue;
     }
 
+    
     public function getFilesTypes() {
 
         return [ 'image', 'file' ];
     }
 
+    
     public function getTextFieldsByParentID() {
 
         $arrReturn = [ 'title' ];
@@ -125,6 +131,7 @@ class tl_catalog_fields extends \Backend {
         return $this->arrTextFieldsCache;
     }
 
+    
     public function getCatalogFieldsByParentID() {
 
         if ( !empty( $this->arrFieldsCache ) && is_array( $this->arrFieldsCache ) ) {
@@ -144,6 +151,7 @@ class tl_catalog_fields extends \Backend {
         return $this->arrFieldsCache;
     }
 
+    
     public function renameFieldname( $varValue, \DataContainer $dc ) {
 
         if ( !$varValue || !$dc->activeRecord->fieldname || $dc->activeRecord->fieldname == $varValue ) {
@@ -170,11 +178,13 @@ class tl_catalog_fields extends \Backend {
         return $varValue;
     }
 
+    
     public function checkFieldname( $varValue ) {
 
         return Toolkit::parseConformSQLValue( $varValue );
     }
 
+    
     public function dropFieldOnDelete( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;
@@ -184,11 +194,13 @@ class tl_catalog_fields extends \Backend {
         $objSQLBuilder->dropTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
     }
 
+    
     public function getTables() {
 
         return $this->Database->listTables( null );
     }
 
+    
     public function getColumnsByDbTable( \DataContainer $dc ) {
 
         $strTable = $dc->activeRecord->dbTable;
@@ -203,16 +215,19 @@ class tl_catalog_fields extends \Backend {
         return [];
     }
 
+    
     public function getFieldTypes() {
 
         return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'map', 'fieldsetStart', 'fieldsetStop' ];
     }
 
+    
     public function getIndexes() {
 
         return [ 'index', 'unique' ];
     }
 
+    
     public function getRGXPTypes( \DataContainer $dc ) {
 
         if ( $dc->activeRecord->type && $dc->activeRecord->type == 'number') {
@@ -228,31 +243,37 @@ class tl_catalog_fields extends \Backend {
         return [ 'url', 'time', 'date', 'alias', 'alnum', 'alpha', 'datim', 'digit', 'email', 'extnd', 'phone', 'prcnt', 'locale', 'emails', 'natural', 'friendly', 'language', 'folderalias' ];
     }
 
+    
     public function getRichTextEditor() {
 
         return [ 'tinyMCE', 'tinyFlash' ];
     }
 
+    
     public function getTLClasses() {
 
         return [ 'w50', 'long', 'm12', 'clr' ];
     }
 
+    
     public function getFieldFlags() {
 
         return [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12' ];
     }
 
+    
     public function getSQLStatements() {
 
         return $this->DCABuilderHelper->arrSQLStatements;
     }
 
+    
     public function getCatalogFieldList( $arrRow ) {
 
         return $arrRow['title'];
     }
 
+    
     public function getMapTemplates() {
 
         return $this->getTemplateGroup( 'map_catalog_' );

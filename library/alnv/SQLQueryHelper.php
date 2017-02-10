@@ -4,12 +4,14 @@ namespace CatalogManager;
 
 class SQLQueryHelper extends CatalogController {
 
+
     public function __construct() {
 
         parent::__construct();
 
         $this->import( 'SQLQueryBuilder' );
     }
+
 
     public function getCatalogTableItemByID( $strTablename, $strID ) {
         
@@ -18,6 +20,7 @@ class SQLQueryHelper extends CatalogController {
         return $this->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $strTablename ) )->limit( 1 )->execute( $strID )->row();
     }
 
+
     public function getCatalogs() {
 
         return $this->SQLQueryBuilder->execute([
@@ -25,6 +28,7 @@ class SQLQueryHelper extends CatalogController {
             'table' => 'tl_catalog'
         ]);
     }
+
 
     public function getCatalogByTablename( $strTablename ) {
 
@@ -52,6 +56,7 @@ class SQLQueryHelper extends CatalogController {
         ])->row();
     }
 
+    
     public function getCatalogFieldsByCatalogID( $strID, $arrCallback = [] ) {
 
         $arrFields = [];

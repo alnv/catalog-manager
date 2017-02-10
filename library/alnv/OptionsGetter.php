@@ -4,7 +4,9 @@ namespace CatalogManager;
 
 class OptionsGetter extends CatalogController {
 
+
     private $arrField = [];
+
 
     public function __construct( $arrField ) {
 
@@ -16,6 +18,7 @@ class OptionsGetter extends CatalogController {
         $this->import( 'I18nCatalogTranslator' );
     }
 
+
     public function isForeignKey() {
 
         if ( $this->arrField['optionsType'] && $this->arrField['optionsType'] == 'useForeignKey' ) {
@@ -26,10 +29,12 @@ class OptionsGetter extends CatalogController {
         return false;
     }
 
+
     public function getForeignKey() {
 
         return $this->setForeignKey();
     }
+
 
     public function getOptions() {
 
@@ -50,6 +55,7 @@ class OptionsGetter extends CatalogController {
 
         return [];
     }
+
 
     private function getDbOptions() {
 
@@ -75,6 +81,7 @@ class OptionsGetter extends CatalogController {
         return $arrOptions;
     }
 
+
     private function getKeyValueOptions() {
 
         $arrOptions = [];
@@ -95,6 +102,7 @@ class OptionsGetter extends CatalogController {
         return $arrOptions;
     }
 
+    
     private function setForeignKey() {
 
         if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] ) {

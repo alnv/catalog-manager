@@ -58,7 +58,13 @@ class FrontendEditing extends CatalogController {
 
             if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
 
+
             $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
+
+            if ( $arrField['type'] == 'hidden' ) {
+
+                $arrDCField['inputType'] = 'hidden';
+            }
 
             $arrDCField['_fieldname'] = $strFieldname;
             $arrDCField['_palette'] = $this->I18nCatalogTranslator->getLegendLabel( $this->strTemporaryPalette );
@@ -461,6 +467,11 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'checkbox';
         }
 
+        if ( $arrField['inputType'] == 'checkboxWizard' ) {
+
+            $arrField['inputType'] = 'checkbox';
+        }
+
         if ( $arrField['inputType'] == 'fileTree' ) {
 
             $arrField['inputType'] = 'upload';
@@ -472,7 +483,7 @@ class FrontendEditing extends CatalogController {
         return $arrField;
     }
 
-    
+
     private function fieldClassExist( $strInputType ) {
 
         $strClass = $GLOBALS['TL_FFL'][$strInputType];

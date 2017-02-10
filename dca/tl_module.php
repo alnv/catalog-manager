@@ -9,13 +9,15 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewP
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAddMapInfoBox';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAllowComments';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiusSearch';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry,catalogRadioSearchZoomFactor';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
@@ -814,4 +816,54 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapInfoBoxContent'] = [
 
     'exclude' => true,
     'sql' => "text NULL"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseRadiusSearch'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseRadiusSearch'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr m12',
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchCountry'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 128,
+        'tl_class' => 'w50',
+        'doNotCopy' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getSystemCountries' ],
+
+    'exclude' => true,
+    'sql' => "char(128) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchZoomFactor'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchZoomFactor'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
 ];

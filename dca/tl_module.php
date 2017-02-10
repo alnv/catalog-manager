@@ -16,7 +16,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalo
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -618,6 +618,26 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapLng'] = [
     'sql' => "smallint(5) unsigned NOT NULL default '0'"
 ];
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapViewTemplate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapViewTemplate'],
+    'inputType' => 'select',
+    'default' => 'map_catalog_default',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 255,
+        'tl_class' => 'w50',
+        'mandatory' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getMapViewTemplates' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapTemplate'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapTemplate'],
@@ -727,7 +747,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogAddMapInfoBox'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50 m12',
+        'tl_class' => 'clr',
         'submitOnChange' => true
     ],
 

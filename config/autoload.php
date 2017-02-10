@@ -51,5 +51,6 @@ TemplateLoader::addFiles([
     'catalog_map_default' => 'system/modules/catalog-manager/templates',
     'map_catalog_default' => 'system/modules/catalog-manager/templates',
     'form_catalog_default' => 'system/modules/catalog-manager/templates',
-    'form_catalog_grouped' => 'system/modules/catalog-manager/templates'
+    'form_catalog_grouped' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
 ]);

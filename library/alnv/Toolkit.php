@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class Toolkit {
 
+    
     public static function parseStringToArray( $strValue ) {
 
         if ( $strValue && is_string( $strValue ) ) {
@@ -19,6 +20,7 @@ class Toolkit {
         return [];
     }
 
+
     public static function removeBreakLines( $strValue ) {
 
         if ( !$strValue || !is_string( $strValue ) ) {
@@ -28,6 +30,7 @@ class Toolkit {
 
         return preg_replace( "/\r|\n/", "", $strValue );
     }
+
 
     public static function removeApostrophe( $strValue ) {
 
@@ -39,10 +42,12 @@ class Toolkit {
         return str_replace( "'", "", $strValue );
     }
 
+
     public static function parseConformSQLValue( $varValue ) {
 
         return str_replace( '-', '_', $varValue );
     }
+
 
     public static function prepareValues4Db( $arrValues ) {
 
@@ -59,6 +64,7 @@ class Toolkit {
         return $arrReturn;
     }
 
+
     public static function prepareValue4Db( $varValue ) {
 
         if ( !static::isDefined( $varValue ) ) return $varValue;
@@ -72,6 +78,7 @@ class Toolkit {
         return $varValue;
     }
 
+
     public static function deserialize( $strValue ) {
 
         $strValue = deserialize( $strValue );
@@ -84,6 +91,7 @@ class Toolkit {
         return $strValue;
     }
 
+
     public static function getBooleanByValue( $varValue ) {
 
         if ( !$varValue ) {
@@ -93,6 +101,7 @@ class Toolkit {
 
         return true;
     }
+
 
     public static function deserializeAndImplode( $strValue, $strDelimiter = ',' ) {
 
@@ -110,6 +119,7 @@ class Toolkit {
 
         return '';
     }
+
 
     public static function isDefined( $varValue ) {
 
@@ -130,6 +140,7 @@ class Toolkit {
 
         return false;
     }
+
 
     public static function parseColumns( $arrColumns ) {
 

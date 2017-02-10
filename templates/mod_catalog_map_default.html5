@@ -1,4 +1,30 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
-   <h1>test</h1>
+   <div id="id_<?= $this->map['id'] ?>" class="catalog_map_default" style="width: 100%; height: 768px;"></div>
+   <script async defer>
+
+      'use strict';
+
+      var CatalogManagerMaps = CatalogManagerMaps || [];
+      var objCatalogMapView_<?= $this->map['id'] ?> = null;
+
+      CatalogManagerMaps[CatalogManagerMaps.length] = function () {
+
+         var objLatLng = new google.maps.LatLng("<?= $this->map['lat']; ?>", "<?= $this->map['lng']; ?>");
+
+         objCatalogMapView_<?= $this->map['id'] ?> = new google.maps.Map( document.getElementById( "id_<?= $this->map['id'] ?>" ), {
+
+            center: objLatLng,
+            zoom: <?= $this->map['mapZoom']; ?>,
+            scrollwheel: <?= $this->map['mapScrollWheel']; ?>,
+            mapTypeId: google.maps.MapTypeId.<?= $this->map['mapType']; ?>,
+            <?php if( $this->map['mapStyle'] ): ?> <?= 'styles: ' . $this->map['mapStyle'] ?> <?php endif; ?>
+         });
+      };
+
+   </script>
+   <?= $this->output; ?>
+   <?php if ($this->catalogAddPagination): ?>
+      <?= $this->pagination; ?>
+   <?php endif; ?>
 <?php $this->endblock(); ?>

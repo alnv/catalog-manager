@@ -140,7 +140,7 @@ class CatalogView extends CatalogController {
 
     public function getCatalogView( $arrQuery ) {
 
-        $strCatalogView = '';
+        $arrCatalogItems = [];
         $strPageID = 'page_e' . $this->id;
         $intOffset = $this->catalogOffset;
         $intPerPage = $this->catalogPerPage;
@@ -150,7 +150,7 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
 
-            return $strCatalogView;
+            return '';
         }
 
         if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
@@ -364,7 +364,7 @@ class CatalogView extends CatalogController {
             }
 
             $objTemplate->setData( $arrCatalog );
-            $strCatalogView .= $objTemplate->parse();
+            $arrCatalogItems[] = $objTemplate->parse();
         }
 
         if ( $intPerPage > 0 && $this->catalogAddPagination ) {
@@ -377,7 +377,12 @@ class CatalogView extends CatalogController {
             $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
         }
 
-        return $strCatalogView;
+        if ( $this->catalogRandomSorting ) {
+
+            shuffle( $arrCatalogItems );
+        }
+
+        return implode( '', $arrCatalogItems );
     }
 
 

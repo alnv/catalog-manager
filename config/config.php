@@ -19,6 +19,13 @@ array_insert( $GLOBALS['FE_MOD'], 3, [
     ]
 ]);
 
+if ( TL_MODE == 'BE' ) {
+
+    $GLOBALS['TL_JAVASCRIPT']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
+        ? 'system/modules/catalog-manager/assets/BackendExtension.js'
+        : 'system/modules/catalog-manager/assets/BackendExtension.js';
+}
+
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
@@ -32,4 +39,4 @@ $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
 
-$GLOBALS['BE_FFL']['catalogWizard'] = 'CatalogManager\CatalogWizard';
+$GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizard';

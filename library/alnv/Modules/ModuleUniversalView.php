@@ -96,14 +96,7 @@ class ModuleUniversalView extends \Module {
         $arrQuery = [
 
             'where' => [],
-
-            'orderBy' => [
-
-                [
-                    'order' => 'ASC',
-                    'field' => 'alias'
-                ]
-            ],
+            'orderBy' => [],
 
             'pagination' => [
 

@@ -6,6 +6,7 @@ class tl_module extends \Backend {
 
 
     private $arrCatalogFieldsCache = [];
+    private $arrSortableCatalogFieldsCache = [];
 
 
     public function getCatalogs() {
@@ -165,5 +166,50 @@ class tl_module extends \Backend {
         }
 
         return $this->arrCatalogFieldsCache;
+    }
+
+    public function getSortableCatalogFieldsByTablename( $strTablename ) {
+
+        if ( !empty( $this->arrSortableCatalogFieldsCache ) && is_array( $this->arrSortableCatalogFieldsCache ) ) {
+
+            return $this->arrSortableCatalogFieldsCache;
+        }
+
+        $arrFields = [
+
+            'title' => 'Title', // todo translate
+            'alias' => 'Alias' // todo translate
+        ];
+
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $strTablename );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->type && in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
+
+                continue;
+            }
+
+            $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+        }
+
+        if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename] && is_array(  $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
+
+            if ( in_array( 'invisible', $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
+
+                $arrFields['start'] = 'Anzeigen ab'; // todo translate
+                $arrFields['stop'] = 'Anzeigen bis'; // todo translate
+                $arrFields['invisible'] = 'Datensatz verstecken'; // todo translate
+            }
+        }
+
+        $this->arrSortableCatalogFieldsCache = $arrFields;
+
+        return $this->arrSortableCatalogFieldsCache;
+    }
+
+    public function getOrderByItems() {
+
+        return [ 'asc', 'desc' ];
     }
 }

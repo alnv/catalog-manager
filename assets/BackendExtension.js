@@ -61,7 +61,7 @@ var CatalogManager = {};
                     if (tr = parent.getNext('tr')) {
 
                         parent.inject(tr, 'after');
-
+                        
                     } else {
 
                         parent.inject(tbody, 'top');

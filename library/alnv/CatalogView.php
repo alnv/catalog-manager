@@ -86,6 +86,7 @@ class CatalogView extends CatalogController {
             $this->strTemplate = $this->catalogMapTemplate;
         }
 
+        $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
@@ -268,8 +269,23 @@ class CatalogView extends CatalogController {
             }
         }
 
-        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
+        if ( !empty( $this->catalogOrderBy )  && is_array( $this->catalogOrderBy ) ) {
 
+            foreach ( $this->catalogOrderBy as $arrOrderBy ) {
+
+                if ( $arrOrderBy['key'] && $arrOrderBy['value'] ) {
+
+                    $arrQuery['orderBy'][] = [
+
+                        'field' => $arrOrderBy['key'],
+                        'order' => $arrOrderBy['value']
+                    ];
+                }
+            }
+        }
+
+        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();

@@ -177,6 +177,7 @@ class tl_module extends \Backend {
 
         $arrFields = [
 
+            'id' => 'ID', // todo translate
             'title' => 'Title', // todo translate
             'alias' => 'Alias' // todo translate
         ];
@@ -210,6 +211,6 @@ class tl_module extends \Backend {
 
     public function getOrderByItems() {
 
-        return [ 'asc', 'desc' ];
+        return [ 'ASC' => 'ASC', 'DESC' => 'DESC' ];
     }
 }

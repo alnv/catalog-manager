@@ -177,9 +177,9 @@ class tl_module extends \Backend {
 
         $arrFields = [
 
-            'id' => 'ID', // todo translate
-            'title' => 'Title', // todo translate
-            'alias' => 'Alias' // todo translate
+            'id' => 'ID',
+            'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
+            'alias' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0]
         ];
 
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $strTablename );
@@ -198,9 +198,9 @@ class tl_module extends \Backend {
 
             if ( in_array( 'invisible', $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
 
-                $arrFields['start'] = 'Anzeigen ab'; // todo translate
-                $arrFields['stop'] = 'Anzeigen bis'; // todo translate
-                $arrFields['invisible'] = 'Datensatz verstecken'; // todo translate
+                $arrFields['stop'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0];
+                $arrFields['start'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0];
+                $arrFields['invisible'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0];
             }
         }
 
@@ -211,6 +211,6 @@ class tl_module extends \Backend {
 
     public function getOrderByItems() {
 
-        return [ 'ASC' => 'ASC', 'DESC' => 'DESC' ];
+        return [ 'ASC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'], 'DESC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] ];
     }
 }

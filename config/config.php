@@ -24,6 +24,10 @@ if ( TL_MODE == 'BE' ) {
     $GLOBALS['TL_JAVASCRIPT']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
         ? 'system/modules/catalog-manager/assets/BackendExtension.js'
         : 'system/modules/catalog-manager/assets/BackendExtension.js';
+
+    $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
+        ? 'system/modules/catalog-manager/assets/Widgets.css'
+        : 'system/modules/catalog-manager/assets/Widgets.css';
 }
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];

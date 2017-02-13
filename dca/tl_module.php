@@ -176,11 +176,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMasterTemplate'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogOrderBy'],
-    'inputType' => 'keyValueWizard', // @todo
+    'inputType' => 'catalogOrderByWizard',
 
     'eval' => [
 
-        //
+        'chosen' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=>true,
+        'orderByTablename' => null,
+        'orderByOptionsCallback' => [ 'CatalogManager\tl_module', 'getOrderByItems' ],
+        'fieldOptionsCallback' => [ 'CatalogManager\tl_module', 'getSortableCatalogFieldsByTablename' ]
     ],
 
     'exclude' => true,

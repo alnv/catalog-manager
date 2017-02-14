@@ -115,10 +115,10 @@ class tl_module extends \Backend {
     }
 
 
-    public function getChildTables( \DataContainer $dc ) {
+    public function getChildTablesByTablename( $strTablename ) {
 
         $arrReturn = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
 
         if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
 
@@ -209,8 +209,24 @@ class tl_module extends \Backend {
         return $this->arrSortableCatalogFieldsCache;
     }
 
+
     public function getOrderByItems() {
 
         return [ 'ASC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'], 'DESC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] ];
+    }
+
+
+    public function getAllCatalogsViews() {
+
+        $arrReturn = [];
+        $strID = \Input::get('id');
+        $objModules = $this->Database->prepare( 'SELECT id, name, type FROM tl_module WHERE type = ? AND id != ? ORDER BY tstamp' )->execute( 'catalogUniversalView', $strID );
+
+        while ( $objModules->next() ) {
+
+            $arrReturn[ $objModules->id ] = $objModules->name;
+        }
+
+        return $arrReturn;
     }
 }

@@ -40,7 +40,8 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogOrderByWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogOrderByWizard.php',
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
-    'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php'
+    'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
+    'CatalogManager\CatalogInPageRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogInPageRelationWizard.php'
 ]);
 
 TemplateLoader::addFiles([

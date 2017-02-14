@@ -41,7 +41,7 @@ ClassLoader::addClasses([
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
-    'CatalogManager\CatalogInPageRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogInPageRelationWizard.php'
+    'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php'
 ]);
 
 TemplateLoader::addFiles([

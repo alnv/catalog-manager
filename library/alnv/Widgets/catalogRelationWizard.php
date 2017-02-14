@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class CatalogInPageRelationWizard extends \Widget {
+class CatalogRelationWizard extends \Widget {
 
 
     protected $blnSubmitInput = true;
@@ -66,62 +66,10 @@ class CatalogInPageRelationWizard extends \Widget {
             $this->redirect( preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request') ) ) );
         }
 
-        /*
-        if ( is_array( $this->varValue ) ) {
-
-            $arrOptions = [];
-            $arrTemp = $this->arrOptions;
-
-            foreach ( $this->arrOptions as $i => $arrOption ) {
-
-                foreach ( $this->varValue as $intPos => $arrValue ) {
-
-                    if ( ( array_search( $arrOption['value'], $arrValue ) ) !== false ) {
-
-                        $arrOptions[$intPos] = $arrOption;
-
-                        unset( $arrTemp[$i] );
-                    }
-                }
-            }
-
-            var_dump($arrOptions);
-
-            ksort($arrOptions);
-
-            $this->arrOptions = array_merge( $arrOptions, $arrTemp );
-        }
-        */
-
         $blnCheckAll = true;
-        $arrCatalogViews = [];
         $arrRelatedTables = [];
-        $arrCatalogChildTables = [];
 
-        if ( !$this->orderByTablename ) {
-
-            $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->strTable ) )->limit(1)->execute( $this->currentRecord );
-
-            if ( $objModule->numRows && $objModule->catalogTablename ) {
-
-                $this->orderByTablename = $objModule->catalogTablename;
-            }
-        }
-
-        if ( !empty( $this->CatalogViews ) && is_array( $this->CatalogViews ) ) {
-
-            $this->import( $this->CatalogViews[0] );
-
-            $arrCatalogViews = $this->{$this->CatalogViews[0]}->{$this->CatalogViews[1]}();
-        }
-
-        if ( !empty( $this->CatalogChildTables ) && is_array( $this->CatalogChildTables ) ) {
-
-            $this->import( $this->CatalogChildTables[0] );
-            $arrCatalogChildTables = $this->{$this->CatalogChildTables[0]}->{$this->CatalogChildTables[1]}( $this->orderByTablename );
-        }
-
-        foreach ( $arrCatalogChildTables as $intIndex => $strTable ) {
+        foreach ( $this->arrOptions as $intIndex => $arrOption ) {
 
             $strButtons = \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
 
@@ -130,12 +78,12 @@ class CatalogInPageRelationWizard extends \Widget {
                 $strButtons .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord).'" class="button-move" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="Backend.optionsWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
             }
 
-            $arrRelatedTables[] = $this->generateRelatedInputField( $strTable, $arrCatalogViews, $intIndex, $strButtons );
+            $arrRelatedTables[] = $this->generateRelatedInputField( $arrOption, $intIndex, $strButtons );
         }
 
         if ( empty( $arrRelatedTables ) ) {
 
-            $blnCheckAll = false;
+            return '-';
         }
 
         if ( !\Cache::has( 'tabindex' ) ) {
@@ -151,7 +99,7 @@ class CatalogInPageRelationWizard extends \Widget {
                     '<tr>'.
                         '<th>'.( $blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this,\'ctrl_' . $this->strId . '\')"></span>' : '').'</th>'.
                         '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['table'] .'</th>'.
-                        '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogView'] .'</th>'.
+                        '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['pageURL'] .'</th>'.
                         '<th>&nbsp;</th>'.
                     '</tr>'.
                 '</thead>'.
@@ -166,13 +114,13 @@ class CatalogInPageRelationWizard extends \Widget {
     }
 
 
-    protected function generateRelatedInputField( $strTable, $arrCatalogViews, $intIndex, $strButtons ) {
+    protected function generateRelatedInputField( $arrOption, $intIndex, $strButtons ) {
 
         $strTemplate =
             '<tr>'.
                 '<td><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="%s" %s></td>'.
                 '<td><label for="%s">%s</label></td>'.
-                '<td><select name="%s" id="%s" class="tl_select tl_chosen">%s</select></td>'.
+                '<td><div class="wizard"><input name="%s" id="%s" class="tl_text" value="%s">%s</div></td>'.
                 '<td>'. $strButtons .'</td>'.
             '</tr>';
 
@@ -181,54 +129,41 @@ class CatalogInPageRelationWizard extends \Widget {
             $strTemplate,
             $this->strName . '['. $intIndex .'][table]',
             $this->strId . '_table_' . $intIndex,
-            $strTable,
-            $this->isCustomChecked( $strTable ),
+            $arrOption['value'],
+            $this->isCustomChecked( $arrOption['value'] ),
             $this->strId . '_table_' . $intIndex,
-            $strTable,
-            $this->strName . '[' . $intIndex . '][view]',
-            $this->strId . '_view_' . $intIndex,
-            $this->generateSelectOptions( $arrCatalogViews, $intIndex )
+            $arrOption['label'],
+            $this->strName . '[' . $intIndex . '][pageURL]',
+            $this->strId . '_pageURL_' . $intIndex,
+            $this->getValues( $intIndex ),
+            $this->createPagePicker( $intIndex )
         );
     }
 
 
-    protected function generateSelectOptions( $arrCatalogViews, $intIndex ) {
+    protected function createPagePicker( $intIndex ) {
 
-        $strSelectOptions = $this->includeBlankOption ? '<option value>'. ( $this->blankOptionLabel ? $this->blankOptionLabel : '' ) .'</option>' : '';
+        $varValue = $this->getValues( $intIndex );
+        $strID = $this->strId . '_pageURL_' . $intIndex;
+        $strName = $this->strName . '['.$intIndex.'][pageURL]';
 
-        if ( !empty( $arrCatalogViews ) && is_array( $arrCatalogViews ) ) {
-
-            foreach ( $arrCatalogViews as $strKey => $strTitle ) {
-
-                $strSelectOptions .= sprintf( '<option value="%s" %s>%s</option>', $strKey, $this->isCustomSelected( $strKey, $intIndex ), $strTitle );
-            }
-        }
-
-        return $strSelectOptions;
+        return ' <a href="contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_module&amp;field=' . $strName . '&amp;value=' . rawurlencode( str_replace( array('{{link_url::', '}}'), '', $varValue ) ) . '&amp;switch=1' . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\'' . specialchars(str_replace("'", "\\'", $GLOBALS['TL_DCA']['tl_module']['fields'][$this->strName]['label'][0])) . '\',\'url\':this.href,\'id\':\'' . $strID . '\',\'tag\':\''. $strID . (( \Input::get('act') == 'editAll') ? '_' . $strID : '') . '\',\'self\':this});return false">' . \Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
     }
 
 
-    private function isCustomChecked( $strValue ) {
+    protected function getValues( $intIndex ) {
+
+        return isset( $this->varValue[$intIndex]['pageURL'] ) ? $this->varValue[$intIndex]['pageURL'] : '';
+    }
+
+
+    protected function isCustomChecked( $strValue ) {
 
         foreach ( $this->varValue as $arrValue ) {
 
             if ( $arrValue['table'] && $arrValue['table'] == $strValue ) {
 
                 return 'checked';
-            }
-        }
-
-        return '';
-    }
-
-
-    private function isCustomSelected( $strValue, $intIndex ) {
-
-        if ( isset( $this->varValue[$intIndex] ) ) {
-
-            if ( isset( $this->varValue[$intIndex]['view'] ) && $this->varValue[$intIndex]['view'] == $strValue ) {
-
-                return 'selected';
             }
         }
 

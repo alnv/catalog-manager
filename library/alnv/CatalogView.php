@@ -36,20 +36,7 @@ class CatalogView extends CatalogController {
         global $objPage;
 
         $this->setOptions();
-
-        if ( $this->catalogRelationType ) {
-
-            $this->catalogInPageRelatedChildTables = Toolkit::deserialize( $this->catalogInPageRelatedChildTables );
-
-            switch ( $this->catalogRelationType ) {
-
-                case 'inPage':
-
-                    $this->getInPageTable();
-
-                    break;
-            }
-        }
+        $arrPage = $objPage->row();
 
         if ( !$this->catalogTablename ) return null;
 
@@ -73,7 +60,8 @@ class CatalogView extends CatalogController {
             }
         }
 
-        $this->arrMasterPage = $objPage->row();
+        $this->arrMasterPage = $arrPage;
+        $this->arrViewPage = $arrPage;
 
         if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
 
@@ -105,6 +93,7 @@ class CatalogView extends CatalogController {
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
+        $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
     }
 
 
@@ -331,7 +320,12 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->catalogItemOperations ) ) {
 
-                $arrCatalog['operationsLinks'] = $this->generateOperationsLinks( $arrCatalog['id'] );
+                $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'] );
+            }
+
+            if ( $this->catalogUseRelation ) {
+
+                $arrCatalog['relations'] = $this->setRelatedTableLinks( $arrCatalog['id'] );
             }
 
             if ( $this->strMode === 'master' && $this->arrCatalog['addContentElements'] ) {
@@ -381,8 +375,8 @@ class CatalogView extends CatalogController {
             $objTemplate->setData( $arrCatalog );
             $arrCatalogItems[] = $objTemplate->parse();
         }
-
-        if ( $intPerPage > 0 && $this->catalogAddPagination ) {
+        
+        if ( $intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view' ) {
 
             $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, $this->arrViewPage['id'] );
         }
@@ -400,35 +394,23 @@ class CatalogView extends CatalogController {
         return implode( '', $arrCatalogItems );
     }
 
-
-    private function getInPageTable() {
-
-        if ( !empty( $this->catalogInPageRelatedChildTables )  && is_array( $this->catalogInPageRelatedChildTables ) ) {
-
-            $strTable = \Input::get( 'table' );
-
-            if ( $strTable && in_array( $strTable, $this->catalogInPageRelatedChildTables ) ) {
-
-                $this->catalogTablename = $strTable;
-            }
-
-            // @todo set options here
-        }
-    }
-
-
-    private function setRelatedTableLinks() {
+    private function setRelatedTableLinks( $strID ) {
 
         $arrReturn = [];
 
-        if ( !empty( $this->catalogInPageRelatedChildTables ) && is_array( $this->catalogInPageRelatedChildTables ) ) {
+        if ( is_array( $this->catalogRelatedChildTables ) ) {
 
-            foreach ( $this->catalogInPageRelatedChildTables as $arrRelatedChild ) {
+            foreach ( $this->catalogRelatedChildTables as $arrRelatedChild ) {
 
-                $arrReturn[] = [
+                if ( !$arrRelatedChild['table'] ) continue;
 
-                    'href' => '',
-                    'label' => '',
+                $strUrl = \Controller::replaceInsertTags( $arrRelatedChild['pageURL'] );
+                $strSuffix = sprintf( '?pid=%s&amp;pTable=%s', $strID, $this->catalogTablename );
+
+                $arrReturn[ $arrRelatedChild['table'] ] = [
+
+                    'href' => $strUrl . $strSuffix,
+                    'label' => $arrRelatedChild['table'],
                     'attributes' => ''
                 ];
             }
@@ -567,7 +549,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function generateOperationsLinks( $strID ) {
+    private function generateOperations( $strID ) {
 
         $arrReturn = [];
 
@@ -584,7 +566,7 @@ class CatalogView extends CatalogController {
 
                 $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
 
-                $arrReturn[] = [
+                $arrReturn[ $strOperation ] = [
 
                     'label' => $strOperation,
                     'href' => $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment,

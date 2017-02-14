@@ -119,8 +119,7 @@ class CatalogOrderByWizard extends \Widget {
 
             \Cache::set('tabindex', 1);
         }
-
-
+        
         if ( !$this->orderByTablename ) {
 
             $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->strTable ) )->limit(1)->execute( $this->currentRecord );

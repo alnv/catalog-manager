@@ -7,7 +7,6 @@ class ModuleUniversalView extends \Module {
 
     private $strAct;
     private $strMasterAlias;
-    private $strCatalogTable;
     protected $strTemplate = 'mod_catalog_view';
 
 
@@ -35,12 +34,7 @@ class ModuleUniversalView extends \Module {
 
 
     protected function compile() {
-
-        $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
-        $this->catalogRelatedChildTables = Toolkit::parseStringToArray( $this->catalogRelatedChildTables );
-
-        $this->setTable(); // @todo settings
-
+        
         if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
 
             $this->determineMasterView();
@@ -186,21 +180,6 @@ class ModuleUniversalView extends \Module {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );
-        }
-    }
-
-    
-    private function setTable() {
-
-        $strTable = \Input::get( 'table' );
-        $this->strCatalogTable = $this->catalogTablename;
-
-        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
-
-            if ( in_array( $strTable, $this->catalogRelatedChildTables ) || $strTable == $this->catalogRelatedParentTable ) {
-
-                $this->strCatalogTable = $strTable;
-            }
         }
     }
 }

@@ -367,6 +367,9 @@ class FrontendEditing extends CatalogController {
 
                 $this->redirectToFrontendPage( $this->strRedirectID );
 
+                // @todo sorting
+                // @todo tstamp
+
                 break;
 
             case 'edit':

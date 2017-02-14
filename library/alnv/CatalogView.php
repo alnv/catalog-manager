@@ -37,6 +37,20 @@ class CatalogView extends CatalogController {
 
         $this->setOptions();
 
+        if ( $this->catalogRelationType ) {
+
+            $this->catalogInPageRelatedChildTables = Toolkit::deserialize( $this->catalogInPageRelatedChildTables );
+
+            switch ( $this->catalogRelationType ) {
+
+                case 'inPage':
+
+                    $this->getInPageTable();
+
+                    break;
+            }
+        }
+
         if ( !$this->catalogTablename ) return null;
 
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
@@ -87,6 +101,7 @@ class CatalogView extends CatalogController {
         }
 
         $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
+        $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
@@ -285,7 +300,7 @@ class CatalogView extends CatalogController {
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -383,6 +398,43 @@ class CatalogView extends CatalogController {
         }
 
         return implode( '', $arrCatalogItems );
+    }
+
+
+    private function getInPageTable() {
+
+        if ( !empty( $this->catalogInPageRelatedChildTables )  && is_array( $this->catalogInPageRelatedChildTables ) ) {
+
+            $strTable = \Input::get( 'table' );
+
+            if ( $strTable && in_array( $strTable, $this->catalogInPageRelatedChildTables ) ) {
+
+                $this->catalogTablename = $strTable;
+            }
+
+            // @todo set options here
+        }
+    }
+
+
+    private function setRelatedTableLinks() {
+
+        $arrReturn = [];
+
+        if ( !empty( $this->catalogInPageRelatedChildTables ) && is_array( $this->catalogInPageRelatedChildTables ) ) {
+
+            foreach ( $this->catalogInPageRelatedChildTables as $arrRelatedChild ) {
+
+                $arrReturn[] = [
+
+                    'href' => '',
+                    'label' => '',
+                    'attributes' => ''
+                ];
+            }
+        }
+
+        return $arrReturn;
     }
 
 

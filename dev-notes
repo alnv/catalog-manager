@@ -1,5 +1,6 @@
 todo
  - yaml parser
  - csv parser
+ - zoom factor geo locator
  - message field
  - fix duplicate field problem in tl_member and tl_user

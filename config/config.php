@@ -44,3 +44,4 @@ $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
 
 $GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizard';
+$GLOBALS['BE_FFL']['catalogInPageRelationWizard'] = 'CatalogManager\CatalogInPageRelationWizard';

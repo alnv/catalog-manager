@@ -3,4 +3,5 @@ todo
  - csv parser
  - zoom factor geo locator
  - message field
+ - auto id where selector on relation
  - fix duplicate field problem in tl_member and tl_user

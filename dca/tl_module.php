@@ -6,16 +6,18 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManag
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogRelationType';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAddMapInfoBox';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAllowComments';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiusSearch';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogRelatedChildTables,catalogRelatedParentTable;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogRelationType;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRelationType_inPage'] = 'catalogInPageRelatedChildTables';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry,catalogRadioSearchZoomFactor';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
@@ -286,10 +288,29 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable'] = [
     'sql' => "char(1) NOT NULL default ''"
 ];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelationType'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'],
-    'inputType' => 'checkbox',
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelationType'],
+    'inputType' => 'radio',
+
+    'eval' => [
+
+        'maxlength' => 16,
+        'submitOnChange' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=>true
+    ],
+
+    'options' => [ 'inPage' ],
+
+    'exclude' => true,
+    'sql' => "varchar(16) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogInPageRelatedChildTables'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogInPageRelatedChildTables'],
+    'inputType' => 'catalogInPageRelationWizard',
 
     'eval' => [
 
@@ -297,14 +318,19 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
         'maxlength' => 255,
         'tl_class' => 'w50',
         'doNotCopy' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=>true,
+        'orderByTablename' => null,
+
+        'CatalogViews' => [ 'CatalogManager\tl_module', 'getAllCatalogsViews' ],
+        'CatalogChildTables' => [ 'CatalogManager\tl_module', 'getChildTablesByTablename' ]
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getChildTables' ],
-
     'exclude' => true,
-    'sql' => "varchar(255) NOT NULL default ''"
+    'sql' => "blob NULL"
 ];
 
+/*
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedParentTable'],
@@ -325,6 +351,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable'] = [
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
 ];
+*/
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormTemplate'] = [
 

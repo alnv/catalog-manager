@@ -363,12 +363,19 @@ class FrontendEditing extends CatalogController {
                     $this->arrValues['pid'] = \Input::get('pid');
                 }
 
+                if ( $this->SQLBuilder->Database->fieldExists( 'sorting', $this->catalogTablename ) ) {
+
+                    $intSort = $this->SQLBuilder->Database->prepare( sprintf( 'SELECT MAX(sorting) FROM %s;', $this->catalogTablename ) )->execute()->row( 'MAX(sorting)' )[0];
+                    $this->arrValues['sorting'] = intval( $intSort ) + 100;
+                }
+
+                if ( $this->SQLBuilder->Database->fieldExists( 'tstamp', $this->catalogTablename ) ) {
+
+                    $this->arrValues['tstamp'] = \Date::floorToMinute();
+                }
+
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
-
                 $this->redirectToFrontendPage( $this->strRedirectID );
-
-                // @todo sorting
-                // @todo tstamp
 
                 break;
 

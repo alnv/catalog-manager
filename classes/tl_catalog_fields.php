@@ -276,6 +276,6 @@ class tl_catalog_fields extends \Backend {
     
     public function getMapTemplates() {
 
-        return $this->getTemplateGroup( 'map_catalog_' );
+        return $this->getTemplateGroup( 'ctlg_field_' );
     }
 }

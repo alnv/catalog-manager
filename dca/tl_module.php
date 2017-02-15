@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTemplate'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTemplate'],
     'inputType' => 'select',
-    'default' => 'catalog_teaser',
+    'default' => 'ctlg_view_teaser',
 
     'eval' => [
 
@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOffset'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogOffset'],
     'inputType' => 'text',
-    'default' => 1000,
+    'default' => 0,
 
     'eval' => [
 

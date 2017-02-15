@@ -71,13 +71,13 @@ class tl_module extends \Backend {
 
     public function getCatalogTemplates() {
 
-        return $this->getTemplateGroup('catalog_');
+        return $this->getTemplateGroup('ctlg_view_');
     }
 
 
     public function getCatalogFormTemplates() {
 
-        return $this->getTemplateGroup('form_catalog_');
+        return $this->getTemplateGroup('ctlg_form_');
     }
 
 
@@ -139,7 +139,7 @@ class tl_module extends \Backend {
 
     public function getMapTemplates() {
 
-        return $this->getTemplateGroup('catalog_map_');
+        return $this->getTemplateGroup('ctlg_map_');
     }
 
 

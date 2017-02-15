@@ -37,7 +37,7 @@ class CatalogRelationWizard extends \Widget {
     public function generate() {
 
         $this->import('Database');
-        $arrButtons = [ 'drag', 'up', 'down' ];
+        $arrButtons = [ 'up', 'down' ];
         $strCommand = 'cmd_' . $this->strField;
 
         if ( !is_array( $this->varValue ) ) {
@@ -69,29 +69,48 @@ class CatalogRelationWizard extends \Widget {
         $blnCheckAll = true;
         $arrRelatedTables = [];
 
+        if ( !\Cache::has( 'tabindex' ) ) {
+
+            \Cache::set( 'tabindex', 1 );
+        }
+
+        $intTabindex = \Cache::get( 'tabindex' );
+
+        if ( is_array( $this->varValue ) ) {
+
+            $arrTempOptions = [];
+
+            foreach ( $this->varValue as $varValue ) {
+
+                if ( $varValue['table'] ) {
+
+                    $arrTempOptions[] = [
+
+                        'value' => $varValue['table'],
+                        'label' => $varValue['table']
+                    ];
+                }
+            }
+
+            $this->arrOptions = $arrTempOptions;
+        }
+
         foreach ( $this->arrOptions as $intIndex => $arrOption ) {
 
-            $strButtons = \Image::getHtml( 'drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"' );
+            $strButtons = '';
 
             foreach ( $arrButtons as $strButton ) {
 
-                $strButtons .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord).'" class="button-move" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="Backend.optionsWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
+                $strButtons .= '<a href="'.$this->addToUrl( '&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord ).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="CatalogManager.CatalogRelationWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
             }
 
-            $arrRelatedTables[] = $this->generateRelatedInputField( $arrOption, $intIndex, $strButtons );
+            $arrRelatedTables[] = $this->generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons );
         }
 
         if ( empty( $arrRelatedTables ) ) {
 
             return '-';
         }
-
-        if ( !\Cache::has( 'tabindex' ) ) {
-
-            \Cache::set( 'tabindex', 1 );
-        }
-
-        $tabindex = \Cache::get( 'tabindex' );
 
         $strTemplate =
             '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">'.
@@ -103,39 +122,41 @@ class CatalogRelationWizard extends \Widget {
                         '<th>&nbsp;</th>'.
                     '</tr>'.
                 '</thead>'.
-                '<tbody class="sortable" data-tabindex="'.$tabindex.'">'.
+                '<tbody data-tabindex="'.$intTabindex.'">'.
                     implode('', $arrRelatedTables ) .
                 '</tbody>'.
             '</table>';
 
-        \Cache::set('tabindex', $tabindex);
+        \Cache::set('tabindex', $intTabindex);
 
         return $strTemplate;
     }
 
 
-    protected function generateRelatedInputField( $arrOption, $intIndex, $strButtons ) {
+    protected function generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons ) {
 
         $strTemplate =
             '<tr>'.
-                '<td><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="%s" %s></td>'.
+                '<td><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="%s" tabindex="%s" %s></td>'.
                 '<td><label for="%s">%s</label></td>'.
-                '<td><div class="wizard"><input name="%s" id="%s" class="tl_text" value="%s">%s</div></td>'.
-                '<td>'. $strButtons .'</td>'.
+                '<td><input type="text" name="%s" id="%s" class="tl_text" value="%s" tabindex="%s">%s</td>'.
+                '<td style="white-space:nowrap; padding-left:3px">'. $strButtons .'</td>'.
             '</tr>';
 
         return sprintf(
 
             $strTemplate,
-            $this->strName . '['. $intIndex .'][table]',
+            $this->strId . '['. $intIndex .'][table]',
             $this->strId . '_table_' . $intIndex,
             $arrOption['value'],
+            $intTabindex++,
             $this->isCustomChecked( $arrOption['value'] ),
             $this->strId . '_table_' . $intIndex,
             $arrOption['label'],
-            $this->strName . '[' . $intIndex . '][pageURL]',
+            $this->strId . '[' . $intIndex . '][pageURL]',
             $this->strId . '_pageURL_' . $intIndex,
             $this->getValues( $intIndex ),
+            $intTabindex++,
             $this->createPagePicker( $intIndex )
         );
     }

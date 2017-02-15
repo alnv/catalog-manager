@@ -9,8 +9,7 @@ class SQLQueryBuilder extends CatalogController {
     private $strTable = '';
     private $arrQuery = [];
     private $arrValues = [];
-
-
+    
     public function __construct() {
 
         parent::__construct();
@@ -49,6 +48,20 @@ class SQLQueryBuilder extends CatalogController {
         return true;
     }
 
+
+    public function getWhereQuery( $arrQuery ) {
+
+        $this->arrValues = [];
+        $this->arrQuery = $arrQuery;
+        $this->strTable = $arrQuery['table'];
+
+        return $this->createWhereStatement();
+    }
+
+    public function getValues() {
+
+        return $this->arrValues;
+    }
 
     protected function createSelectQuery() {
 

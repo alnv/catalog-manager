@@ -172,24 +172,6 @@ class CatalogView extends CatalogController {
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
-        $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s', $this->catalogTablename ) )->execute()->row()['COUNT(*)'];
-
-        if ( $this->catalogOffset ) {
-
-            $intTotal -= $intOffset;
-        }
-
-        if ( \Input::get( $strPageID ) && $this->catalogAddPagination ) {
-
-            $intOffset = $intPagination;
-
-            if ( $intPerPage > 0 && $this->catalogOffset ) {
-
-                $intOffset += round( $this->catalogOffset / $intPerPage );
-            }
-
-            $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
-        }
 
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
 
@@ -286,6 +268,39 @@ class CatalogView extends CatalogController {
                     ];
                 }
             }
+        }
+
+        if ( $this->catalogEnableParentFilter ) {
+
+            if ( $this->arrCatalog['pTable'] && \Input::get( 'pid' ) && \Input::get( 'pTable' ) == $this->arrCatalog['pTable'] ) {
+
+                $arrQuery['where'][] = [
+
+                    'field' => 'pid',
+                    'operator' => 'equal',
+                    'value' => \Input::get( 'pid' )
+                ];
+            }
+        }
+
+        $strWhereStatement =  $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
+        $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s%s', $this->catalogTablename, $strWhereStatement ) )->execute( $this->SQLQueryBuilder->getValues() )->row()[ 'COUNT(*)' ];
+
+        if ( $this->catalogOffset ) {
+
+            $intTotal -= $intOffset;
+        }
+
+        if ( \Input::get( $strPageID ) && $this->catalogAddPagination ) {
+
+            $intOffset = $intPagination;
+
+            if ( $intPerPage > 0 && $this->catalogOffset ) {
+
+                $intOffset += round( $this->catalogOffset / $intPerPage );
+            }
+
+            $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );

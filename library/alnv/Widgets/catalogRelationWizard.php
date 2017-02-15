@@ -62,7 +62,7 @@ class CatalogRelationWizard extends \Widget {
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")->execute( serialize( $this->varValue ), $this->currentRecord );
+            $this->Database->prepare( "UPDATE " . $this->strTable . " SET " . $this->strField . " =? WHERE id =?" )->execute( serialize( $this->varValue ), $this->currentRecord );
             $this->redirect( preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request') ) ) );
         }
 
@@ -71,9 +71,9 @@ class CatalogRelationWizard extends \Widget {
 
         foreach ( $this->arrOptions as $intIndex => $arrOption ) {
 
-            $strButtons = \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
+            $strButtons = \Image::getHtml( 'drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"' );
 
-            foreach ($arrButtons as $strButton) {
+            foreach ( $arrButtons as $strButton ) {
 
                 $strButtons .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord).'" class="button-move" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="Backend.optionsWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
             }

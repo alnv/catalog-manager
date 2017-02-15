@@ -11,7 +11,7 @@ class FrontendEditing extends CatalogController {
     public $strRedirectID;
     public $arrOptions = [];
     public $strTemplate = '';
-
+    
     private $objTemplate;
     private $arrValues = [];
     private $arrCatalog = [];
@@ -196,7 +196,6 @@ class FrontendEditing extends CatalogController {
         if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
 
             $objWidget->validate();
-
             $varValue = $objWidget->value;
 
             if ( $varValue && is_string( $varValue ) ) {
@@ -232,7 +231,6 @@ class FrontendEditing extends CatalogController {
                         if ( is_array( $arrCallback ) ) {
 
                             $this->import( $arrCallback[0] );
-
                             $varValue = $this->{$arrCallback[0]}->{$arrCallback[1]}( $varValue, null );
                         }
 

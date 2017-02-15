@@ -149,7 +149,7 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
         $this->CatalogView->getCommentForm();
-
+        
         $blnHasPermission = $this->CatalogView->checkPermission();
 
         $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';

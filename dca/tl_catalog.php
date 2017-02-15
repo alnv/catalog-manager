@@ -86,9 +86,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'subpalettes' => [
 
         'isBackendModule' => 'navArea,navPosition',
-        'useGeoCoordinates' => 'latField,lngField,addressInputType',
-
         'addressInputType_useSingleField' => 'geoAddress',
+        'useGeoCoordinates' => 'latField,lngField,addressInputType',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
     ],
 
@@ -190,7 +189,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getModeTypes' ],
-
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeRequirements' ] ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'],
@@ -214,7 +212,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllPTables' ],
-
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ] ],
 
             'exclude' => true,

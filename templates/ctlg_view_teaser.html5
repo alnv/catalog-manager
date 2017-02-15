@@ -1,0 +1,21 @@
+<div class="ctlg_teaser block">
+   <h2><?= $this->title; ?></h2>
+   <?php if( $this->link2Master ): ?>
+      <a href="<?= $this->link2Master ?>"><?= $this->title; ?></a>
+   <?php endif; ?>
+   <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
+      <ul>
+         <?php foreach( $this->operations as $arrOperation ): ?>
+            <li><a href="<?= $arrOperation['href'] ?>" <?= $arrOperation['attributes'] ?> ><?= $arrOperation['label'] ?></a></li>
+         <?php endforeach; ?>
+      </ul>
+   <?php endif; ?>
+   <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
+      <ul>
+         <?php foreach( $this->relations as $arrRelation ): ?>
+            <li><a href="<?= $arrRelation['href'] ?>" <?= $arrRelation['attributes'] ?> ><?= $arrRelation['label'] ?></a></li>
+         <?php endforeach; ?>
+      </ul>
+   <?php endif; ?>
+   <?= $this->location;?>
+</div>

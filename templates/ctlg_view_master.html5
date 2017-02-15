@@ -1,0 +1,9 @@
+<div class="ctlg_master block">
+   <h2><?= $this->title; ?></h2>
+   <?php if( $this->link2View ): ?>
+      <a href="<?= $this->link2View ?>">Go back</a>
+   <?php endif; ?>
+   <?php if( $this->contentElements ): ?>
+      <div class="catalog_master_content"><?= $this->contentElements; ?></div>
+   <?php endif; ?>
+</div>

@@ -38,6 +38,7 @@ ClassLoader::addClasses([
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
     'CatalogManager\CatalogOrderByWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogOrderByWizard.php',
+    'CatalogManager\CatalogTaxonomyWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogTaxonomyWizard.php',
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',

@@ -214,4 +214,36 @@ class tl_module extends \Backend {
 
         return [ 'ASC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'], 'DESC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] ];
     }
+
+    
+    public function getTaxonomyTable( \DataContainer $dc ) {
+        
+        return $dc->activeRecord->catalogTablename ? $dc->activeRecord->catalogTablename : '';
+    }
+
+    
+    public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
+
+        $arrReturn = [];
+        
+        if ( !$strTablename ) return $arrReturn;
+
+        $this->import( 'DCABuilderHelper' );
+        $arrForbiddenTypes = [ 'upload', 'textarea' ];
+        $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
+        $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) || in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
+
+                continue;
+            }
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+        }
+
+        return $arrReturn;
+    }
 }

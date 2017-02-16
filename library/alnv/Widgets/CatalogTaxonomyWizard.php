@@ -34,13 +34,37 @@ class CatalogTaxonomyWizard extends \Widget {
 
     public function generate() {
 
-        $strTemplate = '';
+        $intIndex = 0;
         $this->import( 'DCABuilderHelper' );
+        $strCommand = 'cmd_' . $this->strField;
 
-        if ( !$this->varValue ) {
+        if ( \Input::get( $strCommand ) && is_numeric( \Input::get('cid') ) && \Input::get('id') == $this->currentRecord ) {
 
-            $this->varValue = [];
+            $this->import('Database');
+
+            switch ( \Input::get( $strCommand ) ) {
+
+                case 'addQuery':
+
+                    if ( !$this->varValue['table'] ) break;
+
+                    $this->varValue['query'][] = [
+
+                        'value' => '',
+                        'operator' => 'equal',
+                        'field' => $this->varValue['table']
+                    ];
+
+                    unset( $this->varValue['table'] );
+
+                    break;
+            }
+
+            $this->Database->prepare( sprintf( 'UPDATE %s SET `%s`=? WHERE id=? ', \Input::get('table'), $this->strField ) )->execute( serialize( $this->varValue ), $this->currentRecord );
+            $this->redirect( preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace(' /&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', \Environment::get('request') ) ) );
         }
+
+        if ( !$this->varValue ) $this->varValue = [];
 
         if ( !empty( $this->taxonomyTable ) && is_array( $this->taxonomyTable ) ) {
 
@@ -57,8 +81,6 @@ class CatalogTaxonomyWizard extends \Widget {
         $this->arrFields = array_keys( $this->arrTaxonomies );
         $this->arrTaxonomies = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrTaxonomies );
 
-        $strSelectedTable = $this->varValue['table'] ? $this->varValue['table'] : '';
-
         $this->cleanUpValues();
 
         $strHeadTemplate =
@@ -66,7 +88,7 @@ class CatalogTaxonomyWizard extends \Widget {
             '<table>'.
                 '<thead>'.
                     '<tr>'.
-                        '<td>Feld auswählen</td>'.
+                        '<td>select field</td>'.
                         '<td>&nbsp;</td>'.
                     '</tr>'.
                 '</thead>'.
@@ -78,32 +100,116 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</tbody>'.
             '</table>';
 
-        if ( !empty( $this->varValue ) && is_array( $this->varValue ) ) {
 
-            foreach ( $this->varValue as $arrQuery ) {
+        $strRowTemplate = '';
 
-                // todo
+        if ( !empty( $this->varValue['query'] ) && is_array( $this->varValue['query'] ) ) {
+
+            foreach ( $this->varValue['query'] as $arrQuery ) {
+
+                if ( !empty( $arrQuery[0] ) && is_array( $arrQuery[0] ) ) {
+                    
+                    foreach ( $arrQuery as $intSubIndex => $arrOrQuery ) {
+
+                        $strRowTemplate .= $this->generateQueryInputFields( $arrOrQuery, 'or', $intIndex, $intSubIndex );
+                    }
+
+                    $intIndex++;
+
+                    continue;
+                }
+
+                $strRowTemplate .= $this->generateQueryInputFields( $arrQuery, 'and', $intIndex, null );
+                $intIndex++;
             }
         }
 
         $strTemplate =
-            '<input type="text" name="'.$this->strId.'[query][0][field]" value="name">'.
-            '<input type="text" name="'.$this->strId.'[query][0][operator]" value="equal">'.
-            '<input type="text" name="'.$this->strId.'[query][0][value]" value="x">'.
-            '<input type="text" name="'.$this->strId.'[query][1][field]" value="lastname">'.
-            '<input type="text" name="'.$this->strId.'[query][1][operator]" value="equal">'.
-            '<input type="text" name="'.$this->strId.'[query][1][value]" value="y">'.
-            '<input type="text" name="'.$this->strId.'[query][2][field]" value="age">'.
-            '<input type="text" name="'.$this->strId.'[query][2][operator]" value="equal">'.
-            '<input type="text" name="'.$this->strId.'[query][2][value]" value="18">'.
-            '<input type="text" name="'.$this->strId.'[query][2][0][field]" value="age">'.
-            '<input type="text" name="'.$this->strId.'[query][2][0][operator]" value="equal">'.
-            '<input type="text" name="'.$this->strId.'[query][2][0][value]" value="21">'.
-            '<input type="text" name="'.$this->strId.'[query][2][1][field]" value="age">'.
-            '<input type="text" name="'.$this->strId.'[query][2][1][operator]" value="equal">'.
-            '<input type="text" name="'.$this->strId.'[query][2][1][value]" value="50">';
+            '<table>'.
+                '<thead>'.
+                    '<tr>'.
+                        '<td>Field</td>'.
+                        '<td>Operator</td>'.
+                        '<td>Value</td>'.
+                        '<td>&nbsp;</td>'.
+                        '<td>&nbsp;</td>'.
+                    '</tr>'.
+                '</thead>'.
+                '<tbody>'.
+                    $strRowTemplate.
+                '</tbody>'.
+            '</table>';
 
+        
         return $strHeadTemplate.$strTemplate;
+    }
+
+
+    protected function generateQueryInputFields( $arrQuery, $strType, $intIndex, $intSubIndex ) {
+
+        $strID = $this->strId . '_query_'. $intIndex;
+        $strName = $this->strId . '[query]['. $intIndex .']';
+        $strPaddingStyle = $strType == 'or' ? 'style="white-space:nowrap; padding-left:15px"' : '';
+
+        $strFieldTemplate =
+            '<tr>'.
+                '<td '. $strPaddingStyle .'><select name="%s" id="%s" class="ctlg_select">%s</select></td>'.
+                '<td '. $strPaddingStyle .'><select name="%s" id="%s" class="ctlg_select tl_chosen">%s</select></td>'.
+                '<td '. $strPaddingStyle .'><input type="text" name="%s" id="%s" value="%s" class="ctlg_text"></td>'.
+                '<td style="white-space:nowrap;padding-left:3px">'. $this->getOrButton() .'</td>'.
+                '<td style="white-space:nowrap;padding-left:3px">'. $this->getDeleteButton() .'</td>'.
+            '</tr>';
+
+        if ( !is_null( $intSubIndex ) && $intSubIndex ) {
+
+            $strID .= '_' . $intSubIndex;
+            $strName .= '['.$intSubIndex.']';
+        }
+
+        return sprintf(
+
+            $strFieldTemplate,
+            $strName . '[field]',
+            $strID,
+            $this->getFieldOption( $arrQuery ),
+            $strName . '[operator]',
+            $strID,
+            $this->getOperatorOptions( $arrQuery ),
+            $strName . '[value]',
+            $strID,
+            $arrQuery['value']
+        );
+    }
+
+
+    protected function getFieldOption( $arrQuery ) {
+
+        return sprintf( '<option value="%s" selected>%s</option>', $arrQuery['field'], $arrQuery['field'] );
+    }
+
+
+    protected function getOperatorOptions( $arrQuery ) {
+
+        $strOperatorsOptions = '';
+        $arrOperators = [
+
+            'equal',
+            'not',
+            'regexp',
+            'gt',
+            'gte',
+            'lt',
+            'lte',
+            'contain',
+            'between'
+        ];
+
+        foreach ( $arrOperators as $strOperator ) {
+
+            $strOperatorsOptions .= sprintf( '<option value="%s" %s>%s</option>', $strOperator, ( $arrQuery['operator'] == $strOperator ? 'selected' : '' ), $strOperator );
+        }
+
+        return $strOperatorsOptions;
     }
 
 
@@ -142,16 +248,16 @@ class CatalogTaxonomyWizard extends \Widget {
             }
         }
 
-        $this->varValue = $arrValues;
+        $this->varValue['query'] = $arrValues;
     }
 
 
     protected function getFieldSelector() {
 
         return sprintf(
-            '<select name="%s" id="%s" class="tl_select tl_chosen">%s</select>',
-            $this->strId . '[query]',
-            $this->strId . '_query',
+            '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select>',
+            $this->strId . '[table]',
+            $this->strId . '_table',
             $this->getFieldOptions()
         );
     }
@@ -164,8 +270,10 @@ class CatalogTaxonomyWizard extends \Widget {
         foreach (  $this->arrFields as $strField ) {
 
             $strOptions .= sprintf(
-                '<option value="%s">%s</option>',
+
+                '<option value="%s" %s>%s</option>',
                 $strField,
+                ( $this->varValue['table'] == $strField ? 'selected' : '' ),
                 $this->arrTaxonomies[$strField]['label'][0] ? $this->arrTaxonomies[$strField]['label'][0] : $strField
             );
         }
@@ -173,9 +281,21 @@ class CatalogTaxonomyWizard extends \Widget {
         return $strOptions;
     }
 
-    
+
+    protected function getDeleteButton() {
+
+        return ' <a href="" title="" onclick="return false">' . \Image::getHtml('delete.gif', 'delete query') .'</a>';
+    }
+
+
     protected function getAddButton() {
 
-       return ' <a href="" title="" onclick="return false">' . \Image::getHtml('new.gif', 'Taxonomy hinzufügen') .'</a>';
+        return ' <a href="'. \Environment::get('indexFreeRequest') .'&amp;cid=0&amp;cmd_'. $this->strId .'=addQuery" title="create new query" onclick="">' . \Image::getHtml('copy.gif', 'add query') .'</a>';
+    }
+
+
+    protected function getOrButton() {
+
+        return ' <a href="" title="" onclick="return false">' . \Image::getHtml('copychilds.gif', 'add or Query') .'</a>';
     }
 }

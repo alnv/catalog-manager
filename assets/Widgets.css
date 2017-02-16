@@ -4,12 +4,43 @@
     max-width: 210px;
 }
 
-.ctlg_select {
+table.ctlg_taxonomies_field_selector_table tbody td {
 
-    width: 100px;
+    width: 150px;
+    padding: 5px 4px;
 }
 
-.ctlg_text {
+td.ctlg_select_field {
 
-    width: 100px;
+    width: 150px;
+    padding: 5px 4px;
+}
+
+td.ctlg_select_operator {
+
+    width: 150px;
+    padding: 5px 4px;
+}
+
+td.ctlg_text_value {
+
+    width: 250px;
+    padding: 5px 4px;
+}
+
+td.ctlg_button {
+
+    width: 30px;
+    padding: 5px 4px;
+    text-align: right;
+}
+
+.ctlg_text.tl_text {
+
+    width: 100%;
+}
+
+.tl_select.ctlg_select {
+
+    width: 100%;
 }

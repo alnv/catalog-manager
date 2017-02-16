@@ -46,22 +46,62 @@ class CatalogTaxonomyWizard extends \Widget {
 
                 case 'addQuery':
 
-                    if ( !$this->varValue['table'] ) break;
+                    if ( !$this->varValue['field'] ) break;
 
                     $this->varValue['query'][] = [
 
                         'value' => '',
                         'operator' => 'equal',
-                        'field' => $this->varValue['table']
+                        'field' => $this->varValue['field']
                     ];
 
-                    unset( $this->varValue['table'] );
+                    unset( $this->varValue['field'] );
+
+                    break;
+
+                case 'addOrQuery':
+
+                    $arrQuery = $this->varValue['query'][ \Input::get('cid') ];
+
+                    if ( \Input::get('subId') && is_array( $arrQuery[ \Input::get('subId') ] ) ) {
+
+                        $arrQuery = $arrQuery[ \Input::get('subId') ];
+                    }
+
+                    if ( $arrQuery && is_array( $arrQuery ) ) {
+
+                        $arrSubQuery = [
+
+                            'value' => '',
+                            'operator' => 'equal',
+                            'field' => $arrQuery['field']
+                        ];
+
+                        $this->varValue['query'][ \Input::get('cid') ][] = $arrSubQuery;
+                    }
+
+                    break;
+
+                case 'deleteQuery':
+
+                    if ( $this->varValue['query'][ \Input::get('cid') ] ) {
+
+                        if ( \Input::get('subId') && $this->varValue['query'][ \Input::get('cid') ][ \Input::get('subId') ] ) {
+
+                            unset( $this->varValue['query'][ \Input::get('cid') ][ \Input::get('subId') ] );
+                        }
+
+                        else {
+
+                            unset( $this->varValue['query'][ \Input::get('cid') ] );
+                        }
+                    }
 
                     break;
             }
 
             $this->Database->prepare( sprintf( 'UPDATE %s SET `%s`=? WHERE id=? ', \Input::get('table'), $this->strField ) )->execute( serialize( $this->varValue ), $this->currentRecord );
-            $this->redirect( preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace(' /&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', \Environment::get('request') ) ) );
+            $this->redirect( preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', \Environment::get('request') )));
         }
 
         if ( !$this->varValue ) $this->varValue = [];
@@ -84,11 +124,10 @@ class CatalogTaxonomyWizard extends \Widget {
         $this->cleanUpValues();
 
         $strHeadTemplate =
-
-            '<table>'.
+            '<table border="0" cellspacing="0" cellpadding="0" class="ctlg_taxonomies_field_selector_table">'.
                 '<thead>'.
                     '<tr>'.
-                        '<td>select field</td>'.
+                        '<td>Field</td>'.
                         '<td>&nbsp;</td>'.
                     '</tr>'.
                 '</thead>'.
@@ -125,13 +164,12 @@ class CatalogTaxonomyWizard extends \Widget {
         }
 
         $strTemplate =
-            '<table>'.
+            '<table width="100%" border="0" cellspacing="0" cellpadding="0">'.
                 '<thead>'.
                     '<tr>'.
                         '<td>Field</td>'.
                         '<td>Operator</td>'.
                         '<td>Value</td>'.
-                        '<td>&nbsp;</td>'.
                         '<td>&nbsp;</td>'.
                     '</tr>'.
                 '</thead>'.
@@ -140,7 +178,7 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</tbody>'.
             '</table>';
 
-        
+
         return $strHeadTemplate.$strTemplate;
     }
 
@@ -149,15 +187,15 @@ class CatalogTaxonomyWizard extends \Widget {
 
         $strID = $this->strId . '_query_'. $intIndex;
         $strName = $this->strId . '[query]['. $intIndex .']';
-        $strPaddingStyle = $strType == 'or' ? 'style="white-space:nowrap; padding-left:15px"' : '';
+        $strPaddingStyle = $strType == 'or' ? 'style="white-space:nowrap; padding-left:10px"' : '';
+        $strBackgroundStyle = $intIndex % 2 != 0 ? 'style="background:#f9f9f9"' : 'style="background:#f2f2f2"';
 
         $strFieldTemplate =
-            '<tr>'.
-                '<td '. $strPaddingStyle .'><select name="%s" id="%s" class="ctlg_select">%s</select></td>'.
-                '<td '. $strPaddingStyle .'><select name="%s" id="%s" class="ctlg_select tl_chosen">%s</select></td>'.
-                '<td '. $strPaddingStyle .'><input type="text" name="%s" id="%s" value="%s" class="ctlg_text"></td>'.
-                '<td style="white-space:nowrap;padding-left:3px">'. $this->getOrButton() .'</td>'.
-                '<td style="white-space:nowrap;padding-left:3px">'. $this->getDeleteButton() .'</td>'.
+            '<tr '. $strBackgroundStyle .'>'.
+                '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
+                '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
+                '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text"></td>'.
+                '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
             '</tr>';
 
         if ( !is_null( $intSubIndex ) && $intSubIndex ) {
@@ -171,7 +209,7 @@ class CatalogTaxonomyWizard extends \Widget {
             $strFieldTemplate,
             $strName . '[field]',
             $strID,
-            $this->getFieldOption( $arrQuery ),
+            $this->getFieldOptions( $arrQuery['field'], false ),
             $strName . '[operator]',
             $strID,
             $this->getOperatorOptions( $arrQuery ),
@@ -180,13 +218,6 @@ class CatalogTaxonomyWizard extends \Widget {
             $arrQuery['value']
         );
     }
-
-
-    protected function getFieldOption( $arrQuery ) {
-
-        return sprintf( '<option value="%s" selected>%s</option>', $arrQuery['field'], $arrQuery['field'] );
-    }
-
 
     protected function getOperatorOptions( $arrQuery ) {
 
@@ -256,16 +287,16 @@ class CatalogTaxonomyWizard extends \Widget {
 
         return sprintf(
             '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select>',
-            $this->strId . '[table]',
-            $this->strId . '_table',
-            $this->getFieldOptions()
+            $this->strId . '[field]',
+            $this->strId . '_field',
+            $this->getFieldOptions( $this->varValue['field'], true )
         );
     }
 
 
-    protected function getFieldOptions() {
+    protected function getFieldOptions( $strValue, $blnEmptyOption = true ) {
 
-        $strOptions = '<option value="">-</option>';
+        $strOptions = $blnEmptyOption ? '<option value="">-</option>' : '';
 
         foreach (  $this->arrFields as $strField ) {
 
@@ -273,7 +304,7 @@ class CatalogTaxonomyWizard extends \Widget {
 
                 '<option value="%s" %s>%s</option>',
                 $strField,
-                ( $this->varValue['table'] == $strField ? 'selected' : '' ),
+                ( $strValue == $strField ? 'selected' : '' ),
                 $this->arrTaxonomies[$strField]['label'][0] ? $this->arrTaxonomies[$strField]['label'][0] : $strField
             );
         }
@@ -282,20 +313,20 @@ class CatalogTaxonomyWizard extends \Widget {
     }
 
 
-    protected function getDeleteButton() {
+    protected function getDeleteButton( $intIndex, $intSubIndex ) {
 
-        return ' <a href="" title="" onclick="return false">' . \Image::getHtml('delete.gif', 'delete query') .'</a>';
+        return '<a href="'. \Environment::get('indexFreeRequest') .'&amp;cid='. $intIndex .'&amp;subId='. $intSubIndex .'&amp;cmd_'. $this->strId .'=deleteQuery" title="">' . \Image::getHtml('delete.gif', 'delete query') .'</a>';
     }
 
 
     protected function getAddButton() {
 
-        return ' <a href="'. \Environment::get('indexFreeRequest') .'&amp;cid=0&amp;cmd_'. $this->strId .'=addQuery" title="create new query" onclick="">' . \Image::getHtml('copy.gif', 'add query') .'</a>';
+        return '<a href="'. \Environment::get('indexFreeRequest') .'&amp;cid=0&amp;cmd_'. $this->strId .'=addQuery" title="create new query">' . \Image::getHtml('copy.gif', 'add query') .'</a>';
     }
 
 
-    protected function getOrButton() {
+    protected function getOrButton( $intIndex, $intSubIndex ) {
 
-        return ' <a href="" title="" onclick="return false">' . \Image::getHtml('copychilds.gif', 'add or Query') .'</a>';
+        return '<a href="'. \Environment::get('indexFreeRequest') .'&amp;cid='. $intIndex .'&amp;subId='. $intSubIndex .'&amp;cmd_'. $this->strId .'=addOrQuery" title="create or query">' . \Image::getHtml('copychilds.gif', 'add or Query') .'</a>';
     }
 }

@@ -191,10 +191,56 @@ class Toolkit {
     }
 
 
-    public static function parseWhereQueryArray( $arrQuery, $fnCallback = [] ) {
+    public static function parseWhereQueryArray( $arrQueries, $fnCallback = [] ) {
 
-        $arrValues = [];
+        $intIndex = 0;
+        $arrReturn = [];
 
+        if ( !empty( $arrQueries ) && is_array( $arrQueries ) ) {
+
+            foreach ( $arrQueries as $arrQuery ) {
+
+                if ( $arrQuery['subQueries'] && is_array( $arrQuery['subQueries'] ) ) {
+
+                    $arrReturn[ $intIndex ][] = [
+
+                        'field' => $arrQuery['field'],
+                        'value' => $arrQuery['value'],
+                        'operator' => $arrQuery['operator'],
+                    ];
+
+                    foreach ( $arrQuery['subQueries'] as $arrSubQuery ) {
+
+                        if ( is_callable( $fnCallback ) ) {
+
+                            $arrSubQuery = $fnCallback( $arrSubQuery );
+                        }
+
+                        if ( is_null( $arrSubQuery ) ) continue;
+
+                        $arrReturn[$intIndex][] = $arrSubQuery;
+                    }
+
+                    $intIndex++;
+                }
+
+                else {
+
+                    if ( is_callable( $fnCallback ) ) {
+
+                        $arrQuery = $fnCallback( $arrQuery );
+                    }
+
+                    if ( is_null( $arrQuery ) ) continue;
+
+                    $arrReturn[] = $arrQuery;
+                }
+            }
+        }
+
+        return $arrReturn;
+
+        /*
         if ( !empty( $arrQuery ) && is_array( $arrQuery ) ) {
 
             foreach ( $arrQuery as $intIndex => $arrValue ) {
@@ -208,7 +254,7 @@ class Toolkit {
 
                 if ( count( $arrValue ) > 3 ) {
 
-                    $arrValues[ $intIndex ][] = $arrQuery;
+                    $arrValues[$intIndex][] = $arrQuery;
 
                     foreach ( $arrValue as $strKey => $strValue ) {
 
@@ -221,7 +267,7 @@ class Toolkit {
 
                             if ( is_null( $strValue ) ) continue;
 
-                            $arrValues[ $intIndex ][] = $strValue;
+                            $arrValues[$intIndex][] = $strValue;
                         }
                     }
                 }
@@ -235,11 +281,10 @@ class Toolkit {
 
                     if ( is_null( $arrQuery ) ) continue;
 
-                    $arrValues[ $intIndex ] = $arrQuery;
+                    $arrValues[$intIndex] = $arrQuery;
                 }
             }
         }
-
-        return $arrValues;
+        */
     }
 }

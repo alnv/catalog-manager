@@ -34,13 +34,17 @@ class CatalogTaxonomyWizard extends \Widget {
 
     public function generate() {
 
-        $intIndex = 0;
         $this->import( 'DCABuilderHelper' );
         $strCommand = 'cmd_' . $this->strField;
+
+        if ( !$this->varValue ) $this->varValue = [];
 
         if ( \Input::get( $strCommand ) && is_numeric( \Input::get('cid') ) && \Input::get('id') == $this->currentRecord ) {
 
             $this->import('Database');
+
+            $strCID = \Input::get('cid');
+            $strSID = \Input::get('subId');
 
             switch ( \Input::get( $strCommand ) ) {
 
@@ -61,50 +65,39 @@ class CatalogTaxonomyWizard extends \Widget {
 
                 case 'addOrQuery':
 
-                    $arrQuery = $this->varValue['query'][ \Input::get('cid') ];
+                    $arrOrQuery = [
 
-                    if ( \Input::get('subId') && is_array( $arrQuery[ \Input::get('subId') ] ) ) {
+                        'value' => '',
+                        'field' => 'id',
+                        'operator' => 'equal'
+                    ];
 
-                        $arrQuery = $arrQuery[ \Input::get('subId') ];
-                    }
-
-                    if ( $arrQuery && is_array( $arrQuery ) ) {
-
-                        $arrSubQuery = [
-
-                            'value' => '',
-                            'operator' => 'equal',
-                            'field' => $arrQuery['field']
-                        ];
-
-                        $this->varValue['query'][ \Input::get('cid') ][] = $arrSubQuery;
-                    }
+                    $arrOrQuery['field'] = $this->varValue['query'][$strCID]['field'];
+                    $this->varValue['query'][$strCID]['subQueries'][] = $arrOrQuery;
 
                     break;
 
                 case 'deleteQuery':
 
-                    if ( $this->varValue['query'][ \Input::get('cid') ] ) {
+                    if ( isset( $strCID ) && ( !isset( $strSID ) || $strSID == '' ) ) {
 
-                        if ( \Input::get('subId') && $this->varValue['query'][ \Input::get('cid') ][ \Input::get('subId') ] ) {
+                        unset( $this->varValue['query'][$strCID] );
+                    }
 
-                            unset( $this->varValue['query'][ \Input::get('cid') ][ \Input::get('subId') ] );
-                        }
+                    if ( isset( $strCID ) && ( isset( $strSID ) && $strSID != '' ) ) {
 
-                        else {
-
-                            unset( $this->varValue['query'][ \Input::get('cid') ] );
-                        }
+                        unset( $this->varValue['query'][$strSID]['subQueries'][$strSID] );
                     }
 
                     break;
             }
 
             $this->Database->prepare( sprintf( 'UPDATE %s SET `%s`=? WHERE id=? ', \Input::get('table'), $this->strField ) )->execute( serialize( $this->varValue ), $this->currentRecord );
-            $this->redirect( preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', \Environment::get('request') )));
+            $strRedirectUrl = \Environment::get('request');
+            $strRedirectUrl = preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', $strRedirectUrl ));
+            $strRedirectUrl = preg_replace( '/&(amp;)?subId=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', $strRedirectUrl ));
+            $this->redirect( $strRedirectUrl );
         }
-
-        if ( !$this->varValue ) $this->varValue = [];
 
         if ( !empty( $this->taxonomyTable ) && is_array( $this->taxonomyTable ) ) {
 
@@ -121,8 +114,7 @@ class CatalogTaxonomyWizard extends \Widget {
         $this->arrFields = array_keys( $this->arrTaxonomies );
         $this->arrTaxonomies = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrTaxonomies );
 
-        $this->prepareWhereQueryArray();
-
+        $strRowTemplate = '';
         $strHeadTemplate =
             '<table border="0" cellspacing="0" cellpadding="0" class="ctlg_taxonomies_field_selector_table">'.
                 '<thead>'.
@@ -139,27 +131,19 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</tbody>'.
             '</table>';
 
-
-        $strRowTemplate = '';
-
         if ( !empty( $this->varValue['query'] ) && is_array( $this->varValue['query'] ) ) {
 
-            foreach ( $this->varValue['query'] as $arrQuery ) {
+            foreach ( $this->varValue['query'] as $intIndex => $arrQuery ) {
 
-                if ( !empty( $arrQuery[0] ) && is_array( $arrQuery[0] ) ) {
-                    
-                    foreach ( $arrQuery as $intSubIndex => $arrOrQuery ) {
+                $strRowTemplate .= $this->generateQueryInputFields( $arrQuery, 'and', $intIndex, '' );
 
-                        $strRowTemplate .= $this->generateQueryInputFields( $arrOrQuery, 'or', $intIndex, $intSubIndex );
+                if ( $arrQuery['subQueries'] && is_array( $arrQuery['subQueries'] ) ) {
+
+                    foreach ( $arrQuery['subQueries'] as $intSubIndex => $arrSubQuery ) {
+
+                        $strRowTemplate .= $this->generateQueryInputFields( $arrSubQuery, 'or', $intIndex, $intSubIndex );
                     }
-
-                    $intIndex++;
-
-                    continue;
                 }
-
-                $strRowTemplate .= $this->generateQueryInputFields( $arrQuery, 'and', $intIndex, null );
-                $intIndex++;
             }
         }
 
@@ -192,10 +176,10 @@ class CatalogTaxonomyWizard extends \Widget {
         $strPaddingStyle = $strType == 'or' ? 'style="white-space:nowrap; padding-left:10px"' : '';
         $strBackgroundStyle = $intIndex % 2 != 0 ? 'style="background:#f9f9f9"' : 'style="background:#f2f2f2"';
 
-        if ( !is_null( $intSubIndex ) && $intSubIndex ) {
+        if ( is_numeric( $intSubIndex ) ) {
 
             $strID .= '_' . $intSubIndex;
-            $strName .= '['.$intSubIndex.']';
+            $strName .= '[subQueries]['.$intSubIndex.']';
         }
 
         switch ( $arrQuery['operator'] ) {
@@ -290,13 +274,6 @@ class CatalogTaxonomyWizard extends \Widget {
 
         return $strOperatorsOptions;
     }
-
-
-    protected function prepareWhereQueryArray() {
-
-        $this->varValue['query'] = Toolkit::parseWhereQueryArray( $this->varValue['query'] );
-    }
-
 
     protected function getFieldSelector() {
 

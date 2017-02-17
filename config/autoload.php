@@ -31,6 +31,7 @@ ClassLoader::addClasses([
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
     'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\FrontendEditing' => 'system/modules/catalog-manager/library/alnv/FrontendEditing.php',
+    'CatalogManager\MessageInput' => 'system/modules/catalog-manager/library/alnv/Fields/MessageInput.php',
     'CatalogManager\DCABuilderHelper' => 'system/modules/catalog-manager/library/alnv/DCABuilderHelper.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',

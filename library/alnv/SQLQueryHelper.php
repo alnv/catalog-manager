@@ -57,10 +57,8 @@ class SQLQueryHelper extends CatalogController {
     }
 
     
-    public function getCatalogFieldsByCatalogID( $strID, $arrCallback = [] ) {
-
-        $arrFields = [];
-
+    public function getCatalogFieldsByCatalogID( $strID, $arrCallback = [], $arrFields = [] ) {
+        
         if ( !$strID ) return $arrFields;
 
         $objFields = $this->SQLQueryBuilder->execute([

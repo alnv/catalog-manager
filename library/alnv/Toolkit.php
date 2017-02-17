@@ -79,6 +79,34 @@ class Toolkit {
     }
 
 
+    public static function prepareValueForQuery( $varValue ) {
+
+        if ( !empty( $varValue ) && is_array( $varValue ) ) {
+
+            $arrReturn = [];
+
+            foreach ( $varValue as $strKey => $strValue ) {
+
+                $arrReturn[ $strKey ] = Toolkit::prepareValueForQuery( $strValue );
+            }
+
+            return $arrReturn;
+        }
+
+        if ( is_numeric( $varValue ) ) {
+
+            return floatval( $varValue );
+        }
+
+        if ( is_null( $varValue ) ) {
+
+            return '';
+        }
+        
+        return $varValue;
+    }
+
+
     public static function deserialize( $strValue ) {
 
         $strValue = deserialize( $strValue );

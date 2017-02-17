@@ -231,7 +231,7 @@ class CatalogView extends CatalogController {
                 'value' => '1'
             ];
         }
-
+        
         if ( $this->catalogUseRadiusSearch && $this->strMode == 'view' ) {
 
             $arrRSValues = [];

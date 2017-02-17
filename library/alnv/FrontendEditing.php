@@ -491,6 +491,11 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'upload';
         }
 
+        if ( $arrField['inputType'] == 'catalogMessageWidget' ) {
+
+            $arrField['inputType'] = 'catalogMessageForm';
+        }
+
         $arrField['eval']['tableless'] = $this->tableless;
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 

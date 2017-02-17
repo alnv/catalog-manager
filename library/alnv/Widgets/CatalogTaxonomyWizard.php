@@ -121,13 +121,13 @@ class CatalogTaxonomyWizard extends \Widget {
         $this->arrFields = array_keys( $this->arrTaxonomies );
         $this->arrTaxonomies = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrTaxonomies );
 
-        $this->cleanUpValues();
+        $this->prepareWhereQueryArray();
 
         $strHeadTemplate =
             '<table border="0" cellspacing="0" cellpadding="0" class="ctlg_taxonomies_field_selector_table">'.
                 '<thead>'.
                     '<tr>'.
-                        '<td>Field</td>'.
+                        '<td>' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] . '</td>'.
                         '<td>&nbsp;</td>'.
                     '</tr>'.
                 '</thead>'.
@@ -167,9 +167,9 @@ class CatalogTaxonomyWizard extends \Widget {
             '<table width="100%" border="0" cellspacing="0" cellpadding="0">'.
                 '<thead>'.
                     '<tr>'.
-                        '<td>Field</td>'.
-                        '<td>Operator</td>'.
-                        '<td>Value</td>'.
+                        '<td>' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] . '</td>'.
+                        '<td>' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] . '</td>'.
+                        '<td>' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value'] . '</td>'.
                         '<td>&nbsp;</td>'.
                     '</tr>'.
                 '</thead>'.
@@ -178,6 +178,8 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</tbody>'.
             '</table>';
 
+
+        if ( !$strRowTemplate ) $strTemplate = '';
 
         return $strHeadTemplate.$strTemplate;
     }
@@ -244,42 +246,9 @@ class CatalogTaxonomyWizard extends \Widget {
     }
 
 
-    protected function cleanUpValues() {
+    protected function prepareWhereQueryArray() {
 
-        $arrValues = [];
-
-        if ( !empty( $this->varValue['query'] ) && is_array( $this->varValue['query'] ) ) {
-
-            foreach ( $this->varValue['query'] as $intIndex => $arrValue ) {
-                
-                $arrQuery = [
-
-                    'field' => $arrValue['field'],
-                    'value' => $arrValue['value'],
-                    'operator' => $arrValue['operator']
-                ];
-
-                if ( count( $arrValue ) > 3 ) {
-
-                    $arrValues[ $intIndex ][] = $arrQuery;
-
-                    foreach ( $arrValue as $strKey => $strValue ) {
-
-                        if ( is_array( $strValue ) ) {
-
-                            $arrValues[ $intIndex ][] = $strValue;
-                        }
-                    }
-                }
-
-                else {
-
-                    $arrValues[ $intIndex ] = $arrQuery;
-                }
-            }
-        }
-
-        $this->varValue['query'] = $arrValues;
+        $this->varValue['query'] = Toolkit::parseWhereQueryArray( $this->varValue['query'] );
     }
 
 

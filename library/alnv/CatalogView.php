@@ -51,7 +51,7 @@ class CatalogView extends CatalogController {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
 
-                if ( in_array( $arrField['type'], [ 'map' ] ) ) {
+                if ( in_array( $arrField['type'], [ 'map', 'message' ] ) ) {
 
                     $this->arrCatalogStaticFields[] = $strID;
 
@@ -231,7 +231,7 @@ class CatalogView extends CatalogController {
                 'value' => '1'
             ];
         }
-        
+
         if ( $this->catalogUseRadiusSearch && $this->strMode == 'view' ) {
 
             $arrRSValues = [];
@@ -325,7 +325,6 @@ class CatalogView extends CatalogController {
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
-            $arrCatalog['contentElements'] = '';
 
             if ( $this->strMode === 'master' ) {
 
@@ -360,6 +359,8 @@ class CatalogView extends CatalogController {
                 $arrCatalog['relations'] = $this->setRelatedTableLinks( $arrCatalog['id'] );
             }
 
+            $arrCatalog['contentElements'] = '';
+
             if ( $this->strMode === 'master' && $this->arrCatalog['addContentElements'] ) {
 
                 $objContent = \ContentModel::findPublishedByPidAndTable( $arrCatalog['id'] , $this->catalogTablename );
@@ -389,6 +390,12 @@ class CatalogView extends CatalogController {
                             }
 
                             $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField, $arrCatalog );
+
+                            break;
+
+                        case 'message':
+
+                            $arrCatalog[ $arrField['fieldname'] ] = MessageInput::parseValue( '', $arrField, $arrCatalog );
 
                             break;
                     }

@@ -8,6 +8,6 @@ class CatalogMessageWidget extends \Widget {
 
     public function generate() {
 
-        return '';
+        return $this->ctlgMessage;
     }
 }

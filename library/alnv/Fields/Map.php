@@ -61,6 +61,7 @@ class Map {
         return \StringUtil::toHtml5( $strInfoBox );
     }
 
+    
     public static function getMapViewOptions( $arrOptions ) {
 
         $arrOptions['mapMarker'] = $arrOptions['mapMarker'] ? 'true' : 'false';

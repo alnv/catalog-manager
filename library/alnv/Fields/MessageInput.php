@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class MessageInput {
 
+    
     public static function generate( $arrDCAField, $arrField ) {
 
         unset( $arrDCAField['label'][1] );
@@ -18,8 +19,9 @@ class MessageInput {
         return $arrDCAField;
     }
 
+
     public static function parseValue( $varValue, $arrField, $arrCatalog = [] ) {
 
-        return '';
+        return $arrField['message'] ? $arrField['message'] : '';
     }
 }

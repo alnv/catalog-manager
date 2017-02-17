@@ -445,7 +445,7 @@ class DCABuilder extends CatalogController {
 
         foreach ( $this->arrFields as $arrField ) {
 
-            if ( !$arrField['type'] ) continue;
+            if ( !$arrField['type'] || !$arrField['fieldname'] ) continue;
 
             if ( $arrField['title'] && $arrField['type'] == 'fieldsetStart' ) {
 
@@ -453,8 +453,11 @@ class DCABuilder extends CatalogController {
                 $arrPaletteTranslationMap[ $arrField['title'] ] = $arrField['label'];
             }
 
-            if ( !$arrField['fieldname'] || in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
+            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->DCABuilderHelper->arrReadOnlyInputTypes ) ) {
 
+                continue;
+            }
+            
             $arrDCAPalette[ $strTemporaryPalette ][] = $arrField['fieldname'];
         }
 

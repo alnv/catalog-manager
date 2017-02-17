@@ -28,6 +28,7 @@ class CatalogView extends CatalogController {
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
+        $this->import( 'DCABuilderHelper' );
     }
 
 
@@ -40,8 +41,9 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename ) return null;
 
+        $this->arrCatalogFields = $this->DCABuilderHelper->getPredefinedFields();
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'] );
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], null, $this->arrCatalogFields );
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
 
@@ -89,6 +91,7 @@ class CatalogView extends CatalogController {
         }
 
         $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
+        $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
@@ -172,6 +175,15 @@ class CatalogView extends CatalogController {
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
+        if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) ) {
+
+            $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
+
+                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'] );
+
+                return $arrQuery;
+            });
+        }
 
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
 
@@ -304,7 +316,7 @@ class CatalogView extends CatalogController {
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -437,7 +449,7 @@ class CatalogView extends CatalogController {
 
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
-        $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname];
+        $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname] ? $this->arrCatalogFieldnameAndIDMap[$strFieldname] : $strFieldname;
         $arrField = $this->arrCatalogFields[$strFieldID];
 
         switch ( $arrField['type'] ) {
@@ -480,6 +492,24 @@ class CatalogView extends CatalogController {
 
             []
         );
+    }
+
+
+    private function getParseQueryValue( $strFieldname, $strValue = '' ) {
+
+        $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] ? $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] : $strFieldname;
+        $arrField = $this->arrCatalogFields[$strFieldID];
+
+        $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
+
+        if ( $varValue && is_string( $varValue ) && $arrField['multiple'] ) {
+
+            $varValue = Toolkit::deserialize( $varValue );
+        }
+
+        if ( !$varValue ) return null;
+
+        return $varValue;
     }
 
 

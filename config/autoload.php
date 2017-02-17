@@ -37,6 +37,7 @@ ClassLoader::addClasses([
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
+    'CatalogManager\CatalogMessageWidget' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogMessageWidget.php',
     'CatalogManager\CatalogOrderByWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogOrderByWizard.php',
     'CatalogManager\CatalogTaxonomyWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogTaxonomyWizard.php',
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',

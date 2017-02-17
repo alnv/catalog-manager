@@ -44,5 +44,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
 
 $GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizard';
+$GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';
 $GLOBALS['BE_FFL']['catalogTaxonomyWizard'] = 'CatalogManager\CatalogTaxonomyWizard';
 $GLOBALS['BE_FFL']['catalogRelationWizard'] = 'CatalogManager\CatalogRelationWizard';

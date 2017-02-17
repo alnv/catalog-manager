@@ -181,6 +181,11 @@ class CatalogView extends CatalogController {
 
                 $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'] );
 
+                if ( !$arrQuery['value'] || empty( $arrQuery['value'] ) ) {
+
+                    return null;
+                }
+
                 return $arrQuery;
             });
         }
@@ -316,7 +321,7 @@ class CatalogView extends CatalogController {
         }
 
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -507,9 +512,7 @@ class CatalogView extends CatalogController {
             $varValue = Toolkit::deserialize( $varValue );
         }
 
-        if ( !$varValue ) return null;
-
-        return $varValue;
+        return Toolkit::prepareValueForQuery( $varValue );
     }
 
 

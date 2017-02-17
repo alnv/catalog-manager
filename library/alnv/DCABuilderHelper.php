@@ -34,6 +34,12 @@ class DCABuilderHelper extends CatalogController {
     ];
 
 
+    public $arrReadOnlyInputTypes = [
+
+        'message'
+    ];
+
+    
     public $arrInputTypes = [
 
         'text' => 'text',
@@ -44,7 +50,8 @@ class DCABuilderHelper extends CatalogController {
         'select' => 'select',
         'upload' => 'fileTree',
         'textarea' => 'textarea',
-        'checkbox' => 'checkbox'
+        'checkbox' => 'checkbox',
+        'message' => 'catalogMessageWidget'
     ];
 
 
@@ -191,6 +198,12 @@ class DCABuilderHelper extends CatalogController {
                 $arrDCAField = Upload::generate( $arrDCAField, $arrField );
 
                 break;
+
+            case 'message':
+
+                $arrDCAField = MessageInput::generate( $arrDCAField, $arrField );
+
+                break;
         }
 
         return $arrDCAField;
@@ -302,7 +315,7 @@ class DCABuilderHelper extends CatalogController {
 
         if ( !$arrField['type'] ) return false;
 
-        if ( in_array( $arrField['type'], $this->arrForbiddenInputTypes ) ) return false;
+        if ( in_array( $arrField['type'], $this->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->arrReadOnlyInputTypes ) ) return false;
 
         return true;
     }

@@ -30,7 +30,7 @@ td.ctlg_text_value {
 
 td.ctlg_button {
 
-    width: 30px;
+    width: 20px;
     padding: 5px 4px;
     text-align: right;
 }
@@ -38,6 +38,18 @@ td.ctlg_button {
 .ctlg_text.tl_text {
 
     width: 100%;
+}
+
+.ctlg_text_w50.tl_text {
+
+    width: 47%;
+    float: left;
+    margin-right: 1%;
+}
+
+.ctlg_text_w50.tl_text.last {
+
+    margin-right: 0;
 }
 
 .tl_select.ctlg_select {

@@ -192,33 +192,79 @@ class CatalogTaxonomyWizard extends \Widget {
         $strPaddingStyle = $strType == 'or' ? 'style="white-space:nowrap; padding-left:10px"' : '';
         $strBackgroundStyle = $intIndex % 2 != 0 ? 'style="background:#f9f9f9"' : 'style="background:#f2f2f2"';
 
-        $strFieldTemplate =
-            '<tr '. $strBackgroundStyle .'>'.
-                '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
-                '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
-                '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text"></td>'.
-                '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
-            '</tr>';
-
         if ( !is_null( $intSubIndex ) && $intSubIndex ) {
 
             $strID .= '_' . $intSubIndex;
             $strName .= '['.$intSubIndex.']';
         }
 
-        return sprintf(
+        switch ( $arrQuery['operator'] ) {
 
-            $strFieldTemplate,
-            $strName . '[field]',
-            $strID,
-            $this->getFieldOptions( $arrQuery['field'], false ),
-            $strName . '[operator]',
-            $strID,
-            $this->getOperatorOptions( $arrQuery ),
-            $strName . '[value]',
-            $strID,
-            $arrQuery['value']
-        );
+            case 'between':
+
+                if ( !$arrQuery['value'] || is_string( $arrQuery['value'] ) ) {
+
+                    $arrQuery['value'] = [ '', '' ];
+                }
+
+                $strFieldTemplate =
+                    '<tr '. $strBackgroundStyle .'>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text_w50 tl_text"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text_w50 last tl_text"></td>'.
+                    '<td  class="ctlg_button">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
+                    '</tr>';
+
+                return sprintf(
+
+                    $strFieldTemplate,
+                    $strName . '[field]',
+                    $strID,
+                    $this->getFieldOptions( $arrQuery['field'], false ),
+                    $strName . '[operator]',
+                    $strID,
+                    $this->getOperatorOptions( $arrQuery ),
+                    $strName . '[value][0]',
+                    $strID . '_2',
+                    isset( $arrQuery['value'][0] ) ? $arrQuery['value'][0] : '',
+                    $strName . '[value][1]',
+                    $strID . '_1',
+                    isset( $arrQuery['value'][1] ) ? $arrQuery['value'][1] : ''
+                );
+
+                break;
+
+            default:
+
+                if ( is_array( $arrQuery['value'] ) ) {
+
+                    $arrQuery['value'] = $arrQuery['value'][0] ? $arrQuery['value'][0] : '';
+                }
+
+                $strFieldTemplate =
+                    '<tr '. $strBackgroundStyle .'>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text"></td>'.
+                    '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
+                    '</tr>';
+
+                return sprintf(
+
+                    $strFieldTemplate,
+                    $strName . '[field]',
+                    $strID,
+                    $this->getFieldOptions( $arrQuery['field'], false ),
+                    $strName . '[operator]',
+                    $strID,
+                    $this->getOperatorOptions( $arrQuery ),
+                    $strName . '[value]',
+                    $strID,
+                    $arrQuery['value']
+                );
+
+                break;
+        }
     }
 
     protected function getOperatorOptions( $arrQuery ) {

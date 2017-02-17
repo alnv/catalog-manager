@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
-        'message' => '{general_legend},type,title,label,description;{invisible_legend},invisible',
+        'message' => '{general_legend},type,fieldname,title,message;{invisible_legend},invisible',
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
@@ -1378,6 +1378,22 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'rte' => 'ace|html',
+                'tl_class' => 'clr',
+                'allowHtml' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
+        ],
+
+        'message' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['message'],
+            'inputType' => 'textarea',
+
+            'eval' => [
+
+                'rte' => 'tinyMCE',
                 'tl_class' => 'clr',
                 'allowHtml' => true
             ],

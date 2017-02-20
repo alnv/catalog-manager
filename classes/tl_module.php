@@ -268,9 +268,11 @@ class tl_module extends \Backend {
 
         while ( $objCatalogFields->next() ) {
 
-            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
-
             if ( !$objCatalogFields->fieldname ) continue;
+
+            if ( $objCatalogFields->type == 'upload' ) continue;
+
+            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
 
             $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
         }

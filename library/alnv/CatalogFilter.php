@@ -46,6 +46,7 @@ class CatalogFilter extends CatalogController {
 
         if ( !empty( $this->arrActiveFields ) && is_array( $this->arrActiveFields ) ) {
 
+            $arrFieldTemplates = Toolkit::deserialize( $this->catalogFilterFieldTemplates );
             $arrDCFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrActiveFields, [], $this->arrCatalog );
 
             foreach ( $arrDCFields as $arrField ) {
@@ -60,6 +61,19 @@ class CatalogFilter extends CatalogController {
                 $objWidget->id = 'id_' . $arrField['_fieldname'];
                 $objWidget->value = \Input::get( $arrField['_fieldname'] ) ? \Input::get( $arrField['_fieldname'] ) : '';
                 $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
+
+                if ( !empty( $arrFieldTemplates ) && is_array( $arrFieldTemplates ) ) {
+
+                    foreach ( $arrFieldTemplates as $arrValue ) {
+
+                        if ( !$arrValue['template'] ) continue;
+
+                        if ( isset( $arrValue['fieldname'] ) && $arrValue['fieldname'] == $arrField['_fieldname'] ) {
+                            
+                            $objWidget->template = $arrValue['template'];
+                        }
+                    }
+                }
 
                 $strFields .= $objWidget->parse();
                 $intIndex++;

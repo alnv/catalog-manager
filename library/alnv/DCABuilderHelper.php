@@ -74,9 +74,9 @@ class DCABuilderHelper extends CatalogController {
     ];
 
 
-    public function setInputType( $arrField ) {
-        
-        return $this->arrInputTypes[ $arrField['type'] ] ? $this->arrInputTypes[ $arrField['type'] ] : 'text';
+    public function setInputType( $strType ) {
+
+        return $this->arrInputTypes[ $strType ] ? $this->arrInputTypes[ $strType ] : 'text';
     }
 
 
@@ -98,7 +98,7 @@ class DCABuilderHelper extends CatalogController {
         $arrDCAField = [
 
             'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
-            'inputType' => $this->setInputType( $arrField ),
+            'inputType' => $this->setInputType( $arrField['type'] ),
 
             'eval' => [
 

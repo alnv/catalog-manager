@@ -4,7 +4,7 @@
 <form method="GET" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?>>
    <?= $this->output; ?>
    <div class="submit_container">
-      <input type="submit" name="" value="Filter">
+      <input type="submit" name="ctlg_filter" value="Filter">
    </div>
 </form>
 <!-- indexer::continue -->

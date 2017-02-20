@@ -481,11 +481,6 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'checkbox';
         }
 
-        if ( $arrField['inputType'] == 'checkboxWizard' ) {
-
-            $arrField['inputType'] = 'checkbox';
-        }
-
         if ( $arrField['inputType'] == 'fileTree' ) {
 
             $arrField['inputType'] = 'upload';

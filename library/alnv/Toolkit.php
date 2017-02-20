@@ -239,52 +239,5 @@ class Toolkit {
         }
 
         return $arrReturn;
-
-        /*
-        if ( !empty( $arrQuery ) && is_array( $arrQuery ) ) {
-
-            foreach ( $arrQuery as $intIndex => $arrValue ) {
-
-                $arrQuery = [
-
-                    'field' => $arrValue['field'],
-                    'value' => $arrValue['value'],
-                    'operator' => $arrValue['operator']
-                ];
-
-                if ( count( $arrValue ) > 3 ) {
-
-                    $arrValues[$intIndex][] = $arrQuery;
-
-                    foreach ( $arrValue as $strKey => $strValue ) {
-
-                        if ( is_array( $strValue ) ) {
-
-                            if ( is_callable( $fnCallback ) ) {
-
-                                $strValue = $fnCallback( $strValue );
-                            }
-
-                            if ( is_null( $strValue ) ) continue;
-
-                            $arrValues[$intIndex][] = $strValue;
-                        }
-                    }
-                }
-
-                else {
-
-                    if ( is_callable( $fnCallback ) ) {
-
-                        $arrQuery = $fnCallback( $arrQuery );
-                    }
-
-                    if ( is_null( $arrQuery ) ) continue;
-
-                    $arrValues[$intIndex] = $arrQuery;
-                }
-            }
-        }
-        */
     }
 }

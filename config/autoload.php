@@ -47,7 +47,9 @@ ClassLoader::addClasses([
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
-    'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php'
+    'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php',
+    'CatalogManager\FilterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValueInsertTag.php',
+    'CatalogManager\CatalogFilterFieldTemplateWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldTemplateWizard.php'
 ]);
 
 TemplateLoader::addFiles([

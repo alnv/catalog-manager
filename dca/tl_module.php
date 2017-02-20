@@ -55,7 +55,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveFilterFields'] = [
     'eval' => [
 
         'multiple' => true,
-        'mandatory' => true,
         'doNotCopy' => true,
         'submitOnChange' => true
     ],
@@ -71,10 +70,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFilterFieldTemplates'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'],
     'inputType' => 'catalogFilterFieldTemplateWizard',
 
-    'eval' => [
-
-        'doNotCopy' => true,
-    ],
+    'eval' => [],
 
     'exclude' => true,
     'sql' => "blob NULL"

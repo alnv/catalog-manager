@@ -75,7 +75,7 @@ class CatalogOrderByWizard extends \Widget {
 
         $this->import('Database');
         $strCommand = 'cmd_' . $this->strField;
-        $arrButtons = array('copy', 'drag', 'up', 'down', 'delete');
+        $arrButtons = [ 'copy', 'drag', 'up', 'down', 'delete' ];
 
         if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord) {
 
@@ -110,7 +110,7 @@ class CatalogOrderByWizard extends \Widget {
             $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
 
-        if (!is_array($this->varValue) || !$this->varValue[0]) {
+        if ( !is_array( $this->varValue ) || !$this->varValue[0] ) {
 
             $this->varValue = [['']];
         }

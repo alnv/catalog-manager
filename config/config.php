@@ -31,6 +31,8 @@ if ( TL_MODE == 'BE' ) {
         : 'system/modules/catalog-manager/assets/Widgets.css';
 }
 
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValueInsertTag', 'getInsertTagValue' ];
+
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
@@ -48,5 +50,6 @@ $GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizar
 $GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';
 $GLOBALS['BE_FFL']['catalogTaxonomyWizard'] = 'CatalogManager\CatalogTaxonomyWizard';
 $GLOBALS['BE_FFL']['catalogRelationWizard'] = 'CatalogManager\CatalogRelationWizard';
+$GLOBALS['BE_FFL']['catalogFilterFieldTemplateWizard'] = 'CatalogManager\CatalogFilterFieldTemplateWizard';
 
 $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';

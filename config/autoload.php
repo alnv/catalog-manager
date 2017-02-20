@@ -26,6 +26,7 @@ ClassLoader::addClasses([
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/Fields/DateInput.php',
     'CatalogManager\DCAPermission' => 'system/modules/catalog-manager/library/alnv/DCAPermission.php',
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',
+    'CatalogManager\CatalogFilter' => 'system/modules/catalog-manager/library/alnv/CatalogFilter.php',
     'CatalogManager\SQLQueryHelper' => 'system/modules/catalog-manager/library/alnv/SQLQueryHelper.php',
     'CatalogManager\TemplateHelper' => 'system/modules/catalog-manager/library/alnv/TemplateHelper.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
@@ -39,6 +40,7 @@ ClassLoader::addClasses([
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
+    'CatalogManager\ModuleCatalogFilter' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogFilter.php',
     'CatalogManager\CatalogMessageWidget' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogMessageWidget.php',
     'CatalogManager\CatalogOrderByWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogOrderByWizard.php',
     'CatalogManager\CatalogTaxonomyWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogTaxonomyWizard.php',
@@ -58,5 +60,6 @@ TemplateLoader::addFiles([
     'ctlg_form_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_grouped' => 'system/modules/catalog-manager/templates',
     'ctlg_message_field' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
 ]);

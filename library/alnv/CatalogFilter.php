@@ -130,11 +130,6 @@ class CatalogFilter extends CatalogController {
             $arrField['inputType'] = 'checkbox';
         }
 
-        if ( $arrField['inputType'] == 'checkboxWizard' ) {
-
-            $arrField['inputType'] = 'checkbox';
-        }
-
         $arrField['eval']['tableless'] = '1';
         $arrField['eval']['required'] = false;
 

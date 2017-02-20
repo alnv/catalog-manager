@@ -30,5 +30,8 @@ class ModuleCatalogFilter extends \Module {
         $this->CatalogFilter->arrOptions = $this->arrData;
         $this->CatalogFilter->strTable = $this->catalogTablename;
         $this->CatalogFilter->initialize();
+
+        $this->Template->output = $this->CatalogFilter->generateForm();
+        $this->Template->action = \Environment::get( 'indexFreeRequest' );
     }
 }

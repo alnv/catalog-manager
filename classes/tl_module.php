@@ -9,6 +9,14 @@ class tl_module extends \Backend {
     private $arrSortableCatalogFieldsCache = [];
 
 
+    public function __construct() {
+
+        parent::__construct();
+
+        $this->import( 'DCABuilderHelper' );
+    }
+
+
     public function getCatalogs() {
 
         $arrReturn = [];
@@ -64,10 +72,12 @@ class tl_module extends \Backend {
         }
     }
 
+
     public function getSystemCountries() {
 
         return array_values( $this->getcountries() );
     }
+
 
     public function getCatalogTemplates() {
 
@@ -168,6 +178,7 @@ class tl_module extends \Backend {
         return $this->arrCatalogFieldsCache;
     }
 
+
     public function getSortableCatalogFieldsByTablename( $strTablename ) {
 
         if ( !empty( $this->arrSortableCatalogFieldsCache ) && is_array( $this->arrSortableCatalogFieldsCache ) ) {
@@ -242,6 +253,26 @@ class tl_module extends \Backend {
             }
 
             $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getFilterFields( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->catalogTablename ) return [];
+
+        $arrReturn = [];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->execute( $dc->activeRecord->catalogTablename );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
         }
 
         return $arrReturn;

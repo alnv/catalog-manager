@@ -277,4 +277,21 @@ class tl_module extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getActiveFilterFields( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->catalogActiveFilterFields ) return [];
+
+        $arrReturn = [];
+        $arrActiveFilterFields = Toolkit::deserialize( $dc->activeRecord->catalogActiveFilterFields );
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE id IN ( '. implode( ',' , $arrActiveFilterFields ) .' )' )->execute();
+
+        while ( $objCatalogFields->next() ) {
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+        }
+
+        return $arrReturn;
+    }
 }

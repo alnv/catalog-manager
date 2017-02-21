@@ -50,6 +50,6 @@ $GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizar
 $GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';
 $GLOBALS['BE_FFL']['catalogTaxonomyWizard'] = 'CatalogManager\CatalogTaxonomyWizard';
 $GLOBALS['BE_FFL']['catalogRelationWizard'] = 'CatalogManager\CatalogRelationWizard';
-$GLOBALS['BE_FFL']['catalogFilterFieldTemplateWizard'] = 'CatalogManager\CatalogFilterFieldTemplateWizard';
+$GLOBALS['BE_FFL']['catalogFilterFieldSelectWizard'] = 'CatalogManager\CatalogFilterFieldSelectWizard';
 
 $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';

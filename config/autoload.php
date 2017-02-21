@@ -49,7 +49,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
     'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php',
     'CatalogManager\FilterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValueInsertTag.php',
-    'CatalogManager\CatalogFilterFieldTemplateWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldTemplateWizard.php'
+    'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
 ]);
 
 TemplateLoader::addFiles([

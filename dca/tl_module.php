@@ -13,7 +13,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAllowCom
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiusSearch';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{catalogTaxonomy_legend},catalogTaxonomies,catalogEnableParentFilter;{catalogMap_legend:hide},catalogUseMap;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{master_legend:hide},catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontend_editing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFieldTemplates_legend},catalogFilterFieldTemplates;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFieldTemplates_legend},catalogFilterFieldTemplates;{catalogFieldDependencies_legend},catalogFilterFieldDependencies;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
@@ -68,7 +68,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveFilterFields'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFilterFieldTemplates'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'],
-    'inputType' => 'catalogFilterFieldTemplateWizard',
+    'inputType' => 'catalogFilterFieldSelectWizard',
+
+    'eval' => [],
+
+    'exclude' => true,
+    'sql' => "blob NULL"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogFilterFieldDependencies'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'],
+    'inputType' => 'catalogFilterFieldSelectWizard',
 
     'eval' => [],
 

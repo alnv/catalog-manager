@@ -6,7 +6,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
 
     private $blnEmpty = true;
-
+    
     protected $arrCatalogFields = [];
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
@@ -37,7 +37,6 @@ class CatalogFilterFieldSelectWizard extends \Widget {
         $this->import('DCABuilderHelper');
 
         if ( !$this->varValue ) $this->varValue = [];
-
         if ( !\Cache::has('tabindex') ) \Cache::set( 'tabindex', 1 );
 
         $intTabindex = \Cache::get('tabindex');

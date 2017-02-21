@@ -189,7 +189,7 @@ class CatalogView extends CatalogController {
                 return $arrQuery;
             });
         }
-
+        
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
 
             $dteTime = \Date::floorToMinute();
@@ -513,6 +513,7 @@ class CatalogView extends CatalogController {
         $arrField = $this->arrCatalogFields[$strFieldID];
 
         $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
+        $varValue = \Controller::replaceInsertTags( $varValue );
 
         if ( $varValue && is_string( $varValue ) && $arrField['multiple'] ) {
 

@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class CatalogFilterFieldTemplateWizard extends \Widget {
+class CatalogFilterFieldSelectWizard extends \Widget {
 
 
     private $blnEmpty = true;
@@ -38,7 +38,7 @@ class CatalogFilterFieldTemplateWizard extends \Widget {
 
         if ( !$this->varValue ) $this->varValue = [];
 
-        if (!\Cache::has('tabindex')) {
+        if ( !\Cache::has('tabindex') ) {
 
             \Cache::set('tabindex', 1);
         }

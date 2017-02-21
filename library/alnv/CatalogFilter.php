@@ -9,6 +9,7 @@ class CatalogFilter extends CatalogController {
     public $arrFields = [];
     public $arrCatalog = [];
     public $arrOptions = [];
+    public $arrDependencies = [];
     public $arrActiveFields = [];
 
     private $arrForbiddenFilterTypes = [
@@ -47,6 +48,7 @@ class CatalogFilter extends CatalogController {
         if ( !empty( $this->arrActiveFields ) && is_array( $this->arrActiveFields ) ) {
 
             $arrFieldTemplates = Toolkit::deserialize( $this->catalogFilterFieldTemplates );
+            $arrFieldDependencies = Toolkit::deserialize( $this->catalogFilterFieldDependencies );
             $arrDCFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrActiveFields, [], $this->arrCatalog );
 
             foreach ( $arrDCFields as $arrField ) {
@@ -62,19 +64,31 @@ class CatalogFilter extends CatalogController {
                 $objWidget->value = \Input::get( $arrField['_fieldname'] ) ? \Input::get( $arrField['_fieldname'] ) : '';
                 $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
+                if ( $objWidget->value ) {
+
+                    $this->arrDependencies[] = $arrField['_fieldname'];
+                }
+
                 if ( !empty( $arrFieldTemplates ) && is_array( $arrFieldTemplates ) ) {
 
-                    foreach ( $arrFieldTemplates as $arrValue ) {
+                    $arrTemplate = $arrFieldTemplates[ $arrField['_fieldname'] ];
 
-                        if ( !$arrValue['template'] ) continue;
+                    if ( $arrTemplate && $arrTemplate['value'] ) {
 
-                        if ( isset( $arrValue['fieldname'] ) && $arrValue['fieldname'] == $arrField['_fieldname'] ) {
-                            
-                            $objWidget->template = $arrValue['template'];
-                        }
+                        $objWidget->template = $arrTemplate['value'];
                     }
                 }
 
+                if ( !empty( $arrFieldDependencies ) && is_array( $arrFieldDependencies ) ) {
+
+                    $arrDependencies = $arrFieldDependencies[ $arrField['_fieldname'] ];
+
+                    if ( $arrDependencies && $arrDependencies['value'] && !in_array( $arrDependencies['value'], $this->arrDependencies )) {
+
+                        continue;
+                    }
+                }
+                
                 $strFields .= $objWidget->parse();
                 $intIndex++;
             }
@@ -133,7 +147,7 @@ class CatalogFilter extends CatalogController {
 
     protected function setCatalog() {
 
-        $this->arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE tablename = ?')->limit(1)->execute( $this->strTable )->row();
+        $this->arrCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $this->strTable )->row();
     }
 
 

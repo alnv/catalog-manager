@@ -3,9 +3,14 @@
 <!-- indexer::stop -->
 <form method="GET" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?>>
    <?= $this->output; ?>
+<?php if( !$this->disableSubmit ): ?>
    <div class="submit_container">
       <input type="submit" name="ctlg_filter" value="Filter">
    </div>
+<?php endif; ?>
 </form>
+<?php if( $this->reset ): ?>
+   <?= $this->reset; ?>
+<?php endif; ?>
 <!-- indexer::continue -->
 <?php $this->endblock(); ?>

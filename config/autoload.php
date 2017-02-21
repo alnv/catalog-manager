@@ -4,6 +4,7 @@ ClassLoader::addNamespace( 'CatalogManager' );
 
 ClassLoader::addClasses([
 
+    'CatalogManager\tl_page' => 'system/modules/catalog-manager/classes/tl_page.php',
     'CatalogManager\Map' => 'system/modules/catalog-manager/library/alnv/Fields/Map.php',
     'CatalogManager\tl_module' => 'system/modules/catalog-manager/classes/tl_module.php',
     'CatalogManager\Toolkit' => 'system/modules/catalog-manager/library/alnv/Toolkit.php',
@@ -49,6 +50,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
     'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php',
     'CatalogManager\FilterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValueInsertTag.php',
+    'CatalogManager\MasterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterValueInsertTag.php',
     'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
 ]);
 

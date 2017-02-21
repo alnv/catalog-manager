@@ -7,7 +7,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
     private $blnEmpty = true;
 
-
+    protected $arrCatalogFields = [];
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
 
@@ -38,12 +38,17 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
         if ( !$this->varValue ) $this->varValue = [];
 
-        if ( !\Cache::has('tabindex') ) {
-
-            \Cache::set('tabindex', 1);
-        }
+        if ( !\Cache::has('tabindex') ) \Cache::set( 'tabindex', 1 );
 
         $intTabindex = \Cache::get('tabindex');
+
+        $arrActiveFilterFields = Toolkit::deserialize( $this->objDca->activeRecord->catalogActiveFilterFields );
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE id IN ( ' . implode( ',' , $arrActiveFilterFields ) . ' )' )->execute();
+
+        while ( $objCatalogFields->next() ) {
+
+            $this->arrCatalogFields[] = $objCatalogFields->row();
+        }
 
         $strTemplate =
             '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">'.
@@ -67,25 +72,20 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
         $strRows = '';
         $intIndex = 0;
-        $arrActiveFilterFields = Toolkit::deserialize( $this->objDca->activeRecord->catalogActiveFilterFields );
 
-        foreach ( $arrActiveFilterFields as $strFieldID ) {
-
-            $objCatalogField = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE id = ?')->limit(1)->execute( $strFieldID );
-
-            if ( !$objCatalogField->numRows ) continue;
+        foreach ( $this->arrCatalogFields as $arrField ) {
 
             $strRows .= sprintf(
 
                 '<tr><td style="white-space:nowrap; padding-right:3px"><label for="id_%s">%s:</label></td><td><select name="%s" id="id_%s" tabindex="%s" class="tl_select tl_chosen">%s</select><input type="hidden" name="%s" value="%s"></td></tr>',
-                $this->strId . '_' . $intIndex . '_' . $objCatalogField->fieldname,
-                $objCatalogField->title ? $objCatalogField->title : $objCatalogField->fieldname,
-                $this->strId . '[' . $intIndex . '][template]',
-                $this->strId . '_' . $intIndex . '_' . $objCatalogField->fieldname,
+                $this->strId . '_' . $intIndex . '_' . $arrField['fieldname'],
+                $arrField['title'] ? $arrField['title'] : $arrField['fieldname'],
+                $this->strId . '[' . $arrField['fieldname'] . '][value]',
+                $this->strId . '_' . $intIndex . '_' . $arrField['fieldname'],
                 $intTabindex++,
-                $this->getTemplateOptions( $objCatalogField, $intIndex ),
-                $this->strId . '[' . $intIndex . '][fieldname]',
-                $objCatalogField->fieldname
+                $this->getSelectOptions( $arrField, $arrField['fieldname'] ),
+                $this->strId . '[' . $arrField['fieldname'] . '][fieldname]',
+                $arrField['fieldname']
             );
 
             $intIndex++;
@@ -97,10 +97,52 @@ class CatalogFilterFieldSelectWizard extends \Widget {
     }
 
 
-    protected function getTemplateOptions( $objCatalogField, $intIndex ) {
+    protected function getSelectOptions( $arrField, $intIndex ) {
+        
+        switch ( $this->selectType ) {
+
+            case 'dependencies':
+
+                return $this->getDependenciesOptions( $arrField, $intIndex );
+
+                break;
+
+            case 'templates':
+
+                return $this->getTemplateOptions( $arrField, $intIndex );
+
+                break;
+        }
+
+        return '<option value="">-</option>';
+    }
+
+
+    protected function getDependenciesOptions( $arrField, $intIndex ) {
 
         $strOptions = '<option value="">-</option>';
-        $strType = $this->DCABuilderHelper->setInputType( $objCatalogField->type );
+
+        foreach ( $this->arrCatalogFields as $arrCatalogField ) {
+
+            if ( $arrCatalogField['id'] == $arrField['id'] ) continue;
+
+            $strOptions .= sprintf(
+
+                '<option value="%s" %s>%s</option>',
+                $arrCatalogField['fieldname'],
+                $this->varValue[$intIndex]['value'] == $arrCatalogField['fieldname'] ? 'selected' : '',
+                $arrCatalogField['title'] ? $arrCatalogField['title'] : $arrCatalogField['fieldname']
+            );
+        }
+
+        return $strOptions;
+    }
+
+
+    protected function getTemplateOptions( $arrField, $intIndex ) {
+
+        $strOptions = '<option value="">-</option>';
+        $strType = $this->DCABuilderHelper->setInputType( $arrField['type'] );
         $arrTemplates = $this->getTemplateGroup( 'form_' . $strType );
 
         foreach ( $arrTemplates as $strTemplate ) {
@@ -109,7 +151,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
                 '<option value="%s" %s>%s</option>',
                 $strTemplate,
-                $this->varValue[$intIndex]['template'] == $strTemplate ? 'selected' : '',
+                $this->varValue[$intIndex]['value'] == $strTemplate ? 'selected' : '',
                 $strTemplate
             );
         }

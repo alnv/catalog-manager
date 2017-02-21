@@ -4,5 +4,6 @@ todo
  - zoom factor geo locator
  - fix IN SQL Operator
  - 404 for master page
+ - master fe module
  - better sorting for fe palettes
  - fix duplicate field problem in tl_member and tl_user

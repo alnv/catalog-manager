@@ -49,6 +49,8 @@ class CatalogFilter extends CatalogController {
 
             $arrFieldTemplates = Toolkit::deserialize( $this->catalogFilterFieldTemplates );
             $arrFieldDependencies = Toolkit::deserialize( $this->catalogFilterFieldDependencies );
+            $arrFieldsChangeOnSubmit = Toolkit::deserialize( $this->catalogFieldsChangeOnSubmit );
+
             $arrDCFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrActiveFields, [], $this->arrCatalog );
 
             foreach ( $arrDCFields as $arrField ) {
@@ -67,6 +69,14 @@ class CatalogFilter extends CatalogController {
                 if ( $objWidget->value ) {
 
                     $this->arrDependencies[] = $arrField['_fieldname'];
+                }
+
+                if ( !empty( $arrFieldsChangeOnSubmit ) && is_array( $arrFieldsChangeOnSubmit ) ) {
+
+                    if ( in_array( $arrField['_fieldname'], $arrFieldsChangeOnSubmit ) ) {
+
+                        $objWidget->addAttributes([ 'onchange' => 'this.form.submit()' ]);
+                    }
                 }
 
                 if ( !empty( $arrFieldTemplates ) && is_array( $arrFieldTemplates ) ) {
@@ -88,13 +98,43 @@ class CatalogFilter extends CatalogController {
                         continue;
                     }
                 }
-                
+
                 $strFields .= $objWidget->parse();
                 $intIndex++;
             }
         }
 
         return $strFields;
+    }
+
+
+    public function setActionAttribute() {
+
+        if ( $this->catalogRedirectType && $this->catalogRedirectType == 'internal') {
+
+            $objPage = new \PageModel();
+            $arrPage = $objPage->findPublishedById( $this->catalogInternalFormRedirect );
+
+            if ( $arrPage != null ) {
+
+                return \Controller::generateFrontendUrl( $arrPage->row() );
+            }
+        }
+
+        if ( $this->catalogRedirectType && $this->catalogRedirectType == 'external') {
+
+            return $this->catalogExternalFormRedirect;
+        }
+
+        return \Environment::get( 'indexFreeRequest' );
+    }
+
+
+    public function setResetLink() {
+
+        if ( !$this->catalogResetFilterForm ) return '';
+
+        return sprintf( '<div class="reset"><a href="%s" id="id_form_%s">Alle Filtereinstellungen zurücksetzen</a></div>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
     }
 
 

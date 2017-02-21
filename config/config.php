@@ -32,6 +32,7 @@ if ( TL_MODE == 'BE' ) {
 }
 
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValueInsertTag', 'getInsertTagValue' ];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterValueInsertTag', 'getInsertTagValue' ];
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];

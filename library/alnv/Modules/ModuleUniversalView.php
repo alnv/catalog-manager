@@ -5,9 +5,9 @@ namespace CatalogManager;
 class ModuleUniversalView extends \Module {
 
 
-    private $strAct;
-    private $strMasterAlias;
-    protected $strTemplate = 'mod_catalog_view';
+    protected $strAct;
+    protected $strMasterAlias;
+    protected $strTemplate = 'mod_catalog_universal';
 
 
     public function generate() {

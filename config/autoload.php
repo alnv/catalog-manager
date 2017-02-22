@@ -37,6 +37,7 @@ ClassLoader::addClasses([
     'CatalogManager\DCABuilderHelper' => 'system/modules/catalog-manager/library/alnv/DCABuilderHelper.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
+    'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\CatalogMessageForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogMessageForm.php',
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
@@ -59,11 +60,12 @@ TemplateLoader::addFiles([
     'ctlg_field_map' => 'system/modules/catalog-manager/templates',
     'ctlg_view_teaser' => 'system/modules/catalog-manager/templates',
     'ctlg_view_master' => 'system/modules/catalog-manager/templates',
-    'mod_catalog_view' => 'system/modules/catalog-manager/templates',
     'ctlg_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_grouped' => 'system/modules/catalog-manager/templates',
     'ctlg_message_field' => 'system/modules/catalog-manager/templates',
     'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_master' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
 ]);

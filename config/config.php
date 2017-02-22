@@ -16,6 +16,7 @@ array_insert( $GLOBALS['FE_MOD'], 3, [
     'catalog-manager' => [
 
         'catalogUniversalView' => 'ModuleUniversalView',
+        'catalogMasterView' => 'ModuleMasterView',
         'catalogFilter' => 'ModuleCatalogFilter'
     ]
 ]);

@@ -9,7 +9,9 @@ class SQLQueryBuilder extends CatalogController {
     private $strTable = '';
     private $arrQuery = [];
     private $arrValues = [];
-    
+    private $arrMultipleValues = [];
+
+
     public function __construct() {
 
         parent::__construct();
@@ -122,7 +124,9 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function contain( $strField ) {
 
-        return sprintf( 'LOWER(%s.`%s`) IN (?)', $this->strTable, $strField );
+        $strPlaceholder = $this->arrMultipleValues[ $strField ] ? implode ( ',', array_fill( 0, $this->arrMultipleValues[ $strField ], '?' ) ) : '?';
+
+        return sprintf( 'LOWER(%s.`%s`) IN ('. $strPlaceholder .')', $this->strTable, $strField );
     }
 
 
@@ -233,9 +237,8 @@ class SQLQueryBuilder extends CatalogController {
 
                     if ( !$varValue['operator'] ) continue;
 
+                    $this->setValue( $varValue['value'], $arrQueries['field'] );
                     $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
-
-                    $this->setValue( $varValue['value'] );
 
                     $intOrIndex++;
                 }
@@ -247,9 +250,8 @@ class SQLQueryBuilder extends CatalogController {
 
                 if ( $arrQueries['operator'] ) {
 
+                    $this->setValue( $arrQueries['value'], $arrQueries['field'] );
                     $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] );
-
-                    $this->setValue( $arrQueries['value'] );
                 }
             }
         }
@@ -300,7 +302,7 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
-    private function setValue( $varValue ) {
+    private function setValue( $varValue, $strFieldname = '' ) {
 
         if ( is_array( $varValue ) ) {
 
@@ -308,6 +310,8 @@ class SQLQueryBuilder extends CatalogController {
 
                 $this->arrValues[] = $strValue;
             }
+
+            $this->arrMultipleValues[ $strFieldname ] = count( $varValue );
         }
 
         else {

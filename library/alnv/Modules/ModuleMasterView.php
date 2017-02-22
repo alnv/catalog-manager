@@ -66,5 +66,11 @@ class ModuleMasterView extends \Module {
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
         }
+
+        if ( empty( $this->Template->output ) ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
+        }
     }
 }

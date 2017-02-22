@@ -179,7 +179,7 @@ class CatalogView extends CatalogController {
 
             $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
 
-                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'] );
+                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'], $arrQuery['operator'] );
 
                 if ( !$arrQuery['value'] || empty( $arrQuery['value'] ) ) {
 
@@ -507,13 +507,18 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function getParseQueryValue( $strFieldname, $strValue = '' ) {
+    private function getParseQueryValue( $strFieldname, $strValue = '', $strOperator = '' ) {
 
         $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] ? $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] : $strFieldname;
         $arrField = $this->arrCatalogFields[$strFieldID];
 
         $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
         $varValue = \Controller::replaceInsertTags( $varValue );
+
+        if ( $strOperator == 'contain' && is_string( $varValue )) {
+
+            $varValue = explode( ',' , $varValue );
+        }
 
         if ( $varValue && is_string( $varValue ) && $arrField['multiple'] ) {
 

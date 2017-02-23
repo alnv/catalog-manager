@@ -72,6 +72,13 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogUseMap && $this->strMode == 'view' ) {
 
+            if ( $this->catalogRadioSearchZoomFactor && $this->catalogUseRadiusSearch ) {
+
+                $intDistance = \Input::get( 'rs_dstnc' ) ? intval( \Input::get( 'rs_dstnc' ) ) : 0;
+                
+                if ( $intDistance ) $this->catalogMapZoom = Toolkit::getZoomFactor( $intDistance );
+            }
+
             $this->arrCatalogMapViewOptions = Map::getMapViewOptions([
 
                 'id' => 'map_' . $this->id,
@@ -81,8 +88,8 @@ class CatalogView extends CatalogController {
                 'mapType' => $this->catalogMapType,
                 'mapStyle' => $this->catalogMapStyle,
                 'mapMarker' => $this->catalogMapMarker,
-                'mapScrollWheel' => $this->catalogMapScrollWheel,
-                'addMapInfoBox' => $this->catalogAddMapInfoBox
+                'addMapInfoBox' => $this->catalogAddMapInfoBox,
+                'mapScrollWheel' => $this->catalogMapScrollWheel
             ]);
 
             $this->blnMapViewMode = true;
@@ -319,7 +326,7 @@ class CatalogView extends CatalogController {
 
             $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
         }
-        
+
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
         while ( $objQueryBuilderResults->next() ) {

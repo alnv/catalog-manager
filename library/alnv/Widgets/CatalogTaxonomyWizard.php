@@ -194,7 +194,7 @@ class CatalogTaxonomyWizard extends \Widget {
                 $strFieldTemplate =
                     '<tr '. $strBackgroundStyle .'>'.
                     '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
-                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select></td>'.
                     '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text_w50 tl_text"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text_w50 last tl_text"></td>'.
                     '<td  class="ctlg_button">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
                     '</tr>';
@@ -228,7 +228,7 @@ class CatalogTaxonomyWizard extends \Widget {
                 $strFieldTemplate =
                     '<tr '. $strBackgroundStyle .'>'.
                     '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
-                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select></td>'.
+                    '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select></td>'.
                     '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text"></td>'.
                     '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
                     '</tr>';
@@ -278,7 +278,7 @@ class CatalogTaxonomyWizard extends \Widget {
     protected function getFieldSelector() {
 
         return sprintf(
-            '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\'tl_module\');">%s</select>',
+            '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select>',
             $this->strId . '[field]',
             $this->strId . '_field',
             $this->getFieldOptions( $this->varValue['field'], true )

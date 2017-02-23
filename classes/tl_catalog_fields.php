@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
+    
     private $arrFieldsCache = [];
     private $arrTextFieldsCache = [];
 
@@ -277,5 +278,36 @@ class tl_catalog_fields extends \Backend {
     public function getMapTemplates() {
 
         return $this->getTemplateGroup( 'ctlg_field_' );
+    }
+
+    public function getTaxonomyTable( \DataContainer $dc ) {
+
+        return $dc->activeRecord->dbTable ? $dc->activeRecord->dbTable : '';
+    }
+
+
+    public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
+
+        $arrReturn = [];
+
+        if ( !$strTablename ) return $arrReturn;
+
+        $this->import( 'DCABuilderHelper' );
+        $arrForbiddenTypes = [ 'upload', 'textarea' ];
+        $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
+        $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) || in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
+
+                continue;
+            }
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+        }
+
+        return $arrReturn;
     }
 }

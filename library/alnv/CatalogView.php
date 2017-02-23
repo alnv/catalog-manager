@@ -510,7 +510,7 @@ class CatalogView extends CatalogController {
     private function getParseQueryValue( $strFieldname, $strValue = '', $strOperator = '' ) {
 
         $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] ? $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] : $strFieldname;
-        $arrField = $this->arrCatalogFields[$strFieldID];
+        $arrField = $this->arrCatalogFields[ $strFieldID ];
 
         $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
         $varValue = \Controller::replaceInsertTags( $varValue );

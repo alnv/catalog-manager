@@ -1045,6 +1045,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTaxonomies'] = [
 
     'eval' => [
 
+        'dcTable' => 'tl_module',
         'taxonomyTable' => [ 'CatalogManager\tl_module', 'getTaxonomyTable' ],
         'taxonomyEntities' => [ 'CatalogManager\tl_module', 'getTaxonomyFields' ]
     ],

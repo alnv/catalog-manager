@@ -60,11 +60,13 @@ class SQLQueryBuilder extends CatalogController {
         return $this->createWhereStatement();
     }
 
+
     public function getValues() {
 
         return $this->arrValues;
     }
 
+    
     protected function createSelectQuery() {
 
         $this->strQuery = sprintf( 'SELECT %s FROM %s%s%s%s%s%s',

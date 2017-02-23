@@ -6,6 +6,7 @@ class OptionsGetter extends CatalogController {
 
 
     private $arrField = [];
+    private $arrActiveEntity = [];
 
 
     public function __construct( $arrField ) {
@@ -14,7 +15,8 @@ class OptionsGetter extends CatalogController {
 
         $this->arrField = $arrField;
 
-        $this->import( 'Database' );
+        $this->import( 'SQLQueryHelper' );
+        $this->import( 'SQLQueryBuilder' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -66,12 +68,36 @@ class OptionsGetter extends CatalogController {
             return $arrOptions;
         }
 
-        if ( !$this->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) || !$this->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) || !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
 
             return $arrOptions;
         }
 
-        $objDbOptions = $this->Database->prepare( sprintf( 'SELECT `%s`, `%s` FROM %s', $this->arrField['dbTableKey'], $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) )->execute();
+        $arrQuery = [
+
+            'table' => $this->arrField['dbTable'],
+            'where' => []
+        ];
+
+        $this->getActiveEntityValues();
+        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
+
+        if ( !empty( $arrQueries ) && is_array( $arrQueries ) ) {
+
+            $arrQuery['where'] = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
+
+                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'], $arrQuery['operator'] );
+
+                if ( !$arrQuery['value'] || empty( $arrQuery['value'] ) ) {
+
+                    return null;
+                }
+
+                return $arrQuery;
+            });
+        }
+
+        $objDbOptions = $this->SQLQueryBuilder->execute( $arrQuery );
 
         while ( $objDbOptions->next() ) {
 
@@ -79,6 +105,36 @@ class OptionsGetter extends CatalogController {
         }
 
         return $arrOptions;
+    }
+
+
+    private function getParseQueryValue( $strFieldname, $strValue = '', $strOperator = '' ) {
+
+        if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
+
+            $strFieldnameValue = '';
+            $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
+            $strTag = implode( '', $arrTags );
+
+            if ( !empty( $arrTags ) && is_array( $arrTags ) ) {
+
+                $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
+            }
+
+            $strValue = $strFieldnameValue ? $strFieldnameValue : $strValue;
+        }
+
+        if ( $strOperator == 'contain' && is_string( $strValue )) {
+
+            $strValue = explode( ',' , $strValue );
+        }
+
+        if ( $strValue && is_string( $strValue ) && $this->arrField['multiple'] ) {
+
+            $strValue = Toolkit::deserialize( $strValue );
+        }
+
+        return Toolkit::prepareValueForQuery( $strValue );
     }
 
 
@@ -111,5 +167,42 @@ class OptionsGetter extends CatalogController {
         }
 
         return $this->arrField['dbTable'] . '.' . $this->arrField['dbTableKey'];
+    }
+
+
+    private function getActiveEntityValues() {
+
+        switch ( TL_MODE ) {
+
+            case 'BE':
+
+                if ( !\Input::get('id') || !\Input::get('do') ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( \Input::get('do') ) ) {
+
+                    return null;
+                }
+
+                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', \Input::get('do') ) )->limit(1)->execute( \Input::get('id') )->row();
+
+                return null;
+
+                break;
+
+            case 'FE':
+
+                // @todo
+
+                break;
+
+        }
+
+        if ( !is_array( $this->arrActiveEntity ) ) {
+
+            $this->arrActiveEntity = [];
+        }
     }
 }

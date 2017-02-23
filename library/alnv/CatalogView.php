@@ -175,7 +175,7 @@ class CatalogView extends CatalogController {
             $arrQuery['joins'][] = $this->preparePTableJoinData();
         }
 
-        if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) ) {
+        if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
 
             $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
 
@@ -319,7 +319,7 @@ class CatalogView extends CatalogController {
 
             $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
         }
-
+        
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
 
         while ( $objQueryBuilderResults->next() ) {

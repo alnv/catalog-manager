@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey',
 
         'addMapInfoBox' => 'mapInfoBoxContent',
@@ -1209,6 +1209,22 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTaxonomy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTaxonomy'],
+            'inputType' => 'catalogTaxonomyWizard',
+
+            'eval' => [
+
+                'dcTable' => 'tl_catalog_fields',
+                'taxonomyTable' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyTable' ],
+                'taxonomyEntities' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyFields' ]
+            ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
         ],
 
         'latField' => [

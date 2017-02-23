@@ -186,7 +186,7 @@ class OptionsGetter extends CatalogController {
                     return null;
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', \Input::get('do') ) )->limit(1)->execute( \Input::get('id') )->row();
+                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', \Input::get('do') ) )->limit(1)->execute( \Input::get('id') )->row();
 
                 return null;
 
@@ -194,7 +194,19 @@ class OptionsGetter extends CatalogController {
 
             case 'FE':
 
-                // @todo
+                if ( !$this->arrField['pid'] ) {
+
+                    return null;
+                }
+
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE id = ?' )->limit(1)->execute( $this->arrField['pid'] );
+
+                if ( !$objCatalog->tablename || !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $objCatalog->tablename ) ) {
+
+                    return null;
+                }
+
+                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $objCatalog->tablename ) )->limit(1)->execute( \Input::get('id') )->row();
 
                 break;
 

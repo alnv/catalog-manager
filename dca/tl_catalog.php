@@ -90,8 +90,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
         'useChangeLanguage' => 'fallbackEntityColumn,languageEntitySource',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
-        'languageEntitySource_currentTable' => 'currentTableColumn',
-        'languageEntitySource_parentTable' => 'parentTableColumn'
+        'languageEntitySource_currentTable' => 'currentLanguageColumn',
+        'languageEntitySource_parentTable' => 'parentLanguageColumn'
     ],
 
     'fields' => [

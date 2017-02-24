@@ -35,7 +35,7 @@ class CatalogView extends CatalogController {
     public function initialize() {
 
         global $objPage;
-
+        
         $this->setOptions();
         $arrPage = $objPage->row();
 

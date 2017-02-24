@@ -385,15 +385,18 @@ class tl_catalog extends \Backend {
 
     public function getParentColumns( \DataContainer $dc ) {
 
+        $arrColumns = [];
+
         if ( !$dc->activeRecord->pTable ) {
 
-            return [];
+            return $arrColumns;
         }
 
         if ( $dc->activeRecord->pTable && $this->Database->tableExists( $dc->activeRecord->pTable ) ) {
 
             $arrColumns = $this->Database->listFields( $dc->activeRecord->pTable );
-            $arrColumns = Toolkit::parseColumns( $arrColumns );
+
+            return Toolkit::parseColumns( $arrColumns );
         }
 
         return $arrColumns;

@@ -55,3 +55,5 @@ $GLOBALS['BE_FFL']['catalogRelationWizard'] = 'CatalogManager\CatalogRelationWiz
 $GLOBALS['BE_FFL']['catalogFilterFieldSelectWizard'] = 'CatalogManager\CatalogFilterFieldSelectWizard';
 
 $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';
+
+$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];

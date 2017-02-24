@@ -640,6 +640,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
+                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
@@ -660,6 +661,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'maxlength' => 16,
                 'tl_class' => 'clr',
+                'mandatory' => true,
                 'doNotCopy' => true,
                 'submitOnChange' => true
             ],
@@ -670,9 +672,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(16) NOT NULL default ''"
         ],
 
-        'currentTableColumn' => [
+        'currentLanguageColumn' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['currentTableColumn'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['currentLanguageColumn'],
             'inputType' => 'select',
 
             'eval' => [
@@ -680,6 +682,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
+                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
@@ -691,9 +694,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(128) NOT NULL default ''"
         ],
 
-        'parentTableColumn' => [
+        'parentLanguageColumn' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['parentTableColumn'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['parentLanguageColumn'],
             'inputType' => 'select',
 
             'eval' => [
@@ -701,6 +704,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
+                'mandatory' => true,
                 'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true

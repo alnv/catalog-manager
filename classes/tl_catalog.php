@@ -382,23 +382,44 @@ class tl_catalog extends \Backend {
         return [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ];
     }
 
+    
+    public function getChangeLanguageColumns( \DataContainer $dc ) {
 
-    public function getParentColumns( \DataContainer $dc ) {
+        $strTable = '';
+        $arrReturn = [];
 
-        $arrColumns = [];
+        if ( !$dc->activeRecord->languageEntitySource ) {
 
-        if ( !$dc->activeRecord->pTable ) {
-
-            return $arrColumns;
+            return $arrReturn;
         }
 
-        if ( $dc->activeRecord->pTable && $this->Database->tableExists( $dc->activeRecord->pTable ) ) {
+        switch ( $dc->activeRecord->languageEntitySource ) {
 
-            $arrColumns = $this->Database->listFields( $dc->activeRecord->pTable );
+            case 'parentTable':
 
-            return Toolkit::parseColumns( $arrColumns );
+                $strTable = $dc->activeRecord->pTable;
+
+                break;
+
+            case 'currentTable':
+
+                $strTable = $dc->activeRecord->tablename;
+
+                break;
         }
 
-        return $arrColumns;
+        if ( !$strTable ) {
+
+            return $arrReturn;
+        }
+
+        if ( $this->Database->tableExists( $strTable ) ) {
+
+            $arrColumns = $this->Database->listFields( $strTable );
+
+            $arrReturn = Toolkit::parseColumns( $arrColumns );
+        }
+
+        return $arrReturn;
     }
 }

@@ -3,4 +3,6 @@ todo
  - csv parser
  - better sorting for fe palettes
  - showColumns field names
+ - test CTLG_ACTIVE
+ - test getPredefinedFields
  - fix duplicate field problem in tl_member and tl_user

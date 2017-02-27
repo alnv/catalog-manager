@@ -1217,7 +1217,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'inputType' => 'catalogTaxonomyWizard',
 
             'eval' => [
-
+                'tl_class' => 'clr',
                 'dcTable' => 'tl_catalog_fields',
                 'taxonomyTable' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyTable' ],
                 'taxonomyEntities' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyFields' ]

@@ -5,7 +5,7 @@ namespace CatalogManager;
 class ChangeLanguageExtension extends \Frontend {
 
 
-    protected $strTable = 'ctlg_changelanguage_p_data'; // @todo
+    protected $strTable = '';
     protected $arrEntity = [];
     protected $arrCatalog = [];
     protected $strLinkColumn = '';
@@ -17,10 +17,11 @@ class ChangeLanguageExtension extends \Frontend {
         global $objPage;
 
         $this->strMasterAlias = \Input::get('auto_item');
+        $this->strTable = $objPage->catalogChangeLanguageTable;
         $strTargetRoot = $event->getNavigationItem()->getRootPage();
         $strLanguage = $strTargetRoot->rootLanguage ? $strTargetRoot->rootLanguage : $strTargetRoot->language;
-
-        if ( !\Config::get('useAutoItem') ) return null;
+        
+        if ( !\Config::get('useAutoItem') || !$this->strMasterAlias ) return null;
 
         $this->getCatalog();
 
@@ -63,7 +64,7 @@ class ChangeLanguageExtension extends \Frontend {
 
         if ( !$this->arrCatalog['languageEntityColumn'] || !$this->arrCatalog['pTable'] || !$this->strLinkColumn ) return null;
 
-        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `alias`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
 
         if ( $objCurrentEntity->numRows ) {
 
@@ -91,7 +92,7 @@ class ChangeLanguageExtension extends \Frontend {
 
         if ( !$this->arrCatalog['languageEntityColumn'] || !$this->strLinkColumn ) return null;
 
-        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=?  OR `alias`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=?  OR `id`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
 
         if ( $objCurrentEntity->numRows ) {
 

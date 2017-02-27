@@ -5,11 +5,11 @@ namespace CatalogManager;
 class ChangeLanguageExtension extends \Frontend {
 
 
-    protected $strTable = 'ovag_wasserversorgung'; // @todo
+    protected $strTable = 'ctlg_changelanguage_p_data'; // @todo
     protected $arrEntity = [];
     protected $arrCatalog = [];
+    protected $strLinkColumn = '';
     protected $strMasterAlias = '';
-    protected $strFallbackColumn = '';
 
 
     public function translateUrlParameters( \Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent $event ) {
@@ -29,7 +29,7 @@ class ChangeLanguageExtension extends \Frontend {
             return null;
         }
 
-        $this->strFallbackColumn = $this->arrCatalog['fallbackEntityColumn'];
+        $this->strLinkColumn = $this->arrCatalog['linkEntityColumn'];
 
         switch ( $this->arrCatalog['languageEntitySource'] ) {
 
@@ -61,20 +61,51 @@ class ChangeLanguageExtension extends \Frontend {
 
     protected function getEntityByPTable( $strLanguage ) {
 
-        // @todo
+        if ( !$this->arrCatalog['languageEntityColumn'] || !$this->arrCatalog['pTable'] || !$this->strLinkColumn ) return null;
+
+        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `alias`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+
+        if ( $objCurrentEntity->numRows ) {
+
+            $strLinkValue = $objCurrentEntity->{$this->strLinkColumn};
+            $this->arrEntity = $this->Database->prepare(
+
+                sprintf(
+                    'SELECT * FROM %s LEFT OUTER JOIN %s ON %s.`pid` = %s.`id` WHERE %s.`%s`=? AND %s.`%s`=?',
+                    $this->arrCatalog['pTable'],
+                    $this->strTable,
+                    $this->strTable,
+                    $this->arrCatalog['pTable'],
+                    $this->arrCatalog['pTable'],
+                    $this->arrCatalog['languageEntityColumn'],
+                    $this->strTable,
+                    $this->strLinkColumn
+                )
+
+            )->limit(1)->execute( $strLanguage, $strLinkValue )->row();
+        }
     }
 
 
     protected function getEntityByCurrentTable( $strLanguage ) {
 
-        if ( !$this->arrCatalog['currentLanguageColumn'] || !$this->strFallbackColumn ) return null;
+        if ( !$this->arrCatalog['languageEntityColumn'] || !$this->strLinkColumn ) return null;
 
-        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? OR `alias` = ?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=?  OR `alias`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
 
         if ( $objCurrentEntity->numRows ) {
 
-            $strFallbackValue = $objCurrentEntity->{$this->strFallbackColumn};
-            $this->arrEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `%s` = ? AND `%s` = ?', $this->strTable, $this->strFallbackColumn, $this->arrCatalog['currentLanguageColumn'] ) )->limit(1)->execute( $strFallbackValue, $strLanguage )->row();
+            $strLinkValue = $objCurrentEntity->{$this->strLinkColumn};
+            $this->arrEntity = $this->Database->prepare(
+
+                sprintf(
+                    'SELECT * FROM %s WHERE `%s`=? AND `%s`=?',
+                    $this->strTable,
+                    $this->strLinkColumn,
+                    $this->arrCatalog['languageEntityColumn']
+                )
+
+            )->limit(1)->execute( $strLinkValue, $strLanguage )->row();
         }
     }
 }

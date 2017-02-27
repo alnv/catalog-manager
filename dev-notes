@@ -4,5 +4,7 @@ todo
  - better sorting for fe palettes
  - showColumns field names
  - test CTLG_ACTIVE
+ - test CTLG_MASTER
+ - implement check for change language module
  - test getPredefinedFields
  - fix duplicate field problem in tl_member and tl_user

@@ -88,10 +88,10 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'isBackendModule' => 'navArea,navPosition',
         'addressInputType_useSingleField' => 'geoAddress',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
-        'useChangeLanguage' => 'fallbackEntityColumn,languageEntitySource',
+        'languageEntitySource_currentTable' => 'languageEntityColumn',
+        'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
-        'languageEntitySource_currentTable' => 'currentLanguageColumn',
-        'languageEntitySource_parentTable' => 'parentLanguageColumn'
+        'languageEntitySource_parentTable' => 'languageEntityColumn'
     ],
 
     'fields' => [
@@ -630,28 +630,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "char(1) NOT NULL default ''"
         ],
 
-        'fallbackEntityColumn' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['fallbackEntityColumn'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'maxlength' => 128,
-                'tl_class' => 'w50',
-                'mandatory' => true,
-                'doNotCopy' => true,
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
-        ],
-
         'languageEntitySource' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'],
@@ -672,9 +650,31 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'sql' => "varchar(16) NOT NULL default ''"
         ],
 
-        'currentLanguageColumn' => [
+        'languageEntityColumn' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['currentLanguageColumn'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getChangeLanguageColumns' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'linkEntityColumn' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'],
             'inputType' => 'select',
 
             'eval' => [
@@ -689,28 +689,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
-        ],
-
-        'parentLanguageColumn' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['parentLanguageColumn'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'maxlength' => 128,
-                'tl_class' => 'w50',
-                'mandatory' => true,
-                'doNotCopy' => true,
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getParentColumns' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"

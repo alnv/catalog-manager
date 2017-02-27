@@ -28,12 +28,12 @@ if ( TL_MODE == 'BE' ) {
         : 'system/modules/catalog-manager/assets/BackendExtension.js';
 
     $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
-        ? 'system/modules/catalog-manager/assets/widgets.css'
-        : 'system/modules/catalog-manager/assets/widgets.css';
+        ? 'system/modules/catalog-manager/assets/widget.css'
+        : 'system/modules/catalog-manager/assets/widget.css';
 }
 
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\ActiveInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterValueInsertTag', 'getInsertTagValue' ];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterInsertTag', 'getInsertTagValue' ];
 
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] =[ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];

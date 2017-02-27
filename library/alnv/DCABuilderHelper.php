@@ -232,7 +232,31 @@ class DCABuilderHelper extends CatalogController {
             'id' => [
 
                 'fieldname' => 'id',
+                'statement' => 'i10'
+            ],
+
+            'tstamp' => [
+
                 'statement' => 'i10',
+                'fieldname' => 'tstamp',
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
+                'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][1],
+            ],
+
+            'pid' => [
+
+                'statement' => 'i10',
+                'fieldname' => 'pid',
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0],
+                'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][1],
+            ],
+
+            'sorting' => [
+
+                'statement' => 'i10',
+                'fieldname' => 'sorting',
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][0],
+                'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][1],
             ],
 
             'title' => [

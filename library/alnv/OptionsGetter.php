@@ -126,7 +126,7 @@ class OptionsGetter extends CatalogController {
 
         if ( $strOperator == 'contain' && is_string( $strValue )) {
 
-            $strValue = explode( ',' , $strValue );
+            $strValue = explode( ',', $strValue );
         }
 
         if ( $strValue && is_string( $strValue ) && $this->arrField['multiple'] ) {

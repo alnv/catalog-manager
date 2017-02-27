@@ -38,6 +38,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
+    'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',
     'CatalogManager\CatalogMessageForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogMessageForm.php',
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\ChangeLanguageExtension' => 'system/modules/catalog-manager/library/alnv/ChangeLanguageExtension.php',
@@ -51,7 +52,6 @@ ClassLoader::addClasses([
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
     'CatalogManager\CatalogRelationWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationWizard.php',
-    'CatalogManager\FilterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValueInsertTag.php',
     'CatalogManager\MasterValueInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterValueInsertTag.php',
     'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
 ]);

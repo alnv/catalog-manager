@@ -4,13 +4,15 @@ namespace CatalogManager;
 
 class I18nCatalogTranslator {
 
-    
+
     private $strConfigFile = TL_ROOT . '/' . 'system/config/i18nCatalogManager.yaml';
 
     
     public function initialize() {
 
-        \Controller::loadLanguageFile( 'catalog_manager', $this->getCurrentLanguageIsoCode() );
+        $strLanguage = $this->getCurrentLanguageIsoCode();
+
+        \Controller::loadLanguageFile( 'catalog_manager', $strLanguage );
 
         $this->createI18nCatalogConfigFile();
     }
@@ -89,9 +91,17 @@ class I18nCatalogTranslator {
         return $strLegend;
     }
 
-    
+
+    public function getNewLabel() {
+
+        return $GLOBALS['TL_LANG']['catalog_manager']['new'];
+    }
+
+
     private function createI18nCatalogConfigFile() {
 
+        // @todo
+        /*
         if ( !file_exists( $this->strConfigFile ) ) {
 
             $objFile = fopen( $this->strConfigFile, 'a' );
@@ -100,6 +110,7 @@ class I18nCatalogTranslator {
 
             fclose( $objFile );
         }
+        */
     }
 
     

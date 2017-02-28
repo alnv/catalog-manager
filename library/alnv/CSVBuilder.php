@@ -50,7 +50,7 @@ class CSVBuilder {
 
         if ( ( $objCSVHandle = fopen ( $strCSVFile, 'r' ) ) !== false ) {
 
-            while ( ( $arrData = fgetcsv($objCSVHandle, 1000, $this->strDelimiter ) ) !== FALSE) {
+            while ( ( $arrData = fgetcsv( $objCSVHandle, 1000, $this->strDelimiter ) ) !== FALSE ) {
 
                 $iniCount = count( $arrData );
 

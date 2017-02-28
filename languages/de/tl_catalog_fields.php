@@ -29,6 +29,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['statement'] = [ 'SQL Datentyp', 'Bitte
 $GLOBALS['TL_LANG']['tl_catalog_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['nospace'] = [ 'Keine Leerzeichen', 'Es dürfen keine Leerzeichen verwendet werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['pagePicker'] = [ 'Page picker verwenden', 'Hier können Sie den page picker verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['search'] = [ 'Suchbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Back end CSS-Klassen', 'Bitte geben Sie Ihre Back end CSS-Klassen ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['minlength'] = [ 'Minimale Zeichenlänge', 'Hier können Sie die Zeichenlänge beschränken.' ];
@@ -90,6 +91,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
     'upload' => 'Datei-Upload',
     'textarea' => 'Textarea',
     'message' => 'Erklärung',
+    'map' => 'Kartenansicht',
     'fieldsetStart' => 'Palette öffnen',
     'fieldsetStop' => 'Palette schließen'
 ];

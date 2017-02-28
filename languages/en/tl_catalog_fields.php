@@ -27,6 +27,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['readonly'] = [ 'Read only', 'This fiel
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filesOnly'] = [ 'Just Files', 'Only file upload are allowed.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fieldname'] = [ 'Field name', 'Please enter valid field name.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['value'] = [ 'Default-Value', 'Here you can enter default value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['pagePicker'] = [ 'Page picker', 'Here you can use a page picker.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['placeholder'] = [ 'Placeholder', 'Please enter your placeholder.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['description'] = [ 'Description', 'Please enter short description.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rte'] = [ 'Rich Text Editor', 'Please select your rich text editor.' ];

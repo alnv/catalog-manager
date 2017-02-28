@@ -189,8 +189,8 @@ class DCABuilder extends CatalogController {
 
         $arrReturn = [
 
+            'label' => $this->I18nCatalogTranslator->getModuleTitle( $this->strTable ),
             'dataContainer' => 'Table',
-
             'onload_callback' => [],
             'onsubmit_callback' => [],
 

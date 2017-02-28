@@ -1,5 +1,7 @@
 <?php
 
+$GLOBALS['TL_LANG']['catalog_manager']['new'] = [ 'Datensatz anlegen', 'Hier können Sie ein neues Datensatz erstellen.' ];
+
 $GLOBALS['TL_LANG']['catalog_manager']['legends']['invisible_legend'] = 'Datensatz verstecken';
 $GLOBALS['TL_LANG']['catalog_manager']['legends']['general_legend'] = 'Allgemeine Einstellungen';
 

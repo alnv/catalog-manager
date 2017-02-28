@@ -20,9 +20,7 @@ class CatalogManagerInitializer {
     private function createBackendModules() {
 
         $objDatabase = \Database::getInstance();
-        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC LIMIT 100' )->execute();
-        
-        $objI18nCatalogTranslator = new I18nCatalogTranslator();
+        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC' )->limit(100)->execute();
         
         while ( $objCatalogManagerDB->next() ) {
 
@@ -37,7 +35,6 @@ class CatalogManagerInitializer {
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
 
             $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
-            $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->getModuleLabel( $arrCatalog['tablename'] );
 
             $this->createCatalogManagerDCA( $arrCatalog );
 

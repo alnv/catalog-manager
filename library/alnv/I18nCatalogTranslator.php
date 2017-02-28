@@ -98,6 +98,12 @@ class I18nCatalogTranslator {
     }
 
 
+    public function getShowLabel() {
+
+        return $GLOBALS['TL_LANG']['catalog_manager']['operations']['show'];
+    }
+
+
     private function createI18nCatalogConfigFile() {
 
         // @todo

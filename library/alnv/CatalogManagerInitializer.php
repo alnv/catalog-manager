@@ -66,7 +66,6 @@ class CatalogManagerInitializer {
 
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName . 'p';
-        
         $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = $strPermissionName;
     }
 

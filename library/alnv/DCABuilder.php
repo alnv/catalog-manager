@@ -62,7 +62,6 @@ class DCABuilder extends CatalogController {
         }
     }
 
-
     public function initializeI18n() {
 
         $this->I18nCatalogTranslator->initialize();
@@ -104,6 +103,8 @@ class DCABuilder extends CatalogController {
         $this->initializeI18n();
         $this->determineOperations();
         $this->getDCAFields();
+
+        $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
 
         $GLOBALS['TL_DCA'][ $this->strTable ] = [
 
@@ -418,13 +419,13 @@ class DCABuilder extends CatalogController {
 
         return [
 
-            'all' => array
-            (
+            'all' => [
+
                 'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
-            )
+            ]
         ];
     }
 
@@ -441,7 +442,6 @@ class DCABuilder extends CatalogController {
         ];
 
         $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
-
 
         foreach ( $this->arrFields as $arrField ) {
 

@@ -39,7 +39,6 @@ class I18nCatalogTranslator {
             $arrLabel = [ $strName, $strDescription ];
         }
 
-
         if ( isset( $strAdditionalString ) && $strAdditionalString != '' ) {
 
             $arrLabel[0] .= ' ' . $strAdditionalString;
@@ -48,7 +47,21 @@ class I18nCatalogTranslator {
         return $arrLabel;
     }
 
-    
+
+    public function getModuleTitle( $strFieldname ) {
+
+        $strLabel = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ][0];
+
+        if ( !$strLabel ) {
+
+            $strLabel = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] ?
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] : '';
+        }
+
+        return $strLabel;
+    }
+
+
     public function getFieldLabel( $strI18nKey, $strTitle = '', $strDescription = '' ) {
 
         $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strI18nKey ];

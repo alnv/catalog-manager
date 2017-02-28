@@ -1,3 +1,76 @@
 <?php
 
-$GLOBALS['TL_LANG']['tl_module']['catalog_legend'] = 'General Settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_legend'] = 'General settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogView_legend'] = 'List view settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomy settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogMap_legend'] = 'Google Maps settings';
+$GLOBALS['TL_LANG']['tl_module']['orderBy_legend'] = 'Sort settings';
+$GLOBALS['TL_LANG']['tl_module']['pagination_legend'] = 'Pagination settings';
+$GLOBALS['TL_LANG']['tl_module']['master_legend'] = 'Detail view settings';
+$GLOBALS['TL_LANG']['tl_module']['join_legend'] = 'Table joins settings';
+$GLOBALS['TL_LANG']['tl_module']['relation_legend'] = 'Catalog links settings';
+$GLOBALS['TL_LANG']['tl_module']['frontendEditing_legend'] = 'Frontend Editing settings';
+$GLOBALS['TL_LANG']['tl_module']['radiusSearch_legend'] = 'Radius search settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_comments_legend'] = 'Comments settings';
+
+$GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Select list view page', 'Here you can select list view page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogViewPage'] = [ 'Page', 'Please select a page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomies'] = [ 'Enable taxonomies', 'Here you can enable taxonomies.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomies'] = [ 'Taxonomies', 'Here you can define taxonomies.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableParentFilter'] = [ 'Show only child entities', 'All entities will be filtered by the `pid` get parameter.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseMap'] = [ 'Enable Google Maps', 'Here you can enable google maps view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapAddress'] = [ 'Address', 'Please enter your address.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapLat'] = [ 'Latitude', 'This field will be automatically generated.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapLng'] = [ 'Longitude', 'This field will be automatically generated.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldLat'] = [ 'Latitude table column', 'Please select a latitude table column.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldLng'] = [ 'Longitude table column', 'Please select a longitude table column.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapViewTemplate'] = [ 'Template', 'Please select google map template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapTemplate'] = [ 'Google maps template', 'Please select google map template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapZoom'] = [ 'Zoom', 'Here you can enable zoom for your map view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapType'] = [ 'Map Typ', 'Please select map type.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapScrollWheel'] = [ 'Allow to scroll', 'Here you can allow to scroll.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapMarker'] = [ 'Add Marker', 'Here you can make your location visible by markers.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAddMapInfoBox'] = [ 'Add Info-Box', 'Here you can add a info box.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapInfoBoxContent'] = [ 'Info-Box content', 'Please add your info-box content. Inserttags und Simple-Tokens are allowed.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapStyle'] = [ 'Map-Style', 'Here you can define your map style.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogOrderBy'] = [ 'Sort order', 'Here you can define your order by settings.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRandomSorting'] = [ 'Sort entities randomly', 'Here you can sort your entities randomly.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAddPagination'] = [ 'Add pagination', 'Here you can enable pagination.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPerPage'] = [ 'Entities per page', 'The number of items per page. Set to 0 to disable pagination.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogOffset'] = [ 'Entities offset', 'Here you can define how many items will be skipped.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseMasterPage'] = [ 'Select detail view page', 'Here you can select detail view page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMasterPage'] = [ 'Select page', 'Please select page for your detail view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMasterTemplate'] = [ 'Template', 'Please select a template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPreventMasterView'] = [ 'ignore auto-item', 'The auto-item attribute will be ignored.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogJoinFields'] = [ 'Join catalog fields', 'Here you can join catalog tables.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogJoinParentTable'] = [ 'Join parent table', 'Here you can join parent table' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseRelation'] = [ 'Add relation links', 'Here you can add relation links to child tables/catalogs.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'] = [ 'Select child catalogs', 'Here you can select your child catalogs.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogNoValidate'] = [ 'Disable HTML5 validation', 'Add the novalidate attribute to the form tag.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'] = [ 'Enable user permissions', 'Here you can enable user permissions.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormTemplate'] = [ 'Template', 'Please select a template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogStoreFile'] = [ 'Store uploaded files', 'Move the uploaded files to a folder on the server.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUploadFolder'] = [ 'Target folder', 'Please select the target folder from the files directory.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseHomeDir'] = [ 'Use home directory', 'Store the file in the home directory if there is an authenticated user.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDoNotOverwrite'] = [ 'Preserve existing files', 'Add a numeric suffix to the new file if the file name already exists.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogItemOperations'] = [ 'Frontend Editing operations', 'Here you can chose your frontend editing operations.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormRedirect'] = [ 'Redirect', 'Here you can define a redirect page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseRadiusSearch'] = [ 'Enable radius search', 'Here you can enable radius search.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchCountry'] = [ 'Select country', 'Please select a country.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchZoomFactor'] = [ 'Enable auto focus', 'Here you can enable auto focus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAllowComments'] = [ 'Enable comments', 'Here you can enable comments.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentSortOrder'] = [ 'Sort order', 'By default, comments are sorted ascending, starting with the oldest one.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentPerPage'] = [ 'Comments per page', 'Number of comments per page. Set to 0 to disable pagination.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentModerate'] = [ 'Moderate comments', 'Approve comments before they are published on the website.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentBBCode'] = [ 'Allow BBCode', 'Allow visitors to format their comments with BBCode.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentRequireLogin'] = [ 'Require login to comment', 'Allow only authenticated users to create comments.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogCommentDisableCaptcha'] = [ 'Disable the security question', 'Use this option only if you have limited comments to authenticated users.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
+
+    'create' => 'Create',
+    'copy' => 'Duplicate',
+    'edit' => 'Edit',
+    'delete' => 'Delete'
+];

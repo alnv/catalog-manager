@@ -105,6 +105,7 @@ class DCABuilder extends CatalogController {
         $this->getDCAFields();
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
+        $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
 
         $GLOBALS['TL_DCA'][ $this->strTable ] = [
 

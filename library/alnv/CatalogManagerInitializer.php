@@ -16,12 +16,13 @@ class CatalogManagerInitializer {
         }
     }
 
-    
-    private function createBackendModules() {
 
+    protected function createBackendModules() {
+
+        $this->createDirectories();
         $objDatabase = \Database::getInstance();
         $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC' )->limit(100)->execute();
-        
+
         while ( $objCatalogManagerDB->next() ) {
 
             $arrCatalog = $objCatalogManagerDB->row();
@@ -45,7 +46,7 @@ class CatalogManagerInitializer {
     }
 
     
-    private function createBackendModuleWithPermissions( $arrCatalog ) {
+    protected function createBackendModuleWithPermissions( $arrCatalog ) {
 
         $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
         $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
@@ -58,19 +59,20 @@ class CatalogManagerInitializer {
         }
     }
 
-    
-    private function createPermissions( $strPermissionName ) {
+
+    protected function createPermissions( $strPermissionName ) {
 
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName . 'p';
         $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = $strPermissionName;
     }
 
-    
-    private function createBackendModule( $arrCatalog ) {
+
+    protected function createBackendModule( $arrCatalog ) {
 
         $arrTables = [];
         $arrBackendModule = [];
+        $objIconGetter = new IconGetter();
         $arrTables[] = $arrCatalog['tablename'];
 
         foreach ( $arrCatalog[ 'cTables' ] as $strTablename ) {
@@ -85,6 +87,7 @@ class CatalogManagerInitializer {
 
         $arrBackendModule[ $arrCatalog['tablename'] ] = [
 
+            'icon' => $objIconGetter->setCatalogIcon( $arrCatalog['tablename'] ),
             'name' => $arrCatalog['name'],
             'tables' => $arrTables
         ];
@@ -92,10 +95,17 @@ class CatalogManagerInitializer {
         return $arrBackendModule;
     }
 
-    
-    private function createCatalogManagerDCA( $arrCatalog ) {
+
+    protected function createCatalogManagerDCA( $arrCatalog ) {
 
         $objDCABuilder = new DCABuilder( $arrCatalog );
         $objDCABuilder->createDCA();
+    }
+
+
+    protected function createDirectories() {
+
+        $objIconGetter = new IconGetter();
+        $objIconGetter->createCatalogManagerDirectories();
     }
 }

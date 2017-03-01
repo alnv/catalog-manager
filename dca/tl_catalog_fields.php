@@ -105,8 +105,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
-        'optionsType_useForeignKey' => 'dbTable,dbTableKey',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
+        'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
 
         'addMapInfoBox' => 'mapInfoBoxContent',
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
@@ -1412,6 +1412,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'rte' => 'tinyMCE',
                 'tl_class' => 'clr',
                 'allowHtml' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
+        ],
+
+        'addRelationWizard' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'clr'
             ],
 
             'exclude' => true,

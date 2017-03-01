@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Leere Auswah
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Leerzeichen umwandeln', 'Leerzeichen werden zu Unterstrich ( _ ) umgewandelt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hinzufügen', 'Hier können Sie am Ende des Feldwertes ein Schrägstrich hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Wertspalte', 'Bitte wählen Sie eine Spalte für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];

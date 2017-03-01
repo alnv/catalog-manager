@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximum characters', 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Do not copy value', 'The current field will not be duplicated if the record is duplicated.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Space to Underscore', 'Any whitespace character will be replaced by an underscore.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Add link', 'Here you can add a link to the related entity.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];

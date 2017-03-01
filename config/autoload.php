@@ -15,6 +15,7 @@ ClassLoader::addClasses([
     'CatalogManager\Hidden' => 'system/modules/catalog-manager/library/alnv/Fields/Hidden.php',
     'CatalogManager\Upload' => 'system/modules/catalog-manager/library/alnv/Fields/Upload.php',
     'CatalogManager\Number' => 'system/modules/catalog-manager/library/alnv/Fields/Number.php',
+    'CatalogManager\IconGetter' => 'system/modules/catalog-manager/library/alnv/IconGetter.php',
     'CatalogManager\CSVBuilder' => 'system/modules/catalog-manager/library/alnv/CSVBuilder.php',
     'CatalogManager\SQLBuilder' => 'system/modules/catalog-manager/library/alnv/SQLBuilder.php',
     'CatalogManager\DCABuilder' => 'system/modules/catalog-manager/library/alnv/DCABuilder.php',

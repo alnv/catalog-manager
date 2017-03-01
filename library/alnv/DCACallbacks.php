@@ -151,4 +151,34 @@ class DCACallbacks extends \Backend{
             $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE id = ?' )->set($arrSet)->execute( $dc->id );
         }
     }
+
+
+    public function generateRelationWizard( \DataContainer $dc ) {
+
+        $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get( 'do' );
+
+        if ( !$dc->value || !$strTable || !$dc->field ) return '';
+
+        $objCatalogField = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE fieldname = ? AND pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->limit(1)->execute( $dc->field, $strTable );
+
+        if ( !$objCatalogField->numRows ) return '';
+
+        $strTableAttribute = '';
+        $arrField = $objCatalogField->row();
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrField['dbTable'] ];
+        $strTitle = $objCatalogField->description ? $objCatalogField->description : $objCatalogField->label;
+
+        if ( $arrCatalog['pTable'] ) {
+
+            $strTableAttribute = sprintf( '&amp;table=%s', $arrCatalog['tablename'] );
+            $strDoAttribute = sprintf( 'do=%s', $arrCatalog['pTable'] );
+        }
+
+        else {
+
+            $strDoAttribute = sprintf( 'do=%s', $arrCatalog['tablename'] );
+        }
+        
+        return '<a href="contao/main.php?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;rt=' . REQUEST_TOKEN . '" title="' . ( $strTitle ? $strTitle : '' ) . '" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:top"') . '</a>';
+    }
 }

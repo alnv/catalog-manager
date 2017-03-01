@@ -25,6 +25,7 @@ class DCABuilder extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
+        $this->import( 'IconGetter' );
         $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
 
@@ -407,7 +408,7 @@ class DCABuilder extends CatalogController {
 
                 'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
                 'href' => sprintf( 'table=%s', $arrCTable ),
-                'icon' => 'edit.gif'
+                'icon' => $this->IconGetter->setCatalogIcon( $arrCTable )
             ];
 
             array_insert( $arrReturn, 1, $arrChildTable );

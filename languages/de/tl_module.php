@@ -12,6 +12,11 @@ $GLOBALS['TL_LANG']['tl_module']['relation_legend'] = 'Katalogverlinkungs Einste
 $GLOBALS['TL_LANG']['tl_module']['frontendEditing_legend'] = 'Frontend Editing Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['radiusSearch_legend'] = 'Umkreissuche Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_comments_legend'] = 'Kommentar Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFields_legend'] = 'Felder Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Formular Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Weiterleitungs Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Katalog auswählen', 'Bitte wählen Sie ein Katalog aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Listenansicht-Seite auswählen', 'Hier können Sie die Seite für die Listenansicht auswählen.' ];
@@ -66,6 +71,15 @@ $GLOBALS['TL_LANG']['tl_module']['catalogCommentModerate'] = [ 'Kommentare moder
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentBBCode'] = [ 'BBCode erlauben', 'Besuchern das Formatieren ihrer Kommentare mittels BBCode erlauben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentRequireLogin'] = [ 'Login zum Kommentieren benötigt', 'Nur angemeldeten Benutzern das Erstellen von Kommentaren erlauben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentDisableCaptcha'] = [ 'Sicherheitsfrage deaktivieren', 'Wählen Sie diese Option nur, wenn das Erstellen von Kommentaren auf authentifizierte Benutzer beschränkt ist.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveFilterFields'] = [ 'Felder einblenden', 'Hier können Sie die Felder für den Filter Formular aktivieren.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldsChangeOnSubmit'] = [ 'changeOnSubmit aktivieren', 'Die Seite wird nach jeder Änderung neu geladen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogResetFilterForm'] = [ 'Filtereinstellungen zurücksetzen erlauben', 'Die Besucher dürfen die Filtereinstellungen zurücksetzen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDisableSubmit'] = [ 'Absende-Schaltfläche entfernen', 'Hier können Sie die Absende-Schaltfläche aus dem Formular entfernen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRedirectType'] = [ 'Weiterleitungsziel', 'Bitte wählen Sie ein Weiterleitungsziel aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogExternalFormRedirect'] = [ 'Seiten-URL', 'Bitte geben Sie eine Seiten-URL ein.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogInternalFormRedirect'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates', 'Hier können Sie jedem Feld ein individuelles Template zuweisen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Feldabhängigkeit', 'Hier können Sie jedem Feld eine Feldabhängigkeit zuweisen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 
@@ -73,4 +87,10 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
     'copy' => 'Duplizieren',
     'edit' => 'Bearbeiten',
     'delete' => 'Löschen'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [
+
+    'internal' => 'Interne Weiterleitung',
+    'external' => 'Externe Weiterleitung'
 ];

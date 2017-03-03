@@ -12,6 +12,11 @@ $GLOBALS['TL_LANG']['tl_module']['relation_legend'] = 'Catalog links settings';
 $GLOBALS['TL_LANG']['tl_module']['frontendEditing_legend'] = 'Frontend Editing settings';
 $GLOBALS['TL_LANG']['tl_module']['radiusSearch_legend'] = 'Radius search settings';
 $GLOBALS['TL_LANG']['tl_module']['catalog_comments_legend'] = 'Comments settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFields_legend'] = 'Field settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Form settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Redirect settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Field dependencies settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Select list view page', 'Here you can select list view page.' ];
@@ -66,6 +71,15 @@ $GLOBALS['TL_LANG']['tl_module']['catalogCommentModerate'] = [ 'Moderate comment
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentBBCode'] = [ 'Allow BBCode', 'Allow visitors to format their comments with BBCode.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentRequireLogin'] = [ 'Require login to comment', 'Allow only authenticated users to create comments.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentDisableCaptcha'] = [ 'Disable the security question', 'Use this option only if you have limited comments to authenticated users.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveFilterFields'] = [ 'Select form fields', 'Here you can enable form fields.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFieldsChangeOnSubmit'] = [ 'Enable change on submit', 'Page will be load after enter a value.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogResetFilterForm'] = [ 'Add reset button to form', 'Allow to reset form filter in Frontend.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDisableSubmit'] = [ 'Disable submit button', 'Here you can disable submit button.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRedirectType'] = [ 'Redirect', 'Here you can define a redirect.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogExternalFormRedirect'] = [ 'Page url', 'Please enter your page url.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogInternalFormRedirect'] = [ 'Page', 'Please select a page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates', 'Here you can assign individual templates for filter fields' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Field dependencies', 'Here you can set up field dependencies.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 
@@ -73,4 +87,10 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
     'copy' => 'Duplicate',
     'edit' => 'Edit',
     'delete' => 'Delete'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [
+
+    'internal' => 'Internal redirect',
+    'external' => 'External redirect'
 ];

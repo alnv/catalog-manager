@@ -80,6 +80,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExternalFormRedirect'] = [ 'Page url', 
 $GLOBALS['TL_LANG']['tl_module']['catalogInternalFormRedirect'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates', 'Here you can assign individual templates for filter fields' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Field dependencies', 'Here you can set up field dependencies.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Please select a title column. This title will be used for search enginses.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Description', 'Please select a description column. This description will be used for search engines.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

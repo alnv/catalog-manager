@@ -418,7 +418,23 @@ class CatalogView extends CatalogController {
                 $arrCatalog['map'] = $this->arrCatalogMapViewOptions;
             }
 
+            if ( $this->strMode == 'master' ) {
+
+                global $objPage;
+
+                if ( $this->catalogSEOTitle ) {
+                    
+                    $objPage->pageTitle = $arrCatalog[ $this->catalogSEOTitle ] ? strip_tags( $arrCatalog[ $this->catalogSEOTitle ] ) : '';
+                }
+
+                if ( $this->catalogSEODescription ) {
+
+                    $objPage->description = $arrCatalog[ $this->catalogSEODescription ] ? strip_tags( $arrCatalog[ $this->catalogSEODescription ] ) : '';
+                }
+            }
+
             $objTemplate->setData( $arrCatalog );
+
             $arrCatalogItems[] = $objTemplate->parse();
         }
         

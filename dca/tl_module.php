@@ -159,6 +159,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRedirectType'] = [
 
     'options' => [ 'internal', 'external' ],
 
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'],
+
     'exclude' => true,
     'sql' => "varchar(12) NOT NULL default ''"
 ];

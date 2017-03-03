@@ -327,11 +327,25 @@ class CatalogView extends CatalogController {
             $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
         }
 
+        $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
+        $intResultRows = $objQueryBuilderResults->numRows;
 
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
+            $arrCatalog['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
+            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intResultRows ];
+
+            if ( !$intIndex ) {
+
+                $arrCatalog['cssClass'] .= ' first';
+            }
+
+            if ( $intIndex == ( $intResultRows - 1 ) ) {
+
+                $arrCatalog['cssClass'] .= ' last';
+            }
 
             if ( $this->strMode === 'master' ) {
 
@@ -423,7 +437,7 @@ class CatalogView extends CatalogController {
                 global $objPage;
 
                 if ( $this->catalogSEOTitle ) {
-                    
+
                     $objPage->pageTitle = $arrCatalog[ $this->catalogSEOTitle ] ? strip_tags( $arrCatalog[ $this->catalogSEOTitle ] ) : '';
                 }
 
@@ -433,9 +447,11 @@ class CatalogView extends CatalogController {
                 }
             }
 
+            
             $objTemplate->setData( $arrCatalog );
 
             $arrCatalogItems[] = $objTemplate->parse();
+            $intIndex++;
         }
         
         if ( $intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view' ) {

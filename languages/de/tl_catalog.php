@@ -8,6 +8,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'Ansicht Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Ansicht', 'Bitte wählen Sie eine Ansicht aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Modulname', 'Bitte geben Sie den Modulnamen ein.' ];
@@ -27,6 +29,22 @@ $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Inhaltselemente ver
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Mehrere Spalten anzeigen', 'Hier können Sie Ihre mehrere Spalten in der Ansicht anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Als Back end Modul verwenden', 'Diese Tabelle soll als Back end Modul verwendet werden.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'Stadt Spalte', 'Bitte wählen Sie eine Spalte für die Stadt aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Land Spalte', 'Bitte wählen Sie eine Spalte für das Land aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = [ 'Straßen Spalte', 'Bitte wählen Sie eine Spalte für die Straße aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['latField'] = [ 'Latitude Spalte', 'Bitte wählen Sie eine Spalte für den Latitude Wert aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = [ 'Longitude Spalte', 'Bitte wählen Sie eine Spalte für den Longitude Wert aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = [ 'Postleitzahl Spalte', 'Bitte wählen Sie eine Spalte für die Postleitzahl aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Straßennummer Spalte', 'Bitte wählen Sie eine Spalte für die Straßennummer aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Vollständige Adresse Spalte', 'Bitte wählen Sie eine Spalte für die vollständige Adresse aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 'Bitte wählen Sie ein Eingabetyp für die lat & long ermittelten Werte aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Latitude & Longitude erzeugen', 'Hier können Sie automatisch Latitude & Longitude Werte ermitteln.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback Spalte', 'Bitte wählen Sie eine Fallback Spalte aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Sprach-Quelle', 'Bitte wählen Sie eine Quelle für die Sprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Sprachen Spalte', 'Bitte wählen Sie eine Spalte für die Sprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Changelanguage Module verwenden', 'Hier können Sie das changelanguage Module für Ihr Katalog verwenden.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Katalog löschen', 'Katalog mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Katalog bearbeiten', 'Katalog mit der ID %s bearbeiten.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Katalog details anzeigen', 'Die Details des Katalogs mit der ID %s anzeigen.' ];
@@ -40,6 +58,18 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['sort'] = 'Sortierung';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['cut'] = 'Verschieben';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['copy'] = 'Duplizieren';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['invisible'] = 'Aus/Einblenden';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'] = [
+
+    'useSingleField' => 'Vollständige Adresse',
+    'useMultipleFields' => 'Mehrspaltige Adresse'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'] = [
+
+    'parentTable' => 'Aus Eltern Tabelle',
+    'currentTable' => 'Aus eigener Tabelle'
+];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['flag'] = [
 

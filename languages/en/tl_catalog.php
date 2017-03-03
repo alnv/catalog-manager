@@ -2,12 +2,14 @@
 
 $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Create new catalog', 'Here you can create new catalog.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog']['label_settings'] = 'Row Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'View Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation Settings';
-$GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation Settings';
+$GLOBALS['TL_LANG']['tl_catalog']['label_settings'] = 'Row settings';
+$GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table settings';
+$GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'View settings';
+$GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
+$GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
+$GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
+$GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
+$GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'View', 'Please select your view.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sorting', 'Please select your sorting.' ];
@@ -27,6 +29,22 @@ $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here y
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Address Type', 'Please select address type.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'City Column', 'Please select a column for city value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = [ 'Street Column', 'Please select a column for street value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Country Column', 'Please select a column for country value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['latField'] = [ 'Latitude Column', 'Please select a column for latitude value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = [ 'ZIP-Code Column', 'Please select a column for zip-code value' ];
+$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = [ 'Longitude Column', 'Please select a column for longitude value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Full address Column', 'Please select a column for full address value' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Street number Column', 'Please select a column for street number value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Create latitude & longitude', 'Here you can create lat & long values for your entity.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Language source', 'Please select a language source.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback Column', 'Please select a column for fallback value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Language Column', 'Please select a column for language value.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Use changelanguage module', 'Here you can use changelanguage module for your catalog.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Show details', 'Show the details of catalog ID "%s".' ];
@@ -40,6 +58,18 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['filter'] = 'Filter';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['cut'] = 'Move';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['copy'] = 'Copy';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['invisible'] = 'Disable/Enable';
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'] = [
+
+    'useSingleField' => 'Full address',
+    'useMultipleFields' => 'Multiple field address'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'] = [
+
+    'parentTable' => 'From parent table',
+    'currentTable' => 'From own table'
+];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['flag'] = [
 

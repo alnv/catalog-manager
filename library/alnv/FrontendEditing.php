@@ -53,11 +53,10 @@ class FrontendEditing extends CatalogController {
 
             if ( $arrField['type'] == 'fieldsetStart' ) {
 
-                $this->strTemporaryPalette = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+                $this->strTemporaryPalette = $arrField['title']; //$this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
             }
 
             if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
-
 
             $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
 
@@ -67,7 +66,7 @@ class FrontendEditing extends CatalogController {
             }
 
             $arrDCField['_fieldname'] = $strFieldname;
-            $arrDCField['_palette'] = $this->I18nCatalogTranslator->getLegendLabel( $this->strTemporaryPalette );
+            $arrDCField['_palette'] = $this->strTemporaryPalette; // $this->I18nCatalogTranslator->getLegendLabel( $this->strTemporaryPalette );
 
             return $arrDCField;
         });
@@ -137,6 +136,14 @@ class FrontendEditing extends CatalogController {
             $objCaptcha->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
             $this->objTemplate->fields .= $objCaptcha->parse();
+        }
+
+
+        $arrCategories = [ 'general_legend', 'invisible_legend' ];
+
+        foreach ( $this->arrPalettes as $strPalette => $arrPalette ) {
+
+            // @todo
         }
 
         $this->objTemplate->method = 'POST';
@@ -292,6 +299,7 @@ class FrontendEditing extends CatalogController {
         }
 
         $strWidget = $objWidget->parse();
+
         $this->objTemplate->fields .= $strWidget;
         $this->arrPalettes[ $arrField['_palette'] ][ $arrField['_fieldname'] ] = $strWidget;
     }

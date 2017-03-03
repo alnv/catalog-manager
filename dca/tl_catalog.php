@@ -490,6 +490,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'options' => [ 'useSingleField', 'useMultipleFields' ],
 
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'],
+
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -645,6 +647,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options' => [ 'parentTable', 'currentTable' ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'],
 
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"

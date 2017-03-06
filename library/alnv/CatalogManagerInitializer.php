@@ -21,6 +21,9 @@ class CatalogManagerInitializer {
 
         $this->createDirectories();
         $objDatabase = \Database::getInstance();
+
+        if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
+
         $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC' )->limit(100)->execute();
 
         while ( $objCatalogManagerDB->next() ) {

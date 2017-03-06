@@ -36,12 +36,15 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'sorting' => [
 
-            'mode' => 0
+            'mode' => 1,
+            'flag' => 2,
+            'fields' => [ 'name' ]
         ],
 
         'label' => [
 
-            'fields' => [ 'name' ],
+            'showColumns' => true,
+            'fields' => [ 'name', 'tablename', 'info' ]
         ],
 
         'operations' => [
@@ -80,7 +83,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource' ],
-        'default' => '{table_settings},name,tablename,description;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        'default' => '{table_settings},name,tablename,description,info;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
     ],
 
     'subpalettes' => [
@@ -134,6 +137,21 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "varchar(512) NOT NULL default ''"
+        ],
+
+        'info' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['info'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'long clr',
+                'maxlength' => 16
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
         ],
 
         'tablename' => [

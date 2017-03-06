@@ -1,9 +1,6 @@
 todo
- - yaml parser
  - csv parser
  - showColumns field names
  - test CTLG_ACTIVE
  - test CTLG_MASTER
- - implement module check for change language module
- - test getPredefinedFields
  - fix duplicate field problem in tl_member and tl_user

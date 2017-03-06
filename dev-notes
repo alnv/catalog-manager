@@ -1,7 +1,6 @@
 todo
  - yaml parser
  - csv parser
- - better sorting for fe palettes
  - showColumns field names
  - test CTLG_ACTIVE
  - test CTLG_MASTER

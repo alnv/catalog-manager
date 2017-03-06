@@ -523,6 +523,11 @@ class CatalogView extends CatalogController {
             return null;
         }
 
+        if ( !$this->catalogAllowComments ) {
+
+            return null;
+        }
+
         $this->TemplateHelper->addComments(
 
             $this->objMainTemplate,

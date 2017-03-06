@@ -89,6 +89,11 @@ class MemberPermissionExtension extends CatalogController {
 
             if ( !$strSQLStatement ) continue;
 
+            if ( $this->SQLBuilder->Database->fieldExists( $strField, 'tl_member_group' ) ) {
+
+                continue;
+            }
+
             $this->SQLBuilder->alterTableField( 'tl_member_group', $strField, $strSQLStatement );
         }
     }

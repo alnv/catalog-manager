@@ -16,7 +16,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiu
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{template_legend:hide},catalogMasterTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFilterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogResetFilterForm,catalogDisableSubmit;{catalogFilterRedirect_legend:hide},catalogRedirectType;{catalogFilterTemplates_legend:hide},catalogFilterFieldTemplates;{catalogFieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},tableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogStoreFile,catalogItemOperations,catalogFormRedirect;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogView_legend:hide},catalogUseViewPage;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseMasterPage,catalogMasterTemplate,catalogPreventMasterView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogTableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogFormRedirect,catalogItemOperations,catalogStoreFile;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseTaxonomies'] = 'catalogTaxonomies';
@@ -491,7 +491,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormTemplate'] = [
 
         'chosen' => true,
         'maxlength' => 32,
-        'tl_class' => 'w50 clr',
+        'tl_class' => 'w50',
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFormTemplates' ],
@@ -510,7 +510,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogItemOperations'] = [
 
         'multiple' => true,
         'maxlength' => 256,
-        'tl_class' => 'w50 clr',
+        'tl_class' => 'clr',
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogOperationItems' ],
@@ -528,7 +528,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogStoreFile'] = [
 
     'eval' => [
 
-        'tl_class' => 'clr m12',
+        'tl_class' => 'm12 clr',
         'submitOnChange' => true
     ],
 
@@ -573,7 +573,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDoNotOverwrite'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50'
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,
@@ -594,9 +594,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNoValidate'] = [
     'sql' => "char(1) NOT NULL default ''"
 ];
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['disableCaptcha']['eval']['tl_class'] = 'w50';
+$GLOBALS['TL_DCA']['tl_module']['fields']['disableCaptcha']['eval']['tl_class'] = 'w50 m12';
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['tableless']['eval']['tl_class'] = 'w50';
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableless'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTableless'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
 
@@ -605,7 +617,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50',
+        'tl_class' => 'clr',
         'fieldType' => 'radio',
     ],
 

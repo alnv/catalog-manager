@@ -59,12 +59,12 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hin
 $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Wertspalte', 'Bitte wählen Sie eine Spalte für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie eine Spalte für den Text aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Schlüsselspalte', 'Bitte wählen Sie eine Tabelle für den Schlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Auswahlliste einbinden', 'Hier können Sie eine Auswahlliste an Werten erstellen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Feld löschen', 'Feld mit der ID %s löschen.' ];

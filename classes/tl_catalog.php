@@ -88,6 +88,8 @@ class tl_catalog extends \Backend {
 
             if ( $blnVisibleField ) {
 
+                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'stop' , $this->arrRequiredTableFields['stop'] );
+                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'start' , $this->arrRequiredTableFields['start'] );
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'invisible' , $this->arrRequiredTableFields['invisible'] );
             }
         }

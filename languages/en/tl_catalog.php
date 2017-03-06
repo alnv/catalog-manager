@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['navArea'] = [ 'Navigation area', 'Please sele
 $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Header fields', 'Please select your header fields.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Description', 'Please enter short module description.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here you can show multiple columns.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
 

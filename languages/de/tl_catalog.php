@@ -25,6 +25,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['fields'] = [ 'Felder', 'Bitte wählen Sie Ihr
 $GLOBALS['TL_LANG']['tl_catalog']['tablename'] = [ 'Tabelle', 'Bitte geben Sie einen validen Datenbank namen ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['navArea'] = [ 'Navigationsbereich', 'Bitte wählen Sie Ihren Navigationsbereich aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Bitte geben Sie eine kurze Information über die Tabelle ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Mehrere Spalten anzeigen', 'Hier können Sie Ihre mehrere Spalten in der Ansicht anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Als Back end Modul verwenden', 'Diese Tabelle soll als Back end Modul verwendet werden.' ];

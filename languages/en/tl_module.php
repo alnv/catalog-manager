@@ -82,6 +82,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates',
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Field dependencies', 'Here you can set up field dependencies.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Please select a title column. This title will be used for search enginses.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Description', 'Please select a description column. This description will be used for search engines.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableless'] = [ 'Tableless layout', 'Render the form without HTML tables.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

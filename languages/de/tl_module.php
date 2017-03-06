@@ -82,6 +82,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates',
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Feldabhängigkeit', 'Hier können Sie jedem Feld eine Feldabhängigkeit zuweisen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Bitte wählen Sie ein Spalte für Ihren Titel aus. Dieses Titel wird für Suchmaschinen verwendet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Beschreibung', 'Bitte wählen Sie ein Spalte für Ihre Beschreibung aus. Diese Beschreibung wird für Suchmaschinen verwendet.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableless'] = [ 'Tabellenloses Layout', 'Das Formular ohne HTML-Tabellen ausgeben.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

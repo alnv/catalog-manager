@@ -475,7 +475,7 @@ class FrontendEditing extends CatalogController {
             'type' => 'captcha',
             'mandatory' => true,
             'required' => true,
-            'tableless' => $this->tableless
+            'tableless' => $this->catalogTableless
         ];
 
         $strClass = $GLOBALS['TL_FFL']['captcha'];
@@ -518,7 +518,7 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'catalogMessageForm';
         }
 
-        $arrField['eval']['tableless'] = $this->tableless;
+        $arrField['eval']['tableless'] = $this->catalogTableless;
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 
         return $arrField;

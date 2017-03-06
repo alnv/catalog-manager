@@ -11,16 +11,17 @@ class FrontendEditing extends CatalogController {
     public $strRedirectID;
     public $arrOptions = [];
     public $strTemplate = '';
-    
-    private $objTemplate;
-    private $arrValues = [];
-    private $arrCatalog = [];
-    private $arrPalettes = [];
-    private $arrFormFields = [];
-    private $strSubmitName = '';
-    private $blnNoSubmit = false;
-    private $blnHasUpload = false;
-    private $strTemporaryPalette = 'general_legend';
+
+    protected $objTemplate;
+    protected $arrValues = [];
+    protected $arrCatalog = [];
+    protected $arrPalettes = [];
+    protected $arrFormFields = [];
+    protected $strSubmitName = '';
+    protected $blnNoSubmit = false;
+    protected $blnHasUpload = false;
+    protected $arrPaletteNames = [];
+    protected $strTemporaryPalette = 'general_legend';
 
 
     public function __construct() {
@@ -53,7 +54,8 @@ class FrontendEditing extends CatalogController {
 
             if ( $arrField['type'] == 'fieldsetStart' ) {
 
-                $this->strTemporaryPalette = $arrField['title']; //$this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+                $this->strTemporaryPalette = $arrField['title'];
+                $this->arrPaletteNames[ $this->strTemporaryPalette ] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
             }
 
             if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
@@ -66,7 +68,7 @@ class FrontendEditing extends CatalogController {
             }
 
             $arrDCField['_fieldname'] = $strFieldname;
-            $arrDCField['_palette'] = $this->strTemporaryPalette; // $this->I18nCatalogTranslator->getLegendLabel( $this->strTemporaryPalette );
+            $arrDCField['_palette'] = $this->strTemporaryPalette;
 
             return $arrDCField;
         });
@@ -138,17 +140,29 @@ class FrontendEditing extends CatalogController {
             $this->objTemplate->fields .= $objCaptcha->parse();
         }
 
-
-        $arrCategories = [ 'general_legend', 'invisible_legend' ];
+        $arrCategories = [];
+        $arrLastPalette = [];
 
         foreach ( $this->arrPalettes as $strPalette => $arrPalette ) {
 
-            // @todo
+            if ( $strPalette == 'invisible_legend' ) {
+
+                $arrLastPalette[ $strPalette ] = $arrPalette;
+
+                continue;
+            }
+
+            $arrCategories[ $this->arrPaletteNames[ $strPalette ] ] = $arrPalette;
+        }
+
+        foreach ( $arrLastPalette as $strPalette => $arrPalette ) {
+
+            $arrCategories[ $this->arrPaletteNames[ $strPalette ] ] = $arrPalette;
         }
 
         $this->objTemplate->method = 'POST';
         $this->objTemplate->formId = $this->strSubmitName;
-        $this->objTemplate->categories = $this->arrPalettes;
+        $this->objTemplate->categories = $arrCategories;
         $this->objTemplate->submitName = $this->strSubmitName;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
@@ -158,7 +172,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function generateForm( $arrField, $intIndex ) {
+    protected function generateForm( $arrField, $intIndex ) {
 
         $arrField = $this->convertWidgetToField( $arrField );
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
@@ -302,6 +316,11 @@ class FrontendEditing extends CatalogController {
 
         $this->objTemplate->fields .= $strWidget;
         $this->arrPalettes[ $arrField['_palette'] ][ $arrField['_fieldname'] ] = $strWidget;
+
+        if ( is_null( $this->arrPaletteNames[ $arrField['_palette'] ] ) ) {
+
+            $this->arrPaletteNames[ $arrField['_palette'] ] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['_palette'] );
+        }
     }
 
 
@@ -318,7 +337,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function saveEntity() {
+    protected function saveEntity() {
 
         $this->import( 'SQLBuilder' );
 
@@ -402,7 +421,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function setValues() {
+    protected function setValues() {
 
         if ( $this->strItemID && $this->catalogTablename ) {
             
@@ -419,7 +438,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function setOptions() {
+    protected function setOptions() {
 
         if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
 
@@ -431,7 +450,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function decodeValue( $varValue ) {
+    protected function decodeValue( $varValue ) {
 
         if ( class_exists('StringUtil') ) {
 
@@ -447,7 +466,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function getCaptcha() {
+    protected function getCaptcha() {
 
         $arrCaptcha = [
 
@@ -482,7 +501,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function convertWidgetToField( $arrField ) {
+    protected function convertWidgetToField( $arrField ) {
 
         if ( $arrField['inputType'] == 'checkboxWizard' ) {
 
@@ -506,7 +525,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    private function fieldClassExist( $strInputType ) {
+    protected function fieldClassExist( $strInputType ) {
 
         $strClass = $GLOBALS['TL_FFL'][$strInputType];
 

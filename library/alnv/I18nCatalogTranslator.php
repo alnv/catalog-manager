@@ -5,16 +5,9 @@ namespace CatalogManager;
 class I18nCatalogTranslator {
 
 
-    private $strConfigFile = TL_ROOT . '/' . 'system/config/i18nCatalogManager.yaml';
-
-    
     public function initialize() {
-
-        $strLanguage = $this->getCurrentLanguageIsoCode();
-
-        \Controller::loadLanguageFile( 'catalog_manager', $strLanguage );
-
-        $this->createI18nCatalogConfigFile();
+        
+        \Controller::loadLanguageFile( 'catalog_manager', $this->getCurrentLanguageIsoCode() );
     }
 
     
@@ -71,8 +64,6 @@ class I18nCatalogTranslator {
             $arrLabel = [ $strTitle, $strDescription ];
         }
 
-        // @todo yaml
-
         return $arrLabel;
     }
 
@@ -85,8 +76,6 @@ class I18nCatalogTranslator {
 
         if ( !$strGivenOption ) return $strI18nKey;
 
-        // @todo yaml
-
         return $strOption;
     }
 
@@ -98,8 +87,6 @@ class I18nCatalogTranslator {
         if ( !$strLegend ) $strLegend = $strTitle;
 
         if ( !$strLegend ) $strLegend = $strI18nKey;
-
-        // @todo yaml
 
         return $strLegend;
     }
@@ -114,27 +101,5 @@ class I18nCatalogTranslator {
     public function getShowLabel() {
 
         return $GLOBALS['TL_LANG']['catalog_manager']['operations']['show'];
-    }
-
-
-    private function createI18nCatalogConfigFile() {
-
-        // @todo
-        /*
-        if ( !file_exists( $this->strConfigFile ) ) {
-
-            $objFile = fopen( $this->strConfigFile, 'a' );
-
-            fwrite( $objFile, '' );
-
-            fclose( $objFile );
-        }
-        */
-    }
-
-    
-    public function getYamlLanguageFile( $strType, $strI18nKey ) {
-
-        return [];
     }
 }

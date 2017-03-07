@@ -86,8 +86,8 @@ class SQLBuilder extends CatalogController {
 
             return null;
         }
-
-        if ( !$this->Database->fieldExists( $strField, $strTable ) ) {
+        
+        if ( !$this->Database->fieldExists( $strField, $strTable, true ) ) {
 
             $strAlterFieldStatement = sprintf( 'ALTER TABLE %s ADD `%s` %s ', $strTable, $strField, $strSQLStatement );
 
@@ -103,7 +103,7 @@ class SQLBuilder extends CatalogController {
             return null;
         }
 
-        if ( $this->Database->fieldExists( $strField, $strTable ) ) {
+        if ( $this->Database->fieldExists( $strField, $strTable, true ) ) {
 
             $strDropFieldStatement = sprintf( 'ALTER TABLE %s DROP COLUMN `%s`', $strTable, $strField );
 
@@ -119,7 +119,7 @@ class SQLBuilder extends CatalogController {
             return null;
         }
 
-        if ( $this->Database->fieldExists( $strField, $strTable ) ) {
+        if ( $this->Database->fieldExists( $strField, $strTable, true ) ) {
 
             $strAlterFieldStatement = sprintf( 'ALTER TABLE %s MODIFY COLUMN %s %s', $strTable, $strField, $strSQLStatement );
 
@@ -197,13 +197,13 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    private function getPlaceholders( $arrValues, $strPlaceholder = '?' ) {
+    protected function getPlaceholders( $arrValues, $strPlaceholder = '?' ) {
 
         return implode( ', ', array_fill( 0, count( $arrValues ), $strPlaceholder ) );
     }
 
 
-    private function getSQLKey( $strKey ) {
+    protected function getSQLKey( $strKey ) {
         
         if ( $strKey == 'UNI' ) {
 
@@ -219,7 +219,7 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    private function getNullStatement( $strNull ) {
+    protected function getNullStatement( $strNull ) {
 
         if ( !$strNull ) {
 
@@ -230,7 +230,7 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    private function getDefaultStatement( $strDefault ) {
+    protected function getDefaultStatement( $strDefault ) {
 
         if ( is_null( $strDefault ) ) {
 

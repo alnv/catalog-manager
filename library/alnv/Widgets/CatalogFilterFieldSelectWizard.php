@@ -40,8 +40,13 @@ class CatalogFilterFieldSelectWizard extends \Widget {
         if ( !\Cache::has('tabindex') ) \Cache::set( 'tabindex', 1 );
 
         $intTabindex = \Cache::get('tabindex');
-
         $arrActiveFilterFields = Toolkit::deserialize( $this->objDca->activeRecord->catalogActiveFilterFields );
+
+        if ( empty( $arrActiveFilterFields ) || !is_array( $arrActiveFilterFields ) ) {
+
+            return '-';
+        }
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE id IN ( ' . implode( ',' , $arrActiveFilterFields ) . ' )' )->execute();
 
         while ( $objCatalogFields->next() ) {

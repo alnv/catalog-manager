@@ -5,8 +5,8 @@ namespace CatalogManager;
 class OptionsGetter extends CatalogController {
 
 
-    private $arrField = [];
-    private $arrActiveEntity = [];
+    protected $arrField = [];
+    protected $arrActiveEntity = [];
 
 
     public function __construct( $arrField ) {
@@ -59,7 +59,7 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    private function getDbOptions() {
+    protected function getDbOptions() {
 
         $arrOptions = [];
 
@@ -73,7 +73,7 @@ class OptionsGetter extends CatalogController {
             return $arrOptions;
         }
 
-        $arrQuery = [
+        $arrSQLQuery = [
 
             'table' => $this->arrField['dbTable'],
             'where' => []
@@ -81,23 +81,25 @@ class OptionsGetter extends CatalogController {
 
         $this->getActiveEntityValues();
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
+        $arrQueries = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
 
-        if ( !empty( $arrQueries ) && is_array( $arrQueries ) ) {
+            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
 
-            $arrQuery['where'] = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
+            if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
 
-                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'], $arrQuery['operator'] );
+                return null;
+            }
 
-                if ( !$arrQuery['value'] || empty( $arrQuery['value'] ) ) {
+            if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
 
-                    return null;
-                }
+                return null;
+            }
 
-                return $arrQuery;
-            });
-        }
+            return $arrQuery;
+        });
 
-        $objDbOptions = $this->SQLQueryBuilder->execute( $arrQuery );
+        $arrSQLQuery['where'] = $arrQueries;
+        $objDbOptions = $this->SQLQueryBuilder->execute( $arrSQLQuery );
 
         while ( $objDbOptions->next() ) {
 
@@ -108,7 +110,7 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    private function getParseQueryValue( $strFieldname, $strValue = '', $strOperator = '' ) {
+    protected function getParseQueryValue( $strValue = '', $strOperator = '' ) {
 
         if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
@@ -116,12 +118,9 @@ class OptionsGetter extends CatalogController {
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
-            if ( !empty( $arrTags ) && is_array( $arrTags ) ) {
+            if ( $strTag ) $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
 
-                $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
-            }
-
-            $strValue = $strFieldnameValue ? $strFieldnameValue : $strValue;
+            $strValue = $strFieldnameValue ? $strFieldnameValue : '';
         }
 
         if ( $strOperator == 'contain' && is_string( $strValue )) {
@@ -131,14 +130,14 @@ class OptionsGetter extends CatalogController {
 
         if ( $strValue && is_string( $strValue ) && $this->arrField['multiple'] ) {
 
-            $strValue = Toolkit::deserialize( $strValue );
+            // @todo
         }
 
         return Toolkit::prepareValueForQuery( $strValue );
     }
 
 
-    private function getKeyValueOptions() {
+    protected function getKeyValueOptions() {
 
         $arrOptions = [];
 
@@ -158,8 +157,8 @@ class OptionsGetter extends CatalogController {
         return $arrOptions;
     }
 
-    
-    private function setForeignKey() {
+
+    protected function setForeignKey() {
 
         if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] ) {
 
@@ -170,7 +169,7 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    private function getActiveEntityValues() {
+    protected function getActiveEntityValues() {
 
         switch ( TL_MODE ) {
 

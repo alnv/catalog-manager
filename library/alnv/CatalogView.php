@@ -201,7 +201,7 @@ class CatalogView extends CatalogController {
                 return $arrQuery;
             });
         }
-        
+
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
 
             $dteTime = \Date::floorToMinute();
@@ -335,7 +335,7 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();

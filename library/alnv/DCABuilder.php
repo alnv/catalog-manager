@@ -26,6 +26,7 @@ class DCABuilder extends CatalogController {
 
         $this->import( 'Database' );
         $this->import( 'IconGetter' );
+        $this->import( 'IconGetter' );
         $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
 
@@ -271,6 +272,14 @@ class DCABuilder extends CatalogController {
             $arrReturn['format'] = $this->arrCatalog['format'];
         }
 
+        if ( $this->arrCatalog['mode'] == '5' ) {
+
+            $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
+
+                return $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );
+            };
+        }
+
         return $arrReturn;
     }
 
@@ -315,6 +324,8 @@ class DCABuilder extends CatalogController {
 
             unset( $arrReturn['flag'] );
             unset( $arrReturn['headerFields'] );
+
+            $arrReturn['icon'] = $this->IconGetter->setCatalogIcon( $this->arrCatalog['tablename'] );
         }
 
         return $arrReturn;

@@ -5,7 +5,7 @@
    <?= $this->output; ?>
 <?php if( !$this->disableSubmit ): ?>
    <div class="submit_container">
-      <input type="submit" name="ctlg_filter" value="Filter">
+      <input type="submit" value="<?= $this->submit; ?>">
    </div>
 <?php endif; ?>
 </form>

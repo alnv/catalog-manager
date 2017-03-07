@@ -5,14 +5,14 @@ namespace CatalogManager;
 class DCABuilder extends CatalogController {
 
 
-    private $strID;
-    private $strTable;
-    private $arrFields = [];
-    private $arrCatalog = [];
-    private $arrErrorTables = [];
+    protected $strID;
+    protected $strTable;
+    protected $arrFields = [];
+    protected $arrCatalog = [];
+    protected $arrErrorTables = [];
 
 
-    private $arrOperations = [
+    protected $arrOperations = [
 
         'cut' => false,
         'copy' => false,
@@ -70,7 +70,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function determineOperations() {
+    protected function determineOperations() {
 
         $arrOperations = [];
 
@@ -89,7 +89,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function getDCAFields() {
+    protected function getDCAFields() {
 
         $objCatalogFieldsDb = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
 
@@ -106,10 +106,6 @@ class DCABuilder extends CatalogController {
         $this->determineOperations();
         $this->getDCAFields();
 
-        $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
-        $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
-        $GLOBALS['TL_LANG']['MOD'][ $this->strTable ] = $this->I18nCatalogTranslator->getModuleLabel( $this->strTable );
-
         $GLOBALS['TL_DCA'][ $this->strTable ] = [
 
             'config' => $this->createConfigDataArray(),
@@ -125,10 +121,14 @@ class DCABuilder extends CatalogController {
             'palettes' => $this->createPaletteDataArray(),
             'fields' => $this->parseDCAFields()
         ];
+
+        $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
+        $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
+        // $GLOBALS['TL_LANG']['MOD'][ $this->strTable ] = $this->I18nCatalogTranslator->getModuleLabel( $this->strTable ); @todo
     }
 
 
-    private function parseDCAFields() {
+    protected function parseDCAFields() {
 
         $arrDCAFields = $this->getDefaultDCFields();
 
@@ -141,7 +141,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function getDefaultDCFields() {
+    protected function getDefaultDCFields() {
 
         $arrReturn = $this->DCABuilderHelper->getPredefinedDCFields();
 
@@ -187,7 +187,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createConfigDataArray() {
+    protected function createConfigDataArray() {
 
         $arrReturn = [
 
@@ -259,7 +259,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createLabelDataArray() {
+    protected function createLabelDataArray() {
 
         $arrReturn = [
 
@@ -284,7 +284,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createSortingDataArray() {
+    protected function createSortingDataArray() {
 
         $arrFields = $this->arrCatalog['fields'];
         $headerFields = $this->arrCatalog['headerFields'];
@@ -332,7 +332,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createOperationDataArray() {
+    protected function createOperationDataArray() {
 
         $arrReturn = [
 
@@ -429,7 +429,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createGlobalOperationDataArray() {
+    protected function createGlobalOperationDataArray() {
 
         return [
 
@@ -444,7 +444,7 @@ class DCABuilder extends CatalogController {
     }
 
 
-    private function createPaletteDataArray() {
+    protected function createPaletteDataArray() {
 
         $strPalette = '';
         $strTemporaryPalette = 'general_legend';
@@ -495,8 +495,8 @@ class DCABuilder extends CatalogController {
         return [ 'default' => $strPalette ];
     }
 
-    
-    private function shouldBeUsedParentTable() {
+
+    protected function shouldBeUsedParentTable() {
 
         if ( !$this->arrCatalog['pTable'] ) {
 

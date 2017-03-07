@@ -27,7 +27,7 @@ class I18nCatalogTranslator {
                 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] : '';
 
             $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] ?
-                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] : $strName;
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] : '';
 
             $arrLabel = [ $strName, $strDescription ];
         }

@@ -188,7 +188,12 @@ class CatalogView extends CatalogController {
 
                 $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'], $arrQuery['operator'] );
 
-                if ( !$arrQuery['value'] || empty( $arrQuery['value'] ) ) {
+                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+
+                    return null;
+                }
+
+                if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
 
                     return null;
                 }
@@ -566,7 +571,7 @@ class CatalogView extends CatalogController {
 
         if ( $varValue && is_string( $varValue ) && $arrField['multiple'] ) {
 
-            $varValue = Toolkit::deserialize( $varValue );
+            // @todo
         }
 
         return Toolkit::prepareValueForQuery( $varValue );

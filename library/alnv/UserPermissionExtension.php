@@ -30,7 +30,7 @@ class UserPermissionExtension extends CatalogController {
     }
 
 
-    private function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
+    protected function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
 
         $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
@@ -84,8 +84,8 @@ class UserPermissionExtension extends CatalogController {
         ];
     }
 
-    
-    private function createSQLColumns( $strCatalogname, $strDCAName ) {
+
+    protected function createSQLColumns( $strCatalogname, $strDCAName ) {
 
         $arrColumnsToCreate = [ $strCatalogname, $strCatalogname . 'p' ];
 

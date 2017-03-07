@@ -5,6 +5,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['pageID'] = 'URL';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] = 'Field';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value'] = 'Value';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['table'] = 'Table';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'] = 'Filter';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['delete'] = 'Delete';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['create'] = 'Create';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'] = 'Ascending';

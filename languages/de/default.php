@@ -6,6 +6,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value'] = 'Wert';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['table'] = 'Tabelle';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['delete'] = 'Löschen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['create'] = 'Anlegen';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'] = 'Filtern';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'] = 'Aufsteigend';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] = 'Absteigend';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['edit'] = 'Bearbeiten';

@@ -83,7 +83,7 @@ class SQLQueryBuilder extends CatalogController {
 
 
     protected function equal( $strField ) {
-
+        
         return sprintf( '%s.`%s` = ?', $this->strTable, $strField );
     }
 

@@ -32,7 +32,7 @@ class MemberPermissionExtension extends CatalogController {
     }
 
 
-    private function extendMemberGroupDCA( $strCatalogname ){
+    protected function extendMemberGroupDCA( $strCatalogname ){
 
         $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
@@ -78,8 +78,8 @@ class MemberPermissionExtension extends CatalogController {
         ];
     }
 
-    
-    private function createSQLColumns( $strCatalogname ) {
+
+    protected function createSQLColumns( $strCatalogname ) {
 
         $arrFields = [ $strCatalogname, $strCatalogname . 'p' ];
 
@@ -88,11 +88,6 @@ class MemberPermissionExtension extends CatalogController {
             $strSQLStatement =  $GLOBALS['TL_DCA']['tl_member_group']['fields'][$strField]['sql'];
 
             if ( !$strSQLStatement ) continue;
-
-            if ( $this->SQLBuilder->Database->fieldExists( $strField, 'tl_member_group' ) ) {
-
-                continue;
-            }
 
             $this->SQLBuilder->alterTableField( 'tl_member_group', $strField, $strSQLStatement );
         }

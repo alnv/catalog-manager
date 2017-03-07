@@ -191,7 +191,7 @@ class Toolkit {
     }
 
 
-    public static function parseWhereQueryArray( $arrQueries, $fnCallback = [] ) {
+    public static function parseWhereQueryArray( $arrQueries, $fnCallback = null ) {
 
         $intIndex = 0;
         $arrReturn = [];
@@ -211,7 +211,7 @@ class Toolkit {
 
                     foreach ( $arrQuery['subQueries'] as $arrSubQuery ) {
 
-                        if ( is_callable( $fnCallback ) ) {
+                        if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
 
                             $arrSubQuery = $fnCallback( $arrSubQuery );
                         }
@@ -226,7 +226,7 @@ class Toolkit {
 
                 else {
 
-                    if ( is_callable( $fnCallback ) ) {
+                    if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
 
                         $arrQuery = $fnCallback( $arrQuery );
                     }
@@ -237,7 +237,7 @@ class Toolkit {
                 }
             }
         }
-
+        
         return $arrReturn;
     }
 

@@ -197,11 +197,11 @@ class tl_module extends \Backend {
 
         while ( $objCatalogFields->next() ) {
 
-            if ( !$objCatalogFields->type && in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
+            if ( !$objCatalogFields->type || in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
 
                 continue;
             }
-
+            
             $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
         }
 

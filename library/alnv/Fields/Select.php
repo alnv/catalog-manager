@@ -18,7 +18,7 @@ class Select {
         }
 
         $objOptionGetter = new OptionsGetter( $arrField );
-
+        
         if ( $objOptionGetter->isForeignKey() ) {
 
             $strForeignKey = $objOptionGetter->getForeignKey();
@@ -39,7 +39,7 @@ class Select {
             $arrDCAField['eval']['csv'] = ',';
         }
 
-        if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) ) {
+        if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple'] ) {
 
             if ( $arrField['dbTable'] ) $arrDCAField['wizard'] = [ [ 'CatalogManager\DCACallbacks', 'generateRelationWizard' ] ];
 

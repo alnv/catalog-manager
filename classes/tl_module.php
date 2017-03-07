@@ -285,6 +285,12 @@ class tl_module extends \Backend {
 
         $arrReturn = [];
         $arrActiveFilterFields = Toolkit::deserialize( $dc->activeRecord->catalogActiveFilterFields );
+        
+        if ( empty( $arrActiveFilterFields ) || !is_array( $arrActiveFilterFields ) ) {
+
+            return $arrReturn;
+        }
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE id IN ( '. implode( ',' , $arrActiveFilterFields ) .' )' )->execute();
 
         while ( $objCatalogFields->next() ) {

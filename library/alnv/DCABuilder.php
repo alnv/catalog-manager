@@ -419,7 +419,7 @@ class DCABuilder extends CatalogController {
 
                 'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
                 'href' => sprintf( 'table=%s', $arrCTable ),
-                'icon' => $arrCTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $arrCTable ) : 'edit.gif'
+                'icon' => $arrCTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $arrCTable ) : 'articles.gif'
             ];
 
             array_insert( $arrReturn, 1, $arrChildTable );

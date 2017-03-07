@@ -11,9 +11,15 @@ class ActiveInsertTag extends \Frontend {
 
         if ( is_array( $arrTags ) && $arrTags[0] == 'CTLG_ACTIVE' && isset( $arrTags[1] ) ) {
 
-            $strDefaultValue = $arrTags[2] ? $arrTags[2] : '';
+            $varValue = $arrTags[2] ? $arrTags[2] : '';
+            $varValue =  \Input::get( $arrTags[1] ) ? \Input::get( $arrTags[1] ) : $varValue;
 
-            return \Input::get( $arrTags[1] ) ? \Input::get( $arrTags[1] ) : $strDefaultValue;
+            if ( is_array( $varValue ) ) {
+
+                $varValue = implode( ',', $varValue );
+            }
+
+            return $varValue;
         }
 
         return false;

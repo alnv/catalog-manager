@@ -3,5 +3,3 @@ todo
  - test CTLG_ACTIVE
  - test CTLG_MASTER
  - fix duplicate field problem in tl_member and tl_user
- - implement tree view icons
- - set correct tl_content icon

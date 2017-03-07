@@ -35,5 +35,6 @@ class ModuleCatalogFilter extends \Module {
         $this->Template->output = $this->CatalogFilter->generateForm();
         $this->Template->action = $this->CatalogFilter->setActionAttribute();
         $this->Template->disableSubmit = $this->catalogDisableSubmit ? true : false;
+        $this->Template->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
     }
 }

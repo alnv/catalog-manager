@@ -23,7 +23,7 @@ class IconGetter extends CatalogController {
 
     public function setTreeViewIcon( $strTablename, $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
 
-        $strIconname = $strTablename . '_' . 'tag.gif';
+        $strIconname = $strTablename . '-' . 'tag';
         $strCustomIcon = $this->getIcon( $strIconname );
         $strIcon = 'system/modules/catalog-manager/assets/icons/tag-icon.gif';
 

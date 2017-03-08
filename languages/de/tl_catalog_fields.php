@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Feld anlegen', 'Hier können Sie ein neues Feld erstellen.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Bild Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbank Einstellungen';
@@ -60,6 +61,16 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hin
 $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'Dateityp', 'Bitte wählen Sie einen Dateityp aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageTitle'] = [ 'Titel', 'Bitte wählen Sie eine Spalte für den Titel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'] = [ 'Bildgröße verwenden', 'Hier können Sie eine Bildgröße definieren.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'] = [ 'Bildlink-Adresse', 'Bitte wählen Sie eine Spalte für die Bildlink-Adresse aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'] = [ 'Alternativer Text', 'Bitte wählen Sie eine Spalte für den alternativer Text aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'] = [ 'Bildunterschrift', 'Bitte wählen Sie eine Spalte für die Bildunterschrift aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['size'] = [ 'Bildgröße', 'Hier können Sie die Abmessungen des Bildes und den Skalierungsmodus festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Bild nicht rendern', 'In der Template ausgabe wird das Bild nicht gerendert.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Großansicht/Neues Fenster', 'Großansicht des Bildes in einer Lightbox bzw. den Link in einem neuem Browserfenster öffnen.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie eine Spalte für den Text aus.' ];
@@ -73,12 +84,18 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Feld bearbeiten', 'Feld mi
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Feld ausblenden', 'Feld mit der ID %s ein/ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Feld Details anziegen', 'Die Details des Feldes mit der ID %s anzeigen.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
+
+    'image' => 'Bild',
+    'file' => 'Datei'
+];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [
 
-    'clr' => 'clear both',
-    'w50' => 'float left',
-    'm12' => 'margin-top 12px',
-    'long' => 'width 100%'
+    'clr' => 'Clear',
+    'w50' => 'Float',
+    'm12' => 'Margin top',
+    'long' => 'Fullsize'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [

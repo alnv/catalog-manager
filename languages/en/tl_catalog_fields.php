@@ -4,6 +4,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Create new field', 'Here yo
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Hide Field';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Option Settings';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Image Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'General Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Database Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Settings';
@@ -60,6 +61,16 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Space to Unde
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Add link', 'Here you can add a link to the related entity.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'File type', 'Please select a file type.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'] = [ 'Use size', 'Here you can define image size.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageTitle'] = [ 'Title', 'Please select a column for title value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'] = [ 'Alternate Text', 'Please select a column for alternate text value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'] = [ 'Image caption', 'Please select a column for image caption value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['size'] = [ 'Image size', 'Here you can set the image dimensions and the resize mode.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'] = [ 'Image link target', 'Please select a column for image link target value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Do not render', 'This image will be not rendered in frontend template.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Full-size view/new window', 'Open the full-size image in a lightbox or the link in a new browser window.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Key column', 'Please select a key column.' ];
@@ -73,12 +84,18 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Delete field', 'Delete f
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Hide field', 'Disable or Enable field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Show field', 'Show the details of field ID "%s".' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
+
+    'image' => 'Image',
+    'file' => 'File'
+];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [
 
-    'clr' => 'clear both',
-    'w50' => 'float left',
-    'm12' => 'margin-top 12px',
-    'long' => 'width 100%'
+    'clr' => 'Clear',
+    'w50' => 'Float',
+    'm12' => 'Margin top',
+    'long' => 'Fullsize'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [

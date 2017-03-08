@@ -17,5 +17,4 @@
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>
-   <?= $this->location;?>
 </div>

@@ -6,3 +6,10 @@ todo before release
  - set error on wrong sql data type in upload field
  - improve filter for multiple values
  - improve edit icon in relation wizard
+ - fix empty delete message
+ - implement tinyMCE to front end text areas
+ - test all labels
+ - fix select box min-width in c4
+ - test preview mode
+ - fix array problem in dca headline
+ - implement search able hook for search index and xml generator

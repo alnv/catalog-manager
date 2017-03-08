@@ -83,6 +83,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Feldabh�
 $GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Bitte w채hlen Sie ein Spalte f체r Ihren Titel aus. Dieses Titel wird f체r Suchmaschinen verwendet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Beschreibung', 'Bitte w채hlen Sie ein Spalte f체r Ihre Beschreibung aus. Diese Beschreibung wird f체r Suchmaschinen verwendet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTableless'] = [ 'Tabellenloses Layout', 'Das Formular ohne HTML-Tabellen ausgeben.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Hide filter form', 'Here you can hide the form in detail view mode.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

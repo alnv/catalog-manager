@@ -1,7 +1,7 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
-   <?php if ( $this->createOperation ): ?>
-      <p><a href="<?= $this->createOperation ?>">create</a></p>
+   <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
+      <p><a href="<?= $this->createOperation['href'] ?>"><?= $this->createOperation['label'] ?></a></p>
    <?php endif; ?>
    <?= $this->output; ?>
    <?php if ($this->allowComments): ?>

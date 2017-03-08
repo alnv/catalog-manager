@@ -121,20 +121,21 @@ class CatalogView extends CatalogController {
     public function getCreateOperation() {
 
         $strPTableFragment = '';
+        $this->loadLanguageFile( 'tl_module' );
 
         if ( !$this->FrontendEditingPermission->hasPermission( 'create', $this->catalogTablename ) ) {
 
-            return '';
+            return [];
         }
 
         if ( empty( $this->catalogItemOperations ) || !in_array( 'create', $this->catalogItemOperations ) ) {
 
-            return '';
+            return [];
         }
 
         if ( $this->arrCatalog['pTable'] && ( !\Input::get('pTable') || !\Input::get('pid' ) ) ) {
 
-            return '';
+            return [];
         }
 
         if ( $this->arrCatalog['pTable'] ) {
@@ -142,7 +143,12 @@ class CatalogView extends CatalogController {
             $strPTableFragment = sprintf( '&pTable=%s&pid=%s', \Input::get('pTable'), \Input::get('pid' ) );
         }
 
-        return $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment );
+        return [
+
+            'href' => $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
+            'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
+            'attributes' => ''
+        ];
     }
 
 
@@ -662,6 +668,7 @@ class CatalogView extends CatalogController {
     private function generateOperations( $strID ) {
 
         $arrReturn = [];
+        $this->loadLanguageFile( 'tl_module' );
 
         if ( is_array( $this->catalogItemOperations ) ) {
 
@@ -678,8 +685,8 @@ class CatalogView extends CatalogController {
 
                 $arrReturn[ $strOperation ] = [
 
-                    'label' => $strOperation,
                     'href' => $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment,
+                    'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
                     'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : ''
                 ];
             }

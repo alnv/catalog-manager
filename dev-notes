@@ -1,3 +1,6 @@
 todo
  - csv parser
  - test CTLG_MASTER
+ - do not set mandatory on filter form
+ - improve auto alias in parent mode
+ - disable form filter on active auto item

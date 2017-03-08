@@ -1,6 +1,8 @@
-todo
- - csv parser
- - test CTLG_MASTER
+todo before release
+ - implement export and import csv files
+ - test CTLG_MASTER insert tag and master handler
  - improve auto alias in parent mode
  - implement custom sorting (drag and drop)
  - set error on wrong sql data type in upload field
+ - improve filter for multiple values
+ - improve edit icon in relation wizard

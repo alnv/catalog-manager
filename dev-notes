@@ -4,3 +4,5 @@ todo
  - do not set mandatory on filter form
  - improve auto alias in parent mode
  - disable form filter on active auto item
+ - implement custom sorting (drag and drop)
+ - set error on wrong sql data type in upload field

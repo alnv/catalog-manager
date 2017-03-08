@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox' ],
+        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -104,13 +104,14 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'subpalettes' => [
 
+        'useSize' => 'size',
         'optionsType_useOptions' => 'options',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
 
         'addMapInfoBox' => 'mapInfoBoxContent',
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
-        'fileType_image' => 'size,fullsize,imageTitle,imageAlt,imageURL,imageCaption,disableImageRendering'
+        'fileType_image' => 'fullsize,disableImageRendering,imageTitle,imageAlt,imageURL,imageCaption,useSize'
     ],
 
     'fields' => [
@@ -938,6 +939,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFilesTypes' ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'],
+            
             'sql' => "varchar(256) NOT NULL default ''"
         ],
 
@@ -969,6 +973,21 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'sql' => "char(1) NOT NULL default ''"
         ],
 
+        'useSize' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
+                'submitOnChange' => true,
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
         'size' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['size'],
@@ -977,8 +996,14 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'nospace'=>true,
+                'rgxp'=>'natural',
                 'maxlength' => 64,
-                'tl_class' => 'w50',
+                'helpwizard'=>true,
+                'tl_class' => 'w50 m12',
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['MSC'],

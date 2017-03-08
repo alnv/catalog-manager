@@ -10,6 +10,7 @@ class Select {
         $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
         $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
+        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
         $arrDCAField['eval']['includeBlankOption'] =  Toolkit::getBooleanByValue( $arrField['includeBlankOption'] );
 
         if ( $arrField['blankOptionLabel'] && is_string( $arrField['blankOptionLabel'] ) ) {
@@ -38,7 +39,7 @@ class Select {
 
             $arrDCAField['eval']['csv'] = ',';
         }
-
+        
         if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple'] ) {
 
             if ( $arrField['dbTable'] ) $arrDCAField['wizard'] = [ [ 'CatalogManager\DCACallbacks', 'generateRelationWizard' ] ];

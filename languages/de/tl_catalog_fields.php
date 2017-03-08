@@ -41,6 +41,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['allowHtml'] = [ 'HTML erlauben', 'Dies
 $GLOBALS['TL_LANG']['tl_catalog_fields']['value'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['minval'] = [ 'Minimaler Zahlenwert', 'Hier können Sie den Minimalen Zahlenwert festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'] = [ 'Maximaler Zahlenwert', 'Hier können Sie den Maximalen Zahlenwert festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Bei einer Änderungen wird die Seite neu geladen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['extensions'] = [ 'Erlaubte Dateitypen', 'Eine kommagetrennte Liste gültiger Dateiendungen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Zeitstempel', 'Der Zeitstempel wird als der Standard-Wert verwendet.' ];

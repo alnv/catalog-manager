@@ -37,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Exclude', 'This field w
 $GLOBALS['TL_LANG']['tl_catalog_fields']['chosen'] = [ 'Use Chosen-Select', 'Native selects enhanced with Chosen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filter'] = [ 'Filter able', 'This field is filter able in layout palette.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['search'] = [ 'Search able', 'This field is search able in layout palette.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Page will be reloaded by submit.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Add blank option', 'Here you can add blank option.'];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Timestamp', 'Timestamp will be add as default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Back end CSS-Classes', 'Please select back end CSS-Classes.' ];

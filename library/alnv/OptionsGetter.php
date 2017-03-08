@@ -118,7 +118,15 @@ class OptionsGetter extends CatalogController {
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
-            if ( $strTag ) $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
+            if ( $strTag ) {
+
+                $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
+            }
+
+            if ( TL_MODE == 'FE' && ( is_null( $strFieldnameValue ) || $strFieldnameValue === '' ) ) {
+
+                $strFieldnameValue = \Input::get( $strTag ) ? \Input::get( $strTag ) : '';
+            }
 
             $strValue = $strFieldnameValue ? $strFieldnameValue : '';
         }

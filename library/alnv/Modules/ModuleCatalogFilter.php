@@ -19,6 +19,11 @@ class ModuleCatalogFilter extends \Module {
             return $objTemplate->parse();
         }
 
+        if ( $this->catalogIgnoreFilterOnAutoItem && \Input::get( 'auto_item' ) ) {
+
+            return null;
+        }
+
         return parent::generate();
     }
 

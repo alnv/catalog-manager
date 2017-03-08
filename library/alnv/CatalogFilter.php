@@ -62,6 +62,7 @@ class CatalogFilter extends CatalogController {
 
                 $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '' ) );
 
+                $objWidget->mandatory = false;
                 $objWidget->id = 'id_' . $arrField['_fieldname'];
                 $objWidget->value = \Input::get( $arrField['_fieldname'] ) ? \Input::get( $arrField['_fieldname'] ) : '';
                 $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );

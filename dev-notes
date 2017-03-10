@@ -3,13 +3,12 @@ todo before release
  - test CTLG_MASTER insert tag and master handler
  - improve auto alias in parent mode
  - implement custom sorting (drag and drop)
- - set error on wrong sql data type in upload field
  - improve filter for multiple values
  - improve edit icon in relation wizard
- - fix empty delete message
  - implement tinyMCE to front end text areas
  - test all labels
  - fix select box min-width in c4
  - test preview mode
  - fix array problem in dca headline
  - implement search able hook for search index and xml generator
+ - implement google map bounds

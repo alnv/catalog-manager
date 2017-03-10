@@ -239,8 +239,25 @@ class SQLQueryBuilder extends CatalogController {
 
                     if ( !$varValue['operator'] ) continue;
 
-                    $this->setValue( $varValue['value'], $arrQueries['field'] );
-                    $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
+                    if ( is_bool( $varValue['multiple'] ) &&  $varValue['multiple'] == true ) {
+
+                        if ( !empty( $varValue ) && is_array( $varValue['value'] ) ) {
+
+                            $intValues = count( $varValue['value'] ) -1;
+
+                            foreach ( $varValue['value'] as $intValueIndex => $varQueryValue ) {
+
+                                $this->setValue( $varQueryValue, $varValue['field'] );
+                                $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] ) . ( $intValues !==  $intValueIndex ? ' OR ' : '' );
+                            }
+                        }
+                    }
+
+                    else {
+
+                        $this->setValue( $varValue['value'], $arrQueries['field'] );
+                        $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
+                    }
 
                     $intOrIndex++;
                 }
@@ -252,8 +269,25 @@ class SQLQueryBuilder extends CatalogController {
 
                 if ( $arrQueries['operator'] ) {
 
-                    $this->setValue( $arrQueries['value'], $arrQueries['field'] );
-                    $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] );
+                    if ( is_bool( $arrQueries['multiple'] ) &&  $arrQueries['multiple'] == true && $arrQueries['multiple'] != 'contain' ) {
+
+                        if ( !empty( $arrQueries ) && is_array( $arrQueries['value'] ) ) {
+
+                            $intValues = count( $arrQueries['value'] ) -1;
+                            
+                            foreach ( $arrQueries['value'] as $intValueIndex => $varQueryValue ) {
+
+                                $this->setValue( $varQueryValue, $arrQueries['field'] );
+                                $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] ) . ( $intValues !==  $intValueIndex ? ' OR ' : '' );
+                            }
+                        }
+                    }
+
+                    else {
+
+                        $this->setValue( $arrQueries['value'], $arrQueries['field'] );
+                        $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] );
+                    }
                 }
             }
         }

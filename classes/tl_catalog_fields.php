@@ -263,9 +263,30 @@ class tl_catalog_fields extends \Backend {
     }
 
     
-    public function getSQLStatements() {
+    public function getSQLStatements( \DataContainer $dc ) {
 
-        return $this->DCABuilderHelper->arrSQLStatements;
+        $arrSQLStatements = $this->DCABuilderHelper->arrSQLStatements;
+
+        if ( $dc->activeRecord->type == 'upload' ) {
+
+            return [
+
+                'binary' => $arrSQLStatements['binary']
+            ];
+        }
+
+        if ( $dc->activeRecord->type == 'textarea' ) {
+
+            unset( $arrSQLStatements['i5'] );
+            unset( $arrSQLStatements['c1'] );
+            unset( $arrSQLStatements['c16'] );
+            unset( $arrSQLStatements['c32'] );
+            unset( $arrSQLStatements['c64'] );
+            unset( $arrSQLStatements['c128'] );
+            unset( $arrSQLStatements['c256'] );
+        }
+
+        return $arrSQLStatements;
     }
 
     

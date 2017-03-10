@@ -1,5 +1,7 @@
 <?php
 
+$GLOBALS['TL_LANG']['catalog_manager']['deleteConfirm'] = 'Do you really want to delete entry ID %s?';
+
 $GLOBALS['TL_LANG']['catalog_manager']['new'] = [ 'Create entity', 'Here you can create new entity.' ];
 
 $GLOBALS['TL_LANG']['catalog_manager']['legends']['invisible_legend'] = 'Hide entity';

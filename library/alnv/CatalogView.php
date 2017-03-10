@@ -15,6 +15,7 @@ class CatalogView extends CatalogController {
     private $arrCatalog = [];
     private $arrCatalogFields = [];
     private $blnMapViewMode = false;
+    private $arrMultipleQueries = [];
     private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
     private $arrCatalogMapViewOptions = [];
@@ -204,6 +205,11 @@ class CatalogView extends CatalogController {
                     return null;
                 }
 
+                if ( is_array( $arrQuery['value'] ) ) {
+
+                    $arrQuery['multiple'] = true;
+                }
+
                 return $arrQuery;
             });
         }
@@ -318,7 +324,7 @@ class CatalogView extends CatalogController {
             }
         }
 
-        $strWhereStatement =  $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
+        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
         $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s%s', $this->catalogTablename, $strWhereStatement ) )->execute( $this->SQLQueryBuilder->getValues() )->row()[ 'COUNT(*)' ];
 
         if ( $this->catalogOffset ) {
@@ -341,7 +347,8 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-        
+        echo($objQueryBuilderResults->query);
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -570,14 +577,9 @@ class CatalogView extends CatalogController {
         $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
         $varValue = \Controller::replaceInsertTags( $varValue );
 
-        if ( $strOperator == 'contain' && is_string( $varValue )) {
+        if ( $strOperator == 'contain' || $arrField['multiple'] ) {
 
-            $varValue = explode( ',' , $varValue );
-        }
-
-        if ( $varValue && is_string( $varValue ) && $arrField['multiple'] ) {
-
-            // @todo
+            $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
         }
 
         return Toolkit::prepareValueForQuery( $varValue );

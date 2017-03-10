@@ -102,4 +102,10 @@ class I18nCatalogTranslator {
 
         return $GLOBALS['TL_LANG']['catalog_manager']['operations']['show'];
     }
+
+
+    public function getDeleteConfirmLabel() {
+
+        return $GLOBALS['TL_LANG']['catalog_manager']['deleteConfirm'];
+    }
 }

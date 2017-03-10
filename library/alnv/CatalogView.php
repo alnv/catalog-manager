@@ -347,7 +347,6 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-        echo($objQueryBuilderResults->query);
 
         while ( $objQueryBuilderResults->next() ) {
 

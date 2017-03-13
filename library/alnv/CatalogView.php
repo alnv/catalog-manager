@@ -15,7 +15,6 @@ class CatalogView extends CatalogController {
     private $arrCatalog = [];
     private $arrCatalogFields = [];
     private $blnMapViewMode = false;
-    private $arrMultipleQueries = [];
     private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
     private $arrCatalogMapViewOptions = [];
@@ -193,7 +192,10 @@ class CatalogView extends CatalogController {
 
             $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
 
-                $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['field'], $arrQuery['value'], $arrQuery['operator'] );
+                $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] ? $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] : $arrQuery['field'];
+                $arrField = $this->arrCatalogFields[ $strFieldID ];
+
+                $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
 
                 if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
 
@@ -205,7 +207,7 @@ class CatalogView extends CatalogController {
                     return null;
                 }
 
-                if ( is_array( $arrQuery['value'] ) ) {
+                if ( is_array( $arrQuery['value'] ) && $arrQuery['operator'] != 'contain' ) {
 
                     $arrQuery['multiple'] = true;
                 }
@@ -347,7 +349,7 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -568,15 +570,12 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function getParseQueryValue( $strFieldname, $strValue = '', $strOperator = '' ) {
+    private function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
 
-        $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] ? $this->arrCatalogFieldnameAndIDMap[ $strFieldname ] : $strFieldname;
-        $arrField = $this->arrCatalogFields[ $strFieldID ];
-
-        $varValue = \Input::get( $strFieldname . $this->id ) ? \Input::get( $strFieldname . $this->id ) : $strValue;
+        $varValue = \Input::get( $arrField['fieldname'] . $this->id ) ? \Input::get( $arrField['fieldname'] . $this->id ) : $strValue;
         $varValue = \Controller::replaceInsertTags( $varValue );
 
-        if ( $strOperator == 'contain' || $arrField['multiple'] ) {
+        if ( $varValue && ( $arrField['type'] == 'checkbox' || $arrField['multiple'] || $strOperator == 'contain' ) ) {
 
             $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
         }

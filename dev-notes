@@ -3,7 +3,7 @@ todo before release
  - test CTLG_MASTER insert tag and master handler
  - improve auto alias in parent mode
  - implement custom sorting (drag and drop)
- - improve filter for multiple values
+ - improve parseWhereQueryArray and createWhereStatement handler
  - improve edit icon in relation wizard
  - implement tinyMCE to front end text areas
  - test all labels

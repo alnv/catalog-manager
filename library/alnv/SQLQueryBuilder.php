@@ -212,6 +212,7 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
+    // @todo improve
     protected function createWhereStatement() {
 
         $strWhereStatement = '';
@@ -255,7 +256,7 @@ class SQLQueryBuilder extends CatalogController {
 
                     else {
 
-                        $this->setValue( $varValue['value'], $arrQueries['field'] );
+                        $this->setValue( $varValue['value'], $varValue['field'] );
                         $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
                     }
 
@@ -269,7 +270,7 @@ class SQLQueryBuilder extends CatalogController {
 
                 if ( $arrQueries['operator'] ) {
 
-                    if ( is_bool( $arrQueries['multiple'] ) &&  $arrQueries['multiple'] == true && $arrQueries['multiple'] != 'contain' ) {
+                    if ( is_bool( $arrQueries['multiple'] ) &&  $arrQueries['multiple'] == true ) {
 
                         if ( !empty( $arrQueries ) && is_array( $arrQueries['value'] ) ) {
 

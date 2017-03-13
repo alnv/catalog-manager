@@ -161,8 +161,8 @@ class CatalogOrderByWizard extends \Widget {
                     for ($i=0, $c=count($this->varValue); $i<$c; $i++) {
                         $return .= '
                         <tr>
-                          <td><select name="'.$this->strId.'['.$i.'][key]" id="'.$this->strId.'_key_'.$i.'" class="tl_select tl_chosen tl_catalog_widget">' . $this->generateSelectOptions( $arrFieldOptions, 'key', $i ) . '</select></td>
-                          <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_value_'.$i.'" class="tl_select tl_chosen tl_catalog_widget">' . $this->generateSelectOptions( $arrOrderByOptions, 'value', $i ) . '</select></td>';
+                          <td><select name="'.$this->strId.'['.$i.'][key]" id="'.$this->strId.'_key_'.$i.'" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateSelectOptions( $arrFieldOptions, 'key', $i ) . '</select></td>
+                          <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_value_'.$i.'" class="tl_select tl_chosen tl_catalog_widget  min-width">' . $this->generateSelectOptions( $arrOrderByOptions, 'value', $i ) . '</select></td>';
 
                                 $return .= '
                           <td style="white-space:nowrap;padding-left:3px">';

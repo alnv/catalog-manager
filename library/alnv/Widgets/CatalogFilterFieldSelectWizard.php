@@ -81,7 +81,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
 
             $strRows .= sprintf(
 
-                '<tr><td style="white-space:nowrap; padding-right:3px"><label for="id_%s">%s:</label></td><td><select name="%s" id="id_%s" tabindex="%s" class="tl_select tl_chosen">%s</select><input type="hidden" name="%s" value="%s"></td></tr>',
+                '<tr><td style="white-space:nowrap; padding-right:3px"><label for="id_%s">%s:</label></td><td><select name="%s" id="id_%s" tabindex="%s" class="tl_select tl_chosen tl_select min-width">%s</select><input type="hidden" name="%s" value="%s"></td></tr>',
                 $this->strId . '_' . $intIndex . '_' . $arrField['fieldname'],
                 $arrField['title'] ? $arrField['title'] : $arrField['fieldname'],
                 $this->strId . '[' . $arrField['fieldname'] . '][value]',

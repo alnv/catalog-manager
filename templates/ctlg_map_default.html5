@@ -16,6 +16,8 @@
             position: objLatLng
          });
 
+         objCatalogMapBounds_<?= $this->map['id'] ?>.extend( objLatLng );
+
       <?php endif;?>
 
       <?php if ( $this->map['addMapInfoBox'] == 'true' ): ?>
@@ -38,6 +40,8 @@
          });
 
       <?php endif;?>
+
+      objCatalogMapView_<?= $this->map['id'] ?>.fitBounds( objCatalogMapBounds_<?= $this->map['id'] ?> );
    };
 
 </script>

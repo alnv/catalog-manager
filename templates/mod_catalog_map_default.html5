@@ -7,11 +7,13 @@
 
       var CatalogManagerMaps = CatalogManagerMaps || [];
       var objCatalogMapView_<?= $this->map['id'] ?> = null;
+      var objCatalogMapBounds_<?= $this->map['id'] ?> = null;
 
       CatalogManagerMaps[CatalogManagerMaps.length] = function () {
 
          var objLatLng = new google.maps.LatLng("<?= $this->map['lat']; ?>", "<?= $this->map['lng']; ?>");
 
+         objCatalogMapBounds_<?= $this->map['id'] ?> = new google.maps.LatLngBounds();
          objCatalogMapView_<?= $this->map['id'] ?> = new google.maps.Map( document.getElementById( "id_<?= $this->map['id'] ?>" ), {
 
             center: objLatLng,

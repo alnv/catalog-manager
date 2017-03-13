@@ -191,6 +191,7 @@ class Toolkit {
     }
 
 
+    // @todo improve
     public static function parseWhereQueryArray( $arrQueries, $fnCallback = null ) {
 
         $intIndex = 0;
@@ -202,12 +203,21 @@ class Toolkit {
 
                 if ( $arrQuery['subQueries'] && is_array( $arrQuery['subQueries'] ) ) {
 
-                    $arrReturn[ $intIndex ][] = [
+                    $arrMainQuery = [
 
                         'field' => $arrQuery['field'],
                         'value' => $arrQuery['value'],
                         'operator' => $arrQuery['operator'],
                     ];
+
+                    if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
+
+                        $arrMainQuery = $fnCallback( $arrQuery );
+                    }
+                    if ( !is_null( $arrMainQuery ) ) {
+
+                        $arrReturn[$intIndex][] = $arrMainQuery;
+                    }
 
                     foreach ( $arrQuery['subQueries'] as $arrSubQuery ) {
 
@@ -237,7 +247,7 @@ class Toolkit {
                 }
             }
         }
-        
+
         return $arrReturn;
     }
 

@@ -295,7 +295,7 @@ class DCABuilder extends CatalogController {
             $arrFields = ['sorting'];
         }
 
-        if ( empty( $this->arrCatalog['fields'] ) ) {
+        if ( empty( $arrFields ) ) {
 
             $arrFields = [ 'title' ];
         }

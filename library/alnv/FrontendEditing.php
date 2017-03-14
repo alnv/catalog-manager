@@ -11,7 +11,6 @@ class FrontendEditing extends CatalogController {
     public $strRedirectID;
     public $arrOptions = [];
     public $strTemplate = '';
-    public $blnTinyMCEScript = false;
 
     protected $objTemplate;
     protected $arrValues = [];
@@ -22,6 +21,7 @@ class FrontendEditing extends CatalogController {
     protected $blnNoSubmit = false;
     protected $blnHasUpload = false;
     protected $arrPaletteNames = [];
+    protected $blnTinyMCEScript = false;
     protected $strTemporaryPalette = 'general_legend';
 
 
@@ -74,7 +74,9 @@ class FrontendEditing extends CatalogController {
             return $arrDCField;
         });
 
+        $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
+
         $arrPredefinedDCFields = $this->DCABuilderHelper->getPredefinedDCFields();
 
         if ( in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
@@ -117,11 +119,18 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate = new \FrontendTemplate( $this->strTemplate );
         $this->objTemplate->setData( $this->arrOptions );
 
+        if ( !is_array( $this->catalogExcludedFields ) ) {
+
+            $this->catalogExcludedFields = [];
+        }
+
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
             foreach ( $this->arrFormFields as $arrField ) {
 
                 if ( !$arrField ) continue;
+
+                if ( in_array( $arrField['_fieldname'], $this->catalogExcludedFields ) ) continue;
 
                 $this->generateForm( $arrField, $intIndex );
                 $intIndex++;

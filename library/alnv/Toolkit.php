@@ -297,7 +297,7 @@ class Toolkit {
 
         $strUrl = rawurldecode( $strUrl );
 
-        // @todo intern, extern and article handler
+        // @todo internal, external and article handler
 
         return $strBase . sprintf( $strUrl, ( ( $objItem->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objItem->alias : $objItem->id ) );
     }

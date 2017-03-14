@@ -11,6 +11,7 @@ class FrontendEditing extends CatalogController {
     public $strRedirectID;
     public $arrOptions = [];
     public $strTemplate = '';
+    public $blnTinyMCEScript = false;
 
     protected $objTemplate;
     protected $arrValues = [];
@@ -201,6 +202,40 @@ class FrontendEditing extends CatalogController {
             $objWidget->maxlength = $arrField['eval']['maxsize'];
 
             $this->blnHasUpload = true;
+        }
+
+        if ( $arrField['inputType'] == 'textarea' && isset( $arrField['eval']['rte'] ) ) {
+
+            $objWidget->mandatory = false;
+
+            if ( !$this->blnTinyMCEScript ) {
+
+                $GLOBALS['TL_JAVASCRIPT']['tinyMCE_JS'] = 'assets/tinymce4/js/tinymce.gzip.js';
+                $GLOBALS['TL_CSS']['tinyMCE_CSS'] = 'assets/tinymce4/js/skins/contao/skin.min.css';
+            }
+
+            $GLOBALS['TL_HEAD'][] =
+                '<script>'.
+                    'if ( typeof window.addEventListener != "undefined" ) { window.addEventListener( "DOMContentLoaded", initialize, false ); }'.
+                    'function initialize() { setTimeout( function() {'.
+                        'window.tinymce && tinymce.init({'.
+                            'skin: "contao",'.
+                            'selector: "#ctrl_'. $objWidget->id .'",'.
+                            'language: "'. $GLOBALS['TL_LANGUAGE'] .'",'.
+                            'element_format: "html",'.
+                            'forced_root_block: false,'.
+                            'document_base_url: "'. \Environment::get( 'base' ) .'",'.
+                            'entities: "160,nbsp,60,lt,62,gt,173,shy",'.
+                            'plugins: "autosave charmap code fullscreen image legacyoutput link lists paste searchreplace tabfocus visualblocks",'.
+                            'browser_spellcheck: true,'.
+                            'tabfocus_elements: "prev,:next",'.
+                            'importcss_append: true,'.
+                            'extended_valid_elements: "b/strong,i/em",'.
+                            'menubar: "file edit insert view format table",'.
+                            'toolbar: "link unlink | image | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | undo redo | code"'.
+                        '});'.
+                    '}, 0) }'.
+                '</script>';
         }
 
         if ( $arrField['eval']['rgxp'] && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
@@ -470,12 +505,12 @@ class FrontendEditing extends CatalogController {
 
         $arrCaptcha = [
 
-            'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
             'id' => 'id_',
+            'required' => true,
             'type' => 'captcha',
             'mandatory' => true,
-            'required' => true,
-            'tableless' => $this->catalogTableless
+            'tableless' => $this->catalogTableless,
+            'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion']
         ];
 
         $strClass = $GLOBALS['TL_FFL']['captcha'];

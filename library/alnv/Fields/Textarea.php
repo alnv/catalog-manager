@@ -34,6 +34,11 @@ class Textarea {
             $arrDCAField['eval']['maxlength'] = intval( $arrField['maxlength'] );
         }
 
+        if ( !$arrDCAField['eval']['tl_class'] ) {
+
+            $arrDCAField['eval']['tl_class'] = 'clr';
+        }
+
         return $arrDCAField;
     }
 }

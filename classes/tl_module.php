@@ -179,7 +179,7 @@ class tl_module extends \Backend {
     }
 
 
-    public function getSortableCatalogFieldsByTablename( $strTablename ) {
+    public function getSortableCatalogFieldsByTablename( $strTablename, $blnSettings = false ) {
 
         if ( !empty( $this->arrSortableCatalogFieldsCache ) && is_array( $this->arrSortableCatalogFieldsCache ) ) {
 
@@ -201,8 +201,16 @@ class tl_module extends \Backend {
 
                 continue;
             }
-            
-            $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+
+            if ( !$blnSettings ) {
+
+                $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+            }
+
+            else {
+
+                $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+            }
         }
 
         if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename] && is_array(  $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
@@ -296,6 +304,37 @@ class tl_module extends \Backend {
         while ( $objCatalogFields->next() ) {
 
             $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getExcludeOnlyCatalogFields( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->catalogTablename ) return [];
+
+        $arrReturn = [];
+        $arrFields = $this->getSortableCatalogFieldsByTablename( $dc->activeRecord->catalogTablename, true );
+
+        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
+
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                if ( !$arrField ) continue;
+
+                if ( is_string( $arrField ) ) {
+
+                    $arrReturn[ $strFieldname ] = $arrField;
+
+                    continue;
+                }
+
+                if ( $arrFields['exclude'] ) {
+
+                    $arrReturn[ $strFieldname ] = $arrField['title'] ? $arrField['title'] : $strFieldname;
+                }
+            }
         }
 
         return $arrReturn;

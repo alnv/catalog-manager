@@ -291,4 +291,14 @@ class Toolkit {
 
         return 2;
     }
+
+
+    public static function getLink( $objItem, $strUrl, $strBase = '' ) {
+
+        $strUrl = rawurldecode( $strUrl );
+
+        // @todo intern, extern and article handler
+
+        return $strBase . sprintf( $strUrl, ( ( $objItem->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objItem->alias : $objItem->id ) );
+    }
 }

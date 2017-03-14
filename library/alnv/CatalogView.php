@@ -216,7 +216,7 @@ class CatalogView extends CatalogController {
             });
         }
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) ) {
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) && !BE_USER_LOGGED_IN ) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -257,7 +257,7 @@ class CatalogView extends CatalogController {
                 'value' => '1'
             ];
         }
-
+        
         if ( $this->catalogUseRadiusSearch && $this->strMode == 'view' ) {
 
             $arrRSValues = [];
@@ -349,7 +349,7 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();

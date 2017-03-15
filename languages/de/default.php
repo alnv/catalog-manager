@@ -14,3 +14,4 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Rechte';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] = 'Operator';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Felder';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] = 'Sortierreihenfolge';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'Es wurden keine Elemente gefunden.';

@@ -1056,22 +1056,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
     'sql' => "char(128) NOT NULL default ''"
 ];
 
-/*
-$GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchZoomFactor'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchZoomFactor'],
-    'inputType' => 'checkbox',
-
-    'eval' => [
-
-        'tl_class' => 'w50 m12'
-    ],
-
-    'exclude' => true,
-    'sql' => "char(1) NOT NULL default ''"
-];
-*/
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseTaxonomies'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomies'],

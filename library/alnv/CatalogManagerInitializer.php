@@ -14,9 +14,6 @@ class CatalogManagerInitializer {
 
             $this->createBackendModules();
         }
-
-        $objCatalogManagerVerification = new CatalogManagerVerification();
-        $objCatalogManagerVerification->initialize();
     }
 
 

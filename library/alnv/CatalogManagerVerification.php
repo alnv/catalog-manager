@@ -9,7 +9,7 @@ class CatalogManagerVerification extends CatalogController {
 
         return [
 
-            'name' => 'catalog_manager',
+            'name' => 'catalog-manager',
             'ip' => \Environment::get('ip'),
             'domain' => \Environment::get('base'),
             'title' => \Config::get('websiteTitle'),
@@ -20,19 +20,32 @@ class CatalogManagerVerification extends CatalogController {
     }
 
 
-    public function initialize() {
+    public function verify() {
 
+        $objRequest = new \Request();
         $arrContaoInstallData = $this->getContaoInstallData();
-        
-        // @todo send data 2 server
-        // @todo handle server result
 
-        return true;
-    }
+        if ( $arrContaoInstallData[ 'ip' ] == '127.0.0.1' ) {
 
+            return true;
+        }
 
-    protected function verifyLicence() {
+        $strRequestData = http_build_query( $arrContaoInstallData );
+        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify?%s', $strRequestData ) );
 
-        return true;
+        if ( !$objRequest->hasError() ) {
+
+            $arrResponse = (array) json_decode( $objRequest->response );
+
+            if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
+
+                if ( is_bool( $arrResponse['valid'] ) && $arrResponse['valid'] == true ) {
+                    
+                    return $arrResponse['valid'];
+                }
+            }
+        }
+
+        return false;
     }
 }

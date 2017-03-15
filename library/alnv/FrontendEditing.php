@@ -102,6 +102,83 @@ class FrontendEditing extends CatalogController {
     }
 
 
+    public function isVisible() {
+
+        if ( !\Input::get( 'auto_item' ) || !$this->catalogTablename ) {
+
+            return false;
+        }
+
+        $arrQuery = [
+
+            'table' => $this->catalogTablename,
+
+            'where' => [
+
+                [
+                    [
+                        'field' => 'id',
+                        'operator' => 'equal',
+                        'value' => \Input::get( 'auto_item' )
+                    ],
+
+                    [
+                        'field' => 'alias',
+                        'operator' => 'equal',
+                        'value' => \Input::get( 'auto_item' )
+                    ]
+                ]
+            ]
+        ];
+
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) && !BE_USER_LOGGED_IN ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => ( $dteTime + 60 )
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
+
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+        
+        return $objEntities->numRows ? true : false;
+    }
+
+
     public function checkPermission() {
 
         $this->import( 'FrontendEditingPermission' );

@@ -251,50 +251,7 @@ class Toolkit {
         return $arrReturn;
     }
 
-
-    /*
-    public static function getZoomFactor( $intDistance ) {
-
-        if ( $intDistance > 0 && $intDistance < 50 ) {
-
-            return 16;
-        }
-
-        if ( $intDistance > 50 && $intDistance <= 100 ) {
-
-            return 13;
-        }
-
-        if ( $intDistance > 100 && $intDistance <= 150 ) {
-
-            return 11;
-        }
-
-        if ( $intDistance > 150 && $intDistance <= 500 ) {
-
-            return 7;
-        }
-
-        if ( $intDistance > 500 && $intDistance <= 1000 ) {
-
-            return 6;
-        }
-
-        if ( $intDistance > 1000 && $intDistance <= 1500 ) {
-
-            return 5;
-        }
-
-        if ( $intDistance > 2000 && $intDistance <= 3000 ) {
-
-            return 4;
-        }
-
-        return 2;
-    }
-    */
     
-
     public static function getLink( $objItem, $strUrl, $strBase = '' ) {
 
         $strUrl = rawurldecode( $strUrl );

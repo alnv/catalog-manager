@@ -105,16 +105,22 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
         $this->CatalogView->initialize();
 
-        $blnHasPermission = $this->CatalogView->checkPermission();
-
-        $this->Template->map = $this->CatalogView->getMapViewOptions();
-        $this->Template->createOperation = $this->CatalogView->getCreateOperation();
-        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
-
-        if ( !$blnHasPermission ) {
+        if ( !$this->CatalogView->checkPermission() ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->CatalogView->arrViewPage['id'] );
+
+            return null;
+        }
+
+        $this->Template->message = '';
+        $this->Template->map = $this->CatalogView->getMapViewOptions();
+        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+        $this->Template->createOperation = $this->CatalogView->getCreateOperation();
+
+        if ( !$this->Template->output ) {
+
+            $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
         }
     }
 
@@ -149,15 +155,23 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
         $this->CatalogView->getCommentForm();
-        
-        $blnHasPermission = $this->CatalogView->checkPermission();
 
-        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
-
-        if ( !$blnHasPermission ) {
+        if ( !$this->CatalogView->checkPermission() ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
+
+            return null;
+        }
+
+        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+
+        if ( !$this->Template->output ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $this->CatalogView->strPageID );
+
+            return null;
         }
     }
 
@@ -172,19 +186,25 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
+        $blnIsVisible = $this->FrontendEditing->isVisible();
         $blnHasPermission = $this->FrontendEditing->checkPermission();
-
-        $this->Template->output = $blnHasPermission ? $this->FrontendEditing->getCatalogForm() : '';
-
-        if ( !$this->FrontendEditing->isVisible() ) {
-
-            $this->Template->output = '';
-        }
 
         if ( !$blnHasPermission ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );
+
+            return null;
         }
+
+        if ( !$blnIsVisible ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $this->FrontendEditing->strPageID );
+
+            return null;
+        }
+
+        $this->Template->output = $this->FrontendEditing->getCatalogForm();
     }
 }

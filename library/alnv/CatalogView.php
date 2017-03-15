@@ -216,7 +216,7 @@ class CatalogView extends CatalogController {
             });
         }
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) && !BE_USER_LOGGED_IN ) {
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) && !BE_USER_LOGGED_IN ) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -391,7 +391,7 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->catalogItemOperations ) ) {
 
-                $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'] );
+                $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'], $arrCatalog['alias'] );
             }
 
             if ( $this->catalogUseRelation ) {
@@ -665,7 +665,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function generateOperations( $strID ) {
+    private function generateOperations( $strID, $strAlias = '' ) {
 
         $arrReturn = [];
         $this->loadLanguageFile( 'tl_module' );
@@ -685,7 +685,7 @@ class CatalogView extends CatalogController {
 
                 $arrReturn[ $strOperation ] = [
 
-                    'href' => $this->generateUrl( $this->arrViewPage, '' ) . $strActFragment,
+                    'href' => $this->generateUrl( $this->arrViewPage, $strAlias ) . $strActFragment,
                     'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
                     'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : ''
                 ];

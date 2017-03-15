@@ -71,16 +71,7 @@ class CatalogView extends CatalogController {
         }
 
         if ( $this->catalogUseMap && $this->strMode == 'view' ) {
-
-            /*
-            if ( $this->catalogRadioSearchZoomFactor && $this->catalogUseRadiusSearch ) {
-
-                $intDistance = \Input::get( 'rs_dstnc' ) ? intval( \Input::get( 'rs_dstnc' ) ) : 0;
-                
-                if ( $intDistance ) $this->catalogMapZoom = Toolkit::getZoomFactor( $intDistance );
-            }
-            */
-
+            
             $this->arrCatalogMapViewOptions = Map::getMapViewOptions([
 
                 'id' => 'map_' . $this->id,

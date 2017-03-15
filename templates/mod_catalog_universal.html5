@@ -4,6 +4,9 @@
       <p><a href="<?= $this->createOperation['href'] ?>"><?= $this->createOperation['label'] ?></a></p>
    <?php endif; ?>
    <?= $this->output; ?>
+   <?php if ( $this->message ): ?>
+      <p class="catalog_message"><?= $this->message; ?></p>
+   <?php endif; ?>
    <?php if ($this->allowComments): ?>
       <div class="ce_comments block">
          <p class="add-comment"><?= $this->addComment; ?></p>

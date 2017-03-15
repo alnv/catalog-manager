@@ -63,7 +63,6 @@ $GLOBALS['TL_LANG']['tl_module']['catalogItemOperations'] = [ 'Frontend Editing 
 $GLOBALS['TL_LANG']['tl_module']['catalogFormRedirect'] = [ 'Weiterleitung', 'Hier können Sie eine Weiterleitungsseite auswählen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseRadiusSearch'] = [ 'Umkreissuche verwenden', 'Hier können Sie die Umkreissuche verwenden.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchCountry'] = [ 'Land auswählen', 'Bitte wählen Sie ein Land aus.' ];
-// $GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchZoomFactor'] = [ 'Automatisches zoomen aktivieren', 'Hier können Sie das automatisches zoomen aktivieren.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogAllowComments'] = [ 'Kommentare hinzufügen', 'Hier können Sie Kommentare aktivieren.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentSortOrder'] = [ 'Sortierreihenfolge', 'Standardmäßig werden Kommentare aufsteigend sortiert, beginnend mit dem ältesten.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCommentPerPage'] = [ 'Kommentare pro Seite', 'Anzahl an Kommentaren pro Seite. Geben Sie 0 ein, um den automatischen Seitenumbruch zu deaktivieren.' ];

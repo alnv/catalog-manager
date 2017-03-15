@@ -34,37 +34,37 @@ class ModuleUniversalView extends \Module {
 
 
     protected function compile() {
-        
-        if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
 
-            $this->determineMasterView();
-        }
+        switch ( $this->strAct  ) {
 
-        else {
+            case 'create':
+            case 'copy':
+            case 'edit':
 
-            switch ( $this->strAct  ) {
+                $this->determineFormView();
 
-                case 'create':
-                case 'copy':
-                case 'edit':
-
-                    $this->determineFormView();
-
-                    break;
+                break;
 
 
-                case 'delete':
+            case 'delete':
 
-                    $this->deleteItemFromCatalog();
+                $this->deleteItemFromCatalog();
 
-                    break;
+                break;
 
-                default:
+            default:
+
+                if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
+
+                    $this->determineMasterView();
+                }
+
+                else {
 
                     $this->determineCatalogView();
+                }
 
-                    break;
-            }
+                break;
         }
     }
 
@@ -175,6 +175,11 @@ class ModuleUniversalView extends \Module {
         $blnHasPermission = $this->FrontendEditing->checkPermission();
 
         $this->Template->output = $blnHasPermission ? $this->FrontendEditing->getCatalogForm() : '';
+
+        if ( !$this->FrontendEditing->isVisible() ) {
+
+            $this->Template->output = '';
+        }
 
         if ( !$blnHasPermission ) {
 

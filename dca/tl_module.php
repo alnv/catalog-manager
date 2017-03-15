@@ -26,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalo
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_internal'] = 'catalogInternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_external'] = 'catalogExternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry,catalogRadioSearchZoomFactor';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
@@ -1056,6 +1056,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
     'sql' => "char(128) NOT NULL default ''"
 ];
 
+/*
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchZoomFactor'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRadioSearchZoomFactor'],
@@ -1069,6 +1070,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchZoomFactor'] = [
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
+*/
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseTaxonomies'] = [
 

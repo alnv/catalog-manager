@@ -252,6 +252,7 @@ class Toolkit {
     }
 
 
+    /*
     public static function getZoomFactor( $intDistance ) {
 
         if ( $intDistance > 0 && $intDistance < 50 ) {
@@ -291,7 +292,8 @@ class Toolkit {
 
         return 2;
     }
-
+    */
+    
 
     public static function getLink( $objItem, $strUrl, $strBase = '' ) {
 

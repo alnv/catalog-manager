@@ -6,3 +6,4 @@ todo before release
  - test preview mode
  - fix array problem in dca headline
  - improve text label in select menu (tablename)
+ - test delete handler with permissions

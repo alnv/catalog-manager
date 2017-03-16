@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseChangeLanguage'] = 'cata
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['fields']['catalogUseMaster'],
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogUseMaster'],
     'inputType' => 'checkbox',
 
     'eval' => [
@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseChangeLanguage'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['fields']['catalogUseChangeLanguage'],
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogUseChangeLanguage'],
     'inputType' => 'checkbox',
 
     'eval' => [
@@ -40,14 +40,14 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseChangeLanguage'] = [
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogChangeLanguageTable'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['fields']['catalogChangeLanguageTable'],
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogChangeLanguageTable'],
     'inputType' => 'select',
 
     'eval' => [
 
         'chosen' => true,
         'maxlength' => 128,
-        'tl_class' => 'w50',
+        'tl_class' => 'clr',
         'mandatory' => true,
         'doNotCopy' => true,
         'blankOptionLabel' => '-',
@@ -62,14 +62,14 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogChangeLanguageTable'] = [
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogMasterTable'] = [
 
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['fields']['catalogMasterTable'],
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogMasterTable'],
     'inputType' => 'select',
 
     'eval' => [
 
         'chosen' => true,
         'maxlength' => 128,
-        'tl_class' => 'w50',
+        'tl_class' => 'clr',
         'mandatory' => true,
         'doNotCopy' => true,
         'blankOptionLabel' => '-',

@@ -32,5 +32,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogLicence'] = [
     'eval' => [
 
         'tl_class' => 'w50 long'
-    ]
+    ],
+
+    'save_callback' => [ [ 'CatalogManager\tl_settings', 'verifyLicence' ] ]
 ];

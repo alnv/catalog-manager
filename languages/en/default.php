@@ -15,3 +15,4 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Permissions';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Fields';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'No items were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] ='Sort sequence';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Your license key is invalid.';

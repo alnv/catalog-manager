@@ -424,4 +424,15 @@ class tl_catalog extends \Backend {
 
         return $arrReturn;
     }
+
+    
+    public function checkLicence() {
+
+        $objCatalogManagerVerification = new CatalogManagerVerification();
+
+        if ( !$objCatalogManagerVerification->verify() ) {
+
+            \Message::addError( "Your Catalog Manager installation is not licensed." );
+        }
+    }
 }

@@ -20,15 +20,13 @@ class CatalogManagerVerification extends CatalogController {
     }
 
 
-    public function verify() {
+    public function verify( $strLicence = '', $blnLocale = true ) {
 
         $objRequest = new \Request();
         $arrContaoInstallData = $this->getContaoInstallData();
 
-        if ( $arrContaoInstallData[ 'ip' ] == '127.0.0.1' ) {
-
-            return true;
-        }
+        if ( $strLicence ) $arrContaoInstallData['licence'] = $strLicence;
+        if ( $arrContaoInstallData[ 'ip' ] == '127.0.0.1' && $blnLocale ) return true;
 
         $strRequestData = http_build_query( $arrContaoInstallData );
         $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify?%s', $strRequestData ) );
@@ -40,7 +38,7 @@ class CatalogManagerVerification extends CatalogController {
             if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
 
                 if ( is_bool( $arrResponse['valid'] ) && $arrResponse['valid'] == true ) {
-                    
+
                     return $arrResponse['valid'];
                 }
             }

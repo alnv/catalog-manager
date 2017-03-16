@@ -5,7 +5,7 @@ Here you can read all about [Catalog Manager][1]
 
 ## Installation
 
-Catalog Manager: latest version: _v0.1-beta.2_
+Catalog Manager: latest version: _v1.0-beta.2_
 
 **Contao 3.5**
 

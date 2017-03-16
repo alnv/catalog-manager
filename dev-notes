@@ -3,7 +3,6 @@ todo before release
  - test CTLG_MASTER insert tag and master handler
  - improve parseWhereQueryArray and createWhereStatement handler
  - test all labels
- - test preview mode
  - fix array problem in dca headline
  - improve text label in select menu (tablename)
  - test delete handler with permissions

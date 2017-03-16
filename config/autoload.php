@@ -10,6 +10,7 @@ ClassLoader::addClasses([
     'CatalogManager\Toolkit' => 'system/modules/catalog-manager/library/alnv/Toolkit.php',
     'CatalogManager\tl_catalog' => 'system/modules/catalog-manager/classes/tl_catalog.php',
     'CatalogManager\Text' => 'system/modules/catalog-manager/library/alnv/Fields/Text.php',
+    'CatalogManager\tl_settings' => 'system/modules/catalog-manager/classes/tl_settings.php',
     'CatalogManager\Radio' => 'system/modules/catalog-manager/library/alnv/Fields/Radio.php',
     'CatalogManager\Select' => 'system/modules/catalog-manager/library/alnv/Fields/Select.php',
     'CatalogManager\Hidden' => 'system/modules/catalog-manager/library/alnv/Fields/Hidden.php',

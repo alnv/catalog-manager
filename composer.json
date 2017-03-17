@@ -1,7 +1,7 @@
 {
   "name": "alnv/catalog-manager",
   "description": "Catalog Manager for Contao CMS",
-  "keywords": [ "contao", "catalog", "filter", "taxonomy", "tags", "filter", "frontend", "editing" ],
+  "keywords": [ "contao", "catalog", "filter", "taxonomy", "tags", "frontend", "editing" ],
   "type": "contao-module",
   "homepage": "https://github.com/alnv/catalog-manager",
   "license": "commercial",

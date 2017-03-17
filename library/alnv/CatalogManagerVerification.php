@@ -7,8 +7,23 @@ class CatalogManagerVerification extends CatalogController {
 
     protected function getContaoInstallData() {
 
+        $blnLocale = false;
+        $strIpAddress = \Environment::get('ip');
+        $arrIpBlocks = $strIpAddress ? explode( '.' , $strIpAddress ) : [];
+        
+        if ( is_array( $arrIpBlocks ) && isset( $arrIpBlocks[0] ) ) {
+
+            $strFirstIpRange = $arrIpBlocks[0];
+
+            if ( $strFirstIpRange && in_array( $strFirstIpRange, [ '127' ] ) ) {
+
+                $blnLocale = true;
+            }
+        }
+        
         return [
 
+            'locale' => $blnLocale,
             'name' => 'catalog-manager',
             'ip' => \Environment::get('ip'),
             'domain' => \Environment::get('base'),
@@ -24,9 +39,9 @@ class CatalogManagerVerification extends CatalogController {
 
         $objRequest = new \Request();
         $arrContaoInstallData = $this->getContaoInstallData();
-
+        
         if ( $strLicence ) $arrContaoInstallData['licence'] = $strLicence;
-        if ( $arrContaoInstallData[ 'ip' ] == '127.0.0.1' && $blnLocale ) return true;
+        if ( $arrContaoInstallData[ 'locale' ] && $blnLocale ) return true;
 
         $strRequestData = http_build_query( $arrContaoInstallData );
         $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify?%s', $strRequestData ) );

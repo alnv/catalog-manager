@@ -26,7 +26,7 @@
     "classmap": [ "src/" ]
   },
   "replace": {
-    "contao-legacy/catalogmanager": "self.version"
+    "contao-legacy/catalog-manager": "self.version"
   },
   "extra": {
     "contao": {

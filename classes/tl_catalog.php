@@ -432,7 +432,7 @@ class tl_catalog extends \Backend {
 
         if ( !$objCatalogManagerVerification->verify() ) {
 
-            \Message::addError( "Your Catalog Manager installation is not licensed." );
+            // \Message::addInfo( "This Catalog Manager installation is not licensed. " );
         }
     }
 }

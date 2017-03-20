@@ -1,7 +1,7 @@
 Catalog Manager for Contao CMS
 ===============
 
-Here you can read all about [Catalog Manager][1]
+Here you find [Catalog Manager Documentation][3] ( German only )
 
 ## Installation
 
@@ -29,3 +29,4 @@ Alle zukünftig erscheinenden Updates ( Bugfixes und Sicherheitsupdates ) sind k
 
 [1]: https://www.alexandernaumov.de/blog/f-modul-2-0-aka-catalog-manager
 [2]: https://github.com/alnv/catalog-manager/archive/v1.0-beta.3.tar.gz
+[3]: https://github.com/alnv/catalog-manager/wiki

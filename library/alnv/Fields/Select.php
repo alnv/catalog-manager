@@ -4,7 +4,10 @@ namespace CatalogManager;
 
 class Select {
 
-    
+
+    public static $arrCache = [];
+
+
     public static function generate( $arrDCAField, $arrField, $arrCatalog = [] ) {
 
         $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );
@@ -50,5 +53,46 @@ class Select {
          }
 
         return $arrDCAField;
+    }
+
+
+    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+
+        if ( !$varValue ) return $arrField['multiple'] ? [] : '';
+
+        static::getOptionsFromCache( $arrField['fieldname'], $arrField );
+
+        if ( $arrField['multiple'] ) {
+
+            $arrReturn = [];
+            $varValue = explode( ',', $varValue );
+
+            if ( !empty( $varValue ) && is_array( $varValue ) ) {
+
+                foreach ( $varValue as $strValue ) {
+
+                    $arrReturn[ $strValue ] = static::$arrCache[ $arrField['fieldname'] ][ $strValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $strValue ] : $strValue;
+                }
+            }
+
+            return $arrReturn;
+        }
+
+        return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $varValue ] : $varValue;
+    }
+
+    
+    protected static function getOptionsFromCache( $strFieldname, $arrField ) {
+
+        if ( !static::$arrCache[ $strFieldname ]  ) {
+
+            static::$arrCache[ $strFieldname ] = [];
+        }
+
+        if ( empty( static::$arrCache[ $strFieldname ] ) && is_array( static::$arrCache[ $strFieldname ] ) ) {
+
+            $objOptionGetter = new OptionsGetter( $arrField );
+            static::$arrCache[ $strFieldname ] = $objOptionGetter->getOptions();
+        }
     }
 }

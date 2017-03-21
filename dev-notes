@@ -7,3 +7,5 @@ todo before release
  - improve text label in select menu (tablename)
  - test delete handler with permissions
  - auto field output for catalog entity templates
+ - translate catalog field and description for template output
+ - google map field label translations

@@ -232,7 +232,8 @@ class DCABuilderHelper extends CatalogController {
             'id' => [
 
                 'fieldname' => 'id',
-                'statement' => 'i10'
+                'statement' => 'i10',
+                'invisible' => ''
             ],
 
             'tstamp' => [
@@ -241,6 +242,7 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'tstamp',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][1],
+                'invisible' => ''
             ],
 
             'pid' => [
@@ -249,6 +251,7 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'pid',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][1],
+                'invisible' => ''
             ],
 
             'sorting' => [
@@ -257,6 +260,7 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'sorting',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][1],
+                'invisible' => ''
             ],
 
             'title' => [
@@ -270,7 +274,8 @@ class DCABuilderHelper extends CatalogController {
                 'maxlength' => '128',
                 'exclude' => '1',
                 'tl_class' => serialize( [ 'w50' ] ),
-                '_palette' => 'general_legend'
+                '_palette' => 'general_legend',
+                'invisible' => ''
             ],
 
             'alias' => [
@@ -288,7 +293,8 @@ class DCABuilderHelper extends CatalogController {
                 'doNotCopy' => '1',
                 'rgxp' => 'alias',
                 'tl_class' => serialize( [ 'w50' ] ),
-                '_palette' => 'general_legend'
+                '_palette' => 'general_legend',
+                'invisible' => ''
             ],
 
             'invisible' => [
@@ -299,7 +305,8 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'invisible',
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1],
-                '_palette' => 'invisible_legend'
+                '_palette' => 'invisible_legend',
+                'invisible' => ''
             ],
 
             'start' => [
@@ -313,7 +320,8 @@ class DCABuilderHelper extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1]
+                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1],
+                'invisible' => ''
             ],
 
             'stop' => [
@@ -327,7 +335,8 @@ class DCABuilderHelper extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1]
+                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1],
+                'invisible' => ''
             ]
         ];
     }

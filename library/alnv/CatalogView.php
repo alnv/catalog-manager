@@ -13,12 +13,13 @@ class CatalogView extends CatalogController {
     public $arrMasterPage = [];
 
     private $arrCatalog = [];
+    private $arrActiveFields = [];
     private $arrCatalogFields = [];
     private $blnMapViewMode = false;
     private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
     private $arrCatalogMapViewOptions = [];
-    private $arrCatalogFieldnameAndIDMap = [];
+    // private $arrCatalogFieldnameAndIDMap = [];
 
 
     public function __construct() {
@@ -50,17 +51,25 @@ class CatalogView extends CatalogController {
             foreach ( $this->arrCatalogFields as $strID => $arrField ) {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
+                
+
+                if ( !$arrField['invisible'] && is_numeric( $strID ) ) {
+                    
+                    $this->arrActiveFields[] = $arrField['fieldname'];
+                }
 
                 if ( in_array( $arrField['type'], [ 'map', 'message' ] ) ) {
 
                     $this->arrCatalogStaticFields[] = $strID;
 
-                    continue;
+                    // continue;
                 }
 
-                $this->arrCatalogFieldnameAndIDMap[ $arrField['fieldname'] ] = $strID;
+                // $this->arrCatalogFieldnameAndIDMap[ $arrField['fieldname'] ] = $strID;
             }
         }
+
+        $this->rebuildCatalogFieldIndexes();
 
         $this->arrMasterPage = $arrPage;
         $this->arrViewPage = $arrPage;
@@ -108,6 +117,30 @@ class CatalogView extends CatalogController {
         $this->FrontendEditingPermission->initialize();
         
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
+    }
+
+
+    public function getActiveCatalogFields() {
+
+        return $this->arrActiveFields;
+    }
+
+
+    protected function rebuildCatalogFieldIndexes() {
+
+        $arrReturn = [];
+
+        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
+
+            foreach ( $this->arrCatalogFields as $arrCatalogField ) {
+
+                if ( !$arrCatalogField['fieldname'] ) continue;
+
+                $arrReturn[ $arrCatalogField['fieldname'] ] = $arrCatalogField;
+             }
+        }
+
+        $this->arrCatalogFields = $arrReturn;
     }
 
 
@@ -185,8 +218,8 @@ class CatalogView extends CatalogController {
 
             $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
 
-                $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] ? $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] : $arrQuery['field'];
-                $arrField = $this->arrCatalogFields[ $strFieldID ];
+                // $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] ? $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] : $arrQuery['field'];
+                $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
 
                 $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
 
@@ -411,7 +444,7 @@ class CatalogView extends CatalogController {
 
                 foreach ( $this->arrCatalogStaticFields as $strID ) {
 
-                    $arrField = $this->arrCatalogFields[$strID];
+                    $arrField = $this->arrCatalogFields[ $strID ];
 
                     switch ( $arrField['type'] ) {
 
@@ -459,7 +492,10 @@ class CatalogView extends CatalogController {
                 }
             }
 
-            
+            $arrCatalog['catalogFields'] = $this->arrCatalogFields;
+            $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
+            $arrCatalog['activeFieldsHeadline'] = $this->getActiveFieldsHeadline();
+
             $objTemplate->setData( $arrCatalog );
 
             $arrCatalogItems[] = $objTemplate->parse();
@@ -483,6 +519,13 @@ class CatalogView extends CatalogController {
 
         return implode( '', $arrCatalogItems );
     }
+
+
+    protected function getActiveFieldsHeadline() {
+
+        return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'];
+    }
+
 
     private function setRelatedTableLinks( $strID ) {
 
@@ -512,14 +555,32 @@ class CatalogView extends CatalogController {
 
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
-        $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname] ? $this->arrCatalogFieldnameAndIDMap[$strFieldname] : $strFieldname;
-        $arrField = $this->arrCatalogFields[$strFieldID];
+        // $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname] ? $this->arrCatalogFieldnameAndIDMap[$strFieldname] : $strFieldname;
+        $arrField = $this->arrCatalogFields[ $strFieldname ];
 
         switch ( $arrField['type'] ) {
 
             case 'upload':
 
                 return Upload::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'select':
+
+                return Select::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'checkbox':
+
+                return Checkbox::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'radio':
+
+                return Radio::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;
         }

@@ -10,4 +10,5 @@ todo before release
  - translate catalog field and description for template output
  - google map field label translations
  - implement ajax based toggle handler
+ - implement custom toggle icons
  - improve site map xml

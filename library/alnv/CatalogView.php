@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class CatalogView extends CatalogController {
 
+
     public $strMode;
     public $strMasterID;
     public $arrViewPage;
@@ -19,7 +20,6 @@ class CatalogView extends CatalogController {
     private $blnGoogleMapScript = false;
     private $arrCatalogStaticFields = [];
     private $arrCatalogMapViewOptions = [];
-    // private $arrCatalogFieldnameAndIDMap = [];
 
 
     public function __construct() {
@@ -61,11 +61,7 @@ class CatalogView extends CatalogController {
                 if ( in_array( $arrField['type'], [ 'map', 'message' ] ) ) {
 
                     $this->arrCatalogStaticFields[] = $strID;
-
-                    // continue;
                 }
-
-                // $this->arrCatalogFieldnameAndIDMap[ $arrField['fieldname'] ] = $strID;
             }
         }
 
@@ -218,9 +214,7 @@ class CatalogView extends CatalogController {
 
             $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
 
-                // $strFieldID = $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] ? $this->arrCatalogFieldnameAndIDMap[ $arrQuery['field'] ] : $arrQuery['field'];
                 $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
-
                 $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
 
                 if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
@@ -555,7 +549,6 @@ class CatalogView extends CatalogController {
 
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
-        // $strFieldID = $this->arrCatalogFieldnameAndIDMap[$strFieldname] ? $this->arrCatalogFieldnameAndIDMap[$strFieldname] : $strFieldname;
         $arrField = $this->arrCatalogFields[ $strFieldname ];
 
         switch ( $arrField['type'] ) {

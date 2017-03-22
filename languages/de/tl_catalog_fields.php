@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['path'] = [ 'Zielverzeichnis', 'Bitte w
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Wert nicht duplizieren', 'Beim duplizieren wird der Wert nicht übertragen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['blankOptionLabel'] = [ 'Leeres Zeichen ersetzen', 'Hier kannst du ein leere Auswahl eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['chosen'] = [ 'Chosen-Select verwenden', 'Hier können Sie die Chosen-Select Library verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['enableToggleIcon'] = [ 'Toggle-Icon einblenden', 'Hier können Sie ein toggle icon einblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxsize'] = [ 'Maximale Eingabelänge', 'Hier können Sie die maximale Anzahl an Bytes festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fieldname'] = [ 'Feldname', 'Der Feldname ist ein eindeutiger Name zur Identifizierung des Feldes.' ];

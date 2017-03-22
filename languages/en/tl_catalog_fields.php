@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Add blank op
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Timestamp', 'Timestamp will be add as default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Back end CSS-Classes', 'Please select back end CSS-Classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['enableToggleIcon'] = [ 'Enable toggle-Icon', 'Here you can enable toggle icon.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rgxp'] = [ 'Regular expression', 'Here you can select your regular expression.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['minval'] = [ 'Minimum  Value', 'Minimum number value to be checked (lower bound).' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'] = [ 'Maximum  Value', 'Maximum number value to be checked (upper bound).' ];

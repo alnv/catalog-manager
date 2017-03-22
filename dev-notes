@@ -9,3 +9,5 @@ todo before release
  - auto field output for catalog entity templates
  - translate catalog field and description for template output
  - google map field label translations
+ - implement ajax based toggle handler
+ - improve site map xml

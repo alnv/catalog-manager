@@ -28,34 +28,42 @@ class DCACallbacks extends \Backend{
 
         parse_str( $strHref, $arrHrefAttributes );
 
-        $strTable = \Input::get('table') ? \Input::get('table') : $arrHrefAttributes['table'];
+        $arrOptions = [
+
+            'icon' => 'invisible.gif',
+            'fieldname' => 'invisible'
+        ];
+
+        $strTable = \Input::get('catalogTable') ? \Input::get('catalogTable') : $arrHrefAttributes['catalogTable'];
+        $strCustomFieldname = \Input::get('fieldname') ? \Input::get('fieldname') : $arrHrefAttributes['fieldname'];
+        $strIconInVisible = \Input::get('iconInvisible') ? \Input::get('iconInvisible') : $arrHrefAttributes['iconInvisible'];
+
+        if ( $strIconInVisible ) $arrOptions['icon'] = $strIconInVisible;
+        if ( $strCustomFieldname ) $arrOptions['fieldname'] = $strCustomFieldname;
 
         if ( strlen( \Input::get('tid') ) ) {
 
-            $this->toggleVisibility( \Input::get('tid'), ( \Input::get('state') == 1 ), $strTable, ( @func_get_arg( 12 ) ?: null ) );
+            $this->toggleVisibility( \Input::get('tid'), ( \Input::get('state') == 1 ), $strTable, $arrOptions, ( @func_get_arg( 12 ) ?: null ) );
             $this->redirect( $this->getReferer() );
         }
 
-        $strHref .= '&amp;tid='. $arrRow['id'] .'&amp;state='. $arrRow['invisible'];
+        $strHref .= '&amp;tid='. $arrRow['id'] .'&amp;state='. $arrRow[ $arrOptions['fieldname'] ];
 
-        if ( $arrRow['invisible'] ) {
+        if ( $arrRow[ $arrOptions['fieldname'] ] ) {
 
-            $strIcon = 'invisible.gif';
+            $strIcon = $arrOptions['icon'];
         }
 
-        return '<a href="' . $this->addToUrl( $strHref ) . '" title="' . specialchars( $strTitle ) . '"' . $strAttributes . '>' . \Image::getHtml( $strIcon, $strLabel, 'data-state="' . ( $arrRow['invisible'] ? 0 : 1) . '"' ) . '</a> ';
+        return '<a href="' . $this->addToUrl( $strHref ) . '" title="' . specialchars( $strTitle ) . '"' . $strAttributes . '>' . \Image::getHtml( $strIcon, $strLabel, 'data-state="' . ( $arrRow[ $arrOptions['fieldname'] ] ? 0 : 1 ) . '"' ) . '</a> ';
     }
 
 
-    public function toggleVisibility( $intId, $blnVisible, $strTable, \DataContainer $dc = null ) {
+    public function toggleVisibility( $intId, $blnVisible, $strTable, $arrOptions, \DataContainer $dc = null ) {
 
         \Input::setGet( 'id', $intId );
         \Input::setGet( 'act', 'toggle' );
 
-        if ( $dc ) {
-
-            $dc->id = $intId;
-        }
+        if ( $dc ) $dc->id = $intId;
 
         if ( is_array( $GLOBALS['TL_DCA'][ $strTable ]['config']['onload_callback'] ) ) {
 
@@ -73,7 +81,7 @@ class DCACallbacks extends \Backend{
             }
         }
 
-        $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `invisible` = ? WHERE `id` = ?", $strTable, time() ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
+        $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `%s` = ? WHERE `id` = ?", $strTable, time(), $arrOptions[ 'fieldname' ] ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
     }
 
 

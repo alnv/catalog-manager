@@ -370,7 +370,7 @@ class DCABuilder extends CatalogController {
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
                 'icon' => 'visible.gif',
-                'href' => sprintf( 'table=%s', $this->strTable ),
+                'href' => sprintf( 'catalogTable=%s', $this->strTable ),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", $this->strTable ) .' )"',
                 'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
             ],
@@ -423,6 +423,31 @@ class DCABuilder extends CatalogController {
             ];
 
             array_insert( $arrReturn, 1, $arrChildTable );
+        }
+
+        if ( !empty( $this->arrFields ) && is_array( $this->arrFields ) ) {
+
+            foreach ( $this->arrFields as $arrField ) {
+
+                if ( !$arrField['fieldname'] || !$arrField['type'] == 'checkbox' ) continue;
+
+                if ( $arrField['multiple'] ) continue;
+
+                if ( $arrField['enableToggleIcon'] ) {
+
+                    $arrToggleIcon = [];
+                    $arrToggleIcon[ $arrField['fieldname'] ] = [
+
+                        'icon' => 'featured.gif',
+                        'attributes' => 'onclick="Backend.getScrollOffset()"',
+                        'button_callback' => [ 'DCACallbacks',  'toggleIcon' ],
+                        'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggleIcon'],
+                        'href' => sprintf( 'catalogTable=%s&fieldname=%s&iconInvisible=%s', $this->strTable, $arrField['fieldname'], 'featured_.gif' ),
+                    ];
+
+                    array_insert( $arrReturn, count( $arrReturn ), $arrToggleIcon );
+                }
+            }
         }
 
         return $arrReturn;

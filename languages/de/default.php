@@ -16,4 +16,4 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Felder'
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] = 'Sortierreihenfolge';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Ihr Lizenzschlüssel ist ungültig.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'Es wurden keine Elemente gefunden.';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Felder gefunden';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';

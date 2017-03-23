@@ -6,30 +6,6 @@
       <a href="<?= $this->link2Master ?>"><?= $this->title; ?></a>
    <?php endif; ?>
 
-   <?php if( !empty( $this->activeFields ) && is_array( $this->activeFields ) ): ?>
-      <div class="catalog_active_fields">
-         <p><?= $this->activeFieldsHeadline; ?>:</p>
-         <div>
-            <?php foreach( $this->activeFields as $strFieldname ): ?>
-
-               <?php if( !$this->{$strFieldname} ): ?>
-                  <?php continue; ?>
-               <?php endif; ?>
-
-               <div class="catalog_active_field <?= $strFieldname ?>">
-                  <ul>
-                     <li><span class="attribute">Type: </span><strong><?= $this->catalogFields[ $strFieldname ][ 'type' ]; ?></strong></li>
-                     <li><span class="attribute">Fieldname: </span><strong><?= $strFieldname; ?></strong></li>
-                     <li><span class="attribute">Title: </span><strong><?= $this->catalogFields[ $strFieldname ][ 'title' ]; ?></strong></li>
-                     <li><span class="attribute">Access: </span><strong><code>$this-><?=$strFieldname ?></code></strong></li>
-                  </ul>
-               </div>
-
-            <?php endforeach; ?>
-         </div>
-      </div>
-   <?php endif; ?>
-
    <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
       <ul>
          <?php foreach( $this->operations as $arrOperation ): ?>
@@ -46,4 +22,7 @@
       </ul>
    <?php endif; ?>
 
+   <?php if( $this->debug ): ?>
+      <?= $this->debug; ?>
+   <?php endif; ?>
 </div>

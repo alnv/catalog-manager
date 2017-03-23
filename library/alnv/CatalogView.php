@@ -489,20 +489,6 @@ class CatalogView extends CatalogController {
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
 
-            if ( $this->catalogTemplateDebug ) {
-
-                $objDebugTemplate = new \FrontendTemplate( 'ctlg_debug_default' );
-
-                $objDebugTemplate->setData([
-
-                    'catalogFields' => $this->arrCatalogFields,
-                    'activeFields' => $this->getActiveCatalogFields(),
-                    'activeFieldsHeadline' => $this->getActiveFieldsHeadline()
-                ]);
-
-                $arrCatalog['debug'] = $objDebugTemplate->parse();
-            }
-
             $objTemplate->setData( $arrCatalog );
 
             $arrCatalogItems[] = $objTemplate->parse();
@@ -521,7 +507,30 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogTemplateDebug ) {
 
-            // @todo add debug css
+            $objDebugTemplate = new \FrontendTemplate( 'ctlg_debug_default' );
+            $GLOBALS['TL_CSS']['catalogManagerFrontendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
+                ? 'system/modules/catalog-manager/assets/debug.css'
+                : 'system/modules/catalog-manager/assets/debug.css';
+
+            $objDebugTemplate->setData([
+
+                'catalogDebugTags' => [
+
+                    'open_php' => htmlentities('<?php'),
+                    'close_php' => htmlentities('?>'),
+                    'echo_php' => htmlentities('<?='),
+                    'open_html' => htmlentities('<'),
+                    'close_tag' => htmlentities('>'),
+                    'close_html' => htmlentities('</')
+                ],
+
+                'catalogTemplate' => $this->strTemplate,
+                'catalogFields' => $this->arrCatalogFields,
+                'activeFields' => $this->getActiveCatalogFields(),
+                'activeFieldsHeadline' => $this->getActiveFieldsHeadline( $this->strTemplate )
+            ]);
+
+            $this->objMainTemplate->debug = $objDebugTemplate->parse();
         }
 
         if ( $this->catalogRandomSorting ) {
@@ -533,9 +542,9 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function getActiveFieldsHeadline() {
+    protected function getActiveFieldsHeadline( $strTemplate ) {
 
-        return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'];
+        return sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'], $strTemplate );
     }
 
 

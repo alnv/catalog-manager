@@ -267,7 +267,7 @@ class tl_catalog_fields extends \Backend {
 
         $arrSQLStatements = $this->DCABuilderHelper->arrSQLStatements;
 
-        if ( $dc->activeRecord->type == 'upload' ) {
+        if ( $dc->activeRecord->type == 'upload' && !$dc->activeRecord->multiple ) {
 
             return [
 
@@ -275,7 +275,7 @@ class tl_catalog_fields extends \Backend {
             ];
         }
 
-        if ( $dc->activeRecord->type == 'textarea' ) {
+        if ( $dc->activeRecord->type == 'textarea' || $dc->activeRecord->multiple ) {
 
             unset( $arrSQLStatements['i5'] );
             unset( $arrSQLStatements['c1'] );

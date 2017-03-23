@@ -2,10 +2,25 @@
 
 if ( \Input::get('do') ) {
     
-    $arrCatalogExtensions = array_keys( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] );
+    $arrCatalogs = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'];
 
-    if ( in_array( \Input::get('do'), $arrCatalogExtensions ) ) {
+    if ( !empty( $arrCatalogs ) && is_array( $arrCatalogs ) ) {
 
-        $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = \Input::get('do');
+        foreach ( $arrCatalogs as $strTablename => $arrCatalog ) {
+
+            if ( !$arrCatalog['tablename'] ) continue;
+
+            if ( $arrCatalog['tablename'] == \Input::get( 'do' ) ) {
+
+                $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
+                break;
+            }
+
+            if ( $arrCatalog['pTable'] == \Input::get( 'do' ) ) {
+
+                $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
+                break;
+            }
+        }
     }
 }

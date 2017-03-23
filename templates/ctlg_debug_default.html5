@@ -1,0 +1,20 @@
+<?php if( !empty( $this->activeFields ) && is_array( $this->activeFields ) ): ?>
+<div class="catalog_debug_view">
+   <p><?= $this->activeFieldsHeadline; ?>:</p>
+   <div class="active_field">
+
+      <?php foreach( $this->activeFields as $strFieldname ): ?>
+
+         <div class="catalog_active_field <?= $strFieldname ?>">
+            <ul>
+               <li><span class="attribute">Type: </span><strong><?= $this->catalogFields[ $strFieldname ][ 'type' ]; ?></strong></li>
+               <li><span class="attribute">Fieldname: </span><strong><?= $strFieldname; ?></strong></li>
+               <li><span class="attribute">Title: </span><strong><?= $this->catalogFields[ $strFieldname ][ 'title' ]; ?></strong></li>
+               <li><span class="attribute">Access: </span><strong><code>$this-><?=$strFieldname ?></code></strong></li>
+            </ul>
+         </div>
+
+      <?php endforeach; ?>
+   </div>
+</div>
+<?php endif; ?>

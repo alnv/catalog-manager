@@ -70,6 +70,7 @@ TemplateLoader::addFiles([
     'ctlg_message_field' => 'system/modules/catalog-manager/templates',
     'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
+    'ctlg_debug_default' => 'system/modules/catalog-manager/templates',
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
 ]);

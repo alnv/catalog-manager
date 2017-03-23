@@ -77,13 +77,14 @@ class CatalogManagerInitializer {
         $arrBackendModule = [];
         $objIconGetter = new IconGetter();
         $arrTables[] = $arrCatalog['tablename'];
+        $blnAddContentElements = $arrCatalog['addContentElements'] ? true : false;
 
         foreach ( $arrCatalog[ 'cTables' ] as $strTablename ) {
 
             $arrTables[] = $strTablename;
         }
 
-        if ( $arrCatalog['addContentElements'] ) {
+        if ( $blnAddContentElements || $this->contentElementExistInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
 
             $arrTables[] = 'tl_content';
         }
@@ -110,5 +111,22 @@ class CatalogManagerInitializer {
 
         $objIconGetter = new IconGetter();
         $objIconGetter->createCatalogManagerDirectories();
+    }
+
+
+    protected function contentElementExistInChildrenCatalogs( $arrTables ) {
+
+        if ( !empty( $arrTables ) && is_array( $arrTables ) ) {
+
+            foreach ( $arrTables as $strTable ) {
+
+                if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable]['addContentElements'] ) {
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

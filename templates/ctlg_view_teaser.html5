@@ -21,8 +21,4 @@
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>
-
-   <?php if( $this->debug ): ?>
-      <?= $this->debug; ?>
-   <?php endif; ?>
 </div>

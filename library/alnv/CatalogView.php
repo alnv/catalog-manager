@@ -488,7 +488,20 @@ class CatalogView extends CatalogController {
 
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
-            $arrCatalog['activeFieldsHeadline'] = $this->getActiveFieldsHeadline();
+
+            if ( $this->catalogTemplateDebug ) {
+
+                $objDebugTemplate = new \FrontendTemplate( 'ctlg_debug_default' );
+
+                $objDebugTemplate->setData([
+
+                    'catalogFields' => $this->arrCatalogFields,
+                    'activeFields' => $this->getActiveCatalogFields(),
+                    'activeFieldsHeadline' => $this->getActiveFieldsHeadline()
+                ]);
+
+                $arrCatalog['debug'] = $objDebugTemplate->parse();
+            }
 
             $objTemplate->setData( $arrCatalog );
 
@@ -504,6 +517,11 @@ class CatalogView extends CatalogController {
         if ( $this->blnGoogleMapScript ) {
 
             $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
+        }
+
+        if ( $this->catalogTemplateDebug ) {
+
+            // @todo add debug css
         }
 
         if ( $this->catalogRandomSorting ) {

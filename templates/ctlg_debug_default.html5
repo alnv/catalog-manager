@@ -1,5 +1,5 @@
 <?php if( !empty( $this->activeFields ) && is_array( $this->activeFields ) ): ?>
-<div class="ctlg_debug_default" xmlns="http://www.w3.org/1999/html">
+<div class="ctlg_debug_default">
 
    <p class="debug_title"><?= $this->activeFieldsHeadline; ?></p>
 

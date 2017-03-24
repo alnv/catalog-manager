@@ -3,6 +3,7 @@
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['pageID'] = 'URL';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] = 'Feld';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value'] = 'Wert';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'] = 'Zurück';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['table'] = 'Tabelle';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['delete'] = 'Löschen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['create'] = 'Anlegen';

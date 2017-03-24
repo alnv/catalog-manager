@@ -24,7 +24,7 @@ class CatalogManagerInitializer {
 
         if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
 
-        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY name ASC' )->limit(100)->execute();
+        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `name` ASC, `pTable` DESC' )->limit(100)->execute();
 
         while ( $objCatalogManagerDB->next() ) {
 
@@ -120,7 +120,7 @@ class CatalogManagerInitializer {
 
             foreach ( $arrTables as $strTable ) {
 
-                if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable]['addContentElements'] ) {
+                if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['addContentElements'] ) {
 
                     return true;
                 }

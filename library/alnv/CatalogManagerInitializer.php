@@ -84,7 +84,7 @@ class CatalogManagerInitializer {
             $arrTables[] = $strTablename;
         }
 
-        if ( $blnAddContentElements || $this->contentElementExistInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
+        if ( $blnAddContentElements || $this->existContentElementInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
 
             $arrTables[] = 'tl_content';
         }
@@ -114,7 +114,7 @@ class CatalogManagerInitializer {
     }
 
 
-    protected function contentElementExistInChildrenCatalogs( $arrTables ) {
+    protected function existContentElementInChildrenCatalogs( $arrTables ) {
 
         if ( !empty( $arrTables ) && is_array( $arrTables ) ) {
 

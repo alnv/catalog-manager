@@ -13,12 +13,14 @@ if ( \Input::get('do') ) {
             if ( $arrCatalog['tablename'] == \Input::get( 'do' ) ) {
 
                 $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
+                
                 break;
             }
 
             if ( $arrCatalog['pTable'] == \Input::get( 'do' ) ) {
 
                 $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
+                
                 break;
             }
         }

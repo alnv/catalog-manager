@@ -11,6 +11,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'] = 'Filtern';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'] = 'Aufsteigend';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] = 'Absteigend';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['edit'] = 'Bearbeiten';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'] = 'Speichern';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Rechte';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] = 'Operator';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Felder';

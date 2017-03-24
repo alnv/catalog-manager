@@ -10,34 +10,34 @@
             <div class="debug_code_example">
                <p class="debug_code_title">Eingabefeld <em>"<?= $strFieldname; ?> [<?= $this->catalogFields[$strFieldname]['type']; ?>]"</em> im Template ausgeben</p>
                <div class="debug_code">
-                  <p><code><?= $this->catalogDebugTags['open_php'] ?> foreach( $this-><?= $strFieldname; ?> as $strKey => $strValue ): <?= $this->catalogDebugTags['close_php'] ?></code></p>
-                  <p class="indent"><code><?= $this->catalogDebugTags['echo_php'] ?> $strValue <?= $this->catalogDebugTags['close_php'] ?></code></p>
-                  <p><code><?= $this->catalogDebugTags['open_php'] ?> endforeach; <?= $this->catalogDebugTags['close_php'] ?></code></p>
+                  <p><code><?= $this->open_php ?> foreach( $this-><?= $strFieldname; ?> as $strKey => $strValue ): <?= $this->close_php ?></code></p>
+                  <p class="indent"><code><?= $this->echo_php ?> $strValue <?= $this->close_php ?></code></p>
+                  <p><code><?= $this->open_php ?> endforeach; <?= $this->close_php ?></code></p>
                </div>
             </div>
             <?php continue; ?>
          <?php endif; ?>
 
-         <?php if( $this->catalogFields[$strFieldname]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'image' && !$this->catalogFields[$strFieldname]['multiple'] ): ?>
+         <?php if( $this->catalogFields[$strFieldname]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'image' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableImageRendering'] ): ?>
             <div class="debug_code_example">
                <p class="debug_code_title">Eingabefeld <em>"<?= $strFieldname; ?> [<?= $this->catalogFields[$strFieldname]['type']; ?>]"</em> im Template ausgeben</p>
                <div class="debug_code">
-                  <p><code><?= $this->catalogDebugTags['open_html'] ?>figure<?= $this->catalogDebugTags['close_tag'] ?></code></p>
-                  <p class="indent"><code><?= $this->catalogDebugTags['open_html'] ?>img src="<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>->src <?= $this->catalogDebugTags['close_php'] ?>" alt="<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>->alt <?= $this->catalogDebugTags['close_php'] ?>" title="<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>->title <?= $this->catalogDebugTags['close_php'] ?>" <?= $this->catalogDebugTags['close_tag'] ?></code></p>
-                  <p class="indent"><code><?= $this->catalogDebugTags['open_html'] ?>figcaption<?= $this->catalogDebugTags['close_tag'] ?><?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>->caption <?= $this->catalogDebugTags['close_php'] ?><?= $this->catalogDebugTags['close_html'] ?>figcaption<?= $this->catalogDebugTags['close_tag'] ?></code></p>
-                  <p><code><?= $this->catalogDebugTags['close_html'] ?>figure<?= $this->catalogDebugTags['close_tag'] ?></code></p>
+                  <p><code><?= $this->open_html ?>figure<?= $this->close_tag ?></code></p>
+                  <p class="indent"><code><?= $this->open_html ?>img src="<?= $this->echo_php ?> $this-><?=$strFieldname ?>->src <?= $this->close_php ?>" alt="<?= $this->echo_php ?> $this-><?=$strFieldname ?>->alt <?= $this->close_php ?>" title="<?= $this->echo_php ?> $this-><?=$strFieldname ?>->title <?= $this->close_php ?>" <?= $this->close_tag ?></code></p>
+                  <p class="indent"><code><?= $this->open_html ?>figcaption<?= $this->close_tag ?><?= $this->echo_php ?> $this-><?=$strFieldname ?>->caption <?= $this->close_php ?><?= $this->close_html ?>figcaption<?= $this->close_tag ?></code></p>
+                  <p><code><?= $this->close_html ?>figure<?= $this->close_tag ?></code></p>
                </div>
             </div>
             <?php continue; ?>
          <?php endif; ?>
 
-         <?php if( $this->catalogFields[ $strFieldname ]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'file' && !$this->catalogFields[$strFieldname]['multiple'] ): ?>
+         <?php if( $this->catalogFields[ $strFieldname ]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'file' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableFileRendering'] ): ?>
             <div class="debug_code_example">
                <p class="debug_code_title">Eingabefeld <em>"<?= $strFieldname; ?> [<?= $this->catalogFields[ $strFieldname ][ 'type' ]; ?>]"</em> im Template ausgeben</p>
                <div class="debug_code">
-                  <p><code><?= $this->catalogDebugTags['open_html'] ?>a href="<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>['href']; <?= $this->catalogDebugTags['close_php'] ?>" title="<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>['title']; <?= $this->catalogDebugTags['close_php'] ?>"<?= $this->catalogDebugTags['close_tag'] ?></code></p>
-                  <p class="indent"><code><?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>['name']; <?= $this->catalogDebugTags['close_php'] ?> (<?= $this->catalogDebugTags['echo_php'] ?> $this-><?=$strFieldname ?>['filesize']; <?= $this->catalogDebugTags['close_php'] ?>)</code></p>
-                  <p><code><?= $this->catalogDebugTags['close_html'] ?>a<?= $this->catalogDebugTags['close_tag'] ?></code></p>
+                  <p><code><?= $this->open_html ?>a href="<?= $this->echo_php ?> $this-><?=$strFieldname ?>['href']; <?= $this->close_php ?>" title="<?= $this->echo_php ?> $this-><?=$strFieldname ?>['title']; <?= $this->close_php ?>"<?= $this->close_tag ?></code></p>
+                  <p class="indent"><code><?= $this->echo_php ?> $this-><?=$strFieldname ?>['name']; <?= $this->close_php ?> (<?= $this->echo_php ?> $this-><?=$strFieldname ?>['filesize']; <?= $this->close_php ?>)</code></p>
+                  <p><code><?= $this->close_html ?>a<?= $this->close_tag ?></code></p>
                </div>
             </div>
             <?php continue; ?>
@@ -46,7 +46,7 @@
          <div class="debug_code_example">
             <p class="debug_code_title">Eingabefeld <em>"<?= $strFieldname; ?> [<?= $this->catalogFields[$strFieldname]['type']; ?>]"</em> im Template ausgeben</p>
             <div class="debug_code">
-               <p><code><?= $this->catalogDebugTags['echo_php'] ?> $this-><?= $strFieldname; ?> <?= $this->catalogDebugTags['close_php'] ?></code></p>
+               <p><code><?= $this->echo_php ?> $this-><?= $strFieldname; ?> <?= $this->close_php ?></code></p>
             </div>
          </div>
 

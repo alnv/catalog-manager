@@ -197,7 +197,7 @@ class ModuleUniversalView extends \Module {
             return null;
         }
 
-        if ( !$blnIsVisible ) {
+        if ( !$blnIsVisible && $this->strAct != 'create' ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_404']();
             $objHandler->generate( $this->FrontendEditing->strPageID );

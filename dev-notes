@@ -12,6 +12,4 @@ todo before release
  - implement ajax based toggle handler
  - implement custom toggle icons
  - improve site map xml
- - add labels for upload field (file type)
  - fix problem with sql blob to binary cast
- - implement debug for master page

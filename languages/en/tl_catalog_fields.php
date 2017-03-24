@@ -69,8 +69,12 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'] = [ 'Alternate Text', 'Plea
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'] = [ 'Image caption', 'Please select a column for image caption value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['size'] = [ 'Image size', 'Here you can set the image dimensions and the resize mode.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'] = [ 'Image link target', 'Please select a column for image link target value.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Do not render', 'This image will be not rendered in frontend template.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Render source only', 'Here you can generate only image src attribute for template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Full-size view/new window', 'Open the full-size image in a lightbox or the link in a new browser window.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTitle'] = [ 'Titel', 'Please select a column for title value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Description', 'Please select a column for description value.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableFileRendering'] = [ 'Render href only', 'Here you can generate a href attribute for template.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];

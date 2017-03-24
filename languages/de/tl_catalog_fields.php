@@ -67,10 +67,14 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['imageTitle'] = [ 'Titel', 'Bitte wähl
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'] = [ 'Bildgröße verwenden', 'Hier können Sie eine Bildgröße definieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'] = [ 'Bildlink-Adresse', 'Bitte wählen Sie eine Spalte für die Bildlink-Adresse aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'] = [ 'Alternativer Text', 'Bitte wählen Sie eine Spalte für den alternativer Text aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Nur Bildpfad rendern', 'Im Template wird nur der Bildpfad ausgegeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'] = [ 'Bildunterschrift', 'Bitte wählen Sie eine Spalte für die Bildunterschrift aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['size'] = [ 'Bildgröße', 'Hier können Sie die Abmessungen des Bildes und den Skalierungsmodus festlegen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Bild nicht rendern', 'In der Template ausgabe wird das Bild nicht gerendert.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Großansicht/Neues Fenster', 'Großansicht des Bildes in einer Lightbox bzw. den Link in einem neuem Browserfenster öffnen.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTitle'] = [ 'Titel', 'Bitte wählen Sie eine Spalte für den Titel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Bezeichnung', 'Bitte wählen Sie eine Spalte für die Bezeichnung aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['disableFileRendering'] = [ 'Nur Download Link rendern', 'Im Template wird nur ein Download Link ausgegeben.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];

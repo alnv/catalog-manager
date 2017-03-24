@@ -8,7 +8,7 @@ class tl_settings extends \Backend {
     public function verifyLicence( $varValue ) {
 
         $objCatalogManagerVerification = new CatalogManagerVerification();
-        $blnValidLicence = $objCatalogManagerVerification->verify( $varValue, false );
+        $blnValidLicence = $objCatalogManagerVerification->verify( $varValue );
 
         if ( !$varValue ) return '';
 

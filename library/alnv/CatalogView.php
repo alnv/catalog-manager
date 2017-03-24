@@ -401,12 +401,13 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->arrViewPage ) ) {
 
-                $arrCatalog['link2View'] = $this->generateUrl( $this->arrViewPage, '' );
+                $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, '' );
+                $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
             if ( !empty( $this->arrMasterPage ) ) {
 
-                $arrCatalog['link2Master'] = $this->generateUrl( $this->arrMasterPage, $arrCatalog['alias'] );
+                $arrCatalog['masterUrl'] = $this->generateUrl( $this->arrMasterPage, $arrCatalog['alias'] );
             }
 
             if ( !empty( $this->catalogItemOperations ) ) {

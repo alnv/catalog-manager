@@ -68,6 +68,11 @@ class OptionsGetter extends CatalogController {
             return $arrOptions;
         }
 
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+
+            return $arrOptions;
+        }
+
         if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) || !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
 
             return $arrOptions;

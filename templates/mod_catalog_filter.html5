@@ -1,6 +1,6 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
-<!-- indexer::stop -->
+
 <form method="GET" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?>>
    <?= $this->output; ?>
 <?php if( !$this->disableSubmit ): ?>
@@ -12,5 +12,5 @@
 <?php if( $this->reset ): ?>
    <?= $this->reset; ?>
 <?php endif; ?>
-<!-- indexer::continue -->
+
 <?php $this->endblock(); ?>

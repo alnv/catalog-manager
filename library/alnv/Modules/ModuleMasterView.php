@@ -58,7 +58,7 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->getCommentForm();
 
         $blnHasPermission = $this->CatalogView->checkPermission();
-
+        
         $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
 
         if ( !$blnHasPermission ) {

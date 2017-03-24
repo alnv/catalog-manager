@@ -515,20 +515,17 @@ class CatalogView extends CatalogController {
 
             $objDebugTemplate->setData([
 
-                'catalogDebugTags' => [
-
-                    'open_php' => htmlentities('<?php'),
-                    'close_php' => htmlentities('?>'),
-                    'echo_php' => htmlentities('<?='),
-                    'open_html' => htmlentities('<'),
-                    'close_tag' => htmlentities('>'),
-                    'close_html' => htmlentities('</')
-                ],
-
                 'catalogTemplate' => $this->strTemplate,
                 'catalogFields' => $this->arrCatalogFields,
                 'activeFields' => $this->getActiveCatalogFields(),
-                'activeFieldsHeadline' => $this->getActiveFieldsHeadline( $this->strTemplate )
+                'activeFieldsHeadline' => $this->getActiveFieldsHeadline( $this->strTemplate ),
+
+                'open_html' => htmlentities('<'),
+                'close_tag' => htmlentities('>'),
+                'close_php' => htmlentities('?>'),
+                'echo_php' => htmlentities('<?='),
+                'close_html' => htmlentities('</'),
+                'open_php' => htmlentities('<?php'),
             ]);
 
             $this->objMainTemplate->debug = $objDebugTemplate->parse();

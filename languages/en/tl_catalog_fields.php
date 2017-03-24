@@ -89,6 +89,17 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Delete field', 'Delete f
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Hide field', 'Disable or Enable field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Show field', 'Show the details of field ID "%s".' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapType'] = [ 'Map Typ', 'Please select map type.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapTemplate'] = [ 'Template', 'Please select a Template.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapStyle'] = [ 'Map-Style', 'Here you can define your map style.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['addMapInfoBox'] = [ 'Add Info-Box', 'Here you can add a info box.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapZoom'] = [ 'Zoom', 'Here you can enable zoom for your map view.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapScrollWheel'] = [ 'Allow to scroll', 'Here you can allow to scroll.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['latField'] = [ 'Latitude', 'This field will be automatically generated.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['lngField'] = [ 'Longitude', 'This field will be automatically generated.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapMarker'] = [ 'Add Marker', 'Here you can make your location visible by markers.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'] = [ 'Info-Box content', 'Please add your info-box content. Inserttags und Simple-Tokens are allowed.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'image' => 'Image',

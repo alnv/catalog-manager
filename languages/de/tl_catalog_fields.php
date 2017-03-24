@@ -8,6 +8,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine Einstel
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbank Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Eingabefeld verstecken';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Auswahlliste Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapField_legend'] = 'Kartenansicht Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluationsarray Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
@@ -88,6 +89,17 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Feld löschen', 'Feld mi
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Feld bearbeiten', 'Feld mit der ID %s bearbeiten.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Feld ausblenden', 'Feld mit der ID %s ein/ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Feld Details anziegen', 'Die Details des Feldes mit der ID %s anzeigen.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapScrollWheel'] = [ 'Scrollen erlauben', 'Das scrollen auf der Map erlauben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapZoom'] = [ 'Zoom', 'Hier können Sie den Zoom für die Kartenansicht einstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['addMapInfoBox'] = [ 'Info-Box einblenden', 'Hier können Sie eine Info-Box einblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapMarker'] = [ 'Marker hinzufügen', 'Hier können Sie Marker für die jeweiligen Standorte einblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['latField'] = [ 'Latitude-Tabellenspalte auswählen', 'Bitte wählen Sie eine Latitude-Tabellenspalte aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['lngField'] = [ 'Longitude-Tabellenspalte auswählen', 'Bitte wählen Sie eine Longitude-Tabellenspalte aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapType'] = [ 'Kartenansicht Typ', 'Hier können Sie den Kartenansicht Typ für die Kartenansicht einstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapStyle'] = [ 'Kartenansicht-Style überschreiben', 'Hier können Sie den Kartenansicht-Style überschreiben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'] = [ 'Info-Box Inhalt', 'Hier können Sie den Inhalt für die Info-Box eingeben. Inserttags und Simple-Tokens sind erlaubt.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 

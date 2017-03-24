@@ -6,9 +6,7 @@ todo before release
  - fix array problem in dca headline
  - improve text label in select menu (tablename)
  - test delete handler with permissions
- - auto field output for catalog entity templates
  - translate catalog field and description for template output
- - google map field label translations
  - implement ajax based toggle handler
  - implement custom toggle icons
  - improve site map xml

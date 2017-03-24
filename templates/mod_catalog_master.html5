@@ -1,4 +1,10 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
-<?= $this->output; ?>
+
+   <?php if( $this->debug ): ?>
+      <?= $this->debug; ?>
+   <?php endif; ?>
+
+   <?= $this->output; ?>
+
 <?php $this->endblock(); ?>

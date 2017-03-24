@@ -253,8 +253,9 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->submitName = $this->strSubmitName;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
+        $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-
+        
         return $this->objTemplate->parse();
     }
 

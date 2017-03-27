@@ -15,7 +15,6 @@ class SearchIndexBuilder extends \Frontend {
         }
 
         $arrProcessed = [];
-        $dteTime = \Date::floorToMinute();
         $objModules = $this->Database->prepare( 'SELECT * FROM tl_module WHERE type = ? OR type = ?' )->execute( 'catalogUniversalView', 'catalogMasterView' );
 
         while ( $objModules->next() ) {
@@ -30,17 +29,7 @@ class SearchIndexBuilder extends \Frontend {
 
             if ( !isset( $arrProcessed[ $objModules->catalogMasterPage ] ) ) {
 
-                $objParent = \PageModel::findWithDetails( $objModules->catalogMasterPage );
-
-                if ( $objParent === null ) continue;
-
-                if ( !$objParent->published || ( $objParent->start != '' && $objParent->start > $dteTime ) || ( $objParent->stop != '' && $objParent->stop <= ( $dteTime + 60 ) ) ) {
-
-                    continue;
-                }
-
-                if ( $objParent->sitemap == 'map_never' ) continue;
-
+                $objParent = $this->getPageModelWithDetailsByID( $objModules->catalogMasterPage );
                 $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
                 $arrProcessed[ $objModules->catalogMasterPage ] = $strDomain . $this->generateFrontendUrl( $objParent->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? '/%s' : '/items/%s' ), $objParent->language );
             }
@@ -50,12 +39,70 @@ class SearchIndexBuilder extends \Frontend {
 
             if ( !$objEntities->numRows ) continue;
 
+            $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $objModules->catalogTablename );
+
+            if ( !$objCatalog->numRows ) $objCatalog = null;
+
             while ( $objEntities->next() ) {
 
-                $arrPages[] = Toolkit::getLink( $objEntities, $strUrl );
+                $strSiteMapUrl = $this->createMasterUrl( $objCatalog, $objEntities, $strUrl );
+
+                if ( $strSiteMapUrl ) $arrPages[] = $strSiteMapUrl;
             }
+
         }
 
         return $arrPages;
+    }
+
+
+    protected function createMasterUrl( $objCatalog, $objEntities, $strUrl ) {
+
+        $strBase = '';
+        $strUrl = rawurldecode( $strUrl );
+
+        if ( !is_null( $objCatalog ) ) {
+
+            if ( $objCatalog->useRedirect && $objCatalog->internalUrlColumn ) {
+
+                if ( $objEntities->{$objCatalog->internalUrlColumn} ) {
+
+                    $intPageID = intval( preg_replace('/[^0-9]+/', '', $objEntities->{$objCatalog->internalUrlColumn} ) );
+
+                    $objParent = $this->getPageModelWithDetailsByID( $intPageID );
+                    $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
+
+                    return $strDomain . $this->generateFrontendUrl( $objParent->row() );
+                }
+            }
+
+            if ( $objCatalog->useRedirect && $objCatalog->externalUrlColumn ) {
+
+                if ( $objEntities->{$objCatalog->externalUrlColumn} ) {
+
+                    return null;
+                }
+            }
+        }
+
+        return $strBase . sprintf( $strUrl, ( ( $objEntities->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objEntities->alias : $objEntities->id ) );
+    }
+
+
+    protected function getPageModelWithDetailsByID( $intPageID ) {
+
+        $dteTime = \Date::floorToMinute();
+        $objPage = \PageModel::findWithDetails( $intPageID );
+
+        if ( $objPage === null ) return null;
+
+        if ( !$objPage->published || ( $objPage->start != '' && $objPage->start > $dteTime ) || ( $objPage->stop != '' && $objPage->stop <= ( $dteTime + 60 ) ) ) {
+
+            return null;
+        }
+
+        if ( $objPage->sitemap == 'map_never' ) return null;
+
+        return $objPage;
     }
 }

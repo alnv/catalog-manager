@@ -429,20 +429,20 @@ class DCABuilder extends CatalogController {
 
             foreach ( $this->arrFields as $arrField ) {
 
-                if ( !$arrField['fieldname'] || !$arrField['type'] == 'checkbox' ) continue;
-
                 if ( $arrField['multiple'] ) continue;
+
+                if ( !$arrField['fieldname'] || !$arrField['type'] == 'checkbox' ) continue;
 
                 if ( $arrField['enableToggleIcon'] ) {
 
                     $arrToggleIcon = [];
                     $arrToggleIcon[ $arrField['fieldname'] ] = [
 
-                        'icon' => 'featured.gif',
                         'attributes' => 'onclick="Backend.getScrollOffset()"',
                         'button_callback' => [ 'DCACallbacks',  'toggleIcon' ],
+                        'icon' => $this->IconGetter->setToggleIcon( $arrField['fieldname'], false ),
                         'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggleIcon'],
-                        'href' => sprintf( 'catalogTable=%s&fieldname=%s&iconInvisible=%s', $this->strTable, $arrField['fieldname'], 'featured_.gif' ),
+                        'href' => sprintf( 'catalogTable=%s&fieldname=%s&iconVisible=%s', $this->strTable, $arrField['fieldname'], $this->IconGetter->setToggleIcon( $arrField['fieldname'], true ) ),
                     ];
 
                     array_insert( $arrReturn, count( $arrReturn ), $arrToggleIcon );

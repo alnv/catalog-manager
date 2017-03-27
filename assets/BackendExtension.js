@@ -109,6 +109,7 @@ var CatalogManager = {};
             });
         };
 
+
         CatalogManager.CatalogOrderByWizard = function ( objElement, strCommand, strID ) {
 
             var table = $(strID),
@@ -205,6 +206,31 @@ var CatalogManager = {};
                 handle: '.drag-handle'
             });
         };
-    }
 
+
+        CatalogManager.CatalogToggleVisibility = function ( objElement, strID, strVisibleIcon, strInVisibleIcon, strAjaxPath ) {
+
+            objElement.blur();
+
+            var objImage = $( objElement ).getFirst('img');
+            var intPublished = ( objImage.get('data-state') == 1 );
+
+            if ( !intPublished ) {
+
+                objImage.src = strInVisibleIcon;
+                objImage.set( 'data-state', 1 );
+
+                new Request.Contao( { 'url': window.location.href + '&' + strAjaxPath, 'followRedirects': false } ).get( {'tid': strID, 'state': 1, 'rt': Contao.request_token } );
+
+            } else {
+
+                objImage.src = strVisibleIcon;
+                objImage.set('data-state', 0);
+
+                new Request.Contao( { 'url': window.location.href + '&' + strAjaxPath, 'followRedirects': false } ).get( {'tid': strID, 'state': 0, 'rt': Contao.request_token } );
+            }
+
+            return false;
+        };
+    }
 })();

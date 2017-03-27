@@ -250,14 +250,4 @@ class Toolkit {
 
         return $arrReturn;
     }
-
-    
-    public static function getLink( $objItem, $strUrl, $strBase = '' ) {
-
-        $strUrl = rawurldecode( $strUrl );
-
-        // @todo internal, external and article handler
-
-        return $strBase . sprintf( $strUrl, ( ( $objItem->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objItem->alias : $objItem->id ) );
-    }
 }

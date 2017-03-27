@@ -13,13 +13,13 @@ class CatalogView extends CatalogController {
     public $arrOptions = [];
     public $arrMasterPage = [];
 
-    private $arrCatalog = [];
-    private $arrActiveFields = [];
-    private $arrCatalogFields = [];
-    private $blnMapViewMode = false;
-    private $blnGoogleMapScript = false;
-    private $arrCatalogStaticFields = [];
-    private $arrCatalogMapViewOptions = [];
+    protected $arrCatalog = [];
+    protected $arrActiveFields = [];
+    protected $arrCatalogFields = [];
+    protected $blnMapViewMode = false;
+    protected $blnGoogleMapScript = false;
+    protected $arrCatalogStaticFields = [];
+    protected $arrCatalogMapViewOptions = [];
 
 
     public function __construct() {
@@ -405,10 +405,7 @@ class CatalogView extends CatalogController {
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
-            if ( !empty( $this->arrMasterPage ) ) {
-
-                $arrCatalog['masterUrl'] = $this->generateUrl( $this->arrMasterPage, $arrCatalog['alias'] );
-            }
+            $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
 
             if ( !empty( $this->catalogItemOperations ) ) {
 
@@ -546,7 +543,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function setRelatedTableLinks( $strID ) {
+    protected function setRelatedTableLinks( $strID ) {
 
         $arrReturn = [];
 
@@ -569,6 +566,28 @@ class CatalogView extends CatalogController {
         }
 
         return $arrReturn;
+    }
+
+
+    protected function getMasterRedirect( $arrCatalog = [], $strAlias = '' ) {
+
+        if ( $this->arrCatalog['useRedirect'] && $this->arrCatalog['internalUrlColumn'] ) {
+
+            if ( $arrCatalog[ $this->arrCatalog['internalUrlColumn'] ] ) {
+
+                return \Controller::replaceInsertTags( $arrCatalog[ $this->arrCatalog['internalUrlColumn'] ] );
+            }
+        }
+
+        if ( $this->arrCatalog['useRedirect'] && $this->arrCatalog['externalUrlColumn'] ) {
+
+            if ( $arrCatalog[ $this->arrCatalog['externalUrlColumn'] ] ) {
+
+                return $arrCatalog[ $this->arrCatalog['externalUrlColumn'] ];
+            }
+        }
+
+        return $this->generateUrl( $this->arrMasterPage, $strAlias );
     }
 
 
@@ -642,7 +661,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
+    protected function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
 
         $varValue = \Input::get( $arrField['fieldname'] . $this->id ) ? \Input::get( $arrField['fieldname'] . $this->id ) : $strValue;
         $varValue = \Controller::replaceInsertTags( $varValue );
@@ -656,7 +675,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function setOptions() {
+    protected function setOptions() {
 
         if ( !empty( $this->arrOptions ) && is_array( $this->arrOptions ) ) {
 
@@ -668,7 +687,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function getPageModel( $strID ) {
+    protected function getPageModel( $strID ) {
 
         return $this->SQLQueryBuilder->execute([
 
@@ -693,7 +712,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function prepareJoinData ( $arrJoins ) {
+    protected function prepareJoinData ( $arrJoins ) {
 
         $arrReturn = [];
 
@@ -729,7 +748,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function generateUrl( $objPage, $strAlias ) {
+    protected function generateUrl( $objPage, $strAlias ) {
 
         if ( $objPage == null ) return '';
 
@@ -737,7 +756,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function generateOperations( $strID, $strAlias = '' ) {
+    protected function generateOperations( $strID, $strAlias = '' ) {
 
         $arrReturn = [];
         $this->loadLanguageFile( 'tl_module' );
@@ -768,7 +787,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    private function preparePTableJoinData () {
+    protected function preparePTableJoinData () {
 
         return [
 

@@ -25,7 +25,7 @@ class tl_module extends \Backend {
 
             foreach ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] as $arrCatalog ) {
 
-                $arrReturn[ $arrCatalog['tablename'] ] = $arrCatalog['name'];
+                $arrReturn[ $arrCatalog['tablename'] ] = $arrCatalog['name'] . ( $arrCatalog['info'] ? ' (' . \StringUtil::substr( $arrCatalog['info'], 16 ) . ')' : '' );
             }
         }
 

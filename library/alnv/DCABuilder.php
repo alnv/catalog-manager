@@ -371,7 +371,7 @@ class DCABuilder extends CatalogController {
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
                 'icon' => 'visible.gif',
                 'href' => sprintf( 'catalogTable=%s', $this->strTable ),
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", $this->strTable ) .' )"',
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility( this,%s,'. sprintf( "'%s'", $this->strTable ) .' )"',
                 'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
             ],
 
@@ -417,8 +417,8 @@ class DCABuilder extends CatalogController {
 
             $arrChildTable[ $strOperationName ] = [
 
-                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
                 'href' => sprintf( 'table=%s', $arrCTable ),
+                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
                 'icon' => $arrCTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $arrCTable ) : 'articles.gif'
             ];
 
@@ -436,13 +436,17 @@ class DCABuilder extends CatalogController {
                 if ( $arrField['enableToggleIcon'] ) {
 
                     $arrToggleIcon = [];
+                    $strVisibleIcon = $this->IconGetter->setToggleIcon( $arrField['fieldname'], true );
+                    $strInVisibleIcon = $this->IconGetter->setToggleIcon( $arrField['fieldname'], false );
+                    $strHref = sprintf( 'catalogTable=%s&fieldname=%s&iconVisible=%s', $this->strTable, $arrField['fieldname'], $strVisibleIcon );
+
                     $arrToggleIcon[ $arrField['fieldname'] ] = [
 
-                        'attributes' => 'onclick="Backend.getScrollOffset()"',
+                        'href' => $strHref,
+                        'icon' => $strInVisibleIcon,
                         'button_callback' => [ 'DCACallbacks',  'toggleIcon' ],
-                        'icon' => $this->IconGetter->setToggleIcon( $arrField['fieldname'], false ),
                         'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggleIcon'],
-                        'href' => sprintf( 'catalogTable=%s&fieldname=%s&iconVisible=%s', $this->strTable, $arrField['fieldname'], $this->IconGetter->setToggleIcon( $arrField['fieldname'], true ) ),
+                        'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,'. sprintf( "'%s'", $strVisibleIcon ) .', '. sprintf( "'%s'", $strInVisibleIcon ) .', '. sprintf( "'%s'", $strHref ) .' )"'
                     ];
 
                     array_insert( $arrReturn, count( $arrReturn ), $arrToggleIcon );

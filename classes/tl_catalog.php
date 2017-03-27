@@ -431,4 +431,42 @@ class tl_catalog extends \Backend {
         $objCatalogManagerVerification = new CatalogManagerVerification();
         $objCatalogManagerVerification->verify();
     }
+
+
+    public function getInternalCatalogFields() {
+
+        $arrReturn = [];
+        $strID = \Input::get('id');
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND `pagePicker` = ?' )->execute( $strID, '1' );
+
+        if ( !$objCatalogFields->numRows ) return $arrReturn;
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getExternalCatalogFields() {
+
+        $arrReturn = [];
+        $strID = \Input::get('id');
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND `rgxp` = ?' )->execute( $strID, 'url' );
+
+        if ( !$objCatalogFields->numRows ) return $arrReturn;
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+        }
+
+        return $arrReturn;
+    }
 }

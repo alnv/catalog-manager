@@ -83,19 +83,20 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource' ],
-        'default' => '{table_settings},name,tablename,description,info;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect' ],
+        'default' => '{table_settings},name,tablename,description,info;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{redirect_legend},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
     ],
 
     'subpalettes' => [
 
         'isBackendModule' => 'navArea,navPosition',
         'addressInputType_useSingleField' => 'geoAddress',
+        'useRedirect' => 'internalUrlColumn,externalUrlColumn',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
+        'languageEntitySource_parentTable' => 'languageEntityColumn',
         'languageEntitySource_currentTable' => 'languageEntityColumn',
         'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
-        'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
-        'languageEntitySource_parentTable' => 'languageEntityColumn'
+        'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry'
     ],
 
     'fields' => [
@@ -712,6 +713,63 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'useRedirect' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['useRedirect'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'clr m12',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'internalUrlColumn' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getInternalCatalogFields' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'externalUrlColumn' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getExternalCatalogFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"

@@ -7,6 +7,5 @@ todo before release
  - improve text label in select menu (tablename)
  - test delete handler with permissions
  - translate catalog field and description for template output
- - implement ajax based toggle handler
  - improve site map xml
  - fix problem with sql blob to binary cast

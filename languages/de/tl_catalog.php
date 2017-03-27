@@ -8,6 +8,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'Ansicht Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Weiterleitungs Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage Einstellungen';
 
@@ -45,6 +46,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback Spalte', 'Bi
 $GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Sprach-Quelle', 'Bitte wählen Sie eine Quelle für die Sprache aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Sprachen Spalte', 'Bitte wählen Sie eine Spalte für die Sprache aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Changelanguage Module verwenden', 'Hier können Sie das changelanguage Module für Ihr Katalog verwenden.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Feld für interne Weiterleitung', 'Hier können Sie ein Feld für interne Weiterleitung verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe Weiterleitung', 'Hier können Sie ein Feld für externe Weiterleitung verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie eine externe oder interne Weiterleitungsseite definieren.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Katalog löschen', 'Katalog mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Katalog bearbeiten', 'Katalog mit der ID %s bearbeiten.' ];

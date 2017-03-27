@@ -5,6 +5,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Create new catalog', 'Here you can
 $GLOBALS['TL_LANG']['tl_catalog']['label_settings'] = 'Row settings';
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table settings';
 $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'View settings';
+$GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Redirect Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
@@ -45,6 +46,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Language source',
 $GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback Column', 'Please select a column for fallback value.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Language Column', 'Please select a column for language value.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Use changelanguage module', 'Here you can use changelanguage module for your catalog.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Internal field', 'Here you can chose a field for internal redirect.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'External field', 'Here you can chose a field for external redirect.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Overwrite redirect', 'Here you can define a internal or external redirect.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];

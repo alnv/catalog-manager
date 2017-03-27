@@ -6,5 +6,4 @@ todo before release
  - fix array problem in dca headline
  - test delete handler with permissions
  - translate catalog field and description for template output
- - improve site map xml
  - fix problem with sql blob to binary cast

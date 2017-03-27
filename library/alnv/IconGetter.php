@@ -42,6 +42,20 @@ class IconGetter extends CatalogController {
         return \Image::getHtml( $strIcon, '', $strImageAttribute ) . ' <span>' . $strLabel . '</span>';
     }
 
+    
+    public function setToggleIcon( $strTablename, $blnVisible ) {
+
+        $strIconname = $strTablename . ( !$blnVisible ? '_' : '' );
+        $strCustomIcon = $this->getIcon( $strIconname );
+
+        if ( $blnVisible ) {
+
+            return $strCustomIcon ? $strCustomIcon : 'featured.gif';
+        }
+
+        return $strCustomIcon ? $strCustomIcon : 'featured_.gif';
+    }
+
 
     public function createCatalogManagerDirectories() {
 

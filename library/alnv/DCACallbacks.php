@@ -36,7 +36,7 @@ class DCACallbacks extends \Backend{
 
         $strTable = \Input::get('catalogTable') ? \Input::get('catalogTable') : $arrHrefAttributes['catalogTable'];
         $strCustomFieldname = \Input::get('fieldname') ? \Input::get('fieldname') : $arrHrefAttributes['fieldname'];
-        $strIconInVisible = \Input::get('iconInvisible') ? \Input::get('iconInvisible') : $arrHrefAttributes['iconInvisible'];
+        $strIconInVisible = \Input::get('iconVisible') ? \Input::get('iconVisible') : $arrHrefAttributes['iconVisible'];
 
         if ( $strIconInVisible ) $arrOptions['icon'] = $strIconInVisible;
         if ( $strCustomFieldname ) $arrOptions['fieldname'] = $strCustomFieldname;

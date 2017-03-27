@@ -42,18 +42,19 @@ class IconGetter extends CatalogController {
         return \Image::getHtml( $strIcon, '', $strImageAttribute ) . ' <span>' . $strLabel . '</span>';
     }
 
-    
+
     public function setToggleIcon( $strTablename, $blnVisible ) {
 
         $strIconname = $strTablename . ( !$blnVisible ? '_' : '' );
         $strCustomIcon = $this->getIcon( $strIconname );
+        $strPath = 'system/modules/catalog-manager/assets/icons/';
 
         if ( $blnVisible ) {
 
-            return $strCustomIcon ? $strCustomIcon : 'featured.gif';
+            return $strCustomIcon ? $strCustomIcon : $strPath . 'featured.gif';
         }
 
-        return $strCustomIcon ? $strCustomIcon : 'featured_.gif';
+        return $strCustomIcon ? $strCustomIcon : $strPath . 'featured_.gif';
     }
 
 

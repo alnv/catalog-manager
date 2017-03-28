@@ -95,6 +95,8 @@ class DCABuilder extends CatalogController {
 
         while ( $objCatalogFieldsDb->next() ) {
 
+            if ( !$this->Database->fieldExists( $objCatalogFieldsDb->fieldname, $this->strTable ) ) continue;
+
             $this->arrFields[] = $objCatalogFieldsDb->row();
         }
     }
@@ -286,9 +288,9 @@ class DCABuilder extends CatalogController {
 
     protected function createSortingDataArray() {
 
-        $arrFields = $this->arrCatalog['fields'];
-        $headerFields = $this->arrCatalog['headerFields'];
+        $arrHeaderFields = $this->arrCatalog['headerFields'];
         $strPanelLayout = implode( ',', $this->arrCatalog['panelLayout'] );
+        $arrFields = Toolkit::returnOnlyExistedItems( $this->arrCatalog['fields'], $this->arrFields, true );
 
         if ( $this->arrCatalog['mode'] == '4' && empty( $this->arrCatalog['fields'] ) ) {
 
@@ -300,21 +302,21 @@ class DCABuilder extends CatalogController {
             $arrFields = [ 'title' ];
         }
 
-        if ( empty( $headerFields ) ) {
+        if ( empty( $arrHeaderFields ) ) {
 
-            $headerFields = [ 'id', 'title', 'alias' ];
+            $arrHeaderFields = [ 'id', 'title', 'alias' ];
         }
 
         if ( strpos( $strPanelLayout, 'filter' ) !== false ) {
 
             $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
         }
-
+        
         $arrReturn = [
 
             'fields' => $arrFields,
-            'headerFields' => $headerFields,
             'panelLayout' => $strPanelLayout,
+            'headerFields' => $arrHeaderFields,
             'mode' => $this->arrCatalog['mode'],
             'flag' => $this->arrCatalog['flag'],
             'child_record_callback' => [ 'DCACallbacks', 'createRowView' ],
@@ -327,7 +329,7 @@ class DCABuilder extends CatalogController {
 
             $arrReturn['icon'] = $this->IconGetter->setCatalogIcon( $this->arrCatalog['tablename'] );
         }
-
+        
         return $arrReturn;
     }
 

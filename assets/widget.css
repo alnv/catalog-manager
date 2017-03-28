@@ -12,25 +12,25 @@ table.ctlg_taxonomies_field_selector_table tbody td {
 
 td.ctlg_select_field {
 
-    width: 150px;
+    width: 225px;
     padding: 5px 4px;
 }
 
 td.ctlg_select_operator {
 
-    width: 150px;
+    width: 100px;
     padding: 5px 4px;
 }
 
 td.ctlg_text_value {
 
-    width: 250px;
+    width: 225px;
     padding: 5px 4px;
 }
 
 td.ctlg_button {
 
-    width: 20px;
+    width: 25px;
     padding: 5px 4px;
     text-align: right;
 }
@@ -42,7 +42,7 @@ td.ctlg_button {
 
 .ctlg_text_w50.tl_text {
 
-    width: 47%;
+    width: 49%;
     float: left;
     margin-right: 1%;
 }
@@ -50,6 +50,12 @@ td.ctlg_button {
 .ctlg_text_w50.tl_text.last {
 
     margin-right: 0;
+}
+
+.ctlg_taxonomies_field_selector_table .ctlg_taxonomy_main_selector {
+
+    width: 100%;
+    max-width: 480px;
 }
 
 .tl_select.ctlg_select {

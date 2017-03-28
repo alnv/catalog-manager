@@ -38,6 +38,7 @@ ClassLoader::addClasses([
     'CatalogManager\DCABuilderHelper' => 'system/modules/catalog-manager/library/alnv/DCABuilderHelper.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
+    'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',

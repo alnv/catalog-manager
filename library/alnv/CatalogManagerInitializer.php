@@ -24,13 +24,14 @@ class CatalogManagerInitializer {
 
         if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
 
-        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `name` ASC, `pTable` DESC' )->limit(100)->execute();
+        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC' )->limit( 100 )->execute();
 
         while ( $objCatalogManagerDB->next() ) {
 
             $arrCatalog = $objCatalogManagerDB->row();
 
             if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) continue;
+            if ( !$objDatabase->tableExists( $arrCatalog['tablename'] ) ) continue;
 
             $arrCatalog['fields'] = Toolkit::parseStringToArray( $arrCatalog['fields'] );
             $arrCatalog['cTables'] = Toolkit::parseStringToArray( $arrCatalog['cTables'] );

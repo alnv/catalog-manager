@@ -250,4 +250,25 @@ class Toolkit {
 
         return $arrReturn;
     }
+
+    
+    public static function returnOnlyExistedItems( $arrItems, $arrExistedFields, $blnKeysOnly = false ) {
+
+        $arrReturn = [];
+        $arrExistedValues = $blnKeysOnly ? array_keys( $arrExistedFields ) : $arrExistedFields;
+
+        if ( !empty( $arrItems ) && is_array( $arrItems ) ) {
+
+            foreach ( $arrItems as $varValue ) {
+
+                if ( !$varValue || !is_string( $varValue ) ) continue;
+
+                if ( !in_array( $varValue, $arrExistedValues ) ) continue;
+
+                $arrReturn[] = $varValue;
+            }
+        }
+
+        return $arrReturn;
+    }
 }

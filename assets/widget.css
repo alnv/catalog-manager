@@ -52,26 +52,9 @@ td.ctlg_button {
     margin-right: 0;
 }
 
-.ctlg_taxonomies_field_selector_table .ctlg_taxonomy_main_selector {
-
-    width: 275px;
-}
-
 .ctlg_taxonomies_field_selector_table .ctlg_taxonomy_main_selector .tl_select {
 
-    width: 100% !important;
-}
-
-.ctlg_taxonomies_field_selector_table .ctlg_taxonomy_add_button {
-
-    position: absolute;
-    right: 0;
-    top: 24%;
-}
-
-.ctlg_taxonomies_field_selector_table .ctlg_taxonomy_add_button a {
-
-    display: block;
+    width: 315px;
 }
 
 .tl_select.ctlg_select {
@@ -89,13 +72,5 @@ td.ctlg_button {
     .tl_select.min-width {
 
         min-width: 145px;
-    }
-}
-
-@media only screen and ( min-width: 768px ) {
-
-    .ctlg_taxonomies_field_selector_table .ctlg_taxonomy_main_selector {
-
-        width: 315px;
     }
 }

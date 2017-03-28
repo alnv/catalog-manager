@@ -9,6 +9,7 @@ class CatalogTaxonomyWizard extends \Widget {
     private $arrFields = [];
     private $arrTaxonomies = [];
 
+
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
 
@@ -125,7 +126,8 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</thead>'.
                 '<tbody>'.
                     '<tr>'.
-                        '<td><div style="position:relative; padding-right: 25px;">' . $this->getFieldSelector() . ' <div class="ctlg_taxonomy_add_button">' . $this->getAddButton() . '</div></div></td>'.
+                        '<td><div class="ctlg_taxonomy_main_selector">' . $this->getFieldSelector() . '</div></td>'.
+                        '<td><div class="ctlg_taxonomy_add_button">' . $this->getAddButton() . '</div></td>'.
                     '</tr>'.
                 '</tbody>'.
             '</table>';
@@ -250,6 +252,7 @@ class CatalogTaxonomyWizard extends \Widget {
         }
     }
 
+
     protected function getOperatorOptions( $arrQuery ) {
 
         $strOperatorsOptions = '';
@@ -274,10 +277,11 @@ class CatalogTaxonomyWizard extends \Widget {
         return $strOperatorsOptions;
     }
 
+
     protected function getFieldSelector() {
 
         return sprintf(
-            '<div class="ctlg_taxonomy_main_selector"><select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select></div>',
+            '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select>',
             $this->strId . '[field]',
             $this->strId . '_field',
             $this->getFieldOptions( $this->varValue['field'], true )

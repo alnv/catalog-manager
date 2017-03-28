@@ -280,7 +280,7 @@ class tl_module extends \Backend {
             if ( $objCatalogFields->type == 'upload' ) continue;
             if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
 
-            $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+            $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>': $objCatalogFields->fieldname;
         }
 
         return $arrReturn;

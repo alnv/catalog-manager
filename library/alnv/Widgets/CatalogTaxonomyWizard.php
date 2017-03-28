@@ -116,7 +116,7 @@ class CatalogTaxonomyWizard extends \Widget {
 
         $strRowTemplate = '';
         $strHeadTemplate =
-            '<table border="0" cellspacing="0" cellpadding="0" style="width:100%; margin-top: 5px; margin-bottom: 5px;" class="ctlg_taxonomies_field_selector_table">'.
+            '<table border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px; margin-bottom: 5px;" class="ctlg_taxonomies_field_selector_table">'.
                 '<thead>'.
                     '<tr>'.
                         '<td>' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] . '</td>'.
@@ -125,8 +125,7 @@ class CatalogTaxonomyWizard extends \Widget {
                 '</thead>'.
                 '<tbody>'.
                     '<tr>'.
-                        '<td>' . $this->getFieldSelector() . '</td>'.
-                        '<td style="white-space:nowrap;padding-left:3px">' . $this->getAddButton() . '</td>'.
+                        '<td><div style="position:relative; padding-right: 25px;">' . $this->getFieldSelector() . ' <div class="ctlg_taxonomy_add_button">' . $this->getAddButton() . '</div></div></td>'.
                     '</tr>'.
                 '</tbody>'.
             '</table>';

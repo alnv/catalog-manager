@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect' ],
-        'default' => '{table_settings},name,tablename,description,info;{sorting_settings},mode,flag,cTables,pTable,addContentElements;{label_settings},showColumns,fields,headerFields,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{redirect_legend},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,headerFields,fields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
     ],
 
     'subpalettes' => [
@@ -148,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'tl_class' => 'long clr',
+                'tl_class' => 'w50',
                 'maxlength' => 16
             ],
 
@@ -166,9 +166,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'unique' => true,
                 'rgxp' => 'extnd',
                 'maxlength' => 128,
-                'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
+                'tl_class' => 'long',
                 'spaceToUnderscore' => true,
             ],
 
@@ -344,7 +344,10 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['showColumns'],
             'inputType' => 'checkbox',
 
-            'eval' => [],
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"

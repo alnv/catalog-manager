@@ -5,7 +5,7 @@ Here you find [Catalog Manager Documentation][3] ( German only )
 
 ## Installation
 
-Catalog Manager: latest version: _v1.0-beta.6_
+Catalog Manager: latest version: _v1.0-beta.7_
 
 **Contao 3.5**
 
@@ -28,5 +28,5 @@ Die Contao Erweiterung "Catalog-Manager" wird kostenpflichtig angeboten. Mit dem
 Alle zukünftig erscheinenden Updates ( Bugfixes und Sicherheitsupdates ) sind kostenlos. Die Software wird ohne jede ausdrückliche oder implizierte Garantie bereitgestellt.
 
 [1]: https://www.alexandernaumov.de/blog/f-modul-2-0-aka-catalog-manager
-[2]: https://github.com/alnv/catalog-manager/archive/v1.0-beta.6.tar.gz
+[2]: https://github.com/alnv/catalog-manager/archive/v1.0-beta.7.tar.gz
 [3]: https://github.com/alnv/catalog-manager/wiki

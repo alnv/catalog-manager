@@ -1,15 +1,15 @@
 <?php
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Feld anlegen', 'Hier können Sie ein neues Feld erstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Eingabefeld erstellen', 'Hier können Sie ein neues Eingabefeld erstellen.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Bild Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbank Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Eingabefeld verstecken';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Auswahlliste Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['mapField_legend'] = 'Kartenansicht Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluationsarray Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Bild-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbankeinstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Auswahlliste-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapField_legend'] = 'Kartenansicht-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Eingabefeld-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Sichtbarkeitseinstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Layout-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['step'] = [ 'Interval', 'Bitte geben Sie den Interval ein.' ];
@@ -43,7 +43,6 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['allowHtml'] = [ 'HTML erlauben', 'Dies
 $GLOBALS['TL_LANG']['tl_catalog_fields']['value'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['minval'] = [ 'Minimaler Zahlenwert', 'Hier können Sie den Minimalen Zahlenwert festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'] = [ 'Maximaler Zahlenwert', 'Hier können Sie den Maximalen Zahlenwert festlegen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Bei einer Änderungen wird die Seite neu geladen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['extensions'] = [ 'Erlaubte Dateitypen', 'Eine kommagetrennte Liste gültiger Dateiendungen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Zeitstempel', 'Der Zeitstempel wird als der Standard-Wert verwendet.' ];
@@ -60,7 +59,8 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Zeichenlänge', 'Bit
 $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Leerzeichen umwandeln', 'Leerzeichen werden zu Unterstrich ( _ ) umgewandelt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hinzufügen', 'Hier können Sie am Ende des Feldwertes ein Schrägstrich hinzufügen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausblenden', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Legt fest, ob das Formular bei der Änderung des Feldwertes automatisch abgeschickt wird.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausschließen', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'Dateityp', 'Bitte wählen Sie einen Dateityp aus.' ];
@@ -85,10 +85,10 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitt
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Auswahlliste einbinden', 'Hier können Sie eine Auswahlliste an Werten erstellen.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Feld löschen', 'Feld mit der ID %s löschen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Feld bearbeiten', 'Feld mit der ID %s bearbeiten.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Feld ausblenden', 'Feld mit der ID %s ein/ausblenden.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Feld Details anziegen', 'Die Details des Feldes mit der ID %s anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Eingabefeld bearbeiten', 'Eingabefeld mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Eingabefeld ausblenden', 'Eingabefeld mit der ID %s ein/ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Details des Eingabefelds anziegen', 'Die Details des Eingabefelds mit der ID %s anzeigen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['mapTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['mapScrollWheel'] = [ 'Scrollen erlauben', 'Das scrollen auf der Map erlauben.' ];

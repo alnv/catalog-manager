@@ -6,14 +6,14 @@ class CatalogManagerVerification extends CatalogController {
 
 
     protected function getContaoInstallData() {
-
+        
         return [
 
             'name' => 'catalog-manager',
-            'ip' => \Environment::get('ip'),
+            'version' => constant('VERSION'),
+            'ip' => \Environment::get('server'),
             'domain' => \Environment::get('base'),
             'title' => \Config::get('websiteTitle'),
-            'adminEmail' => \Config::get('adminEmail'),
             'licence' => \Config::get('catalogLicence'),
             'lastUpdate' => date( 'd.m.Y H:i',\Date::floorToMinute() )
         ];

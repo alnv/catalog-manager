@@ -5,8 +5,6 @@ Here you find [Catalog Manager Documentation][3] ( German only )
 
 ## Installation
 
-Catalog Manager: latest version: _v1.0-beta.7_
-
 **Contao 3.5**
 
 You can install Catalog Manager in Extension Repository. Just search for "Catalog-Manager" :)

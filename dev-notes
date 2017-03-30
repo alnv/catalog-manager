@@ -3,7 +3,6 @@ todo before release
  - improve parseWhereQueryArray and createWhereStatement handler
  - fix array problem in dca headline
  - test delete handler with permissions
- - translate catalog field and description for template output
  - fix problem with sql blob to binary cast
 
 todo next release

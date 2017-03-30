@@ -48,7 +48,7 @@ class ModuleUniversalView extends \Module {
 
             case 'delete':
 
-                $this->deleteItemFromCatalog();
+                $this->deleteEntityFromCatalog();
 
                 break;
 
@@ -69,7 +69,7 @@ class ModuleUniversalView extends \Module {
     }
 
 
-    private function deleteItemFromCatalog() {
+    private function deleteEntityFromCatalog() {
 
         $this->import( 'FrontendEditing' );
 
@@ -78,6 +78,25 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->strItemID = \Input::get( 'id' );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
+
+        $blnIsVisible = $this->FrontendEditing->isVisible();
+        $blnHasPermission = $this->FrontendEditing->checkPermission( $this->strAct );
+
+        if ( !$blnHasPermission ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $this->FrontendEditing->strPageID );
+
+            return null;
+        }
+
+        if ( !$blnIsVisible ) {
+
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $this->FrontendEditing->strPageID );
+
+            return null;
+        }
 
         $this->FrontendEditing->deleteEntity();
     }
@@ -187,9 +206,10 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
-        $blnHasPermission = $this->FrontendEditing->checkPermission();
+        $blnHasAccess = $this->FrontendEditing->checkAccess();
+        $blnHasPermission = $this->FrontendEditing->checkPermission( $this->strAct );
 
-        if ( !$blnHasPermission ) {
+        if ( !$blnHasPermission || !$blnHasAccess ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );

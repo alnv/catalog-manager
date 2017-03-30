@@ -7,8 +7,8 @@ class FrontendEditingPermission extends CatalogController {
 
     public $blnDisablePermissions = false;
 
-    private $arrGroups = [];
-    private $arrCatalogManagerPermissions = [];
+    protected $arrGroups = [];
+    protected $arrCatalogManagerPermissions = [];
 
 
     public function __construct() {
@@ -69,7 +69,7 @@ class FrontendEditingPermission extends CatalogController {
     }
 
 
-    private function setCatalogManagerPermissionFields() {
+    protected function setCatalogManagerPermissionFields() {
 
         $objCatalogs = $this->SQLQueryHelper->getCatalogs();
 
@@ -81,7 +81,7 @@ class FrontendEditingPermission extends CatalogController {
     }
 
 
-    private function setAttributes() {
+    protected function setAttributes() {
 
         $arrUser = $this->User->getData();
 
@@ -95,7 +95,7 @@ class FrontendEditingPermission extends CatalogController {
     }
 
 
-    private function setMemberGroup() {
+    protected function setMemberGroup() {
 
         $intTime = \Date::floorToMinute();
 

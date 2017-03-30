@@ -232,7 +232,7 @@ class SQLQueryBuilder extends CatalogController {
 
                 $intOrIndex = 0;
 
-                if ( $intIndex ) $strWhereStatement .= '(';
+                $strWhereStatement .= '(';
 
                 foreach ( $arrQueries as $strKey => $varValue ) {
 
@@ -263,7 +263,7 @@ class SQLQueryBuilder extends CatalogController {
                     $intOrIndex++;
                 }
 
-                if ( $intIndex ) $strWhereStatement .= ')';
+                $strWhereStatement .= ')';
             }
 
             else {

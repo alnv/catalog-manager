@@ -2,7 +2,6 @@ todo before release
  - implement export and import csv files
  - test CTLG_MASTER insert tag and master handler
  - improve parseWhereQueryArray and createWhereStatement handler
- - improve labels
  - fix array problem in dca headline
  - test delete handler with permissions
  - translate catalog field and description for template output

@@ -32,23 +32,22 @@ $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Eltern-Felder', 'Eines od
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Als mehrspaltige Tabelle anzeigen', 'Legt fest, ob Contao einen Tabellenkopf mit Spaltennamen ausgeben soll.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'Stadt', 'Bitte wählen Sie ein Feld für die Stadt aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Land', 'Bitte wählen Sie ein Feld für das Land aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = [ 'Straßen', 'Bitte wählen Sie ein Feld für die Straße aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['latField'] = [ 'Latitude', 'Bitte wählen Sie ein Feld für den Latitude Wert aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = [ 'Longitude', 'Bitte wählen Sie ein Feld für den Longitude Wert aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = [ 'Postleitzahl', 'Bitte wählen Sie ein Feld für die Postleitzahl aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Straßennummer', 'Bitte wählen Sie ein Feld für die Straßennummer aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Vollständige Adresse', 'Bitte wählen Sie eein Feld für die vollständige Adresse aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 'Bitte wählen Sie ein Eingabetyp für die lat & long ermittelten Werte aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Latitude & Longitude erzeugen', 'Hier können Sie automatisch Latitude & Longitude Werte ermitteln.' ];
-
-$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback', 'Bitte wählen Sie ein Fallback Feld aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Sprach-Quelle', 'Bitte wählen Sie eine Quelle für die Sprache aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Sprache', 'Bitte wählen Sie ein Feld für die Sprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Land', 'Bitte wählen Sie für den Land ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = [ 'Straße', 'Bitte wählen Sie für die Straße ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['latField'] = [ 'Latitude', 'Bitte wählen Sie für die Latitude ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = [ 'Longitude', 'Bitte wählen Sie für die Longitude ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback', 'Bitte wählen Sie für den Fallback ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = [ 'Postleitzahl', 'Bitte wählen Sie für die Postleitzahl ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Quelle', 'Bitte wählen Sie eine Quelle für die Sprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Sprache', 'Bitte wählen Sie für die Sprache ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Vollständige Adresse', 'Bitte wählen Sie für die Adresse ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Straßennummer', 'Bitte wählen Sie für die Straßennummer ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Sprachwechsler Module verwenden', 'Hier können Sie das Sprachwechsler Module verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Latitude & Longitude erzeugen', 'Hier können Sie automatisch Latitude und Longitude Werte ermitteln.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 'Bitte wählen Sie für Latitude und Longitude ein Eingabefeld. In diesem Eingabefeld wird der tatsächliche Wert gespeichert.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Feld für interne Weiterleitung', 'Hier können Sie ein Feld für interne Weiterleitung verwenden.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe Weiterleitung', 'Hier können Sie ein Feld für externe Weiterleitung verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Feld für interne Weiterleitung', 'Hier können Sie ein Eingabefeld für interne Weiterleitung verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe Weiterleitung', 'Hier können Sie ein Eingabefeld für externe Weiterleitung verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie eine externe oder interne Weiterleitungsseite definieren.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Backend Modul löschen', 'Backend Modul mit der ID %s löschen.' ];

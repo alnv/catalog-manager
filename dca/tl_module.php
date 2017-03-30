@@ -471,7 +471,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseRelation'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'],
-    'inputType' => 'catalogRelationWizard',
+    'inputType' => 'catalogRelationRedirectWizard',
 
     'eval' => [
 

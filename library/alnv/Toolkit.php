@@ -220,7 +220,7 @@ class Toolkit {
                     }
 
                     foreach ( $arrQuery['subQueries'] as $arrSubQuery ) {
-
+                        
                         if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
 
                             $arrSubQuery = $fnCallback( $arrSubQuery );

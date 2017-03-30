@@ -128,7 +128,7 @@ class tl_module extends \Backend {
     public function getChildTablesByTablename( \DataContainer $dc ) {
 
         $arrReturn = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][  $dc->activeRecord->catalogTablename ];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
 
         if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
 

@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
+
     private $arrCatalogFieldCache = [];
     private $arrCreateSortingFieldOn = [ '4', '5' ];
 
@@ -227,7 +228,7 @@ class tl_catalog extends \Backend {
 
         if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
 
-            throw new \Exception('This mode required ptable.'); // @todo i18n
+            throw new \Exception('this mode required parent table.');
         }
 
         return $varValue;
@@ -320,7 +321,7 @@ class tl_catalog extends \Backend {
 
         if ( $varValue && in_array( $dc->activeRecord->mode , $arrNotAllowedModeTypes ) ) {
 
-            throw new \Exception('You can not use format in this mode'); // @todo i18n
+            throw new \Exception('you can not use format in this mode.');
         }
 
         return $varValue;
@@ -331,7 +332,7 @@ class tl_catalog extends \Backend {
 
         if ( $varValue && $dc->activeRecord->pTable ) {
 
-            throw new \Exception('You can not generate backend module with ptable attribute.'); // @todo i18n
+            throw new \Exception('you can not generate backend module with parent table.');
         }
 
         return $varValue;
@@ -342,7 +343,7 @@ class tl_catalog extends \Backend {
 
         if ( $varValue && $dc->activeRecord->isBackendModule ) {
 
-            throw new \Exception('You can not use ptable for backend module.'); // @todo i18n
+            throw new \Exception('you can not use parent table for backend module.');
         }
 
         return $varValue;

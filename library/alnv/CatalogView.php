@@ -30,6 +30,7 @@ class CatalogView extends CatalogController {
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
+        $this->import( 'I18nCatalogTranslator' );
     }
 
 
@@ -39,6 +40,8 @@ class CatalogView extends CatalogController {
         
         $this->setOptions();
         $arrPage = $objPage->row();
+
+        $this->I18nCatalogTranslator->initialize();
 
         if ( !$this->catalogTablename ) return null;
 
@@ -51,7 +54,11 @@ class CatalogView extends CatalogController {
             foreach ( $this->arrCatalogFields as $strID => $arrField ) {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
-                
+
+                $arrFieldLabels = $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['title'], $arrField['description'] );
+
+                $this->arrCatalogFields[ $strID ][ 'title' ] = $arrFieldLabels[0];
+                $this->arrCatalogFields[ $strID ][ 'description' ] = $arrFieldLabels[1];
 
                 if ( !$arrField['invisible'] && is_numeric( $strID ) ) {
                     

@@ -516,6 +516,7 @@ class CatalogView extends CatalogController {
                 'catalogFields' => $this->arrCatalogFields,
                 'activeFields' => $this->getActiveCatalogFields(),
                 'activeFieldsHeadline' => $this->getActiveFieldsHeadline( $this->strTemplate ),
+                'activeFieldsOutput' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'],
 
                 'open_html' => htmlentities('<'),
                 'close_tag' => htmlentities('>'),

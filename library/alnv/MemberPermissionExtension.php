@@ -36,9 +36,13 @@ class MemberPermissionExtension extends CatalogController {
 
         $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
+        \Controller::loadLanguageFile( 'tl_member_group' );
+
+        $GLOBALS['TL_LANG']['tl_member_group'][ $strCatalogname . '_legend' ] = $arrLabels[0] . ' [' . $strCatalogname . ']';
+
         $GLOBALS['TL_DCA']['tl_member_group']['palettes']['__selector__'][] = $strCatalogname;
         $GLOBALS['TL_DCA']['tl_member_group']['subpalettes'][$strCatalogname] = $strCatalogname . 'p';
-        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] = str_replace( 'isAdmin;', sprintf( 'isAdmin;{%s:hide},%s;', $arrLabels[0], $strCatalogname ), $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] );
+        $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] = str_replace( 'isAdmin;', sprintf( 'isAdmin;{%s:hide},%s;', $strCatalogname . '_legend', $strCatalogname ), $GLOBALS['TL_DCA']['tl_member_group']['palettes']['default'] );
 
         $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname ] = [
 

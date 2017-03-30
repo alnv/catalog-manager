@@ -31,6 +31,7 @@ class CatalogView extends CatalogController {
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
+        $this->import( 'FrontendEditingPermission' );
     }
 
 
@@ -113,8 +114,6 @@ class CatalogView extends CatalogController {
 
 
     public function checkPermission() {
-
-        $this->import( 'FrontendEditingPermission' );
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
         $this->FrontendEditingPermission->initialize();
@@ -273,7 +272,7 @@ class CatalogView extends CatalogController {
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
-                    'value' => ( $dteTime + 60 )
+                    'value' => $dteTime
                 ]
             ];
 

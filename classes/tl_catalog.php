@@ -203,7 +203,9 @@ class tl_catalog extends \Backend {
     }
 
 
-    public function getModeTypes () {
+    public function getModeTypes ( \DataContainer $dc ) {
+
+        if ( $dc->activeRecord->pTable ) return ['4'];
 
         return [ '0', '1', '2', '4', '5' ];
     }

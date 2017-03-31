@@ -139,7 +139,7 @@ class CatalogRelationRedirectWizard extends \Widget {
     protected function generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons ) {
 
         $arrModuleName = $this->I18nCatalogTranslator->getModuleLabel( $arrOption['value'] );
-        $strName = $arrModuleName[0] ? $arrModuleName[0] . ' [' . $arrOption['label'] . ']' : $arrOption['label'];
+        $strName = $arrModuleName[0] ? $arrModuleName[0] : $arrOption['label'];
 
         $strTemplate =
             '<tr>'.
@@ -173,7 +173,6 @@ class CatalogRelationRedirectWizard extends \Widget {
 
         $varValue = $this->getValues( $intIndex );
         $strID = $this->strId . '_pageURL_' . $intIndex;
-        $strName = $this->strName . '['.$intIndex.'][pageURL]';
 
         return ' <a href="contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_module&amp;field=' . $strID . '&amp;value=' . rawurlencode( str_replace( array('{{link_url::', '}}'), '', $varValue ) ) . '&amp;switch=1' . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\'' . specialchars(str_replace("'", "\\'", $GLOBALS['TL_DCA']['tl_module']['fields'][$this->strName]['label'][0])) . '\',\'url\':this.href,\'id\':\'' . $strID . '\',\'tag\':\''. $strID . (( \Input::get('act') == 'editAll') ? '_' . $strID : '') . '\',\'self\':this});return false">' . \Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="vertical-align:top;cursor:pointer"') . '</a>';
     }

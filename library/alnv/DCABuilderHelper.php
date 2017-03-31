@@ -34,6 +34,13 @@ class DCABuilderHelper extends CatalogController {
     ];
 
 
+    public $arrNoFieldnameRequired = [
+
+        'fieldsetStart',
+        'fieldsetStop'
+    ];
+
+    
     public $arrReadOnlyInputTypes = [
 
         'message'

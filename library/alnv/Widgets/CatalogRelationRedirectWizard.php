@@ -37,6 +37,8 @@ class CatalogRelationRedirectWizard extends \Widget {
     public function generate() {
 
         $this->import('Database');
+        $this->import('I18nCatalogTranslator');
+
         $arrButtons = [ 'up', 'down' ];
         $strCommand = 'cmd_' . $this->strField;
 
@@ -117,8 +119,9 @@ class CatalogRelationRedirectWizard extends \Widget {
                 '<thead>'.
                     '<tr>'.
                         '<th>'.( $blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this,\'ctrl_' . $this->strId . '\')"></span>' : '').'</th>'.
-                        '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['table'] .'</th>'.
-                        '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['pageURL'] .'</th>'.
+                        '<th>'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['selectAll'] .'</th>'.
+                        '<th>&nbsp;</th>'.
+                        '<th>&nbsp;</th>'.
                         '<th>&nbsp;</th>'.
                     '</tr>'.
                 '</thead>'.
@@ -135,12 +138,15 @@ class CatalogRelationRedirectWizard extends \Widget {
 
     protected function generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons ) {
 
+        $arrModuleName = $this->I18nCatalogTranslator->getModuleLabel( $arrOption['value'] );
+        $strName = $arrModuleName[0] ? $arrModuleName[0] . ' [' . $arrOption['label'] . ']' : $arrOption['label'];
+
         $strTemplate =
             '<tr>'.
                 '<td><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="%s" tabindex="%s" %s></td>'.
                 '<td><label for="%s">%s</label></td>'.
                 '<td><input type="text" name="%s" id="%s" class="tl_text" value="%s" tabindex="%s"></td>'.
-                '<td>%s</td>'.
+                '<td style="white-space:nowrap; padding-left:3px">%s</td>'.
                 '<td style="white-space:nowrap; padding-left:3px">'. $strButtons .'</td>'.
             '</tr>';
 
@@ -153,7 +159,7 @@ class CatalogRelationRedirectWizard extends \Widget {
             $intTabindex++,
             $this->isCustomChecked( $arrOption['value'] ),
             $this->strId . '_table_' . $intIndex,
-            $arrOption['label'],
+            $strName,
             $this->strId . '[' . $intIndex . '][pageURL]',
             $this->strId . '_pageURL_' . $intIndex,
             $this->getValues( $intIndex ),

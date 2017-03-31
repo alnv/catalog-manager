@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'],
                 'icon' => 'visible.gif',
-                'href' => sprintf( 'table=%s', 'tl_catalog_fields' ),
+                'href' => sprintf( 'catalogTable=%s', 'tl_catalog_fields' ),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", 'tl_catalog_fields' ) .' )"',
                 'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
             ],

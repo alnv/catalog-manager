@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect' ],
-        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,headerFields,fields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,format,showColumns,headerFields,fields;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
     ],
 
     'subpalettes' => [
@@ -302,13 +302,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'headerFields' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['headerFields'],
-            'inputType' => 'select',
+            'inputType' => 'checkboxWizard',
 
             'eval' => [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50',
+                'tl_class' => 'clr',
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],
@@ -322,13 +322,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'fields' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['fields'],
-            'inputType' => 'select',
+            'inputType' => 'checkboxWizard',
 
             'eval' => [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'w50',
+                'tl_class' => 'clr',
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],
@@ -336,7 +336,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
-            'sql' => "varchar(64) NOT NULL default ''"
+            'sql' => "varchar(1024) NOT NULL default ''"
         ],
 
         'showColumns' => [
@@ -346,7 +346,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50 m12'
+                'tl_class' => 'w50'
             ],
 
             'exclude' => true,

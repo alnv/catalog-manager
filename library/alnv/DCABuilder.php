@@ -95,7 +95,13 @@ class DCABuilder extends CatalogController {
 
         while ( $objCatalogFieldsDb->next() ) {
 
-            if ( !$this->Database->fieldExists( $objCatalogFieldsDb->fieldname, $this->strTable ) ) continue;
+            if ( !$this->Database->fieldExists( $objCatalogFieldsDb->fieldname, $this->strTable ) ) {
+                
+                if ( !in_array( $objCatalogFieldsDb->type, $this->DCABuilderHelper->arrNoFieldnameRequired ) ) {
+
+                    continue;
+                }
+            }
 
             $this->arrFields[] = $objCatalogFieldsDb->row();
         }
@@ -292,7 +298,7 @@ class DCABuilder extends CatalogController {
         $strPanelLayout = implode( ',', $this->arrCatalog['panelLayout'] );
         $arrFields = Toolkit::returnOnlyExistedItems( $this->arrCatalog['fields'], $this->arrFields, true );
 
-        if ( $this->arrCatalog['mode'] == '4' && empty( $this->arrCatalog['fields'] ) ) {
+        if ( $this->arrCatalog['mode'] == '4' && ( empty( $this->arrCatalog['fields'] ) || in_array( 'sorting', $this->arrCatalog['fields'] ) ) ) {
 
             $arrFields = ['sorting'];
         }
@@ -479,13 +485,7 @@ class DCABuilder extends CatalogController {
 
         $strPalette = '';
         $strTemporaryPalette = 'general_legend';
-
-        $arrPaletteTranslationMap = [
-
-            'general_legend' => '',
-            'invisible_legend' => ''
-        ];
-
+        $arrPaletteTranslationMap = [ 'general_legend' => '', 'invisible_legend' => '' ];
         $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
 
         foreach ( $this->arrFields as $arrField ) {

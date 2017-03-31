@@ -17,7 +17,7 @@
    <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
       <ul>
          <?php foreach( $this->relations as $arrRelation ): ?>
-            <li><a href="<?= $arrRelation['href'] ?>" <?= $arrRelation['attributes'] ?> ><?= $arrRelation['label'] ?></a></li>
+            <li><a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>"><span class="catalog_module_icon"><img src="<?= $arrRelation['iconSRC'] ?>" width="16" height="16"></span> <?= $arrRelation['title'] ?></a></li>
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>

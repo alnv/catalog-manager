@@ -20,12 +20,14 @@ class CatalogView extends CatalogController {
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
+    protected $arrRelatedTables = [];
 
 
     public function __construct() {
 
         parent::__construct();
 
+        $this->import( 'IconGetter' );
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
@@ -110,6 +112,8 @@ class CatalogView extends CatalogController {
         $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
+
+        $this->setRelatedTables();
     }
 
 
@@ -550,32 +554,6 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function setRelatedTableLinks( $strID ) {
-
-        $arrReturn = [];
-
-        if ( is_array( $this->catalogRelatedChildTables ) ) {
-
-            foreach ( $this->catalogRelatedChildTables as $arrRelatedChild ) {
-
-                if ( !$arrRelatedChild['table'] ) continue;
-
-                $strUrl = \Controller::replaceInsertTags( $arrRelatedChild['pageURL'] );
-                $strSuffix = sprintf( '?pid=%s&amp;pTable=%s', $strID, $this->catalogTablename );
-
-                $arrReturn[ $arrRelatedChild['table'] ] = [
-
-                    'href' => $strUrl . $strSuffix,
-                    'label' => $arrRelatedChild['table'],
-                    'attributes' => ''
-                ];
-            }
-        }
-
-        return $arrReturn;
-    }
-
-
     protected function getMasterRedirect( $arrCatalog = [], $strAlias = '' ) {
 
         if ( $this->arrCatalog['useRedirect'] && $this->arrCatalog['internalUrlColumn'] ) {
@@ -804,5 +782,45 @@ class CatalogView extends CatalogController {
             'table' => $this->catalogTablename,
             'onTable' => $this->arrCatalog['pTable']
         ];
+    }
+
+
+    protected function setRelatedTableLinks( $strID ) {
+
+        foreach ( $this->arrRelatedTables as $strTablename => $arrRelatedTable ) {
+
+            $strUrl = $this->arrRelatedTables[ $strTablename ]['url'];
+            $strSuffix = sprintf( '?pid=%s&amp;pTable=%s', $strID, $this->catalogTablename );
+
+            $this->arrRelatedTables[ $strTablename ]['href'] = $strUrl . $strSuffix;
+        }
+
+        return $this->arrRelatedTables;
+    }
+
+
+    protected function setRelatedTables() {
+
+        if ( !empty( $this->catalogRelatedChildTables )  && is_array( $this->catalogRelatedChildTables ) ) {
+
+            foreach ( $this->catalogRelatedChildTables as $arrRelatedTable ) {
+
+                $arrTableData = [];
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $arrRelatedTable['table'] );
+
+                if ( !$objCatalog->numRows ) continue;
+
+                $arrCatalog = $objCatalog->row();
+                $strName = $this->I18nCatalogTranslator->getModuleLabel( $arrRelatedTable['table'] );
+
+                $arrTableData['info'] = $arrCatalog['info'];
+                $arrTableData['description'] = $arrCatalog['description'];
+                $arrTableData['title'] = $strName[0] ? $strName[0] : $arrCatalog['name'];
+                $arrTableData['url'] = \Controller::replaceInsertTags( $arrRelatedTable['pageURL'] );
+                $arrTableData['iconSRC'] = $this->IconGetter->setCatalogIcon( $arrRelatedTable['table'] );
+
+                $this->arrRelatedTables[ $arrRelatedTable['table'] ] = $arrTableData;
+            }
+        }
     }
 }

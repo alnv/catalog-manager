@@ -319,6 +319,14 @@ class tl_catalog_fields extends \Backend {
         $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
 
+        foreach ( $arrReturn as $strFieldname => $arrField ) {
+
+            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) {
+
+                unset( $arrReturn[ $strFieldname ] );
+            }
+        }
+
         while ( $objCatalogFields->next() ) {
 
             if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) || in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {

@@ -188,17 +188,20 @@ class OptionsGetter extends CatalogController {
 
             case 'BE':
 
-                if ( !\Input::get('id') || !\Input::get('do') ) {
+                $strID = \Input::get('id');
+                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('do');
+
+                if ( !$strID || !$strTable ) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( \Input::get('do') ) ) {
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $strTable ) ) {
 
                     return null;
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', \Input::get('do') ) )->limit(1)->execute( \Input::get('id') )->row();
+                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $strTable ) )->limit(1)->execute( $strID )->row();
 
                 return null;
 

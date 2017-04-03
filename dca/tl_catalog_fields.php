@@ -1163,7 +1163,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'useOptions',
                 'useDbOptions',
-                'useForeignKey',
+                'useForeignKey'
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'],

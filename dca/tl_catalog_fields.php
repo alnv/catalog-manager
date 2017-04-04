@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'addMapInfoBox' => 'mapInfoBoxContent',
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
-        'fileType_image' => 'fullsize,disableImageRendering,imageTitle,imageAlt,imageURL,imageCaption,useSize'
+        'fileType_image' => 'disableImageRendering,fullsize,imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,useSize'
     ],
 
     'fields' => [
@@ -1483,6 +1483,26 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'imageTemplate' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['imageTemplate'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getImageTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
         ]
     ]
 ];

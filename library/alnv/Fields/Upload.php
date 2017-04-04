@@ -188,7 +188,7 @@ class Upload {
         if ( $arrField['multiple'] ) $strTemplate = ''; // @todo gallery
 
         $objPicture = new \FrontendTemplate( $strTemplate );
-
+        
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
         return $strTemplate ? $objPicture->parse() : $objPicture;

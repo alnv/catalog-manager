@@ -584,6 +584,8 @@ class CatalogView extends CatalogController {
 
             case 'upload':
 
+                if ( is_null( $varValue ) ) return ''; // @todo sync file
+
                 return Upload::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;

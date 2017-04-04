@@ -4,6 +4,7 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = [ 'CatalogMan
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'enableTableView';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRelation';
@@ -16,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiu
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseMasterPage,catalogUseViewPage;{template_legend:hide},catalogMasterTemplate,customTpl,catalogTemplateDebug;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFilterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalogFilterRedirect_legend:hide},catalogRedirectType;{catalogFilterTemplates_legend:hide},catalogFilterFieldTemplates;{catalogFieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogTableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogFormRedirect,catalogItemOperations,catalogExcludedFields,catalogStoreFile;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink,enableTableView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogTableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogFormRedirect,catalogItemOperations,catalogExcludedFields,catalogStoreFile;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseTaxonomies'] = 'catalogTaxonomies';
@@ -25,6 +26,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRelation'] = 'catalogR
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_internal'] = 'catalogInternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_external'] = 'catalogExternalFormRedirect';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
@@ -1053,7 +1055,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
     'options_callback' => [ 'CatalogManager\tl_module', 'getSystemCountries' ],
 
     'exclude' => true,
-    'sql' => "char(128) NOT NULL default ''"
+    'sql' => "varchar(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseTaxonomies'] = [
@@ -1105,7 +1107,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEODescription'] = [
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
 
     'exclude' => true,
-    'sql' => "char(128) NOT NULL default ''"
+    'sql' => "varchar(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEOTitle'] = [
@@ -1125,7 +1127,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEOTitle'] = [
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
 
     'exclude' => true,
-    'sql' => "char(128) NOT NULL default ''"
+    'sql' => "varchar(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludedFields'] = [
@@ -1173,4 +1175,55 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDisableMasterLink'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['enableTableView'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['enableTableView'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'doNotCopy' => true,
+        'tl_class' => 'w50 m12',
+        'submitOnChange' => true,
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveTableColumns'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'],
+    'inputType' => 'checkboxWizard',
+
+    'eval' => [
+
+        'multiple' => true,
+        'tl_class' => 'clr',
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+
+    'exclude' => true,
+    'sql' => "blob NULL"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableViewTemplate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50',
+        'mandatory' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getTableViewTemplates' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
 ];

@@ -66,6 +66,7 @@ TemplateLoader::addFiles([
     'ctlg_view_teaser' => 'system/modules/catalog-manager/templates',
     'ctlg_view_master' => 'system/modules/catalog-manager/templates',
     'ctlg_map_default' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_table' => 'system/modules/catalog-manager/templates',
     'ctlg_form_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_grouped' => 'system/modules/catalog-manager/templates',
     'ctlg_message_field' => 'system/modules/catalog-manager/templates',
@@ -73,5 +74,5 @@ TemplateLoader::addFiles([
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
     'ctlg_debug_default' => 'system/modules/catalog-manager/templates',
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
-    'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
+    'ctlg_view_teaser_table' => 'system/modules/catalog-manager/templates',
 ]);

@@ -85,6 +85,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogTableless'] = [ 'Tableless layout', 'Re
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Hide filter form', 'Here you can hide the form in detail view mode.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Disable fields', 'Here you can disable fields.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Enable template debug mode', 'Here you can enable template debug mode.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Disable master redirect', 'Here you can disable redirect to master page.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

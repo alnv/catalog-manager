@@ -86,6 +86,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Filter ve
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Felder deaktivieren', 'Hier können Sie Felder aus dem Formular ausschließen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Debugmodus aktivieren', 'Hier können Sie den Debugmodus aktivieren. Dabei werden nützliche Informationen bereitgestellt.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Detail-Weiterleitung deaktivieren', 'Hier können Sie den Link zu der Detailseite ausblenden.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

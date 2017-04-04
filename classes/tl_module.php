@@ -91,6 +91,12 @@ class tl_module extends \Backend {
     }
 
 
+    public function getTableViewTemplates() {
+
+        return $this->getTemplateGroup('mod_catalog_table');
+    }
+
+
     public function getCatalogOperationItems() {
 
         return [ 'create', 'copy', 'edit', 'delete' ];
@@ -334,6 +340,26 @@ class tl_module extends \Backend {
 
                     $arrReturn[ $strFieldname ] = $arrField['title'] ? $arrField['title'] : $strFieldname;
                 }
+            }
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getAllColumns( \DataContainer $dc ) {
+
+        $arrReturn = [];
+
+        if ( !$dc->activeRecord->catalogTablename ) return $arrReturn;
+
+        $arrColumns = $this->getTaxonomyFields( $dc, $dc->activeRecord->catalogTablename );
+
+        if ( !empty( $arrColumns ) && is_array( $arrColumns ) ) {
+
+            foreach ( $arrColumns as $strFieldname => $arrField ) {
+
+                $arrReturn[ $strFieldname ] = $arrField['title'] ? $arrField['title'] . ' ['. $arrField['fieldname'] .']' : $arrField['fieldname'];
             }
         }
 

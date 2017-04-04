@@ -301,6 +301,7 @@ class tl_catalog_fields extends \Backend {
         return $this->getTemplateGroup( 'ctlg_field_' );
     }
 
+
     public function getTaxonomyTable( \DataContainer $dc ) {
 
         return $dc->activeRecord->dbTable ? $dc->activeRecord->dbTable : '';
@@ -338,5 +339,13 @@ class tl_catalog_fields extends \Backend {
         }
 
         return $arrReturn;
+    }
+
+
+    public function getImageTemplates( \DataContainer $dc ) {
+
+        if ( $dc->activeRecord->multiple ) return [];
+
+        return $this->getTemplateGroup( 'ce_image' );
     }
 }

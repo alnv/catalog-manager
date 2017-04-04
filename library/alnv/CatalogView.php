@@ -7,10 +7,11 @@ class CatalogView extends CatalogController {
 
     public $strMode;
     public $strMasterID;
-    public $arrViewPage;
     public $strTemplate;
+    public $arrPage = [];
     public $objMainTemplate;
     public $arrOptions = [];
+    public $arrViewPage = [];
     public $arrMasterPage = [];
 
     protected $arrCatalog = [];
@@ -42,7 +43,7 @@ class CatalogView extends CatalogController {
         global $objPage;
         
         $this->setOptions();
-        $arrPage = $objPage->row();
+        $this->arrPage = $objPage->row();
 
         $this->I18nCatalogTranslator->initialize();
 
@@ -77,8 +78,7 @@ class CatalogView extends CatalogController {
 
         $this->rebuildCatalogFieldIndexes();
 
-        $this->arrMasterPage = $arrPage;
-        $this->arrViewPage = $arrPage;
+        $this->arrMasterPage = $this->arrPage;
 
         if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
 
@@ -177,7 +177,7 @@ class CatalogView extends CatalogController {
 
         return [
 
-            'href' => $this->generateUrl( $this->arrViewPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
+            'href' => $this->generateUrl( $this->arrPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
             'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
             'attributes' => ''
         ];
@@ -555,6 +555,8 @@ class CatalogView extends CatalogController {
 
 
     protected function getMasterRedirect( $arrCatalog = [], $strAlias = '' ) {
+        
+        if ( $this->catalogDisableMasterLink ) return '';
 
         if ( $this->arrCatalog['useRedirect'] && $this->arrCatalog['internalUrlColumn'] ) {
 

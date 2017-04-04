@@ -106,13 +106,13 @@ class Upload {
 
             foreach ( $varValue as $strUuid ) {
 
-                $arrImages[] = static::generateImage( static::createImageArray( $strUuid, $arrField, $arrCatalog ) );
+                $arrImages[] = static::generateImage( static::createImageArray( $strUuid, $arrField, $arrCatalog ), $arrField );
             }
 
             return $arrImages;
         }
 
-        return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ) );
+        return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ), $arrField );
     }
 
 
@@ -181,13 +181,17 @@ class Upload {
     }
 
 
-    public static function generateImage( $arrImage ) {
+    public static function generateImage( $arrImage, $arrField = [] ) {
 
-        $objPicture = new \stdClass();
+        $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : '';
+
+        if ( $arrField['multiple'] ) $strTemplate = ''; // @todo gallery
+
+        $objPicture = new \FrontendTemplate( $strTemplate );
 
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
-        return $objPicture;
+        return $strTemplate ? $objPicture->parse() : $objPicture;
     }
 
     

@@ -18,7 +18,7 @@
             <?php continue; ?>
          <?php endif; ?>
 
-         <?php if( $this->catalogFields[$strFieldname]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'image' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableImageRendering'] ): ?>
+         <?php if( $this->catalogFields[$strFieldname]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'image' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableImageRendering'] && !$this->catalogFields[$strFieldname]['imageTemplate'] ): ?>
             <div class="debug_code_example">
                <p class="debug_code_title"><?= sprintf( $this->activeFieldsOutput, $strFieldname, $this->catalogFields[$strFieldname]['type'] ) ?></p>
                <div class="debug_code">

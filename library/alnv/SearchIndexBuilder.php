@@ -25,6 +25,8 @@ class SearchIndexBuilder extends \Frontend {
 
             if ( !$objModules->catalogTablename ) continue;
 
+            if ( $objModules->type == 'catalogUniversalView' && $objModules->catalogMasterPage ) continue;
+
             if ( !empty( $arrRoot ) && !in_array( $objModules->catalogMasterPage, $arrRoot ) ) continue;
 
             if ( !isset( $arrProcessed[ $objModules->catalogMasterPage ] ) ) {

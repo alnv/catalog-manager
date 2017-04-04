@@ -87,6 +87,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Felder deaktivier
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Debugmodus aktivieren', 'Hier können Sie den Debugmodus aktivieren. Dabei werden nützliche Informationen bereitgestellt.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Detail-Weiterleitung deaktivieren', 'Hier können Sie den Link zu der Detailseite ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Kopfzeilen auswählen', 'Hier können Sie Kopfzeilen für die Tabelle auswählen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Als Tabelle darstellen', 'Alle Datensätze werden in einer Tabelle dargestellt.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

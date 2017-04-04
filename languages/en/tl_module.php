@@ -86,6 +86,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Hide filt
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Disable fields', 'Here you can disable fields.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Enable template debug mode', 'Here you can enable template debug mode.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Disable master redirect', 'Here you can disable redirect to master page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Select header columns ', 'Here you can select table headers.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Please select a template.' ];
+$GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Show as Table', 'All entities will be displayed in a table.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

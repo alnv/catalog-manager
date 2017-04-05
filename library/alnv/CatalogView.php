@@ -126,6 +126,12 @@ class CatalogView extends CatalogController {
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
+            $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
+            $this->objMainTemplate->hasOperations = !empty( $this->catalogItemOperations ) ? true : false;
+            $this->objMainTemplate->hasOperations = !empty( $this->catalogItemOperations ) ? true : false;
+            $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
+            $this->objMainTemplate->relationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'];
+            $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
         }
 
         $this->objMainTemplate->timeFormat = $this->strTimeFormat;
@@ -213,9 +219,10 @@ class CatalogView extends CatalogController {
 
         return [
 
+            'attributes' => '',
+            'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
             'href' => $this->generateUrl( $this->arrPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
-            'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
-            'attributes' => ''
+            'image' => \Image::getHtml( 'new.gif', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
         ];
     }
 
@@ -534,6 +541,7 @@ class CatalogView extends CatalogController {
             $arrCatalog['dateFormat'] = $this->strDateFormat;
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
             $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
+            $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
             
             if ( $this->enableTableView && $this->strMode == 'view' ) {
@@ -827,9 +835,10 @@ class CatalogView extends CatalogController {
 
                 $arrReturn[ $strOperation ] = [
 
-                    'href' => $this->generateUrl( $this->arrViewPage, $strAlias ) . $strActFragment,
-                    'label' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
-                    'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : ''
+                    'href' => $this->generateUrl( $this->arrPage, $strAlias ) . $strActFragment,
+                    'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
+                    'image' => \Image::getHtml( sprintf( '%s.gif', $strOperation ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ] ),
+                    'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : '',
                 ];
             }
         }
@@ -878,12 +887,13 @@ class CatalogView extends CatalogController {
 
                 $arrCatalog = $objCatalog->row();
                 $strName = $this->I18nCatalogTranslator->getModuleLabel( $arrRelatedTable['table'] );
+                $strTitle = $strName[0] ? $strName[0] : $arrCatalog['name'];
 
+                $arrTableData['title'] = $strTitle;
                 $arrTableData['info'] = $arrCatalog['info'];
                 $arrTableData['description'] = $arrCatalog['description'];
-                $arrTableData['title'] = $strName[0] ? $strName[0] : $arrCatalog['name'];
                 $arrTableData['url'] = \Controller::replaceInsertTags( $arrRelatedTable['pageURL'] );
-                $arrTableData['iconSRC'] = $this->IconGetter->setCatalogIcon( $arrRelatedTable['table'] );
+                $arrTableData['image'] = \Image::getHtml( $this->IconGetter->setCatalogIcon( $arrRelatedTable['table'] ), $strTitle );
 
                 $this->arrRelatedTables[ $arrRelatedTable['table'] ] = $arrTableData;
             }

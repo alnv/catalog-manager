@@ -41,4 +41,12 @@ class Textarea {
 
         return $arrDCAField;
     }
+
+
+    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+
+        if ( !$varValue ) return '';
+
+        return $varValue;
+    }
 }

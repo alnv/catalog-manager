@@ -1,21 +1,43 @@
 <tr class="ctlg_row<?= $this->cssClass ?>">
+
    <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
 
       <?php if ( is_string( $this->{$strColumnName} ) ): ?>
-
          <td><?= $this->{$strColumnName}; ?></td>
          <?php continue; ?>
-
       <?php endif; ?>
 
       <?php if ( is_array( $this->{$strColumnName} ) ): ?>
-
          <td><?= implode( ',', $this->{$strColumnName} ); ?></td>
          <?php continue; ?>
-
       <?php endif; ?>
 
-      <td>unknown data type</td>
+      <td>-</td>
 
    <?php endforeach; ?>
+
+   <?php if( $this->masterUrl ): ?>
+      <td><a href="<?= $this->masterUrl ?>" title="<?= $this->title ?>"><?= $this->readMore; ?></a></td>
+   <?php endif; ?>
+
+   <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
+      <td>
+         <div class="ctlg_operations">
+            <?php foreach( $this->operations as $arrOperation ): ?>
+               <a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>><?= $arrOperation['image']; ?></a>
+            <?php endforeach; ?>
+         </div>
+      </td>
+   <?php endif; ?>
+
+   <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
+      <td>
+         <div class="ctlg_relations">
+            <?php foreach( $this->relations as $arrRelation ): ?>
+               <a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>"><?= $arrRelation['image']; ?></a>
+            <?php endforeach; ?>
+         </div>
+      </td>
+   <?php endif; ?>
+
 </tr>

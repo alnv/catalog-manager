@@ -4,7 +4,7 @@
       <?= $this->debug; ?>
    <?php endif; ?>
    <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
-      <p><a href="<?= $this->createOperation['href'] ?>"><?= $this->createOperation['label'] ?></a></p>
+      <p><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a></p>
    <?php endif; ?>
    <?= $this->output; ?>
    <?php if ( $this->message ): ?>

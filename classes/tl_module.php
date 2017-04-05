@@ -337,6 +337,8 @@ class tl_module extends \Backend {
         $arrReturn = [];
         $arrFields = $this->getSortableCatalogFieldsByTablename( $dc->activeRecord->catalogTablename, true );
 
+        unset( $arrFields['id'] );
+
         if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
 
             foreach ( $arrFields as $strFieldname => $arrField ) {

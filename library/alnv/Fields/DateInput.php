@@ -35,4 +35,37 @@ class DateInput {
 
         return $strRgxp;
     }
+
+
+    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+
+        if ( !$varValue ) return '';
+
+        $strRgxp = $arrField['rgxp'] ? $arrField['rgxp'] : 'datim';
+        $strDateFormat = \Date::getFormatFromRgxp( $strRgxp );
+        $objDate = new \Date( $varValue, $strDateFormat );
+
+        switch ( $strRgxp ) {
+
+            case 'date':
+
+                return $objDate->date;
+
+                break;
+
+            case 'time':
+
+                return $objDate->time;
+
+                break;
+
+            case 'datim':
+
+                return $objDate->datim;
+
+                break;
+        }
+
+        return $objDate->timestamp;
+    }
 }

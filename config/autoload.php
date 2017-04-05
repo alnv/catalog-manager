@@ -63,6 +63,7 @@ ClassLoader::addClasses([
 TemplateLoader::addFiles([
 
     'ctlg_field_map' => 'system/modules/catalog-manager/templates',
+    'ctlg_view_table' => 'system/modules/catalog-manager/templates',
     'ctlg_view_teaser' => 'system/modules/catalog-manager/templates',
     'ctlg_view_master' => 'system/modules/catalog-manager/templates',
     'ctlg_map_default' => 'system/modules/catalog-manager/templates',
@@ -74,5 +75,4 @@ TemplateLoader::addFiles([
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
     'ctlg_debug_default' => 'system/modules/catalog-manager/templates',
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
-    'ctlg_view_teaser_table' => 'system/modules/catalog-manager/templates',
 ]);

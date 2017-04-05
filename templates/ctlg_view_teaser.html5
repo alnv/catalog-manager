@@ -9,7 +9,12 @@
    <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
       <ul>
          <?php foreach( $this->operations as $arrOperation ): ?>
-            <li><a href="<?= $arrOperation['href'] ?>"><?= $arrOperation['attributes'] ?> ><?= $arrOperation['label'] ?></a></li>
+
+            <li>
+               <a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>>
+                  <span class="ctlg_relation_icon"><?= $arrOperation['image']; ?></span> <?= $arrOperation['title']; ?>
+               </a>
+            </li>
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>
@@ -17,7 +22,11 @@
    <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
       <ul>
          <?php foreach( $this->relations as $arrRelation ): ?>
-            <li><a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>"><span class="catalog_module_icon"><img src="<?= $arrRelation['iconSRC'] ?>" width="16" height="16"></span> <?= $arrRelation['title'] ?></a></li>
+            <li>
+               <a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>">
+                  <span class="catalog_module_icon"><?= $arrRelation['image']; ?></span> <?= $arrRelation['title']; ?>
+               </a>
+            </li>
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>

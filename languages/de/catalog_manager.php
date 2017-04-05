@@ -20,3 +20,9 @@ $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'] = [ 'Titel', 'Bitte ge
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'] = [ 'Anzeigen ab', 'Datensatz erst ab diesem Tag auf der Webseite anzeigen.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'] = [ 'Anzeigen bis', 'Datensatz nur bis zu diesem Tag auf der Webseite anzeigen.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'] = [ 'Datensatz verstecken', 'Hier können Sie diesen Datensatz auf der Webseite verstecken.' ];
+
+
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'] = [ 'ID', '' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'] = [ 'Elternelement', '' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'] = [ 'Sortierindex', '' ];
+$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'] = [ 'Änderungsdatum', '' ];

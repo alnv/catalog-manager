@@ -91,6 +91,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Kopfzeilen au
 $GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Als Tabelle darstellen', 'Alle Datensätze werden in einer Tabelle dargestellt.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body Template', 'Bitte wählen Sie ein Body Template aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'] = [ 'Frontend Editing aktivieren', 'Hier können Sie das Frontend Editing für diese Tabelle aktivieren.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'] = [ 'Frontend Editing Seite festlegen', 'Hier können Sie eine optionale Frontend Editing Seite festlegen. Normalerweise ist die Seite identisch mit der Listenansichtsseite.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite für das Frontend Editing aus.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

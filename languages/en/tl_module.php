@@ -90,6 +90,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Select header
 $GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Show as Table', 'All entities will be displayed in a table.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body template', 'Please select a body template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'] = [ 'Enable frontend editing', 'Here you can enable frontend editing.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'] = [ 'Determine frontend editing page', 'Here you can determine a frontend editing page. Usually is it the same page as list view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Select page', 'Please select page for your frontend editing view.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

@@ -29,6 +29,11 @@ class ModuleUniversalView extends \Module {
             $this->strTemplate = $this->catalogMapViewTemplate;
         }
 
+        if ( TL_MODE == 'FE' && $this->enableTableView && !$this->strMasterAlias ) {
+
+            $this->strTemplate = $this->catalogTableViewTemplate;
+        }
+
         return parent::generate();
     }
 

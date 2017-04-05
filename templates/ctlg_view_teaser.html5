@@ -9,7 +9,7 @@
    <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
       <ul>
          <?php foreach( $this->operations as $arrOperation ): ?>
-            <li><a href="<?= $arrOperation['href'] ?>" <?= $arrOperation['attributes'] ?> ><?= $arrOperation['label'] ?></a></li>
+            <li><a href="<?= $arrOperation['href'] ?>"><?= $arrOperation['attributes'] ?> ><?= $arrOperation['label'] ?></a></li>
          <?php endforeach; ?>
       </ul>
    <?php endif; ?>

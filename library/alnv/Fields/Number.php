@@ -33,4 +33,14 @@ class Number {
 
         return $strRGXP;
     }
+
+
+    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+
+        if ( is_null( $varValue ) ) return '';
+
+        if ( is_numeric( $varValue ) ) return (string) $varValue;
+
+        return $varValue;
+    }
 }

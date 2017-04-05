@@ -665,6 +665,12 @@ class CatalogView extends CatalogController {
                 return Number::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;
+
+            case 'textarea':
+
+                return Textarea::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
         }
 
         return $varValue;

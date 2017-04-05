@@ -130,6 +130,7 @@ class DCABuilderHelper extends CatalogController {
         $arrDCAField['_disableFEE'] = $arrField['disableFEE'];
         $arrDCAField['_fieldname'] = $arrField['fieldname'];
         $arrDCAField['_palette'] = $arrField['_palette'];
+        $arrDCAField['_type'] = $arrField['type'];
         
         if ( $arrField['flag'] ) {
 

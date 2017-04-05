@@ -127,6 +127,7 @@ class DCABuilderHelper extends CatalogController {
             'sql' => $this->arrSQLStatements[ $arrField['statement'] ]
         ];
 
+        $arrDCAField['_disableFEE'] = $arrField['disableFEE'];
         $arrDCAField['_fieldname'] = $arrField['fieldname'];
         $arrDCAField['_palette'] = $arrField['_palette'];
         
@@ -242,6 +243,7 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'id',
                 'statement' => 'i10',
                 'invisible' => '',
+                'disableFEE' => true,
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][1],
             ],
@@ -253,7 +255,8 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'tstamp',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][1],
-                'invisible' => ''
+                'invisible' => '',
+                'disableFEE' => true,
             ],
 
             'pid' => [
@@ -263,7 +266,8 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'pid',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][1],
-                'invisible' => ''
+                'invisible' => '',
+                'disableFEE' => true,
             ],
 
             'sorting' => [
@@ -273,7 +277,8 @@ class DCABuilderHelper extends CatalogController {
                 'fieldname' => 'sorting',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][0],
                 'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][1],
-                'invisible' => ''
+                'invisible' => '',
+                'disableFEE' => true,
             ],
 
             'title' => [

@@ -13,6 +13,9 @@ class CatalogView extends CatalogController {
     public $arrOptions = [];
     public $arrViewPage = [];
     public $arrMasterPage = [];
+    public $strTimeFormat = 'H:i';
+    public $strDateFormat = 'd.m.Y';
+    public $strDateTimeFormat = 'd.m.Y H:i';
 
     protected $arrCatalog = [];
     protected $arrActiveFields = [];
@@ -44,6 +47,9 @@ class CatalogView extends CatalogController {
         
         $this->setOptions();
         $this->arrPage = $objPage->row();
+        $this->strTimeFormat = $objPage->timeFormat;
+        $this->strDateFormat = $objPage->dateFormat;
+        $this->strDateTimeFormat = $objPage->datimFormat;
 
         $this->I18nCatalogTranslator->initialize();
 
@@ -114,6 +120,18 @@ class CatalogView extends CatalogController {
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
 
         $this->setRelatedTables();
+
+        if ( $this->enableTableView && $this->strMode == 'view' ) {
+
+            $this->strTemplate = $this->catalogTableBodyViewTemplate;
+            $this->catalogActiveTableColumns = $this->setActiveTableColumns();
+            $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
+        }
+
+        $this->objMainTemplate->timeFormat = $this->strTimeFormat;
+        $this->objMainTemplate->dateFormat = $this->strDateFormat;
+        $this->objMainTemplate->catalogFields = $this->arrCatalogFields;
+        $this->objMainTemplate->dateTimeFormat = $this->strDateTimeFormat;
     }
 
 
@@ -123,6 +141,24 @@ class CatalogView extends CatalogController {
         $this->FrontendEditingPermission->initialize();
         
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
+    }
+
+
+    public function setActiveTableColumns() {
+
+        $this->catalogActiveTableColumns = Toolkit::deserialize( $this->catalogActiveTableColumns );
+
+        if ( !is_array( $this->catalogActiveTableColumns ) ) {
+
+            $this->catalogActiveTableColumns = [];
+        }
+
+        if ( empty( $this->catalogActiveTableColumns ) ) {
+
+            $this->catalogActiveTableColumns = array_keys( $this->arrCatalogFields );
+        }
+
+        return $this->catalogActiveTableColumns;
     }
 
 
@@ -494,8 +530,16 @@ class CatalogView extends CatalogController {
                 }
             }
 
+            $arrCatalog['timeFormat'] = $this->strTimeFormat;
+            $arrCatalog['dateFormat'] = $this->strDateFormat;
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
+            $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
+            
+            if ( $this->enableTableView && $this->strMode == 'view' ) {
+
+                $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
+            }
 
             $objTemplate->setData( $arrCatalog );
 
@@ -581,7 +625,7 @@ class CatalogView extends CatalogController {
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
-
+        
         switch ( $arrField['type'] ) {
 
             case 'upload':
@@ -607,6 +651,18 @@ class CatalogView extends CatalogController {
             case 'radio':
 
                 return Radio::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'date':
+
+                return DateInput::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'number':
+
+                return Number::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;
         }

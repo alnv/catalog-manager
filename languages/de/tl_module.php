@@ -19,7 +19,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template-Ei
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link überschreiben', 'Hier können Sie den zurück-Link zu der Listenansicht überschreiben.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogViewPage'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomies'] = [ 'Taxonomies/Filterung aktivieren', 'Hier können Sie die Datensätze filtern.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomies'] = [ 'Taxonomies/Filter', 'Hier können Sie Filtereinstellungen für die Datensätze anwenden.' ];
@@ -90,6 +90,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Detail-Weiterl
 $GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Kopfzeilen auswählen', 'Hier können Sie Kopfzeilen für die Tabelle auswählen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Als Tabelle darstellen', 'Alle Datensätze werden in einer Tabelle dargestellt.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body Template', 'Bitte wählen Sie ein Body Template aus.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

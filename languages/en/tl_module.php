@@ -19,7 +19,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template se
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Field dependencies settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Select list view page', 'Here you can select list view page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogViewPage'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomies'] = [ 'Enable taxonomies', 'Here you can enable taxonomies.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomies'] = [ 'Taxonomies', 'Here you can define taxonomies.' ];
@@ -89,6 +89,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'] = [ 'Disable master
 $GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'] = [ 'Select header columns ', 'Here you can select table headers.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTableViewTemplate'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_module']['enableTableView'] = [ 'Show as Table', 'All entities will be displayed in a table.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body template', 'Please select a body template.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

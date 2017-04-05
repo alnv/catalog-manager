@@ -8,14 +8,17 @@ class CatalogView extends CatalogController {
     public $strMode;
     public $strMasterID;
     public $strTemplate;
-    public $arrPage = [];
     public $objMainTemplate;
     public $arrOptions = [];
-    public $arrViewPage = [];
-    public $arrMasterPage = [];
+
     public $strTimeFormat = 'H:i';
     public $strDateFormat = 'd.m.Y';
     public $strDateTimeFormat = 'd.m.Y H:i';
+
+    public $arrPage = [];
+    public $arrViewPage = [];
+    public $arrMasterPage = [];
+    public $arrFrontendEditingPage = [];
 
     protected $arrCatalog = [];
     protected $arrActiveFields = [];
@@ -46,7 +49,7 @@ class CatalogView extends CatalogController {
         global $objPage;
         
         $this->setOptions();
-        $this->arrPage = $objPage->row();
+
         $this->strTimeFormat = $objPage->timeFormat;
         $this->strDateFormat = $objPage->dateFormat;
         $this->strDateTimeFormat = $objPage->datimFormat;
@@ -84,11 +87,23 @@ class CatalogView extends CatalogController {
 
         $this->rebuildCatalogFieldIndexes();
 
+        $this->arrPage = $objPage->row();
         $this->arrMasterPage = $this->arrPage;
+        $this->arrFrontendEditingPage = $this->arrPage;
 
         if ( $this->catalogUseViewPage && $this->catalogViewPage !== '0' ) {
 
             $this->arrViewPage = $this->getPageModel( $this->catalogViewPage );
+        }
+
+        if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
+
+            $this->arrMasterPage = $this->getPageModel( $this->catalogMasterPage );
+        }
+
+        if ( $this->catalogUseFrontendEditingViewPage && $this->catalogFrontendEditingViewPage !== '0' ) {
+
+            $this->arrFrontendEditingPage = $this->getPageModel( $this->catalogFrontendEditingViewPage );
         }
 
         if ( $this->catalogUseMap && $this->strMode == 'view' ) {
@@ -127,8 +142,7 @@ class CatalogView extends CatalogController {
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
             $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
-            $this->objMainTemplate->hasOperations = !empty( $this->catalogItemOperations ) ? true : false;
-            $this->objMainTemplate->hasOperations = !empty( $this->catalogItemOperations ) ? true : false;
+            $this->objMainTemplate->hasOperations = $this->catalogEnableFrontendEditing ? true : false;
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
             $this->objMainTemplate->relationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'];
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
@@ -221,7 +235,7 @@ class CatalogView extends CatalogController {
 
             'attributes' => '',
             'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
-            'href' => $this->generateUrl( $this->arrPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
+            'href' => $this->generateUrl( $this->arrFrontendEditingPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
             'image' => \Image::getHtml( 'new.gif', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
         ];
     }
@@ -246,11 +260,6 @@ class CatalogView extends CatalogController {
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
 
             return '';
-        }
-
-        if ( $this->catalogUseMasterPage && $this->catalogMasterPage !== '0' ) {
-
-            $this->arrMasterPage = $this->getPageModel( $this->catalogMasterPage );
         }
 
         if ( $this->catalogJoinFields ) {
@@ -460,7 +469,7 @@ class CatalogView extends CatalogController {
 
             $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
 
-            if ( !empty( $this->catalogItemOperations ) ) {
+            if ( $this->catalogEnableFrontendEditing ) {
 
                 $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'], $arrCatalog['alias'] );
             }
@@ -543,6 +552,7 @@ class CatalogView extends CatalogController {
             $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
+            $arrCatalog['hasOperations'] = $this->catalogEnableFrontendEditing ? true : false;
             
             if ( $this->enableTableView && $this->strMode == 'view' ) {
 
@@ -820,7 +830,7 @@ class CatalogView extends CatalogController {
         $arrReturn = [];
         $this->loadLanguageFile( 'tl_module' );
 
-        if ( is_array( $this->catalogItemOperations ) ) {
+        if ( !empty( $this->catalogItemOperations ) && is_array( $this->catalogItemOperations ) ) {
 
             foreach ( $this->catalogItemOperations as $strOperation ) {
 
@@ -835,7 +845,7 @@ class CatalogView extends CatalogController {
 
                 $arrReturn[ $strOperation ] = [
 
-                    'href' => $this->generateUrl( $this->arrPage, $strAlias ) . $strActFragment,
+                    'href' => $this->generateUrl( $this->arrFrontendEditingPage, $strAlias ) . $strActFragment,
                     'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
                     'image' => \Image::getHtml( sprintf( '%s.gif', $strOperation ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ] ),
                     'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : '',

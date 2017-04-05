@@ -51,7 +51,7 @@ class FrontendEditing extends CatalogController {
 
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-        $this->arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], function ( $arrField, $strFieldname ) {
+        $arrFormFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], function ( $arrField, $strFieldname ) {
 
             if ( $arrField['type'] == 'fieldsetStart' ) {
 
@@ -74,6 +74,16 @@ class FrontendEditing extends CatalogController {
             return $arrDCField;
         });
 
+        if ( !empty( $arrFormFields ) && is_array( $arrFormFields ) ) {
+
+            foreach ( $arrFormFields as $arrFormField ) {
+
+                if ( !$arrFormField ) continue;
+
+                $this->arrFormFields[ $arrFormField['_fieldname'] ] = $arrFormField;
+            }
+        }
+
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
@@ -81,7 +91,7 @@ class FrontendEditing extends CatalogController {
 
         if ( in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
-            $this->arrFormFields[] = $arrPredefinedDCFields['invisible'];
+            $this->arrFormFields[ 'invisible' ] = $arrPredefinedDCFields['invisible'];
         }
 
         unset( $arrPredefinedDCFields['invisible'] );
@@ -518,7 +528,7 @@ class FrontendEditing extends CatalogController {
             }
         }
 
-        $this->arrValues = Toolkit::prepareValues4Db( $this->arrValues );
+        $this->prepareData();
 
         switch ( $this->strAct ) {
 
@@ -560,6 +570,33 @@ class FrontendEditing extends CatalogController {
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
 
                 break;
+        }
+    }
+
+
+    protected function prepareData() {
+
+        if ( !empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
+
+            foreach ( $this->arrValues as $strFieldname => $varValue ) {
+
+                $arrField = $this->arrFormFields[ $strFieldname ];
+                $varValue = Toolkit::prepareValue4Db( $varValue );
+
+                if ( $arrField['_type'] == 'date' || in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+                    $objDate = new \Date( $varValue );
+                    $intTime = $objDate->timestamp;
+                    $varValue = $intTime < 1 ? '' : $intTime;
+                }
+
+                if ( strpos( $arrField['sql'], 'int' ) && is_string( $varValue ) ) {
+
+                    $varValue = intval( $varValue );
+                }
+
+                $this->arrValues[ $strFieldname ] = $varValue;
+            }
         }
     }
 

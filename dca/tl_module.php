@@ -26,9 +26,9 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRelation'] = 'catalogR
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_internal'] = 'catalogInternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_external'] = 'catalogExternalFormRedirect';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
@@ -1223,6 +1223,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableViewTemplate'] = [
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getTableViewTemplates' ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableBodyViewTemplate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50',
+        'mandatory' => true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getTableBodyViewTemplates' ],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"

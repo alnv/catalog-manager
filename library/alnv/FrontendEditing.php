@@ -278,16 +278,26 @@ class FrontendEditing extends CatalogController {
 
         if ( $strClass == false ) return null;
 
+        if ( is_bool( $arrField['_disableFEE'] ) && $arrField['_disableFEE'] == true ) {
+
+            return null;
+        }
+
         $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '' ) );
 
         $objWidget->storeValues = true;
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
         $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
-        
+
         if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
 
             $objWidget->value = '';
+        }
+
+        if ( $arrField['eval']['multiple'] && $arrField['eval']['csv'] && is_string( $objWidget->value ) ) {
+
+            $objWidget->value = explode( $arrField['eval']['csv'], $objWidget->value );
         }
 
         if ( $arrField['inputType'] == 'upload' ) {

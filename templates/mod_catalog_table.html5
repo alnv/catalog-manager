@@ -1,0 +1,42 @@
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+
+   <?php if( $this->debug ): ?>
+      <?= $this->debug; ?>
+   <?php endif; ?>
+
+   <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
+      <p><a href="<?= $this->createOperation['href'] ?>"><?= $this->createOperation['label'] ?></a></p>
+   <?php endif; ?>
+
+   <table class="ctlg_table">
+      <thead>
+         <tr>
+            <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
+               <th class="head"><?= $this->catalogFields[ $strColumnName ]['title'] ? $this->catalogFields[ $strColumnName ]['title'] : strColumnName;  ?></th>
+            <?php endforeach; ?>
+         </tr>
+      </thead>
+      <tbody>
+         <?= $this->output; ?>
+      </tbody>
+   </table>
+
+   <?php if ( $this->message ): ?>
+      <p class="catalog_message"><?= $this->message; ?></p>
+   <?php endif; ?>
+
+   <?php if ($this->allowComments): ?>
+      <div class="ce_comments block">
+         <p class="add-comment"><?= $this->addComment; ?></p>
+         <?= implode('', $this->comments) ?>
+            <?= $this->pagination ?>
+         <?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
+      </div>
+   <?php endif; ?>
+
+   <?php if ($this->catalogAddPagination): ?>
+      <?= $this->pagination; ?>
+   <?php endif; ?>
+
+<?php $this->endblock(); ?>

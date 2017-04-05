@@ -17,14 +17,14 @@
    <?php endforeach; ?>
 
    <?php if( $this->masterUrl ): ?>
-      <td><a href="<?= $this->masterUrl ?>" title="<?= $this->title ?>"><?= $this->readMore; ?></a></td>
+      <td><a href="<?= $this->masterUrl; ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></td>
    <?php endif; ?>
 
-   <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
+   <?php if ( $this->hasOperations ): ?>
       <td>
          <div class="ctlg_operations">
             <?php foreach( $this->operations as $arrOperation ): ?>
-               <a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>><?= $arrOperation['image']; ?></a>
+               <a href="<?= $arrOperation['href']; ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes']; ?>><?= $arrOperation['image']; ?></a>
             <?php endforeach; ?>
          </div>
       </td>
@@ -34,7 +34,7 @@
       <td>
          <div class="ctlg_relations">
             <?php foreach( $this->relations as $arrRelation ): ?>
-               <a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>"><?= $arrRelation['image']; ?></a>
+               <a href="<?= $arrRelation['href']; ?>" title="<?= $arrRelation['description']; ?>"><?= $arrRelation['image']; ?></a>
             <?php endforeach; ?>
          </div>
       </td>

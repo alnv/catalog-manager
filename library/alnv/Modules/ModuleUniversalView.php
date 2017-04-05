@@ -24,14 +24,17 @@ class ModuleUniversalView extends \Module {
         $this->strAct = \Input::get( 'act' . $this->id );
         $this->strMasterAlias = \Input::get( 'auto_item' );
 
-        if ( TL_MODE == 'FE' && $this->catalogUseMap && !$this->strMasterAlias && !$this->strAct ) {
+        if ( TL_MODE == 'FE' && $this->catalogUseMap && !$this->strAct ) {
 
             $this->strTemplate = $this->catalogMapViewTemplate;
         }
 
-        if ( TL_MODE == 'FE' && $this->enableTableView && !$this->strMasterAlias && !$this->strAct ) {
+        if ( TL_MODE == 'FE' && $this->enableTableView && !$this->strAct ) {
 
-            $this->strTemplate = $this->catalogTableViewTemplate;
+            if ( !$this->strMasterAlias || $this->catalogPreventMasterView ) {
+
+                $this->strTemplate = $this->catalogTableViewTemplate;
+            }
         }
 
         return parent::generate();

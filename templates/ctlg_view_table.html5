@@ -1,0 +1,21 @@
+<tr class="ctlg_row<?= $this->cssClass ?>">
+   <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
+
+      <?php if ( is_string( $this->{$strColumnName} ) ): ?>
+
+         <td><?= $this->{$strColumnName}; ?></td>
+         <?php continue; ?>
+
+      <?php endif; ?>
+
+      <?php if ( is_array( $this->{$strColumnName} ) ): ?>
+
+         <td><?= implode( ',', $this->{$strColumnName} ); ?></td>
+         <?php continue; ?>
+
+      <?php endif; ?>
+
+      <td>unknown data type</td>
+
+   <?php endforeach; ?>
+</tr>

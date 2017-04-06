@@ -221,14 +221,14 @@ class CatalogView extends CatalogController {
             return [];
         }
 
-        if ( $this->arrCatalog['pTable'] && ( !\Input::get('pTable') || !\Input::get('pid' ) ) ) {
+        if ( $this->arrCatalog['pTable'] && !\Input::get('pid' ) ) {
 
             return [];
         }
 
         if ( $this->arrCatalog['pTable'] ) {
-
-            $strPTableFragment = sprintf( '&pTable=%s&pid=%s', \Input::get('pTable'), \Input::get('pid' ) );
+            
+            $strPTableFragment = sprintf( '&amp;pid=%s', \Input::get('pid' ) );
         }
 
         return [
@@ -397,7 +397,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogEnableParentFilter ) {
 
-            if ( $this->arrCatalog['pTable'] && \Input::get( 'pid' ) && \Input::get( 'pTable' ) == $this->arrCatalog['pTable'] ) {
+            if ( \Input::get( 'pid' ) ) {
 
                 $arrQuery['where'][] = [
 
@@ -875,7 +875,7 @@ class CatalogView extends CatalogController {
         foreach ( $this->arrRelatedTables as $strTablename => $arrRelatedTable ) {
 
             $strUrl = $this->arrRelatedTables[ $strTablename ]['url'];
-            $strSuffix = sprintf( '?pid=%s&amp;pTable=%s', $strID, $this->catalogTablename );
+            $strSuffix = sprintf( '?pid=%s', $strID );
 
             $this->arrRelatedTables[ $strTablename ]['href'] = $strUrl . $strSuffix;
         }

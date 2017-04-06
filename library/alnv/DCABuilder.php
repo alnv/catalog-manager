@@ -63,6 +63,7 @@ class DCABuilder extends CatalogController {
             }
         }
     }
+    
 
     public function initializeI18n() {
 
@@ -132,6 +133,7 @@ class DCABuilder extends CatalogController {
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
         $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
+
         $GLOBALS['TL_LANG']['MOD'][ $this->strTable ] = $this->I18nCatalogTranslator->getModuleLabel( $this->strTable );
     }
 

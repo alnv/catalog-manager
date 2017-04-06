@@ -530,18 +530,22 @@ class FrontendEditing extends CatalogController {
 
         $this->prepareData();
 
+        $strQuery = '';
+
+        if ( \Input::get('pid') ) {
+
+            $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
+        }
+
         switch ( $this->strAct ) {
 
             case 'create':
-
-                $strQuery = '';
 
                 if ( $this->SQLBuilder->Database->fieldExists( 'pid', $this->catalogTablename ) ) {
 
                     if ( !\Input::get('pid') ) return null;
 
                     $this->arrValues['pid'] = \Input::get('pid');
-                    $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
                 }
 
                 if ( $this->SQLBuilder->Database->fieldExists( 'sorting', $this->catalogTablename ) ) {
@@ -563,6 +567,7 @@ class FrontendEditing extends CatalogController {
             case 'edit':
 
                 $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
+                $this->reload();
 
                 break;
 
@@ -571,6 +576,7 @@ class FrontendEditing extends CatalogController {
                 unset( $this->arrValues['id'] );
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+                $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;
         }

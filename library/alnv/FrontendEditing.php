@@ -534,11 +534,14 @@ class FrontendEditing extends CatalogController {
 
             case 'create':
 
-                if ( $this->arrCatalog['pTable'] ) {
+                $strQuery = '';
+
+                if ( $this->SQLBuilder->Database->fieldExists( 'pid', $this->catalogTablename ) ) {
 
                     if ( !\Input::get('pid') ) return null;
 
                     $this->arrValues['pid'] = \Input::get('pid');
+                    $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
                 }
 
                 if ( $this->SQLBuilder->Database->fieldExists( 'sorting', $this->catalogTablename ) ) {
@@ -553,7 +556,7 @@ class FrontendEditing extends CatalogController {
                 }
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
-                $this->redirectToFrontendPage( $this->strRedirectID );
+                $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;
 
@@ -571,6 +574,35 @@ class FrontendEditing extends CatalogController {
 
                 break;
         }
+    }
+
+
+    protected function redirectAfterInsertion( $intPage, $strAttributes = '', $blnReturn=false ) {
+
+        if ( ( $intPage = intval($intPage ) ) <= 0 ) {
+
+            return '';
+        }
+
+        $objPage = \PageModel::findWithDetails( $intPage );
+        $strUrl = $this->generateFrontendUrl( $objPage->row(), '', $objPage->language, true );
+
+        if ( strncmp( $strUrl, 'http://', 7 ) !== 0 && strncmp( $strUrl, 'https://', 8 ) !== 0 ) {
+
+            $strUrl = \Environment::get( 'base' ) . $strUrl;
+        }
+
+        if ( $strAttributes ) {
+
+            $strUrl .= $strAttributes;
+        }
+
+        if ( !$blnReturn ) {
+
+            $this->redirect( $strUrl );
+        }
+
+        return $strUrl;
     }
 
 

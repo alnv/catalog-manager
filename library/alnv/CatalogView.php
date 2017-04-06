@@ -843,6 +843,11 @@ class CatalogView extends CatalogController {
 
                 $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
 
+                if ( $this->arrCatalog['pTable'] ) {
+
+                    $strActFragment .= sprintf( '&amp;pid=%s', \Input::get('pid' ) );
+                }
+                
                 $arrReturn[ $strOperation ] = [
 
                     'href' => $this->generateUrl( $this->arrFrontendEditingPage, $strAlias ) . $strActFragment,

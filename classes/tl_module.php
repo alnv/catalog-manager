@@ -263,6 +263,9 @@ class tl_module extends \Backend {
         $arrForbiddenTypes = [ 'upload', 'textarea' ];
         $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
         $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+
+        if ( !$arrCatalog || !is_array( $arrCatalog ) ) return $arrReturn;
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
 
         foreach ( $arrReturn as $strFieldname => $arrField ) {

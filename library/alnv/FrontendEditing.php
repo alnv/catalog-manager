@@ -566,8 +566,33 @@ class FrontendEditing extends CatalogController {
 
             case 'edit':
 
-                $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
-                $this->reload();
+                $blnReload = true;
+                $objEntity = $this->SQLBuilder->Database->prepare( 'SELECT * FROM '. $this->catalogTablename .' WHERE id = ?' )->limit(1)->execute( $this->strItemID );
+
+                if ( $objEntity->numRows ) {
+
+                    if ( $this->arrValues['alias'] && $this->arrValues['alias'] !== $objEntity->alias ) {
+
+                        $blnReload =  false;
+
+                        if ( $objEntity->pid ) {
+
+                            $strQuery = sprintf( '?pid=%s', $objEntity->pid );
+                        }
+                    }
+
+                    $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
+                }
+
+                if ( $blnReload ) {
+
+                    $this->reload();
+                }
+
+                else {
+
+                    $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
+                }
 
                 break;
 

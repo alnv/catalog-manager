@@ -19,7 +19,7 @@ class tl_page extends \Backend {
 
         while ( $objCatalogs->next() ) {
 
-            $this->arrCatalogCache[ $objCatalogs->tablename ] = $objCatalogs->name ? $objCatalogs->name : $objCatalogs->tablename;
+            $this->arrCatalogCache[ $objCatalogs->tablename ] = $objCatalogs->name ? $objCatalogs->name . ' [' . $objCatalogs->tablename . ']' : $objCatalogs->tablename;
         }
 
         return $this->arrCatalogCache;

@@ -1,5 +1,5 @@
 <!-- indexer::stop -->
-<div class="ctlg_form_grouped">
+<div class="ctlg_form ctlg_form_grouped">
    <?php if ($this->message): ?>
       <?= $this->message ?>
    <?php endif; ?>

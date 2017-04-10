@@ -5,31 +5,32 @@
       <?= $this->debug; ?>
    <?php endif; ?>
 
-   <table class="ctlg_table">
-      <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
-         <caption><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title']; ?></a></caption>
-      <?php endif; ?>
-      <thead>
-         <tr>
-            <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
-               <th class="head"><?= $this->catalogFields[ $strColumnName ]['title'] ? $this->catalogFields[ $strColumnName ]['title'] : strColumnName;  ?></th>
-            <?php endforeach; ?>
-            <?php if( !$this->catalogDisableMasterLink ): ?>
-               <th><?= $this->readMoreColumnTitle; ?></th>
-            <?php endif; ?>
-            <?php if ( $this->hasOperations ): ?>
-               <th><?= $this->operationsColumnTitle; ?></th>
-            <?php endif; ?>
-            <?php if ( $this->hasRelations ): ?>
-               <th><?= $this->relationsColumnTitle; ?></th>
-            <?php endif; ?>
-         </tr>
-      </thead>
-      <tbody>
-         <?= $this->output; ?>
-      </tbody>
-   </table>
-
+   <div class="ctlg_table">
+      <table>
+         <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
+            <caption><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title']; ?></a></caption>
+         <?php endif; ?>
+         <thead>
+            <tr>
+               <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
+                  <th class="head"><?= $this->catalogFields[ $strColumnName ]['title'] ? $this->catalogFields[ $strColumnName ]['title'] : strColumnName;  ?></th>
+               <?php endforeach; ?>
+               <?php if( !$this->catalogDisableMasterLink ): ?>
+                  <th><?= $this->readMoreColumnTitle; ?></th>
+               <?php endif; ?>
+               <?php if ( $this->hasOperations ): ?>
+                  <th><?= $this->operationsColumnTitle; ?></th>
+               <?php endif; ?>
+               <?php if ( $this->hasRelations ): ?>
+                  <th><?= $this->relationsColumnTitle; ?></th>
+               <?php endif; ?>
+            </tr>
+         </thead>
+         <tbody>
+            <?= $this->output; ?>
+         </tbody>
+      </table>
+   </div>
    <?php if ( $this->message ): ?>
       <p class="catalog_message"><?= $this->message; ?></p>
    <?php endif; ?>

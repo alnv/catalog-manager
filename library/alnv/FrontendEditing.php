@@ -298,7 +298,8 @@ class FrontendEditing extends CatalogController {
         $objWidget->storeValues = true;
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
-        $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
+        $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
+        $objWidget->class = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
         if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
 

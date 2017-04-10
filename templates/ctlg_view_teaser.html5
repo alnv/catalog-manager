@@ -31,4 +31,7 @@
       </ul>
    <?php endif; ?>
 
+   <?php if( $this->masterUrl ): ?>
+      <p class="more"><a href="<?= $this->masterUrl ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></p>
+   <?php endif; ?>
 </div>

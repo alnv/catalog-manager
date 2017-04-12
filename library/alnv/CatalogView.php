@@ -264,7 +264,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogJoinFields ) {
 
-            $arrQuery['joins'] = $this->prepareJoinData( $this->catalogJoinFields );
+            $arrQuery['joins'] = $this->prepareJoinData();
         }
 
         if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
@@ -431,7 +431,7 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-
+        
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -781,16 +781,16 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function prepareJoinData ( $arrJoins ) {
+    protected function prepareJoinData () {
 
         $arrReturn = [];
 
-        if ( empty( $arrJoins ) || !is_array( $arrJoins ) ) {
+        if ( empty( $this->catalogJoinFields ) || !is_array( $this->catalogJoinFields ) ) {
 
             return $arrReturn;
         }
 
-        foreach ( $arrJoins as $strFieldJoinID ) {
+        foreach ( $this->catalogJoinFields as $strFieldJoinID ) {
 
             $arrRelatedJoinData = [];
 

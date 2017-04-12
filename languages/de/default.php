@@ -25,3 +25,14 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurd
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detailansicht';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Bearbeiten';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gt'] = 'Größer';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lt'] = 'Kleiner';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['contain'] = 'IN';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['equal'] = 'Gleich';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['not'] = 'Ungleich';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['regexp'] = 'REGEXP';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['between'] = 'BETWEEN';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gte'] = 'Größer gleich';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lte'] = 'Kleiner gleich';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSet'] = 'FIND_IN_SET';

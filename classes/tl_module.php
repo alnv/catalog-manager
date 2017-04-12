@@ -81,7 +81,21 @@ class tl_module extends \Backend {
 
     public function getCatalogTemplates() {
 
-        return $this->getTemplateGroup('ctlg_view_');
+        $arrReturn = [];
+        $arrTemplates = $this->getTemplateGroup('ctlg_view_');
+        $strNotAllowedTemplateName = 'ctlg_view_table';
+
+        foreach ( $arrTemplates as $strTemplate => $strTemplateName ) {
+
+            if ( strpos( $strTemplateName, $strNotAllowedTemplateName ) !== false ) {
+
+                continue;
+            }
+
+            $arrReturn[ $strTemplate ] = $strTemplateName;
+        }
+        
+        return $arrReturn;
     }
 
 
@@ -130,7 +144,7 @@ class tl_module extends \Backend {
                 continue;
             }
 
-            $arrReturn[$objCatalogFields->id] = $objCatalogFields->title;
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' [' . $objCatalogFields->fieldname . ']' : $objCatalogFields->fieldname;
         }
 
         return $arrReturn;

@@ -292,7 +292,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getCatalogFieldList( $arrRow ) {
 
-        return $arrRow['title'];
+        return $arrRow['title'] . ' - ' . '<span style="color:#ccc;">[' . $arrRow['fieldname'] . ']</span><span style="color:#ccc;"> [' . $arrRow['type'] . ']</span>';
     }
 
     

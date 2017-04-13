@@ -42,7 +42,6 @@ class CatalogFilter extends CatalogController {
 
     public function generateForm() {
 
-        $intIndex = 0;
         $strFields = '';
 
         if ( !empty( $this->arrActiveFields ) && is_array( $this->arrActiveFields ) ) {
@@ -65,11 +64,24 @@ class CatalogFilter extends CatalogController {
                 $objWidget->mandatory = false;
                 $objWidget->id = 'id_' . $arrField['_fieldname'];
                 $objWidget->value = \Input::get( $arrField['_fieldname'] ) ? \Input::get( $arrField['_fieldname'] ) : '';
-                $objWidget->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
+                $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
 
                 if ( $objWidget->value ) {
 
                     $this->arrDependencies[] = $arrField['_fieldname'];
+                }
+
+                if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
+
+                    if ( $arrField['_cssID'][0] ) {
+
+                        $objWidget->id = 'id_' . $arrField['_cssID'][0];
+                    }
+
+                    if ( $arrField['_cssID'][1] ) {
+
+                        $objWidget->class = ' ' . $arrField['_cssID'][1];
+                    }
                 }
 
                 if ( !empty( $arrFieldsChangeOnSubmit ) && is_array( $arrFieldsChangeOnSubmit ) ) {
@@ -100,8 +112,12 @@ class CatalogFilter extends CatalogController {
                     }
                 }
 
+                if ( !$objWidget->value && $arrField['default'] ) {
+
+                    $objWidget->value = $arrField['default'];
+                }
+
                 $strFields .= $objWidget->parse();
-                $intIndex++;
             }
         }
 
@@ -135,7 +151,7 @@ class CatalogFilter extends CatalogController {
 
         if ( !$this->catalogResetFilterForm ) return '';
 
-        return sprintf( '<div class="reset"><a href="%s" id="id_form_%s">Alle Filtereinstellungen zurücksetzen</a></div>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
+        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">Alle Filtereinstellungen zurücksetzen</a></p>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
     }
 
 

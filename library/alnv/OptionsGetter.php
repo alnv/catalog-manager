@@ -89,8 +89,8 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
 
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-
-            if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+            
+            if ( is_null( $arrQuery['value'] ) ) {
 
                 return null;
             }

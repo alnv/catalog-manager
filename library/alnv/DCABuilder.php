@@ -274,7 +274,7 @@ class DCABuilder extends CatalogController {
         $arrReturn = [
 
             'showColumns' => $this->arrCatalog['showColumns'] ? true : false,
-            'fields' => empty( $this->arrCatalog['fields'] ) ? [ 'title' ] : $this->arrCatalog['fields'],
+            'fields' => empty( $this->arrCatalog['labelFields'] ) ? [ 'title' ] : $this->arrCatalog['labelFields'],
         ];
 
         if ( $this->arrCatalog['format'] ) {
@@ -298,16 +298,11 @@ class DCABuilder extends CatalogController {
 
         $arrHeaderFields = $this->arrCatalog['headerFields'];
         $strPanelLayout = implode( ',', $this->arrCatalog['panelLayout'] );
-        $arrFields = Toolkit::returnOnlyExistedItems( $this->arrCatalog['fields'], $this->arrFields, true );
+        $arrSortingFields = Toolkit::returnOnlyExistedItems( $this->arrCatalog['sortingFields'], $this->arrFields, true );
 
-        if ( $this->arrCatalog['mode'] == '4' && ( empty( $this->arrCatalog['fields'] ) || in_array( 'sorting', $this->arrCatalog['fields'] ) ) ) {
+        if ( empty( $arrSortingFields ) ) {
 
-            $arrFields = ['sorting'];
-        }
-
-        if ( empty( $arrFields ) ) {
-
-            $arrFields = [ 'title' ];
+            $arrSortingFields = [ 'title' ];
         }
 
         if ( empty( $arrHeaderFields ) ) {
@@ -319,10 +314,10 @@ class DCABuilder extends CatalogController {
 
             $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
         }
-        
+
         $arrReturn = [
 
-            'fields' => $arrFields,
+            'fields' => $arrSortingFields,
             'panelLayout' => $strPanelLayout,
             'headerFields' => $arrHeaderFields,
             'mode' => $this->arrCatalog['mode'],
@@ -337,7 +332,7 @@ class DCABuilder extends CatalogController {
 
             $arrReturn['icon'] = $this->IconGetter->setCatalogIcon( $this->arrCatalog['tablename'] );
         }
-        
+
         return $arrReturn;
     }
 

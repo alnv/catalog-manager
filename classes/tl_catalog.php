@@ -4,8 +4,8 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
-
     private $arrCatalogFieldCache = [];
+    private $arrDataContainerFields = [];
     private $arrCreateSortingFieldOn = [ '4', '5' ];
 
 
@@ -250,8 +250,13 @@ class tl_catalog extends \Backend {
 
     public function getDataContainerFields( \DataContainer $dc ) {
 
+        if ( !empty( $this->arrDataContainerFields ) && is_array( $this->arrDataContainerFields ) ) {
+
+            return $this->arrDataContainerFields;
+        }
+
         $strID = \Input::get('id');
-        $arrDefaultFields = [ 'id', 'title', 'alias', 'tstamp' ];
+        $this->arrDataContainerFields = [ 'id', 'title', 'alias', 'tstamp' ];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ?' )->execute( $strID );
 
         while ( $objCatalogFields->next() ) {
@@ -261,18 +266,18 @@ class tl_catalog extends \Backend {
                 continue;
             }
 
-            $arrDefaultFields[] = $objCatalogFields->fieldname;
+            $this->arrDataContainerFields[] = $objCatalogFields->fieldname;
         }
 
         if ( $this->Database->tableExists( $dc->activeRecord->tablename ) ) {
 
             if ( $this->Database->fieldExists( 'sorting', $dc->activeRecord->tablename ) ) {
 
-                $arrDefaultFields[] = 'sorting';
+                $this->arrDataContainerFields[] = 'sorting';
             }
         }
 
-        return $arrDefaultFields;
+        return $this->arrDataContainerFields;
     }
 
 

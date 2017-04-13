@@ -14,6 +14,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'] = 'Ascending';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] = 'Descending';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] = 'Operator';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['selectAll'] = 'Select all';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'] = 'Captcha';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Permissions';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Fields';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'No items were found.';

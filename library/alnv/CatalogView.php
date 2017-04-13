@@ -431,7 +431,7 @@ class CatalogView extends CatalogController {
         $intIndex = 0;
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
@@ -738,6 +738,12 @@ class CatalogView extends CatalogController {
         if ( $varValue && ( $arrField['type'] == 'checkbox' || $arrField['multiple'] || $strOperator == 'contain' ) ) {
 
             $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
+        }
+
+        if ( $arrField['type'] == 'date' || in_array( $arrField['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+            $objDate = new \Date( $varValue );
+            $varValue  = $objDate->tstamp;
         }
 
         return Toolkit::prepareValueForQuery( $varValue );

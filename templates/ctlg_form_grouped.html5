@@ -10,13 +10,7 @@
          <?php if (!empty($category)): ?>
             <fieldset>
                <legend><?= $legend ?></legend>
-               <?php if (!$this->tableless): ?>
-               <table>
-                  <?php endif; ?>
-                  <?= implode('', $category) ?>
-                  <?php if (!$this->tableless): ?>
-               </table>
-               <?php endif; ?>
+               <?= implode('', $category) ?>
             </fieldset>
          <?php endif; ?>
       <?php endforeach; ?>

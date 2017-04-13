@@ -435,7 +435,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinFields'] = [
 
         'multiple' => true,
         'maxlength' => 255,
-        'tl_class' => 'w50',
+        'tl_class' => 'clr',
         'doNotCopy' => true,
     ],
 
@@ -453,7 +453,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable'] = [
     'eval' => [
 
         'doNotCopy' => true,
-        'tl_class' => 'w50 m12'
+        'tl_class' => 'clr m12'
     ],
 
     'exclude' => true,

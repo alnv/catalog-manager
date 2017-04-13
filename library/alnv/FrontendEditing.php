@@ -285,6 +285,7 @@ class FrontendEditing extends CatalogController {
 
         $arrField = $this->convertWidgetToField( $arrField );
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
+        $strCssClasses = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
         if ( $strClass == false ) return null;
 
@@ -299,7 +300,21 @@ class FrontendEditing extends CatalogController {
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
         $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
-        $objWidget->class = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
+
+        if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
+
+            if ( $arrField['_cssID'][0] ) {
+
+                $objWidget->id = 'id_' . $arrField['_cssID'][0];
+            }
+
+            if ( $arrField['_cssID'][1] ) {
+
+                $strCssClasses .= ' ' . $arrField['_cssID'][1];
+            }
+        }
+
+        $objWidget->class = $strCssClasses;
 
         if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
 
@@ -368,6 +383,11 @@ class FrontendEditing extends CatalogController {
             $objWidget->rowClassConfirm = 'row_' . ++$intIndex . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
         }
 
+        if ( !$objWidget->value && $arrField['default'] ) {
+
+            $objWidget->value = $arrField['default'];
+        }
+        
         if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
 
             $objWidget->validate();
@@ -718,7 +738,7 @@ class FrontendEditing extends CatalogController {
             'required' => true,
             'type' => 'captcha',
             'mandatory' => true,
-            'tableless' => $this->catalogTableless,
+            'tableless' => '1',
             'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion']
         ];
 
@@ -762,7 +782,7 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'catalogMessageForm';
         }
 
-        $arrField['eval']['tableless'] = $this->catalogTableless;
+        $arrField['eval']['tableless'] = '1';
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 
         return $arrField;

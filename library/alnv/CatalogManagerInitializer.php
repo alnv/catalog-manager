@@ -33,11 +33,12 @@ class CatalogManagerInitializer {
             if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) continue;
             if ( !$objDatabase->tableExists( $arrCatalog['tablename'] ) ) continue;
 
-            $arrCatalog['fields'] = Toolkit::parseStringToArray( $arrCatalog['fields'] );
             $arrCatalog['cTables'] = Toolkit::parseStringToArray( $arrCatalog['cTables'] );
             $arrCatalog['operations'] = Toolkit::parseStringToArray( $arrCatalog['operations'] );
             $arrCatalog['panelLayout'] = Toolkit::parseStringToArray( $arrCatalog['panelLayout'] );
+            $arrCatalog['labelFields'] = Toolkit::parseStringToArray( $arrCatalog['labelFields'] );
             $arrCatalog['headerFields'] = Toolkit::parseStringToArray( $arrCatalog['headerFields'] );
+            $arrCatalog['sortingFields'] = Toolkit::parseStringToArray( $arrCatalog['sortingFields'] );
 
             $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
 

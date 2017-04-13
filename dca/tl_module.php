@@ -32,8 +32,8 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseFrontendEditingViewPag
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogTableless,disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogFormRedirect,catalogItemOperations,catalogExcludedFields';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
@@ -615,20 +615,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNoValidate'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['disableCaptcha']['eval']['tl_class'] = 'w50 m12';
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableless'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTableless'],
-    'inputType' => 'checkbox',
-
-    'eval' => [
-
-        'tl_class' => 'w50 m12'
-    ],
-
-    'exclude' => true,
-    'sql' => "char(1) NOT NULL default ''"
-];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
 

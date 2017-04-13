@@ -213,7 +213,6 @@ class FrontendEditing extends CatalogController {
     
     public function getCatalogForm() {
 
-        $intIndex = 0;
         $this->objTemplate = new \FrontendTemplate( $this->strTemplate );
         $this->objTemplate->setData( $this->arrOptions );
 
@@ -230,8 +229,7 @@ class FrontendEditing extends CatalogController {
 
                 if ( in_array( $arrField['_fieldname'], $this->catalogExcludedFields ) ) continue;
 
-                $this->generateForm( $arrField, $intIndex );
-                $intIndex++;
+                $this->generateForm( $arrField );
             }
         }
 
@@ -243,8 +241,6 @@ class FrontendEditing extends CatalogController {
         if ( !$this->disableCaptcha ) {
 
             $objCaptcha = $this->getCaptcha();
-            $objCaptcha->rowClass = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
-
             $this->objTemplate->fields .= $objCaptcha->parse();
         }
 
@@ -281,11 +277,10 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    protected function generateForm( $arrField, $intIndex ) {
+    protected function generateForm( $arrField ) {
 
         $arrField = $this->convertWidgetToField( $arrField );
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
-        $strCssClasses = 'row_' . $intIndex . ( ( $intIndex == 0 ) ? ' row_first' : '' ) . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
 
         if ( $strClass == false ) return null;
 
@@ -310,11 +305,9 @@ class FrontendEditing extends CatalogController {
 
             if ( $arrField['_cssID'][1] ) {
 
-                $strCssClasses .= ' ' . $arrField['_cssID'][1];
+                $objWidget->class = ' ' . $arrField['_cssID'][1];
             }
         }
-
-        $objWidget->class = $strCssClasses;
 
         if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
 
@@ -378,16 +371,11 @@ class FrontendEditing extends CatalogController {
             $objWidget->value = \Date::parse( $strDateFormat, $objWidget->value );
         }
 
-        if ( $objWidget instanceof \FormPassword ) {
-
-            $objWidget->rowClassConfirm = 'row_' . ++$intIndex . ( ( ( $intIndex % 2 ) == 0 ) ? ' even' : ' odd' );
-        }
-
         if ( !$objWidget->value && $arrField['default'] ) {
 
             $objWidget->value = $arrField['default'];
         }
-        
+
         if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
 
             $objWidget->validate();

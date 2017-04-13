@@ -14,6 +14,12 @@
             </fieldset>
          <?php endif; ?>
       <?php endforeach; ?>
+      <?php if( $this->captchaWidget ): ?>
+         <fieldset>
+            <legend><?= $this->captchaLabel; ?></legend>
+            <?= $this->captchaWidget; ?>
+         </fieldset>
+      <?php endif; ?>
       <div class="submit_container">
          <input type="submit" name="<?= $this->submitName; ?>" value="<?= $this->submit; ?>">
       </div>

@@ -17,7 +17,6 @@ $GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sorting', 'Please select your sor
 $GLOBALS['TL_LANG']['tl_catalog']['tablename'] = [ 'Table', 'Please enter valid table name.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Module name', 'Please enter your module name.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['cTables'] = [ 'Child tables', 'Please select your tables.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['fields'] = [ 'Fields', 'Please select fields for the view.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['navPosition'] = [ 'Position', 'Please select your position' ];
 $GLOBALS['TL_LANG']['tl_catalog']['format'] = [ 'Format', 'Here you can customize your table row.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['pTable'] = [ 'Parent table', 'Please select your parent table.' ];
@@ -29,6 +28,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Description', 'Please ente
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here you can show multiple columns.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or more fields that will be shown in the list.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Address Type', 'Please select address type.' ];

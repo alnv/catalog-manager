@@ -25,10 +25,11 @@ $GLOBALS['TL_LANG']['tl_catalog']['panelLayout'] = [ 'Panel Layout', 'Hier könn
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Bitte geben Sie eine kurze Information über die Tabelle ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Darstellung', 'Bitte wählen Sie eine Darstellung für das Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Beschreibung des Moduls', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['fields'] = [ 'Feld/er', 'Eines oder mehrere Felder, anhand derer die Tabelle sortiert wird.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Anzeige-Feld/er', 'Eines oder mehrere Felder, die in der Liste angezeigt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Backend Modul einblenden', 'Dieses Backend Modul wird in der Hauptnavigation sichtbar.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Eltern-Felder', 'Eines oder mehrere Felder, die im Header des Parent View angezeigt werden' ];
+$GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sortierungs-Feld/er', 'Eines oder mehrere Felder, anhand derer die Tabelle sortiert wird.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Als mehrspaltige Tabelle anzeigen', 'Legt fest, ob Contao einen Tabellenkopf mit Spaltennamen ausgeben soll.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'Stadt', 'Bitte wählen Sie ein Feld für die Stadt aus.' ];

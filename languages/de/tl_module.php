@@ -81,7 +81,6 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates',
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Feldabhängigkeit', 'Hier können Sie jedem Feld eine Feldabhängigkeit zuweisen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Bitte wählen Sie für den Title ein Eingabefeld. Dieses Eingabefeld wird für den Title Meta-Tag verwendet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Beschreibung', 'Bitte wählen Sie für die Beschreibung ein Eingabefeld. Dieses Eingabefeld wird für das Description Meta-Tag verwendet.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogTableless'] = [ 'Tabellenloses Layout', 'Das Formular ohne HTML-Tabellen ausgeben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Filter verstecken', 'Hier können Sie den Filter verstecken, wenn sich die Seite in der Detailansicht befindet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Felder deaktivieren', 'Hier können Sie Felder aus dem Formular ausschließen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Debugmodus aktivieren', 'Hier können Sie den Debugmodus aktivieren. Dabei werden nützliche Informationen bereitgestellt.' ];

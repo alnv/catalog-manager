@@ -83,7 +83,7 @@ class SQLQueryBuilder extends CatalogController {
 
 
     protected function equal( $strField ) {
-        
+
         return sprintf( '%s.`%s` = ?', $this->strTable, $strField );
     }
 
@@ -96,13 +96,13 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function regexp( $strField ) {
 
-        return sprintf( 'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER("?")', $this->strTable, $strField );
+        return sprintf( 'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)', $this->strTable, $strField );
     }
 
 
     protected function findInSet( $strField ) {
 
-        return sprintf( 'FIND_IN_SET("?",LOWER(CAST(%s.`%s` AS CHAR)))', $this->strTable, $strField );
+        return sprintf( 'FIND_IN_SET(?,LOWER(CAST(%s.`%s` AS CHAR)))', $this->strTable, $strField );
     }
 
 

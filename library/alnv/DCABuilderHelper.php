@@ -127,6 +127,7 @@ class DCABuilderHelper extends CatalogController {
             'sql' => $this->arrSQLStatements[ $arrField['statement'] ]
         ];
 
+        $arrDCAField['_cssID'] = Toolkit::deserialize( $arrField['cssID'] );
         $arrDCAField['_placeholder'] = $arrField['placeholder'];
         $arrDCAField['_disableFEE'] = $arrField['disableFEE'];
         $arrDCAField['_fieldname'] = $arrField['fieldname'];
@@ -299,7 +300,8 @@ class DCABuilderHelper extends CatalogController {
                 'exclude' => '1',
                 'tl_class' => serialize( [ 'w50' ] ),
                 '_palette' => 'general_legend',
-                'invisible' => ''
+                'invisible' => '',
+                'cssID' => serialize( [ '', 'title' ] )
             ],
 
             'alias' => [
@@ -318,7 +320,8 @@ class DCABuilderHelper extends CatalogController {
                 'rgxp' => 'alias',
                 'tl_class' => serialize( [ 'w50' ] ),
                 '_palette' => 'general_legend',
-                'invisible' => ''
+                'invisible' => '',
+                'cssID' => serialize( [ '', 'alias' ] )
             ],
 
             'invisible' => [
@@ -331,7 +334,8 @@ class DCABuilderHelper extends CatalogController {
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1],
                 '_palette' => 'invisible_legend',
                 'invisible' => '',
-                'placeholder' => ''
+                'placeholder' => '',
+                'cssID' => serialize( [ '', 'invisible' ] )
             ],
 
             'start' => [
@@ -347,7 +351,8 @@ class DCABuilderHelper extends CatalogController {
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
-                'invisible' => ''
+                'invisible' => '',
+                'cssID' => serialize( [ '', 'start' ] )
             ],
 
             'stop' => [
@@ -363,7 +368,8 @@ class DCABuilderHelper extends CatalogController {
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
-                'invisible' => ''
+                'invisible' => '',
+                'cssID' => serialize( [ '', 'stop' ] )
             ]
         ];
     }

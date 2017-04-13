@@ -233,15 +233,15 @@ class FrontendEditing extends CatalogController {
             }
         }
 
-        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
-
-            $this->saveEntity();
-        }
-
         if ( !$this->disableCaptcha ) {
 
             $objCaptcha = $this->getCaptcha();
-            $this->objTemplate->fields .= $objCaptcha->parse();
+            $this->objTemplate->captchaWidget = $objCaptcha->parse();
+        }
+
+        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
+
+            $this->saveEntity();
         }
 
         $arrCategories = [];
@@ -271,6 +271,7 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
+        $this->objTemplate->captchaLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'];
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         
         return $this->objTemplate->parse();

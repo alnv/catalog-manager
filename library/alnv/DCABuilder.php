@@ -133,7 +133,6 @@ class DCABuilder extends CatalogController {
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
         $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
-
         $GLOBALS['TL_LANG']['MOD'][ $this->strTable ] = $this->I18nCatalogTranslator->getModuleLabel( $this->strTable );
     }
 
@@ -154,13 +153,6 @@ class DCABuilder extends CatalogController {
     protected function getDefaultDCFields() {
 
         $arrReturn = $this->DCABuilderHelper->getPredefinedDCFields();
-
-        $arrReturn['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
-
-            $objDCACallbacks = new DCACallbacks();
-
-            return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
-        }];
 
         if ( !$this->arrOperations['invisible'] ) {
 
@@ -191,6 +183,15 @@ class DCABuilder extends CatalogController {
                     'load' => 'eager'
                 ];
             }
+        }
+
+        if ( $arrReturn['alias'] && is_array( $arrReturn['alias'] ) ) {
+
+            $arrReturn['alias']['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
+
+                $objDCACallbacks = new DCACallbacks();
+                return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
+            }];
         }
 
         return $arrReturn;

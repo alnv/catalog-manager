@@ -424,12 +424,18 @@ class FrontendEditing extends CatalogController {
                         }
                     }
 
-                    catch  (\Exception $objError ) {
+                    catch ( \Exception $objError ) {
 
                         $objWidget->class = 'error';
                         $objWidget->addError( $objError->getMessage() );
                     }
                 }
+            }
+
+            if ( $arrField['_fieldname'] == 'alias' ) {
+
+                $objDCACallbacks = new DCACallbacks();
+                $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename );
             }
 
             if ( $objWidget->hasErrors() ) {

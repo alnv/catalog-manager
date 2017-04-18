@@ -124,16 +124,21 @@ class DCACallbacks extends \Backend{
             $varValue = \StringUtil::generateAlias( $strTitle );
         }
 
-        if ( !$varValue ) {
-
-            $varValue = $varValue . uniqid( '_' );
-        }
-
         $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTablename ) )->execute( $varValue );
 
         if ( $objCatalogs->numRows && \Input::get('id') ) {
 
             $varValue .= '_' . \Input::get('id');
+        }
+
+        if ( $objCatalogs->numRows && !\Input::get('id') ) {
+
+            $varValue .= '_' . md5( time() . uniqid() );
+        }
+
+        if ( !$varValue ) {
+
+            $varValue .= md5( $objCatalogs->numRows . time() . uniqid() );
         }
 
         return $varValue;

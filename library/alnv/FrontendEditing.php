@@ -94,6 +94,8 @@ class FrontendEditing extends CatalogController {
             $this->arrFormFields[ 'invisible' ] = $arrPredefinedDCFields['invisible'];
         }
 
+        unset( $arrPredefinedDCFields['stop'] );
+        unset( $arrPredefinedDCFields['start'] );
         unset( $arrPredefinedDCFields['invisible'] );
 
         array_insert( $this->arrFormFields, 0, $arrPredefinedDCFields );

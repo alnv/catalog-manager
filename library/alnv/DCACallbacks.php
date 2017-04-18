@@ -116,7 +116,30 @@ class DCACallbacks extends \Backend{
         return $varValue;
     }
 
-    
+
+    public function generateFEAlias( $varValue, $strTitle, $strTablename ) {
+
+        if ( !$varValue && $strTitle ) {
+
+            $varValue = \StringUtil::generateAlias( $strTitle );
+        }
+
+        if ( !$varValue ) {
+
+            $varValue = $varValue . uniqid( '_' );
+        }
+
+        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTablename ) )->execute( $varValue );
+
+        if ( $objCatalogs->numRows && \Input::get('id') ) {
+
+            $varValue .= '_' . \Input::get('id');
+        }
+
+        return $varValue;
+    }
+
+
     public function generateGeoCords( \DataContainer $dc ) {
 
         if ( !$dc->activeRecord ) return null;

@@ -24,7 +24,7 @@ You can install Catalog Manager in Extension Repository. Just search for "Catalo
 
 Do you have some issues? Contact me: https://www.alexandernaumov.de
 
-**Lizenzvereinbarung**
+## Lizenzvereinbarung
 
 Die Contao Erweiterung "Catalog-Manager" wird kostenpflichtig angeboten. Mit dem Erwerb einer Lizenz darf die Erweiterung verwendet werden. Die Nutzungslizenz ist an eine einzige Contao Installationen gebunden. Es muss pro Contao Installation, eine neue Lizenz erworben werden. **Für Testzwecke kann der Catalog Manager kostenfrei installiert werden**, sofern die Software auf einer lokalen Webumgebungen liegt. Die Lizenz erlaubt nur die Nutzung der Software jegliche Veränderung am Quellcode ist verboten. Die Software und der dazugehörende Quellcode sind urheberrechtlich geschützt.
 Alle zukünftig erscheinenden Updates ( Bugfixes und Sicherheitsupdates ) sind kostenlos. Die Software wird ohne jede ausdrückliche oder implizierte Garantie bereitgestellt.

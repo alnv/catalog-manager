@@ -553,13 +553,19 @@ class FrontendEditing extends CatalogController {
             $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
         }
 
+        if ( !$this->arrValues['alias'] ) {
+
+            $objDCACallbacks = new DCACallbacks();
+            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename );
+        }
+
         switch ( $this->strAct ) {
 
             case 'create':
 
-                if ( $this->SQLBuilder->Database->fieldExists( 'pid', $this->catalogTablename ) ) {
+                if ( $this->SQLBuilder->Database->fieldExists( 'pid', $this->catalogTablename ) && $this->arrCatalog['pTable'] ) {
 
-                    if ( !\Input::get('pid') ) return null;
+                   if ( !\Input::get('pid') ) return null;
 
                     $this->arrValues['pid'] = \Input::get('pid');
                 }

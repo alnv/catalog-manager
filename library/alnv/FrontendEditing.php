@@ -244,36 +244,32 @@ class FrontendEditing extends CatalogController {
             $this->saveEntity();
         }
 
+
         $arrCategories = [];
-        $arrLastPalette = [];
+        $arrInvisiblePalette = [];
 
         foreach ( $this->arrPalettes as $strPalette => $arrPalette ) {
 
-            if ( $strPalette == 'invisible_legend' ) {
+            if ( $strPalette === 'invisible_legend' ) {
 
-                $arrLastPalette[ $strPalette ] = $arrPalette;
-
+                $arrInvisiblePalette[ $this->arrPaletteNames[ $strPalette ] ] = $arrPalette;
                 continue;
             }
 
             $arrCategories[ $this->arrPaletteNames[ $strPalette ] ] = $arrPalette;
         }
 
-        foreach ( $arrLastPalette as $strPalette => $arrPalette ) {
-
-            $arrCategories[ $this->arrPaletteNames[ $strPalette ] ] = $arrPalette;
-        }
-
         $this->objTemplate->method = 'POST';
-        $this->objTemplate->formId = $this->strSubmitName;
         $this->objTemplate->categories = $arrCategories;
+        $this->objTemplate->formId = $this->strSubmitName;
+        $this->objTemplate->invisible = $arrInvisiblePalette;
         $this->objTemplate->submitName = $this->strSubmitName;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
         $this->objTemplate->captchaLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'];
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        
+
         return $this->objTemplate->parse();
     }
 
@@ -366,15 +362,15 @@ class FrontendEditing extends CatalogController {
                 '</script>';
         }
 
-        if ( $arrField['eval']['rgxp'] && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
-
-            $strDateFormat = \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] );
-            $objWidget->value = \Date::parse( $strDateFormat, $objWidget->value );
-        }
-
         if ( !$objWidget->value && $arrField['default'] ) {
 
             $objWidget->value = $arrField['default'];
+        }
+
+        if ( $arrField['eval']['rgxp'] && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+            $strDateFormat = \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] );
+            $objWidget->value = $objWidget->value ? \Date::parse( $strDateFormat, $objWidget->value ) : '';
         }
 
         if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
@@ -482,8 +478,6 @@ class FrontendEditing extends CatalogController {
         }
 
         $strWidget = $objWidget->parse();
-
-        $this->objTemplate->fields .= $strWidget;
         $this->arrPalettes[ $arrField['_palette'] ][ $arrField['_fieldname'] ] = $strWidget;
 
         if ( is_null( $this->arrPaletteNames[ $arrField['_palette'] ] ) ) {

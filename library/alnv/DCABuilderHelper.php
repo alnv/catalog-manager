@@ -313,7 +313,6 @@ class DCABuilderHelper extends CatalogController {
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0],
                 'statement' => 'c128',
                 'maxlength' => '128',
-                'mandatory' => '1',
                 'unique' => '1',
                 'exclude' => '1',
                 'doNotCopy' => '1',

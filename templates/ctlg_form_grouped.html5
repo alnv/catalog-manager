@@ -6,23 +6,38 @@
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
-      <?php foreach ( $this->categories as $legend => $category ): ?>
-         <?php if (!empty($category)): ?>
+
+      <?php foreach ( $this->categories as $strPalette => $strField ): ?>
+         <?php if (!empty($strField)): ?>
             <fieldset>
-               <legend><?= $legend ?></legend>
-               <?= implode('', $category) ?>
+               <legend><?= $strPalette ?></legend>
+               <?= implode('', $strField) ?>
             </fieldset>
          <?php endif; ?>
       <?php endforeach; ?>
+
+      <?php if ( !empty( $this->invisible ) && is_array( $this->invisible ) ): ?>
+         <?php foreach ( $this->invisible as $strPalette => $strInvisibleField ): ?>
+            <?php if (!empty($strInvisibleField)): ?>
+               <fieldset>
+                  <legend><?= $strPalette ?></legend>
+                  <?= implode( '', $strInvisibleField ) ?>
+               </fieldset>
+            <?php endif; ?>
+         <?php endforeach; ?>
+      <?php endif; ?>
+
       <?php if( $this->captchaWidget ): ?>
          <fieldset>
             <legend><?= $this->captchaLabel; ?></legend>
             <?= $this->captchaWidget; ?>
          </fieldset>
       <?php endif; ?>
+
       <div class="submit_container">
          <input type="submit" name="<?= $this->submitName; ?>" value="<?= $this->submit; ?>">
       </div>
+
    </form>
 </div>
 <!-- indexer::continue -->

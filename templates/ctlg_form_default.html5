@@ -6,15 +6,31 @@
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+
       <div class="fields_container">
-         <?= $this->fields ?>
+         <?php foreach ( $this->categories as $strPalette => $strField ): ?>
+            <?php if (!empty($strField)): ?>
+               <?= implode('', $strField) ?>
+            <?php endif; ?>
+         <?php endforeach; ?>
+
+         <?php if ( !empty( $this->invisible ) && is_array( $this->invisible ) ): ?>
+            <?php foreach ( $this->invisible as $strPalette => $strInvisibleField ): ?>
+               <?php if (!empty($strInvisibleField)): ?>
+                  <?= implode( '', $strInvisibleField ) ?>
+               <?php endif; ?>
+            <?php endforeach; ?>
+         <?php endif; ?>
       </div>
+
       <?php if( $this->captchaWidget ): ?>
          <?= $this->captchaWidget; ?>
       <?php endif; ?>
+
       <div class="submit_container">
          <input type="submit" name="<?= $this->submitName; ?>" value="<?= $this->submit; ?>">
       </div>
+
    </form>
 </div>
 <!-- indexer::continue -->

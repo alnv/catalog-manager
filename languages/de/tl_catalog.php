@@ -43,7 +43,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Quelle', 'Bitte w
 $GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Sprache', 'Bitte wählen Sie für die Sprache ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Vollständige Adresse', 'Bitte wählen Sie für die Adresse ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Straßennummer', 'Bitte wählen Sie für die Straßennummer ein Eingabefeld.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Sprachwechsler Module verwenden', 'Hier können Sie das Sprachwechsler Module verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Sprachwechsler Modul verwenden', 'Hier können Sie das Sprachwechsler Module verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Latitude & Longitude erzeugen', 'Hier können Sie automatisch Latitude und Longitude Werte ermitteln.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 'Bitte wählen Sie für Latitude und Longitude ein Eingabefeld. In diesem Eingabefeld wird der tatsächliche Wert gespeichert.' ];
 

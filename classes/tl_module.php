@@ -347,33 +347,42 @@ class tl_module extends \Backend {
     }
 
 
-    public function getExcludeOnlyCatalogFields( \DataContainer $dc ) {
+    public function getExcludedCatalogFields( \DataContainer $dc ) {
 
         if ( !$dc->activeRecord->catalogTablename ) return [];
 
         $arrReturn = [];
-        $arrFields = $this->getSortableCatalogFieldsByTablename( $dc->activeRecord->catalogTablename, true );
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $dc->activeRecord->catalogTablename );
 
-        unset( $arrFields['id'] );
+        if ( is_array( $arrCatalog ) ) {
 
-        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
+            $arrOperations = $arrCatalog['operations'];
 
-            foreach ( $arrFields as $strFieldname => $arrField ) {
+            $arrReturn['title'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0] . ' [title]';
+            $arrReturn['alias'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0] . ' [alias]';
 
-                if ( !$arrField ) continue;
+            if ( in_array( 'invisible', $arrOperations ) && $this->Database->fieldExists( 'invisible', $dc->activeRecord->catalogTablename ) ) {
 
-                if ( is_string( $arrField ) ) {
-
-                    $arrReturn[ $strFieldname ] = $arrField;
-
-                    continue;
-                }
-
-                if ( $arrFields['exclude'] ) {
-
-                    $arrReturn[ $strFieldname ] = $arrField['title'] ? $arrField['title'] : $strFieldname;
-                }
+                $arrReturn['stop'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0] . ' [stop]';
+                $arrReturn['start'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0] . ' [start]';
+                $arrReturn['invisible'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0] . ' [invisible]';
             }
+        }
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->type || !$objCatalogFields->fieldname ) {
+
+                continue;
+            }
+
+            if ( in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message' ] ) ) {
+
+                continue;
+            }
+
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' ['. $objCatalogFields->fieldname .']' : $objCatalogFields->fieldname;
         }
 
         return $arrReturn;

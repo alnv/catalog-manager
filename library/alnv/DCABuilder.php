@@ -298,8 +298,8 @@ class DCABuilder extends CatalogController {
     protected function createSortingDataArray() {
 
         $arrHeaderFields = $this->arrCatalog['headerFields'];
+        $arrSortingFields = $this->arrCatalog['sortingFields'];
         $strPanelLayout = implode( ',', $this->arrCatalog['panelLayout'] );
-        $arrSortingFields = Toolkit::returnOnlyExistedItems( $this->arrCatalog['sortingFields'], $this->arrFields, true );
 
         if ( empty( $arrSortingFields ) ) {
 

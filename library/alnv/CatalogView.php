@@ -23,11 +23,12 @@ class CatalogView extends CatalogController {
     protected $arrCatalog = [];
     protected $arrActiveFields = [];
     protected $arrCatalogFields = [];
+    protected $arrRelatedTables = [];
     protected $blnMapViewMode = false;
+    protected $blnHasOperations = false;
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
-    protected $arrRelatedTables = [];
 
 
     public function __construct() {
@@ -136,13 +137,24 @@ class CatalogView extends CatalogController {
 
         $this->setRelatedTables();
 
+        if ( $this->catalogEnableFrontendEditing && !empty( $this->catalogItemOperations ) ) {
+
+            $this->blnHasOperations = true;
+
+            if ( count( $this->catalogItemOperations ) === 1 && in_array( 'create', $this->catalogItemOperations ) ) {
+
+                $this->blnHasOperations = false;
+            }
+        }
+
         if ( $this->enableTableView && $this->strMode == 'view' ) {
 
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
+
+            $this->objMainTemplate->hasOperations = $this->blnHasOperations;
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
             $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
-            $this->objMainTemplate->hasOperations = $this->catalogEnableFrontendEditing && !empty( $this->catalogItemOperations ) ? true : false;
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
             $this->objMainTemplate->relationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'];
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
@@ -548,11 +560,11 @@ class CatalogView extends CatalogController {
 
             $arrCatalog['timeFormat'] = $this->strTimeFormat;
             $arrCatalog['dateFormat'] = $this->strDateFormat;
+            $arrCatalog['hasOperations'] = $this->blnHasOperations;
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
             $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
-            $arrCatalog['hasOperations'] = $this->catalogEnableFrontendEditing && !empty( $this->catalogItemOperations ) ? true : false;
             
             if ( $this->enableTableView && $this->strMode == 'view' ) {
 

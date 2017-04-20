@@ -1131,7 +1131,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludedFields'] = [
         'tl_class' => 'clr'
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getExcludeOnlyCatalogFields' ],
+    'options_callback' => [ 'CatalogManager\tl_module', 'getExcludedCatalogFields' ],
 
     'exclude' => true,
     'sql' => "blob NULL"

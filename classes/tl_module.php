@@ -212,18 +212,35 @@ class tl_module extends \Backend {
             return $this->arrSortableCatalogFieldsCache;
         }
 
-        $arrFields = [
-
-            'id' => 'ID',
-            'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
-            'alias' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0]
-        ];
-
+        $arrFields = [];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $strTablename );
+
+        if ( is_array( $arrCatalog ) ) {
+
+            $arrOperations = $arrCatalog['operations'];
+
+            $arrFields['id'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0];
+            $arrFields['title'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0];
+            $arrFields['alias'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0];
+            $arrFields['tstamp'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0];
+
+            if ( in_array( 'invisible', $arrOperations ) && $this->Database->fieldExists( 'invisible', $strTablename ) ) {
+
+                $arrFields['stop'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0];
+                $arrFields['start'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0];
+                $arrFields['invisible'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0];
+            }
+        }
 
         while ( $objCatalogFields->next() ) {
 
-            if ( !$objCatalogFields->type || in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
+            if ( !$objCatalogFields->fieldname || !$objCatalogFields->type ) {
+
+                continue;
+            }
+
+            if ( in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
 
                 continue;
             }
@@ -236,16 +253,6 @@ class tl_module extends \Backend {
             else {
 
                 $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
-            }
-        }
-
-        if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename] && is_array(  $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
-
-            if ( in_array( 'invisible', $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]['operations'] ) ) {
-
-                $arrFields['stop'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0];
-                $arrFields['start'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0];
-                $arrFields['invisible'] = &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0];
             }
         }
 

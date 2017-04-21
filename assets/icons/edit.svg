@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>edit 64x64</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M24.7924567,18.9036467 L34.7924567,18.9036467 L34.7924567,63.3122491 L24.7924567,63.3122491 L24.7924567,18.9036467 Z M24.7924567,16.1872906 L29.7924567,4.31224912 L34.7924567,16.1872906 L24.7924567,16.1872906 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="edit-64x64">
+            <g id="Combined-Shape" transform="translate(29.792457, 33.812249) rotate(220.000000) translate(-29.792457, -33.812249) ">
+                <use fill="#25AF80" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <path stroke="#25AF80" stroke-width="2.97" d="M26.2774567,20.3886467 L33.3074567,20.3886467 L33.3074567,61.8272491 L26.2774567,61.8272491 L26.2774567,20.3886467 Z M27.0289831,14.7022906 L29.7924567,8.13901787 L32.5559303,14.7022906 L27.0289831,14.7022906 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

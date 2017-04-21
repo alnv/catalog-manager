@@ -248,7 +248,7 @@ class CatalogView extends CatalogController {
             'attributes' => '',
             'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
             'href' => $this->generateUrl( $this->arrFrontendEditingPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
-            'image' => \Image::getHtml( 'new.gif', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
+            'image' => \Image::getHtml( 'system/modules/catalog-manager/assets/icons/new.svg', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
         ];
     }
 
@@ -870,7 +870,7 @@ class CatalogView extends CatalogController {
 
                     'href' => $this->generateUrl( $this->arrFrontendEditingPage, $strAlias ) . $strActFragment,
                     'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
-                    'image' => \Image::getHtml( sprintf( '%s.gif', $strOperation ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ] ),
+                    'image' => \Image::getHtml( sprintf( 'system/modules/catalog-manager/assets/icons/%s.svg', $strOperation ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ] ),
                     'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf( $GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID ) . '\'))return false;"' : '',
                 ];
             }

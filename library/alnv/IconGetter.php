@@ -17,7 +17,7 @@ class IconGetter extends CatalogController {
 
         if ( $strCustomIcon != '' ) return $strCustomIcon;
 
-        return 'system/modules/catalog-manager/assets/icons/catalog-icon.gif';
+        return 'system/modules/catalog-manager/assets/icons/catalog-icon.svg';
     }
 
 
@@ -25,7 +25,7 @@ class IconGetter extends CatalogController {
 
         $strIconname = $strTablename . '-' . 'tag';
         $strCustomIcon = $this->getIcon( $strIconname );
-        $strIcon = 'system/modules/catalog-manager/assets/icons/tag-icon.gif';
+        $strIcon = 'system/modules/catalog-manager/assets/icons/tag-icon.svg';
 
         if ( $strCustomIcon != '' ) {
 
@@ -51,10 +51,10 @@ class IconGetter extends CatalogController {
 
         if ( $blnVisible ) {
 
-            return $strCustomIcon ? $strCustomIcon : $strPath . 'featured.gif';
+            return $strCustomIcon ? $strCustomIcon : $strPath . 'featured.svg';
         }
 
-        return $strCustomIcon ? $strCustomIcon : $strPath . 'featured_.gif';
+        return $strCustomIcon ? $strCustomIcon : $strPath . 'featured_.svg';
     }
 
 
@@ -82,9 +82,9 @@ class IconGetter extends CatalogController {
 
     protected function getIcon( $strIconname ) {
 
-        if ( $this->iconExist( $strIconname, 'gif' ) ) {
+        if ( $this->iconExist( $strIconname, 'svg' ) ) {
 
-            return $this->strDirectory . '/' . $strIconname . '.gif';
+            return $this->strDirectory . '/' . $strIconname . '.svg';
         }
 
         foreach ( $this->arrFileFormats as $strFileFormat ) {

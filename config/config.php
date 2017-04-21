@@ -3,7 +3,7 @@
 $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
 
     'name' => 'catalog-manager',
-    'icon' => 'system/modules/catalog-manager/assets/icons/catalog-manager-icon.gif',
+    'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
 
     'tables' => [
         

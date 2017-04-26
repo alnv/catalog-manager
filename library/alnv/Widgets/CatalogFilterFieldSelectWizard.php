@@ -59,7 +59,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
                 '<thead>'.
                     '<tr>'.
                         '<th>Name</th>'.
-                        '<th>Template</th>'.
+                        '<th></th>'.
                     '</tr>'.
                 '</thead>'.
                 '<tbody data-tabindex="'.$intTabindex.'">'.
@@ -149,14 +149,14 @@ class CatalogFilterFieldSelectWizard extends \Widget {
         $strType = $this->DCABuilderHelper->setInputType( $arrField['type'] );
         $arrTemplates = $this->getTemplateGroup( 'form_' . $strType );
 
-        foreach ( $arrTemplates as $strTemplate ) {
+        foreach ( $arrTemplates as $strValue => $strName ) {
 
             $strOptions .= sprintf(
 
                 '<option value="%s" %s>%s</option>',
-                $strTemplate,
-                $this->varValue[$intIndex]['value'] == $strTemplate ? 'selected' : '',
-                $strTemplate
+                $strValue,
+                $this->varValue[$intIndex]['value'] == $strValue ? 'selected' : '',
+                $strName
             );
         }
 

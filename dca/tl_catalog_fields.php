@@ -111,6 +111,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'addMapInfoBox' => 'mapInfoBoxContent',
         'fileType_file' => 'fileTitle,fileText,disableFileRendering',
+        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize',
         'fileType_image' => 'disableImageRendering,fullsize,imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,useSize'
     ],
 
@@ -1256,6 +1257,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'inputType' => 'catalogTaxonomyWizard',
 
             'eval' => [
+
                 'tl_class' => 'clr',
                 'dcTable' => 'tl_catalog_fields',
                 'taxonomyTable' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyTable' ],
@@ -1494,15 +1496,123 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'chosen' => true,
                 'maxlength' => 255,
-                'tl_class' => 'w50',
-                'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'mandatory' => true,
+                'tl_class' => 'w50'
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getImageTemplates' ],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'galleryTemplate' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['galleryTemplate'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'mandatory' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getGalleryTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'sortBy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['sortBy'],
+            'inputType' => 'select',
+
+            'options' => [
+                
+                'name_asc',
+                'name_desc',
+                'date_asc',
+                'date_desc',
+                'random'
+            ],
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 32,
+                'tl_class' => 'w50'
+            ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'],
+
+            'exclude' => true,
+            'sql' => "varchar(32) NOT NULL default ''"
+        ],
+
+        'metaIgnore' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'perRow' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'],
+            'inputType' => 'select',
+            'default' => 4,
+
+            'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'perPage' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'rgxp' => 'natural'
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'numberOfItems' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'],
+
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'rgxp' => 'natural'
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
         ]
     ]
 ];

@@ -8,7 +8,7 @@
    <div class="ctlg_table">
       <table>
          <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
-            <caption><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title']; ?></a></caption>
+            <caption><a href="<?= $this->createOperation['href'] ?>"><?= $this->createOperation['image']; ?><span><?= $this->createOperation['title']; ?></span></a></caption>
          <?php endif; ?>
          <thead>
             <tr>

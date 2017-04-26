@@ -18,19 +18,6 @@
             <?php continue; ?>
          <?php endif; ?>
 
-         <?php if( $this->catalogFields[$strFieldname]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'image' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableImageRendering'] && !$this->catalogFields[$strFieldname]['imageTemplate'] ): ?>
-            <div class="debug_code_example">
-               <p class="debug_code_title"><?= sprintf( $this->activeFieldsOutput, $strFieldname, $this->catalogFields[$strFieldname]['type'] ) ?></p>
-               <div class="debug_code">
-                  <p><code><?= $this->open_html ?>figure<?= $this->close_tag ?></code></p>
-                  <p class="indent"><code><?= $this->open_html ?>img src="<?= $this->echo_php ?> $this-><?=$strFieldname ?>->src <?= $this->close_php ?>" alt="<?= $this->echo_php ?> $this-><?=$strFieldname ?>->alt <?= $this->close_php ?>" <?= $this->close_tag ?></code></p>
-                  <p class="indent"><code><?= $this->open_html ?>figcaption<?= $this->close_tag ?><?= $this->echo_php ?> $this-><?=$strFieldname ?>->caption <?= $this->close_php ?><?= $this->close_html ?>figcaption<?= $this->close_tag ?></code></p>
-                  <p><code><?= $this->close_html ?>figure<?= $this->close_tag ?></code></p>
-               </div>
-            </div>
-            <?php continue; ?>
-         <?php endif; ?>
-
          <?php if( $this->catalogFields[ $strFieldname ]['type'] == 'upload' && $this->catalogFields[$strFieldname]['fileType'] == 'file' && !$this->catalogFields[$strFieldname]['multiple'] && !$this->catalogFields[$strFieldname]['disableFileRendering'] ): ?>
             <div class="debug_code_example">
                <p class="debug_code_title"><?= sprintf( $this->activeFieldsOutput, $strFieldname, $this->catalogFields[$strFieldname]['type'] ) ?></p>

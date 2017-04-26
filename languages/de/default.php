@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'] = 'Sicherheitsabfr
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] = 'Sortierreihenfolge';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Ihr Lizenzschlüssel ist ungültig.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'Es wurden keine Elemente gefunden.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'Es wurden keine Bilder gefunden.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Eingabefeld "%s <em>[%s]</em>" im Template ausgeben';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';
 

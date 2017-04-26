@@ -145,8 +145,6 @@ class GalleryCreator extends \Frontend {
             }
         }
 
-        var_dump($this->sortBy);
-
         switch ( $this->sortBy ) {
 
             case 'name_asc':

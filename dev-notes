@@ -3,7 +3,7 @@ todo before release
  - fix array problem in dca headline
  - fix problem with sql blob to binary cast
  - check date field for error if filter checkbox is active
- - implement multiple images + gallery template
+ - custom sorting for gallery
 
 todo next release
  - implement export and import csv files

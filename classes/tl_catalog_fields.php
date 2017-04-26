@@ -102,7 +102,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getFilesTypes() {
 
-        return [ 'image', 'file' ];
+        return [ 'image', 'gallery', 'file' ];
     }
 
     
@@ -267,11 +267,12 @@ class tl_catalog_fields extends \Backend {
 
         $arrSQLStatements = $this->DCABuilderHelper->arrSQLStatements;
 
-        if ( $dc->activeRecord->type == 'upload' && !$dc->activeRecord->multiple ) {
+        if ( $dc->activeRecord->type == 'upload' ) {
 
             return [
 
-                'binary' => $arrSQLStatements['binary']
+                'binary' => $arrSQLStatements['binary'],
+                'blob' => $arrSQLStatements['blob']
             ];
         }
 
@@ -343,9 +344,13 @@ class tl_catalog_fields extends \Backend {
 
 
     public function getImageTemplates( \DataContainer $dc ) {
-
-        if ( $dc->activeRecord->multiple ) return [];
-
+        
         return $this->getTemplateGroup( 'ce_image' );
+    }
+
+
+    public function getGalleryTemplates( \DataContainer $dc ) {
+
+        return $this->getTemplateGroup( 'gallery_default' );
     }
 }

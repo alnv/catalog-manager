@@ -102,10 +102,27 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['lngField'] = [ 'Longitude', 'This fiel
 $GLOBALS['TL_LANG']['tl_catalog_fields']['mapMarker'] = [ 'Add Marker', 'Here you can make your location visible by markers.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'] = [ 'Info-Box content', 'Please add your info-box content. Inserttags und Simple-Tokens are allowed.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['sortBy'] = [ 'Order by', 'Please choose the sort order.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['galleryTemplate'] = [ 'Template', 'Please select template.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Thumbnails per row', 'The number of image thumbnails per row.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Items per page', 'The number of items per page. Set to 0 to disable pagination.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Ignore files without meta data', 'Do not show files without meta data matching the page language.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Total number of images', 'Here you can limit the total number of images. Set to 0 to show all.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
+
+    'name_asc' => 'File name (ascending)',
+    'name_desc' => 'File name (descending)',
+    'date_asc' => 'Date (ascending)',
+    'date_desc' => 'Date (descending)',
+    'random' => 'Random order'
+];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
+    'file' => 'File',
     'image' => 'Image',
-    'file' => 'File'
+    'gallery' => 'Gallery',
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [

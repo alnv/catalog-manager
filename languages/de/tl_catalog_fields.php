@@ -103,10 +103,27 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['mapMarker'] = [ 'Marker einblenden', '
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addMapInfoBox'] = [ 'Info-Fenster einblenden', 'Hier können Sie Info-Fenster für Ihre Marker einblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'] = [ 'Info-Fenster', 'Hier können Sie den Inhalt für das Info-Fenster eingeben. Sie können Inserttags und Simple-Tokens verwenden.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['galleryTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['sortBy'] = [ 'Sortieren nach', 'Bitte wählen Sie die Sortierreihenfolge aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Vorschaubilder pro Reihe', 'Die Anzahl an Vorschaubildern pro Reihe.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Dateien ohne Metadaten ignorieren', 'Dateien ohne zur Seitensprache passenden Metadaten nicht anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Gesamtzahl der Bilder', 'Hier können Sie die Gesamtzahl der Bilder begrenzen. Geben Sie 0 ein, um alle anzuzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Elemente pro Seite', 'Die Anzahl an Elementen pro Seite. Geben Sie 0 ein, um den automatischen Seitenumbruch zu deaktivieren.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'image' => 'Bild',
-    'file' => 'Datei'
+    'file' => 'Datei',
+    'gallery' => 'Galerie'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
+
+    'name_asc' => 'Dateiname (aufsteigend)',
+    'name_desc' => 'Dateiname (absteigend)',
+    'date_asc' => 'Datum (aufsteigend)',
+    'date_desc' => 'Datum (absteigend)',
+    'random' => 'Zufällige Reihenfolge'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [

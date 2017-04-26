@@ -113,7 +113,7 @@ class Toolkit {
 
         if ( !is_array( $strValue ) ) {
 
-            return [];
+            return is_string( $strValue ) ? [ $strValue ] : [];
         }
 
         return $strValue;

@@ -293,7 +293,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getCatalogFieldList( $arrRow ) {
 
-        return $arrRow['title'] . ( $arrRow['fieldname'] ? ' - ' . '<span style="color:#ccc;">[' . $arrRow['fieldname'] . ']</span>' : '' );
+        return $arrRow['title'] . ( $arrRow['fieldname'] ? ' ' . '<span style="color:#ccc;">[' . $arrRow['fieldname'] . ']</span>' : '' );
     }
 
     
@@ -344,7 +344,7 @@ class tl_catalog_fields extends \Backend {
 
 
     public function getImageTemplates( \DataContainer $dc ) {
-        
+
         return $this->getTemplateGroup( 'ce_image' );
     }
 

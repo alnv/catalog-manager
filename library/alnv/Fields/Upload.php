@@ -13,14 +13,22 @@ class Upload {
         $arrDCAField['eval']['multiple'] = $blnMultiple;
         $arrDCAField['eval']['filesOnly'] = Toolkit::getBooleanByValue( $arrField['filesOnly'] );
 
-        if ( $blnMultiple ) {
+        if ( $blnMultiple || $arrField['fileType'] == 'gallery' ) {
 
             $arrDCAField['eval']['fieldType'] = 'checkbox';
+            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
         }
 
         else {
 
             $arrDCAField['eval']['fieldType'] = 'radio';
+        }
+
+        if ( $arrField['fileType'] == 'gallery' ) {
+
+            $arrDCAField['eval']['multiple'] = true;
+
+            // @todo custom orderBy
         }
 
         if ( $arrField['extensions'] ) {
@@ -39,8 +47,8 @@ class Upload {
 
     public static function parseValue ( $varValue, $arrField, $arrCatalog = [] ) {
 
-        if ( $arrField['multiple'] ) {
-
+        if ( $arrField['multiple'] || $arrField['fileType'] == 'gallery' ) {
+            
             $varValue = Toolkit::deserialize( $varValue );
         }
 
@@ -54,6 +62,12 @@ class Upload {
                 }
 
                 return static::renderDefaultFileValue( $varValue );
+
+                break;
+
+            case 'gallery':
+
+                return static::renderGallery( $varValue, $arrField, $arrCatalog );
 
                 break;
 
@@ -97,6 +111,34 @@ class Upload {
         }
     }
 
+
+    public static function renderGallery( $varValue, $arrField, $arrCatalog ) {
+
+        if ( !empty( $varValue ) && is_array( $varValue ) ) {
+
+            $strTemplate = $arrField['galleryTemplate'] ? $arrField['galleryTemplate'] : 'gallery_default';
+
+            $objGallery = new GalleryCreator( $varValue, [
+
+                'id' => $arrCatalog['id'],
+                'size' => $arrField['size'],
+                'galleryTpl' => $strTemplate,
+                'perRow' => $arrField['perRow'],
+                'sortBy' => $arrField['sortBy'],
+                'perPage' => $arrField['perPage'],
+                'fullsize' => $arrField['fullsize'],
+                'metaIgnore' => $arrField['metaIgnore'],
+                'numberOfItems' => $arrField['numberOfItems'],
+
+                'orderSRC' => '', // @todo
+            ]);
+
+            return $objGallery->render();
+        }
+
+        return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'];
+    }
+    
 
     public static function renderImage( $varValue, $arrField, $arrCatalog ) {
 
@@ -183,18 +225,16 @@ class Upload {
 
     public static function generateImage( $arrImage, $arrField = [] ) {
 
-        $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : '';
-
-        if ( $arrField['multiple'] ) $strTemplate = ''; // @todo gallery
+        $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
 
         $objPicture = new \FrontendTemplate( $strTemplate );
         
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
-        return $strTemplate ? $objPicture->parse() : $objPicture;
+        return $objPicture->parse();
     }
 
-    
+
     public static function generateEnclosure( $arrEnclosure ) {
 
         $objEnclosure = new \stdClass();

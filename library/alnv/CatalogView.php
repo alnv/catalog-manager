@@ -827,7 +827,7 @@ class CatalogView extends CatalogController {
                 $arrRelatedJoinData['multiple'] = true;
             }
 
-            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], null, $this->arrCatalogFields );
+            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true );
 
             $arrReturn[] = $arrRelatedJoinData;
         }
@@ -883,7 +883,7 @@ class CatalogView extends CatalogController {
 
     protected function preparePTableJoinData () {
 
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], null, $this->arrCatalogFields );
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], $this->arrCatalogFields, true );
 
         return [
 

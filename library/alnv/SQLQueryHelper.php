@@ -118,4 +118,19 @@ class SQLQueryHelper extends CatalogController {
 
         return $arrFields;
     }
+
+
+    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [] ) {
+
+        if ( !$strTablename ) return $arrFields;
+
+        $objFields = $this->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->execute( $strTablename );
+
+        while ( $objFields->next() ) {
+
+            $arrFields[ $strTablename . ucfirst( $objFields->fieldname ) ] = $objFields->row();
+        }
+
+        return $arrFields;
+    }
 }

@@ -261,7 +261,7 @@ class CatalogView extends CatalogController {
 
     public function getCatalogView( $arrQuery ) {
 
-        $arrCatalogItems = [];
+        $strReturn = '';
         $strPageID = 'page_e' . $this->id;
         $intOffset = $this->catalogOffset;
         $intPerPage = $this->catalogPerPage;
@@ -440,25 +440,13 @@ class CatalogView extends CatalogController {
             $arrQuery['pagination']['offset'] = ( $intOffset - 1 ) * $intPerPage;
         }
 
-        $intIndex = 0;
+        $arrCatalogs = [];
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
 
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
-            $arrCatalog['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
-            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intResultRows ];
-
-            if ( !$intIndex ) {
-
-                $arrCatalog['cssClass'] .= ' first';
-            }
-
-            if ( $intIndex == ( $intResultRows - 1 ) ) {
-
-                $arrCatalog['cssClass'] .= ' last';
-            }
 
             if ( $this->strMode === 'master' ) {
 
@@ -571,10 +559,7 @@ class CatalogView extends CatalogController {
                 $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
             }
 
-            $objTemplate->setData( $arrCatalog );
-
-            $arrCatalogItems[] = $objTemplate->parse();
-            $intIndex++;
+            $arrCatalogs[] = $arrCatalog;
         }
         
         if ( $intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view' ) {
@@ -615,10 +600,29 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogRandomSorting ) {
 
-            shuffle( $arrCatalogItems );
+            shuffle( $arrCatalogs );
         }
 
-        return implode( '', $arrCatalogItems );
+        foreach ( $arrCatalogs as $intIndex => $arrCatalog ) {
+
+            $arrCatalog['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
+            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intResultRows ];
+
+            if ( !$intIndex ) {
+
+                $arrCatalog['cssClass'] .= ' first';
+            }
+
+            if ( $intIndex == ( $intResultRows - 1 ) ) {
+
+                $arrCatalog['cssClass'] .= ' last';
+            }
+
+            $objTemplate->setData( $arrCatalog );
+            $strReturn .= $objTemplate->parse();
+        }
+
+        return $strReturn;
     }
 
 

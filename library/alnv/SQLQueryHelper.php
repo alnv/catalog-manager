@@ -120,7 +120,7 @@ class SQLQueryHelper extends CatalogController {
     }
 
 
-    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [] ) {
+    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [], $blnUseTablePrefix = false ) {
 
         if ( !$strTablename ) return $arrFields;
 
@@ -128,7 +128,11 @@ class SQLQueryHelper extends CatalogController {
 
         while ( $objFields->next() ) {
 
-            $arrFields[ $strTablename . ucfirst( $objFields->fieldname ) ] = $objFields->row();
+            $strAlias = $objFields->fieldname;
+
+            if ( $blnUseTablePrefix ) $strAlias = $strTablename . ucfirst( $strAlias );
+            
+            $arrFields[ $strAlias ] = $objFields->row();
         }
 
         return $arrFields;

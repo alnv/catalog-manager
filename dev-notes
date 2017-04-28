@@ -4,6 +4,8 @@ todo before release
  - check date field for error if filter checkbox is active
  - custom sorting for gallery
  - test taxonomies widget
+ - implement insert tag for random number
+ - improve tinyMCE getter
 
 todo next release
  - implement export and import csv files

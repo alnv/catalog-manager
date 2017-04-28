@@ -1,13 +1,11 @@
-Catalog Manager for Contao CMS
+[Catalog Manager][1] for Contao CMS
 ===============
 
-## Official [Catalog Manager][1] Page
-
-### Catalog Manager Demo
+## Catalog Manager Demo
 
 Here you can find Catalog Manager [Demo Page][4].
 
-### Installation
+## Installation
 
 **Contao 3.5**
 

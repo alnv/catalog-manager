@@ -1,13 +1,13 @@
 Catalog Manager for Contao CMS
 ===============
 
-Here you find [Catalog Manager Documentation][3] ( German only )
+## Official [Catalog Manager][1] Page
 
-## Catalog Manager Demo
+### Catalog Manager Demo
 
 Here you can find Catalog Manager [Demo Page][4].
 
-## Installation
+### Installation
 
 **Contao 3.5**
 
@@ -24,12 +24,7 @@ You can install Catalog Manager in Extension Repository. Just search for "Catalo
 
 Do you have some issues? Contact me: https://www.alexandernaumov.de
 
-## Lizenzvereinbarung
-
-Die Contao Erweiterung "Catalog-Manager" wird kostenpflichtig angeboten. Mit dem Erwerb einer Lizenz darf die Erweiterung verwendet werden. Die Nutzungslizenz ist an eine einzige Contao Installationen gebunden. Es muss pro Contao Installation, eine neue Lizenz erworben werden. **Für Testzwecke kann der Catalog Manager kostenfrei installiert werden**, sofern die Software auf einer lokalen Webumgebungen liegt. Die Lizenz erlaubt nur die Nutzung der Software jegliche Veränderung am Quellcode ist verboten. Die Software und der dazugehörende Quellcode sind urheberrechtlich geschützt.
-Alle zukünftig erscheinenden Updates ( Bugfixes und Sicherheitsupdates ) sind kostenlos. Die Software wird ohne jede ausdrückliche oder implizierte Garantie bereitgestellt.
-
-[1]: https://www.alexandernaumov.de/blog/f-modul-2-0-aka-catalog-manager
-[2]: https://github.com//alnv/catalog-manager/archive/v1.0-rc.5.tar.gz
-[3]: https://github.com/alnv/catalog-manager/wiki
+[1]: https://catalog-manager.alexandernaumov.de
+[2]: https://github.com//alnv/catalog-manager/archive/v1.0-rc.6.tar.gz
+[3]: https://catalog-manager.alexandernaumov.de
 [4]: http://catalog-manager-demo.alexandernaumov.de

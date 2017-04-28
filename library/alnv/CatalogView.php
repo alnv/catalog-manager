@@ -274,7 +274,7 @@ class CatalogView extends CatalogController {
             return '';
         }
 
-        if ( $this->catalogJoinFields ) {
+        if ( !empty( $this->catalogJoinFields ) || is_array( $this->catalogJoinFields ) ) {
 
             $arrQuery['joins'] = $this->prepareJoinData();
         }
@@ -659,7 +659,7 @@ class CatalogView extends CatalogController {
     public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
-        
+
         switch ( $arrField['type'] ) {
 
             case 'upload':
@@ -807,11 +807,6 @@ class CatalogView extends CatalogController {
 
         $arrReturn = [];
 
-        if ( empty( $this->catalogJoinFields ) || !is_array( $this->catalogJoinFields ) ) {
-
-            return $arrReturn;
-        }
-
         foreach ( $this->catalogJoinFields as $strFieldJoinID ) {
 
             $arrRelatedJoinData = [];
@@ -831,6 +826,8 @@ class CatalogView extends CatalogController {
 
                 $arrRelatedJoinData['multiple'] = true;
             }
+
+            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], null, $this->arrCatalogFields );
 
             $arrReturn[] = $arrRelatedJoinData;
         }
@@ -885,6 +882,8 @@ class CatalogView extends CatalogController {
 
 
     protected function preparePTableJoinData () {
+
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], null, $this->arrCatalogFields );
 
         return [
 

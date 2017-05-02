@@ -466,18 +466,20 @@ class CatalogView extends CatalogController {
 
             $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
 
+            if ( !empty( $this->arrViewPage ) ) {
+
+                $strAlias = $strAlias = $this->getAliasWithFragments( '', $arrCatalog );
+                
+                $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, $strAlias );
+                $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
+            }
+
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
                     $arrCatalog[$strFieldname] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
                 }
-            }
-
-            if ( !empty( $this->arrViewPage ) ) {
-
-                $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, '' );
-                $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
             if ( $this->catalogEnableFrontendEditing ) {
@@ -663,6 +665,14 @@ class CatalogView extends CatalogController {
             }
         }
 
+        $strAlias = $this->getAliasWithFragments( $strAlias, $arrCatalog );
+
+        return $this->generateUrl( $this->arrMasterPage, $strAlias );
+    }
+
+
+    protected function getAliasWithFragments( $strAlias, $arrCatalog = [] ) {
+
         if ( !empty( $this->arrRoutingParameter ) && is_array( $this->arrRoutingParameter ) ) {
 
             $strAliasWithFragments = '';
@@ -683,7 +693,7 @@ class CatalogView extends CatalogController {
             if ( $strAliasWithFragments ) $strAlias = $strAliasWithFragments;
         }
 
-        return $this->generateUrl( $this->arrMasterPage, $strAlias );
+        return $strAlias;
     }
 
 

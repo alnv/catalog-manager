@@ -32,6 +32,7 @@ ClassLoader::addClasses([
     'CatalogManager\GalleryCreator' => 'system/modules/catalog-manager/library/alnv/GalleryCreator.php',
     'CatalogManager\SQLQueryHelper' => 'system/modules/catalog-manager/library/alnv/SQLQueryHelper.php',
     'CatalogManager\TemplateHelper' => 'system/modules/catalog-manager/library/alnv/TemplateHelper.php',
+    'CatalogManager\RoutingBuilder' => 'system/modules/catalog-manager/library/alnv/RoutingBuilder.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
     'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\FrontendEditing' => 'system/modules/catalog-manager/library/alnv/FrontendEditing.php',

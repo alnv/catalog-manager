@@ -271,4 +271,30 @@ class Toolkit {
 
         return $arrReturn;
     }
+
+
+    public static function getRoutingParameter( $strRoutingParameter ) {
+
+        $arrReturn = [];
+        $arrRoutingFragments = explode( '/' , $strRoutingParameter );
+        
+        if ( !empty( $arrRoutingFragments ) && is_array( $arrRoutingFragments ) ) {
+
+            foreach ( $arrRoutingFragments as $strRoutingFragment ) {
+
+                if ( !$strRoutingFragment ) continue;
+
+                preg_match_all( '/{(.*?)}/', $strRoutingFragment, $arrMatches );
+
+                $strParamName = implode( '', $arrMatches[1] );
+
+                if ( $strParamName ) {
+
+                    $arrReturn[ $strParamName ] = $strParamName;
+                }
+            }
+        }
+
+        return $arrReturn;
+    }
 }

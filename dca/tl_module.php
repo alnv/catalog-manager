@@ -1291,3 +1291,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFrontendEditingViewPage'] = [
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
+
+/*
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogIgnoreRouting'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogIgnoreRouting'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12',
+        'doNotCopy' => true,
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+*/

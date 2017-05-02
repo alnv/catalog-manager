@@ -26,6 +26,7 @@ class CatalogView extends CatalogController {
     protected $arrRelatedTables = [];
     protected $blnMapViewMode = false;
     protected $blnHasOperations = false;
+    protected $arrRoutingParameter = [];
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
@@ -145,6 +146,16 @@ class CatalogView extends CatalogController {
 
                 $this->blnHasOperations = false;
             }
+        }
+
+        if ( $objPage->catalogDetermineRoutingTable && $objPage->catalogDetermineRoutingTable !== $this->catalogTablename ) {
+
+            $objPage->catalogUseRouting = '';
+        }
+
+        if ( $objPage->catalogUseRouting && $objPage->catalogRouting ) {
+
+            $this->arrRoutingParameter = Toolkit::getRoutingParameter( $objPage->catalogRouting );
         }
 
         if ( $this->enableTableView && $this->strMode == 'view' ) {
@@ -453,6 +464,8 @@ class CatalogView extends CatalogController {
                 $this->strMasterID = $arrCatalog['id'];
             }
 
+            $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
+
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
@@ -466,8 +479,6 @@ class CatalogView extends CatalogController {
                 $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, '' );
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
-
-            $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
 
             if ( $this->catalogEnableFrontendEditing ) {
 
@@ -650,6 +661,26 @@ class CatalogView extends CatalogController {
 
                 return $arrCatalog[ $this->arrCatalog['externalUrlColumn'] ];
             }
+        }
+
+        if ( !empty( $this->arrRoutingParameter ) && is_array( $this->arrRoutingParameter ) ) {
+
+            $strAliasWithFragments = '';
+
+            foreach ( $this->arrRoutingParameter as $strParameter ) {
+
+                if ( $strParameter === 'auto_item' ) {
+
+                    $strAliasWithFragments .= $strAlias;
+                }
+
+                if ( $arrCatalog[ $strParameter ] ) {
+
+                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] . '/';
+                }
+            }
+
+            if ( $strAliasWithFragments ) $strAlias = $strAliasWithFragments;
         }
 
         return $this->generateUrl( $this->arrMasterPage, $strAlias );

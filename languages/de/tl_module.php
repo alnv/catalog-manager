@@ -93,6 +93,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body Templ
 $GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'] = [ 'Frontend Editing aktivieren', 'Hier können Sie das Frontend Editing für diese Tabelle aktivieren.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'] = [ 'Frontend Editing Seite festlegen', 'Hier können Sie eine optionale Frontend Editing Seite festlegen. Normalerweise ist die Seite identisch mit der Listenansichtsseite.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite für das Frontend Editing aus.' ];
+// $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreRouting'] = [ 'Automatisches Routing verhindern', 'Hier können Sie das automatische Routing in der Master URL verhindern.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

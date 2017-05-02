@@ -92,6 +92,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body templ
 $GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'] = [ 'Enable frontend editing', 'Here you can enable frontend editing.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'] = [ 'Determine frontend editing page', 'Here you can determine a frontend editing page. Usually is it the same page as list view.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Select page', 'Please select page for your frontend editing view.' ];
+// $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreRouting'] = [ 'Avoid auto routing', 'Here you can avoid auto routing rendering in master urls.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

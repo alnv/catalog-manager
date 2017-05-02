@@ -6,9 +6,9 @@ $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'catalogUseChangeL
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace( 'includeLayout;', 'includeLayout;{catalogSettings_legend},catalogUseMaster,catalogUseChangeLanguage,catalogUseRouting;', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] );
 
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseRouting'] = 'catalogRouting';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseMaster'] = 'catalogMasterTable';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseChangeLanguage'] = 'catalogChangeLanguageTable';
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseRouting'] = 'catalogRouting,catalogDetermineRoutingTable';
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
 
@@ -67,27 +67,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogRouting'] = [
         'mandatory' => true,
         'doNotCopy' => true,
     ],
-
-    'exclude' => true,
-    'sql' => "varchar(128) NOT NULL default ''"
-];
-
-$GLOBALS['TL_DCA']['tl_page']['fields']['catalogDetermineRoutingTable'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogDetermineRoutingTable'],
-    'inputType' => 'select',
-
-    'eval' => [
-
-        'chosen' => true,
-        'maxlength' => 128,
-        'tl_class' => 'clr',
-        'doNotCopy' => true,
-        'blankOptionLabel' => '-',
-        'includeBlankOption' => true
-    ],
-
-    'options_callback' => [ 'CatalogManager\tl_page', 'getCatalogTables' ],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"

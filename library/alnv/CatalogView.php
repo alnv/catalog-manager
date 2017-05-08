@@ -677,6 +677,11 @@ class CatalogView extends CatalogController {
 
             $strAliasWithFragments = '';
 
+            if ( !in_array( 'auto_item', $this->arrRoutingParameter ) ) {
+
+                return $strAlias;
+            }
+
             foreach ( $this->arrRoutingParameter as $strParameter ) {
 
                 if ( $strParameter === 'auto_item' ) {

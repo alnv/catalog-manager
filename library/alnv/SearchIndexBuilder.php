@@ -30,6 +30,9 @@ class SearchIndexBuilder extends \Frontend {
             if ( !isset( $arrProcessed[ $objModules->catalogMasterPage ] ) ) {
 
                 $objParent = $this->getPageModelWithDetailsByID( $objModules->catalogMasterPage );
+
+                if ( !$objParent ) continue;
+
                 $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
                 $arrProcessed[ $objModules->catalogMasterPage ] = $strDomain . $this->generateFrontendUrl( $objParent->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? '/%s' : '/items/%s' ), $objParent->language );
             }

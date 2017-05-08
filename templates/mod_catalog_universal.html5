@@ -1,15 +1,20 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
+
    <?php if( $this->debug ): ?>
       <?= $this->debug; ?>
    <?php endif; ?>
+
    <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
       <p><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a></p>
    <?php endif; ?>
+
    <?= $this->output; ?>
+
    <?php if ( $this->message ): ?>
       <p class="catalog_message"><?= $this->message; ?></p>
    <?php endif; ?>
+
    <?php if ($this->allowComments): ?>
       <div class="ce_comments block">
          <p class="add-comment"><?= $this->addComment; ?></p>
@@ -18,7 +23,9 @@
          <?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
       </div>
    <?php endif; ?>
+
    <?php if ($this->catalogAddPagination): ?>
       <?= $this->pagination; ?>
    <?php endif; ?>
+
 <?php $this->endblock(); ?>

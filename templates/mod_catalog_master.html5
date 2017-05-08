@@ -7,4 +7,13 @@
 
    <?= $this->output; ?>
 
+   <?php if ($this->allowComments): ?>
+      <div class="ce_comments block">
+         <p class="add-comment"><?= $this->addComment; ?></p>
+         <?= implode('', $this->comments) ?>
+         <?= $this->pagination ?>
+         <?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
+      </div>
+   <?php endif; ?>
+
 <?php $this->endblock(); ?>

@@ -6,6 +6,7 @@ todo before release
  - test taxonomies widget
  - implement insert tag for random number
  - improve tinyMCE getter
+ - enable link only with id
 
 todo next release
  - implement export and import csv files

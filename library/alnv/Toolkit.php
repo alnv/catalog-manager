@@ -273,7 +273,7 @@ class Toolkit {
     }
 
 
-    public static function getRoutingParameter( $strRoutingParameter ) {
+    public static function getRoutingParameter( $strRoutingParameter, $blnEmptyArray = false ) {
 
         $arrReturn = [];
         $arrRoutingFragments = explode( '/' , $strRoutingParameter );
@@ -290,7 +290,7 @@ class Toolkit {
 
                 if ( $strParamName ) {
 
-                    $arrReturn[ $strParamName ] = $strParamName;
+                    $arrReturn[ $strParamName ] = $blnEmptyArray ? [] : $strParamName;
                 }
             }
         }

@@ -33,5 +33,7 @@ class ModuleCatalogTaxonomyTree extends \Module {
 
         $this->CatalogTaxonomy->arrOptions = $this->arrData;
         $this->CatalogTaxonomy->initialize();
+
+        $this->Template->taxonomies = $this->CatalogTaxonomy->getTaxonomiesView();
     }
 }

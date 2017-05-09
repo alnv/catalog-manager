@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Formular-Ein
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Weiterleitungseinstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomie-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
@@ -93,7 +94,15 @@ $GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'] = [ 'Body Templ
 $GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'] = [ 'Frontend Editing aktivieren', 'Hier können Sie das Frontend Editing für diese Tabelle aktivieren.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'] = [ 'Frontend Editing Seite festlegen', 'Hier können Sie eine optionale Frontend Editing Seite festlegen. Normalerweise ist die Seite identisch mit der Listenansichtsseite.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite für das Frontend Editing aus.' ];
-// $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreRouting'] = [ 'Automatisches Routing verhindern', 'Hier können Sie das automatische Routing in der Master URL verhindern.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRoutingSource'] = [ 'Quelle', 'Bitte wählen Sie eine Quelle für den Taxonomie Baum aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPageRouting'] = [ 'Seite', 'Bitte wählen Sie Parameter aus der vorhandenen Seitenstruktur aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter auswählen', 'Bitte wählen Sie Ihre Routing Parameter aus.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
+
+    'page' => 'Aus der Seitenstruktur',
+    'module' => 'Neue Parameter erstellen'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
 

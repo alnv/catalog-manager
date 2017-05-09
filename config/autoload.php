@@ -34,6 +34,7 @@ ClassLoader::addClasses([
     'CatalogManager\TemplateHelper' => 'system/modules/catalog-manager/library/alnv/TemplateHelper.php',
     'CatalogManager\RoutingBuilder' => 'system/modules/catalog-manager/library/alnv/RoutingBuilder.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
+    'CatalogManager\CatalogTaxonomy' => 'system/modules/catalog-manager/library/alnv/CatalogTaxonomy.php',
     'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\FrontendEditing' => 'system/modules/catalog-manager/library/alnv/FrontendEditing.php',
     'CatalogManager\MessageInput' => 'system/modules/catalog-manager/library/alnv/Fields/MessageInput.php',
@@ -58,8 +59,9 @@ ClassLoader::addClasses([
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
     'CatalogManager\CatalogManagerVerification' => 'system/modules/catalog-manager/library/alnv/CatalogManagerVerification.php',
+    'CatalogManager\ModuleCatalogTaxonomyTree' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogTaxonomyTree.php',
     'CatalogManager\CatalogRelationRedirectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationRedirectWizard.php',
-    'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
+    'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php',
 ]);
 
 TemplateLoader::addFiles([
@@ -76,5 +78,6 @@ TemplateLoader::addFiles([
     'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
     'ctlg_debug_default' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_taxonomy' => 'system/modules/catalog-manager/templates',
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
 ]);

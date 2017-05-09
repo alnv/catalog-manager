@@ -31,6 +31,7 @@ class ModuleCatalogTaxonomyTree extends \Module {
 
         $this->Import('CatalogTaxonomy');
 
+        $this->CatalogTaxonomy->arrOptions = $this->arrData;
         $this->CatalogTaxonomy->initialize();
     }
 }

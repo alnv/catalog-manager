@@ -331,6 +331,50 @@ class tl_module extends \Backend {
     }
 
 
+    public function getRoutingFields( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->catalogTablename ) return [];
+
+        $arrReturn = [];
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->execute( $dc->activeRecord->catalogTablename );
+
+        if ( !$objCatalogFields->numRows ) return $arrReturn;
+
+        while ( $objCatalogFields->next() ) {
+
+            if ( !$objCatalogFields->fieldname ) continue;
+
+            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox' ] ) ) {
+
+                continue;
+            }
+
+            $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>' : $objCatalogFields->fieldname;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getPageRouting( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $objPages = $this->Database->prepare( 'SELECT * FROM tl_page WHERE pid != ? AND catalogUseRouting = ?' )->execute( '0', '1' );
+
+        if ( !$objPages->numRows ) return $arrReturn;
+
+        while ( $objPages->next() ) {
+
+            if ( $objPages->catalogRouting ) {
+
+                $arrReturn[ $objPages->id ] = $objPages->title . ' <span style="color:#333; font-size:12px; display:inline">[' . $objPages->catalogRouting . ']</span>';
+            }
+        }
+
+        return $arrReturn;
+    }
+
+
     public function getActiveFilterFields( \DataContainer $dc ) {
 
         if ( !$dc->activeRecord->catalogActiveFilterFields ) return [];

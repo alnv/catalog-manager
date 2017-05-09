@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogRoutingParameter'] = [
     'options_callback' => [ 'CatalogManager\tl_page', 'getRoutingFields' ],
 
     'exclude' => true,
-    'sql' => "varchar(256) NOT NULL default ''"
+    'sql' => "blob NULL"
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogSetAutoItem'] = [

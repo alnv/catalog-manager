@@ -349,7 +349,7 @@ class tl_module extends \Backend {
                 continue;
             }
 
-            $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>' : $objCatalogFields->fieldname;
+            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>' : $objCatalogFields->fieldname;
         }
 
         return $arrReturn;

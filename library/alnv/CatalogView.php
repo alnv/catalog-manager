@@ -148,7 +148,7 @@ class CatalogView extends CatalogController {
             }
         }
 
-        if ( $objPage->catalogDetermineRoutingTable && $objPage->catalogDetermineRoutingTable !== $this->catalogTablename ) {
+        if ( $objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename ) {
 
             $objPage->catalogUseRouting = '';
         }

@@ -231,6 +231,11 @@ class tl_module extends \Backend {
                 $arrFields['start'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0];
                 $arrFields['invisible'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0];
             }
+
+            if ( $this->Database->fieldExists( 'sorting', $strTablename ) ) {
+
+                $arrFields['sorting'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0];
+            }
         }
 
         while ( $objCatalogFields->next() ) {

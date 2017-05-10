@@ -1,0 +1,6 @@
+<!-- indexer::stop -->
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+      <?= $this->items; ?>
+<?php $this->endblock(); ?>
+<!-- indexer::continue -->

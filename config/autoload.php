@@ -71,6 +71,7 @@ TemplateLoader::addFiles([
     'ctlg_view_teaser' => 'system/modules/catalog-manager/templates',
     'ctlg_view_master' => 'system/modules/catalog-manager/templates',
     'ctlg_map_default' => 'system/modules/catalog-manager/templates',
+    'ctlg_taxonomy_nav' => 'system/modules/catalog-manager/templates',
     'mod_catalog_table' => 'system/modules/catalog-manager/templates',
     'ctlg_form_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_grouped' => 'system/modules/catalog-manager/templates',

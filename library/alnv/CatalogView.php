@@ -403,17 +403,22 @@ class CatalogView extends CatalogController {
             }
         }
 
-        if ( !empty( $this->catalogOrderBy )  && is_array( $this->catalogOrderBy ) ) {
+        if ( is_array( $this->catalogOrderBy ) ) {
 
-            foreach ( $this->catalogOrderBy as $arrOrderBy ) {
+            $this->setOrderByParameters();
 
-                if ( $arrOrderBy['key'] && $arrOrderBy['value'] ) {
+            if ( !empty( $this->catalogOrderBy ) ) {
 
-                    $arrQuery['orderBy'][] = [
+                foreach ( $this->catalogOrderBy as $arrOrderBy ) {
 
-                        'field' => $arrOrderBy['key'],
-                        'order' => $arrOrderBy['value']
-                    ];
+                    if ( $arrOrderBy['key'] && $arrOrderBy['value'] ) {
+
+                        $arrQuery['orderBy'][] = [
+
+                            'field' => $arrOrderBy['key'],
+                            'order' => $arrOrderBy['value']
+                        ];
+                    }
                 }
             }
         }
@@ -645,6 +650,35 @@ class CatalogView extends CatalogController {
     }
 
 
+    protected function setOrderByParameters() {
+
+        $strSort = \Input::get( 'sortID' . $this->id ) ? \Input::get( 'sortID' . $this->id ) : '';
+        $strOrder = \Input::get( 'orderID' . $this->id ) ? mb_strtoupper( \Input::get( 'orderID' . $this->id ), 'UTF-8' ) : 'DESC';
+
+        if ( !in_array( $strOrder, [ 'ASC','DESC' ] ) ) {
+
+            if ( $strOrder == 'RAND' ) {
+
+                $this->catalogRandomSorting = '1';
+            }
+
+            else {
+
+                $strOrder = 'DESC';
+            }
+        };
+
+        if ( $strSort && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strSort, $this->catalogTablename ) ) {
+
+            $this->catalogOrderBy = [[
+
+                'key' => $strSort,
+                'value' => $strOrder
+            ]];
+        }
+    }
+
+
     protected function getMasterRedirect( $arrCatalog = [], $strAlias = '' ) {
         
         if ( $this->catalogDisableMasterLink ) return '';
@@ -825,8 +859,8 @@ class CatalogView extends CatalogController {
 
 
     protected function getPageModel( $strID ) {
-
-        return $this->SQLQueryBuilder->execute([
+        
+        return $this->SQLQueryHelper->SQLQueryBuilder->execute([
 
             'table' => 'tl_page',
 

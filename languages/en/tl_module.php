@@ -95,6 +95,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Select p
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingSource'] = [ 'Source', 'Please select a source for your taxonomy navigation.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPageRouting'] = [ 'Page', 'Please select your taxonomy structure.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter', 'Here you can select routing parameter.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Overwrite redirect', 'Here you can define a new redirect.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Page', 'Please select a page.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

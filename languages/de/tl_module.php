@@ -97,6 +97,10 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFrontendEditingViewPage'] = [ 'Seite au
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingSource'] = [ 'Quelle', 'Bitte wählen Sie eine Quelle für den Taxonomie Baum aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPageRouting'] = [ 'Seite', 'Bitte wählen Sie Parameter aus der vorhandenen Seitenstruktur aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter auswählen', 'Bitte wählen Sie Ihre Routing Parameter aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie die Weiterleitung überschreiben.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Weiterleitungsseite auswählen', 'Bitte wählen Sie eine Weiterleitungsseite aus.' ];
+
+
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

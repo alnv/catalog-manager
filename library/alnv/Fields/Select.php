@@ -42,14 +42,16 @@ class Select {
 
             $arrDCAField['eval']['csv'] = ',';
         }
-        
+
         if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple'] ) {
 
-            if ( $arrField['dbTable'] ) $arrDCAField['wizard'] = [ [ 'CatalogManager\DCACallbacks', 'generateRelationWizard' ] ];
-
-            $arrDCAField['eval']['chosen'] = true;
-            $arrDCAField['eval']['submitOnChange'] = true;
-            $arrDCAField['eval']['tl_class'] .= $arrDCAField['eval']['tl_class'] ? ' wizard' : 'wizard';
+            if ( $arrField['dbTable'] && $arrField['dbTableKey'] == 'id' ) {
+                
+                $arrDCAField['wizard'] = [ [ 'CatalogManager\DCACallbacks', 'generateRelationWizard' ] ];
+                $arrDCAField['eval']['chosen'] = true;
+                $arrDCAField['eval']['submitOnChange'] = true;
+                $arrDCAField['eval']['tl_class'] .= $arrDCAField['eval']['tl_class'] ? ' wizard' : 'wizard';
+            }
          }
 
         return $arrDCAField;

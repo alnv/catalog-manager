@@ -12,6 +12,7 @@ class CatalogTaxonomy extends CatalogController {
     protected $arrCatalog = [];
     protected $strParameter = '';
     protected $arrParameter = [];
+    protected $arrRedirectPage = [];
     protected $arrTaxonomyTree = [];
     protected $arrCatalogFields = [];
 
@@ -55,6 +56,18 @@ class CatalogTaxonomy extends CatalogController {
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->catalogTablename );
 
+        if ( $this->catalogUseTaxonomyRedirect ) {
+
+            $this->arrRedirectPage = $this->getPageModel( $this->catalogTaxonomyRedirect );
+        }
+
+        if ( empty( $this->arrRedirectPage ) || !is_array( $this->arrRedirectPage ) ) {
+
+            global $objPage;
+
+            $this->arrRedirectPage = $objPage->row();
+        }
+
         $this->setTaxonomyTree();
     }
 
@@ -93,9 +106,32 @@ class CatalogTaxonomy extends CatalogController {
     }
 
 
-    protected function setTaxonomyTree() {
+    protected function getPageModel( $strID ) {
 
-        global $objPage;
+        return $this->SQLQueryHelper->SQLQueryBuilder->execute([
+
+            'table' => 'tl_page',
+
+            'pagination' => [
+
+                'limit' => 1,
+                'offset' => 0
+            ],
+
+            'where' => [
+
+                [
+                    'field' => 'id',
+                    'value' => $strID,
+                    'operator' => 'equal'
+                ]
+            ]
+
+        ])->row();
+    }
+
+
+    protected function setTaxonomyTree() {
 
         $strTaxonomyUrl = '';
         $strTempParameter = '';
@@ -123,7 +159,7 @@ class CatalogTaxonomy extends CatalogController {
                         'title' => $varOptions,
                         'next' => $strNextParameter,
                         'alias' => $objEntities->{$strParameter},
-                        'href' => $this->generateUrl( $objPage, '/' . $objEntities->{$strParameter} ),
+                        'href' => $this->generateUrl( $this->arrRedirectPage, '/' . $objEntities->{$strParameter} ),
                         'class' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? 'active' : '',
                         'active' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? true : false,
                     ];
@@ -159,7 +195,7 @@ class CatalogTaxonomy extends CatalogController {
                         'alias' => $objEntities->{$strParameter},
                         'class' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? 'active' : '',
                         'active' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? true : false,
-                        'href' =>  $this->generateUrl( $objPage, $strTaxonomyUrl . '/' . $objEntities->{$strParameter} ),
+                        'href' =>  $this->generateUrl( $this->arrRedirectPage, $strTaxonomyUrl . '/' . $objEntities->{$strParameter} ),
                     ];
                 }
             }
@@ -171,11 +207,11 @@ class CatalogTaxonomy extends CatalogController {
     }
 
 
-    protected function generateUrl( $objPage, $strAlias ) {
+    protected function generateUrl( $arrPage, $strAlias ) {
 
-        if ( $objPage == null ) return '';
+        if ( empty( $arrPage ) || !is_array( $arrPage ) ) return '';
 
-        return $this->generateFrontendUrl( $objPage->row(), $strAlias );
+        return $this->generateFrontendUrl( $arrPage, $strAlias );
     }
 
 

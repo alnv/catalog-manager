@@ -138,6 +138,7 @@ class CatalogTaxonomy extends CatalogController {
 
         foreach ( $this->arrParameter as $intIndex => $strParameter ) {
 
+            $arrAliasCache = [];
             $strNextParameter = $this->arrParameter[ $intIndex + 1 ] ? $this->arrParameter[ $intIndex + 1 ] : '';
 
             if ( !$intIndex ) {
@@ -150,19 +151,32 @@ class CatalogTaxonomy extends CatalogController {
 
                     if ( !$objEntities->{$strParameter} ) continue;
 
-                    $varOptions = $this->parseCatalogValues( $objEntities->{$strParameter}, $strParameter, [] );
+                    $varValue = $this->parseCatalogValues( $objEntities->{$strParameter}, $strParameter, [] );
 
-                    if ( is_array( $varOptions ) ) $varOptions = implode( ',', $varOptions );
+                    if ( is_array( $varValue ) ) {
 
-                    $this->arrTaxonomyTree[ $objEntities->{$strParameter} ] = [
+                        $varValue = array_values( $varValue );
+                        $arrOriginValues = explode( ',', $objEntities->{$strParameter} );
 
-                        'title' => $varOptions,
-                        'next' => $strNextParameter,
-                        'alias' => $objEntities->{$strParameter},
-                        'href' => $this->generateUrl( $this->arrRedirectPage, '/' . $objEntities->{$strParameter} ),
-                        'class' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? 'active' : '',
-                        'active' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? true : false,
-                    ];
+                        foreach ( $varValue as $intPosition => $strValue ) {
+
+                            if ( in_array( $strValue, $arrAliasCache ) ) {
+
+                                continue;
+                            }
+
+                            $strHref = $this->generateUrl( $this->arrRedirectPage, '/' . $arrOriginValues[ $intPosition ] );
+                            $this->arrTaxonomyTree[ $strValue ] = $this->setTaxonomyEntity( $arrOriginValues[ $intPosition ], $strValue, $strParameter, $strHref, $strNextParameter );
+
+                            $arrAliasCache[] = $strValue;
+                        }
+                    }
+
+                    else {
+
+                        $strHref = $this->generateUrl( $this->arrRedirectPage, '/' . $objEntities->{$strParameter} );
+                        $this->arrTaxonomyTree[ $objEntities->{$strParameter} ] = $this->setTaxonomyEntity( $objEntities->{$strParameter}, $varValue, $strParameter, $strHref, $strNextParameter );
+                    }
                 }
 
                 $this->strName = $strParameter;
@@ -184,19 +198,33 @@ class CatalogTaxonomy extends CatalogController {
 
                     if ( !$objEntities->{$strParameter} ) continue;
 
-                    $varOptions = $this->parseCatalogValues( $objEntities->{$strParameter}, $strParameter, [] );
+                    $varValue = $this->parseCatalogValues( $objEntities->{$strParameter}, $strParameter, [] );
 
-                    if ( is_array( $varOptions ) ) $varOptions = implode( ',', $varOptions );
+                    if ( is_array( $varValue ) ) {
 
-                    $this->{$strParameter}[] = [
+                        $varValue = array_values( $varValue );
+                        $arrOriginValues = explode( ',', $objEntities->{$strParameter} );
 
-                        'title' => $varOptions,
-                        'next' => $strNextParameter,
-                        'alias' => $objEntities->{$strParameter},
-                        'class' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? 'active' : '',
-                        'active' => \Input::get( $strParameter ) == $objEntities->{$strParameter} ? true : false,
-                        'href' =>  $this->generateUrl( $this->arrRedirectPage, $strTaxonomyUrl . '/' . $objEntities->{$strParameter} ),
-                    ];
+                        foreach ( $varValue as $intPosition => $strValue ) {
+
+                            if ( in_array( $strValue, $arrAliasCache ) ) {
+
+                                continue;
+                            }
+
+                            $strOriginValue = $arrOriginValues[ $intPosition ];
+                            $strHref = $this->generateUrl( $this->arrRedirectPage, $strTaxonomyUrl . '/' . $strOriginValue );
+                            $this->{$strParameter}[] = $this->setTaxonomyEntity( $strOriginValue, $strValue, $strParameter, $strHref, $strNextParameter );
+
+                            $arrAliasCache[] = $strValue;
+                        }
+                    }
+
+                    else {
+
+                        $strHref = $this->generateUrl( $this->arrRedirectPage, $strTaxonomyUrl . '/' . $objEntities->{$strParameter} );
+                        $this->{$strParameter}[] =  $this->setTaxonomyEntity( $objEntities->{$strParameter}, $varValue, $strParameter, $strHref, $strNextParameter );
+                    }
                 }
             }
 
@@ -204,6 +232,20 @@ class CatalogTaxonomy extends CatalogController {
 
             if ( \Input::get( $strParameter ) ) $this->arrActive[] = $strParameter;
         }
+    }
+
+
+    protected function setTaxonomyEntity( $originValue, $strTitle, $strParameter, $strHref, $strNextParameter = '' ) {
+
+        return [
+
+            'href' => $strHref,
+            'title' => $strTitle,
+            'alias' => $originValue,
+            'next' => $strNextParameter,
+            'class' => \Input::get( $strParameter ) == $originValue ? ' active' : '',
+            'active' => \Input::get( $strParameter ) == $originValue ? true : false,
+        ];
     }
 
 

@@ -68,9 +68,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogRoutingParameter'] = [
         'multiple' => true,
         'tl_class' => 'clr',
         'mandatory' => true,
-        'doNotCopy' => true,
-        'submitOnChange' => true,
-
+        'doNotCopy' => true
     ],
 
     'options_callback' => [ 'CatalogManager\tl_page', 'getRoutingFields' ],

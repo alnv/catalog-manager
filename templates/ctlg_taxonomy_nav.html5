@@ -1,6 +1,6 @@
 <ul>
    <?php foreach( $this->arrItems as $arrItem ): ?>
-      <li class="<?= $arrItem['class'] ?>">
+      <li class="taxonomy_item<?= $arrItem['class'] ?>">
          <?php if ( $arrItem['active'] ): ?>
             <strong><?= $arrItem['title'] ?></strong><?= $arrItem['subItems'] ?>
          <?php else: ?>

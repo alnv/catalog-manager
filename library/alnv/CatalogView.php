@@ -473,7 +473,7 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->arrViewPage ) ) {
 
-                $strAlias = $strAlias = $this->getAliasWithFragments( '', $arrCatalog );
+                $strAlias = $strAlias = $this->getAliasWithParameters( '', $arrCatalog );
                 
                 $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, $strAlias );
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
@@ -699,13 +699,13 @@ class CatalogView extends CatalogController {
             }
         }
 
-        $strAlias = $this->getAliasWithFragments( $strAlias, $arrCatalog );
+        $strAlias = $this->getAliasWithParameters( $strAlias, $arrCatalog );
 
         return $this->generateUrl( $this->arrMasterPage, $strAlias );
     }
 
 
-    protected function getAliasWithFragments( $strAlias, $arrCatalog = [] ) {
+    protected function getAliasWithParameters( $strAlias, $arrCatalog = [] ) {
 
         if ( !empty( $this->arrRoutingParameter ) && is_array( $this->arrRoutingParameter ) ) {
 
@@ -723,9 +723,9 @@ class CatalogView extends CatalogController {
                     $strAliasWithFragments .= $strAlias;
                 }
 
-                if ( $arrCatalog[ $strParameter ] ) {
+                if ( $arrCatalog[ $strParameter ] || $arrCatalog[ $strParameter ] === '' ) {
 
-                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] . '/';
+                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] ? $arrCatalog[ $strParameter ] . '/' : ' ' . '/' ;
                 }
             }
 
@@ -859,7 +859,7 @@ class CatalogView extends CatalogController {
 
 
     protected function getPageModel( $strID ) {
-        
+
         return $this->SQLQueryHelper->SQLQueryBuilder->execute([
 
             'table' => 'tl_page',

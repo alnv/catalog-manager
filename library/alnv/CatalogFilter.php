@@ -151,7 +151,7 @@ class CatalogFilter extends CatalogController {
 
         if ( !$this->catalogResetFilterForm ) return '';
 
-        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">Alle Filtereinstellungen zurücksetzen</a></p>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
+        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a></p>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
     }
 
 

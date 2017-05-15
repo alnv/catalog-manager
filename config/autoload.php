@@ -38,6 +38,7 @@ ClassLoader::addClasses([
     'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\FrontendEditing' => 'system/modules/catalog-manager/library/alnv/FrontendEditing.php',
     'CatalogManager\MessageInput' => 'system/modules/catalog-manager/library/alnv/Fields/MessageInput.php',
+    'CatalogManager\DownloadsCreator' => 'system/modules/catalog-manager/library/alnv/DownloadsCreator.php',
     'CatalogManager\DCABuilderHelper' => 'system/modules/catalog-manager/library/alnv/DCABuilderHelper.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',

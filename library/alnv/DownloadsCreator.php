@@ -6,6 +6,7 @@ class DownloadsCreator extends \Frontend {
 
 
     public $sortBy;
+    public $orderSRC;
     public $metaIgnore;
     public $multiSRC = [];
 
@@ -216,7 +217,7 @@ class DownloadsCreator extends \Frontend {
 
         $objTemplate = new \FrontendTemplate( $this->downloadsTpl );
         $objTemplate->setData( $this->arrData );
-        
+
         return $objTemplate->parse();
     }
 

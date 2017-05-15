@@ -102,7 +102,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getFilesTypes() {
 
-        return [ 'image', 'gallery', 'file' ];
+        return [ 'image', 'gallery', 'file', 'files' ];
     }
 
     
@@ -343,14 +343,26 @@ class tl_catalog_fields extends \Backend {
     }
 
 
-    public function getImageTemplates( \DataContainer $dc ) {
+    public function getImageTemplates() {
 
         return $this->getTemplateGroup( 'ce_image' );
     }
 
 
-    public function getGalleryTemplates( \DataContainer $dc ) {
+    public function getGalleryTemplates() {
 
         return $this->getTemplateGroup( 'gallery_default' );
+    }
+
+
+    public function getFileTemplates() {
+
+        return $this->getTemplateGroup( 'ce_download' );
+    }
+
+
+    public function getFilesTemplates() {
+
+        return $this->getTemplateGroup( 'ce_downloads' );
     }
 }

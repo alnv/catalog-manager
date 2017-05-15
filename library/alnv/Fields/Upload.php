@@ -35,6 +35,9 @@ class Upload {
 
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
+            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
+
+            // @todo custom orderBy
         }
 
         if ( $arrField['extensions'] ) {

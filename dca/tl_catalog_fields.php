@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize' ],
+        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,unique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -106,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'useSize' => 'size',
         'addMapInfoBox' => 'mapInfoBoxContent',
+        'usePreviewImage' => 'imageTemplate,previewImagePosition',
 
         'optionsType_useOptions' => 'options',
         'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
@@ -114,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'fileType_file' => 'fileTemplate,fileTitle,fileText',
         'fileType_files' => 'filesTemplate,sortBy,metaIgnore',
         'fileType_image' => 'imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,fullsize,useSize',
-        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize'
+        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,usePreviewImage'
     ],
 
     'fields' => [
@@ -1576,7 +1577,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'numberOfItems' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'],
-
             'inputType' => 'text',
 
             'eval' => [
@@ -1625,6 +1625,41 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'usePreviewImage' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['usePreviewImage'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'clr',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'previewImagePosition' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['previewImagePosition'],
+            'inputType' => 'radio',
+            'default' => 'first',
+
+            'eval' => [
+
+                'maxlength' => 16,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+            ],
+
+            'options' => [ 'first', 'middle', 'last' ],
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
         ]
     ]
 ];

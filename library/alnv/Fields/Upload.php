@@ -109,13 +109,24 @@ class Upload {
                 'metaIgnore' => $arrField['metaIgnore'],
                 'numberOfItems' => $arrField['numberOfItems'],
 
+                'usePreviewImage' => $arrField['usePreviewImage'],
+                'previewImagePosition' => $arrField['previewImagePosition'],
+
                 'orderSRC' => '', // @todo
             ]);
 
-            return $objGallery->render();
+            return [
+
+                'gallery' => $objGallery->render(),
+                'preview' => $objGallery->getPreviewImage(),
+            ];
         }
 
-        return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'];
+        return [
+
+            'preview' => '',
+            'gallery' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages']
+        ];
     }
     
 
@@ -128,7 +139,9 @@ class Upload {
 
                 'downloadsTpl' => $strTemplate,
                 'sortBy' => $arrField['sortBy'],
-                'metaIgnore' => $arrField['metaIgnore']
+                'metaIgnore' => $arrField['metaIgnore'],
+
+                'orderSRC' => '', // @todo
             ]);
 
             return $objDownloads->render();

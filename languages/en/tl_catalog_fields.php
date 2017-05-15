@@ -71,12 +71,10 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['imageAlt'] = [ 'Alternate Text', 'Plea
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageCaption'] = [ 'Image caption', 'Please select a column for image caption value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['size'] = [ 'Image size', 'Here you can set the image dimensions and the resize mode.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageURL'] = [ 'Image link target', 'Please select a column for image link target value.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['disableImageRendering'] = [ 'Render source only', 'Here you can generate only image src attribute for template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Full-size view/new window', 'Open the full-size image in a lightbox or the link in a new browser window.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTitle'] = [ 'Titel', 'Please select a column for title value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Description', 'Please select a column for description value.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['disableFileRendering'] = [ 'Render href only', 'Here you can generate a href attribute for template.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];
@@ -108,6 +106,9 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Thumbnails per row', 'Th
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Items per page', 'The number of items per page. Set to 0 to disable pagination.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Ignore files without meta data', 'Do not show files without meta data matching the page language.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Total number of images', 'Here you can limit the total number of images. Set to 0 to show all.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Please select template.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Please select template.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 

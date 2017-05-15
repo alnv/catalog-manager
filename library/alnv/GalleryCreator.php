@@ -161,7 +161,7 @@ class GalleryCreator extends \Frontend {
 
             case 'date_asc':
 
-                array_multisort($arrImages, SORT_NUMERIC, $arrAuxDate, SORT_ASC );
+                array_multisort( $arrImages, SORT_NUMERIC, $arrAuxDate, SORT_ASC );
 
                 break;
 
@@ -281,7 +281,7 @@ class GalleryCreator extends \Frontend {
 
     protected function setDataContainer(){
 
-        $this->arrData = array(
+        $this->arrData = [
 
             'hl' => 'h1',
             'id' => $this->id,
@@ -295,6 +295,6 @@ class GalleryCreator extends \Frontend {
             'metaIgnore' => $this->metaIgnore,
             'galleryTpl' => $this->galleryTpl,
             'numberOfItems' => $this->numberOfItems,
-        );
+        ];
     }
 }

@@ -121,6 +121,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'file' => 'File',
+    'files' => 'Files',
     'image' => 'Image',
     'gallery' => 'Gallery',
 ];

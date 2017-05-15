@@ -110,10 +110,14 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Dateien ohne Metadat
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Gesamtzahl der Bilder', 'Hier können Sie die Gesamtzahl der Bilder begrenzen. Geben Sie 0 ein, um alle anzuzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Elemente pro Seite', 'Die Anzahl an Elementen pro Seite. Geben Sie 0 ein, um den automatischen Seitenumbruch zu deaktivieren.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'image' => 'Bild',
     'file' => 'Datei',
+    'files' => 'Datein',
     'gallery' => 'Galerie'
 ];
 

@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,submitOnChange,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,disabled,submitOnChange,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,enableToggleIcon,disabled,submitOnChange,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,multiple,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
+        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,fieldname,title,message;{invisible_legend},invisible',
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
@@ -105,14 +105,16 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
     'subpalettes' => [
 
         'useSize' => 'size',
-        'optionsType_useOptions' => 'options',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
-        'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
-
         'addMapInfoBox' => 'mapInfoBoxContent',
-        'fileType_file' => 'fileTitle,fileText,disableFileRendering',
-        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize',
-        'fileType_image' => 'disableImageRendering,fullsize,imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,useSize'
+
+        'optionsType_useOptions' => 'options',
+        'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
+
+        'fileType_file' => 'fileTemplate,fileTitle,fileText',
+        'fileType_files' => 'filesTemplate,sortBy,metaIgnore',
+        'fileType_image' => 'imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,fullsize,useSize',
+        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize'
     ],
 
     'fields' => [
@@ -1613,6 +1615,44 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "smallint(5) unsigned NOT NULL default '0'"
+        ],
+
+        'fileTemplate' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'mandatory' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFileTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'filesTemplate' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'mandatory' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFilesTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
         ]
     ]
 ];

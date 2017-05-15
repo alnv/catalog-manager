@@ -16,10 +16,12 @@ class GalleryCreator extends \Frontend {
     public $metaIgnore;
     public $numberOfItems;
     public $multiSRC = [];
+    public $usePreviewImage;
+    public $previewImagePosition;
 
     protected $arrData = [];
     protected $objFiles = null;
-
+    protected $arrPreviewImage = [];
 
     public function __construct( $arrMultiSRC, $arrGallery ) {
 
@@ -181,6 +183,34 @@ class GalleryCreator extends \Frontend {
         $intOffset = 0;
         $arrImages = array_values( $arrImages );
 
+        if ( $this->usePreviewImage ) {
+
+            $inrPosition = 0;
+
+            switch ( $this->previewImagePosition ) {
+
+                case 'first':
+
+                    $inrPosition = 0;
+
+                    break;
+
+                case 'middle':
+
+                    $inrPosition = ceil( ( count( $arrImages ) - 1 ) / 2 );
+
+                    break;
+
+                case 'last':
+
+                    $inrPosition = count( $arrImages ) - 1;
+                    
+                    break;
+            }
+
+            $this->arrPreviewImage = $arrImages[ $inrPosition ] ? $arrImages[ $inrPosition ] : [];
+        }
+
         if ( $this->numberOfItems > 0 ) {
 
             $arrImages = array_slice( $arrImages, 0, $this->numberOfItems );
@@ -276,6 +306,12 @@ class GalleryCreator extends \Frontend {
         $objMainTemplate->images = $objTemplate->parse();
 
         return $objMainTemplate->parse();
+    }
+
+
+    public function getPreviewImage() {
+
+        return Upload::generateImage( $this->arrPreviewImage );
     }
 
 

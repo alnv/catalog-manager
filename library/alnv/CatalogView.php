@@ -483,7 +483,7 @@ class CatalogView extends CatalogController {
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
-                    $arrCatalog[$strFieldname] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
+                    $arrCatalog[ $strFieldname ] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
                 }
             }
 
@@ -736,7 +736,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    public function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
+    public function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
 
@@ -744,9 +744,21 @@ class CatalogView extends CatalogController {
 
             case 'upload':
 
-                if ( is_null( $varValue ) ) return ''; // @todo sync file
+                if ( is_null( $varValue ) ) return '';
 
-                return Upload::parseValue( $varValue, $arrField, $arrCatalog );
+                $varValue = Upload::parseValue( $varValue, $arrField, $arrCatalog );
+
+                if ( is_array( $varValue ) ) {
+
+                    if ( $varValue['preview'] ) {
+
+                        $arrCatalog[ $strFieldname . 'Preview' ] = $varValue['preview'];
+                    }
+
+                    return $varValue['gallery'];
+                }
+
+                return $varValue;
 
                 break;
 

@@ -111,6 +111,16 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Elemente pro Seite', 'D
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['previewImagePosition'] = [ 'Bildposition', 'Bitte wählen Sie eine Bildposition aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['usePreviewImage'] = [ 'Vorschaubild verwenden', 'Hier können Sie ein Vorschaubild aus der Galerie verwenden.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'] = [
+
+    'first' => 'Erstes',
+    'middle' => 'Mittleres',
+    'last' => 'Letztes',
+];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'image' => 'Bild',

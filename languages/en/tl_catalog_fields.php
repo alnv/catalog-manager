@@ -110,6 +110,16 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Total number of i
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Please select template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Please select template.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['previewImagePosition'] = [ 'Image position', 'Please chose a relative image position.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['usePreviewImage'] = [ 'Use preview image', 'Here you can use preview image from your image gallery.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'] = [
+
+    'first' => 'First',
+    'middle' => 'Middle',
+    'last' => 'Last',
+];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 
     'name_asc' => 'File name (ascending)',

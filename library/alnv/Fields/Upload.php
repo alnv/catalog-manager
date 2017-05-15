@@ -7,28 +7,34 @@ class Upload {
 
     public static function generate( $arrDCAField, $arrField ) {
 
-        $blnMultiple = Toolkit::getBooleanByValue( $arrField['multiple'] );
-
         $arrDCAField['eval']['files'] = true;
-        $arrDCAField['eval']['multiple'] = $blnMultiple;
         $arrDCAField['eval']['filesOnly'] = Toolkit::getBooleanByValue( $arrField['filesOnly'] );
-
-        if ( $blnMultiple || $arrField['fileType'] == 'gallery' ) {
-
-            $arrDCAField['eval']['fieldType'] = 'checkbox';
-            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
-        }
-
-        else {
-
-            $arrDCAField['eval']['fieldType'] = 'radio';
-        }
 
         if ( $arrField['fileType'] == 'gallery' ) {
 
             $arrDCAField['eval']['multiple'] = true;
+            $arrDCAField['eval']['fieldType'] = 'checkbox';
+            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
 
             // @todo custom orderBy
+        }
+
+        if ( $arrField['fileType'] == 'image' ) {
+
+            $arrDCAField['eval']['multiple'] = false;
+            $arrDCAField['eval']['fieldType'] = 'radio';
+        }
+
+        if ( $arrField['fileType'] == 'file' ) {
+
+            $arrDCAField['eval']['multiple'] = false;
+            $arrDCAField['eval']['fieldType'] = 'radio';
+        }
+
+        if ( $arrField['fileType'] == 'files' ) {
+
+            $arrDCAField['eval']['multiple'] = true;
+            $arrDCAField['eval']['fieldType'] = 'checkbox';
         }
 
         if ( $arrField['extensions'] ) {
@@ -47,25 +53,17 @@ class Upload {
 
     public static function parseValue ( $varValue, $arrField, $arrCatalog = [] ) {
 
-        if ( $arrField['multiple'] || $arrField['fileType'] == 'gallery' ) {
-            
-            $varValue = Toolkit::deserialize( $varValue );
-        }
-
         switch ( $arrField['fileType'] ) {
 
             case 'image':
 
-                if ( !$arrField['disableImageRendering'] ) {
-
-                    return static::renderImage( $varValue, $arrField, $arrCatalog );
-                }
-
-                return static::renderDefaultFileValue( $varValue );
+                return static::renderImage( $varValue, $arrField, $arrCatalog );
 
                 break;
 
             case 'gallery':
+
+                $varValue = Toolkit::deserialize( $varValue );
 
                 return static::renderGallery( $varValue, $arrField, $arrCatalog );
 
@@ -73,42 +71,20 @@ class Upload {
 
             case 'file':
 
-                if ( !$arrField['disableFileRendering'] ) {
-
-                    return static::renderFile( $varValue, $arrField, $arrCatalog );
-                }
-
-                return static::renderDefaultFileValue( $varValue );
+                return static::renderFile( $varValue, $arrField, $arrCatalog );
 
                 break;
 
-            default:
+            case 'files':
 
-                return static::renderDefaultFileValue( $varValue );
+                $varValue = Toolkit::deserialize( $varValue );
+
+                return static::renderFiles( $varValue, $arrField, $arrCatalog );
 
                 break;
         }
-    }
 
-
-    public static function renderDefaultFileValue( $varValue ) {
-
-        if ( is_array( $varValue ) ) {
-
-            $arrFiles = [];
-
-            foreach ( $varValue as $strUuid ) {
-
-                $arrFiles[] = static::getImagePath( $strUuid );
-            }
-
-            return $arrFiles;
-        }
-
-        else {
-
-            return static::getImagePath( $varValue );
-        }
+        return '';
     }
 
 
@@ -140,18 +116,30 @@ class Upload {
     }
     
 
+    public static function renderFiles( $varValue, $arrField, $arrCatalog ) {
+
+        if ( !empty( $varValue ) && is_array( $varValue ) ) {
+
+            $strTemplate = $arrField['filesTemplate'] ? $arrField['filesTemplate'] : 'ce_downloads';
+            $objDownloads = new DownloadsCreator( $varValue, [
+
+                'downloadsTpl' => $strTemplate,
+                'sortBy' => $arrField['sortBy'],
+                'metaIgnore' => $arrField['metaIgnore']
+            ]);
+
+            return $objDownloads->render();
+        }
+
+        return '';
+    }
+
+
     public static function renderImage( $varValue, $arrField, $arrCatalog ) {
 
-        if ( is_array( $varValue ) ) {
+        if ( !is_string( $varValue ) ) {
 
-            $arrImages = [];
-
-            foreach ( $varValue as $strUuid ) {
-
-                $arrImages[] = static::generateImage( static::createImageArray( $strUuid, $arrField, $arrCatalog ), $arrField );
-            }
-
-            return $arrImages;
+            return '';
         }
 
         return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ), $arrField );
@@ -160,24 +148,12 @@ class Upload {
 
     public static function renderFile( $varValue, $arrField, $arrCatalog ) {
 
-        if ( is_array( $varValue ) ) {
+        if ( !is_string( $varValue ) ) {
 
-            $arrFiles = [];
-
-            foreach ( $varValue as $intIndex => $strUuid ) {
-
-                $arrFiles[] = static::generateEnclosure( static::createEnclosureArray( $strUuid, $arrField, $arrCatalog ) )->enclosure[0];
-            }
-
-            return $arrFiles;
+            return '';
         }
 
-        $objFile = static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ) );
-
-        $objFile->enclosure[0]['name'] = $arrCatalog[ $arrField['fileText'] ] ? $arrCatalog[ $arrField['fileText'] ] : $objFile->enclosure[0]['name'];
-        $objFile->enclosure[0]['title'] = $arrCatalog[ $arrField['fileTitle'] ] ? $arrCatalog[ $arrField['fileTitle'] ] : $objFile->enclosure[0]['title'];
-
-        return $objFile->enclosure[0];
+        return static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ), $arrField );
     }
 
 
@@ -198,12 +174,56 @@ class Upload {
 
     public static function createEnclosureArray( $varValue, $arrField, $arrCatalog ) {
 
-        $arrReturn = [
+        global $objPage;
 
-            'enclosure' => [ $varValue ]
+        $objFileEntity = \FilesModel::findByUuid( $varValue );
+
+        if ( !$objFileEntity->path || $objFileEntity->type != 'file' ) return [];
+
+        $objFile = new \File( $objFileEntity->path, true );
+        $strTitle = $arrCatalog[ $arrField['fileTitle'] ];
+        $strDescription = $arrCatalog[ $arrField['fileText'] ];
+
+        if ( !$strTitle ) {
+
+            $strTitle = specialchars( $objFile->name );
+        }
+
+        $strHref = \Environment::get('request');
+
+        if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
+
+            $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
+        }
+
+        $strHref .= ( ( \Config::get( 'disableAlias' ) || strpos( $strHref, '?' ) !== false) ? '&amp;' : '?' ) . 'file=' . \System::urlEncode( $objFile->value );
+
+        $arrMeta = \Frontend::getMetaData( $objFileEntity->meta, $objPage->language );
+
+        if ( empty( $arrMeta ) && $objPage->rootFallbackLanguage !== null ) {
+
+            $arrMeta = \Frontend::getMetaData( $objFileEntity->meta, $objPage->rootFallbackLanguage );
+        }
+
+        if ($arrMeta['title'] == '') {
+
+            $arrMeta['title'] = specialchars( $objFile->basename );
+        }
+
+        return [
+
+            'href' => $strHref,
+            'meta' => $arrMeta,
+            'link' => $strTitle,
+            'mime' => $objFile->mime,
+            'id' => $objFileEntity->id,
+            'path' => $objFile->dirname,
+            'name' => $objFile->basename,
+            'extension' => $objFile->extension,
+            'icon' => \Image::getPath( $objFile->icon ),
+            'filesize' => \Controller::getReadableSize( $objFile->filesize ),
+            'title' => specialchars( $strDescription ?: sprintf( $GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename ) )
         ];
-
-        return $arrReturn;
     }
 
 
@@ -226,21 +246,20 @@ class Upload {
     public static function generateImage( $arrImage, $arrField = [] ) {
 
         $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
-
         $objPicture = new \FrontendTemplate( $strTemplate );
-        
+
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
         return $objPicture->parse();
     }
 
 
-    public static function generateEnclosure( $arrEnclosure ) {
+    public static function generateEnclosure( $arrEnclosure, $arrField = [] ) {
 
-        $objEnclosure = new \stdClass();
+        $strTemplate = $arrField['fileTemplate'] ? $arrField['fileTemplate'] : 'ce_download';
+        $objTemplate = new \FrontendTemplate( $strTemplate );
+        $objTemplate->setData( $arrEnclosure );
 
-        \Controller::addEnclosuresToTemplate( $objEnclosure, $arrEnclosure ) ;
-
-        return $objEnclosure;
+        return $objTemplate->parse();
     }
 }

@@ -947,21 +947,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             
             'sql' => "varchar(256) NOT NULL default ''"
         ],
-
-        'disableFileRendering' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['disableFileRendering'],
-            'inputType' => 'checkbox',
-
-            'eval' => [
-
-                'tl_class' => 'w50 m12',
-            ],
-
-            'exclude' => true,
-            'sql' => "char(1) NOT NULL default ''"
-        ],
-
+        
         'useSize' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'],

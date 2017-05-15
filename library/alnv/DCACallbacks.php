@@ -26,10 +26,26 @@ class DCACallbacks extends \Backend{
     
     public function setMultiSrcFlags( $varValue, \DataContainer $dc ) {
 
-        if ( $dc->activeRecord && $dc->table && $dc->field ) {
+        if ( $dc->table && $dc->field ) {
 
-            $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['isGallery'] = true;
-            $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['extensions'] = \Config::get('validImageTypes');
+            $objField = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1) AND fieldname = ?')->limit(1)->execute( $dc->table, $dc->field );
+
+            switch ( $objField->fileType ) {
+
+                case 'gallery':
+
+                    $GLOBALS['TL_DCA'][ $dc->table ]['fields'][ $dc->field ]['eval']['isGallery'] = true;
+                    $GLOBALS['TL_DCA'][ $dc->table ]['fields'][ $dc->field ]['eval']['extensions'] = \Config::get('validImageTypes');
+
+                    break;
+
+                case 'files':
+
+                    $GLOBALS['TL_DCA'][ $dc->table ]['fields'][ $dc->field ]['eval']['isDownloads'] = true;
+                    $GLOBALS['TL_DCA'][ $dc->table ]['fields'][ $dc->field ]['eval']['extensions'] = \Config::get('allowedDownload');
+
+                    break;
+            }
         }
 
         return $varValue;

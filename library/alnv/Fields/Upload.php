@@ -15,6 +15,11 @@ class Upload {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
             $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
+
+            if ( $arrField['sortBy'] == 'custom' && $arrField['orderField'] ) {
+
+                $arrDCAField['eval']['orderField'] = $arrField['orderField'];
+            }
         }
 
         if ( $arrField['fileType'] == 'image' ) {
@@ -92,12 +97,14 @@ class Upload {
         if ( !empty( $varValue ) && is_array( $varValue ) ) {
 
             $strTemplate = $arrField['galleryTemplate'] ? $arrField['galleryTemplate'] : 'gallery_default';
+            $strOrderField = $arrCatalog[ $arrField['orderField'] ] ? $arrCatalog[ $arrField['orderField'] ] : '';
 
             $objGallery = new GalleryCreator( $varValue, [
 
                 'id' => $arrCatalog['id'],
                 'size' => $arrField['size'],
                 'galleryTpl' => $strTemplate,
+                'orderSRC' => $strOrderField,
                 'perRow' => $arrField['perRow'],
                 'sortBy' => $arrField['sortBy'],
                 'perPage' => $arrField['perPage'],

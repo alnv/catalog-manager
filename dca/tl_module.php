@@ -5,6 +5,7 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManag
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'enableTableView';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseArray';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRelation';
@@ -20,11 +21,12 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogEnableFr
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseFrontendEditingViewPage';
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalogTaxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{template_legend:hide},catalogMasterTemplate,customTpl,catalogTemplateDebug;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{template_legend:hide},catalogMasterTemplate,customTpl,catalogTemplateDebug;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{catalogOutput_legend:hide},catalogUseArray;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFilterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalogFilterRedirect_legend:hide},catalogRedirectType;{catalogFilterTemplates_legend:hide},catalogFilterFieldTemplates;{catalogFieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink,enableTableView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink,enableTableView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{catalogOutput_legend:hide},catalogUseArray;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseArray'] = 'catalogSendJsonHeader';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseTaxonomies'] = 'catalogTaxonomies';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRelation'] = 'catalogRelatedChildTables';
@@ -1401,4 +1403,33 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFrontendEditingViewPage'] = [
 
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseArray'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseArray'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'submitOnChange' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogSendJsonHeader'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'm12 w50',
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
 ];

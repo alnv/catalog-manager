@@ -99,7 +99,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'message' => '{general_legend},type,fieldname,title,message;{invisible_legend},invisible',
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
-        'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible'
+        'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible',
+        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{invisible_legend},invisible',
     ],
 
     'subpalettes' => [
@@ -115,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'fileType_file' => 'fileTemplate,fileTitle,fileText',
         'fileType_files' => 'filesTemplate,sortBy,metaIgnore',
         'fileType_image' => 'imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,fullsize,useSize',
-        'fileType_gallery' => 'galleryTemplate,sortBy,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,usePreviewImage'
+        'fileType_gallery' => 'galleryTemplate,sortBy,orderField,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,usePreviewImage'
     ],
 
     'fields' => [
@@ -1506,7 +1507,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'inputType' => 'select',
 
             'options' => [
-                
+
+                'custom',
                 'name_asc',
                 'name_desc',
                 'date_asc',
@@ -1525,6 +1527,27 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(32) NOT NULL default ''"
+        ],
+
+        'orderField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['orderField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getOrderFields' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'metaIgnore' => [

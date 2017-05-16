@@ -30,10 +30,10 @@ class DCABuilderHelper extends CatalogController {
         'map',
         'message',
         'fieldsetStart',
-        'fieldsetStop'
+        'fieldsetStop',
     ];
 
-
+    
     public $arrNoFieldnameRequired = [
 
         'fieldsetStart',
@@ -213,6 +213,13 @@ class DCABuilderHelper extends CatalogController {
             case 'message':
 
                 $arrDCAField = MessageInput::generate( $arrDCAField, $arrField );
+
+                break;
+
+            case 'dbColumn':
+
+                unset( $arrDCAField['eval'] );
+                unset( $arrDCAField['inputType'] );
 
                 break;
         }

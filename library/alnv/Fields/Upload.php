@@ -15,8 +15,6 @@ class Upload {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
             $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
-
-            // @todo custom orderBy
         }
 
         if ( $arrField['fileType'] == 'image' ) {
@@ -36,8 +34,6 @@ class Upload {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
             $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
-
-            // @todo custom orderBy
         }
 
         if ( $arrField['extensions'] ) {
@@ -111,8 +107,6 @@ class Upload {
 
                 'usePreviewImage' => $arrField['usePreviewImage'],
                 'previewImagePosition' => $arrField['previewImagePosition'],
-
-                'orderSRC' => '', // @todo
             ]);
 
             return [
@@ -140,8 +134,6 @@ class Upload {
                 'downloadsTpl' => $strTemplate,
                 'sortBy' => $arrField['sortBy'],
                 'metaIgnore' => $arrField['metaIgnore'],
-
-                'orderSRC' => '', // @todo
             ]);
 
             return $objDownloads->render();
@@ -214,7 +206,6 @@ class Upload {
         }
 
         $strHref .= ( ( \Config::get( 'disableAlias' ) || strpos( $strHref, '?' ) !== false) ? '&amp;' : '?' ) . 'file=' . \System::urlEncode( $objFile->value );
-
         $arrMeta = \Frontend::getMetaData( $objFileEntity->meta, $objPage->language );
 
         if ( empty( $arrMeta ) && $objPage->rootFallbackLanguage !== null ) {

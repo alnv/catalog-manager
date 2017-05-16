@@ -62,19 +62,25 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->getCommentForm();
 
         $blnHasPermission = $this->CatalogView->checkPermission();
-        
-        $this->Template->output = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+        $strOutput = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+
+        $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
+        $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
 
         if ( !$blnHasPermission ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
-        }
 
-        if ( empty( $this->Template->output ) ) {
+            return null;
+        }
+        
+        if ( empty( $strOutput ) ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_404']();
             $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
+
+            return null;
         }
     }
 }

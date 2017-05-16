@@ -146,8 +146,11 @@ class ModuleUniversalView extends \Module {
 
         $this->Template->message = '';
         $this->Template->map = $this->CatalogView->getMapViewOptions();
-        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
         $this->Template->createOperation = $this->CatalogView->getCreateOperation();
+
+        $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
+        $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
+        $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
 
         if ( !$this->Template->output ) {
 
@@ -195,15 +198,18 @@ class ModuleUniversalView extends \Module {
             return null;
         }
 
-        $this->Template->output = $this->CatalogView->getCatalogView( $arrQuery );
+        $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
 
-        if ( !$this->Template->output ) {
+        if ( empty( $strOutput ) ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_404']();
             $objHandler->generate( $this->CatalogView->strPageID );
 
             return null;
         }
+
+        $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
+        $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
     }
 
 

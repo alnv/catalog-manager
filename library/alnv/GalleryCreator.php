@@ -178,6 +178,38 @@ class GalleryCreator extends \Frontend {
                 shuffle( $arrImages );
 
                 break;
+
+            case 'custom':
+
+                if ($this->orderSRC != '') {
+
+                    $arrTmp = deserialize( $this->orderSRC );
+
+                    if ( !empty( $arrTmp ) && is_array( $arrTmp ) ) {
+
+                        $arrOrder = array_map( function () {}, array_flip( $arrTmp ));
+
+                        foreach ( $arrImages as $strKey => $arrValue ) {
+
+                            if ( array_key_exists( $arrValue['uuid'], $arrOrder ) ) {
+
+                                $arrOrder[ $arrValue['uuid'] ] = $arrValue;
+                                unset( $arrImages[$strKey] );
+                            }
+                        }
+
+                        if ( !empty( $arrImages ) ) {
+
+                            $arrOrder = array_merge( $arrOrder, array_values( $arrImages ) );
+                        }
+
+                        $arrImages = array_values( array_filter( $arrOrder ) );
+
+                        unset( $arrOrder );
+                    }
+                }
+
+                break;
         }
 
         $intOffset = 0;

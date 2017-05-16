@@ -219,7 +219,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getFieldTypes() {
 
-        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'map', 'fieldsetStart', 'fieldsetStop' ];
+        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'map', 'fieldsetStart', 'fieldsetStop', 'dbColumn' ];
     }
 
     
@@ -364,5 +364,26 @@ class tl_catalog_fields extends \Backend {
     public function getFilesTemplates() {
 
         return $this->getTemplateGroup( 'ce_downloads' );
+    }
+
+
+    public function getOrderFields( \DataContainer $dc ) {
+
+        $arrReturn = [];
+
+        if ( $dc->activeRecord ) {
+
+            $objFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? AND statement = ?' )->execute( $dc->activeRecord->pid, 'blob' );
+
+            while ( $objFields->next() ) {
+
+                if ( $objFields->fieldname && $objFields->type == 'dbColumn' ) {
+
+                    $arrReturn[ $objFields->fieldname ] = $objFields->fieldname;
+                }
+            }
+        }
+
+        return $arrReturn;
     }
 }

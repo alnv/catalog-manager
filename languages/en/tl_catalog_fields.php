@@ -103,6 +103,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['mapInfoBoxContent'] = [ 'Info-Box cont
 $GLOBALS['TL_LANG']['tl_catalog_fields']['sortBy'] = [ 'Order by', 'Please choose the sort order.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['galleryTemplate'] = [ 'Template', 'Please select template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Thumbnails per row', 'The number of image thumbnails per row.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['orderField'] = [ 'Custom order column', 'Please select a column of type database column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Items per page', 'The number of items per page. Set to 0 to disable pagination.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Ignore files without meta data', 'Do not show files without meta data matching the page language.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Total number of images', 'Here you can limit the total number of images. Set to 0 to show all.' ];
@@ -122,6 +123,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'] = 
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 
+    'custom' => 'Custom order',
     'name_asc' => 'File name (ascending)',
     'name_desc' => 'File name (descending)',
     'date_asc' => 'Date (ascending)',
@@ -158,7 +160,8 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
     'textarea' => 'Textarea',
     'message' => 'Message',
     'fieldsetStart' => 'Open Palette',
-    'fieldsetStop' => 'Close Palette'
+    'fieldsetStop' => 'Close Palette',
+    'dbColumn' => 'Database column'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['flag'] = [

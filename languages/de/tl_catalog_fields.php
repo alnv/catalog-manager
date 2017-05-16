@@ -107,6 +107,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Vorschaubilder pro Reihe
 $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Dateien ohne Metadaten ignorieren', 'Dateien ohne zur Seitensprache passenden Metadaten nicht anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Gesamtzahl der Bilder', 'Hier können Sie die Gesamtzahl der Bilder begrenzen. Geben Sie 0 ein, um alle anzuzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Elemente pro Seite', 'Die Anzahl an Elementen pro Seite. Geben Sie 0 ein, um den automatischen Seitenumbruch zu deaktivieren.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['orderField'] = [ 'Reihenfolge Spalte', 'Damit die individuelle Reihenfolge der Bilder funktioniert, benötigen wir eine leere Datenbank Spalte für die Zwischenspeicherung der Reihenfolge.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
@@ -131,6 +132,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 
+    'custom' => 'Individuelle Reihenfolge',
     'name_asc' => 'Dateiname (aufsteigend)',
     'name_desc' => 'Dateiname (absteigend)',
     'date_asc' => 'Datum (aufsteigend)',
@@ -160,7 +162,8 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
     'message' => 'Erklärung',
     'map' => 'Kartenansicht',
     'fieldsetStart' => 'Palette öffnen',
-    'fieldsetStop' => 'Palette schließen'
+    'fieldsetStop' => 'Palette schließen',
+    'dbColumn' => 'Datenbank Spalte',
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['flag'] = [

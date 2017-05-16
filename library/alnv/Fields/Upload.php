@@ -192,6 +192,7 @@ class Upload {
 
         global $objPage;
 
+        $strDownload = \Input::get( 'file', true );
         $objFileEntity = \FilesModel::findByUuid( $varValue );
 
         if ( !$objFileEntity->path || $objFileEntity->type != 'file' ) return [];
@@ -225,6 +226,8 @@ class Upload {
 
             $arrMeta['title'] = specialchars( $objFile->basename );
         }
+
+        if ( $strDownload != '' && $objFileEntity->path ) \Controller::sendFileToBrowser( $strDownload );
 
         return [
 

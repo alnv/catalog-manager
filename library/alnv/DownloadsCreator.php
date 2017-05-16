@@ -39,6 +39,7 @@ class DownloadsCreator extends \Frontend {
         $arrAuxDate = [];
 
         $objFiles = $this->objFiles;
+        $strDownload = \Input::get( 'file', true );
         $arrAllowedDownload = trimsplit( ',', strtolower( \Config::get('allowedDownload') ) );
 
         while ( $objFiles->next() ) {
@@ -104,6 +105,8 @@ class DownloadsCreator extends \Frontend {
                 ];
 
                 $arrAuxDate[] = $objFile->mtime;
+
+                if ( $strDownload != '' && $objFiles->path ) \Controller::sendFileToBrowser( $strDownload );
             }
 
             else {
@@ -176,6 +179,8 @@ class DownloadsCreator extends \Frontend {
                     ];
 
                     $arrAuxDate[] = $objFile->mtime;
+
+                    if ( $strDownload != '' && $objSubFiles->path ) \Controller::sendFileToBrowser( $strDownload );
                 }
             }
 

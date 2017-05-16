@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Weiterleitun
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomie-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend'] = 'Format-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
@@ -99,8 +100,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogPageRouting'] = [ 'Seite', 'Bitte wähl
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter auswählen', 'Bitte wählen Sie Ihre Routing Parameter aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie die Weiterleitung überschreiben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Weiterleitungsseite auswählen', 'Bitte wählen Sie eine Weiterleitungsseite aus.' ];
-
-
+$GLOBALS['TL_LANG']['tl_module']['catalogUseArray'] = [ 'Als Array ausgeben', 'Hier können Sie die Datensätze als Array im Template ausgeben. Verwenden Sie <strong>$this->data</strong> statt $this->output.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json Header', 'Hier können Sie den HTTP Content-Type Header auf "application/json" umstellen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

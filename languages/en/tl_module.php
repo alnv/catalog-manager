@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Form setting
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Redirect settings';
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template settings';
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Field dependencies settings';
+$GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend']= 'Format settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];
@@ -97,6 +98,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogPageRouting'] = [ 'Page', 'Please selec
 $GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter', 'Here you can select routing parameter.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Overwrite redirect', 'Here you can define a new redirect.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Page', 'Please select a page.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseArray'] = [ 'Output as array', 'Here you can output entities as array. Call <strong>$this->data</strong> instead $this->output.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json Header', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

@@ -501,6 +501,11 @@ class DCABuilder extends CatalogController {
                 continue;
             }
 
+            if ( $arrField['type'] == 'dbColumn' ) {
+
+               continue;
+            }
+
             if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->DCABuilderHelper->arrReadOnlyInputTypes ) ) {
 
                 continue;
@@ -520,7 +525,7 @@ class DCABuilder extends CatalogController {
 
             $strPalette .= sprintf( '{%s},%s;', $this->I18nCatalogTranslator->getLegendLabel( $strPaletteTitle, $arrPaletteTranslationMap[ $strPaletteTitle ] ), implode( ',', $arrDCAPalette[ $strPaletteTitle ] ) );
         }
-
+        
         return [ 'default' => $strPalette ];
     }
 

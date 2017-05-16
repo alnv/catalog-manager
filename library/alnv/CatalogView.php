@@ -272,13 +272,11 @@ class CatalogView extends CatalogController {
 
     public function getCatalogView( $arrQuery ) {
 
-        $strReturn = '';
         $strPageID = 'page_e' . $this->id;
         $intOffset = $this->catalogOffset;
         $intPerPage = $this->catalogPerPage;
         $intPagination = \Input::get( $strPageID );
         $arrQuery['table'] = $this->catalogTablename;
-        $objTemplate = new \FrontendTemplate( $this->strTemplate );
 
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
 
@@ -620,6 +618,20 @@ class CatalogView extends CatalogController {
 
             shuffle( $arrCatalogs );
         }
+        
+        if ( $this->catalogUseArray ) {
+
+            return $this->getArrayValue( $arrCatalogs );
+        }
+
+        return $this->getTemplateValue( $arrCatalogs, $intResultRows );
+    }
+
+
+    protected function getTemplateValue( $arrCatalogs, $intResultRows ) {
+
+        $strReturn = '';
+        $objTemplate = new \FrontendTemplate( $this->strTemplate );
 
         foreach ( $arrCatalogs as $intIndex => $arrCatalog ) {
 
@@ -637,10 +649,24 @@ class CatalogView extends CatalogController {
             }
 
             $objTemplate->setData( $arrCatalog );
+
             $strReturn .= $objTemplate->parse();
         }
 
         return $strReturn;
+    }
+
+
+    protected function getArrayValue( $arrCatalogs ) {
+
+        if ( $this->catalogSendJsonHeader ) {
+
+            header('Content-Type: application/json');
+            echo json_encode( $arrCatalogs );
+            exit;
+        }
+
+        return $arrCatalogs;
     }
 
 

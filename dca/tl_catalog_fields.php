@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
 
         'fileType_file' => 'fileTemplate,fileTitle,fileText',
-        'fileType_files' => 'filesTemplate,sortBy,metaIgnore',
+        'fileType_files' => 'filesTemplate,sortBy,orderField,metaIgnore',
         'fileType_image' => 'imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,fullsize,useSize',
         'fileType_gallery' => 'galleryTemplate,sortBy,orderField,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,usePreviewImage'
     ],

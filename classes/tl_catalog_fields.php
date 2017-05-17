@@ -336,6 +336,11 @@ class tl_catalog_fields extends \Backend {
                 continue;
             }
 
+            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrColumnsOnly ) ) {
+
+                continue;
+            }
+
             $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
         }
 

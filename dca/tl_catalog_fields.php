@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible',
-        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{invisible_legend},invisible',
+        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,{invisible_legend},invisible',
     ],
 
     'subpalettes' => [

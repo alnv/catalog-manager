@@ -44,6 +44,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
     'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
+    'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',

@@ -495,6 +495,12 @@ class FrontendEditing extends CatalogController {
 
         if (  $this->SQLBuilder->Database->tableExists( $this->catalogTablename ) ) {
 
+            if ( $this->catalogNotifyDelete ) {
+
+                $objCatalogNotification = new CatalogNotification();
+                $objCatalogNotification->notifyOnInsert( $this->catalogNotifyDelete, [] );
+            }
+
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
 
@@ -578,6 +584,13 @@ class FrontendEditing extends CatalogController {
                 }
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                if ( $this->catalogNotifyInsert ) {
+
+                    $objCatalogNotification = new CatalogNotification();
+                    $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
+                }
+
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;
@@ -597,6 +610,12 @@ class FrontendEditing extends CatalogController {
 
                             $strQuery = sprintf( '?pid=%s', $objEntity->pid );
                         }
+                    }
+
+                    if ( $this->catalogNotifyUpdate ) {
+
+                        $objCatalogNotification = new CatalogNotification();
+                        $objCatalogNotification->notifyOnInsert( $this->catalogNotifyUpdate, $this->arrValues );
                     }
 
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
@@ -619,6 +638,13 @@ class FrontendEditing extends CatalogController {
                 unset( $this->arrValues['id'] );
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                if ( $this->catalogNotifyInsert ) {
+
+                    $objCatalogNotification = new CatalogNotification();
+                    $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
+                }
+
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;

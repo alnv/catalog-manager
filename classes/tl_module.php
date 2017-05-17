@@ -463,4 +463,31 @@ class tl_module extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getNotificationChoices( \DataContainer $dc ) {
+
+        $strWhere = '';
+        $arrValues = [];
+        $arrChoices = [];
+
+        if ( !$this->Database->tableExists( 'tl_nc_notification' ) ) return [];
+
+        $arrTypes = $GLOBALS['TL_DCA']['tl_module']['fields'][ $dc->field ]['eval']['ncNotificationChoices'];
+
+        if ( !empty( $arrTypes ) && is_array( $arrTypes ) ) {
+
+            $strWhere = ' WHERE ' . implode( ' OR ', array_fill(0, count($arrTypes), 'type=?' ) );
+            $arrValues = $arrTypes;
+        }
+
+        $objNotifications = $this->Database->prepare( 'SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title' )->execute( $arrValues );
+
+        while ($objNotifications->next()) {
+
+            $arrChoices[ $objNotifications->id ] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
 }

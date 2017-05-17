@@ -219,7 +219,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getFieldTypes() {
 
-        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'map', 'fieldsetStart', 'fieldsetStop', 'dbColumn' ];
+        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'dbColumn', 'map', 'fieldsetStart', 'fieldsetStop' ];
     }
 
     

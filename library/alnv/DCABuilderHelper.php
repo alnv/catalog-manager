@@ -25,6 +25,12 @@ class DCABuilderHelper extends CatalogController {
     ];
 
 
+    public $arrColumnsOnly = [
+
+        'dbColumn'
+    ];
+
+
     public $arrForbiddenInputTypes = [
 
         'map',
@@ -218,9 +224,8 @@ class DCABuilderHelper extends CatalogController {
 
             case 'dbColumn':
 
-                unset( $arrDCAField['eval'] );
-                unset( $arrDCAField['inputType'] );
-
+                $arrDCAField = DbColumn::generate( $arrDCAField, $arrField );
+                
                 break;
         }
 

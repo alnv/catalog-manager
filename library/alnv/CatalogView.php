@@ -823,6 +823,12 @@ class CatalogView extends CatalogController {
                 return Textarea::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;
+
+            case 'dbColumn':
+
+                return DbColumn::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
         }
 
         return $varValue;

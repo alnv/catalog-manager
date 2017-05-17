@@ -39,6 +39,11 @@ class Upload {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
             $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
+
+            if ( $arrField['sortBy'] == 'custom' && $arrField['orderField'] ) {
+
+                $arrDCAField['eval']['orderField'] = $arrField['orderField'];
+            }
         }
 
         if ( $arrField['extensions'] ) {
@@ -136,8 +141,11 @@ class Upload {
         if ( !empty( $varValue ) && is_array( $varValue ) ) {
 
             $strTemplate = $arrField['filesTemplate'] ? $arrField['filesTemplate'] : 'ce_downloads';
+            $strOrderField = $arrCatalog[ $arrField['orderField'] ] ? $arrCatalog[ $arrField['orderField'] ] : '';
+
             $objDownloads = new DownloadsCreator( $varValue, [
 
+                'orderSRC' => $strOrderField,
                 'downloadsTpl' => $strTemplate,
                 'sortBy' => $arrField['sortBy'],
                 'metaIgnore' => $arrField['metaIgnore'],

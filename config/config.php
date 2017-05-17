@@ -61,3 +61,52 @@ $GLOBALS['BE_FFL']['catalogFilterFieldSelectWizard'] = 'CatalogManager\CatalogFi
 $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';
 
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];
+
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
+
+    'ctlg_entity_status_insert'   => [
+
+        'recipients' => [ 'admin_email', 'form_*' ],
+        'email_subject' => [ 'form_*', 'admin_email' ],
+        'email_text' => [ 'form_*', 'admin_email' ],
+        'email_html' => [ 'form_*', 'admin_email' ],
+        'file_name' => [ 'form_*', 'admin_email' ],
+        'file_content' => [ 'form_*', 'admin_email' ],
+        'email_sender_name' => [ 'admin_email', 'form_*' ],
+        'email_sender_address' => [ 'admin_email', 'form_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
+        'email_replyTo' => [ 'admin_email', 'form_*' ],
+        'attachment_tokens' => [ 'form_*' ]
+    ],
+
+    'ctlg_entity_status_update' => [
+
+        'recipients' => [ 'admin_email', 'form_*' ],
+        'email_subject' => [ 'form_*', 'admin_email' ],
+        'email_text' => [ 'form_*', 'admin_email' ],
+        'email_html' => [ 'form_*', 'admin_email' ],
+        'file_name' => [ 'form_*', 'admin_email' ],
+        'file_content' => [ 'form_*', 'admin_email' ],
+        'email_sender_name' => [ 'admin_email', 'form_*' ],
+        'email_sender_address' => [ 'admin_email', 'form_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
+        'email_replyTo' => [ 'admin_email', 'form_*' ],
+        'attachment_tokens' => [ 'form_*' ]
+    ],
+
+    'ctlg_entity_status_delete' => [
+
+        'recipients' => [ 'admin_email', 'form_*' ],
+        'email_subject' => [ 'form_*', 'admin_email' ],
+        'email_text' => [ 'form_*', 'admin_email' ],
+        'email_html' => [ 'form_*', 'admin_email' ],
+        'email_sender_name' => [ 'admin_email', 'form_*' ],
+        'email_sender_address' => [ 'admin_email', 'form_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
+        'email_replyTo' => [ 'admin_email', 'form_*' ],
+        'attachment_tokens' => [ 'form_*' ]
+    ]
+];

@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseFrontendEditingViewPag
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogFormRedirect';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'disableCaptcha,catalogNoValidate,catalogEnableFrontendPermission,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogNotifyInsert,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
@@ -1432,4 +1432,82 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSendJsonHeader'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50',
+        'includeBlankOption' => true,
+        'ncNotificationChoices' => [ 'ctlg_entity_status_insert' ]
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+
+    'relation' => [
+
+        'load'=>'lazy',
+        'type'=>'hasOne',
+        'table'=>'tl_nc_notification'
+    ],
+
+    'exclude' => true,
+    'sql' => "int(10) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50',
+        'includeBlankOption' => true,
+        'ncNotificationChoices' => [ 'ctlg_entity_status_update' ]
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+
+    'relation' => [
+
+        'load'=>'lazy',
+        'type'=>'hasOne',
+        'table'=>'tl_nc_notification'
+    ],
+
+    'exclude' => true,
+    'sql' => "int(10) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'tl_class' => 'w50',
+        'includeBlankOption' => true,
+        'ncNotificationChoices' => [ 'ctlg_entity_status_delete' ]
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+
+    'relation' => [
+
+        'load'=>'lazy',
+        'type'=>'hasOne',
+        'table'=>'tl_nc_notification'
+    ],
+
+    'exclude' => true,
+    'sql' => "int(10) unsigned NOT NULL default '0'"
 ];

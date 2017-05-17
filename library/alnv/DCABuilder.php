@@ -501,8 +501,8 @@ class DCABuilder extends CatalogController {
                 continue;
             }
 
-            if ( $arrField['type'] == 'dbColumn' ) {
-
+            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrColumnsOnly ) ) {
+                
                continue;
             }
 

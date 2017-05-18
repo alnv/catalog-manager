@@ -1,6 +1,7 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = [ 'CatalogManager\tl_module', 'generateGeoCords' ];
+$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'checkModuleRequirements' ];
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';

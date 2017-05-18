@@ -178,27 +178,13 @@ class CatalogNotification extends CatalogController {
     
     protected function parseCatalogValues( $varValue, $arrField, &$arrCatalog ) {
 
-        $strFieldname = $arrField['fieldname'];
-
         switch ( $arrField['type'] ) {
 
             case 'upload':
 
                 if ( is_null( $varValue ) ) return '';
 
-                $varValue = Upload::parseValue( $varValue, $arrField, $arrCatalog );
-
-                if ( is_array( $varValue ) ) {
-
-                    if ( $varValue['preview'] ) {
-
-                        $arrCatalog[ $strFieldname . 'Preview' ] = $varValue['preview'];
-                    }
-
-                    return $varValue['gallery'];
-                }
-
-                return $varValue;
+                return Upload::parseAttachment( $varValue, $arrField, $arrCatalog );
 
                 break;
 

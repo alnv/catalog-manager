@@ -497,8 +497,8 @@ class FrontendEditing extends CatalogController {
 
             if ( $this->catalogNotifyDelete ) {
 
-                $objCatalogNotification = new CatalogNotification();
-                $objCatalogNotification->notifyOnInsert( $this->catalogNotifyDelete, [] );
+                $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                $objCatalogNotification->notifyOnDelete( $this->catalogNotifyDelete, [] );
             }
 
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
@@ -587,7 +587,7 @@ class FrontendEditing extends CatalogController {
 
                 if ( $this->catalogNotifyInsert ) {
 
-                    $objCatalogNotification = new CatalogNotification();
+                    $objCatalogNotification = new CatalogNotification( $this->catalogTablename );
                     $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
                 }
 
@@ -614,8 +614,8 @@ class FrontendEditing extends CatalogController {
 
                     if ( $this->catalogNotifyUpdate ) {
 
-                        $objCatalogNotification = new CatalogNotification();
-                        $objCatalogNotification->notifyOnInsert( $this->catalogNotifyUpdate, $this->arrValues );
+                        $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                        $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyUpdate, $this->arrValues );
                     }
 
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );

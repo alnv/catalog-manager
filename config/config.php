@@ -66,47 +66,49 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
 
     'ctlg_entity_status_insert'   => [
 
-        'recipients' => [ 'admin_email', 'form_*' ],
-        'email_subject' => [ 'form_*', 'admin_email' ],
-        'email_text' => [ 'form_*', 'admin_email' ],
-        'email_html' => [ 'form_*', 'admin_email' ],
-        'file_name' => [ 'form_*', 'admin_email' ],
-        'file_content' => [ 'form_*', 'admin_email' ],
-        'email_sender_name' => [ 'admin_email', 'form_*' ],
-        'email_sender_address' => [ 'admin_email', 'form_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
-        'email_replyTo' => [ 'admin_email', 'form_*' ],
-        'attachment_tokens' => [ 'form_*' ]
+        'recipients' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*' ],
+        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
+        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
+        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
+        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
+        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*' ],
+        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*' ]
     ],
 
     'ctlg_entity_status_update' => [
 
-        'recipients' => [ 'admin_email', 'form_*' ],
-        'email_subject' => [ 'form_*', 'admin_email' ],
-        'email_text' => [ 'form_*', 'admin_email' ],
-        'email_html' => [ 'form_*', 'admin_email' ],
-        'file_name' => [ 'form_*', 'admin_email' ],
-        'file_content' => [ 'form_*', 'admin_email' ],
-        'email_sender_name' => [ 'admin_email', 'form_*' ],
-        'email_sender_address' => [ 'admin_email', 'form_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
-        'email_replyTo' => [ 'admin_email', 'form_*' ],
-        'attachment_tokens' => [ 'form_*' ]
+        'recipients' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ]
     ],
 
     'ctlg_entity_status_delete' => [
 
-        'recipients' => [ 'admin_email', 'form_*' ],
-        'email_subject' => [ 'form_*', 'admin_email' ],
-        'email_text' => [ 'form_*', 'admin_email' ],
-        'email_html' => [ 'form_*', 'admin_email' ],
-        'email_sender_name' => [ 'admin_email', 'form_*' ],
-        'email_sender_address' => [ 'admin_email', 'form_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'form_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'form_*' ],
-        'email_replyTo' => [ 'admin_email', 'form_*' ],
-        'attachment_tokens' => [ 'form_*' ]
+        'recipients' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'email_subject' => [ 'admin_email', 'domain', 'rawOld_*', 'cleanOld_*' ],
+        'email_text' => [ 'admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_html' => [ 'admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_name' => [ 'admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_content' => [ 'admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_name' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_address' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'email_replyTo' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
+        'attachment_tokens' => [ 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ]
     ]
 ];

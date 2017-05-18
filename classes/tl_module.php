@@ -17,6 +17,37 @@ class tl_module extends \Backend {
     }
 
 
+    public function checkModuleRequirements() {
+
+        if ( !$this->Database->tableExists( 'tl_nc_notification' ) ) {
+
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['relation'] );
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['options_callback'] );
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['options'] = [];
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete']['eval']['blankOptionLabel'] = 'notification center required';
+
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['relation'] );
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['options_callback'] );
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['options'] = [];
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate']['eval']['blankOptionLabel'] = 'notification center required';
+
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['relation'] );
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['options_callback'] );
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['options'] = [];
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['blankOptionLabel'] = 'notification center required';
+        }
+    }
+
+
     public function getCatalogs() {
 
         $arrReturn = [];

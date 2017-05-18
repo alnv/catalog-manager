@@ -9,7 +9,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'onload_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ]
+            [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ],
+            [ 'CatalogManager\tl_catalog_fields', 'setOrderField' ]
         ],
 
         'onsubmit_callback' => [
@@ -100,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
         'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible',
-        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,{invisible_legend},invisible',
+        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy;{invisible_legend},invisible',
     ],
 
     'subpalettes' => [
@@ -1520,7 +1521,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'chosen' => true,
                 'maxlength' => 32,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'submitOnChange' => true
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'],
@@ -1540,6 +1542,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'doNotCopy' => true,
+                'mandatory' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],

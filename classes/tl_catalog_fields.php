@@ -23,7 +23,30 @@ class tl_catalog_fields extends \Backend {
         $objDCAPermission->checkPermissionByParent( 'tl_catalog_fields' , 'tl_catalog', 'catalog', 'catalogp' );
     }
 
-    
+
+    public function setOrderField( \DataContainer $dc ) {
+        
+        if ( \Input::get( 'act' ) != 'edit' ) return;
+
+        $objField = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE id = ?' )->limit(1)->execute( $dc->id );
+
+        if ( $objField === null ) return;
+
+        if ( $objField->numRows ) {
+
+            $strOrder = $objField->sortBy;
+
+            if ( $strOrder != 'custom' ) {
+
+                unset( $GLOBALS['TL_DCA']['tl_catalog_fields']['fields']['orderField'] );
+
+                $GLOBALS['TL_DCA']['tl_catalog_fields']['subpalettes']['fileType_files'] = str_replace( 'orderField,', '', $GLOBALS['TL_DCA']['tl_catalog_fields']['subpalettes']['fileType_files'] );
+                $GLOBALS['TL_DCA']['tl_catalog_fields']['subpalettes']['fileType_gallery'] = str_replace( 'orderField,', '', $GLOBALS['TL_DCA']['tl_catalog_fields']['subpalettes']['fileType_gallery'] );
+            }
+        }
+    }
+
+
     public function createFieldOnSubmit( \DataContainer $dc ) {
 
         $strID = $dc->activeRecord->pid;

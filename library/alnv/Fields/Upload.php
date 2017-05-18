@@ -97,6 +97,16 @@ class Upload {
     }
 
 
+    public static function parseAttachment ( $varValue, $arrField, $arrCatalog = [] ) {
+
+        $objFile = \FilesModel::findByUuid( $varValue );
+
+        if ( $objFile === null ) return '';
+
+        return $objFile->path ?  $objFile->path : '';
+    }
+
+
     public static function renderGallery( $varValue, $arrField, $arrCatalog ) {
 
         if ( !empty( $varValue ) && is_array( $varValue ) ) {

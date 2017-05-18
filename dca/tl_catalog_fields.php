@@ -1522,7 +1522,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'maxlength' => 32,
                 'tl_class' => 'w50',
-                'submitOnChange' => true
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'],

@@ -762,7 +762,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    public function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
+    protected function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
 

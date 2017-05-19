@@ -142,7 +142,7 @@ class DCABuilderHelper extends CatalogController {
 
         if ( $arrField['flag'] ) {
 
-            $arrDCAField['default'] = $arrField['flag'];
+            $arrDCAField['flag'] = $arrField['flag'];
         }
 
         if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {

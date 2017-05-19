@@ -134,7 +134,7 @@ class Upload {
             return [
 
                 'gallery' => $objGallery->render(),
-                'preview' => $objGallery->getPreviewImage(),
+                'preview' => $arrField['usePreviewImage'] ? $objGallery->getPreviewImage() : '',
             ];
         }
 

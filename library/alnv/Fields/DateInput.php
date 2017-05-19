@@ -21,7 +21,7 @@ class DateInput {
 
             $arrDCAField['default'] = time();
         }
-
+        
         return $arrDCAField;
     }
 

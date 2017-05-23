@@ -2,8 +2,7 @@
 
 namespace CatalogManager;
 
-class DCACallbacks extends \Backend{
-
+class DCACallbacks extends \Backend {
 
     public function __construct() {
 
@@ -109,7 +108,24 @@ class DCACallbacks extends \Backend{
             }
         }
 
-        $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `%s` = ? WHERE `id` = ?", $strTable, time(), $arrOptions[ 'fieldname' ] ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
+        $strTstamp = time();
+
+        $arrData = [
+
+            'id' => $intId,
+            'table' => $strTable,
+            'row' => [
+
+                'tstamp' => $strTstamp
+            ]
+        ];
+
+        $arrData['row'][ $arrOptions[ 'fieldname' ] ] = ( $blnVisible ? '' : 1 );
+
+        $objEventListener = new CatalogEvents();
+        $objEventListener->addEventListener( 'update', $arrData );
+
+        $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `%s` = ? WHERE `id` = ?", $strTable, $strTstamp, $arrOptions[ 'fieldname' ] ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
     }
 
 
@@ -145,14 +161,14 @@ class DCACallbacks extends \Backend{
     }
 
 
-    public function generateFEAlias( $varValue, $strTitle, $strTablename ) {
+    public function generateFEAlias( $varValue, $strTitle, $strTablename, $strID ) {
 
         if ( !$varValue && $strTitle ) {
 
             $varValue = \StringUtil::generateAlias( $strTitle );
         }
 
-        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTablename ) )->execute( $varValue );
+        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? AND id != ?', $strTablename ) )->execute( $varValue, $strID );
 
         if ( $objCatalogs->numRows && \Input::get('id') ) {
 
@@ -244,5 +260,72 @@ class DCACallbacks extends \Backend{
         }
         
         return '<a href="contao/main.php?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;rt=' . REQUEST_TOKEN . '" title="' . ( $strTitle ? $strTitle : '' ) . '" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
+    }
+
+
+    public function onSubmitCallback( \DataContainer $dc ) {
+
+        if ( is_null( $dc->activeRecord ) ) return;
+
+        $strRedirectUrl = \Environment::get('request');
+        $strEvent = \Input::get( '_act' ) ? \Input::get( '_act' ) : '';
+
+        $arrData = [
+
+            'id' => $dc->id,
+            'table' => $dc->table,
+            'row' => method_exists( $dc->activeRecord, 'row' ) ? $dc->activeRecord->row() : [],
+        ];
+
+        $objEventListener = new CatalogEvents();
+        $objEventListener->addEventListener( ( $strEvent ? $strEvent : 'create' ), $arrData );
+
+        if ( !$strEvent ) {
+
+            $this->redirect( $strRedirectUrl . '&_act=update' );
+        }
+
+        if ( $strEvent == 'create' ) {
+
+            $strRedirectUrl = str_replace( '&_act=create', '', $strRedirectUrl );
+            $this->redirect( $strRedirectUrl );
+        }
+    }
+
+
+    public function onDeleteCallback( \DataContainer $dc, $strID ) {
+
+        if ( is_null( $dc->activeRecord ) || !$strID ) return;
+
+        $arrData = [
+
+            'id' => $strID,
+            'table' => $dc->table,
+            'row' => method_exists( $dc->activeRecord, 'row' ) ? $dc->activeRecord->row() : [],
+        ];
+
+        $objEventListener = new CatalogEvents();
+        $objEventListener->addEventListener( 'delete' , $arrData );
+    }
+
+
+    public function onCutCallback( \DataContainer $dc ) {
+
+        $arrData = [
+
+            'row' => [],
+            'id' => $dc->id,
+            'table' => $dc->table,
+        ];
+
+        $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $dc->table ) )->limit(1)->execute( $dc->id );
+
+        if ( $objEntity->numRows ) {
+
+            $arrData['row']['pid'] = $objEntity->pid;
+        }
+
+        $objEventListener = new CatalogEvents();
+        $objEventListener->addEventListener( 'update' , $arrData );
     }
 }

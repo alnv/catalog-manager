@@ -30,6 +30,7 @@ ClassLoader::addClasses([
     'CatalogManager\DCAPermission' => 'system/modules/catalog-manager/library/alnv/DCAPermission.php',
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',
     'CatalogManager\CatalogFilter' => 'system/modules/catalog-manager/library/alnv/CatalogFilter.php',
+    'CatalogManager\CatalogEvents' => 'system/modules/catalog-manager/library/alnv/CatalogEvents.php',
     'CatalogManager\GalleryCreator' => 'system/modules/catalog-manager/library/alnv/GalleryCreator.php',
     'CatalogManager\SQLQueryHelper' => 'system/modules/catalog-manager/library/alnv/SQLQueryHelper.php',
     'CatalogManager\TemplateHelper' => 'system/modules/catalog-manager/library/alnv/TemplateHelper.php',

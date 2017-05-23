@@ -204,8 +204,11 @@ class DCABuilder extends CatalogController {
 
             'label' => $this->I18nCatalogTranslator->getModuleTitle( $this->strTable ),
             'dataContainer' => 'Table',
+
+            'oncut_callback' => [],
             'onload_callback' => [],
             'onsubmit_callback' => [],
+            'ondelete_callback' => [],
 
             'sql' => [
 
@@ -265,6 +268,10 @@ class DCABuilder extends CatalogController {
                 $objDCAPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p' );
             };
         }
+
+        $arrReturn['oncut_callback'][] = [ 'CatalogManager\DCACallbacks', 'onCutCallback' ];
+        $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'onSubmitCallback' ];
+        $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DCACallbacks', 'onDeleteCallback' ];
 
         return $arrReturn;
     }
@@ -345,21 +352,21 @@ class DCABuilder extends CatalogController {
             'edit' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
-                'href' => 'act=edit',
+                'href' => 'act=edit&_act=update',
                 'icon' => 'header.gif'
             ],
 
             'copy' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
-                'href' => 'act=copy',
+                'href' => 'act=copy&_act=create',
                 'icon' => 'copy.gif'
             ],
 
             'cut' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
-                'href' => 'act=paste&amp;mode=cut',
+                'href' => 'act=paste&amp;mode=cut&_act=update',
                 'icon' => 'cut.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
             ],
@@ -367,7 +374,7 @@ class DCABuilder extends CatalogController {
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
-                'href' => 'act=delete',
+                'href' => 'act=delete&_act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $this->I18nCatalogTranslator->getDeleteConfirmLabel() . '\'))return false;Backend.getScrollOffset()"'
             ],

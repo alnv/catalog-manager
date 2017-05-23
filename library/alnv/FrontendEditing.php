@@ -29,6 +29,7 @@ class FrontendEditing extends CatalogController {
 
         parent::__construct();
 
+        $this->import( 'CatalogEvents' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
@@ -508,9 +509,7 @@ class FrontendEditing extends CatalogController {
                 'table' => $this->catalogTablename
             ];
 
-            $objEventListener = new CatalogEvents();
-            $objEventListener->addEventListener( 'delete', $arrData );
-
+            $this->CatalogEvents->addEventListener( 'delete', $arrData );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
 
@@ -608,9 +607,7 @@ class FrontendEditing extends CatalogController {
                     'table' => $this->catalogTablename,
                 ];
 
-                $objEventListener = new CatalogEvents();
-                $objEventListener->addEventListener( 'create', $arrData );
-
+                $this->CatalogEvents->addEventListener( 'create', $arrData );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;
@@ -645,9 +642,7 @@ class FrontendEditing extends CatalogController {
                         'table' => $this->catalogTablename,
                     ];
 
-                    $objEventListener = new CatalogEvents();
-                    $objEventListener->addEventListener( 'update', $arrData );
-
+                    $this->CatalogEvents->addEventListener( 'update', $arrData );
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
                 }
 
@@ -682,9 +677,7 @@ class FrontendEditing extends CatalogController {
                     'table' => $this->catalogTablename
                 ];
 
-                $objEventListener = new CatalogEvents();
-                $objEventListener->addEventListener( 'create', $arrData );
-
+                $this->CatalogEvents->addEventListener( 'create', $arrData );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;

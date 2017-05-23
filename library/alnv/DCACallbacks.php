@@ -7,6 +7,8 @@ class DCACallbacks extends \Backend {
     public function __construct() {
 
         parent::__construct();
+
+        $this->import( 'CatalogEvents' );
     }
 
 
@@ -122,9 +124,7 @@ class DCACallbacks extends \Backend {
 
         $arrData['row'][ $arrOptions[ 'fieldname' ] ] = ( $blnVisible ? '' : 1 );
 
-        $objEventListener = new CatalogEvents();
-        $objEventListener->addEventListener( 'update', $arrData );
-
+        $this->CatalogEvents->addEventListener( 'update', $arrData );
         $this->Database->prepare( sprintf( "UPDATE %s SET `tstamp` = %s, `%s` = ? WHERE `id` = ?", $strTable, $strTstamp, $arrOptions[ 'fieldname' ] ) )->execute( ( $blnVisible ? '' : 1 ), $intId );
     }
 
@@ -274,11 +274,12 @@ class DCACallbacks extends \Backend {
 
             'id' => $dc->id,
             'table' => $dc->table,
-            'row' => method_exists( $dc->activeRecord, 'row' ) ? $dc->activeRecord->row() : [],
+            'row' => $this->getActiveRecordRow( $dc->table, $dc->id )
         ];
 
-        $objEventListener = new CatalogEvents();
-        $objEventListener->addEventListener( ( $strEvent ? $strEvent : 'create' ), $arrData );
+        $this->CatalogEvents->addEventListener( ( $strEvent ? $strEvent : 'create' ), $arrData );
+
+        if ( \Input::post( 'saveNclose' ) === '' ) return;
 
         if ( !$strEvent ) {
 
@@ -301,11 +302,10 @@ class DCACallbacks extends \Backend {
 
             'id' => $strID,
             'table' => $dc->table,
-            'row' => method_exists( $dc->activeRecord, 'row' ) ? $dc->activeRecord->row() : [],
+            'row' => $this->getActiveRecordRow( $dc->table, $strID )
         ];
 
-        $objEventListener = new CatalogEvents();
-        $objEventListener->addEventListener( 'delete' , $arrData );
+        $this->CatalogEvents->addEventListener( 'delete' , $arrData );
     }
 
 
@@ -313,19 +313,27 @@ class DCACallbacks extends \Backend {
 
         $arrData = [
 
-            'row' => [],
             'id' => $dc->id,
             'table' => $dc->table,
+            'row' => $this->getActiveRecordRow( $dc->table, $dc->id )
         ];
 
-        $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $dc->table ) )->limit(1)->execute( $dc->id );
+        $this->CatalogEvents->addEventListener( 'update' , $arrData );
+    }
 
-        if ( $objEntity->numRows ) {
 
-            $arrData['row']['pid'] = $objEntity->pid;
+    protected function getActiveRecordRow( $strTable, $strID ) {
+
+        if ( $this->Database->tableExists( $strTable ) && $strID ) {
+
+            $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $strTable ) )->limit(1)->execute( $strID );
+
+            if ( $objEntity->numRows ) {
+
+               return method_exists( $objEntity, 'row' ) ? $objEntity->row() : [];
+            }
         }
 
-        $objEventListener = new CatalogEvents();
-        $objEventListener->addEventListener( 'update' , $arrData );
+        return [];
     }
 }

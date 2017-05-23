@@ -237,14 +237,16 @@ class CatalogTaxonomy extends CatalogController {
 
     protected function setTaxonomyEntity( $originValue, $strTitle, $strParameter, $strHref, $strNextParameter = '' ) {
 
+        $blnActive = $this->isActive( $strParameter, $originValue );
+
         return [
 
             'href' => $strHref,
             'title' => $strTitle,
+            'active' => $blnActive,
             'alias' => $originValue,
             'next' => $strNextParameter,
-            'class' => $this->isActive( $strParameter, $originValue ),
-            'active' => $this->isActive( $strParameter, $originValue ),
+            'class' => $blnActive ? ' active' : ''
         ];
     }
 

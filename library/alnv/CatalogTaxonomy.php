@@ -243,9 +243,30 @@ class CatalogTaxonomy extends CatalogController {
             'title' => $strTitle,
             'alias' => $originValue,
             'next' => $strNextParameter,
-            'class' => \Input::get( $strParameter ) == $originValue ? ' active' : '',
-            'active' => \Input::get( $strParameter ) == $originValue ? true : false,
+            'class' => $this->isActive( $strParameter, $originValue ),
+            'active' => $this->isActive( $strParameter, $originValue ),
         ];
+    }
+
+
+    protected function isActive( $strParameter, $varValue ) {
+
+        if ( \Input::get( $strParameter ) ) {
+
+            if ( \Input::get( $strParameter ) == $varValue ) {
+
+                return true;
+            }
+
+            $arrParamValues = explode( ',' , \Input::get( $strParameter ) );
+
+            if ( is_array( $arrParamValues ) && in_array( $varValue, $arrParamValues ) ) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

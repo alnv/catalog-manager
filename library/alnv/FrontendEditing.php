@@ -433,7 +433,7 @@ class FrontendEditing extends CatalogController {
             if ( $arrField['_fieldname'] == 'alias' ) {
 
                 $objDCACallbacks = new DCACallbacks();
-                $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename );
+                $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'] );
             }
 
             if ( $objWidget->hasErrors() ) {
@@ -501,6 +501,16 @@ class FrontendEditing extends CatalogController {
                 $objCatalogNotification->notifyOnDelete( $this->catalogNotifyDelete, [] );
             }
 
+            $arrData = [
+
+                'row' => [],
+                'id' => $this->strItemID,
+                'table' => $this->catalogTablename
+            ];
+
+            $objEventListener = new CatalogEvents();
+            $objEventListener->addEventListener( 'delete', $arrData );
+
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
 
@@ -558,7 +568,7 @@ class FrontendEditing extends CatalogController {
         if ( !$this->arrValues['alias'] ) {
 
             $objDCACallbacks = new DCACallbacks();
-            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename );
+            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'] );
         }
 
         switch ( $this->strAct ) {
@@ -591,6 +601,16 @@ class FrontendEditing extends CatalogController {
                     $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
                 }
 
+                $arrData = [
+
+                    'id' => '',
+                    'row' => $this->arrValues,
+                    'table' => $this->catalogTablename,
+                ];
+
+                $objEventListener = new CatalogEvents();
+                $objEventListener->addEventListener( 'create', $arrData );
+
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;
@@ -618,6 +638,16 @@ class FrontendEditing extends CatalogController {
                         $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyUpdate, $this->arrValues );
                     }
 
+                    $arrData = [
+
+                        'id' => $this->strItemID,
+                        'row' => $this->arrValues,
+                        'table' => $this->catalogTablename,
+                    ];
+
+                    $objEventListener = new CatalogEvents();
+                    $objEventListener->addEventListener( 'update', $arrData );
+
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
                 }
 
@@ -644,6 +674,16 @@ class FrontendEditing extends CatalogController {
                     $objCatalogNotification = new CatalogNotification();
                     $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
                 }
+
+                $arrData = [
+
+                    'id' => '',
+                    'row' => $this->arrValues,
+                    'table' => $this->catalogTablename
+                ];
+
+                $objEventListener = new CatalogEvents();
+                $objEventListener->addEventListener( 'create', $arrData );
 
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 

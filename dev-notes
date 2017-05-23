@@ -5,3 +5,9 @@ todo
  - test taxonomies widget
  - improve tinyMCE getter
  - implement export and import csv files
+ - filter form generator
+    - between widget
+    - text widget
+    - select widget
+    - checkbox widget
+    - radio widget

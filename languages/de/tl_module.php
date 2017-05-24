@@ -102,7 +102,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Weiterleitun
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Weiterleitungsseite auswählen', 'Bitte wählen Sie eine Weiterleitungsseite aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseArray'] = [ 'Als Array ausgeben', 'Hier können Sie die Datensätze als Array im Template ausgeben. Verwenden Sie <strong>$this->data</strong> statt $this->output.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json Header', 'Hier können Sie den HTTP Content-Type Header auf "application/json" umstellen.' ];
-
+$GLOBALS['TL_LANG']['tl_module']['catalogGroupBy'] = [ 'Gruppieren', 'Hier können Sie die Datensätze nach einem bestimmten Feld gruppieren.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogGroupHeadlineTag'] = [ 'Überschrift Größe', 'Hier kann die Überschrift Größe eingestellt werden.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Benachrichtigung [erstellen]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Benachrichtigung [löschen]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Benachrichtigung [ändern]', 'Bitte wählen Sie eine Benachrichtigung.' ];

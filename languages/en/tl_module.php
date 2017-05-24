@@ -100,7 +100,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Overwrite re
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseArray'] = [ 'Output as array', 'Here you can output entities as array. Call <strong>$this->data</strong> instead $this->output.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json Header', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
-
+$GLOBALS['TL_LANG']['tl_module']['catalogGroupBy'] = [ 'Group By', 'Here you can group the records according to a specific field.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogGroupHeadlineTag'] = [ 'Headline size', 'Here you can define the headline size.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [insert]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Notifications [delete]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [update]', 'Manage notifications.' ];

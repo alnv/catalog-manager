@@ -20,11 +20,13 @@ class CatalogView extends CatalogController {
     public $arrMasterPage = [];
     public $arrFrontendEditingPage = [];
 
+    protected $arrGroups = [];
     protected $arrCatalog = [];
     protected $arrActiveFields = [];
     protected $arrCatalogFields = [];
     protected $arrRelatedTables = [];
     protected $blnMapViewMode = false;
+    protected $blnShowAsGroup = false;
     protected $blnHasOperations = false;
     protected $arrRoutingParameter = [];
     protected $blnGoogleMapScript = false;
@@ -171,6 +173,8 @@ class CatalogView extends CatalogController {
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
         }
 
+        $this->blnShowAsGroup = $this->catalogGroupBy && $this->strMode == 'view' ? true : false;
+
         $this->objMainTemplate->timeFormat = $this->strTimeFormat;
         $this->objMainTemplate->dateFormat = $this->strDateFormat;
         $this->objMainTemplate->catalogFields = $this->arrCatalogFields;
@@ -184,6 +188,12 @@ class CatalogView extends CatalogController {
         $this->FrontendEditingPermission->initialize();
         
         return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
+    }
+
+
+    public function showAsGroup() {
+
+        return $this->blnShowAsGroup;
     }
 
 
@@ -575,6 +585,16 @@ class CatalogView extends CatalogController {
                 $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
             }
 
+            if ( $this->blnShowAsGroup ) {
+
+                $strGroupName = $arrCatalog[ $this->catalogGroupBy ];
+
+                if ( !isset( $this->arrGroups[ $strGroupName ] ) && $strGroupName ) {
+
+                    $this->arrGroups[ $strGroupName ] = [];
+                }
+            }
+
             $arrCatalogs[] = $arrCatalog;
         }
         
@@ -624,13 +644,40 @@ class CatalogView extends CatalogController {
             return $this->getArrayValue( $arrCatalogs );
         }
 
+        if ( $this->blnShowAsGroup ) {
+
+            return $this->getGroupedValue( $arrCatalogs );
+        }
+
         return $this->getTemplateValue( $arrCatalogs, $intResultRows );
+    }
+
+
+    protected function getGroupedValue( $arrCatalogs ) {
+
+        $arrIndexes = [];
+        $objTemplate = new \FrontendTemplate( $this->strTemplate );
+
+        foreach ( $arrCatalogs as $arrCatalog ) {
+
+            $strGroupName = $arrCatalog[ $this->catalogGroupBy ];
+
+            if ( !isset( $this->arrGroups[ $strGroupName ] ) ) $arrIndexes[ $strGroupName ] = 0;
+            $arrCatalog['cssClass'] = $arrIndexes[ $strGroupName ] % 2 ? ' even' : ' odd';
+            $objTemplate->setData( $arrCatalog );
+
+            $this->arrGroups[ $strGroupName ][] = $objTemplate->parse();
+
+            $arrIndexes[ $strGroupName ]++;
+        }
+
+        return $this->arrGroups;
     }
 
 
     protected function getTemplateValue( $arrCatalogs, $intResultRows ) {
 
-        $strReturn = '';
+        $strContent = '';
         $objTemplate = new \FrontendTemplate( $this->strTemplate );
 
         foreach ( $arrCatalogs as $intIndex => $arrCatalog ) {
@@ -649,11 +696,10 @@ class CatalogView extends CatalogController {
             }
 
             $objTemplate->setData( $arrCatalog );
-
-            $strReturn .= $objTemplate->parse();
+            $strContent .= $objTemplate->parse();
         }
 
-        return $strReturn;
+        return $strContent;
     }
 
 

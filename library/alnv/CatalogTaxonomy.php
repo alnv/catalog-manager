@@ -251,7 +251,8 @@ class CatalogTaxonomy extends CatalogController {
             'class' => $strClasses,
             'alias' => $originValue,
             'isActive' => $blnActive,
-            'next' => $strNextParameter
+            'next' => $strNextParameter,
+            'isMaster' => $this->isMaster()
         ];
     }
 
@@ -259,6 +260,12 @@ class CatalogTaxonomy extends CatalogController {
     protected function isTrail( $strNextParameter ) {
 
         return \Input::get( $strNextParameter ) ? true : false;
+    }
+
+
+    public function isMaster() {
+
+        return \Input::get( 'auto_item' ) ? true : false;
     }
 
 

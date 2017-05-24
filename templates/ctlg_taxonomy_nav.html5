@@ -2,7 +2,7 @@
    <?php foreach( $this->arrItems as $arrItem ): ?>
       <li class="taxonomy_item<?= $arrItem['class'] ?>">
          <?php if ( $arrItem['isActive'] ): ?>
-            <?php if( $arrItem['isTrail'] ): ?>
+            <?php if( $arrItem['isTrail'] || $arrItem['isMaster'] ): ?>
                <a href="<?= $arrItem['href'] ?>"><?= $arrItem['title'] ?></a><?= $arrItem['subItems'] ?>
             <?php else: ?>
                <strong><?= $arrItem['title'] ?></strong><?= $arrItem['subItems'] ?>

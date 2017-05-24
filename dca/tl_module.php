@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseFront
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalogTaxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{template_legend:hide},catalogMasterTemplate,customTpl,catalogTemplateDebug;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{catalogOutput_legend:hide},catalogUseArray;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalogFilterFields_legend},catalogActiveFilterFields;{catalogFilterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalogFilterRedirect_legend:hide},catalogRedirectType;{catalogFilterTemplates_legend:hide},catalogFilterFieldTemplates;{catalogFieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},customTpl;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink,enableTableView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{catalogOutput_legend:hide},catalogUseArray;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalogView_legend:hide},catalogDisableMasterLink,enableTableView;{catalogTaxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{orderBy_legend:hide},catalogOrderBy,catalogGroupBy,catalogGroupHeadlineTag,catalogRandomSorting;{pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{join_legend:hide},catalogJoinFields,catalogJoinParentTable;{relation_legend:hide},catalogUseRelation;{frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalogMap_legend:hide},catalogUseMap;{radiusSearch_legend:hide},catalogUseRadiusSearch;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,customTpl,catalogTemplateDebug;{catalogOutput_legend:hide},catalogUseArray;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseArray'] = 'catalogSendJsonHeader';
@@ -480,6 +480,43 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
     'sql' => "blob NULL"
 ];
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogGroupBy'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogGroupBy'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 128,
+        'tl_class' => 'w50',
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=>true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+
+    'exclude' => true,
+    'sql' => "varchar(128) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogGroupHeadlineTag'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogGroupHeadlineTag'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'maxlength' => 8,
+        'tl_class' => 'w50',
+    ],
+
+    'options' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
+
+    'exclude' => true,
+    'sql' => "varchar(8) NOT NULL default ''"
+];
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRandomSorting'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRandomSorting'],
@@ -487,7 +524,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRandomSorting'] = [
 
     'eval' => [
 
-        'tl_class' => 'clr'
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,

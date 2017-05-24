@@ -9,7 +9,16 @@
       <p><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a></p>
    <?php endif; ?>
 
-   <?= $this->output; ?>
+   <?php if ( $this->showAsGroup ):?>
+      <?php foreach( $this->data as $strGroup => $arrOutput ): ?>
+         <div class="ctlg_group">
+            <div class="ctlg_group_headline"><<?= $this->catalogGroupHeadlineTag; ?>><?= $strGroup; ?></<?= $this->catalogGroupHeadlineTag; ?>></div>
+            <div class="ctlg_group_content"><?= join( $arrOutput ); ?></div>
+         </div>
+      <?php endforeach; ?>
+   <?php else: ?>
+      <?= $this->output; ?>
+   <?php endif; ?>
 
    <?php if ( $this->message ): ?>
       <p class="catalog_message"><?= $this->message; ?></p>

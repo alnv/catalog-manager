@@ -234,7 +234,7 @@ class tl_module extends \Backend {
 
         return $this->arrCatalogFieldsCache;
     }
-
+    
 
     public function getSortableCatalogFieldsByTablename( $strTablename, $blnSettings = false ) {
 

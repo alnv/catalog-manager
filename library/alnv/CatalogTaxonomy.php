@@ -97,7 +97,7 @@ class CatalogTaxonomy extends CatalogController {
 
     protected function setSubTaxonomies( $arrTree ) {
 
-        if ( ( $arrTree['active'] && $arrTree['next'] ) && ( isset( $this->{$arrTree['next']} ) && is_array( $this->{$arrTree['next']} ) ) ) {
+        if ( ( $arrTree['isActive'] && $arrTree['next'] ) && ( isset( $this->{$arrTree['next']} ) && is_array( $this->{$arrTree['next']} ) ) ) {
 
            $arrTree['subItems'] = $this->getTaxonomyTree( $arrTree['next'] );
         }
@@ -238,16 +238,27 @@ class CatalogTaxonomy extends CatalogController {
     protected function setTaxonomyEntity( $originValue, $strTitle, $strParameter, $strHref, $strNextParameter = '' ) {
 
         $blnActive = $this->isActive( $strParameter, $originValue );
+        $blnTrail = $blnActive && $this->isTrail( $strNextParameter );
+
+        $strClasses = $blnActive ? ' active' : '';
+        $strClasses .= $blnTrail ? ' trail' : '';
 
         return [
 
             'href' => $strHref,
             'title' => $strTitle,
-            'active' => $blnActive,
+            'isTrail' => $blnTrail,
+            'class' => $strClasses,
             'alias' => $originValue,
-            'next' => $strNextParameter,
-            'class' => $blnActive ? ' active' : ''
+            'isActive' => $blnActive,
+            'next' => $strNextParameter
         ];
+    }
+
+
+    protected function isTrail( $strNextParameter ) {
+
+        return \Input::get( $strNextParameter ) ? true : false;
     }
 
 
@@ -260,7 +271,7 @@ class CatalogTaxonomy extends CatalogController {
                 return true;
             }
 
-            $arrParamValues = explode( ',' , \Input::get( $strParameter ) );
+            $arrParamValues = explode( ',', \Input::get( $strParameter ) );
 
             if ( is_array( $arrParamValues ) && in_array( $varValue, $arrParamValues ) ) {
 

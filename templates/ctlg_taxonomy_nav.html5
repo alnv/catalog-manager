@@ -1,8 +1,12 @@
 <ul>
    <?php foreach( $this->arrItems as $arrItem ): ?>
       <li class="taxonomy_item<?= $arrItem['class'] ?>">
-         <?php if ( $arrItem['active'] ): ?>
-            <strong><?= $arrItem['title'] ?></strong><?= $arrItem['subItems'] ?>
+         <?php if ( $arrItem['isActive'] ): ?>
+            <?php if( $arrItem['isTrail'] ): ?>
+               <a href="<?= $arrItem['href'] ?>"><?= $arrItem['title'] ?></a><?= $arrItem['subItems'] ?>
+            <?php else: ?>
+               <strong><?= $arrItem['title'] ?></strong><?= $arrItem['subItems'] ?>
+            <?php endif; ?>
          <?php else: ?>
             <a href="<?= $arrItem['href'] ?>"><?= $arrItem['title'] ?></a>
          <?php endif; ?>

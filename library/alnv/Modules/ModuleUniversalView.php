@@ -146,13 +146,15 @@ class ModuleUniversalView extends \Module {
 
         $this->Template->message = '';
         $this->Template->map = $this->CatalogView->getMapViewOptions();
+        $this->Template->showAsGroup = $this->CatalogView->showAsGroup();
         $this->Template->createOperation = $this->CatalogView->getCreateOperation();
 
-        $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
-        $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
-        $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
+        $varView = $this->CatalogView->getCatalogView( $arrQuery );
 
-        if ( !$this->Template->output ) {
+        $this->Template->data = is_array( $varView ) ? $varView : [];
+        $this->Template->output = is_string( $varView ) ? $varView : '';
+
+        if ( empty( $varView ) ) {
 
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
         }
@@ -208,6 +210,7 @@ class ModuleUniversalView extends \Module {
             return null;
         }
 
+        $this->Template->showAsGroup = false;
         $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
         $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
     }

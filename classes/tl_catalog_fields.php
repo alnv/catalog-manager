@@ -270,7 +270,36 @@ class tl_catalog_fields extends \Backend {
     
     public function getRichTextEditor() {
 
-        return [ 'tinyMCE', 'tinyFlash' ];
+        $arrReturn = [ 'tinyMCE', 'tinyFlash' ];
+
+        if ( version_compare( VERSION, '4.0', '>=' ) ) {
+
+            $arrCustomTinyMce = $this->getTemplateGroup( 'be_tiny' );
+
+            if ( !empty( $arrCustomTinyMce ) && is_array( $arrCustomTinyMce ) ) {
+
+                foreach ( $arrCustomTinyMce as $strTinyMCE => $strTinyMCEName ) {
+
+                    $strTinyMCE = $strTinyMCE ? str_replace( 'be_', '', $strTinyMCE ) : '';
+
+                    if ( !$strTinyMCE ) continue;
+
+                    if ( !in_array( $strTinyMCE, $arrReturn ) ) {
+
+                        $arrReturn[] = $strTinyMCE;
+                    }
+                }
+            }
+
+            return $arrReturn;
+        }
+
+        if ( !empty( $GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] ) && is_array( $GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] ) ) {
+
+            return $GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'];
+        }
+
+        return $arrReturn;
     }
 
     

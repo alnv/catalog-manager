@@ -21,7 +21,7 @@ class FrontendEditing extends CatalogController {
     protected $blnNoSubmit = false;
     protected $blnHasUpload = false;
     protected $arrPaletteNames = [];
-    protected $blnTinyMCEScript = false;
+    // protected $blnTinyMCEScript = false;
     protected $strTemporaryPalette = 'general_legend';
 
 
@@ -335,34 +335,27 @@ class FrontendEditing extends CatalogController {
 
             $objWidget->mandatory = false;
 
-            if ( !$this->blnTinyMCEScript ) {
+            $arrData = [
 
-                $GLOBALS['TL_JAVASCRIPT']['tinyMCE_JS'] = 'assets/tinymce4/js/tinymce.gzip.js';
-                $GLOBALS['TL_CSS']['tinyMCE_CSS'] = 'assets/tinymce4/js/skins/contao/skin.min.css';
+                'selector' => 'ctrl_' . $objWidget->id
+            ];
+
+            if ( version_compare( VERSION, '4.0', '>=' ) ) {
+
+                $strTemplate = 'be_' . $arrField['eval']['rte'];
             }
 
-            $GLOBALS['TL_HEAD'][] =
-                '<script>'.
-                    'if ( typeof window.addEventListener != "undefined" ) { window.addEventListener( "DOMContentLoaded", initialize, false ); }'.
-                    'function initialize() { setTimeout( function() {'.
-                        'window.tinymce && tinymce.init({'.
-                            'skin: "contao",'.
-                            'selector: "#ctrl_'. $objWidget->id .'",'.
-                            'language: "'. $GLOBALS['TL_LANGUAGE'] .'",'.
-                            'element_format: "html",'.
-                            'forced_root_block: false,'.
-                            'document_base_url: "'. \Environment::get( 'base' ) .'",'.
-                            'entities: "160,nbsp,60,lt,62,gt,173,shy",'.
-                            'plugins: "autosave charmap code fullscreen image legacyoutput link lists paste searchreplace tabfocus visualblocks",'.
-                            'browser_spellcheck: true,'.
-                            'tabfocus_elements: "prev,:next",'.
-                            'importcss_append: true,'.
-                            'extended_valid_elements: "b/strong,i/em",'.
-                            'menubar: "file edit insert view format table",'.
-                            'toolbar: "link unlink | image | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | undo redo | code"'.
-                        '});'.
-                    '}, 0) }'.
-                '</script>';
+            else {
+
+                $strTemplate = 'ctlg_catalog_tinyMCE';
+                $arrData['tinyMCE'] = TL_ROOT . '/' . 'system/config/' . $arrField['eval']['rte'] . '.php';
+            }
+
+            $objScript = new \FrontendTemplate( $strTemplate );
+            $objScript->setData( $arrData );
+            $strScript = $objScript->parse();
+
+            $GLOBALS['TL_HEAD'][] = $strScript;
         }
 
         if ( !$objWidget->value && $arrField['default'] ) {

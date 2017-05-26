@@ -51,6 +51,8 @@ $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLan
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];
 
+$GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] = [ 'tinyMCE', 'tinyFlash' ];
+
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
 

@@ -269,9 +269,9 @@ class DCABuilder extends CatalogController {
             };
         }
 
-        $arrReturn['oncut_callback'][] = [ 'CatalogManager\DCACallbacks', 'onCutCallback' ];
-        $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'onSubmitCallback' ];
-        $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DCACallbacks', 'onDeleteCallback' ];
+        // $arrReturn['oncut_callback'][] = [ 'CatalogManager\DCACallbacks', 'onCutCallback' ];
+        // $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'onSubmitCallback' ];
+        // $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DCACallbacks', 'onDeleteCallback' ];
 
         return $arrReturn;
     }

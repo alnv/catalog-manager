@@ -521,4 +521,28 @@ class tl_module extends \Backend {
 
         return $arrChoices;
     }
+
+
+    public function getCustomTemplate( \DataContainer $dc ) {
+
+        $arrTemplates = [
+
+            'catalogFilter' => 'mod_catalog_filter',
+            'catalogMasterView' => 'mod_catalog_master',
+            'catalogTaxonomyTree' => 'mod_catalog_taxonomy',
+            'catalogUniversalView' => 'mod_catalog_universal'
+        ];
+
+        if ( $dc->activeRecord->type ) {
+
+            $strTemplate = $arrTemplates[ $dc->activeRecord->type ];
+
+            if ( $strTemplate ) {
+
+                return $this->getTemplateGroup( $strTemplate );
+            }
+        }
+
+        return [];
+    }
 }

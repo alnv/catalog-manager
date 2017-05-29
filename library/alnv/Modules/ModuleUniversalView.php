@@ -27,7 +27,12 @@ class ModuleUniversalView extends \Module {
 
         $this->strAct = \Input::get( 'act' . $this->id );
         $this->strMasterAlias = \Input::get( 'auto_item' );
-        
+
+        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) {
+
+            $this->strTemplate = $this->catalogCustomTemplate;
+        }
+
         if ( TL_MODE == 'FE' && $this->catalogUseMap && !$this->strAct ) {
 
             $this->strTemplate = $this->catalogMapViewTemplate;

@@ -24,6 +24,11 @@ class ModuleMasterView extends \Module {
             return $objTemplate->parse();
         }
 
+        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) {
+
+            $this->strTemplate = $this->catalogCustomTemplate;
+        }
+
         $this->strMasterAlias = \Input::get( 'auto_item' );
 
         return parent::generate();

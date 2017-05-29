@@ -23,6 +23,11 @@ class ModuleCatalogTaxonomyTree extends \Module {
             return $objTemplate->parse();
         }
 
+        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) {
+
+            $this->strTemplate = $this->catalogCustomTemplate;
+        }
+
         return parent::generate();
     }
 

@@ -641,7 +641,7 @@ class CatalogView extends CatalogController {
         
         if ( $this->catalogUseArray ) {
 
-            return $this->getArrayValue( $arrCatalogs );
+            return $this->getArrayValue( $arrCatalogs, $intResultRows );
         }
 
         if ( $this->blnShowAsGroup ) {
@@ -703,7 +703,23 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function getArrayValue( $arrCatalogs ) {
+    protected function getArrayValue( $arrCatalogs, $intResultRows ) {
+
+        for ( $intIndex = 0; $intIndex < count( $arrCatalogs ); $intIndex++ ) {
+
+            $arrCatalogs[ $intIndex ]['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
+            $arrCatalogs[ $intIndex ]['entityIndex'] = [ $intIndex + 1, $intResultRows ];
+
+            if ( !$intIndex ) {
+
+                $arrCatalogs[ $intIndex ]['cssClass'] .= ' first';
+            }
+
+            if ( $intIndex == ( $intResultRows - 1 ) ) {
+
+                $arrCatalogs[ $intIndex ]['cssClass'] .= ' last';
+            }
+        }
 
         if ( $this->catalogSendJsonHeader ) {
 

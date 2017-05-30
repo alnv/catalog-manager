@@ -267,15 +267,7 @@ class DCACallbacks extends \Backend {
 
         if ( is_null( $dc->activeRecord ) ) return;
 
-        $arrSubmitEvents = [
-
-            'saveNback',
-            'saveNclose',
-            'saveNcreate'
-        ];
-
-        $strRedirectUrl = \Environment::get('request');
-        $strEvent = \Input::get( '_act' ) ? \Input::get( '_act' ) : '';
+        $strEvent = $this->entityExist( $dc->table, $dc->id ) ? 'update' : 'create';
 
         $arrData = [
 
@@ -284,23 +276,7 @@ class DCACallbacks extends \Backend {
             'row' => $this->getActiveRecordRow( $dc->table, $dc->id )
         ];
 
-        $this->CatalogEvents->addEventListener( ( $strEvent ? $strEvent : 'create' ), $arrData );
-
-        foreach ( $arrSubmitEvents as $strSubmitEvent ) {
-
-            if ( \Input::post( $strSubmitEvent ) === '' || \Input::post( $strSubmitEvent ) ) return;
-        }
-
-        if ( !$strEvent ) {
-
-            $this->redirect( $strRedirectUrl . '&_act=update' );
-        }
-
-        if ( $strEvent == 'create' ) {
-
-            $strRedirectUrl = str_replace( '&_act=create', '', $strRedirectUrl );
-            $this->redirect( $strRedirectUrl );
-        }
+        $this->CatalogEvents->addEventListener( $strEvent, $arrData );
     }
 
 
@@ -345,5 +321,18 @@ class DCACallbacks extends \Backend {
         }
 
         return [];
+    }
+
+
+    protected function entityExist( $strTable, $strID ) {
+
+        if ( $this->Database->tableExists( $strTable ) && $strID ) {
+
+            $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ? AND tstamp != 0', $strTable ) )->limit(1)->execute( $strID );
+
+            if ( $objEntity->numRows ) return true;
+        }
+
+        return false;
     }
 }

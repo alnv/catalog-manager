@@ -107,6 +107,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['orderField'] = [ 'Custom order column'
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Items per page', 'The number of items per page. Set to 0 to disable pagination.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Ignore files without meta data', 'Do not show files without meta data matching the page language.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Total number of images', 'Here you can limit the total number of images. Set to 0 to show all.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useArrayFormat'] = [ 'Return Gallery as an array', 'Here you can output the gallery as an array. You can access individual gallery images via the index.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Please select template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Please select template.' ];

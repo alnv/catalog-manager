@@ -107,6 +107,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['perRow'] = [ 'Vorschaubilder pro Reihe
 $GLOBALS['TL_LANG']['tl_catalog_fields']['metaIgnore'] = [ 'Dateien ohne Metadaten ignorieren', 'Dateien ohne zur Seitensprache passenden Metadaten nicht anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['numberOfItems'] = [ 'Gesamtzahl der Bilder', 'Hier können Sie die Gesamtzahl der Bilder begrenzen. Geben Sie 0 ein, um alle anzuzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['perPage'] = [ 'Elemente pro Seite', 'Die Anzahl an Elementen pro Seite. Geben Sie 0 ein, um den automatischen Seitenumbruch zu deaktivieren.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useArrayFormat'] = [ 'Als Array ausgeben', 'Mit dieser Einstellung können Sie über den Array-Index auf einzelne Galerie Bilder zugreifen. Zum Beispiel: $this->myGallery[0][0]->src' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['orderField'] = [ 'Reihenfolge Spalte', 'Damit die individuelle Reihenfolge der Bilder funktioniert, benötigen wir eine leere Datenbank Spalte für die Zwischenspeicherung der Reihenfolge.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];

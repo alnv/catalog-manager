@@ -16,6 +16,7 @@ class GalleryCreator extends \Frontend {
     public $metaIgnore;
     public $numberOfItems;
     public $multiSRC = [];
+    public $useArrayFormat;
     public $usePreviewImage;
     public $previewImagePosition;
 
@@ -240,7 +241,14 @@ class GalleryCreator extends \Frontend {
                     break;
             }
 
-            $this->arrPreviewImage = $arrImages[ $inrPosition ] ? $arrImages[ $inrPosition ] : [];
+            if ( $arrImages[ $inrPosition ] ) {
+
+                $arrPreviewImage = $arrImages[ $inrPosition ];
+                $arrPreviewImage['size'] = $this->size;
+                $arrPreviewImage['fullsize'] = $this->fullsize;
+
+                $this->arrPreviewImage = $arrPreviewImage;
+            }
         }
 
         if ( $this->numberOfItems > 0 ) {
@@ -327,6 +335,11 @@ class GalleryCreator extends \Frontend {
             }
 
             ++$intRowCount;
+        }
+
+        if ( $this->useArrayFormat ) {
+            
+            return is_array( $arrBody ) ? array_values( $arrBody ) : [];
         }
 
         $this->setDataContainer();

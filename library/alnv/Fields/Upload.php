@@ -127,6 +127,7 @@ class Upload {
                 'metaIgnore' => $arrField['metaIgnore'],
                 'numberOfItems' => $arrField['numberOfItems'],
 
+                'useArrayFormat' => $arrField['useArrayFormat'],
                 'usePreviewImage' => $arrField['usePreviewImage'],
                 'previewImagePosition' => $arrField['previewImagePosition'],
             ]);
@@ -141,7 +142,7 @@ class Upload {
         return [
 
             'preview' => '',
-            'gallery' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages']
+            'gallery' => $arrField['useArrayFormat'] ? [] : ''
         ];
     }
     

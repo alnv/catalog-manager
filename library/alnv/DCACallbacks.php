@@ -267,6 +267,13 @@ class DCACallbacks extends \Backend {
 
         if ( is_null( $dc->activeRecord ) ) return;
 
+        $arrSubmitEvents = [
+
+            'saveNback',
+            'saveNclose',
+            'saveNcreate'
+        ];
+
         $strRedirectUrl = \Environment::get('request');
         $strEvent = \Input::get( '_act' ) ? \Input::get( '_act' ) : '';
 
@@ -279,7 +286,10 @@ class DCACallbacks extends \Backend {
 
         $this->CatalogEvents->addEventListener( ( $strEvent ? $strEvent : 'create' ), $arrData );
 
-        if ( \Input::post( 'saveNclose' ) === '' ) return;
+        foreach ( $arrSubmitEvents as $strSubmitEvent ) {
+
+            if ( \Input::post( $strSubmitEvent ) === '' || \Input::post( $strSubmitEvent ) ) return;
+        }
 
         if ( !$strEvent ) {
 

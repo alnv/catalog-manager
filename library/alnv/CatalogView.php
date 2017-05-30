@@ -832,7 +832,7 @@ class CatalogView extends CatalogController {
 
             case 'upload':
 
-                if ( is_null( $varValue ) ) return '';
+                if ( is_null( $varValue ) ) return $arrField['useArrayFormat'] ? [] : '';
 
                 $varValue = Upload::parseValue( $varValue, $arrField, $arrCatalog );
 

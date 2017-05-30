@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'fileType_file' => 'fileTemplate,fileTitle,fileText',
         'fileType_files' => 'filesTemplate,sortBy,orderField,metaIgnore',
         'fileType_image' => 'imageTemplate,imageTitle,imageAlt,imageURL,imageCaption,fullsize,useSize',
-        'fileType_gallery' => 'galleryTemplate,sortBy,orderField,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,usePreviewImage'
+        'fileType_gallery' => 'galleryTemplate,sortBy,orderField,perRow,perPage,numberOfItems,fullsize,metaIgnore,useSize,useArrayFormat,usePreviewImage'
     ],
 
     'fields' => [
@@ -1662,7 +1662,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'clr',
+                'tl_class' => 'w50 m12',
                 'submitOnChange' => true
             ],
 
@@ -1688,6 +1688,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"
+        ],
+
+        'useArrayFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['useArrayFormat'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'm12 w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
         ]
     ]
 ];

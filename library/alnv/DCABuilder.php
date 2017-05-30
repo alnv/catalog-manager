@@ -352,21 +352,21 @@ class DCABuilder extends CatalogController {
             'edit' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
-                'href' => 'act=edit&_act=update',
+                'href' => 'act=edit',
                 'icon' => 'header.gif'
             ],
 
             'copy' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
-                'href' => 'act=copy&_act=create',
+                'href' => 'act=copy',
                 'icon' => 'copy.gif'
             ],
 
             'cut' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
-                'href' => 'act=paste&amp;mode=cut&_act=update',
+                'href' => 'act=paste&amp;mode=cut',
                 'icon' => 'cut.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
             ],
@@ -374,7 +374,7 @@ class DCABuilder extends CatalogController {
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
-                'href' => 'act=delete&_act=delete',
+                'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $this->I18nCatalogTranslator->getDeleteConfirmLabel() . '\'))return false;Backend.getScrollOffset()"'
             ],

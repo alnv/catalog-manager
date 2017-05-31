@@ -26,6 +26,7 @@ ClassLoader::addClasses([
     'CatalogManager\GeoCoding' => 'system/modules/catalog-manager/library/alnv/Maps/GeoCoding.php',
     'CatalogManager\DbColumn' => 'system/modules/catalog-manager/library/alnv/Fields/DbColumn.php',
     'CatalogManager\DCACallbacks' => 'system/modules/catalog-manager/library/alnv/DCACallbacks.php',
+    'CatalogManager\tl_catalog_form' => 'system/modules/catalog-manager/classes/tl_catalog_form.php',
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/Fields/DateInput.php',
     'CatalogManager\DCAPermission' => 'system/modules/catalog-manager/library/alnv/DCAPermission.php',
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',

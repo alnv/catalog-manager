@@ -5,9 +5,3 @@ todo
  - test taxonomies widget
  - implement export and import csv files
  - implement debug for gallery array
- - filter form generator
-    - between widget
-    - text widget
-    - select widget
-    - checkbox widget
-    - radio widget

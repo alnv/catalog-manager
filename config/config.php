@@ -12,6 +12,18 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
     ]
 ];
 
+$GLOBALS['BE_MOD']['content']['filter-form'] = [
+
+    'name' => 'filter-form',
+    'icon' => '', // @todo
+
+    'tables' => [
+
+        'tl_catalog_form',
+        'tl_catalog_form_fields'
+    ]
+];
+
 array_insert( $GLOBALS['FE_MOD'], 3, [
 
     'catalog-manager' => [

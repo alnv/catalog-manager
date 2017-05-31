@@ -88,4 +88,5 @@ TemplateLoader::addFiles([
     'ctlg_catalog_tinyMCE' => 'system/modules/catalog-manager/templates',
     'mod_catalog_taxonomy' => 'system/modules/catalog-manager/templates',
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_map_default' => 'system/modules/catalog-manager/templates'
 ]);

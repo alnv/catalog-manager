@@ -24,15 +24,66 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'mode' => 4,
             'fields' => [ 'sorting' ],
             'headerFields' => [ 'id' ],
+
+            'child_record_callback' => [
+
+                'CatalogManager\tl_catalog_form_fields',
+                'setBackendRow'
+            ]
         ],
 
         'operations' => [
 
+            'edit' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'],
+                'href' => 'act=edit',
+                'icon' => 'header.gif'
+            ],
+
+            'delete' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'],
+                'href' => 'act=delete',
+                'icon' => 'delete.gif',
+                'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
+            ],
+
+            'toggle' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['toggle'],
+                'icon' => 'visible.gif',
+                'href' => sprintf( 'catalogTable=%s', 'tl_catalog_form_fields' ),
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", 'tl_catalog_form_fields' ) .' )"',
+                'button_callback' => [ 'CatalogManager\DCACallbacks',  'toggleIcon' ]
+            ],
+
+            'show' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'],
+                'href' => 'act=show',
+                'icon' => 'show.gif'
+            ]
         ]
     ],
 
     'palettes' => [
 
+        '__selector__' => [ 'type', 'optionSource' ],
+
+        'default' => '{field_type_legend},type,title;',
+        'text' => '{field_type_legend},type,title;{general_legend},label,placeholder,description;{filter_settings_legend},filter;{invisible_legend},invisible',
+        'radio' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
+        'select' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
+        'checkbox' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
+        'range' => '{field_type_legend},type,title;{general_legend},rangeGreatLabel,rangeLowLabel,description;{filter_settings_legend},rangeGreatType,rangeLowType,filter;{invisible_legend},invisible',
+    ],
+
+    'subpalettes' => [
+
+        'optionSource_useOptions' => 'options',
+        'optionSource_useColumn' => 'catalogColumn',
+        'optionSource_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
     ],
 
     'fields' => [
@@ -63,6 +114,296 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         'tstamp' => [
 
             'sql' => "int(10) unsigned NOT NULL default '0'"
+        ],
+
+        'type' => [
+
+            'label' =>  &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'],
+            'inputType' => 'select',
+            'default' => 'text',
+
+            'eval' => [
+
+                'chosen' => true,
+                'mandatory' => true,
+                'tl_class' => 'w50',
+                'submitOnChange' => true
+            ],
+
+            'options_callback' => [
+
+                'CatalogManager\tl_catalog_form_fields',
+                'getFilterFormFields'
+            ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
+        'title' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'mandatory' => true,
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'label' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'description' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'clr long',
+                'maxlength' => 512
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(512) NOT NULL default ''"
+        ],
+
+        'placeholder' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'filter' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['filter'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'clr'
+            ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
+        ],
+
+        'rangeGreatLabel' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'rangeLowLabel' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'rangeGreatType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 12
+            ],
+
+            'options' => [ 'gt', 'gte' ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'rangeLowType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 12
+            ],
+
+            'options' => [ 'lt', 'lte' ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'optionSource' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionSource'],
+            'inputType' => 'radio',
+            'default' => 'useColumn',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'mandatory' => true,
+                'tl_class' => 'clr',
+                'submitOnChange' => true
+            ],
+
+            'options' => [ 'useColumn', 'useOptions', 'useDbOptions' ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'options' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['options'],
+            'inputType' => 'keyValueWizard',
+            'exclude' => true,
+
+            'eval' => [
+
+                'doNotCopy' => true,
+                'mandatory' => true
+            ],
+
+            'sql' => "blob NULL"
+        ],
+
+        'catalogColumn' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['catalogColumn'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'mandatory' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getTableColumns' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128 NOT NULL default ''"
+        ],
+
+        'dbTable' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true,
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getTables' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTableKey' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getColumnsByDbTable' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTableValue' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getColumnsByDbTable' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'invisible' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'],
+            'inputType' => 'checkbox',
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
         ]
     ]
 ];

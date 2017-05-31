@@ -293,7 +293,7 @@ class DCABuilderHelper extends CatalogController {
                 'type' => 'number',
                 'statement' => 'i10',
                 'fieldname' => 'sorting',
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['sorting']['pid'][0],
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0],
                 'invisible' => '',

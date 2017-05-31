@@ -48,6 +48,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
     'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
+    'CatalogManager\tl_catalog_form_fields' => 'system/modules/catalog-manager/classes/tl_catalog_form_fields.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',
     'CatalogManager\MasterInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterInsertTag.php',

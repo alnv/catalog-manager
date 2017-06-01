@@ -28,10 +28,18 @@ array_insert( $GLOBALS['FE_MOD'], 3, [
 
     'catalog-manager' => [
 
-        'catalogTaxonomyTree' => 'ModuleCatalogTaxonomyTree',
-        'catalogUniversalView' => 'ModuleUniversalView',
-        'catalogMasterView' => 'ModuleMasterView',
-        'catalogFilter' => 'ModuleCatalogFilter',
+        'catalogTaxonomyTree' => 'CatalogManager\ModuleCatalogTaxonomyTree',
+        'catalogUniversalView' => 'CatalogManager\ModuleUniversalView',
+        'catalogMasterView' => 'CatalogManager\ModuleMasterView',
+        'catalogFilter' => 'CatalogManager\ModuleCatalogFilter',
+    ]
+]);
+
+array_insert( $GLOBALS['TL_CTE'], 3, [
+
+    'catalog-manager' => [
+
+        'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm'
     ]
 ]);
 

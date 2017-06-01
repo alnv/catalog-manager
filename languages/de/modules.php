@@ -1,5 +1,6 @@
 <?php
 
+$GLOBALS['TL_LANG']['MOD']['filter-form'] = [ 'Filtergenerator', 'Hier können Sie Ihre Filterformular verwalten.' ];
 $GLOBALS['TL_LANG']['MOD']['catalog-manager'] = [ 'Catalog Manager', 'Hier können Sie Ihre Backend Module verwalten.' ];
 
 $GLOBALS['TL_LANG']['FMD']['catalog-manager'] = ['Catalog Manager', 'Alle Frontend Module des Catalog Managers'];

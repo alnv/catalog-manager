@@ -65,6 +65,18 @@ class tl_catalog_form_fields extends \Backend {
     }
 
 
+    public function getTaxonomyTable( \DataContainer $dc ) {
+
+        return $dc->activeRecord->dbTable ? $dc->activeRecord->dbTable : '';
+    }
+
+
+    public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
+
+       return $this->getTableColumnsByTablename( $strTablename, [ 'upload', 'textarea' ], true );
+    }
+
+
     protected function getTablename() {
 
         $objForm = $this->Database->prepare( 'SELECT * FROM tl_catalog_form WHERE id = (SELECT pid FROM tl_catalog_form_fields WHERE id = ? LIMIT 1)' )->limit(1)->execute( \Input::get('id') );
@@ -78,7 +90,7 @@ class tl_catalog_form_fields extends \Backend {
     }
 
 
-    protected function getTableColumnsByTablename( $strTable ) {
+    protected function getTableColumnsByTablename( $strTable, $arrForbiddenTypes = [], $blnFullContext = false ) {
 
         $arrReturn = [];
 
@@ -94,7 +106,9 @@ class tl_catalog_form_fields extends \Backend {
 
             foreach ( $arrPredefinedFields as $arrField ) {
 
-                $arrReturn[ $arrField['fieldname'] ] = $arrField['title'] ? $arrField['title'] : $arrField['fieldname'];
+                $strTitle = $arrField['title'] ? $arrField['title'] : $arrField['fieldname'];
+                $varContext = $blnFullContext ? $arrField : $strTitle;
+                $arrReturn[ $arrField['fieldname'] ] = $varContext;
             }
         }
 
@@ -115,7 +129,14 @@ class tl_catalog_form_fields extends \Backend {
                 continue;
             }
 
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+            if ( in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
+
+                continue;
+            }
+
+            $strTitle = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
+            $varContext = $blnFullContext ? $objCatalogFields->row() : $strTitle;
+            $arrReturn[ $objCatalogFields->fieldname ] = $varContext;
         }
 
         return $arrReturn;

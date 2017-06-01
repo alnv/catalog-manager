@@ -71,19 +71,19 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         '__selector__' => [ 'type', 'optionSource' ],
 
-        'default' => '{field_type_legend},type,title;',
-        'text' => '{field_type_legend},type,title;{general_legend},label,placeholder,description;{filter_settings_legend},filter;{invisible_legend},invisible',
-        'radio' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
-        'select' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
-        'checkbox' => '{field_type_legend},type,title;{general_legend},label,description;{filter_settings_legend},optionSource,filter;{invisible_legend},invisible',
-        'range' => '{field_type_legend},type,title;{general_legend},rangeGreatLabel,rangeLowLabel,description;{filter_settings_legend},rangeGreatType,rangeLowType,filter;{invisible_legend},invisible',
+        'default' => '{field_type_legend},type,name,title;',
+        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,default,tabindex,cssID;{filter_settings_legend},filter;{invisible_legend},invisible',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeGreatLabel,rangeLowLabel,description,tabindex,cssID;{filter_settings_legend},rangeLowType,rangeGreatType,filter;{invisible_legend},invisible',
     ],
 
     'subpalettes' => [
 
         'optionSource_useOptions' => 'options',
         'optionSource_useColumn' => 'catalogColumn',
-        'optionSource_useDbOptions' => 'dbTable,dbTableKey,dbTableValue',
+        'optionSource_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
     ],
 
     'fields' => [
@@ -137,6 +137,25 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
+        'name' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'rgxp' => 'extnd',
+                'maxlength' => 64,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'doNotCopy' => true,
+                'spaceToUnderscore' => true,
+            ],
 
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
@@ -219,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'rangeGreatLabel' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'],
             'inputType' => 'text',
 
             'eval' => [
@@ -234,7 +253,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'rangeLowLabel' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'],
             'inputType' => 'text',
 
             'eval' => [
@@ -260,6 +279,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'options' => [ 'gt', 'gte' ],
 
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeGreatType'],
+
             'exclude' => true,
             'sql' => "varchar(12) NOT NULL default ''"
         ],
@@ -276,6 +297,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             ],
 
             'options' => [ 'lt', 'lte' ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeLowType'],
 
             'exclude' => true,
             'sql' => "varchar(12) NOT NULL default ''"
@@ -296,6 +319,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             ],
 
             'options' => [ 'useColumn', 'useOptions', 'useDbOptions' ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionSource'],
 
             'exclude' => true,
             'sql' => "varchar(12) NOT NULL default ''"
@@ -396,6 +421,70 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dbTaxonomy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'],
+            'inputType' => 'catalogTaxonomyWizard',
+
+            'eval' => [
+
+                'tl_class' => 'clr',
+                'dcTable' => 'tl_catalog_form_fields',
+                'taxonomyTable' => [ 'CatalogManager\tl_catalog_form_fields', 'getTaxonomyTable' ],
+                'taxonomyEntities' => [ 'CatalogManager\tl_catalog_form_fields', 'getTaxonomyFields' ]
+            ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
+        ],
+
+        'default' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['default'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'cssID' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'size' => 2,
+                'multiple' => true,
+                'tl_class' => 'w50',
+                'maxlength' => 255
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'tabindex' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'rgxp' => 'natural',
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "smallint(5) unsigned NOT NULL default '0'"
         ],
 
         'invisible' => [

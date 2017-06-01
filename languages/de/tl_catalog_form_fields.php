@@ -18,8 +18,8 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Feldname', 'Der Feldn
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Feldbezeichnung', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Umfang (Bis)', 'Here können Sie die Genauigkeit des Umfangs einstellen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Umfang (Ab)', 'Here können Sie die Genauigkeit des Umfangs einstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Umfang (Bis)', 'Hier können Sie die Genauigkeit des Umfangs einstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Umfang (Ab)', 'Hier können Sie die Genauigkeit des Umfangs einstellen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'] = [ 'Feldbezeichnung (Kleiner)', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Feldbezeichnung (Größer)', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 

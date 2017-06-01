@@ -2,12 +2,12 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Create new field', 'Here you can create new field.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Hide Field';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Option Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Image Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'General Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Database Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Settings';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Visibility Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluations Settings';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rows'] = [ 'Rows', 'Please enter number of rows.' ];

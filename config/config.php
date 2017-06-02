@@ -12,9 +12,9 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
     ]
 ];
 
-$GLOBALS['BE_MOD']['content']['filter-form'] = [
+$GLOBALS['BE_MOD']['content']['filterform'] = [
 
-    'name' => 'filter-form',
+    'name' => 'filterform',
     'icon' => '', // @todo
 
     'tables' => [
@@ -78,6 +78,9 @@ $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
 
 $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
+
+$GLOBALS['TL_PERMISSIONS'][] = 'filterform';
+$GLOBALS['TL_PERMISSIONS'][] = 'filterformp';
 
 $GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizard';
 $GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';

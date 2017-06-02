@@ -11,9 +11,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogForm'] = [
 
         'chosen' => true,
         'mandatory' => true,
-        'tl_class' => 'w50 wizard',
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
+        'tl_class' => 'w50 wizard',
         'includeBlankOption' => true,
     ],
 

@@ -77,11 +77,11 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         '__selector__' => [ 'type', 'optionSource' ],
 
         'default' => '{field_type_legend},type,name,title;',
-        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,default,tabindex,cssID;{filter_settings_legend},filter;{invisible_legend},invisible',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
-        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
-        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{filter_settings_legend},filter;{invisible_legend},invisible',
-        'range' => '{field_type_legend},type,name,title;{general_legend},rangeGreatLabel,rangeLowLabel,description,tabindex,cssID;{filter_settings_legend},rangeLowType,rangeGreatType,filter;{invisible_legend},invisible',
+        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,default,tabindex,cssID;{invisible_legend},invisible',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{invisible_legend},invisible',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{invisible_legend},invisible',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,default,tabindex,cssID;{option_legend},optionSource;{invisible_legend},invisible',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,tabindex,cssID;rangeLowType,rangeGreatType;{invisible_legend},invisible',
     ],
 
     'subpalettes' => [
@@ -225,20 +225,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
-        ],
-
-        'filter' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['filter'],
-            'inputType' => 'text',
-
-            'eval' => [
-
-                'tl_class' => 'clr'
-            ],
-
-            'exclude' => true,
-            'sql' => "blob NULL"
         ],
 
         'rangeGreatLabel' => [

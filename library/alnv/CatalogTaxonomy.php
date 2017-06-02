@@ -53,6 +53,7 @@ class CatalogTaxonomy extends CatalogController {
 
         if ( !$this->catalogTablename ) return null;
 
+        $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->catalogTablename );
 
@@ -138,8 +139,44 @@ class CatalogTaxonomy extends CatalogController {
 
     protected function setTaxonomyTree() {
 
+        $strQuery = '';
+        $arrValues = [];
         $strTaxonomyUrl = '';
         $strTempParameter = '';
+
+        if ( !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
+
+            $arrQueries = [
+
+                'table' => $this->catalogTablename
+            ];
+
+            $arrQueries['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
+
+                $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
+                $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
+
+                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+
+                    return null;
+                }
+
+                if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
+
+                    return null;
+                }
+
+                if ( is_array( $arrQuery['value'] ) && $arrQuery['operator'] != 'contain' ) {
+
+                    $arrQuery['multiple'] = true;
+                }
+
+                return $arrQuery;
+            });
+
+            $strQuery = $this->SQLQueryHelper->SQLQueryBuilder->getWhereQuery( $arrQueries );
+            $arrValues = $this->SQLQueryHelper->SQLQueryBuilder->getValues();
+        }
 
         foreach ( $this->arrParameter as $intIndex => $strParameter ) {
 
@@ -148,7 +185,7 @@ class CatalogTaxonomy extends CatalogController {
 
             if ( !$intIndex ) {
 
-                $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT %s FROM %s ORDER BY %s %s', $strParameter, $this->catalogTablename, $strParameter, $this->strOrderBy ) )->execute();
+                $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT %s FROM %s%s ORDER BY %s %s', $strParameter, $this->catalogTablename, $strQuery, $strParameter, $this->strOrderBy ) )->execute( $arrValues );
 
                 if ( !$objEntities->numRows ) continue;
 
@@ -187,11 +224,31 @@ class CatalogTaxonomy extends CatalogController {
                 $this->strName = $strParameter;
             }
 
-            if ( $intIndex || ( \Input::get( $strTempParameter ) && $strTempParameter ) ) {
+            if ( $intIndex && ( \Input::get( $strTempParameter ) && $strTempParameter ) ) {
+
+                $strQueryStatement = ' WHERE';
+                if ( $strQuery && $this->catalogUseTaxonomies ) $strQueryStatement = ' AND';
+
+                $strSQLQuery = sprintf(
+
+                    'SELECT DISTINCT %s FROM %s%s%s FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) AND FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) ORDER BY %s %s',
+
+                    $strParameter,
+                    $this->catalogTablename,
+                    $strQuery,
+                    $strQueryStatement,
+                    $strTempParameter,
+                    $this->strName,
+                    $strParameter,
+                    $this->strOrderBy
+                );
+
+                $arrValues[] = \Input::get( $strTempParameter );
+                $arrValues[] = \Input::get( $this->strName );
 
                 $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database
-                    ->prepare( sprintf( 'SELECT DISTINCT %s FROM %s WHERE FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) AND FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) ORDER BY %s %s', $strParameter, $this->catalogTablename, $strTempParameter, $this->strName, $strParameter, $this->strOrderBy ) )
-                    ->execute( \Input::get( $strTempParameter ), \Input::get( $this->strName ) );
+                    ->prepare( $strSQLQuery )
+                    ->execute( $arrValues );
 
                 if ( !$objEntities->numRows ) continue;
 
@@ -292,6 +349,26 @@ class CatalogTaxonomy extends CatalogController {
         }
 
         return false;
+    }
+
+
+    protected function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
+
+        $varValue = \Input::get( $arrField['fieldname'] . $this->id ) ? \Input::get( $arrField['fieldname'] . $this->id ) : $strValue;
+        $varValue = \Controller::replaceInsertTags( $varValue );
+
+        if ( $varValue && ( $arrField['type'] == 'checkbox' || $arrField['multiple'] || $strOperator == 'contain' ) ) {
+
+            $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
+        }
+
+        if ( $arrField['type'] == 'date' || in_array( $arrField['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+            $objDate = new \Date( $varValue );
+            $varValue  = $objDate->tstamp;
+        }
+
+        return Toolkit::prepareValueForQuery( $varValue );
     }
 
 

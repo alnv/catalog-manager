@@ -6,3 +6,5 @@ todo
  - implement export and import csv files
  - implement debug for gallery array
  - add icon to filter form
+ - unique alias in tl_catalog_form_fields
+ - custom field templates

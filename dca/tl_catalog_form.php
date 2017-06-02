@@ -7,6 +7,11 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
         'dataContainer' => 'Table',
         'ctable' => [ 'tl_catalog_form_fields' ],
 
+        'onload_callback' => [
+
+            [ 'CatalogManager\tl_catalog_form', 'checkPermission' ],
+        ],
+        
         'sql' => [
 
             'keys' => [

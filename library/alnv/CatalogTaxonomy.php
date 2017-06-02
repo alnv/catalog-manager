@@ -12,10 +12,10 @@ class CatalogTaxonomy extends CatalogController {
     protected $arrCatalog = [];
     protected $strParameter = '';
     protected $arrParameter = [];
+    protected $strOrderBy = 'ASC';
     protected $arrRedirectPage = [];
     protected $arrTaxonomyTree = [];
     protected $arrCatalogFields = [];
-
 
     public function __construct() {
 
@@ -66,6 +66,11 @@ class CatalogTaxonomy extends CatalogController {
             global $objPage;
 
             $this->arrRedirectPage = $objPage->row();
+        }
+
+        if ( $this->catalogOrderByTaxonomies && in_array( $this->catalogOrderByTaxonomies, [ 'ASC', 'DESC' ] ) ) {
+
+            $this->strOrderBy = $this->catalogOrderByTaxonomies;
         }
 
         $this->setTaxonomyTree();
@@ -143,7 +148,7 @@ class CatalogTaxonomy extends CatalogController {
 
             if ( !$intIndex ) {
 
-                $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT %s FROM %s', $strParameter, $this->catalogTablename ) )->execute();
+                $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT %s FROM %s ORDER BY %s %s', $strParameter, $this->catalogTablename, $strParameter, $this->strOrderBy ) )->execute();
 
                 if ( !$objEntities->numRows ) continue;
 
@@ -185,7 +190,7 @@ class CatalogTaxonomy extends CatalogController {
             if ( $intIndex || ( \Input::get( $strTempParameter ) && $strTempParameter ) ) {
 
                 $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database
-                    ->prepare( sprintf( 'SELECT DISTINCT %s FROM %s WHERE FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) AND FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) ', $strParameter, $this->catalogTablename, $strTempParameter, $this->strName ) )
+                    ->prepare( sprintf( 'SELECT DISTINCT %s FROM %s WHERE FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) AND FIND_IN_SET( ?, LOWER( CAST( %s AS CHAR ) ) ) ORDER BY %s %s', $strParameter, $this->catalogTablename, $strTempParameter, $this->strName, $strParameter, $this->strOrderBy ) )
                     ->execute( \Input::get( $strTempParameter ), \Input::get( $this->strName ) );
 
                 if ( !$objEntities->numRows ) continue;

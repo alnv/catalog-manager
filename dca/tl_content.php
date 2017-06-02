@@ -11,13 +11,20 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogForm'] = [
 
         'chosen' => true,
         'mandatory' => true,
-        'tl_class' => 'w50',
+        'tl_class' => 'w50 wizard',
+        'submitOnChange' => true,
         'blankOptionLabel' => '-',
-        'includeBlankOption' => true
+        'includeBlankOption' => true,
     ],
 
-    'wizard' => [ 'CatalogManager\tl_content', 'getCatalogForms' ],
-    'options_callback' => [ 'CatalogManager\tl_content', 'editCatalogForm' ],
+    'wizard' => [
+
+        [
+            'CatalogManager\tl_content', 'editCatalogForm'
+        ]
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_content', 'getCatalogForms' ],
 
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"

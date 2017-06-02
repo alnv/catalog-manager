@@ -1,3 +1,9 @@
-<div>
-   <input type="text" name="" value="">
+<div class="ctlg_form_field_text">
+   <?php if( $this->label ): ?>
+      <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
+   <?php endif; ?>
+   <input type="text" id="id_form_<?= $this->name ?>" name="<?= $this->name ?>" value="" placeholder="<?= $this->placeholder ?>">
+   <?php if( $this->description ): ?>
+      <p class="description"><?= $this->description ?></p>
+   <?php endif; ?>
 </div>

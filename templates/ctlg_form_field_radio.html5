@@ -1,3 +1,9 @@
-<div>
+<div class="ctlg_form_field_radio">
+   <?php if( $this->label ): ?>
+      <label><?= $this->label ?></label>
+   <?php endif; ?>
    <input type="radio" name="">
+   <?php if( $this->description ): ?>
+      <p class="description"><?= $this->description ?></p>
+   <?php endif; ?>
 </div>

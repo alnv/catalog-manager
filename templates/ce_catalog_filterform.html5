@@ -1,7 +1,15 @@
 <?php $this->extend('block_searchable'); ?>
-
 <?php $this->block('content'); ?>
 
-
+<form action="" method="GET">
+   <?php if( !empty( $this->fields ) && is_array( $this->fields ) ): ?>
+      <?php foreach( $this->fields as $strField ): ?>
+         <?= $strField ?>
+      <?php endforeach; ?>
+   <?php endif; ?>
+   <div class="ctlg_form_field_submit">
+      <input type="submit" name="" value="Filtern">
+   </div>
+</form>
 
 <?php $this->endblock(); ?>

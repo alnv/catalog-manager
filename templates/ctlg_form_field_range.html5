@@ -1,4 +1,14 @@
-<div>
-   <input type="text" name="" value="">
-   <input type="text" name="" value="">
+<div class="ctlg_form_field_range">
+   <div>
+      <?php if( $this->rangeLowLabel ): ?>
+         <label for="id_form_<?= $this->name ?>_lt"><?= $this->rangeLowLabel ?></label>
+      <?php endif; ?>
+      <input type="text" id="id_form_<?= $this->name ?>_lt" name="<?= $this->name ?>_lt" value="">
+   </div>
+   <div>
+      <?php if( $this->rangeLowLabel ): ?>
+         <label for="id_form_<?= $this->name ?>_gt"><?= $this->rangeGreatLabel ?></label>
+      <?php endif; ?>
+      <input type="text" id="id_form_<?= $this->name ?>_gt" name="<?= $this->name ?>_gt" value="">
+   </div>
 </div>

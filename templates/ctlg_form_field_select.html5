@@ -1,5 +1,11 @@
-<div>
-   <select name="">
-      <option></option>
+<div class="ctlg_form_field_select">
+   <?php if( $this->label ): ?>
+      <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
+   <?php endif; ?>
+   <select id="id_form_<?= $this->name ?>" name="<?= $this->label ?>">
+      <option value=""></option>
    </select>
+   <?php if( $this->description ): ?>
+      <p class="description"><?= $this->description ?></p>
+   <?php endif; ?>
 </div>

@@ -40,7 +40,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogMapMarker'] = [ 'Add Marker', 'Here you
 $GLOBALS['TL_LANG']['tl_module']['catalogAddMapInfoBox'] = [ 'Add Info-Box', 'Here you can add a info box.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogMapInfoBoxContent'] = [ 'Info-Box content', 'Please add your info-box content. Inserttags und Simple-Tokens are allowed.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogMapStyle'] = [ 'Map-Style', 'Here you can define your map style.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogOrderBy'] = [ 'Sort order', 'Here you can define your order by settings.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogOrderBy'] = [ 'Sort order', 'Here you can order the entities.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRandomSorting'] = [ 'Sort entities randomly', 'Here you can sort your entities randomly.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogAddPagination'] = [ 'Add pagination', 'Here you can enable pagination.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPerPage'] = [ 'Entities per page', 'The number of items per page. Set to 0 to disable pagination.' ];
@@ -106,6 +106,13 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [inse
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Notifications [delete]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [update]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module template', 'Here you can overwrite the default module template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Sort order', 'Here you can order taxonomy entities.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
+
+    'ASC' => 'Ascending',
+    'DESC' => 'Descending'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

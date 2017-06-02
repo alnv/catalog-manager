@@ -108,6 +108,13 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Benachrichtigung [e
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Benachrichtigung [löschen]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Benachrichtigung [ändern]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Individuelles Template', 'Hier können Sie das Standard-Template überschreiben.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Taxonomies festlegen.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
+
+    'ASC' => 'Aufsteigend',
+    'DESC' => 'Absteigend'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

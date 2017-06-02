@@ -8,12 +8,20 @@ class tl_catalog_form_fields extends \Backend {
     protected $strTablename;
     protected $arrFields = [];
 
+
     public function __construct() {
 
         parent::__construct();
 
         $this->strTablename = $this->getTablename();
         $this->arrFields = $this->getTableColumnsByTablename( $this->strTablename );
+    }
+
+
+    public function checkPermission() {
+
+        $objDCAPermission = new DCAPermission();
+        $objDCAPermission->checkPermissionByParent( 'tl_catalog_form_fields' , 'tl_catalog_form', 'filterform', 'filterformp' );
     }
 
 

@@ -305,8 +305,20 @@ class tl_module extends \Backend {
 
     
     public function getTaxonomyTable( \DataContainer $dc ) {
-        
-        return $dc->activeRecord->catalogTablename ? $dc->activeRecord->catalogTablename : '';
+
+        $strTable = $dc->activeRecord->catalogTablename ? $dc->activeRecord->catalogTablename : '';
+
+        if ( $dc->activeRecord->type == 'catalogTaxonomyTree' && $dc->activeRecord->catalogRoutingSource == 'page' && $dc->activeRecord->catalogPageRouting ) {
+
+            $objPage = $this->Database->prepare( 'SELECT * FROM tl_page WHERE id = ?' )->limit(1)->execute( $dc->activeRecord->catalogPageRouting );
+
+            if ( $objPage->numRows ) {
+
+                $strTable = $objPage->catalogUseRouting ? $objPage->catalogRoutingTable : $strTable;
+            }
+        }
+
+        return $strTable;
     }
 
     

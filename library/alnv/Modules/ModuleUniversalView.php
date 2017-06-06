@@ -195,8 +195,7 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
-        $this->CatalogView->getCommentForm();
-
+        
         if ( !$this->CatalogView->checkPermission() ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
@@ -206,6 +205,7 @@ class ModuleUniversalView extends \Module {
         }
 
         $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
+        $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
 
         if ( empty( $strOutput ) ) {
 

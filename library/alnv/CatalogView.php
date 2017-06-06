@@ -897,7 +897,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    public function getCommentForm() {
+    public function getCommentForm( $strMasterID ) {
 
         if ( !in_array( 'comments', \ModuleLoader::getActive() ) ) {
 
@@ -925,7 +925,7 @@ class CatalogView extends CatalogController {
 
             $this->catalogTablename,
 
-            '0',
+            ( $strMasterID ? $strMasterID : '0' ),
 
             []
         );

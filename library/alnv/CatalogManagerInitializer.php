@@ -86,6 +86,11 @@ class CatalogManagerInitializer {
             $arrTables[] = $strTablename;
         }
 
+        if ( !empty( $arrCatalog[ 'cTables' ] ) && is_array( $arrCatalog[ 'cTables' ] ) ) {
+
+            $this->getNestedChildTables( $arrTables, $arrCatalog[ 'cTables' ], '' );
+        }
+        
         if ( $blnAddContentElements || $this->existContentElementInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
 
             $arrTables[] = 'tl_content';
@@ -122,13 +127,45 @@ class CatalogManagerInitializer {
 
             foreach ( $arrTables as $strTable ) {
 
+                $arrChildTables = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['cTables'];
+
                 if ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['addContentElements'] ) {
 
                     return true;
+                }
+
+                if ( !empty( $arrChildTables ) && is_array( $arrChildTables ) ) {
+
+                    return $this->existContentElementInChildrenCatalogs( $arrChildTables );
                 }
             }
         }
 
         return false;
+    }
+
+
+    protected function getNestedChildTables( &$arrTables, $arrChildTables, $strTable = '' ) {
+
+        if ( $strTable ) {
+
+            $arrTables[] = $strTable;
+        }
+
+        if ( !empty( $arrChildTables ) && is_array( $arrChildTables ) ) {
+
+            foreach ( $arrChildTables as $strChildTable ) {
+
+                $arrNestedChildTables = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strChildTable ]['cTables'];
+
+                if ( !empty( $arrNestedChildTables ) && is_array( $arrNestedChildTables ) ) {
+
+                    foreach (  $arrNestedChildTables as $strNestedChildTable ) {
+
+                        $this->getNestedChildTables( $arrTables, $arrNestedChildTables, $strNestedChildTable );
+                    }
+                }
+            }
+        }
     }
 }

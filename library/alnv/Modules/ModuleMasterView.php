@@ -64,13 +64,13 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
-        $this->CatalogView->getCommentForm();
 
         $blnHasPermission = $this->CatalogView->checkPermission();
         $strOutput = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
 
         $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
         $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
+        $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
 
         if ( !$blnHasPermission ) {
 

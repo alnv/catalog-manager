@@ -75,6 +75,15 @@ class CatalogTaxonomy extends CatalogController {
         }
 
         $this->setTaxonomyTree();
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] as $callback ) {
+
+                $this->import($callback[0]);
+                $this->{$callback[0]}->{$callback[1]}( $this->arrTaxonomyTree, $this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrActive, $this->arrParameter );
+            }
+        }
     }
 
 
@@ -156,6 +165,13 @@ class CatalogTaxonomy extends CatalogController {
                 $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
                 $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
 
+                if ( $arrQuery['operator'] && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) {
+
+                    $arrQuery['value'] = '';
+
+                    return $arrQuery;
+                }
+
                 if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
 
                     return null;
@@ -200,15 +216,17 @@ class CatalogTaxonomy extends CatalogController {
                         $varValue = array_values( $varValue );
                         $arrOriginValues = explode( ',', $objEntities->{$strParameter} );
 
-                        foreach ( $varValue as $intPosition => $strValue ) {
+                        foreach ( $varValue as $intPosition => $strOption ) {
+
+                            $strValue = $arrOriginValues[ $intPosition ];
 
                             if ( in_array( $strValue, $arrAliasCache ) ) {
 
                                 continue;
                             }
 
-                            $strHref = $this->generateUrl( $this->arrRedirectPage, '/' . $arrOriginValues[ $intPosition ] );
-                            $this->arrTaxonomyTree[ $strValue ] = $this->setTaxonomyEntity( $arrOriginValues[ $intPosition ], $strValue, $strParameter, $strHref, $strNextParameter );
+                            $strHref = $this->generateUrl( $this->arrRedirectPage, '/' . $strValue );
+                            $this->arrTaxonomyTree[ $strValue ] = $this->setTaxonomyEntity( $arrOriginValues[ $intPosition ], $strOption, $strParameter, $strHref, $strNextParameter );
 
                             $arrAliasCache[] = $strValue;
                         }
@@ -267,18 +285,19 @@ class CatalogTaxonomy extends CatalogController {
                         $varValue = array_values( $varValue );
                         $arrOriginValues = explode( ',', $objEntities->{$strParameter} );
 
-                        foreach ( $varValue as $intPosition => $strValue ) {
+                        foreach ( $varValue as $intPosition => $strOption ) {
 
-                            if ( in_array( $strValue, $arrAliasCache ) ) {
+                            $strOriginValue = $arrOriginValues[ $intPosition ];
+
+                            if ( in_array( $strOriginValue, $arrAliasCache ) ) {
 
                                 continue;
                             }
 
-                            $strOriginValue = $arrOriginValues[ $intPosition ];
                             $strHref = $this->generateUrl( $this->arrRedirectPage, $strTaxonomyUrl . '/' . $strOriginValue );
-                            $this->{$strParameter}[] = $this->setTaxonomyEntity( $strOriginValue, $strValue, $strParameter, $strHref, $strNextParameter );
+                            $this->{$strParameter}[ $strOriginValue ] = $this->setTaxonomyEntity( $strOriginValue, $strOption, $strParameter, $strHref, $strNextParameter );
 
-                            $arrAliasCache[] = $strValue;
+                            $arrAliasCache[] = $strOriginValue;
                         }
                     }
 

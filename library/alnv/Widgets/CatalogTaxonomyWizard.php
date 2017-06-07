@@ -221,16 +221,23 @@ class CatalogTaxonomyWizard extends \Widget {
 
             default:
 
+                $blnReadOnly = false;
+
                 if ( is_array( $arrQuery['value'] ) ) {
 
                     $arrQuery['value'] = $arrQuery['value'][0] ? $arrQuery['value'][0] : '';
+                }
+
+                if ( in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) {
+
+                    $blnReadOnly = true;
                 }
 
                 $strFieldTemplate =
                     '<tr '. $strBackgroundStyle .'>'.
                         '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
                         '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select></td>'.
-                        '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text"></td>'.
+                        '<td '. $strPaddingStyle .' class="ctlg_text_value"><input type="text" name="%s" id="%s" value="%s" class="ctlg_text tl_text" '. ( $blnReadOnly ? 'readonly' : '' ) .' ></td>'.
                         '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
                     '</tr>';
 
@@ -267,7 +274,9 @@ class CatalogTaxonomyWizard extends \Widget {
             'lt',
             'lte',
             'contain',
-            'between'
+            'between',
+            'isEmpty',
+            'isNotEmpty'
         ];
 
         foreach ( $arrOperators as $strOperator ) {

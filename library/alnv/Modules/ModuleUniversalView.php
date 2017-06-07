@@ -206,7 +206,7 @@ class ModuleUniversalView extends \Module {
 
         $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
         $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
-        
+
         if ( empty( $strOutput ) ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_404']();

@@ -310,6 +310,13 @@ class CatalogView extends CatalogController {
                 $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
                 $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
 
+                if ( $arrQuery['operator'] && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) {
+
+                    $arrQuery['value'] = '';
+
+                    return $arrQuery;
+                }
+
                 if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
 
                     return null;
@@ -467,7 +474,7 @@ class CatalogView extends CatalogController {
         $arrCatalogs = [];
         $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
         $intResultRows = $objQueryBuilderResults->numRows;
-        
+
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();

@@ -144,6 +144,18 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
+    protected function isEmpty( $strField ) {
+
+        return sprintf( "%s.%s IS NULL OR %s.%s = ?", $this->strTable, $strField, $this->strTable, $strField );
+    }
+
+
+    protected function isNotEmpty( $strField ) {
+
+        return sprintf( "%s.%s != ?", $this->strTable, $strField );
+    }
+
+
     protected function createSelectionStatement() {
 
         $strSelectionStatement = '*';

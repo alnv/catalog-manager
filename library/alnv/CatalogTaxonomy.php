@@ -69,6 +69,15 @@ class CatalogTaxonomy extends CatalogController {
         }
 
         $this->setTaxonomyTree();
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] as $callback ) {
+
+                $this->import($callback[0]);
+                $this->{$callback[0]}->{$callback[1]}( $this->arrTaxonomyTree, $this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrActive, $this->arrParameter );
+            }
+        }
     }
 
 
@@ -231,15 +240,6 @@ class CatalogTaxonomy extends CatalogController {
             $strTempParameter = $strParameter;
 
             if ( \Input::get( $strParameter ) ) $this->arrActive[] = $strParameter;
-        }
-
-        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) ) {
-
-            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] as $callback ) {
-
-                $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}( $this->arrTaxonomyTree, $this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrActive, $this->arrParameter );
-            }
         }
     }
 

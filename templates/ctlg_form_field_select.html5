@@ -2,7 +2,7 @@
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>
-   <select id="id_form_<?= $this->name ?>" name="<?= $this->label ?>">
+   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?>"<?= $this->multiple ?>>
       <option value=""></option>
    </select>
    <?php if( $this->description ): ?>

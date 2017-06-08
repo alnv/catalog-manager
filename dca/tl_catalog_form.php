@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => 'title,catalog'
+        'default' => '{general_legend},title,catalog,jumpTo,resetForm;{expert_legend:hide},attributes,formID'
     ],
 
     'fields' => [
@@ -121,6 +121,74 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'jumpTo' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['jumpTo'],
+            'inputType' => 'pageTree',
+            'foreignKey' => 'tl_page.title',
+
+            'eval' => [
+
+                'tl_class' => 'w50',
+            ],
+
+            'relation' => [
+
+                'type'=>'hasOne',
+                'load'=>'eager'
+            ],
+
+            'exclude' => true,
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ],
+
+        'resetForm' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['resetForm'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'attributes' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['attributes'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'size'=>2,
+                'multiple'=>true,
+                'tl_class'=>'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'formID' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['formID'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'nospace'=>true,
+                'maxlength'=>64,
+                'tl_class'=>'w50'
+            ],
+
+            'exclude' => true,
+            'search' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
         ]
     ]
 ];

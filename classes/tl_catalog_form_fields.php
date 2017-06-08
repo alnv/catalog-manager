@@ -149,4 +149,12 @@ class tl_catalog_form_fields extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getFieldTemplates( \DataContainer $dc ) {
+
+        $strType = $dc->activeRecord->type ? $dc->activeRecord->type : '';
+
+        return $this->getTemplateGroup( sprintf( 'ctlg_form_field_%s', $strType ) );
+    }
 }

@@ -1053,7 +1053,7 @@ class CatalogView extends CatalogController {
                     continue;
                 }
 
-                $strActFragment = sprintf( '?act%s=%s&id=%s', $this->id, $strOperation, $strID );
+                $strActFragment = sprintf( '?act%s=%s&id%s=%s', $this->id, $strOperation, $this->id, $strID );
 
                 if ( $this->arrCatalog['pTable'] ) {
 

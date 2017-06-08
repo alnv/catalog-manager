@@ -130,7 +130,7 @@ class OptionsGetter extends CatalogController {
 
             if ( TL_MODE == 'FE' && ( is_null( $strFieldnameValue ) || $strFieldnameValue === '' ) ) {
 
-                $strFieldnameValue = \Input::get( $strTag ) ? \Input::get( $strTag ) : '';
+                $strFieldnameValue = \Input::post( $strTag ) ? \Input::post( $strTag ) : '';
             }
 
             $strValue = $strFieldnameValue ? $strFieldnameValue : '';

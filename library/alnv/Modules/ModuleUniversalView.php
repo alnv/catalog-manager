@@ -92,7 +92,7 @@ class ModuleUniversalView extends \Module {
 
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = \Input::get( 'id' );
+        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
@@ -227,7 +227,7 @@ class ModuleUniversalView extends \Module {
 
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = \Input::get( 'id' );
+        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 

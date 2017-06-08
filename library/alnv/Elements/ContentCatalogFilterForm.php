@@ -110,9 +110,68 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         $objTemplate = new \FrontendTemplate( $strTemplate );
 
+        if ( $arrField['type'] == 'range' ) {
+
+            $arrField['gtName'] = $arrField['name'] . '_gt';
+            $arrField['ltName'] = $arrField['name'] . '_lt';
+        }
+
         $arrField['multiple'] = $arrField['multiple'] ? 'multiple' : '';
+        
+        if ( in_array( $arrField['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
+
+            $arrField['options'] = $this->setOptions( $arrField );
+        }
+
+        $arrField['value'] = $this->getActiveOptions( $arrField );
+
         $objTemplate->setData( $arrField );
 
         return $objTemplate->parse();
+    }
+
+
+    protected function setOptions( $arrField ) {
+
+        $objOptionGetter = new OptionsGetter( $arrField );
+
+        return $objOptionGetter->getOptions();
+    }
+
+
+    protected function getActiveOptions( $arrField ) {
+
+        $strValue = $arrField['defaultValue'] ? $arrField['defaultValue'] : '';
+        $strValue = \Input::get( $arrField['name'] ) ? \Input::get( $arrField['name'] ) : $strValue;
+
+        if ( $arrField['type'] == 'select' || $arrField['type'] == 'checkbox' ) {
+
+            $arrReturn = [];
+
+            if ( $strValue && ( empty( $arrField['options'] ) || !is_array( $arrField['options'] ) ) ) {
+
+                return $arrReturn;
+            }
+
+            if ( !is_array( $strValue ) ) {
+
+                $arrReturn[ $strValue ] = $strValue;
+
+                return $arrReturn;
+            }
+
+            return $strValue;
+        }
+
+        if ( $arrField['type'] == 'range' ) {
+
+            return [
+
+                'ltValue' => \Input::get( $arrField['name'] . '_lt' ) ? \Input::get( $arrField['name'] . '_lt' ) : '',
+                'gtValue' => \Input::get( $arrField['name'] . '_gt' ) ? \Input::get( $arrField['name'] . '_gt' ) : ''
+            ];
+        }
+
+        return $strValue;
     }
 }

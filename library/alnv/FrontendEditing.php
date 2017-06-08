@@ -21,7 +21,6 @@ class FrontendEditing extends CatalogController {
     protected $blnNoSubmit = false;
     protected $blnHasUpload = false;
     protected $arrPaletteNames = [];
-    // protected $blnTinyMCEScript = false;
     protected $strTemporaryPalette = 'general_legend';
 
 
@@ -317,6 +316,11 @@ class FrontendEditing extends CatalogController {
         if ( $arrField['eval']['multiple'] && $arrField['eval']['csv'] && is_string( $objWidget->value ) ) {
 
             $objWidget->value = explode( $arrField['eval']['csv'], $objWidget->value );
+        }
+
+        if ( $arrField['eval']['submitOnChange'] ) {
+
+            $objWidget->addAttributes([ 'onchange' => 'this.form.submit()' ]);
         }
 
         if ( $arrField['inputType'] == 'upload' ) {

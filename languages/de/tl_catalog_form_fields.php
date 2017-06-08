@@ -12,9 +12,9 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['default'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Feldname', 'Der Feldname ist ein eindeutiger Name zur Identifizierung des Feldes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Feldbezeichnung', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 
@@ -23,7 +23,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Umfang (Ab)
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'] = [ 'Feldbezeichnung (Kleiner)', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Feldbezeichnung (Größer)', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionSource'] = [ 'Quelle', 'Hier können Sie eine Quelle auswählen, aus der die Auswahlliste generiert werden soll.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Quelle', 'Hier können Sie eine Quelle auswählen, aus der die Auswahlliste generiert werden soll.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie für die Tabelle ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
@@ -44,7 +44,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
     'range' => 'Umfang (von-bis)'
 ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionSource'] = [
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'] = [
 
     'useColumn' => 'Spalte',
     'useDbOptions' => 'Datenbank',

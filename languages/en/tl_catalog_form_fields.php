@@ -13,8 +13,8 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Field type', 'Please 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'field name', 'Please enter valid field name.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Field label', 'Please enter your field label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Description', 'Please enter short description.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['default'] = [ 'Default-Value', 'Here you can enter default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Hide', 'Do not show this field in the filter form.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Default-Value', 'Here you can enter default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab index', 'The position of the form field in the tabbing order.' ];
 
@@ -23,7 +23,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Range (from
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'] = [ 'Field label (low)', 'Please enter your field label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Field label (great)', 'Please enter your field label.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionSource'] = [ 'Source', 'Here you can select a source from which the selection list should be generated.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Source', 'Here you can select a source from which the selection list should be generated.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Key column', 'Please select a key column.'  ];
@@ -44,7 +44,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
     'checkbox' => 'Checkbox menu'
 ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionSource'] = [
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'] = [
 
     'useColumn' => 'Column',
     'useOptions' => 'Options',

@@ -37,6 +37,33 @@ class ContentCatalogFilterForm extends \ContentElement {
         }
 
         $this->Template->fields = $arrFields;
+        $this->Template->reset = $this->setReset();
+        $this->Template->action = $this->setAction();
+    }
+
+
+    protected function setAction() {
+
+        if ( $this->arrForm['jumpTo'] ) {
+
+            $objPage = new \PageModel();
+            $arrPage = $objPage->findPublishedById( $this->arrForm['jumpTo'] );
+
+            if ( $arrPage != null ) {
+
+                return $this->generateFrontendUrl( $arrPage->row() );
+            }
+        }
+
+        return ampersand( \Environment::get('indexFreeRequest') );
+    }
+
+
+    public function setReset() {
+
+        if ( !$this->arrForm['resetForm'] ) return '';
+
+        return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>', str_replace( '?' . \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
     }
 
 
@@ -77,11 +104,13 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function parseFieldTemplate( $arrField ) {
 
         $strReturn = '';
-        $strTemplate = $this->arrTemplateMap[ $arrField['type'] ];
+        $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
 
         if ( !$strTemplate ) return $strReturn;
 
         $objTemplate = new \FrontendTemplate( $strTemplate );
+
+        $arrField['multiple'] = $arrField['multiple'] ? 'multiple' : '';
         $objTemplate->setData( $arrField );
 
         return $objTemplate->parse();

@@ -1,8 +1,17 @@
 <div class="ctlg_form_field_checkbox">
    <?php if( $this->label ): ?>
-      <label><?= $this->label ?></label>
+      <p><?= $this->label ?></p>
    <?php endif; ?>
-   <input type="checkbox" name="">
+
+   <?php $intIndex = 0; ?>
+   <?php foreach( $this->options as $strKey => $strTitle ): ?>
+      <div class="checkbox_container">
+         <label for="id_form_<?= $this->name ?>_<?= $intIndex ?>"><?= $strTitle ?></label>
+         <input type="checkbox" id="id_form_<?= $this->name ?>_<?= $intIndex ?>" name="<?= $this->name ?>[]" value="<?= $strKey ?>" <?= ( !empty( $this->value ) && in_array( $strKey, $this->value ) ? 'checked' : '' ) ?>>
+      </div>
+      <?php $intIndex++; ?>
+   <?php endforeach; ?>
+
    <?php if( $this->description ): ?>
       <p class="description"><?= $this->description ?></p>
    <?php endif; ?>

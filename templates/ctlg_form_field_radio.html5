@@ -1,8 +1,17 @@
 <div class="ctlg_form_field_radio">
    <?php if( $this->label ): ?>
-      <label><?= $this->label ?></label>
+      <p><?= $this->label ?></p>
    <?php endif; ?>
-   <input type="radio" name="">
+
+   <?php $intIndex = 0; ?>
+   <?php foreach( $this->options as $strKey => $strTitle ): ?>
+      <div class="radio_container">
+         <label for="id_form_<?= $this->name ?>_<?= $intIndex ?>"><?= $strTitle ?></label>
+         <input type="radio" id="id_form_<?= $this->name ?>_<?= $intIndex ?>" name="<?= $this->name ?>" value="<?= $strKey ?>" <?= ( $this->value == $strKey ? 'checked' : '' ) ?>>
+      </div>
+      <?php $intIndex++; ?>
+   <?php endforeach; ?>
+
    <?php if( $this->description ): ?>
       <p class="description"><?= $this->description ?></p>
    <?php endif; ?>

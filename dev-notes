@@ -5,6 +5,8 @@ todo
  - test taxonomies widget
  - implement export and import csv files
  - implement debug for gallery array
+ - improve permission management #7
+ - separate permission fields from fe editing palette #7
  - filter form generator
     - between widget
     - text widget

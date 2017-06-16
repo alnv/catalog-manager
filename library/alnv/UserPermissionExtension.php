@@ -22,7 +22,7 @@ class UserPermissionExtension extends CatalogController {
 
                 foreach ( $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] as $strCatalogname ) {
 
-                    $this->createSQLColumns( $strCatalogname, $strDCAName );
+                    // $this->createSQLColumns( $strCatalogname, $strDCAName );
                     $this->extendUserAndUserGroupDCA( $strCatalogname, $strDCAName );
                 }
             }

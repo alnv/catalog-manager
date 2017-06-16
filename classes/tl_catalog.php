@@ -94,6 +94,18 @@ class tl_catalog extends \Backend {
                 $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'invisible' , $this->arrRequiredTableFields['invisible'] );
             }
         }
+
+        if ( $dc->activeRecord->isBackendModule && !$dc->activeRecord->pTable ) {
+
+            $objSQLBuilder->alterTableField( 'tl_user' , $dc->activeRecord->tablename, 'blob NULL' );
+            $objSQLBuilder->alterTableField( 'tl_user' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
+
+            $objSQLBuilder->alterTableField( 'tl_user_group' , $dc->activeRecord->tablename, 'blob NULL' );
+            $objSQLBuilder->alterTableField( 'tl_user_group' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
+
+            $objSQLBuilder->alterTableField( 'tl_member_group' , $dc->activeRecord->tablename, 'blob NULL' );
+            $objSQLBuilder->alterTableField( 'tl_member_group' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
+        }
     }
 
 

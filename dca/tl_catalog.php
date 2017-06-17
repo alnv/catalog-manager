@@ -37,9 +37,10 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'sorting' => [
 
-            'mode' => 1,
-            'flag' => 2,
-            'fields' => [ 'name' ]
+            'mode' => 2,
+            'flag' => 1,
+            'fields' => [ 'name' ],
+            'panelLayout' => 'filter;sort,search,limit'
         ],
 
         'label' => [
@@ -122,6 +123,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50',
             ],
 
+            'search' => true,
+            'sorting' => true,
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -152,6 +155,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'maxlength' => 16
             ],
 
+            'search' => true,
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"
         ],
@@ -178,6 +182,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 [ 'CatalogManager\tl_catalog', 'renameTable' ]
             ],
 
+            'search' => true,
+            'sorting' => true,
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -193,7 +199,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForPTableAndModes' ] ],
-            
+
+            'filter' => true,
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
         ],
@@ -237,6 +244,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllPTables' ],
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ] ],
 
+            'search' => true,
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],
@@ -255,6 +263,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllCTables' ],
 
+            'search' => true,
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],

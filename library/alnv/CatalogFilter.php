@@ -63,7 +63,7 @@ class CatalogFilter extends CatalogController {
 
                 $objWidget->mandatory = false;
                 $objWidget->id = 'id_' . $arrField['_fieldname'];
-                $objWidget->value = \Input::get( $arrField['_fieldname'] ) ? \Input::get( $arrField['_fieldname'] ) : '';
+                $objWidget->value = $this->getValue( $arrField['_fieldname'] );
                 $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
 
                 if ( $objWidget->value ) {
@@ -171,6 +171,17 @@ class CatalogFilter extends CatalogController {
         }
 
         return $this->arrFields;
+    }
+
+
+    protected function getValue( $strFieldname ) {
+
+        $strValue = '';
+
+        if ( \Input::get( $strFieldname ) ) $strValue = \Input::get( $strFieldname );
+        if ( \Input::post( $strFieldname ) && $this->catalogFormMethod == 'POST' ) $strValue = \Input::post( $strFieldname );
+
+        return $strValue;
     }
 
 

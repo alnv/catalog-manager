@@ -790,7 +790,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirect'] = [
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
 
-// @todo
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogEnableFrontendPermission'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'],

@@ -106,6 +106,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [inse
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Notifications [delete]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [update]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module template', 'Here you can overwrite the default module template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Submission method', 'The default form submission method is POST.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [
 

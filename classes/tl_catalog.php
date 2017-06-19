@@ -448,8 +448,8 @@ class tl_catalog extends \Backend {
     
     public function checkLicence() {
 
-        $objCatalogManagerVerification = new CatalogManagerVerification();
-        $objCatalogManagerVerification->verify();
+        // $objCatalogManagerVerification = new CatalogManagerVerification();
+        // $objCatalogManagerVerification->verify();
     }
 
 

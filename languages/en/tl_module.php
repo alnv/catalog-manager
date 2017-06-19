@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Redirect set
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template settings';
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Field dependencies settings';
 $GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend']= 'Format settings';
+$GLOBALS['TL_LANG']['tl_module']['permission_legend'] = 'Permission settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];
@@ -54,7 +55,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogJoinParentTable'] = [ 'Join parent tabl
 $GLOBALS['TL_LANG']['tl_module']['catalogUseRelation'] = [ 'Add relation links', 'Here you can add relation links to child tables/catalogs.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'] = [ 'Select child catalogs', 'Here you can select your child catalogs.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNoValidate'] = [ 'Disable HTML5 validation', 'Add the novalidate attribute to the form tag.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'] = [ 'Enable user permissions', 'Here you can enable user permissions.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'] = [ 'Enable user permissions', 'You can set user permission in member group module.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormTemplate'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogStoreFile'] = [ 'Store uploaded files', 'Move the uploaded files to a folder on the server.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUploadFolder'] = [ 'Target folder', 'Please select the target folder from the files directory.' ];
@@ -106,6 +107,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [inse
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Notifications [delete]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [update]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module template', 'Here you can overwrite the default module template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Submission method', 'The default form submission method is POST.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Sort order', 'Here you can order taxonomy entities.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [

@@ -292,13 +292,16 @@ class SQLQueryBuilder extends CatalogController {
 
                         if ( !empty( $arrQueries ) && is_array( $arrQueries['value'] ) ) {
 
-                            $intValues = count( $arrQueries['value'] ) -1;
-                            
+                            $strWhereStatement .= '(';
+                            $intValues = count( $arrQueries['value'] ) - 1;
+
                             foreach ( $arrQueries['value'] as $intValueIndex => $varQueryValue ) {
 
                                 $this->setValue( $varQueryValue, $arrQueries['field'] );
                                 $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] ) . ( $intValues !==  $intValueIndex ? ' OR ' : '' );
                             }
+
+                            $strWhereStatement .= ')';
                         }
                     }
 

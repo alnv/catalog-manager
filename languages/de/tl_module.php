@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template-Ei
 $GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomie-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend'] = 'Format-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['permission_legend'] = 'Berechtigungseinstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
@@ -55,7 +56,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogJoinParentTable'] = [ 'Elternelement ve
 $GLOBALS['TL_LANG']['tl_module']['catalogUseRelation'] = [ 'Kind-Tabellen Weiterleitungsseiten', 'Hier können Sie die Weiterleitungsseiten zu den Kind-Tabellen erstellen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'] = [ 'Tabellen auswählen', 'Bitte wählen Sie die Tabellen aus, auf die Sie verlinken wollen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNoValidate'] = [ 'HTML5-Validierung deaktivieren', 'Fügt dem Formular das novalidate-Attribut hinzu.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'] = [ 'Benutzerberechtigungen aktivieren', 'Hier können Sie die Benutzerberechtigungen aktivieren.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendPermission'] = [ 'Benutzerberechtigungen aktivieren', 'Die Benutzerberechtigungen können Sie in dem Mitgliedergruppen Modul einstellen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogStoreFile'] = [ 'Hochgeladene Dateien speichern', 'Die hochgeladenen Dateien in einen Ordner auf dem Server verschieben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUploadFolder'] = [ 'Zielverzeichnis', 'Bitte wählen Sie das Zielverzeichnis aus der Dateiübersicht.' ];
@@ -108,6 +109,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Benachrichtigung [e
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Benachrichtigung [löschen]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Benachrichtigung [ändern]', 'Bitte wählen Sie eine Benachrichtigung.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Individuelles Template', 'Hier können Sie das Standard-Template überschreiben.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Übertragungsmethode', 'Die Standard-Übertragungsmethode ist GET.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Taxonomies festlegen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [

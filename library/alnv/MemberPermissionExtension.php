@@ -25,7 +25,6 @@ class MemberPermissionExtension extends CatalogController {
                 foreach ( $arrCatalogs as $strCatalogname ) {
 
                     $this->extendMemberGroupDCA( $strCatalogname );
-                    $this->createSQLColumns($strCatalogname);
                 }
             }
         }

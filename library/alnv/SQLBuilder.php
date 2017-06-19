@@ -43,7 +43,7 @@ class SQLBuilder extends CatalogController {
 
     public function createSQLDropTableStatement( $strTable ) {
 
-        if ( !$strTable ) {
+        if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
 
             return null;
         }

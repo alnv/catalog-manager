@@ -21,6 +21,6 @@ You can install Catalog Manager in Extension Repository. Just search for "Catalo
 Do you have some issues? Contact me: https://www.alexandernaumov.de
 
 [1]: https://catalog-manager.alexandernaumov.de
-[2]: https://github.com/alnv/catalog-manager/archive/v1.2.7.tar.gz
+[2]: https://github.com/alnv/catalog-manager/archive/v1.2.8.tar.gz
 [3]: https://catalog-manager.alexandernaumov.de
 [4]: http://catalog-manager-demo.alexandernaumov.de

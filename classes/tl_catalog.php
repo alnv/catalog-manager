@@ -445,13 +445,6 @@ class tl_catalog extends \Backend {
         return $arrReturn;
     }
 
-    
-    public function checkLicence() {
-
-        $objCatalogManagerVerification = new CatalogManagerVerification();
-        $objCatalogManagerVerification->verify();
-    }
-
 
     public function getInternalCatalogFields() {
 

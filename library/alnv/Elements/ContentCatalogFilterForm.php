@@ -36,13 +36,19 @@ class ContentCatalogFilterForm extends \ContentElement {
             }
         }
 
+        $arrAttributes = Toolkit::deserialize( $this->arrForm['attributes'] );
+        $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
+
         $this->Template->fields = $arrFields;
-        $this->Template->reset = $this->setReset();
-        $this->Template->action = $this->setAction();
+        $this->Template->reset = $this->getResetLink();
+        $this->Template->action = $this->getActionAttr();
+        $this->Template->method = $this->getMethodAttr();
+        $this->Template->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
+        $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
     }
 
-
-    protected function setAction() {
+ 
+    protected function getActionAttr() {
 
         if ( $this->arrForm['jumpTo'] ) {
 
@@ -59,7 +65,13 @@ class ContentCatalogFilterForm extends \ContentElement {
     }
 
 
-    public function setReset() {
+    protected function getMethodAttr() {
+
+        return $this->arrForm['method'] ? $this->arrForm['method'] : 'GET';
+    }
+
+
+    public function getResetLink() {
 
         if ( !$this->arrForm['resetForm'] ) return '';
 
@@ -147,7 +159,7 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function getActiveOptions( $arrField ) {
 
         $strValue = $arrField['defaultValue'] ? $arrField['defaultValue'] : '';
-        $strValue = \Input::get( $arrField['name'] ) ? \Input::get( $arrField['name'] ) : $strValue;
+        $strValue = $this->getInput( $arrField['name'], $strValue );
 
         if ( $arrField['type'] == 'select' || $arrField['type'] == 'checkbox' ) {
 
@@ -172,11 +184,29 @@ class ContentCatalogFilterForm extends \ContentElement {
 
             return [
 
-                'ltValue' => \Input::get( $arrField['name'] . '_lt' ) ? \Input::get( $arrField['name'] . '_lt' ) : '',
-                'gtValue' => \Input::get( $arrField['name'] . '_gt' ) ? \Input::get( $arrField['name'] . '_gt' ) : ''
+                'ltValue' => $this->getInput( $arrField['name'] . '_lt' ),
+                'gtValue' => $this->getInput( $arrField['name'] . '_gt' )
             ];
         }
 
         return $strValue;
+    }
+
+
+    protected function getInput( $strFieldname, $strDefault = '' ) {
+
+        if ( !$strFieldname ) return $strDefault;
+
+        if ( \Input::get( $strFieldname ) ) {
+
+           return \Input::get( $strFieldname );
+        }
+
+        if ( \Input::post( $strFieldname ) ) {
+
+            return \Input::post( $strFieldname );
+        }
+
+        return $strDefault;
     }
 }

@@ -4,9 +4,10 @@ namespace CatalogManager;
 
 class OptionsGetter extends CatalogController {
 
-
     protected $arrField = [];
+    protected $arrCatalog = [];
     protected $arrActiveEntity = [];
+    protected $arrCatalogFields = [];
 
 
     public function __construct( $arrField ) {
@@ -53,9 +54,111 @@ class OptionsGetter extends CatalogController {
                 return $this->getDbOptions();
 
                 break;
+
+            case 'useActiveDbOptions':
+
+                return $this->getActiveDbOptions();
+
+                break;
         }
 
         return [];
+    }
+
+
+    protected function getActiveDbOptions() {
+
+        $arrOptions = [];
+        $strDbColumn = $this->arrField['dbColumn'];
+
+        if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
+
+            return $arrOptions;
+        }
+
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+
+            return $arrOptions;
+        }
+
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
+
+            return $arrOptions;
+        }
+
+        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT * FROM %s', $this->arrField['dbTable'] ) )->execute();
+
+        if ( !$objEntities->numRows ) return $arrOptions;
+
+        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->arrField['dbTable'] );
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrField['dbTable'] );
+
+        while ( $objEntities->next() ) {
+
+            $strOriginValue = $objEntities->{$strDbColumn};
+            $varValue = $this->parseCatalogValues( $strOriginValue, $strDbColumn, [] );
+
+            if ( is_array( $varValue ) ) {
+
+                $arrLabels = array_values( $varValue );
+                $arrOriginValues = array_keys( $varValue );
+
+                if ( !empty( $arrLabels ) && is_array( $arrLabels ) ) {
+
+                    foreach ( $arrLabels as $intPosition => $strLabel ) {
+
+                        $arrOptions = $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
+                    }
+                }
+            }
+
+            else {
+
+                $arrOptions = $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
+            }
+        }
+
+        return $arrOptions;
+    }
+
+
+    protected function setValueToOption( $arrOptions, $strValue, $strLabel = '' ) {
+
+        if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
+
+            $arrOptions[ $strValue ] = $this->I18nCatalogTranslator->getOptionLabel( $strValue, $strLabel );
+        }
+
+        return $arrOptions;
+    }
+
+
+    protected function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
+
+        $arrField = $this->arrCatalogFields[ $strFieldname ];
+
+        switch ( $arrField['type'] ) {
+
+            case 'select':
+                
+                return Select::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'checkbox':
+
+                return Checkbox::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
+            case 'radio':
+
+                return Radio::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+        }
+
+        return $varValue;
     }
 
 

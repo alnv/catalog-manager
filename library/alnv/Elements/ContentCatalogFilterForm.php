@@ -121,10 +121,15 @@ class ContentCatalogFilterForm extends \ContentElement {
         if ( in_array( $arrField['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
 
             $arrField['options'] = $this->setOptions( $arrField );
+
+            if ( $arrField['includeBlankOption'] &&  $arrField['type'] != 'checkbox' ) {
+
+                $strBlankOption = $arrField['blankOptionLabel'] ? $arrField['blankOptionLabel'] : '-';
+                array_insert( $arrField['options'], 0, [ '' => $strBlankOption ] );
+            }
         }
 
         $arrField['value'] = $this->getActiveOptions( $arrField );
-
         $objTemplate->setData( $arrField );
 
         return $objTemplate->parse();

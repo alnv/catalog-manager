@@ -725,12 +725,12 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'maxlength' => 12,
+                'maxlength' => 64,
                 'tl_class' => 'w50',
             ],
 
             'exclude' => true,
-            'sql' => "varchar(12) NOT NULL default ''"
+            'sql' => "varchar(64) NOT NULL default ''"
         ],
 
         'chosen' => [

@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,catalog,jumpTo,resetForm;{expert_legend:hide},attributes,formID'
+        'default' => '{general_legend},title,jumpTo,resetForm;{expert_legend:hide},attributes,formID'
     ],
 
     'fields' => [
@@ -102,27 +102,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             'sql' => "varchar(128) NOT NULL default ''"
         ],
 
-        'catalog' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['catalog'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'maxlength' => 128,
-                'tl_class' => 'w50',
-                'mandatory' => true,
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog_form', 'getCatalogs' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
-        ],
-
         'jumpTo' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['jumpTo'],
@@ -132,6 +111,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             'eval' => [
 
                 'tl_class' => 'w50',
+                'fieldType'=>'radio',
             ],
 
             'relation' => [

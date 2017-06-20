@@ -1,7 +1,11 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
 
-<form action="<?= $this->action; ?>" method="GET">
+<form <?= $this->formID ?>  action="<?= $this->action; ?>" method="<?= $this->method; ?>" class="<?= $this->cssClass ?>" >
+   <?php if ( $this->method == 'POST' ): ?>
+      <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
+      <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+   <?php endif; ?>
    <?php if( !empty( $this->fields ) && is_array( $this->fields ) ): ?>
       <?php foreach( $this->fields as $strField ): ?>
          <?= $strField ?>

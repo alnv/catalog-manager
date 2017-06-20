@@ -6,16 +6,21 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['general_legend'] = 'Allgemeine-Ei
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['option_legend'] = 'Auswahlliste-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['field_type_legend'] = 'Eingabefeld-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible_legend'] = 'Sichtbarkeitseinstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['filter_settings_legend'] = 'Filter-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben Sie ein Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Feldname', 'Der Feldname ist ein eindeutiger Name zur Identifizierung des Feldes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'] = [ 'Leeres Zeichen ersetzen', 'Hier kannst du ein leere Auswahl eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Feldbezeichnung', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Umfang (Bis)', 'Hier können Sie die Genauigkeit des Umfangs einstellen.' ];
@@ -25,6 +30,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Feldbezeic
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Quelle', 'Hier können Sie eine Quelle auswählen, aus der die Auswahlliste generiert werden soll.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie für die Tabelle ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie für den Text ein Eingabefeld.' ];
@@ -46,9 +52,9 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'] = [
 
-    'useColumn' => 'Spalte',
     'useDbOptions' => 'Datenbank',
     'useOptions' => 'Auswahlliste',
+    'useActiveDbOptions' => 'Datenbank (zugewiesen)'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeLowType'] = [

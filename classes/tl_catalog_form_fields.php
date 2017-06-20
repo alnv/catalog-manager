@@ -12,9 +12,8 @@ class tl_catalog_form_fields extends \Backend {
     public function __construct() {
 
         parent::__construct();
-
+        
         $this->strTablename = $this->getTablename();
-        $this->arrFields = $this->getTableColumnsByTablename( $this->strTablename );
     }
 
 
@@ -46,9 +45,22 @@ class tl_catalog_form_fields extends \Backend {
 
     public function getTableColumns() {
 
-        if ( empty( $this->arrFields ) || !is_array( $this->arrFields ) ) return [];
+        $arrReturn = [];
+        $arrFields = $this->getTableColumnsByTablename( $this->strTablename, [ 'upload' ], true );
 
-        return $this->arrFields;
+        if ( empty( $arrFields ) || !is_array( $arrFields ) ) return $arrReturn;
+
+        foreach ( $arrFields as $arrField ) {
+
+            $strType = $arrField['type'];
+
+            if ( $strType && in_array( $strType, [ 'select', 'radio', 'checkbox' ] ) ) {
+
+                $arrReturn[ $arrField['fieldname'] ] = $arrField['title'] ? $arrField['title'] : $arrField['fieldname'];
+            }
+        }
+
+        return $arrReturn;
     }
 
 
@@ -87,11 +99,11 @@ class tl_catalog_form_fields extends \Backend {
 
     protected function getTablename() {
 
-        $objForm = $this->Database->prepare( 'SELECT * FROM tl_catalog_form WHERE id = (SELECT pid FROM tl_catalog_form_fields WHERE id = ? LIMIT 1)' )->limit(1)->execute( \Input::get('id') );
+        $objForm = $this->Database->prepare( 'SELECT * FROM tl_catalog_form_fields WHERE id = ?' )->limit(1)->execute( \Input::get('id') );
 
         if ( $objForm->numRows ) {
 
-            return $objForm->catalog;
+            return $objForm->dbTable;
         }
 
         return null;

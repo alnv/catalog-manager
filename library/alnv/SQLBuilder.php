@@ -75,7 +75,7 @@ class SQLBuilder extends CatalogController {
         }
 
         $strRenameTableStatement = sprintf( 'ALTER TABLE %s CHANGE `%s` `%s` %s', $strTable, $strOldFieldname, $strNewFieldname, $strStatement );
-                
+
         $this->Database->prepare( $strRenameTableStatement )->execute();
     }
 

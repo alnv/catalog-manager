@@ -54,7 +54,7 @@ class MemberPermissionExtension extends CatalogController {
             ],
 
             'exclude' => true,
-            'sql' => "char(1) NOT NULL default ''"
+            'sql' => "blob NULL"
         ];
 
         $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname . 'p' ] = [
@@ -77,7 +77,7 @@ class MemberPermissionExtension extends CatalogController {
             'reference' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'],
 
             'exclude' => true,
-            'sql' => "varchar(512) NOT NULL default ''"
+            'sql' => "blob NULL"
         ];
     }
 

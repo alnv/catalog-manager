@@ -97,14 +97,7 @@ class tl_catalog extends \Backend {
 
         if ( $dc->activeRecord->isBackendModule && !$dc->activeRecord->pTable ) {
 
-            $objSQLBuilder->alterTableField( 'tl_user' , $dc->activeRecord->tablename, 'blob NULL' );
-            $objSQLBuilder->alterTableField( 'tl_user' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
-
-            $objSQLBuilder->alterTableField( 'tl_user_group' , $dc->activeRecord->tablename, 'blob NULL' );
-            $objSQLBuilder->alterTableField( 'tl_user_group' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
-
-            $objSQLBuilder->alterTableField( 'tl_member_group' , $dc->activeRecord->tablename, 'blob NULL' );
-            $objSQLBuilder->alterTableField( 'tl_member_group' , $dc->activeRecord->tablename . 'p', 'blob NULL' );
+            $this->insertPermissionFields( $dc->activeRecord->tablename );
         }
     }
 
@@ -143,8 +136,8 @@ class tl_catalog extends \Backend {
 
             $objSQLBuilder = new SQLBuilder();
             $objSQLBuilder->createSQLRenameTableStatement( $varValue, $dc->activeRecord->tablename );
-
             $this->renameAllTableDependencies( $dc->id, $varValue, $dc->activeRecord->tablename );
+            $this->renamePermissionFields( $varValue, $dc->activeRecord->tablename );
         }
 
         return $varValue;
@@ -156,14 +149,52 @@ class tl_catalog extends \Backend {
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLDropTableStatement( $dc->activeRecord->tablename );
 
-        $objSQLBuilder->dropTableField( 'tl_user' , $dc->activeRecord->tablename );
-        $objSQLBuilder->dropTableField( 'tl_user' , $dc->activeRecord->tablename . 'p' );
+        $this->dropPermissionFields( $dc->activeRecord->tablename );
+    }
 
-        $objSQLBuilder->dropTableField( 'tl_user_group' , $dc->activeRecord->tablename );
-        $objSQLBuilder->dropTableField( 'tl_user_group' , $dc->activeRecord->tablename . 'p' );
 
-        $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename );
-        $objSQLBuilder->dropTableField( 'tl_member_group' , $dc->activeRecord->tablename . 'p' );
+    protected function dropPermissionFields( $strField ) {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $objSQLBuilder->dropTableField( 'tl_user' , $strField );
+        $objSQLBuilder->dropTableField( 'tl_user' , $strField . 'p' );
+
+        $objSQLBuilder->dropTableField( 'tl_user_group' , $strField );
+        $objSQLBuilder->dropTableField( 'tl_user_group' , $strField . 'p' );
+
+        $objSQLBuilder->dropTableField( 'tl_member_group' , $strField );
+        $objSQLBuilder->dropTableField( 'tl_member_group' , $strField . 'p' );
+    }
+
+
+    protected function insertPermissionFields( $strField ) {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $objSQLBuilder->alterTableField( 'tl_user', $strField, 'blob NULL' );
+        $objSQLBuilder->alterTableField( 'tl_user', $strField . 'p', 'blob NULL' );
+
+        $objSQLBuilder->alterTableField( 'tl_user_group', $strField, 'blob NULL' );
+        $objSQLBuilder->alterTableField( 'tl_user_group', $strField . 'p', 'blob NULL' );
+
+        $objSQLBuilder->alterTableField( 'tl_member_group', $strField, 'blob NULL' );
+        $objSQLBuilder->alterTableField( 'tl_member_group', $strField . 'p', 'blob NULL' );
+    }
+
+
+    protected function renamePermissionFields( $strOldFieldname, $strNewFieldname ) {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strNewFieldname, $strOldFieldname, 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
+
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strNewFieldname, $strOldFieldname, 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
+
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strNewFieldname, $strOldFieldname, 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
     }
 
 

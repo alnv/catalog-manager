@@ -78,8 +78,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'default' => '{field_type_legend},type,name,title;',
         'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{invisible_legend},invisible;',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,tabindex,multiple,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,tabindex,multiple,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,tabindex,cssID;rangeLowType,rangeGreatType;{template_legend:hide},template;{invisible_legend},invisible;',
     ],
@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useColumn' => 'catalogColumn',
+        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
     ],
 
@@ -241,6 +241,35 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'sql' => "char(1) NOT NULL default ''"
         ],
 
+        'includeBlankOption' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'blankOptionLabel' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 64,
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
+        ],
+
         'rangeGreatLabel' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'],
@@ -317,17 +346,17 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'eval' => [
 
-                'maxlength' => 12,
+                'maxlength' => 18,
                 'mandatory' => true,
                 'tl_class' => 'clr',
                 'submitOnChange' => true
             ],
 
-            'options' => [ 'useColumn', 'useOptions', 'useDbOptions' ],
+            'options' => [ 'useOptions', 'useDbOptions', 'useActiveDbOptions' ],
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'],
 
             'exclude' => true,
-            'sql' => "varchar(12) NOT NULL default ''"
+            'sql' => "varchar(18) NOT NULL default ''"
         ],
 
         'options' => [
@@ -345,9 +374,9 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'sql' => "blob NULL"
         ],
 
-        'catalogColumn' => [
+        'dbColumn' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['catalogColumn'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'],
             'inputType' => 'select',
 
             'eval' => [

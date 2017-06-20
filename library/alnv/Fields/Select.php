@@ -79,7 +79,7 @@ class Select {
 
             return $arrReturn;
         }
-
+        
         return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $varValue ] : $varValue;
     }
 

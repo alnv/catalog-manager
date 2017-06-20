@@ -9,8 +9,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'onload_callback' => [
 
-            [ 'CatalogManager\tl_catalog', 'checkPermission' ],
-            [ 'CatalogManager\tl_catalog', 'checkLicence' ]
+            [ 'CatalogManager\tl_catalog', 'checkPermission' ]
         ],
 
         'onsubmit_callback' => [

@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,jumpTo,resetForm;{expert_legend:hide},attributes,formID'
+        'default' => '{general_legend},title,jumpTo,method,resetForm;{expert_legend:hide},attributes'
     ],
 
     'fields' => [
@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'clr',
                 'fieldType'=>'radio',
             ],
 
@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
         'resetForm' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['resetForm'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['resetForm'],
             'inputType' => 'checkbox',
 
             'eval' => [
@@ -136,6 +136,24 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'method' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['method'],
+            'inputType' => 'select',
+            'default' => 'GET',
+
+            'eval' => [
+
+                'maxlength' => 8,
+                'tl_class'=>'w50'
+            ],
+
+            'options' => [ 'GET', 'POST' ],
+
+            'exclude' => true,
+            'sql' => "varchar(8) NOT NULL default ''"
         ],
 
         'attributes' => [
@@ -152,23 +170,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
-        ],
-
-        'formID' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['formID'],
-            'inputType' => 'text',
-
-            'eval' => [
-
-                'nospace'=>true,
-                'maxlength'=>64,
-                'tl_class'=>'w50'
-            ],
-
-            'exclude' => true,
-            'search' => true,
-            'sql' => "varchar(64) NOT NULL default ''"
         ]
     ]
 ];

@@ -12,6 +12,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Platzhalter', 'Bitte geben Sie einen Platzhalter ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];

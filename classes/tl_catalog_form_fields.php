@@ -169,4 +169,20 @@ class tl_catalog_form_fields extends \Backend {
 
         return $this->getTemplateGroup( sprintf( 'ctlg_form_field_%s', $strType ) );
     }
+
+
+    public function getFormFields( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $objFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_form_fields WHERE pid = ? AND id != ? ORDER BY sorting' )->execute( $dc->activeRecord->pid, $dc->activeRecord->id );
+
+        if ( !$objFields->numRows ) return $arrReturn;
+
+        while ( $objFields->next() ) {
+
+            $arrReturn[ $objFields->name ] = $objFields->title ? $objFields->title : $objFields->name;
+        }
+
+        return $arrReturn;
+    }
 }

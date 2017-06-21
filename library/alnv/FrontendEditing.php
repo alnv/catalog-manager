@@ -209,6 +209,8 @@ class FrontendEditing extends CatalogController {
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
         $this->FrontendEditingPermission->initialize();
 
+        if ( $strMode == 'copy' ) $strMode = 'create';
+
         return $this->FrontendEditingPermission->hasPermission( $strMode, $this->catalogTablename );
     }
     

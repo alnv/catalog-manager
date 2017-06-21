@@ -433,7 +433,7 @@ class FrontendEditing extends CatalogController {
             if ( $arrField['_fieldname'] == 'alias' ) {
 
                 $objDCACallbacks = new DCACallbacks();
-                $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'] );
+                $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
             }
 
             if ( $objWidget->hasErrors() ) {

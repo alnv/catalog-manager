@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Filter</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Filter">
+            <rect id="Rectangle-4" fill="#FFFFFF" x="2.82999992" y="0.829999983" width="9.5" height="12.5"></rect>
+            <polygon id="Triangle" fill="#25AF80" points="9.9994355 12 6 8 14 8"></polygon>
+            <polygon id="Rectangle-2" fill="#25AF80" points="9.5 11 10.5 11 10.5 15 9.5 14.1306424"></polygon>
+            <rect id="Rectangle-3" stroke="#C9C9C9" stroke-width="0.5" x="7.25" y="2.75" width="3.5" height="1"></rect>
+            <rect id="Rectangle-3-Copy-2" stroke="#25AF80" stroke-width="0.5" x="4.25" y="2.75" width="1.5" height="1"></rect>
+            <rect id="Rectangle-3-Copy-3" stroke="#25AF80" stroke-width="0.5" x="4.25" y="5.25" width="1.5" height="1"></rect>
+            <rect id="Rectangle-3-Copy" stroke="#C9C9C9" stroke-width="0.5" x="7.25" y="5.25" width="3.5" height="1"></rect>
+            <polyline id="Path-2" stroke="#25AF80" stroke-width="0.66" points="9.0045166 13.0007629 3.00870479 13.0007629 3.00870479 1.01422051 12.0191347 1.01422051 12.0191347 7.49356168"></polyline>
+            <polyline id="Path-3" stroke="#25AF80" stroke-width="0.66" points="11.0035706 13.0009918 12.0070343 13.0009918 12.0070343 10.4032438"></polyline>
+            <polygon id="Rectangle" fill="#FFFFFF" points="11.6145935 10.3825226 12.3353729 9.66485596 12.3343658 10.4077148 11.6145935 11.1203156"></polygon>
+        </g>
+    </g>
+</svg>

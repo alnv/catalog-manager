@@ -15,7 +15,7 @@ $GLOBALS['BE_MOD']['system']['catalog-manager'] = [
 $GLOBALS['BE_MOD']['content']['filterform'] = [
 
     'name' => 'filterform',
-    'icon' => '', // @todo
+    'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
 
     'tables' => [
 

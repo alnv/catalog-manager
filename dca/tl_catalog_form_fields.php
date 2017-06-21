@@ -77,11 +77,11 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         '__selector__' => [ 'type', 'optionsType' ],
 
         'default' => '{field_type_legend},type,name,title;',
-        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{invisible_legend},invisible;',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;rangeLowType,rangeGreatType;{template_legend:hide},template;{invisible_legend},invisible;',
+        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;rangeLowType,rangeGreatType;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
     ],
 
     'subpalettes' => [
@@ -350,6 +350,26 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'dependOnField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getFormFields' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'optionsType' => [

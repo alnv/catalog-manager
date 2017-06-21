@@ -566,7 +566,7 @@ class FrontendEditing extends CatalogController {
         if ( !$this->arrValues['alias'] ) {
 
             $objDCACallbacks = new DCACallbacks();
-            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'] );
+            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
         }
 
         switch ( $this->strAct ) {

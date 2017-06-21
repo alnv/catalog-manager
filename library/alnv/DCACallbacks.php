@@ -162,14 +162,23 @@ class DCACallbacks extends \Backend {
 
 
     public function generateFEAlias( $varValue, $strTitle, $strTablename, $strID, $strModuleID = '' ) {
-        
+
         if ( !$varValue && $strTitle ) {
 
             $varValue = \StringUtil::generateAlias( $strTitle );
         }
 
-        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? AND id != ?', $strTablename ) )->execute( $varValue, $strID );
+        $arrValues = [ $varValue ];
+        $strSQLStatement = sprintf( 'SELECT * FROM %s WHERE `alias` = ?', $strTablename );
 
+        if ( !is_null( $strID ) ) {
+
+            $strSQLStatement = $strSQLStatement . ' ' . 'AND id != ?';
+            $arrValues[] = $strID;
+        }
+
+        $objCatalogs = $this->Database->prepare( $strSQLStatement )->execute( $arrValues );
+        
         if ( $objCatalogs->numRows && \Input::get( 'id' . $strModuleID ) ) {
 
             $varValue .= '_' . \Input::get( 'id' . $strModuleID );

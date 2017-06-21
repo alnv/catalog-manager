@@ -78,9 +78,9 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'default' => '{field_type_legend},type,name,title;',
         'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{invisible_legend},invisible;',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,tabindex,multiple,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;rangeLowType,rangeGreatType;{template_legend:hide},template;{invisible_legend},invisible;',
     ],
 
@@ -235,6 +235,20 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'submitOnChange' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['submitOnChange'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,

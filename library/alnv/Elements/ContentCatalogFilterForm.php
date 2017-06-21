@@ -144,6 +144,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['value'] = $this->getActiveOptions( $arrField );
         $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
+        $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
 
@@ -164,6 +165,9 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function getActiveOptions( $arrField ) {
 
         $strValue = $arrField['defaultValue'] ? $arrField['defaultValue'] : '';
+
+        if ( $strValue ) \Input::setGet( $arrField['name'], $strValue );
+
         $strValue = $this->getInput( $arrField['name'], $strValue );
 
         if ( $arrField['type'] == 'select' || $arrField['type'] == 'checkbox' ) {

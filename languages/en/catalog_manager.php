@@ -25,3 +25,5 @@ $GLOBALS['TL_LANG']['catalog_manager']['fields']['id'] = [ 'ID', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'] = [ 'Parent ID', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'] = [ 'Sorting value', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'] = [ 'Revision date', '' ];
+
+$GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'] = [ 'Here you can allow access to catalog operations.', 'Here you can define the permissions.' ];

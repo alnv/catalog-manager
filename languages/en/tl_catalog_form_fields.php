@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Multiple', 'Make 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Placeholder', 'Please enter your placeholder.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Description', 'Please enter short description.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Hide', 'Do not show this field in the filter form.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'] = [ 'Related field', 'Please select a related field.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Default-Value', 'Here you can enter default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'] = [ 'Field label (low)', 'Please enter your field label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['submitOnChange'] = [ 'Submit on change', 'Page will be reloaded by submit.' ];

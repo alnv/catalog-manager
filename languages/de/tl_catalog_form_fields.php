@@ -2,16 +2,18 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['new'] = [ 'Neues Eingabefeld erstellen', 'Hier können Sie ein neues Eingabefeld erstellen.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['general_legend'] = 'Allgemeine-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['option_legend'] = 'Auswahlliste-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['field_type_legend'] = 'Eingabefeld-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible_legend'] = 'Sichtbarkeitseinstellungen';
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependency_legend'] = 'Feldabhängigkeit-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben Sie ein Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'] = [ 'Bezugsfeld', 'Bitte wählen Sie ein Bezugsfeld aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Platzhalter', 'Bitte geben Sie einen Platzhalter ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];

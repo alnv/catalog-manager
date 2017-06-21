@@ -78,10 +78,10 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'default' => '{field_type_legend},type,name,title;',
         'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{invisible_legend},invisible;',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,includeBlankOption,blankOptionLabel,tabindex,multiple,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,tabindex,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,tabindex,cssID;rangeLowType,rangeGreatType;{template_legend:hide},template;{invisible_legend},invisible;',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,cssID;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;rangeLowType,rangeGreatType;{template_legend:hide},template;{invisible_legend},invisible;',
     ],
 
     'subpalettes' => [

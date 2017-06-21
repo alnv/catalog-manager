@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Description', 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Hide', 'Do not show this field in the filter form.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Default-Value', 'Here you can enter default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowLabel'] = [ 'Field label (low)', 'Please enter your field label.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['submitOnChange'] = [ 'Submit on change', 'Page will be reloaded by submit.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Add blank option', 'Here you can add blank option.'];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Field label (great)', 'Please enter your field label.' ];

@@ -33,11 +33,15 @@ class MemberPermissionExtension extends CatalogController {
 
     protected function extendMemberGroupDCA( $strCatalogname ){
 
-        $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
+        $arrAccessLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
+        $arrPermissionLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] );
+
+        $arrAccessLabel[1] = $GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'][0];
+        $arrPermissionLabel[1] = $GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'][1];
 
         \Controller::loadLanguageFile( 'tl_member_group' );
 
-        $GLOBALS['TL_LANG']['tl_member_group'][ $strCatalogname . '_legend' ] = $arrLabels[0] . ' [' . $strCatalogname . ']';
+        $GLOBALS['TL_LANG']['tl_member_group'][ $strCatalogname . '_legend' ] = $arrAccessLabel[0];
 
         $GLOBALS['TL_DCA']['tl_member_group']['palettes']['__selector__'][] = $strCatalogname;
         $GLOBALS['TL_DCA']['tl_member_group']['subpalettes'][$strCatalogname] = $strCatalogname . 'p';
@@ -45,7 +49,7 @@ class MemberPermissionExtension extends CatalogController {
 
         $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname ] = [
 
-            'label' => $arrLabels,
+            'label' => $arrAccessLabel,
             'inputType' => 'checkbox',
 
             'eval' => [
@@ -59,14 +63,14 @@ class MemberPermissionExtension extends CatalogController {
 
         $GLOBALS['TL_DCA']['tl_member_group']['fields'][ $strCatalogname . 'p' ] = [
 
-            'label' => $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
+            'label' => $arrPermissionLabel,
             'inputType' => 'checkbox',
 
             'options' => [
 
-                'edit',
                 'create',
-                'delete',
+                'edit',
+                'delete'
             ],
 
             'eval' => [

@@ -97,9 +97,8 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
-        $blnHasPermission = $this->FrontendEditing->checkPermission( $this->strAct );
 
-        if ( !$blnHasPermission ) {
+        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );
@@ -140,14 +139,6 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->objMainTemplate = $this->Template;
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
         $this->CatalogView->initialize();
-
-        if ( !$this->CatalogView->checkPermission() ) {
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $this->CatalogView->arrViewPage['id'] );
-
-            return null;
-        }
 
         $this->Template->message = '';
         $this->Template->map = $this->CatalogView->getMapViewOptions();
@@ -196,14 +187,6 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
 
-        if ( !$this->CatalogView->checkPermission() ) {
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
-
-            return null;
-        }
-
         $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
         $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
 
@@ -232,10 +215,8 @@ class ModuleUniversalView extends \Module {
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
-        $blnHasAccess = $this->FrontendEditing->checkAccess();
-        $blnHasPermission = $this->FrontendEditing->checkPermission( $this->strAct );
 
-        if ( !$blnHasPermission || !$blnHasAccess ) {
+        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );

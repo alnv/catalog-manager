@@ -28,10 +28,7 @@
       <?php endif; ?>
 
       <?php if( $this->captchaWidget ): ?>
-         <fieldset>
-            <legend><?= $this->captchaLabel; ?></legend>
-            <?= $this->captchaWidget; ?>
-         </fieldset>
+         <?= $this->captchaWidget; ?>
       <?php endif; ?>
 
       <div class="submit_container">

@@ -161,7 +161,7 @@ class DCACallbacks extends \Backend {
     }
 
 
-    public function generateFEAlias( $varValue, $strTitle, $strTablename, $strID ) {
+    public function generateFEAlias( $varValue, $strTitle, $strTablename, $strID, $strModuleID = '' ) {
 
         if ( !$varValue && $strTitle ) {
 
@@ -170,12 +170,12 @@ class DCACallbacks extends \Backend {
 
         $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? AND id != ?', $strTablename ) )->execute( $varValue, $strID );
 
-        if ( $objCatalogs->numRows && \Input::get('id') ) {
+        if ( $objCatalogs->numRows && \Input::get( 'id' . $strModuleID ) ) {
 
-            $varValue .= '_' . \Input::get('id');
+            $varValue .= '_' . \Input::get( 'id' . $strModuleID );
         }
 
-        if ( $objCatalogs->numRows && !\Input::get('id') ) {
+        if ( $objCatalogs->numRows && !\Input::get( 'id' . $strModuleID ) ) {
 
             $varValue .= '_' . md5( time() . uniqid() );
         }

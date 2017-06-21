@@ -86,7 +86,33 @@ class OptionsGetter extends CatalogController {
             return $arrOptions;
         }
 
-        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT DISTINCT * FROM %s', $this->arrField['dbTable'] ) )->execute();
+        $arrSQLQuery = [
+
+            'table' => $this->arrField['dbTable'],
+            'where' => []
+        ];
+
+        $this->getActiveEntityValues();
+        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
+        $arrQueries = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
+
+            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
+
+            if ( is_null( $arrQuery['value'] ) ) {
+
+                return null;
+            }
+
+            if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
+
+                return null;
+            }
+
+            return $arrQuery;
+        });
+
+        $arrSQLQuery['where'] = $arrQueries;
+        $objEntities = $this->SQLQueryBuilder->execute( $arrSQLQuery );
 
         if ( !$objEntities->numRows ) return $arrOptions;
 

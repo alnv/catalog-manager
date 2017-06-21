@@ -48,7 +48,12 @@ class FrontendEditingPermission extends CatalogController {
 
             return true;
         }
-        
+
+        if ( !$this->hasAccess( $strCatalogname ) ) {
+
+            return false;
+        }
+
         if ( !empty( $this->{$strCatalogname. 'p'} ) && is_array( $this->{$strCatalogname. 'p'} ) ) {
             
             return in_array( $strMode, $this->{$strCatalogname. 'p'} );

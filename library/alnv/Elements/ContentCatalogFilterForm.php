@@ -142,6 +142,11 @@ class ContentCatalogFilterForm extends \ContentElement {
         }
 
         $arrField['value'] = $this->getActiveOptions( $arrField );
+        $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
+        $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
+        $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
+        $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
+
         $objTemplate->setData( $arrField );
 
         return $objTemplate->parse();

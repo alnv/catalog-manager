@@ -1,4 +1,4 @@
-<div class="ctlg_form_field_range">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_range">
    <div>
       <?php if( $this->rangeLowLabel ): ?>
          <label for="id_form_<?= $this->ltName ?>"><?= $this->rangeLowLabel ?></label>

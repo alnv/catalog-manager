@@ -1,4 +1,4 @@
-<div class="ctlg_form_field_checkbox">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_checkbox">
    <?php if( $this->label ): ?>
       <p><?= $this->label ?></p>
    <?php endif; ?>

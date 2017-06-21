@@ -1,8 +1,8 @@
-<div class="ctlg_form_field_select">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_select">
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>
-   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?>[]"<?= $this->multiple ?>>
+   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?>[]"<?= $this->multiple ?> <?= $this->tabindex ?>>
       <?php foreach( $this->options as $strKey => $strTitle ): ?>
          <option value="<?= $strKey ?>" <?= ( !empty( $this->value ) && in_array( $strKey, $this->value ) ? 'selected' : '' ) ?>><?= $strTitle ?></option>
       <?php endforeach; ?>

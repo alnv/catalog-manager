@@ -11,7 +11,7 @@ You can install Catalog Manager in Extension Repository. Just search for "Catalo
 
 **Contao 4.3**
 
-- Download [Catalog Manager][2]
+- Download latest [Catalog Manager][2] Version
 - Unzip and rename the folder into "catalog-manager"
 - Copy "catalog-manager" folder into "system/modules/" directory
 - Open "app/AppKernel.php" and put this code on the end of the $bundles array => `new Contao\CoreBundle\HttpKernel\Bundle\ContaoModuleBundle( ('catalog-manager'), $this->getRootDir() )`
@@ -21,6 +21,6 @@ You can install Catalog Manager in Extension Repository. Just search for "Catalo
 Do you have some issues? Contact me: https://www.alexandernaumov.de
 
 [1]: https://catalog-manager.alexandernaumov.de
-[2]: https://github.com/alnv/catalog-manager/archive/v1.3.0.tar.gz
+[2]: https://github.com/alnv/catalog-manager/releases
 [3]: https://catalog-manager.alexandernaumov.de
 [4]: http://catalog-manager-demo.alexandernaumov.de

@@ -73,8 +73,6 @@ class Toolkit {
 
         if ( is_float( $varValue ) ) return floatval( $varValue );
 
-        if ( is_numeric( $varValue ) ) return intval( $varValue );
-
         return $varValue;
     }
 

@@ -120,6 +120,11 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$strTemplate ) return $strReturn;
 
+        if ( $arrField['dependOnField'] &&  !$this->getInput( $arrField['dependOnField'] ) ) {
+
+            return $strReturn;
+        }
+
         $objTemplate = new \FrontendTemplate( $strTemplate );
 
         if ( $arrField['type'] == 'range' ) {

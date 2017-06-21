@@ -65,20 +65,11 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
 
-        $blnHasPermission = $this->CatalogView->checkPermission();
-        $strOutput = $blnHasPermission ? $this->CatalogView->getCatalogView( $arrQuery ) : '';
+        $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
 
         $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
         $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
         $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
-
-        if ( !$blnHasPermission ) {
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
-
-            return null;
-        }
         
         if ( empty( $strOutput ) ) {
 

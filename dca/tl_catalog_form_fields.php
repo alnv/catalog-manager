@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn',
+        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
     ],
 

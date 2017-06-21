@@ -179,15 +179,13 @@ class CatalogView extends CatalogController {
         $this->objMainTemplate->dateFormat = $this->strDateFormat;
         $this->objMainTemplate->catalogFields = $this->arrCatalogFields;
         $this->objMainTemplate->dateTimeFormat = $this->strDateTimeFormat;
-    }
-
-
-    public function checkPermission() {
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
-        $this->FrontendEditingPermission->initialize();
-        
-        return $this->FrontendEditingPermission->hasAccess( $this->catalogTablename );
+
+        if ( !$this->FrontendEditingPermission->blnDisablePermissions ) {
+
+            $this->FrontendEditingPermission->initialize();
+        }
     }
 
 

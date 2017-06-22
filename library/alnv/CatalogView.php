@@ -726,13 +726,6 @@ class CatalogView extends CatalogController {
             }
         }
 
-        if ( $this->catalogSendJsonHeader ) {
-
-            header('Content-Type: application/json');
-            echo json_encode( $arrCatalogs );
-            exit;
-        }
-
         return $arrCatalogs;
     }
 

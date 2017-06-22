@@ -81,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
-        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;rangeLowType,rangeGreatType;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
     ],
 
     'subpalettes' => [
@@ -313,45 +313,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],
-
-        'rangeGreatType' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'],
-            'inputType' => 'radio',
-
-            'eval' => [
-
-                'tl_class' => 'w50',
-                'maxlength' => 12
-            ],
-
-            'options' => [ 'gt', 'gte' ],
-
-            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeGreatType'],
-
-            'exclude' => true,
-            'sql' => "varchar(12) NOT NULL default ''"
-        ],
-
-        'rangeLowType' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'],
-            'inputType' => 'radio',
-
-            'eval' => [
-
-                'tl_class' => 'w50',
-                'maxlength' => 12
-            ],
-
-            'options' => [ 'lt', 'lte' ],
-
-            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeLowType'],
-
-            'exclude' => true,
-            'sql' => "varchar(12) NOT NULL default ''"
-        ],
-
+        
         'dependOnField' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'],

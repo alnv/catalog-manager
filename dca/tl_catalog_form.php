@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
         'label' => [
 
             'showColumns' => true,
-            'fields' => [ 'title', 'catalog' ]
+            'fields' => [ 'id', 'title', 'method' ]
         ],
 
         'operations' => [
@@ -71,13 +71,14 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,jumpTo,method,resetForm;{expert_legend:hide},attributes'
+        'default' => '{general_legend},title,jumpTo,method,resetForm;{expert_legend:hide},attributes;{catalog_json_legend:hide},sendJsonHeader;'
     ],
 
     'fields' => [
 
         'id' => [
 
+            'label' => [ 'ID', '' ],
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ],
 
@@ -170,6 +171,27 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'sendJsonHeader' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['sendJsonHeader'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'maxlength' => 16,
+                'tl_class' => 'clr',
+                'doNotCopy' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options' => [ 'permanent', 'onAjaxCall' ],
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form']['reference']['sendJsonHeader'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
         ]
     ]
 ];

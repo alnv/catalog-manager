@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['expert_legend'] = 'Expert settings';
 $GLOBALS['TL_LANG']['tl_catalog_form']['general_legend'] = 'General settings';
+$GLOBALS['TL_LANG']['tl_catalog_form']['catalog_json_legend'] = 'JSON settings';
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['new'] = [ 'Create filter form', 'Here you can create new filter form.' ];
 
@@ -15,4 +16,11 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['formID'] = [ 'Form ID', 'The form ID is 
 $GLOBALS['TL_LANG']['tl_catalog_form']['method'] = [ 'Submission method', 'The default form submission method is GET.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['attributes'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['resetForm'] = [ 'Add reset button to form', 'Allow to reset form filter in Frontend.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['sendJsonHeader'] = [ 'application/json', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['jumpTo'] = [ 'Redirect page', 'Please choose the page to which visitors will be redirected after submitting the form.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_form']['reference']['sendJsonHeader'] = [
+
+    'permanent' => 'Permanent',
+    'onAjaxCall' => 'Only on ajax request'
+];

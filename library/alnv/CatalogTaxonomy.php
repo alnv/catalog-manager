@@ -160,36 +160,7 @@ class CatalogTaxonomy extends CatalogController {
                 'table' => $this->catalogTablename
             ];
 
-            $arrQueries['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
-
-                $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
-                $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
-
-                if ( $arrQuery['operator'] && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) {
-
-                    $arrQuery['value'] = '';
-
-                    return $arrQuery;
-                }
-
-                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
-
-                    return null;
-                }
-
-                if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
-
-                    return null;
-                }
-
-                if ( is_array( $arrQuery['value'] ) && $arrQuery['operator'] != 'contain' ) {
-
-                    $arrQuery['multiple'] = true;
-                }
-
-                return $arrQuery;
-            });
-
+            $arrQueries['where'] = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
             $strQuery = $this->SQLQueryHelper->SQLQueryBuilder->getWhereQuery( $arrQueries );
             $arrValues = $this->SQLQueryHelper->SQLQueryBuilder->getValues();
         }
@@ -368,26 +339,6 @@ class CatalogTaxonomy extends CatalogController {
         }
 
         return false;
-    }
-
-
-    protected function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
-
-        $varValue = \Input::get( $arrField['fieldname'] . $this->id ) ? \Input::get( $arrField['fieldname'] . $this->id ) : $strValue;
-        $varValue = \Controller::replaceInsertTags( $varValue );
-
-        if ( $varValue && ( $arrField['type'] == 'checkbox' || $arrField['multiple'] || $strOperator == 'contain' ) ) {
-
-            $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
-        }
-
-        if ( $arrField['type'] == 'date' || in_array( $arrField['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
-
-            $objDate = new \Date( $varValue );
-            $varValue  = $objDate->tstamp;
-        }
-
-        return Toolkit::prepareValueForQuery( $varValue );
     }
 
 

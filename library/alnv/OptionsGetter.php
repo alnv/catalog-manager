@@ -94,19 +94,9 @@ class OptionsGetter extends CatalogController {
 
         $this->getActiveEntityValues();
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
-        $arrQueries = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
+        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-
-            if ( is_null( $arrQuery['value'] ) ) {
-
-                return null;
-            }
-
-            if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
-
-                return null;
-            }
 
             return $arrQuery;
         });
@@ -215,19 +205,9 @@ class OptionsGetter extends CatalogController {
 
         $this->getActiveEntityValues();
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
-        $arrQueries = Toolkit::parseWhereQueryArray( $arrQueries, function( $arrQuery ) {
+        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-            
-            if ( is_null( $arrQuery['value'] ) ) {
-
-                return null;
-            }
-
-            if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
-
-                return null;
-            }
 
             return $arrQuery;
         });
@@ -270,14 +250,9 @@ class OptionsGetter extends CatalogController {
             $strValue = $strFieldnameValue ? $strFieldnameValue : '';
         }
 
-        if ( $strOperator == 'contain' && is_string( $strValue )) {
+        if ( $strOperator == 'contain' && is_string( $strValue ) ) {
 
             $strValue = explode( ',', $strValue );
-        }
-
-        if ( $strValue && is_string( $strValue ) && $this->arrField['multiple'] ) {
-
-            // @todo
         }
 
         return Toolkit::prepareValueForQuery( $strValue );

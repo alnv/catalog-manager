@@ -303,35 +303,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
 
-            $arrQuery['where'] = Toolkit::parseWhereQueryArray( $this->catalogTaxonomies['query'], function ( $arrQuery ) {
-
-                $arrField = $this->arrCatalogFields[ $arrQuery['field'] ];
-                $arrQuery['value'] = $this->getParseQueryValue( $arrField, $arrQuery['value'], $arrQuery['operator'] );
-
-                if ( $arrQuery['operator'] && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) {
-
-                    $arrQuery['value'] = '';
-
-                    return $arrQuery;
-                }
-
-                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
-
-                    return null;
-                }
-
-                if ( empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
-
-                    return null;
-                }
-
-                if ( is_array( $arrQuery['value'] ) && $arrQuery['operator'] != 'contain' ) {
-
-                    $arrQuery['multiple'] = true;
-                }
-
-                return $arrQuery;
-            });
+            $arrQuery['where'] = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
         }
 
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) && !BE_USER_LOGGED_IN ) {
@@ -927,26 +899,6 @@ class CatalogView extends CatalogController {
 
             []
         );
-    }
-
-
-    protected function getParseQueryValue( $arrField, $strValue = '', $strOperator = '' ) {
-
-        $varValue = \Input::get( $arrField['fieldname'] . $this->id ) ? \Input::get( $arrField['fieldname'] . $this->id ) : $strValue;
-        $varValue = \Controller::replaceInsertTags( $varValue );
-
-        if ( $varValue && ( $arrField['type'] == 'checkbox' || $arrField['multiple'] || $strOperator == 'contain' ) ) {
-
-            $varValue = is_string( $varValue ) ? explode( ',', $varValue ) : $varValue;
-        }
-
-        if ( $arrField['type'] == 'date' || in_array( $arrField['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
-
-            $objDate = new \Date( $varValue );
-            $varValue  = $objDate->tstamp;
-        }
-
-        return Toolkit::prepareValueForQuery( $varValue );
     }
 
 

@@ -67,6 +67,7 @@ ClassLoader::addClasses([
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
     'CatalogManager\CatalogManagerVerification' => 'system/modules/catalog-manager/library/alnv/CatalogManagerVerification.php',
+    'CatalogManager\FilterValuesInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValuesInsertTag.php',
     'CatalogManager\ContentCatalogFilterForm' => 'system/modules/catalog-manager/library/alnv/Elements/ContentCatalogFilterForm.php',
     'CatalogManager\ModuleCatalogTaxonomyTree' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogTaxonomyTree.php',
     'CatalogManager\CatalogRelationRedirectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationRedirectWizard.php',

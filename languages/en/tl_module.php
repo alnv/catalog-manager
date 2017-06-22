@@ -100,7 +100,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'] = [ 'Parameter', 'He
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomyRedirect'] = [ 'Overwrite redirect', 'Here you can define a new redirect.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyRedirect'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseArray'] = [ 'Output as array', 'Here you can output entities as array. Call <strong>$this->data</strong> instead $this->output.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json Header', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogGroupBy'] = [ 'Group By', 'Here you can group the records according to a specific field.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogGroupHeadlineTag'] = [ 'Headline size', 'Here you can define the headline size.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [insert]', 'Manage notifications.' ];
@@ -114,6 +114,12 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 
     'ASC' => 'Ascending',
     'DESC' => 'Descending'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSendJsonHeader'] = [
+
+    'permanent' => 'Permanent',
+    'onAjaxCall' => 'Only on ajax request'
 ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRoutingSource'] = [

@@ -22,17 +22,29 @@ class ContentCatalogFilterForm extends \ContentElement {
     
     protected function compile() {
 
+        $arrFields = [];
         $blnReady = $this->initialize();
 
         if ( !$blnReady ) return;
-
-        $arrFields = [];
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
             foreach ( $this->arrFormFields as $strName => $arrField ) {
 
-                $arrFields[ $strName ] = $this->parseFieldTemplate( $arrField );
+                $this->arrFormFields[$strName] = $this->parseField( $arrField );
+
+                if ( $this->arrFormFields[$strName]['dependOnField'] &&  !$this->getInput( $this->arrFormFields[$strName]['dependOnField'] ) ) {
+
+                    continue;
+                }
+
+                $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
+                if ( !$strTemplate ) continue;
+
+                $objTemplate = new \FrontendTemplate( $strTemplate );
+                $objTemplate->setData( $this->arrFormFields[$strName] );
+
+                $arrFields[$strName] = $objTemplate->parse();
             }
         }
 
@@ -45,6 +57,27 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->method = $this->getMethodAttr();
         $this->Template->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
+
+        if ( $this->arrForm['sendJsonHeader'] ) {
+
+            $this->import( 'CatalogAjaxController' );
+
+            $this->CatalogAjaxController->setData([
+
+                'form' => $this->arrForm,
+                'data' => $this->arrFormFields,
+                'reset' => $this->Template->reset,
+                'fields' => $this->Template->fields,
+                'action' => $this->Template->action,
+                'method' => $this->Template->method,
+                'formID' => $this->Template->formID,
+                'cssClass' => $this->Template->cssClass,
+            ]);
+
+            $this->CatalogAjaxController->setType( $this->arrForm['sendJsonHeader'] );
+            $this->CatalogAjaxController->setModuleID( $this->arrForm['id'] );
+            $this->CatalogAjaxController->sendJsonData();
+        }
     }
 
  
@@ -113,19 +146,7 @@ class ContentCatalogFilterForm extends \ContentElement {
     }
 
 
-    protected function parseFieldTemplate( $arrField ) {
-
-        $strReturn = '';
-        $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
-
-        if ( !$strTemplate ) return $strReturn;
-
-        if ( $arrField['dependOnField'] &&  !$this->getInput( $arrField['dependOnField'] ) ) {
-
-            return $strReturn;
-        }
-
-        $objTemplate = new \FrontendTemplate( $strTemplate );
+    protected function parseField( $arrField ) {
 
         if ( $arrField['type'] == 'range' ) {
 
@@ -153,9 +174,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
 
-        $objTemplate->setData( $arrField );
-
-        return $objTemplate->parse();
+        return $arrField;
     }
 
 

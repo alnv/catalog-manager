@@ -97,7 +97,7 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-
+            $arrQuery['allowEmptyValues'] = true;
             return $arrQuery;
         });
 
@@ -208,7 +208,7 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-
+            $arrQuery['allowEmptyValues'] = true;
             return $arrQuery;
         });
 

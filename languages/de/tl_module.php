@@ -1,25 +1,25 @@
 <?php
 
 $GLOBALS['TL_LANG']['tl_module']['catalog_legend'] = 'Allgemeine-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogView_legend'] = 'Listenansicht-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomy-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogMap_legend'] = 'Karten-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['orderBy_legend'] = 'Sortierungseinstellungen';
-$GLOBALS['TL_LANG']['tl_module']['pagination_legend'] = 'Seitennummerierung-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['master_legend'] = 'Detailansicht-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['join_legend'] = 'Verknüpfungs-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['relation_legend'] = 'Beziehungs-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['frontendEditing_legend'] = 'Frontend Editing-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['radiusSearch_legend'] = 'Umkreissuche-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_view_legend'] = 'Listenansicht-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomy-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_map_legend'] = 'Karten-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_orderBy_legend'] = 'Sortierungseinstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_pagination_legend'] = 'Seitennummerierung-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_master_legend'] = 'Detailansicht-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_join_legend'] = 'Verknüpfungs-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_relation_legend'] = 'Beziehungs-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_frontendEditing_legend'] = 'Frontend Editing-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_radiusSearch_legend'] = 'Umkreissuche-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_comments_legend'] = 'Kommentar-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterFields_legend'] = 'Feld-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Formular-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Weiterleitungseinstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomie-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend'] = 'Format-Einstellungen';
-$GLOBALS['TL_LANG']['tl_module']['permission_legend'] = 'Berechtigungseinstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterFields_legend'] = 'Feld-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterSettings_legend'] = 'Formular-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterRedirect_legend'] = 'Weiterleitungseinstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterTemplates_legend'] = 'Template-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_fieldDependencies_legend'] = 'Feldabhängigkeit-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomie-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_json_legend'] = 'JSON-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Berechtigungseinstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];

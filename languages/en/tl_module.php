@@ -1,24 +1,24 @@
 <?php
 
 $GLOBALS['TL_LANG']['tl_module']['catalog_legend'] = 'General settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogView_legend'] = 'List view settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomy_legend'] = 'Taxonomy settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogMap_legend'] = 'Google Maps settings';
-$GLOBALS['TL_LANG']['tl_module']['orderBy_legend'] = 'Sort settings';
-$GLOBALS['TL_LANG']['tl_module']['pagination_legend'] = 'Pagination settings';
-$GLOBALS['TL_LANG']['tl_module']['master_legend'] = 'Detail view settings';
-$GLOBALS['TL_LANG']['tl_module']['join_legend'] = 'Table joins settings';
-$GLOBALS['TL_LANG']['tl_module']['relation_legend'] = 'Catalog links settings';
-$GLOBALS['TL_LANG']['tl_module']['frontendEditing_legend'] = 'Frontend Editing settings';
-$GLOBALS['TL_LANG']['tl_module']['radiusSearch_legend'] = 'Radius search settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_view_legend'] = 'List view settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_map_legend'] = 'Google Maps settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_orderBy_legend'] = 'Sort settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_pagination_legend'] = 'Pagination settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_master_legend'] = 'Detail view settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_join_legend'] = 'Table joins settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_relation_legend'] = 'Catalog links settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_frontendEditing_legend'] = 'Frontend editing settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_radiusSearch_legend'] = 'Radius search settings';
 $GLOBALS['TL_LANG']['tl_module']['catalog_comments_legend'] = 'Comments settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterFields_legend'] = 'Field settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterSettings_legend'] = 'Form settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterRedirect_legend'] = 'Redirect settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogFilterTemplates_legend'] = 'Template settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogFieldDependencies_legend'] = 'Field dependencies settings';
-$GLOBALS['TL_LANG']['tl_module']['catalogOutput_legend']= 'Format settings';
-$GLOBALS['TL_LANG']['tl_module']['permission_legend'] = 'Permission settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterFields_legend'] = 'Field settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterSettings_legend'] = 'Form settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterRedirect_legend'] = 'Redirect settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_filterTemplates_legend'] = 'Template settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_fieldDependencies_legend'] = 'Field dependencies settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomy settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_json_legend']= 'JSON settings';
+$GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Permission settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];

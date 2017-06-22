@@ -188,58 +188,44 @@ class Toolkit {
         return $arrReturn;
     }
 
+    
+    public static function parseQueries( $arrQueries, $fnCallback = null ) {
 
-    // @todo improve
-    public static function parseWhereQueryArray( $arrQueries, $fnCallback = null ) {
-
-        $intIndex = 0;
         $arrReturn = [];
 
         if ( !empty( $arrQueries ) && is_array( $arrQueries ) ) {
 
             foreach ( $arrQueries as $arrQuery ) {
 
-                if ( $arrQuery['subQueries'] && is_array( $arrQuery['subQueries'] ) ) {
+                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
 
-                    $arrMainQuery = [
+                    return null;
+                }
+
+                if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
+
+                    $arrQuery = $fnCallback( $arrQuery );
+                }
+
+                $arrQuery = static::parseQuery( $arrQuery );
+
+                if ( is_null( $arrQuery ) ) continue;
+
+                if ( !empty( $arrQuery['subQueries'] ) && is_array( $arrQuery['subQueries'] ) ) {
+
+                    $arrSubQueries = static::parseQueries( $arrQuery['subQueries'] );
+
+                    array_insert( $arrSubQueries, 0, [[
 
                         'field' => $arrQuery['field'],
                         'value' => $arrQuery['value'],
                         'operator' => $arrQuery['operator'],
-                    ];
+                    ]]);
 
-                    if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
-
-                        $arrMainQuery = $fnCallback( $arrQuery );
-                    }
-                    if ( !is_null( $arrMainQuery ) ) {
-
-                        $arrReturn[$intIndex][] = $arrMainQuery;
-                    }
-
-                    foreach ( $arrQuery['subQueries'] as $arrSubQuery ) {
-                        
-                        if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
-
-                            $arrSubQuery = $fnCallback( $arrSubQuery );
-                        }
-
-                        if ( is_null( $arrSubQuery ) ) continue;
-
-                        $arrReturn[$intIndex][] = $arrSubQuery;
-                    }
-
-                    $intIndex++;
+                    $arrReturn[] = $arrSubQueries;
                 }
 
                 else {
-
-                    if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
-
-                        $arrQuery = $fnCallback( $arrQuery );
-                    }
-
-                    if ( is_null( $arrQuery ) ) continue;
 
                     $arrReturn[] = $arrQuery;
                 }
@@ -249,7 +235,54 @@ class Toolkit {
         return $arrReturn;
     }
 
-    
+
+    public static function parseQuery( $arrQuery ) {
+
+        if ( is_array( $arrQuery['value'] ) ) {
+
+            if ( !empty( $arrQuery['value'] ) ) {
+
+                foreach ( $arrQuery['value'] as $strK => $strV ) {
+
+                    $arrQuery['value'][ $strK ] = \Controller::replaceInsertTags( $strV );
+                }
+            }
+
+            if ( $arrQuery['operator'] == 'between' ) {
+
+                if ( $arrQuery['value'][0] === '' || $arrQuery['value'][1] === '' ) {
+
+                    return null;
+                }
+            }
+        }
+
+        if ( is_string( $arrQuery['value'] ) ) {
+
+            $arrQuery['value'] = \Controller::replaceInsertTags( $arrQuery['value'] );
+
+            if ( strpos( $arrQuery['value'], ',' ) ) {
+
+                $arrQuery['value'] = explode( ',' , $arrQuery['value'] );
+            }
+        }
+
+        if ( is_array( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'contain', 'between' ] ) ) {
+
+            $arrQuery['multiple'] = true;
+        }
+
+        if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+
+            return null;
+        }
+
+        $arrQuery['value'] = static::prepareValueForQuery( $arrQuery['value'] );
+
+        return $arrQuery;
+    }
+
+
     public static function returnOnlyExistedItems( $arrItems, $arrExistedFields, $blnKeysOnly = false ) {
 
         $arrReturn = [];

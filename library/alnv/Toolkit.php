@@ -188,7 +188,7 @@ class Toolkit {
         return $arrReturn;
     }
 
-    
+
     public static function parseQueries( $arrQueries, $fnCallback = null ) {
 
         $arrReturn = [];
@@ -238,6 +238,8 @@ class Toolkit {
 
     public static function parseQuery( $arrQuery ) {
 
+        $blnAllowEmptyValue = $arrQuery['allowEmptyValues'] ? true : false;
+
         if ( is_array( $arrQuery['value'] ) ) {
 
             if ( !empty( $arrQuery['value'] ) ) {
@@ -272,7 +274,7 @@ class Toolkit {
             $arrQuery['multiple'] = true;
         }
 
-        if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+        if ( ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '') && !$blnAllowEmptyValue ) {
 
             return null;
         }

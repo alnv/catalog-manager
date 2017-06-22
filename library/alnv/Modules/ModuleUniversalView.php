@@ -154,6 +154,26 @@ class ModuleUniversalView extends \Module {
 
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
         }
+
+        if ( $this->catalogSendJsonHeader ) {
+
+            $this->import( 'CatalogAjaxController' );
+
+            $this->CatalogAjaxController->setData([
+
+                'map' => $this->Template->map,
+                'data' => $this->Template->data,
+                'output' => $this->Template->output,
+                'message' => $this->Template->message,
+                'pagination' => $this->Template->pagination,
+                'showAsGroup' => $this->Template->showAsGroup,
+                'operations' => $this->Template->createOperation,
+            ]);
+
+            $this->CatalogAjaxController->setType( $this->catalogSendJsonHeader );
+            $this->CatalogAjaxController->setModuleID( $this->id );
+            $this->CatalogAjaxController->sendJsonData();
+        }
     }
 
 
@@ -201,6 +221,22 @@ class ModuleUniversalView extends \Module {
         $this->Template->showAsGroup = false;
         $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
         $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
+
+        if ( $this->catalogSendJsonHeader ) {
+
+            $this->import( 'CatalogAjaxController' );
+
+            $this->CatalogAjaxController->setData([
+
+                'data' => $this->Template->data,
+                'output' => $this->Template->output,
+                'showAsGroup' => $this->Template->showAsGroup,
+            ]);
+
+            $this->CatalogAjaxController->setType( $this->catalogSendJsonHeader );
+            $this->CatalogAjaxController->setModuleID( $this->id );
+            $this->CatalogAjaxController->sendJsonData();
+        }
     }
 
 

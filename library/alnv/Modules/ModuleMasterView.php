@@ -78,5 +78,21 @@ class ModuleMasterView extends \Module {
 
             return null;
         }
+
+        if ( $this->catalogSendJsonHeader ) {
+
+            $this->import( 'CatalogAjaxController' );
+
+            $this->CatalogAjaxController->setData([
+
+                'data' => $this->Template->data,
+                'output' => $this->Template->output,
+                'showAsGroup' => $this->Template->showAsGroup,
+            ]);
+
+            $this->CatalogAjaxController->setType( $this->catalogSendJsonHeader );
+            $this->CatalogAjaxController->setModuleID( $this->id );
+            $this->CatalogAjaxController->sendJsonData();
+        }
     }
 }

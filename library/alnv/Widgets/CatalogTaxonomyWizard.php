@@ -80,14 +80,14 @@ class CatalogTaxonomyWizard extends \Widget {
 
                 case 'deleteQuery':
 
-                    if ( isset( $strCID ) && ( !isset( $strSID ) || $strSID == '' ) ) {
+                    if ( ( $strCID != '' && is_numeric( $strCID ) ) && ( $strSID == '' || is_null( $strSID ) ) ) {
 
                         unset( $this->varValue['query'][$strCID] );
                     }
 
-                    if ( isset( $strCID ) && ( isset( $strSID ) && $strSID != '' ) ) {
+                    if ( ( $strCID != '' && is_numeric( $strCID ) ) && ( $strSID != '' && is_numeric( $strSID ) ) ) {
 
-                        unset( $this->varValue['query'][$strSID]['subQueries'][$strSID] );
+                        unset( $this->varValue['query'][$strCID]['subQueries'][$strSID] );
                     }
 
                     break;
@@ -136,9 +136,10 @@ class CatalogTaxonomyWizard extends \Widget {
 
             foreach ( $this->varValue['query'] as $intIndex => $arrQuery ) {
 
-                $strRowTemplate .= $this->generateQueryInputFields( $arrQuery, 'and', $intIndex, '' );
+                $blnHasSubs = ( !empty( $arrQuery['subQueries'] ) && is_array( $arrQuery['subQueries'] ) );
+                $strRowTemplate .= $this->generateQueryInputFields( $arrQuery, $blnHasSubs ? 'or' : 'and', $intIndex, '' );
 
-                if ( $arrQuery['subQueries'] && is_array( $arrQuery['subQueries'] ) ) {
+                if ( $blnHasSubs ) {
 
                     foreach ( $arrQuery['subQueries'] as $intSubIndex => $arrSubQuery ) {
 

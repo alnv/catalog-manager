@@ -230,7 +230,6 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
-    // @todo improve
     protected function createWhereStatement() {
 
         $strWhereStatement = '';
@@ -240,81 +239,73 @@ class SQLQueryBuilder extends CatalogController {
             return $strWhereStatement;
         }
 
-        $strWhereStatement .= ' WHERE ';
+        $strWhereStatement .= ' WHERE';
 
-        foreach ( $this->arrQuery['where'] as $intIndex => $arrQueries ) {
+        foreach ( $this->arrQuery['where'] as $intIndex => $arrQuery ) {
 
-            if ( $intIndex ) $strWhereStatement .= ' AND ';
+            if ( $intIndex ) $strWhereStatement .= ' AND';
 
-            if ( !empty( $arrQueries[0] ) && is_array( $arrQueries[0] ) ) {
+            if ( !empty( $arrQuery[0] ) && is_array( $arrQuery[0] ) ) {
 
-                $intOrIndex = 0;
+                $strQuerySeparator = '(';
+                $intTotal = count( $arrQuery ) - 1;
 
-                $strWhereStatement .= '(';
+                foreach ( $arrQuery as $intSubIndex => $arrSubQuery ) {
 
-                foreach ( $arrQueries as $strKey => $varValue ) {
+                    if ( $intSubIndex ) $strQuerySeparator = '';
+                    if ( $intTotal == $intSubIndex ) $strQuerySeparator = ')';
 
-                    if ( $intOrIndex ) $strWhereStatement .= ' OR ';
-
-                    if ( !$varValue['operator'] ) continue;
-
-                    if ( is_bool( $varValue['multiple'] ) &&  $varValue['multiple'] == true ) {
-
-                        if ( !empty( $varValue ) && is_array( $varValue['value'] ) ) {
-
-                            $intValues = count( $varValue['value'] ) -1;
-
-                            foreach ( $varValue['value'] as $intValueIndex => $varQueryValue ) {
-
-                                $this->setValue( $varQueryValue, $varValue['field'] );
-                                $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] ) . ( $intValues !==  $intValueIndex ? ' OR ' : '' );
-                            }
-                        }
-                    }
-
-                    else {
-
-                        $this->setValue( $varValue['value'], $varValue['field'] );
-                        $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $varValue['operator'] ], [ $varValue['field'] ] );
-                    }
-
-                    $intOrIndex++;
+                    $strWhereStatement .= $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strQuerySeparator );
                 }
 
-                $strWhereStatement .= ')';
-            }
+            } else {
 
-            else {
+                if ( !$arrQuery['operator'] ) continue;
 
-                if ( $arrQueries['operator'] ) {
-
-                    if ( is_bool( $arrQueries['multiple'] ) &&  $arrQueries['multiple'] == true ) {
-
-                        if ( !empty( $arrQueries ) && is_array( $arrQueries['value'] ) ) {
-
-                            $strWhereStatement .= '(';
-                            $intValues = count( $arrQueries['value'] ) - 1;
-
-                            foreach ( $arrQueries['value'] as $intValueIndex => $varQueryValue ) {
-
-                                $this->setValue( $varQueryValue, $arrQueries['field'] );
-                                $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] ) . ( $intValues !==  $intValueIndex ? ' OR ' : '' );
-                            }
-
-                            $strWhereStatement .= ')';
-                        }
-                    }
-
-                    else {
-
-                        $this->setValue( $arrQueries['value'], $arrQueries['field'] );
-                        $strWhereStatement .= call_user_func_array( [ 'SQLQueryBuilder', $arrQueries['operator'] ], [ $arrQueries['field'] ] );
-                    }
-                }
+                $strWhereStatement .= $this->createQueryStatement( $arrQuery, '' );
             }
         }
 
         return $strWhereStatement;
+    }
+
+
+    protected function createQueryStatement( $arrQuery, $strOperator, $strSeparator = '' ) {
+
+        $strQuery = '';
+
+        if ( is_bool( $arrQuery['multiple'] ) &&  $arrQuery['multiple'] == true ) {
+
+            if ( !empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
+
+                $strQuerySeparator = '(';
+                $intTotal = count( $arrQuery['value'] ) - 1;
+
+                foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
+
+                    if ( $intIndex ) $strQuerySeparator = '';
+                    if ( $intTotal == $intIndex ) $strQuerySeparator = ')';
+
+                    $strQuery .= $this->createQueryStatement([
+
+                        'value' => $strValue,
+                        'field' => $arrQuery['field'],
+                        'operator' => $arrQuery['operator']
+
+                    ], ( $intIndex ? ' OR' : '' ), $strQuerySeparator );
+                }
+
+                return $strQuery;
+            }
+        }
+
+        $this->setValue( $arrQuery['value'], $arrQuery['field'] );
+        $strEndSeparator = ( $strSeparator == ')' ? $strSeparator : '' );
+        $strStartSeparator = ( $strSeparator == '(' ? $strSeparator : '' );
+
+        $strQuery .= $strStartSeparator . $strOperator . ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] ) . $strEndSeparator;
+
+        return $strQuery;
     }
 
 

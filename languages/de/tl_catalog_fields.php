@@ -77,13 +77,13 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['fullsize'] = [ 'Großansicht/Neues Fen
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileTitle'] = [ 'Titel', 'Bitte wählen Sie für den Titel ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Bezeichnung', 'Bitte wählen Sie für die Bezeichnung ein Eingabefeld.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie für die Tabelle ein Eingabefeld.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie für den Text ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie die zu nutzende Tabelle aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle für den Fremdschlüssel aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie eine Spalte für den angezeigten Text aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Auswahlliste einbinden', 'Hier können Sie eine Auswahlliste an Werten erstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Spalte für den tatsächlichen Wert aus. Dieser Wert wird in der Datenbank gespeichert.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Eingabefeld bearbeiten', 'Eingabefeld mit der ID %s bearbeiten.' ];

@@ -52,6 +52,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
 
         $this->Template->fields = $arrFields;
+        $this->Template->formSubmit = 'tl_filter';
         $this->Template->reset = $this->getResetLink();
         $this->Template->action = $this->getActionAttr();
         $this->Template->method = $this->getMethodAttr();
@@ -106,7 +107,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
     public function getResetLink() {
 
-        if ( !$this->arrForm['resetForm'] ) return '';
+        if ( !$this->arrForm['resetForm'] || $this->arrForm['method'] == 'POST' ) return '';
 
         return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>', str_replace( '?' . \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
     }
@@ -116,6 +117,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$this->catalogForm ) return false;
 
+        $this->import('CatalogInput');
         $objForm = $this->Database->prepare('SELECT * FROM tl_catalog_form WHERE id = ?')->limit(1)->execute( $this->catalogForm );
 
         if ( $objForm->numRows ) {
@@ -224,16 +226,6 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$strFieldname ) return $strDefault;
 
-        if ( \Input::get( $strFieldname ) ) {
-
-           return \Input::get( $strFieldname );
-        }
-
-        if ( \Input::post( $strFieldname ) ) {
-
-            return \Input::post( $strFieldname );
-        }
-
-        return $strDefault;
+        return $this->CatalogInput->getActiveValue( $strFieldname );
     }
 }

@@ -45,7 +45,7 @@ class ModuleCatalogFilter extends \Module {
         $this->CatalogFilter->strTable = $this->catalogTablename;
         $this->CatalogFilter->initialize();
 
-        $this->Template->formSubmit = 'tl_filters';
+        $this->Template->formSubmit = 'tl_filter';
         $this->Template->method = $this->catalogFormMethod;
         $this->Template->reset = $this->CatalogFilter->setResetLink();
         $this->Template->output = $this->CatalogFilter->generateForm();

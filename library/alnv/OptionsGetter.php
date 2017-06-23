@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class OptionsGetter extends CatalogController {
 
+
+    protected $arrCache = [];
     protected $arrField = [];
     protected $arrCatalog = [];
     protected $arrActiveEntity = [];
@@ -16,6 +18,7 @@ class OptionsGetter extends CatalogController {
 
         $this->arrField = $arrField;
 
+        $this->import( 'CatalogInput' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'I18nCatalogTranslator' );
@@ -239,12 +242,7 @@ class OptionsGetter extends CatalogController {
 
             if ( TL_MODE == 'FE' && ( is_null( $strFieldnameValue ) || $strFieldnameValue === '' ) ) {
 
-                $strFieldnameValue = \Input::post( $strTag ) ? \Input::post( $strTag ) : '';
-
-                if ( !$strFieldnameValue ) {
-
-                    $strFieldnameValue = \Input::get( $strTag ) ? \Input::get( $strTag ) : '';
-                }
+                $strFieldnameValue = $this->CatalogInput->getActiveValue( $strTag );
             }
 
             $strValue = $strFieldnameValue ? $strFieldnameValue : '';

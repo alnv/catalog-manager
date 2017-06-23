@@ -5,6 +5,12 @@ namespace CatalogManager;
 class ActiveInsertTag extends \Frontend {
 
 
+    public function __construct() {
+
+        $this->import('CatalogInput');
+    }
+
+
     public function getInsertTagValue( $strTag ) {
 
         $arrTags = explode( '::', $strTag );
@@ -13,10 +19,7 @@ class ActiveInsertTag extends \Frontend {
 
             global $objPage;
 
-            $varValue =  '';
-
-            if ( \Input::get( $arrTags[1] ) ) $varValue = \Input::get( $arrTags[1] );
-            if ( \Input::post( $arrTags[1] ) ) $varValue = \Input::post( $arrTags[1] );
+            $varValue =  $this->CatalogInput->getActiveValue( $arrTags[1] );
 
             if ( isset( $arrTags[2] ) && strpos( $arrTags[2], '?' ) !== false ) {
 

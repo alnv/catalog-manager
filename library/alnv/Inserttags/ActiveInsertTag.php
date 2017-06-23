@@ -45,12 +45,14 @@ class ActiveInsertTag extends \Frontend {
 
                                 foreach ( $varValue as $strK => $strV ) {
 
+                                    if ( !$strV ) continue;
+
                                     $objDate = new \Date( $strV, $strOption );
                                     $varValue[ $strK ] = $objDate->tstamp;
                                 }
                             }
 
-                            else {
+                            elseif( $varValue ) {
 
                                 $objDate = new \Date( $varValue, $strOption );
                                 $varValue = $objDate->tstamp;

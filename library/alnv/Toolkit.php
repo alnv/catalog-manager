@@ -236,6 +236,14 @@ class Toolkit {
     }
 
 
+    public static function isEmpty( $varValue ) {
+
+        if ( is_null( $varValue ) || $varValue === '' ) return true;
+
+        return false;
+    }
+
+
     public static function parseQuery( $arrQuery ) {
 
         $blnAllowEmptyValue = $arrQuery['allowEmptyValues'] ? true : false;

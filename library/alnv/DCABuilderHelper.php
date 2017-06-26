@@ -266,6 +266,7 @@ class DCABuilderHelper extends CatalogController {
 
             'tstamp' => [
 
+                'flag' => 6,
                 'type' => 'date',
                 'statement' => 'i10',
                 'fieldname' => 'tstamp',

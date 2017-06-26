@@ -41,3 +41,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gte'] = 'Größer gleich';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lte'] = 'Kleiner gleich';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSet'] = 'FIND_IN_SET';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteMessage'] = 'Ihr Datensatz wurde gelöscht.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['insertMessage'] = 'Ihr Datensatz wurde erstellt.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Ihr Datensatz wurde gespeichert.';

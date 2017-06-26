@@ -109,7 +109,11 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$this->arrForm['resetForm'] || $this->arrForm['method'] == 'POST' ) return '';
 
-        return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>', str_replace( '?' . \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
+        return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>',
+
+            str_replace( '?' . \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ),
+            $this->id
+        );
     }
 
 

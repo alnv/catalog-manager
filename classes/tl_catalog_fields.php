@@ -208,6 +208,22 @@ class tl_catalog_fields extends \Backend {
         return Toolkit::parseConformSQLValue( $varValue );
     }
 
+
+    public function fieldnameBlackList( $varValue ) {
+
+        $arrBlackList = [
+
+            'id', 'title', 'sorting', 'tstamp', 'pid', 'alias', 'invisible', 'start', 'stop'
+        ];
+
+        if ( $varValue && in_array( $varValue, $arrBlackList ) ) {
+
+            throw new \Exception('This fieldname already exist.');
+        }
+
+        return $varValue;
+    }
+
     
     public function dropFieldOnDelete( \DataContainer $dc ) {
 

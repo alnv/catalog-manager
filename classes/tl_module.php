@@ -322,14 +322,19 @@ class tl_module extends \Backend {
     }
 
     
-    public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
+    public function getTaxonomyFields( \DataContainer $dc, $strTablename, $arrForbiddenTypes = null ) {
 
         $arrReturn = [];
         
         if ( !$strTablename ) return $arrReturn;
 
         $this->import( 'DCABuilderHelper' );
-        $arrForbiddenTypes = [ 'upload', 'textarea' ];
+
+        if ( is_null( $arrForbiddenTypes ) || !is_array( $arrForbiddenTypes ) ) {
+
+            $arrForbiddenTypes = [ 'upload', 'textarea' ];
+        }
+
         $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
         $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
 
@@ -494,7 +499,7 @@ class tl_module extends \Backend {
 
         if ( !$dc->activeRecord->catalogTablename ) return $arrReturn;
 
-        $arrColumns = $this->getTaxonomyFields( $dc, $dc->activeRecord->catalogTablename );
+        $arrColumns = $this->getTaxonomyFields( $dc, $dc->activeRecord->catalogTablename, [] );
 
         if ( !empty( $arrColumns ) && is_array( $arrColumns ) ) {
 

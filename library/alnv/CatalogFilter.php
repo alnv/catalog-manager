@@ -27,6 +27,7 @@ class CatalogFilter extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
+        $this->import( 'CatalogInput' );
         $this->import( 'DCABuilderHelper' );
     }
 
@@ -149,9 +150,13 @@ class CatalogFilter extends CatalogController {
 
     public function setResetLink() {
 
-        if ( !$this->catalogResetFilterForm ) return '';
+        if ( !$this->catalogResetFilterForm || $this->catalogFormMethod == 'POST' ) return '';
 
-        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a></p>', str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ), $this->id );
+        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a></p>',
+
+            str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ),
+            $this->id
+        );
     }
 
 
@@ -176,12 +181,9 @@ class CatalogFilter extends CatalogController {
 
     protected function getValue( $strFieldname ) {
 
-        $strValue = '';
+        if ( !$strFieldname ) return '';
 
-        if ( \Input::get( $strFieldname ) ) $strValue = \Input::get( $strFieldname );
-        if ( \Input::post( $strFieldname ) && $this->catalogFormMethod == 'POST' ) $strValue = \Input::post( $strFieldname );
-
-        return $strValue;
+        return $this->CatalogInput->getActiveValue( $strFieldname );
     }
 
 

@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,jumpTo,method,resetForm;{expert_legend:hide},attributes;{catalog_json_legend:hide},sendJsonHeader;'
+        'default' => '{general_legend},title,jumpTo,method,resetForm,disableSubmit;{expert_legend:hide},attributes;{catalog_json_legend:hide},sendJsonHeader;'
     ],
 
     'fields' => [
@@ -128,6 +128,20 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
         'resetForm' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['resetForm'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50 m12'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'disableSubmit' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['disableSubmit'],
             'inputType' => 'checkbox',
 
             'eval' => [

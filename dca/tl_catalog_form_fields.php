@@ -386,7 +386,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getTableColumns' ],
 
             'exclude' => true,
-            'sql' => "varchar(128 NOT NULL default ''"
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'dbTable' => [

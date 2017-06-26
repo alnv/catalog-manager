@@ -39,6 +39,7 @@ class CatalogView extends CatalogController {
         parent::__construct();
 
         $this->import( 'IconGetter' );
+        $this->import( 'CatalogInput' );
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
@@ -355,9 +356,11 @@ class CatalogView extends CatalogController {
 
             foreach ( $arrRSAttributes as $strSRAttribute ) {
 
-                if ( \Input::get( $strSRAttribute ) && is_string( \Input::get( $strSRAttribute ) ) ) {
+                $strValue = $this->CatalogInput->getActiveValue( $strSRAttribute );
 
-                    $arrRSValues[ $strSRAttribute ] = \Input::get( $strSRAttribute );
+                if ( !Toolkit::isEmpty( $strValue ) && is_string( $strValue ) ) {
+
+                    $arrRSValues[ $strSRAttribute ] = $strValue;
                 }
             }
 
@@ -367,23 +370,28 @@ class CatalogView extends CatalogController {
 
                     $arrRSValues['rs_cntry'] = $this->catalogRadioSearchCountry;
                 }
-
+                
                 $objGeoCoding = new GeoCoding();
                 $objGeoCoding->setCity( $arrRSValues['rs_cty'] );
                 $objGeoCoding->setStreet( $arrRSValues['rs_strt'] );
                 $objGeoCoding->setPostal( $arrRSValues['rs_pstl'] );
                 $objGeoCoding->setCountry( $arrRSValues['rs_cntry'] );
                 $objGeoCoding->setStreetNumber( $arrRSValues['rs_strtn'] );
-
+                $strDistance = $this->CatalogInput->getActiveValue( 'rs_dstnc' );
                 $arrCords = $objGeoCoding->getCords( '', 'en', true );
+
+                if ( Toolkit::isEmpty( $strDistance ) || is_array( $strDistance ) ) {
+
+                    $strDistance = '50';
+                }
 
                 $arrQuery['distance'] = [
 
+                    'value' => $strDistance,
                     'latCord' => $arrCords['lat'],
                     'lngCord' => $arrCords['lng'],
                     'latField' => $this->catalogFieldLat,
-                    'lngField' => $this->catalogFieldLng,
-                    'value' => \Input::get( 'rs_dstnc' ) ? \Input::get( 'rs_dstnc' ) : '50'
+                    'lngField' => $this->catalogFieldLng
                 ];
             }
         }
@@ -710,8 +718,22 @@ class CatalogView extends CatalogController {
 
     protected function setOrderByParameters() {
 
-        $strSort = \Input::get( 'sortID' . $this->id ) ? \Input::get( 'sortID' . $this->id ) : '';
-        $strOrder = \Input::get( 'orderID' . $this->id ) ? mb_strtoupper( \Input::get( 'orderID' . $this->id ), 'UTF-8' ) : 'DESC';
+        $strSort = $this->CatalogInput->getActiveValue( 'sortID' . $this->id );
+        $strOrder = $this->CatalogInput->getActiveValue( 'orderID' . $this->id );
+
+        if ( Toolkit::isEmpty( $strSort ) || is_array( $strSort ) ) {
+
+            $strSort = '';
+        }
+
+        if ( Toolkit::isEmpty( $strOrder ) || is_array( $strOrder ) ) {
+
+            $strOrder = 'DESC';
+
+        } else {
+
+            mb_strtoupper( $strOrder, 'UTF-8' );
+        }
 
         if ( !in_array( $strOrder, [ 'ASC','DESC' ] ) ) {
 

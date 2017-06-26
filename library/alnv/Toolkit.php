@@ -330,4 +330,15 @@ class Toolkit {
 
         return $arrReturn;
     }
+
+
+    public static function parseMultipleOptions( $varValue ) {
+
+        if ( is_string( $varValue ) ) {
+
+            $varValue = explode( ',', $varValue );
+        }
+
+        return $varValue;
+    }
 }

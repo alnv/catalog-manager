@@ -33,9 +33,23 @@ class ContentCatalogFilterForm extends \ContentElement {
 
                 $this->arrFormFields[$strName] = $this->parseField( $arrField );
 
-                if ( $this->arrFormFields[$strName]['dependOnField'] &&  !$this->getInput( $this->arrFormFields[$strName]['dependOnField'] ) ) {
+                if ( $this->arrFormFields[$strName]['dependOnField'] ) {
 
-                    continue;
+                    $varValue = $this->getInput( $this->arrFormFields[$strName]['dependOnField'] );
+
+                    if ( empty( $varValue ) && is_array( $varValue ) ) {
+
+                        continue;
+
+                    }elseif( count( $varValue ) <= 1 && Toolkit::isEmpty( $varValue[0] ) ) {
+
+                       continue;
+                    }
+
+                    if ( Toolkit::isEmpty( $varValue ) ) {
+
+                        continue;
+                    }
                 }
 
                 $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
@@ -56,8 +70,10 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->reset = $this->getResetLink();
         $this->Template->action = $this->getActionAttr();
         $this->Template->method = $this->getMethodAttr();
+        $this->Template->disableSubmit = $this->arrForm['disableSubmit'];
         $this->Template->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
+        $this->Template->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
 
         if ( $this->arrForm['sendJsonHeader'] ) {
 

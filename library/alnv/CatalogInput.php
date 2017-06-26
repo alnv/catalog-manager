@@ -15,7 +15,7 @@ class CatalogInput extends CatalogController {
 
     protected function getPostCookie( $strName ) {
 
-        $strReturn = '';
+        $varReturn = '';
         $strPost = $this->Input->post( $strName );
 
         if ( $this->Input->post( 'FORM_SUBMIT' ) == 'tl_filter' ) {
@@ -26,25 +26,25 @@ class CatalogInput extends CatalogController {
 
             \System::setCookie( $strName, $strCookie, time() + 3000  );
 
-            $strReturn = $strPost;
+            $varReturn = $strPost;
         }
 
-        if ( ( is_null( $strReturn ) || $strReturn === '' ) && $this->Input->post( 'FORM_SUBMIT' ) != 'tl_filter' ) {
+        if ( ( is_null( $varReturn ) || $varReturn === '' ) && $this->Input->post( 'FORM_SUBMIT' ) != 'tl_filter' ) {
 
-            $strReturn = $this->Input->cookie( $strName );
+            $varReturn = $this->Input->cookie( $strName );
 
-            if ( !is_null( $strReturn ) && $strReturn != '' ) {
+            if ( !is_null( $varReturn ) && $varReturn != '' ) {
 
-                $strReturn = unserialize( $strReturn );
+                $varReturn = unserialize( $varReturn );
             }
 
-            if ( is_bool( $strReturn ) ) {
+            if ( is_bool( $varReturn ) ) {
 
-                $strReturn = $strReturn ? '1' : '0';
+                $varReturn = $varReturn ? '1' : '0';
             }
         }
 
-        return $strReturn;
+        return $varReturn;
     }
 
 
@@ -60,6 +60,7 @@ class CatalogInput extends CatalogController {
         return '';
     }
 
+    
     public function get( $strName ) {
 
         $strGet = $this->Input->get( $strName );

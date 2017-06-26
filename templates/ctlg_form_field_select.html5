@@ -2,7 +2,7 @@
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>
-   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?>[]"<?= $this->multiple ?> <?= $this->tabindex ?> <?= $this->onchange ?>>
+   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?><?php if ( $this->multiple ): ?>[]<?php endif; ?>"<?= $this->multiple ?> <?= $this->tabindex ?> <?= $this->onchange ?>>
       <?php if( $this->includeBlankOption ): ?>
          <option value=""><?= ( $this->blankOptionLabel ? $this->blankOptionLabel : '-' ) ?></option>
       <?php endif; ?>

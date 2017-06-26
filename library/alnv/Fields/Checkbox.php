@@ -33,6 +33,7 @@ class Checkbox {
             if ( !empty( $arrOptions ) ) {
 
                 $arrDCAField['options'] = $arrOptions;
+                $arrDCAField['reference'] = $arrDCAField['options'];
             }
         }
 
@@ -46,7 +47,7 @@ class Checkbox {
 
         if ( !$varValue ) return [];
 
-        $varValue = explode( ',' , $varValue );
+        $varValue = Toolkit::parseMultipleOptions( $varValue );
 
         if ( !empty( $varValue ) && is_array( $varValue ) ) {
 

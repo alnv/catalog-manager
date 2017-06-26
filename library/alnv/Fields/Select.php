@@ -36,12 +36,12 @@ class Select {
         else {
 
             $arrDCAField['options'] = $objOptionGetter->getOptions();
-            // $arrDCAField['reference'] = $arrDCAField['options'];
+            $arrDCAField['reference'] = $arrDCAField['options'];
         }
 
         if ( $arrDCAField['eval']['multiple'] ) {
 
-            $arrDCAField['eval']['csv'] = ','; // ?
+            $arrDCAField['eval']['csv'] = ',';
         }
 
         if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple'] ) {
@@ -68,7 +68,7 @@ class Select {
         if ( $arrField['multiple'] ) {
 
             $arrReturn = [];
-            $varValue = explode( ',', $varValue );
+            $varValue = Toolkit::parseMultipleOptions( $varValue );
 
             if ( !empty( $varValue ) && is_array( $varValue ) ) {
 

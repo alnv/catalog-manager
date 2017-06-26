@@ -1,4 +1,4 @@
-<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_text">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_text text">
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>

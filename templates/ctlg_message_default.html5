@@ -1,0 +1,1 @@
+<p class="ctlg_message"><?= $this->message; ?></p>

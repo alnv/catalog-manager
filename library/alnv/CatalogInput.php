@@ -24,7 +24,7 @@ class CatalogInput extends CatalogController {
 
             if ( !is_null( $strCookie ) && $strCookie != '' ) $strCookie = serialize( $strPost );
 
-            \System::setCookie( $strName, $strCookie, time() + ( 36000 ) );
+            \System::setCookie( $strName, $strCookie, time() + 3000  );
 
             $strReturn = $strPost;
         }
@@ -36,6 +36,11 @@ class CatalogInput extends CatalogController {
             if ( !is_null( $strReturn ) && $strReturn != '' ) {
 
                 $strReturn = unserialize( $strReturn );
+            }
+
+            if ( is_bool( $strReturn ) ) {
+
+                $strReturn = $strReturn ? '1' : '0';
             }
         }
 

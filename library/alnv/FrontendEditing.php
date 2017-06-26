@@ -30,6 +30,7 @@ class FrontendEditing extends CatalogController {
 
         $this->import( 'CatalogEvents' );
         $this->import( 'SQLQueryHelper' );
+        $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
@@ -268,6 +269,7 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->formId = $this->strSubmitName;
         $this->objTemplate->invisible = $arrInvisiblePalette;
         $this->objTemplate->submitName = $this->strSubmitName;
+        $this->objTemplate->message = $this->CatalogMessage->get();
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
@@ -508,6 +510,7 @@ class FrontendEditing extends CatalogController {
                 'table' => $this->catalogTablename
             ];
 
+            $this->CatalogMessage->set( 'deleteMessage', $arrData );
             $this->CatalogEvents->addEventListener( 'delete', $arrData );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
@@ -606,6 +609,7 @@ class FrontendEditing extends CatalogController {
                     'table' => $this->catalogTablename,
                 ];
 
+                $this->CatalogMessage->set( 'insertMessage', $arrData );
                 $this->CatalogEvents->addEventListener( 'create', $arrData );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
@@ -641,6 +645,7 @@ class FrontendEditing extends CatalogController {
                         'table' => $this->catalogTablename,
                     ];
 
+                    $this->CatalogMessage->set( 'updateMessage', $arrData );
                     $this->CatalogEvents->addEventListener( 'update', $arrData );
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
                 }
@@ -676,6 +681,7 @@ class FrontendEditing extends CatalogController {
                     'table' => $this->catalogTablename
                 ];
 
+                $this->CatalogMessage->set( 'insertMessage', $arrData );
                 $this->CatalogEvents->addEventListener( 'create', $arrData );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 

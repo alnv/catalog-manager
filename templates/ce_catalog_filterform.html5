@@ -12,7 +12,7 @@
       <?php endforeach; ?>
    <?php endif; ?>
    <?php if( !$this->disableSubmit ): ?>
-      <div class="ctlg_form_field_submit">
+      <div class="submit_container">
          <input type="submit" value="<?= $this->submit;?>">
       </div>
    <?php endif; ?>

@@ -1,4 +1,4 @@
-<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field_radio radio">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field radio">
    <?php if( $this->label ): ?>
       <p><?= $this->label ?></p>
    <?php endif; ?>

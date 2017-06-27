@@ -78,6 +78,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'default' => '{field_type_legend},type,name,title;',
         'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'hidden' => '{field_type_legend},type,name,title,defaultValue;{invisible_legend},invisible;',
         'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',
         'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{option_legend},optionsType;{invisible_legend},invisible;',

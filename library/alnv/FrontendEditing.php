@@ -650,7 +650,7 @@ class FrontendEditing extends CatalogController {
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
                 }
 
-                if ( $blnReload ) {
+                if ( $blnReload && ( Toolkit::isEmpty( $this->catalogFormRedirect ) || $this->catalogFormRedirect == '0'  ) ) {
 
                     $this->reload();
                 }

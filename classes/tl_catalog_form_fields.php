@@ -32,7 +32,8 @@ class tl_catalog_form_fields extends \Backend {
             'select',
             'checkbox',
             'radio',
-            'range'
+            'range',
+            'hidden'
         ];
     }
 

@@ -51,7 +51,8 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
     'radio' => 'Radio-Menü',
     'select' => 'Select-Menü',
     'checkbox' => 'Checkbox-Menü',
-    'range' => 'Umfang (von-bis)'
+    'range' => 'Umfang (von-bis)',
+    'hidden' => 'Verstecktes Feld'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'] = [

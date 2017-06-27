@@ -48,7 +48,8 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
     'text' => 'Text field',
     'radio' => 'Radio menu',
     'select' => 'select menu',
-    'checkbox' => 'Checkbox menu'
+    'checkbox' => 'Checkbox menu',
+    'hidden' => 'Hidden field'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'] = [

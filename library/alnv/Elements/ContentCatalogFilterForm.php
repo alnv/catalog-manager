@@ -31,11 +31,22 @@ class ContentCatalogFilterForm extends \ContentElement {
 
             foreach ( $this->arrFormFields as $strName => $arrField ) {
 
-                $this->arrFormFields[$strName] = $this->parseField( $arrField );
+                $this->arrFormFields[ $strName ] = $this->parseField( $arrField );
 
-                if ( $this->arrFormFields[$strName]['dependOnField'] ) {
+                if ( $this->arrFormFields[ $strName ]['type'] == 'hidden' && $this->arrFormFields[ $strName ]['name'] ) {
 
-                    $varValue = $this->getInput( $this->arrFormFields[$strName]['dependOnField'] );
+                    $arrFields[ $strName ] = sprintf( '<input type="hidden" name="%s" value="%s">',
+
+                        $this->arrFormFields[ $strName ]['name'],
+                        $this->arrFormFields[ $strName ]['value']
+                    );
+
+                    continue;
+                }
+
+                if ( $this->arrFormFields[ $strName ]['dependOnField'] ) {
+
+                    $varValue = $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] );
 
                     if ( empty( $varValue ) && is_array( $varValue ) ) {
 
@@ -53,12 +64,13 @@ class ContentCatalogFilterForm extends \ContentElement {
                 }
 
                 $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
+
                 if ( !$strTemplate ) continue;
 
                 $objTemplate = new \FrontendTemplate( $strTemplate );
-                $objTemplate->setData( $this->arrFormFields[$strName] );
+                $objTemplate->setData( $this->arrFormFields[ $strName ] );
 
-                $arrFields[$strName] = $objTemplate->parse();
+                $arrFields[ $strName ] = $objTemplate->parse();
             }
         }
 
@@ -204,7 +216,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
     protected function getActiveOptions( $arrField ) {
 
-        $strValue = $arrField['defaultValue'] ? $arrField['defaultValue'] : '';
+        $strValue = !Toolkit::isEmpty( $arrField['defaultValue'] ) ? \Controller::replaceInsertTags( $arrField['defaultValue'] ) : '';
 
         if ( $strValue ) \Input::setGet( $arrField['name'], $strValue );
 

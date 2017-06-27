@@ -243,6 +243,8 @@ class CatalogView extends CatalogController {
         $strPTableFragment = '';
         $this->loadLanguageFile( 'tl_module' );
 
+        if ( !$this->catalogEnableFrontendEditing ) return [];
+
         if ( !$this->FrontendEditingPermission->hasPermission( 'create', $this->catalogTablename ) ) {
 
             return [];

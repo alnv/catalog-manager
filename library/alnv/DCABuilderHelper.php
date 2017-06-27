@@ -93,21 +93,21 @@ class DCABuilderHelper extends CatalogController {
     }
 
 
-    public function convertCatalogFields2DCA( $arrFields, $arrDCAContainer = [], $arrCatalog = [] ) {
+    public function convertCatalogFields2DCA( $arrFields, $arrDCAContainer = [], $arrCatalog = [], $objModule = null ) {
 
         foreach ( $arrFields as $arrField ) {
 
             if ( !$this->isValidField( $arrField ) ) continue;
 
-            $arrDCAContainer[ $arrField['fieldname'] ] = $this->convertCatalogField2DCA( $arrField, $arrCatalog );
+            $arrDCAContainer[ $arrField['fieldname'] ] = $this->convertCatalogField2DCA( $arrField, $arrCatalog, $objModule );
         }
 
         return $arrDCAContainer;
     }
 
 
-    public function convertCatalogField2DCA( $arrField, $arrCatalog = [] ) {
-
+    public function convertCatalogField2DCA( $arrField, $arrCatalog = [], $objModule = null ) {
+        
         $arrDCAField = [
 
             'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
@@ -194,19 +194,19 @@ class DCABuilderHelper extends CatalogController {
 
             case 'select':
 
-                $arrDCAField = Select::generate( $arrDCAField, $arrField, $arrCatalog );
+                $arrDCAField = Select::generate( $arrDCAField, $arrField, $arrCatalog, $objModule );
 
                 break;
 
             case 'radio':
 
-                $arrDCAField = Radio::generate( $arrDCAField, $arrField );
+                $arrDCAField = Radio::generate( $arrDCAField, $arrField, $arrCatalog, $objModule );
 
                 break;
 
             case 'checkbox':
 
-                $arrDCAField = Checkbox::generate( $arrDCAField, $arrField );
+                $arrDCAField = Checkbox::generate( $arrDCAField, $arrField, $arrCatalog, $objModule );
 
                 break;
 

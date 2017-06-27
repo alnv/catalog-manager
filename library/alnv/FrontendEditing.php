@@ -62,7 +62,7 @@ class FrontendEditing extends CatalogController {
 
             if ( !$this->DCABuilderHelper->isValidField( $arrField ) ) return null;
 
-            $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField );
+            $arrDCField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField, [], $this );
 
             if ( $arrField['type'] == 'hidden' ) {
 

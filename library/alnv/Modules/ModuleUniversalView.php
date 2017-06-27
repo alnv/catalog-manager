@@ -121,6 +121,7 @@ class ModuleUniversalView extends \Module {
     private function determineCatalogView() {
 
         $this->import( 'CatalogView' );
+        $this->import( 'CatalogMessage' );
 
         $arrQuery = [
 
@@ -140,7 +141,7 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
         $this->CatalogView->initialize();
 
-        $this->Template->message = '';
+        $this->Template->message = $this->CatalogMessage->get();
         $this->Template->map = $this->CatalogView->getMapViewOptions();
         $this->Template->showAsGroup = $this->CatalogView->showAsGroup();
         $this->Template->createOperation = $this->CatalogView->getCreateOperation();

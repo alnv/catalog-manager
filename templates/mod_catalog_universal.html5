@@ -5,6 +5,10 @@
       <?= $this->debug; ?>
    <?php endif; ?>
 
+   <?php if ( $this->message ): ?>
+      <?= $this->message; ?>
+   <?php endif; ?>
+
    <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
       <p><a href="<?= $this->createOperation['href'] ?>"><span class="ctlg_create_icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a></p>
    <?php endif; ?>
@@ -18,10 +22,6 @@
       <?php endforeach; ?>
    <?php else: ?>
       <?= $this->output; ?>
-   <?php endif; ?>
-
-   <?php if ( $this->message ): ?>
-      <p class="catalog_message"><?= $this->message; ?></p>
    <?php endif; ?>
 
    <?php if ($this->allowComments): ?>

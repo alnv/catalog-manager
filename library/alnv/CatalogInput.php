@@ -90,4 +90,16 @@ class CatalogInput extends CatalogController {
 
         return '';
     }
+
+
+    public function getValue( $strName ) {
+
+        if ( $this->get( $strName ) != '' ) return $this->get( $strName );
+
+        $strPost = $this->Input->post( $strName );
+
+        if ( !Toolkit::isEmpty( $strPost ) ) return $strPost;
+
+        return '';
+    }
 }

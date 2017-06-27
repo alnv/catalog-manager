@@ -5,6 +5,7 @@ namespace CatalogManager;
 class OptionsGetter extends CatalogController {
 
 
+    protected $strModuleID;
     protected $arrCache = [];
     protected $arrField = [];
     protected $arrCatalog = [];
@@ -12,11 +13,12 @@ class OptionsGetter extends CatalogController {
     protected $arrCatalogFields = [];
 
 
-    public function __construct( $arrField ) {
+    public function __construct( $arrField, $strModuleID = '' ) {
 
         parent::__construct();
 
         $this->arrField = $arrField;
+        $this->strModuleID = $strModuleID;
 
         $this->import( 'CatalogInput' );
         $this->import( 'SQLQueryHelper' );
@@ -210,8 +212,12 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
-            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
+            $blnValidValue = true;
+            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'], $blnValidValue );
             $arrQuery['allowEmptyValues'] = true;
+
+            if ( !$blnValidValue ) return null;
+
             return $arrQuery;
         });
 
@@ -227,7 +233,7 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getParseQueryValue( $strValue = '', $strOperator = '' ) {
+    protected function getParseQueryValue( $strValue = '', $strOperator = '', &$blnValidValue = true ) {
 
         if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
@@ -242,10 +248,17 @@ class OptionsGetter extends CatalogController {
 
             if ( TL_MODE == 'FE' && ( is_null( $strFieldnameValue ) || $strFieldnameValue === '' ) ) {
 
-                $strFieldnameValue = $this->CatalogInput->getActiveValue( $strTag );
+                $strFieldnameValue = $this->CatalogInput->getValue( $strTag );
             }
 
-            $strValue = $strFieldnameValue ? $strFieldnameValue : '';
+            if ( Toolkit::isEmpty( $strFieldnameValue ) ) {
+
+                $blnValidValue = $this->isValidValue( $strFieldnameValue );
+                $strFieldnameValue = '';
+            }
+
+            $strValue = $strFieldnameValue;
+
         }
 
         if ( $strOperator == 'contain' && is_string( $strValue ) ) {
@@ -328,7 +341,8 @@ class OptionsGetter extends CatalogController {
                     return null;
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $objCatalog->tablename ) )->limit(1)->execute( \Input::get('id') )->row();
+                $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
+                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $objCatalog->tablename ) )->limit(1)->execute( $strID )->row();
 
                 break;
 
@@ -338,5 +352,32 @@ class OptionsGetter extends CatalogController {
 
             $this->arrActiveEntity = [];
         }
+    }
+
+    protected function isValidValue( $strValue ) {
+
+        if ( !Toolkit::isEmpty( $strValue ) ) return true;
+
+        switch ( TL_MODE ) {
+
+            case 'BE':
+
+                $strID = \Input::get('id');
+                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('do');
+
+                if ( !$strID || !$strTable ) return false;
+
+                break;
+
+            case 'FE':
+
+                $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
+
+                if ( !$strID ) return false;
+
+                break;
+        }
+
+        return true;
     }
 }

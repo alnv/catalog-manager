@@ -8,13 +8,14 @@ class Checkbox {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField ) {
+    public static function generate( $arrDCAField, $arrField, $arrCatalog = [], $objModule = null ) {
 
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
         $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
         $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
 
-        $objOptionGetter = new OptionsGetter( $arrField );
+        $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
+        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID );
 
         if ( $objOptionGetter->isForeignKey() ) {
 

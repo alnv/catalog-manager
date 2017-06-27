@@ -8,7 +8,7 @@ class Select {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $arrCatalog = [] ) {
+    public static function generate( $arrDCAField, $arrField, $arrCatalog = [], $objModule = null ) {
 
         $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
@@ -21,7 +21,8 @@ class Select {
             $arrDCAField['eval']['blankOptionLabel'] = $arrField['blankOptionLabel'];
         }
 
-        $objOptionGetter = new OptionsGetter( $arrField );
+        $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
+        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID );
         
         if ( $objOptionGetter->isForeignKey() ) {
 

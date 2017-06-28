@@ -123,7 +123,7 @@ class DCABuilderHelper extends CatalogController {
             'eval' => [
 
                 'tl_class' => $strCSSBackendClasses,
-                'unique' => Toolkit::getBooleanByValue( $arrField['unique'] ),
+                'unique' => Toolkit::getBooleanByValue( $arrField['isUnique'] ),
                 'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
                 'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
                 'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),

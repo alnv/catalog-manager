@@ -13,7 +13,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Layout-E
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['step'] = [ 'Interval', 'Bitte geben Sie den Interval ein.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['unique'] = [ 'Einzigartig', 'Der Wert muss einzigartig sein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['isUnique'] = [ 'Einzigartig', 'Der Wert muss einzigartig sein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useIndex'] = [ 'Index', 'Hier können Sie die Spalte indexieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rows'] = [ 'Zeilen', 'Bitte geben Sie die Anzahl an Zeilen ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cols'] = [ 'Spalten', 'Bitte geben Sie die Anzahl an Spalten ein.' ];

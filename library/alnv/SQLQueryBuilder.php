@@ -247,14 +247,16 @@ class SQLQueryBuilder extends CatalogController {
 
             if ( !empty( $arrQuery[0] ) && is_array( $arrQuery[0] ) ) {
 
-                $strQuerySeparator = '';
+                $strEndSeparator = '';
+                $strStartSeparator = '(';
                 $intTotal = count( $arrQuery ) - 1;
 
                 foreach ( $arrQuery as $intSubIndex => $arrSubQuery ) {
 
-                    if ( $intTotal && !$intSubIndex ) $strQuerySeparator = '(';
-                    if ( $intTotal && $intTotal == $intSubIndex ) $strQuerySeparator = ')';
-                    $strWhereStatement .= $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strQuerySeparator );
+                    if ( $intSubIndex ) $strStartSeparator = '';
+                    if ( $intTotal == $intSubIndex ) $strEndSeparator = ')';
+
+                    $strWhereStatement .= $strStartSeparator . $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strEndSeparator );
                 }
 
             } else {
@@ -274,16 +276,16 @@ class SQLQueryBuilder extends CatalogController {
         $strQuery = '';
 
         if ( is_bool( $arrQuery['multiple'] ) &&  $arrQuery['multiple'] == true ) {
-
+            
             if ( !empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
 
-                $strQuerySeparator = '';
+                $strQuerySeparator = '(';
                 $intTotal = count( $arrQuery['value'] ) - 1;
 
                 foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
 
-                    if ( $intTotal && !$intIndex ) $strQuerySeparator = '(';
-                    if ( $intTotal && $intTotal == $intIndex ) $strQuerySeparator = ')';
+                    if ( $intIndex ) $strQuerySeparator = '';
+                    if ( $intTotal == $intIndex ) $strQuerySeparator = ')';
 
                     $strQuery .= $this->createQueryStatement([
 

@@ -107,7 +107,14 @@ class DCABuilderHelper extends CatalogController {
 
 
     public function convertCatalogField2DCA( $arrField, $arrCatalog = [], $objModule = null ) {
-        
+
+        $strCSSBackendClasses = Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' );
+
+        if ( Toolkit::isEmpty( $strCSSBackendClasses ) ) {
+
+            $strCSSBackendClasses = 'clr';
+        }
+
         $arrDCAField = [
 
             'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
@@ -115,12 +122,12 @@ class DCABuilderHelper extends CatalogController {
 
             'eval' => [
 
+                'tl_class' => $strCSSBackendClasses,
                 'unique' => Toolkit::getBooleanByValue( $arrField['unique'] ),
                 'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
                 'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
                 'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),
                 'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
-                'tl_class' => Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' ),
                 'trailingSlash' => Toolkit::getBooleanByValue( $arrField['trailingSlash'] ),
                 'doNotSaveEmpty' => Toolkit::getBooleanByValue( $arrField['doNotSaveEmpty'] ),
                 'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),

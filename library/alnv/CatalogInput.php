@@ -17,7 +17,7 @@ class CatalogInput extends CatalogController {
 
         $varReturn = '';
         $strPost = $this->Input->post( $strName );
-
+        
         if ( $this->Input->post( 'FORM_SUBMIT' ) == 'tl_filter' ) {
 
             $strCookie = $strPost;
@@ -29,7 +29,7 @@ class CatalogInput extends CatalogController {
             $varReturn = $strPost;
         }
 
-        if ( ( is_null( $varReturn ) || $varReturn === '' ) && $this->Input->post( 'FORM_SUBMIT' ) != 'tl_filter' ) {
+        if ( Toolkit::isEmpty( $varReturn ) && $this->Input->post( 'FORM_SUBMIT' ) != 'tl_filter' ) {
 
             $varReturn = $this->Input->cookie( $strName );
 

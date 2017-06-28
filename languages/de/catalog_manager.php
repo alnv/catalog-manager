@@ -26,5 +26,3 @@ $GLOBALS['TL_LANG']['catalog_manager']['fields']['id'] = [ 'ID', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'] = [ 'Elternelement', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'] = [ 'Sortierindex', '' ];
 $GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'] = [ 'Änderungsdatum', '' ];
-
-$GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'] = [ 'Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.' ];

@@ -24,6 +24,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'No images we
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Your license key is invalid.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Output "%s <em>[%s]</em>" field in template';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Following fields were found in <em>"%s"</em> template';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Here you can allow access to catalog operations.', 'Here you can define the permissions.' ];
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Edit';

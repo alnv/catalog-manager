@@ -19,7 +19,7 @@ class I18nCatalogTranslator {
     
     public function getModuleLabel( $strFieldname, $strAdditionalString = '' ) {
 
-        $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ];
+        $arrLabel = $GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ];
 
         if ( !isset( $arrLabel ) && empty( $arrLabel ) && !is_array( $arrLabel ) ) {
 

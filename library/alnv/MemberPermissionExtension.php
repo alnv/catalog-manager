@@ -34,10 +34,10 @@ class MemberPermissionExtension extends CatalogController {
     protected function extendMemberGroupDCA( $strCatalogname ){
 
         $arrAccessLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
-        $arrPermissionLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] );
+        $arrPermissionLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $this->getPermissionLabel() );
 
-        $arrAccessLabel[1] = $GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'][0];
-        $arrPermissionLabel[1] = $GLOBALS['TL_LANG']['catalog_manager']['permissionInfo'][1];
+        $arrAccessLabel[1] = $this->getPermissionInfo(0);
+        $arrPermissionLabel[1] = $this->getPermissionInfo(1);
 
         \Controller::loadLanguageFile( 'tl_member_group' );
 
@@ -98,5 +98,34 @@ class MemberPermissionExtension extends CatalogController {
 
             $this->SQLBuilder->alterTableField( 'tl_member_group', $strField, $strSQLStatement );
         }
+    }
+
+
+    protected function getPermissionLabel() {
+
+        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_string( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ) ) {
+
+            return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'];
+        }
+
+        return '';
+    }
+
+
+    protected function getPermissionInfo( $intIndex = 0 ) {
+
+        $arrPermissionLabels = ['', ''];
+
+        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_array( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] ) ) {
+
+            $arrPermissionLabels = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'];
+        }
+
+        if ( isset( $arrPermissionLabels[ $intIndex ] ) && is_string( $arrPermissionLabels[ $intIndex ] ) ) {
+
+           return $arrPermissionLabels[ $intIndex ];
+        }
+        
+        return '';
     }
 }

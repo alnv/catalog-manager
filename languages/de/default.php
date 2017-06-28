@@ -24,6 +24,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] = 'Alle Filtereinstel
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'Es wurden keine Bilder gefunden.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Eingabefeld "%s <em>[%s]</em>" im Template ausgeben';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.' ];
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detailansicht';

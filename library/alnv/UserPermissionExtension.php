@@ -58,10 +58,10 @@ class UserPermissionExtension extends CatalogController {
             'exclude' => true,
             'sql' => "blob NULL"
         ];
-
+        
         $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname . 'p' ] = [
 
-            'label' => $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ),
+            'label' => $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $this->getPermissionLabel() ),
             'inputType' => 'checkbox',
 
             'options' => [
@@ -92,5 +92,16 @@ class UserPermissionExtension extends CatalogController {
 
             $this->SQLBuilder->alterTableField( $strDCAName, $strFieldname, 'blob NULL' );
         }
+    }
+
+
+    protected function getPermissionLabel() {
+
+        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_string( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ) ) {
+
+            return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'];
+        }
+
+        return '';
     }
 }

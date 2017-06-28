@@ -217,9 +217,6 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function getActiveOptions( $arrField ) {
 
         $strValue = !Toolkit::isEmpty( $arrField['defaultValue'] ) ? \Controller::replaceInsertTags( $arrField['defaultValue'] ) : '';
-
-        if ( $strValue ) \Input::setGet( $arrField['name'], $strValue );
-
         $strValue = $this->getInput( $arrField['name'], $strValue );
 
         if ( $arrField['type'] == 'select' || $arrField['type'] == 'checkbox' ) {

@@ -20,7 +20,7 @@
       <td><a href="<?= $this->masterUrl; ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></td>
    <?php endif; ?>
 
-   <?php if ( $this->hasOperations ): ?>
+   <?php if ( $this->hasOperations && is_array( $this->operations ) ): ?>
       <td>
          <div class="ctlg_operations">
             <?php foreach( $this->operations as $arrOperation ): ?>

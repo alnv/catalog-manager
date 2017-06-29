@@ -98,7 +98,7 @@ class ModuleUniversalView extends \Module {
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
 
-        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) ) {
+        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );
@@ -253,7 +253,7 @@ class ModuleUniversalView extends \Module {
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
 
-        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) ) {
+        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate( $this->FrontendEditing->strPageID );

@@ -10,7 +10,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'onload_callback' => [
 
             [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ],
-            [ 'CatalogManager\tl_catalog_fields', 'setOrderField' ]
+            [ 'CatalogManager\tl_catalog_fields', 'setOrderField' ],
+            [ 'CatalogManager\tl_catalog_fields', 'changeGlobals' ]
         ],
 
         'onsubmit_callback' => [

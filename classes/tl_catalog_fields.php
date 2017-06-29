@@ -24,6 +24,16 @@ class tl_catalog_fields extends \Backend {
     }
 
 
+    public function changeGlobals() {
+
+        if ( \Input::get( 'do' ) && \Input::get( 'do' ) == 'catalog-manager' ) {
+
+            $GLOBALS['TL_LANG']['MSC']['ow_key'] = &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'];
+            $GLOBALS['TL_LANG']['MSC']['ow_value'] = &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'];
+        }
+    }
+
+
     public function setOrderField( \DataContainer $dc ) {
         
         if ( \Input::get( 'act' ) != 'edit' ) return;

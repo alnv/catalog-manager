@@ -15,6 +15,7 @@ class CatalogMessage extends CatalogController {
         $this->import( 'Input' );
     }
 
+    
     public function set( $strType, $arrData = [], $strID ) {
 
         $strMessage = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][ $strType ] ? $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][ $strType ] : $strType;
@@ -35,9 +36,15 @@ class CatalogMessage extends CatalogController {
 
     public function get( $strID = '' ) {
 
-        $strMessage = $this->Input->cookie( 'ctlg_FEE_Message' . ( $strID ? $strID : '' ) );
+        $strCookieName = 'ctlg_FEE_Message' . ( $strID ? $strID : '' );
+        $strMessage = $this->Input->cookie( $strCookieName );
+
         if ( !$strMessage ) $strMessage = '';
-        \System::setCookie( 'ctlg_FEE_Message' . ( $strID ? $strID : '' ), '', 0 );
+
+        unset( $_COOKIE[ $strCookieName ] );
+
+        \System::setCookie( $strCookieName, '', -1 );
+
         return \StringUtil::decodeEntities( $strMessage );
     }
 }

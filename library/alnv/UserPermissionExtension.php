@@ -97,7 +97,7 @@ class UserPermissionExtension extends CatalogController {
 
     protected function getPermissionLabel() {
 
-        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_string( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] ) ) {
+        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_array( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) ) {
 
             return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'];
         }

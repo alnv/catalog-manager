@@ -238,43 +238,6 @@ class CatalogView extends CatalogController {
     }
 
 
-    public function getCreateOperation() {
-
-        $strPTableFragment = '';
-        $this->loadLanguageFile( 'tl_module' );
-
-        if ( !$this->catalogEnableFrontendEditing ) return [];
-
-        if ( !$this->FrontendEditingPermission->hasPermission( 'create', $this->catalogTablename ) ) {
-
-            return [];
-        }
-
-        if ( empty( $this->catalogItemOperations ) || !in_array( 'create', $this->catalogItemOperations ) ) {
-
-            return [];
-        }
-
-        if ( $this->arrCatalog['pTable'] && !\Input::get('pid' ) ) {
-
-            return [];
-        }
-
-        if ( $this->arrCatalog['pTable'] ) {
-            
-            $strPTableFragment = sprintf( '&amp;pid=%s', \Input::get('pid' ) );
-        }
-
-        return [
-
-            'attributes' => '',
-            'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
-            'href' => $this->generateUrl( $this->arrFrontendEditingPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
-            'image' => \Image::getHtml( 'system/modules/catalog-manager/assets/icons/new.svg', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
-        ];
-    }
-
-
     public function getMapViewOptions() {
 
         return $this->arrCatalogMapViewOptions;
@@ -474,17 +437,17 @@ class CatalogView extends CatalogController {
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
+            if ( $this->catalogEnableFrontendEditing ) {
+
+                $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'], $arrCatalog['alias'], $arrCatalog );
+            }
+
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
                     $arrCatalog[ $strFieldname ] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
                 }
-            }
-
-            if ( $this->catalogEnableFrontendEditing ) {
-
-                $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'], $arrCatalog['alias'] );
             }
 
             if ( $this->catalogUseRelation ) {
@@ -1004,12 +967,14 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function generateOperations( $strID, $strAlias = '' ) {
+    protected function generateOperations( $strID, $strAlias = '', $arrCatalog = [] ) {
 
         $arrReturn = [];
         $this->loadLanguageFile( 'tl_module' );
 
         if ( !empty( $this->catalogItemOperations ) && is_array( $this->catalogItemOperations ) ) {
+
+            $strAlias = $this->getAliasWithParameters( $strAlias, $arrCatalog );
 
             foreach ( $this->catalogItemOperations as $strOperation ) {
 
@@ -1026,7 +991,7 @@ class CatalogView extends CatalogController {
 
                     $strActFragment .= sprintf( '&amp;pid=%s', \Input::get('pid' ) );
                 }
-                
+
                 $arrReturn[ $strOperation ] = [
 
                     'href' => $this->generateUrl( $this->arrFrontendEditingPage, $strAlias ) . $strActFragment,
@@ -1038,6 +1003,43 @@ class CatalogView extends CatalogController {
         }
 
         return $arrReturn;
+    }
+
+
+    public function getCreateOperation() {
+
+        $strPTableFragment = '';
+        $this->loadLanguageFile( 'tl_module' );
+
+        if ( !$this->catalogEnableFrontendEditing ) return [];
+
+        if ( !$this->FrontendEditingPermission->hasPermission( 'create', $this->catalogTablename ) ) {
+
+            return [];
+        }
+
+        if ( empty( $this->catalogItemOperations ) || !in_array( 'create', $this->catalogItemOperations ) ) {
+
+            return [];
+        }
+
+        if ( $this->arrCatalog['pTable'] && !\Input::get('pid' ) ) {
+
+            return [];
+        }
+
+        if ( $this->arrCatalog['pTable'] ) {
+
+            $strPTableFragment = sprintf( '&amp;pid=%s', \Input::get('pid' ) );
+        }
+
+        return [
+
+            'attributes' => '',
+            'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
+            'href' => $this->generateUrl( $this->arrFrontendEditingPage, '' ) . sprintf( '?act%s=create%s', $this->id, $strPTableFragment ),
+            'image' => \Image::getHtml( 'system/modules/catalog-manager/assets/icons/new.svg', $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'] )
+        ];
     }
 
 

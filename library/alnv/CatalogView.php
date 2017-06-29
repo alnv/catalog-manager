@@ -140,16 +140,7 @@ class CatalogView extends CatalogController {
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
 
         $this->setRelatedTables();
-
-        if ( $this->catalogEnableFrontendEditing && !empty( $this->catalogItemOperations ) ) {
-
-            $this->blnHasOperations = true;
-
-            if ( count( $this->catalogItemOperations ) === 1 && in_array( 'create', $this->catalogItemOperations ) ) {
-
-                $this->blnHasOperations = false;
-            }
-        }
+        $this->setHasOperationsFlag();
 
         if ( $objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename ) {
 
@@ -166,7 +157,6 @@ class CatalogView extends CatalogController {
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
 
-            $this->objMainTemplate->hasOperations = $this->blnHasOperations;
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
             $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
@@ -193,6 +183,12 @@ class CatalogView extends CatalogController {
     public function showAsGroup() {
 
         return $this->blnShowAsGroup;
+    }
+
+
+    public function getHasOperationFlag() {
+
+        return $this->blnHasOperations;
     }
 
 
@@ -603,6 +599,20 @@ class CatalogView extends CatalogController {
     }
 
 
+    protected function setHasOperationsFlag() {
+
+        if ( isset( $this->catalogItemOperations[0] ) && !Toolkit::isEmpty( $this->catalogItemOperations[0] ) ) {
+
+            $this->blnHasOperations = true;
+        }
+
+        if ( count( $this->catalogItemOperations ) === 1 && in_array( 'create', $this->catalogItemOperations ) ) {
+
+            $this->blnHasOperations = false;
+        }
+    }
+
+
     protected function getGroupedValue( $arrCatalogs ) {
 
         $arrIndexes = [];
@@ -1001,6 +1011,8 @@ class CatalogView extends CatalogController {
                 ];
             }
         }
+
+        if ( empty( $arrReturn ) ) $this->blnHasOperations = false;
 
         return $arrReturn;
     }

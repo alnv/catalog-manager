@@ -150,6 +150,7 @@ class ModuleUniversalView extends \Module {
 
         $this->Template->data = is_array( $varView ) ? $varView : [];
         $this->Template->output = is_string( $varView ) ? $varView : '';
+        $this->Template->hasOperations = $this->CatalogView->getHasOperationFlag();
 
         if ( empty( $varView ) ) {
 

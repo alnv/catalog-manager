@@ -114,9 +114,9 @@ class MemberPermissionExtension extends CatalogController {
 
     protected function getPermissionInfo( $intIndex = 0 ) {
 
-        $arrPermissionLabels = ['', ''];
+        $arrPermissionLabels = [ '', '' ];
 
-        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_array( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] ) ) {
+        if ( isset( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) && is_array( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'] ) ) {
 
             $arrPermissionLabels = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'];
         }

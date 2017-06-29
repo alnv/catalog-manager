@@ -85,6 +85,7 @@ class FrontendEditing extends CatalogController {
             }
         }
 
+        $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
@@ -206,6 +207,9 @@ class FrontendEditing extends CatalogController {
     public function checkPermission( $strMode ) {
 
         $this->import( 'FrontendEditingPermission' );
+
+        if ( !is_array( $this->catalogItemOperations ) ) $this->catalogItemOperations = [];
+        if ( !in_array( $strMode, $this->catalogItemOperations ) ) return false;
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
         $this->FrontendEditingPermission->initialize();

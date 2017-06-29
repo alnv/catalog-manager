@@ -46,3 +46,6 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteMessage'] = 'Your record has been deleted.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['insertMessage'] = 'Your record has been created.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Your record has been saved.';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Value';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Label';

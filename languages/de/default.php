@@ -46,3 +46,6 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteMessage'] = 'Ihr Datensatz wurde gelöscht.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['insertMessage'] = 'Ihr Datensatz wurde erstellt.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Ihr Datensatz wurde gespeichert.';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Wert';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Text';

@@ -30,19 +30,23 @@ class FilterValuesInsertTag extends \Frontend {
 
                     $arrParameter = array_keys( $_POST );
 
+                    if ( empty( $arrParameter ) ) {
+
+                        $arrParameter = array_keys( $_COOKIE );
+                    }
+
                     break;
             }
 
 
             $intIndex = 0;
-            $this->import( 'Input' );
-            $strInputMethod = mb_strtolower( $strMethod );
-
+            $this->import( 'CatalogInput' );
+            
             if ( !empty( $arrParameter ) && is_array( $arrParameter ) ) {
 
                 foreach ( $arrParameter as $strParameter ) {
 
-                    $varInputValue = $this->Input->{$strInputMethod}($strParameter);
+                    $varInputValue = $this->CatalogInput->getActiveValue( $strParameter );
 
                     if ( is_null( $varInputValue ) || $varInputValue === '' ) continue;
 

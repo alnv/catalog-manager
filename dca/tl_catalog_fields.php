@@ -88,6 +88,17 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'href' => 'act=show',
                 'icon' => 'show.gif'
             ]
+        ],
+
+        'global_operations' => [
+
+            'all' => [
+
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
+            ]
         ]
     ],
 

@@ -19,7 +19,7 @@
                <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
                   <th class="head"><?= $this->catalogFields[ $strColumnName ]['title'] ? $this->catalogFields[ $strColumnName ]['title'] : strColumnName;  ?></th>
                <?php endforeach; ?>
-               <?php if( !$this->catalogDisableMasterLink ): ?>
+               <?php if ( !$this->catalogDisableMasterLink ): ?>
                   <th><?= $this->readMoreColumnTitle; ?></th>
                <?php endif; ?>
                <?php if ( $this->hasOperations ): ?>

@@ -23,6 +23,7 @@ class OptionsGetter extends CatalogController {
         $this->import( 'CatalogInput' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
+        $this->import( 'CatalogDCAExtractor' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -185,6 +186,7 @@ class OptionsGetter extends CatalogController {
 
     protected function getDbOptions() {
 
+        $strOrderBy = '';
         $arrOptions = [];
 
         if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue'] ) {
@@ -222,8 +224,16 @@ class OptionsGetter extends CatalogController {
         });
 
         $arrSQLQuery['where'] = $arrQueries;
-        $objDbOptions = $this->SQLQueryBuilder->execute( $arrSQLQuery );
+        $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
+        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
 
+        if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
+
+            $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
+        }
+
+        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy ) )->execute( $this->SQLQueryBuilder->getValues() );
+        
         while ( $objDbOptions->next() ) {
 
             $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->getOptionLabel( $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );

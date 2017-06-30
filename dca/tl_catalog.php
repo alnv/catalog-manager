@@ -63,6 +63,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'icon' => 'header.gif'
             ],
 
+            'copy' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog']['copy'],
+                'href' => 'act=copy',
+                'icon' => 'copy.gif'
+            ],
+
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog']['delete'],
@@ -118,6 +125,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'maxlength' => 128,
+                'doNotCopy' => true,
                 'tl_class' => 'w50',
             ],
 
@@ -134,8 +142,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'maxlength' => 512,
+                'doNotCopy' => true,
                 'tl_class' => 'long clr',
-                'maxlength' => 512
             ],
 
             'exclude' => true,
@@ -149,8 +158,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'maxlength' => 16,
                 'tl_class' => 'w50',
-                'maxlength' => 16
+                'doNotCopy' => true
             ],
 
             'search' => true,
@@ -193,6 +203,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'doNotCopy' => true,
                 'submitOnChange' => true,
             ],
 
@@ -425,7 +436,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'doNotCopy' => true
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getNavigationAreas' ],
@@ -443,7 +455,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50'
+                'tl_class' => 'w50',
+                'doNotCopy' => true
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getNavigationPosition' ],
@@ -473,6 +486,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'doNotCopy' => true,
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
             ],
@@ -674,6 +688,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'doNotCopy' => true,
                 'tl_class' => 'clr m12',
                 'submitOnChange' => true
             ],
@@ -755,6 +770,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
+                'doNotCopy' => true,
                 'tl_class' => 'clr m12',
                 'submitOnChange' => true
             ],

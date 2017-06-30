@@ -72,78 +72,6 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getActiveDbOptions() {
-
-        $arrOptions = [];
-        $strDbColumn = $this->arrField['dbColumn'];
-
-        if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
-
-        $arrSQLQuery = [
-
-            'table' => $this->arrField['dbTable'],
-            'where' => []
-        ];
-
-        $this->getActiveEntityValues();
-        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
-        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
-
-            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-            $arrQuery['allowEmptyValues'] = true;
-            return $arrQuery;
-        });
-
-        $arrSQLQuery['where'] = $arrQueries;
-        $objEntities = $this->SQLQueryBuilder->execute( $arrSQLQuery );
-
-        if ( !$objEntities->numRows ) return $arrOptions;
-
-        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->arrField['dbTable'] );
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrField['dbTable'] );
-
-        while ( $objEntities->next() ) {
-
-            $strOriginValue = $objEntities->{$strDbColumn};
-            $varValue = $this->parseCatalogValues( $strOriginValue, $strDbColumn, [] );
-
-            if ( is_array( $varValue ) ) {
-
-                $arrLabels = array_values( $varValue );
-                $arrOriginValues = array_keys( $varValue );
-
-                if ( !empty( $arrLabels ) && is_array( $arrLabels ) ) {
-
-                    foreach ( $arrLabels as $intPosition => $strLabel ) {
-
-                        $arrOptions = $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
-                    }
-                }
-            }
-
-            else {
-
-                $arrOptions = $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
-            }
-        }
-
-        return $arrOptions;
-    }
-
-
     protected function setValueToOption( $arrOptions, $strValue, $strLabel = '' ) {
 
         if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
@@ -237,6 +165,87 @@ class OptionsGetter extends CatalogController {
         while ( $objDbOptions->next() ) {
 
             $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->getOptionLabel( $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
+        }
+
+        return $arrOptions;
+    }
+
+    
+    protected function getActiveDbOptions() {
+
+        $strOrderBy = '';
+        $arrOptions = [];
+        $strDbColumn = $this->arrField['dbColumn'];
+
+        if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
+
+            return $arrOptions;
+        }
+
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+
+            return $arrOptions;
+        }
+
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
+
+            return $arrOptions;
+        }
+
+        $arrSQLQuery = [
+
+            'table' => $this->arrField['dbTable'],
+            'where' => []
+        ];
+
+        $this->getActiveEntityValues();
+        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
+        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
+
+            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
+            $arrQuery['allowEmptyValues'] = true;
+            return $arrQuery;
+        });
+
+        $arrSQLQuery['where'] = $arrQueries;
+        $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
+        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
+
+        if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
+
+            $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
+        }
+
+        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy ) )->execute( $this->SQLQueryBuilder->getValues() );
+
+        if ( !$objEntities->numRows ) return $arrOptions;
+
+        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->arrField['dbTable'] );
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrField['dbTable'] );
+
+        while ( $objEntities->next() ) {
+
+            $strOriginValue = $objEntities->{$strDbColumn};
+            $varValue = $this->parseCatalogValues( $strOriginValue, $strDbColumn, [] );
+
+            if ( is_array( $varValue ) ) {
+
+                $arrLabels = array_values( $varValue );
+                $arrOriginValues = array_keys( $varValue );
+
+                if ( !empty( $arrLabels ) && is_array( $arrLabels ) ) {
+
+                    foreach ( $arrLabels as $intPosition => $strLabel ) {
+
+                        $arrOptions = $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
+                    }
+                }
+            }
+
+            else {
+
+                $arrOptions = $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
+            }
         }
 
         return $arrOptions;

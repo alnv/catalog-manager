@@ -111,6 +111,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Benachrichtigung [�
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Individuelles Template', 'Hier können Sie das Standard-Template überschreiben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Übertragungsmethode', 'Die Standard-Übertragungsmethode ist GET.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Taxonomies festlegen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFastMode'] = [ 'Fast Mode', 'Hier können Sie den Fast Mode aktivieren. Folgende Elemente werden nicht gerendert: Datei-Upload und Kartenansicht.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

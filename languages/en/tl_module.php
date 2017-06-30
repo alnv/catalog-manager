@@ -109,6 +109,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [upda
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module template', 'Here you can overwrite the default module template.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Submission method', 'The default form submission method is POST.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Sort order', 'Here you can order taxonomy entities.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFastMode'] = [ 'Fast Mode', 'Here you can enable the fast mode. The following elements are not rendered: file upload and map view.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

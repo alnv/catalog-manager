@@ -140,7 +140,6 @@ class CatalogView extends CatalogController {
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
 
         $this->setRelatedTables();
-        $this->setHasOperationsFlag();
 
         if ( $objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename ) {
 
@@ -177,6 +176,8 @@ class CatalogView extends CatalogController {
 
             $this->FrontendEditingPermission->initialize();
         }
+
+        $this->setHasOperationsFlag();
     }
 
 
@@ -600,6 +601,11 @@ class CatalogView extends CatalogController {
 
 
     protected function setHasOperationsFlag() {
+
+        if ( !$this->catalogEnableFrontendEditing || empty( $this->catalogItemOperations ) ) {
+
+            $this->blnHasOperations = false;
+        }
 
         if ( isset( $this->catalogItemOperations[0] ) && !Toolkit::isEmpty( $this->catalogItemOperations[0] ) ) {
 

@@ -32,6 +32,7 @@ class CatalogView extends CatalogController {
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
+    protected $arrDoNotRenderInFastMode = [ 'upload', 'map' ];
 
 
     public function __construct() {
@@ -800,8 +801,14 @@ class CatalogView extends CatalogController {
     protected function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
+        $strType = $arrField['type'];
 
-        switch ( $arrField['type'] ) {
+        if ( $this->catalogFastMode && in_array( $strType, $this->arrDoNotRenderInFastMode ) ) {
+
+            return '';
+        }
+
+        switch ( $strType ) {
 
             case 'upload':
 

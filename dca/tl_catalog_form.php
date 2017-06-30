@@ -52,6 +52,13 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
                 'icon' => 'header.gif'
             ],
 
+            'copy' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['copy'],
+                'href' => 'act=copy',
+                'icon' => 'copy.gif'
+            ],
+
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['delete'],
@@ -95,6 +102,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             'eval' => [
 
                 'maxlength' => 128,
+                'doNotCopy' => true,
                 'tl_class' => 'w50',
                 'mandatory' => true
             ],
@@ -196,7 +204,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
                 'maxlength' => 16,
                 'tl_class' => 'clr',
-                'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],

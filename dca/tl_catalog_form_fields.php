@@ -46,6 +46,13 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'icon' => 'header.gif'
             ],
 
+            'copy' => [
+
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'],
+                'href' => 'act=copy',
+                'icon' => 'copy.gif'
+            ],
+
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'],
@@ -175,6 +182,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'mandatory' => true,
+                'doNotCopy' => true,
                 'tl_class' => 'w50',
                 'maxlength' => 255
             ],
@@ -191,6 +199,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50',
+                'doNotCopy' => true,
                 'maxlength' => 255
             ],
 
@@ -206,6 +215,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'clr long',
+                'doNotCopy' => true,
                 'maxlength' => 512
             ],
 
@@ -221,6 +231,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50',
+                'doNotCopy' => true,
                 'maxlength' => 255
             ],
 
@@ -364,7 +375,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'eval' => [
 
-                'doNotCopy' => true,
                 'mandatory' => true
             ],
 
@@ -401,7 +411,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption'=>true,
@@ -424,7 +433,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getColumnsByDbTable' ],
@@ -444,7 +452,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_form_fields', 'getColumnsByDbTable' ],

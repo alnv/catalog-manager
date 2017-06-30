@@ -38,6 +38,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Column', 'Please 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter the records.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'] = [ 'Delete field', 'Delete field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['toggle'] = [ 'Hide field', 'Disable or Enable field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'] = [ 'Show field', 'Show the details of field ID "%s".' ];

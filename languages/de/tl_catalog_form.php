@@ -8,6 +8,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['new'] = [ 'Filter Formular erstellen', '
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['delete'] = [ 'Filter Formular löschen', 'Filter Formular mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['edit'] = [ 'Filter Formular bearbeiten', 'Filter Formular mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['copy'] = [ 'Filter Formular duplizieren', 'Filter Formular mit der ID %s duplizieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['show'] = [ 'Details des Filter Formulars anzeigen', 'Die Details des Filter Formulars mit der ID %s anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['editFields'] = [ 'Filter Formular Felder bearbeiten', 'Die Felder des Filter Formulars mit der ID %s bearbeiten.' ];
 

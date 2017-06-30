@@ -52,8 +52,9 @@ $GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Internal field', 'He
 $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'External field', 'Here you can chose a field for external redirect.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Overwrite redirect', 'Here you can define a internal or external redirect.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
+$GLOBALS['TL_LANG']['tl_catalog']['copy'] = [ 'Copy catalog', 'Copy catalog ID "%s".' ];
+$GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Show details', 'Show the details of catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['editFields'] = [ 'Edit catalog fields', 'Edit the fields of catalog ID "%s".' ];
 

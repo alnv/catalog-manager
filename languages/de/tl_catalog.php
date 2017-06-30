@@ -53,6 +53,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite übers
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Backend Modul löschen', 'Backend Modul mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Backend Modul bearbeiten', 'Backend Modul mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['copy'] = [ 'Backend Modul duplizieren','Backend Modul mit der ID %s duplizieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Details des Backend Moduls anzeigen', 'Die Details des Backend Moduls mit der ID %s anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['editFields'] = [ 'Backend Modul Felder bearbeiten', 'Die Eingabefelder des Backend Moduls mit der ID %s bearbeiten.' ];
 

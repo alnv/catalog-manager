@@ -85,6 +85,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Table', 'Please
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Column', 'Please select column for the foreign key.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Delete field', 'Delete field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Hide field', 'Disable or Enable field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Show field', 'Show the details of field ID "%s".' ];

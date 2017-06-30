@@ -87,6 +87,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte 
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Eingabefeld bearbeiten', 'Eingabefeld mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['copy'] = [ 'Eingabefeld duplizieren', 'Eingabefeld mit der ID %s duplizieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'] = [ 'Eingabefeld ausblenden', 'Eingabefeld mit der ID %s ein/ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['show'] = [ 'Details des Eingabefelds anziegen', 'Die Details des Eingabefelds mit der ID %s anzeigen.' ];
 

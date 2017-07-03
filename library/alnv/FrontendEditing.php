@@ -33,6 +33,7 @@ class FrontendEditing extends CatalogController {
         $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFineUploader' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -67,6 +68,12 @@ class FrontendEditing extends CatalogController {
             if ( $arrField['type'] == 'hidden' ) {
 
                 $arrDCField['inputType'] = 'hidden';
+            }
+
+            if ( $arrField['type'] == 'upload' && $arrField['useFineUploader'] ) {
+
+                $arrDCField['inputType'] = 'catalogFineUploader';
+                $this->CatalogFineUploader->loadAssets();
             }
 
             $arrDCField['_fieldname'] = $strFieldname;
@@ -341,6 +348,11 @@ class FrontendEditing extends CatalogController {
             $objWidget->maxlength = $arrField['eval']['maxsize'];
 
             $this->blnHasUpload = true;
+        }
+
+        if ( $arrField['inputType'] == 'catalogFineUploader' ) {
+
+            // @todo set options here
         }
 
         if ( $arrField['inputType'] == 'textarea' && isset( $arrField['eval']['rte'] ) ) {

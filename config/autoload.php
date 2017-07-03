@@ -59,6 +59,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogMessageForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogMessageForm.php',
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\CatalogAjaxController' => 'system/modules/catalog-manager/library/alnv/CatalogAjaxController.php',
+    'CatalogManager\CatalogFineUploader' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogFineUploader.php',
     'CatalogManager\ChangeLanguageExtension' => 'system/modules/catalog-manager/library/alnv/ChangeLanguageExtension.php',
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
@@ -101,6 +102,7 @@ TemplateLoader::addFiles([
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
     'ce_catalog_filterform' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_select' => 'system/modules/catalog-manager/templates',
+    'ctlg_form_fine_uploader' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
 ]);

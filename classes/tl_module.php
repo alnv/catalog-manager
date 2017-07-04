@@ -132,7 +132,20 @@ class tl_module extends \Backend {
 
     public function getCatalogFormTemplates() {
 
-        return $this->getTemplateGroup('ctlg_form_');
+        $arrReturn = [];
+        $arrTypes = [ 'default', 'grouped' ];
+
+        foreach ( $arrTypes as $strType ) {
+
+            $arrTemplateGroup = $this->getTemplateGroup( 'ctlg_form_' . $strType );
+
+            foreach ( $arrTemplateGroup as $strKey => $strValue ) {
+
+                $arrReturn[ $strKey ] = $strValue;
+            }
+        }
+
+        return $arrReturn;
     }
 
 

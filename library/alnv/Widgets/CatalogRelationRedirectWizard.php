@@ -115,7 +115,7 @@ class CatalogRelationRedirectWizard extends \Widget {
         }
 
         $strTemplate =
-            '<table class="tl_optionwizard" id="ctrl_'.$this->strId.'">'.
+            '<table class="tl_catalogRelatedChildTables" id="ctrl_'.$this->strId.'">'.
                 '<thead>'.
                     '<tr>'.
                         '<th>'.( $blnCheckAll ? '<span class="fixed"><input type="checkbox" id="check_all_' . $this->strId . '" class="tl_checkbox" onclick="Backend.toggleCheckboxGroup(this,\'ctrl_' . $this->strId . '\')"></span>' : '').'</th>'.

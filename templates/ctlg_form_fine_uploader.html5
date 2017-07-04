@@ -121,17 +121,11 @@
 
    <script>
 
-      var catalogFineUploader = new qq.FineUploader({
+      CatalogManager.fineUploader( document.getElementById('<?= $this->id; ?>'), {
 
-         element: document.getElementById('<?= $this->id; ?>'),
-         multiple: false,
-         debug: false,
-         maxConnections: 3,
-         validation: {
-            allowedExtensions: ['png'],
-            minSizeLimit: 100000,
-            sizeLimit: 100000
-         }
+         multiple: <?= $this->multiple; ?>,
+         sizeLimit: <?= $this->maxlength; ?>,
+         allowedExtensions: <?= $this->extensions; ?>
       });
 
    </script>

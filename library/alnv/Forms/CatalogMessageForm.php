@@ -5,7 +5,7 @@ namespace CatalogManager;
 class CatalogMessageForm extends \Widget {
 
     
-    protected $strTemplate = 'ctlg_message_field';
+    protected $strTemplate = 'ctlg_form_message';
     protected $strPrefix = 'widget widget-message';
 
 

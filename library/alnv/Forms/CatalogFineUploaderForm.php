@@ -9,6 +9,7 @@ class CatalogFineUploaderForm extends \Widget {
     protected $strTemplate = 'ctlg_form_fine_uploader';
     protected $strPrefix = 'widget widget-fine-uploader';
 
+    
     public function __construct( $arrAttributes = null ) {
 
         $strPost = \Input::post('name') ? \Input::post('name') : '';
@@ -20,6 +21,8 @@ class CatalogFineUploaderForm extends \Widget {
             $this->import('CatalogFineUploader');
             $this->CatalogFineUploader->sendAjaxResponse();
         }
+
+        parent::__construct( $arrAttributes );
     }
 
 

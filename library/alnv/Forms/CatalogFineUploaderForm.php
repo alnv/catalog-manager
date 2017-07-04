@@ -9,6 +9,19 @@ class CatalogFineUploaderForm extends \Widget {
     protected $strTemplate = 'ctlg_form_fine_uploader';
     protected $strPrefix = 'widget widget-fine-uploader';
 
+    public function __construct( $arrAttributes = null ) {
+
+        $strPost = \Input::post('name') ? \Input::post('name') : '';
+        $strName = 'id_' . $arrAttributes['name'];
+        $strID = 'id_' . $arrAttributes['id'];
+
+        if ( \Environment::get('isAjaxRequest') && $strPost && ( $strID === $strPost || $strName === $strPost ) ) {
+
+            $this->import('CatalogFineUploader');
+            $this->CatalogFineUploader->sendAjaxResponse();
+        }
+    }
+
 
     public function validate() {
 
@@ -24,7 +37,7 @@ class CatalogFineUploaderForm extends \Widget {
         $this->multiple = json_encode( $this->multiple );
         $this->extensions = json_encode( explode( ',', $this->extensions ) );
         $this->maxlength = $this->maxlength ? json_encode( $this->maxlength ) : '0';
-
+        
         return parent::parse( $arrAttributes );
     }
 }

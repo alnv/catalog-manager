@@ -13,6 +13,7 @@ class CatalogFineUploader {
         if ( TL_MODE == 'FE' && !$this->blnAssetsLoaded ) {
 
             $GLOBALS['TL_JAVASCRIPT']['catalogFineUploader'] = 'system/modules/catalog-manager/assets/fineUploader/fine-uploader.min.js';
+            $GLOBALS['TL_JAVASCRIPT']['catalogFrontendExtension'] = 'system/modules/catalog-manager/assets/FrontendExtension.js';
             $GLOBALS['TL_CSS']['catalogFineUploader'] = 'system/modules/catalog-manager/assets/fineUploader/fine-uploader-new.min.css';
 
             $this->blnAssetsLoaded = true;

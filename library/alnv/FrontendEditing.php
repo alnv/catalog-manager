@@ -338,21 +338,16 @@ class FrontendEditing extends CatalogController {
             $objWidget->addAttributes([ 'onchange' => 'this.form.submit()' ]);
         }
 
-        if ( $arrField['inputType'] == 'upload' ) {
+        if ( $arrField['inputType'] == 'upload' || $arrField['inputType'] == 'catalogFineUploader' ) {
 
             $objWidget->storeFile = $this->catalogStoreFile;
             $objWidget->useHomeDir = $this->catalogUseHomeDir;
             $objWidget->uploadFolder = $this->catalogUploadFolder;
-            $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
+            $objWidget->maxlength = $arrField['eval']['maxlength'];
             $objWidget->extensions = $arrField['eval']['extensions'];
-            $objWidget->maxlength = $arrField['eval']['maxsize'];
-
+            $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
+            
             $this->blnHasUpload = true;
-        }
-
-        if ( $arrField['inputType'] == 'catalogFineUploader' ) {
-
-            // @todo set options here
         }
 
         if ( $arrField['inputType'] == 'textarea' && isset( $arrField['eval']['rte'] ) ) {

@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class CatalogFineUploader {
 
+    
     protected $arrOptions = [];
     protected $blnAssetsLoaded = false;
 
@@ -18,5 +19,18 @@ class CatalogFineUploader {
 
             $this->blnAssetsLoaded = true;
         }
+    }
+
+
+    public function sendAjaxResponse() {
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+
+            'success' => true
+        ]);
+
+        exit;
     }
 }

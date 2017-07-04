@@ -342,8 +342,8 @@ class FrontendEditing extends CatalogController {
 
             $objWidget->storeFile = $this->catalogStoreFile;
             $objWidget->useHomeDir = $this->catalogUseHomeDir;
+            $objWidget->maxlength = $arrField['eval']['maxsize'];
             $objWidget->uploadFolder = $this->catalogUploadFolder;
-            $objWidget->maxlength = $arrField['eval']['maxlength'];
             $objWidget->extensions = $arrField['eval']['extensions'];
             $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
             

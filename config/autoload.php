@@ -90,7 +90,7 @@ TemplateLoader::addFiles([
     'mod_catalog_table' => 'system/modules/catalog-manager/templates',
     'ctlg_form_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_grouped' => 'system/modules/catalog-manager/templates',
-    'ctlg_message_field' => 'system/modules/catalog-manager/templates',
+    'ctlg_form_message' => 'system/modules/catalog-manager/templates',
     'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
     'ctlg_debug_default' => 'system/modules/catalog-manager/templates',

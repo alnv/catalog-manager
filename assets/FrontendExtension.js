@@ -14,7 +14,19 @@ var CatalogManager = CatalogManager || {};
             validation: {},
             element: objElement,
             debug: objOptions.debug,
-            multiple: objOptions.multiple
+            multiple: objOptions.multiple,
+
+            request: {
+
+                inputName: objOptions.name,
+                endpoint: window.location.href,
+
+                params: {
+                    name: objOptions.name,
+                    action: 'catalogFineUploader',
+                    REQUEST_TOKEN: objOptions.REQUEST_TOKEN
+                }
+            }
         };
 
         if ( !isEmpty( objOptions.sizeLimit ) && objOptions.sizeLimit != '0' ) {

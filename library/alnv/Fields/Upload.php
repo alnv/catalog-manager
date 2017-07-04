@@ -56,6 +56,8 @@ class Upload {
             $arrDCAField['eval']['path'] = $arrField['path'];
         }
 
+        $arrDCAField['eval']['maxsize'] = $arrField['maxsize'];
+
         return $arrDCAField;
     }
 

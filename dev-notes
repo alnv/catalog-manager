@@ -1,9 +1,3 @@
 todo
- - improve parseWhereQueryArray and createWhereStatement handler
- - fix array problem in dca headline
  - check date field for error if filter checkbox is active
- - test taxonomies widget
  - implement export and import csv files
- - implement debug for gallery array
- - add icon to filter form
- - unique alias in tl_catalog_form_fields

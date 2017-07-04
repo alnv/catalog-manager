@@ -24,6 +24,8 @@ class CatalogFineUploader {
 
     public function sendAjaxResponse() {
 
+        // @todo call here fine upload widget
+
         header('Content-Type: application/json');
 
         echo json_encode([

@@ -12,12 +12,19 @@ class CatalogFineUploaderForm extends \Widget {
 
     public function validate() {
 
-        return null;
+       return null;
     }
 
 
-    public function generate() {
+    public function generate() {}
 
-        return '';
+
+    public function parse( $arrAttributes = null ) {
+
+        $this->multiple = json_encode( $this->multiple );
+        $this->extensions = json_encode( explode( ',', $this->extensions ) );
+        $this->maxlength = $this->maxlength ? json_encode( $this->maxlength ) : '0';
+
+        return parent::parse( $arrAttributes );
     }
 }

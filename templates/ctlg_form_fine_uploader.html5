@@ -123,9 +123,11 @@
 
       CatalogManager.fineUploader( document.getElementById('<?= $this->id; ?>'), {
 
+         name: '<?= $this->id; ?>',
          multiple: <?= $this->multiple; ?>,
          sizeLimit: <?= $this->maxlength; ?>,
-         allowedExtensions: <?= $this->extensions; ?>
+         allowedExtensions: <?= $this->extensions; ?>,
+         REQUEST_TOKEN: '<?php echo REQUEST_TOKEN; ?>'
       });
 
    </script>

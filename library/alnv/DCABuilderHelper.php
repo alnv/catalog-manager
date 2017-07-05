@@ -261,10 +261,11 @@ class DCABuilderHelper extends CatalogController {
 
             'id' => [
 
+                'sort' => '1',
+                'invisible' => '',
                 'type' => 'number',
                 'fieldname' => 'id',
                 'statement' => 'i10',
-                'invisible' => '',
                 'disableFEE' => true,
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][1],
@@ -274,6 +275,7 @@ class DCABuilderHelper extends CatalogController {
             'tstamp' => [
 
                 'flag' => 6,
+                'sort' => '1',
                 'type' => 'date',
                 'statement' => 'i10',
                 'fieldname' => 'tstamp',
@@ -310,6 +312,7 @@ class DCABuilderHelper extends CatalogController {
 
             'title' => [
 
+                'sort' => '1',
                 'type' => 'text',
                 'fieldname' => 'title',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],

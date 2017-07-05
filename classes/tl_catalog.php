@@ -237,7 +237,7 @@ class tl_catalog extends \Backend {
 
     public function getPanelLayouts() {
 
-        return [ 'filter', 'search', 'limit', 'sort' ];
+        return [ 'filter', 'sort', 'search', 'limit' ];
     }
 
 

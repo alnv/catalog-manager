@@ -123,7 +123,7 @@
 
       CatalogManager.fineUploader( document.getElementById('<?= $this->id; ?>'), {
 
-         name: '<?= $this->id; ?>',
+         name: '<?= $this->name; ?>',
          multiple: <?= $this->multiple; ?>,
          sizeLimit: <?= $this->maxlength; ?>,
          allowedExtensions: <?= $this->extensions; ?>,

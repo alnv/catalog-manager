@@ -22,17 +22,23 @@ class CatalogFineUploader {
     }
 
 
-    public function sendAjaxResponse() {
+    public function sendAjaxResponse( $arrAttributes ) {
 
-        // @todo call here fine upload widget
+        \Input::setGet( '_doNotTriggerAjax', '1' );
 
-        header('Content-Type: application/json');
+        if ( \Input::post('action') == 'catalogFineUploader' ) {
+            
+            $objWidget = new $GLOBALS['TL_FFL']['catalogFineUploader']( $arrAttributes );
+            $objWidget->bnyUploadFolder = $arrAttributes['configAttributes']['uploadFolder'];
+            $objWidget->blnStoreFile = $arrAttributes['configAttributes']['storeFile'] ? true : false;
+            $objWidget->blnUseHomeDir = $arrAttributes['configAttributes']['useHomeDir'] ? true : false;
+            $objWidget->blnDoNotOverwrite = $arrAttributes['configAttributes']['doNotOverwrite'] ? true : false;
 
-        echo json_encode([
+            $arrResponse = $objWidget->upload();
 
-            'success' => true
-        ]);
-
-        exit;
+            header( 'Content-Type: application/json' );
+            echo json_encode( $arrResponse );
+            exit;
+        }
     }
 }

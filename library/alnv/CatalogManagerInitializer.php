@@ -44,32 +44,39 @@ class CatalogManagerInitializer {
 
             $this->createCatalogManagerDCA( $arrCatalog );
 
-            if ( !$arrCatalog['isBackendModule'] || $arrCatalog['pTable'] ) continue;
+            if ( $arrCatalog['isBackendModule'] && !$arrCatalog['pTable'] ) {
 
-            $this->createBackendModuleWithPermissions( $arrCatalog );
+                $this->insertModuleToBE_MOD( $arrCatalog );
+            }
+
+            if ( $arrCatalog['permissionType'] ) {
+
+                $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
+            }
         }
     }
 
     
-    protected function createBackendModuleWithPermissions( $arrCatalog ) {
+    protected function insertModuleToBE_MOD( $arrCatalog ) {
 
         $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
         $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
         array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
-
-        if ( !$arrCatalog['pTable'] ) {
-
-            $this->createPermissions( $arrCatalog['tablename'] );
-        }
     }
 
 
-    protected function createPermissions( $strPermissionName ) {
+    protected function createPermissions( $strPermissionName, $strType ) {
 
-        $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
         $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName . 'p';
-        $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = $strPermissionName;
+
+        if ( $strType == 'extended' ) $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
+
+        $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = [
+
+            'type' => $strType,
+            'tablename' => $strPermissionName
+        ];
     }
 
 

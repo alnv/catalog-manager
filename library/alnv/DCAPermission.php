@@ -136,6 +136,113 @@ class DCAPermission extends CatalogController {
     }
 
 
+    public function checkPermissionByParent( $strTable, $strPTable, $strFieldname, $strFieldPermissions = '' ) {
+
+        if ( $this->isAdmin() ) {
+
+            return null;
+        }
+
+        $strID = \Input::get( 'id' );
+        $strAct = \Input::get( 'act' );
+        $strPID = \Input::get( 'pid' );
+        $arrRoot = $this->getRootFromUser( $strFieldname );
+
+        switch ( $strAct ) {
+
+            case 'paste':
+
+                // allow
+
+                break;
+
+            case 'create':
+
+                if ( !strlen( $strPID ) || !in_array( $strPID, $arrRoot ) ) {
+
+                    $this->log( sprintf( 'Not enough permissions to create entity in %s ID "%s"', $strPTable, $strPID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                break;
+
+            case 'cut':
+            case 'copy':
+
+                if ( !in_array( $strPID, $arrRoot ) ) {
+
+                    $this->log(sprintf( 'Not enough permissions to %s entity ID "%s" to %s ID "%s"', $strAct, $strID, $strPTable, $strPID ), __METHOD__, TL_ERROR );
+                }
+
+                break;
+
+            case 'edit':
+            case 'show':
+            case 'delete':
+            case 'toggle':
+
+                $objEntity = $this->Database->prepare( sprintf( "SELECT pid FROM %s WHERE id = ?", $strTable ) )->limit(1)->execute( $strID );
+
+                if ( $objEntity->numRows < 1 ) {
+
+                    $this->log( sprintf( 'Invalid entity ID "%s"', $strID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                if ( !in_array( $objEntity->pid, $arrRoot ) ) {
+
+                    $this->log( sprintf( 'Not enough permissions to %s entity ID "%s" of %s ID "%s"', $strAct, $strID, $strPTable, $strPID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                break;
+
+            case 'select':
+            case 'editAll':
+            case 'deleteAll':
+            case 'overrideAll':
+            case 'cutAll':
+            case 'copyAll':
+
+                if ( !in_array( $strID, $arrRoot ) ) {
+
+                    $this->log( sprintf( 'Not enough permissions to access entity ID "%s"', $strID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                $objEntity = $this->Database->prepare( sprintf( "SELECT id FROM %s WHERE pid = ?", $strTable ) )->execute( $strID );
+
+                if ( $objEntity->numRows < 1 ) {
+
+                    $this->log( sprintf( 'Invalid entity ID "%s"',  $strID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                $arrSession = $this->Session->getData();
+                $arrSession['CURRENT']['IDS'] = array_intersect( $arrSession['CURRENT']['IDS'], $objEntity->fetchEach('id') );
+                $this->Session->setData( $arrSession );
+
+                break;
+
+            default:
+
+                if ( strlen( $strAct ) ) {
+
+                    $this->log( sprintf( 'Invalid command "%s"', $strAct ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                elseif ( !in_array( $strID, $arrRoot ) ) {
+
+                    $this->log( sprintf( 'Not enough permissions to access entity ID "%s"', $strID ), __METHOD__, TL_ERROR );
+                    $this->redirect('contao/main.php?act=error');
+                }
+
+                break;
+        }
+    }
+
+
     private function getRoot( $strTable, $strFieldname, $strType ) {
 
         if ( $strType == 'default' ) {

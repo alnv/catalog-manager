@@ -14,7 +14,7 @@ class DCAPermission extends CatalogController {
     }
 
 
-    public function checkPermission( $strTable, $strFieldname, $strFieldPermissions ) {
+    public function checkPermission( $strTable, $strFieldname, $strFieldPermissions, $strType = 'default' ) {
 
         $strID = \Input::get( 'id' );
         $strAct = \Input::get( 'act' );
@@ -24,9 +24,7 @@ class DCAPermission extends CatalogController {
             return null;
         }
 
-        $arrRoot = $this->checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions );
-
-        // @todo add hook
+        $arrRoot = $this->checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions, $strType );
 
         switch ( $strAct ) {
 
@@ -148,9 +146,7 @@ class DCAPermission extends CatalogController {
         $strID = \Input::get( 'id' );
         $strAct = \Input::get( 'act' );
         $strPID = \Input::get( 'pid' );
-        $arrRoot = $this->getRoot( $strFieldname );
-
-        // @todo add hook
+        $arrRoot = $this->getRootFromUser( $strFieldname );
 
         switch ( $strAct ) {
 
@@ -247,20 +243,33 @@ class DCAPermission extends CatalogController {
     }
 
 
-    private function checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions ) {
+    private function getRoot( $strTable, $strFieldname, $strType ) {
 
-        $arrRoot = $this->getRoot( $strFieldname );
+        if ( $strType == 'default' ) {
 
+            return $this->getAllRoots( $strTable );
+        }
+
+        else {
+
+            return $this->getRootFromUser( $strFieldname );
+        }
+    }
+
+
+    private function checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions, $strType ) {
+
+        $arrRoot = $this->getRoot( $strTable, $strFieldname, $strType );
         $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root'] = $arrRoot;
 
         if ( !$this->User->hasAccess( 'create', $strFieldPermissions ) ) {
 
             $GLOBALS['TL_DCA'][$strTable]['config']['closed'] = true;
+            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['copy'] );
         }
 
         if ( !$this->User->hasAccess( 'delete', $strFieldPermissions ) ) {
 
-            unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['copy'] );
             unset( $GLOBALS['TL_DCA'][$strTable]['list']['operations']['delete'] );
         }
 
@@ -273,22 +282,36 @@ class DCAPermission extends CatalogController {
     }
 
 
-    private function getRoot( $strFieldname ) {
+    private function getRootFromUser( $strFieldname ) {
 
-        if ( !is_array( $this->User->{$strFieldname} ) || empty( $this->User->{$strFieldname} ) ) {
+        if ( is_array( $this->User->{$strFieldname} ) && !empty( $this->User->{$strFieldname} ) ) {
 
-            $arrRoot = [0];
+            return $this->User->{$strFieldname};
         }
 
-        else {
+        return [0];
+    }
 
-            $arrRoot = $this->User->{$strFieldname};
+
+    private function getAllRoots( $strTable ) {
+
+        $arrRoot = [];
+        $objRootIds = $this->Database->prepare( sprintf( 'SELECT id FROM %s', $strTable ) )->execute();
+
+        if ( !$objRootIds->numRows ) {
+
+            return [0];
+        }
+
+        while ( $objRootIds->next() ) {
+
+            $arrRoot[] = $objRootIds->id;
         }
 
         return $arrRoot;
     }
 
-    
+
     private function isAdmin() {
 
         return $this->User->isAdmin;

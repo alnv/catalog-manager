@@ -10,7 +10,7 @@ class DCABuilder extends CatalogController {
     protected $arrFields = [];
     protected $arrCatalog = [];
     protected $arrErrorTables = [];
-
+    protected $strPermissionType = '';
 
     protected $arrOperations = [
 
@@ -33,6 +33,7 @@ class DCABuilder extends CatalogController {
         $this->arrCatalog = $arrCatalog;
         $this->strID = $arrCatalog['id'];
         $this->strTable = $arrCatalog['tablename'];
+        $this->strPermissionType = $arrCatalog['permissionType'];
 
         if ( !$this->strTable ) return null;
 
@@ -251,21 +252,12 @@ class DCABuilder extends CatalogController {
             $arrReturn['ctable'] = $this->arrCatalog['cTables'];
         }
 
-        if ( $this->arrCatalog['pTable'] ) {
+        if ( $this->arrCatalog['permissionType'] ) {
 
             $arrReturn['onload_callback'][] = function() {
 
                 $objDCAPermission = new DCAPermission();
-                $objDCAPermission->checkPermissionByParent( $this->strTable, $this->arrCatalog['pTable'], $this->arrCatalog['pTable'], $this->arrCatalog['pTable'] . 'p' );
-            };
-        }
-
-        else {
-
-            $arrReturn['onload_callback'][] = function(){
-
-                $objDCAPermission = new DCAPermission();
-                $objDCAPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p' );
+                $objDCAPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p', $this->strPermissionType );
             };
         }
 

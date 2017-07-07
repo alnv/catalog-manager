@@ -95,9 +95,9 @@ class tl_catalog extends \Backend {
             }
         }
 
-        if ( $dc->activeRecord->isBackendModule && !$dc->activeRecord->pTable ) {
+        if ( $dc->activeRecord->permissionType ) {
 
-            $this->insertPermissionFields( $dc->activeRecord->tablename );
+            $this->insertPermissionFields( $dc->activeRecord->tablename, $dc->activeRecord->permissionType );
         }
     }
 
@@ -168,18 +168,21 @@ class tl_catalog extends \Backend {
     }
 
 
-    protected function insertPermissionFields( $strField ) {
+    protected function insertPermissionFields( $strField, $strType ) {
 
         $objSQLBuilder = new SQLBuilder();
 
-        $objSQLBuilder->alterTableField( 'tl_user', $strField, 'blob NULL' );
         $objSQLBuilder->alterTableField( 'tl_user', $strField . 'p', 'blob NULL' );
-
-        $objSQLBuilder->alterTableField( 'tl_user_group', $strField, 'blob NULL' );
         $objSQLBuilder->alterTableField( 'tl_user_group', $strField . 'p', 'blob NULL' );
 
         $objSQLBuilder->alterTableField( 'tl_member_group', $strField, 'blob NULL' );
         $objSQLBuilder->alterTableField( 'tl_member_group', $strField . 'p', 'blob NULL' );
+
+        if ( $strType == 'extended' ) {
+
+            $objSQLBuilder->alterTableField( 'tl_user', $strField, 'blob NULL' );
+            $objSQLBuilder->alterTableField( 'tl_user_group', $strField, 'blob NULL' );
+        }
     }
 
 
@@ -512,5 +515,11 @@ class tl_catalog extends \Backend {
         }
 
         return $arrReturn;
+    }
+
+
+    public function getPermissionTypes() {
+
+        return [ 'default', 'extended' ];
     }
 }

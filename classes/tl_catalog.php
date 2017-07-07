@@ -513,4 +513,10 @@ class tl_catalog extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getPermissionTypes() {
+
+        return [ 'default', 'extended' ];
+    }
 }

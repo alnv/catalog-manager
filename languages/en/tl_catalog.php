@@ -9,6 +9,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Redirect Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
+$GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Permission settings';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
@@ -29,6 +30,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here y
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or more fields that will be shown in the list.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Permission Types', 'Here you can enable backend module permission.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
 
@@ -71,6 +73,12 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'] = [
 
     'useSingleField' => 'Full address',
     'useMultipleFields' => 'Multiple field address'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['permissionType'] = [
+
+    'default' => 'Only permission rights',
+    'extended' => 'Permission rights and entities'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'] = [

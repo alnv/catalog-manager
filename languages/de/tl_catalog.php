@@ -4,12 +4,13 @@ $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Neues Modul erstellen', 'Hier kön
 
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Datenbankeinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Geo-Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Layout-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'Darstellungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operatoren-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigationseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Weiterleitungseinstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Berechtigungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['description_settings'] = 'Allgemeine-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Layout-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Sprachwechsler-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Name', 'Bitte geben Sie den Names des Moduls ein.' ];
@@ -31,6 +32,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Backend Modul einblend
 $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Eltern-Felder', 'Eines oder mehrere Felder, die im Header des Parent View angezeigt werden' ];
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sortierungs-Feld/er', 'Eines oder mehrere Felder, anhand derer die Tabelle sortiert wird.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Als mehrspaltige Tabelle anzeigen', 'Legt fest, ob Contao einen Tabellenkopf mit Spaltennamen ausgeben soll.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Berechtigungsart festlegen', 'Hier können Sie zwischen zwei Berechtigungsarten entscheiden. Bei der erweiterten Berechtigungsart müssen Datensätze explizit freigeschaltet werden.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'Stadt', 'Bitte wählen Sie ein Feld für die Stadt aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Land', 'Bitte wählen Sie für den Land ein Eingabefeld.' ];
@@ -70,6 +72,12 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'] = [
 
     'useSingleField' => 'Vollständige Adresse',
     'useMultipleFields' => 'Mehrspaltige Adresse'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['permissionType'] = [
+
+    'default' => 'Nur Rechte',
+    'extended' => 'Rechte und Datensätze'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'] = [

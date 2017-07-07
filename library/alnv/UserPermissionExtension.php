@@ -20,44 +20,47 @@ class UserPermissionExtension extends CatalogController {
 
             if ( !empty( $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] ) && is_array( $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] ) ) {
 
-                foreach ( $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] as $strCatalogname ) {
+                foreach ( $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] as $arrCatalog ) {
 
-                    $this->extendUserAndUserGroupDCA( $strCatalogname, $strDCAName );
+                    $this->extendUserAndUserGroupDCA( $arrCatalog['tablename'], $strDCAName, $arrCatalog['type'] );
                 }
             }
         }
     }
 
 
-    protected function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName ) {
+    protected function extendUserAndUserGroupDCA( $strCatalogname, $strDCAName, $strType ) {
 
         $arrLabels = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
 
         if ( $strDCAName == 'tl_user' ) {
 
-            $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] );
-            $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] );
+            $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], ( $strType == 'extended' ? $strCatalogname : '' ), $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] );
+            $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], ( $strType == 'extended' ? $strCatalogname : '' ), $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] );
         }
 
         else {
 
-            $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], $strCatalogname, $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] );
+            $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace( 'fop;', sprintf( 'fop;{%s},%s,%s;', $arrLabels[0], ( $strType == 'extended' ? $strCatalogname : '' ), $strCatalogname . 'p' ), $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] );
         }
 
-        $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname ] = [
+        if ( $strType == 'extended' ) {
 
-            'label' => $arrLabels,
-            'inputType' => 'checkbox',
-            'foreignKey' => sprintf( '%s.title', $strCatalogname ),
+            $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname ] = [
 
-            'eval' => [
+                'label' => $arrLabels,
+                'inputType' => 'checkbox',
+                'foreignKey' => sprintf( '%s.title', $strCatalogname ),
 
-                'multiple' => true
-            ],
+                'eval' => [
 
-            'exclude' => true,
-            'sql' => "blob NULL"
-        ];
+                    'multiple' => true
+                ],
+
+                'exclude' => true,
+                'sql' => "blob NULL"
+            ];
+        }
         
         $GLOBALS['TL_DCA'][ $strDCAName ]['fields'][ $strCatalogname . 'p' ] = [
 
@@ -81,17 +84,6 @@ class UserPermissionExtension extends CatalogController {
             'exclude' => true,
             'sql' => "blob NULL"
         ];
-    }
-
-
-    protected function createSQLColumns( $strCatalogname, $strDCAName ) {
-
-        $arrColumnsToCreate = [ $strCatalogname, $strCatalogname . 'p' ];
-
-        foreach ( $arrColumnsToCreate as $strFieldname ) {
-
-            $this->SQLBuilder->alterTableField( $strDCAName, $strFieldname, 'blob NULL' );
-        }
     }
 
 

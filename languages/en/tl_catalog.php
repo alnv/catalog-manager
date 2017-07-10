@@ -77,8 +77,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['addressInputType'] = [
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['permissionType'] = [
 
-    'default' => 'Only permission rights',
-    'extended' => 'Permission rights and entities'
+    'default' => 'Default',
+    'extended' => 'Extended'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'] = [

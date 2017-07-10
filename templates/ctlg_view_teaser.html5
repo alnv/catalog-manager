@@ -27,7 +27,6 @@
    <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
       <ul>
          <?php foreach( $this->operations as $arrOperation ): ?>
-
             <li>
                <a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>>
                   <span class="ctlg_relation_icon"><?= $arrOperation['image']; ?></span> <?= $arrOperation['title']; ?>

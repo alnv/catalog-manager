@@ -3,9 +3,9 @@
    <h1><?= $this->title; ?></h1>
 
    <!-- you can overwrite this block with your own code -->
-   <?php if ( is_array( $this->catalogTeaserFields ) ):  ?>
+   <?php if ( is_array( $this->catalogEntityFields ) ):  ?>
       <div class="ctlg_entities">
-         <?php foreach( $this->catalogTeaserFields as $strName => $arrField ): ?>
+         <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
             <?php if ( $this->{$strName} ): ?>
                <?php $varValue = is_array( $this->{$strName} ) ? implode( ',', $this->{$strName} ) : $this->{$strName}; ?>
                <?php if ( is_string( $varValue ) ): ?>

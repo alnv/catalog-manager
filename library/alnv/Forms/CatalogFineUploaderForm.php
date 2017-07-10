@@ -19,7 +19,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
         $strPost = \Input::post('name') ? \Input::post('name') : '';
 
-        if ( \Environment::get('isAjaxRequest') && $strPost && ( $arrAttributes['id'] === $strPost || $arrAttributes['name'] === $strPost ) && !\Input::get('_doNotTriggerAjax') ) {
+        if ( \Environment::get('isAjaxRequest') && ( $arrAttributes['id'] === $strPost || $arrAttributes['name'] === $strPost ) && !\Input::get('_doNotTriggerAjax') ) {
 
             $this->import('CatalogFineUploader');
             $this->CatalogFineUploader->sendAjaxResponse( $arrAttributes );
@@ -76,7 +76,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
     public function upload() {
 
-        $arrReturn = [ 'success' => true ];
+        $arrReturn = [ 'success' => true, 'error' => '', 'preventRetry' => true, ];
 
         if ( !isset( $_FILES[$this->strName] ) || empty( $_FILES[$this->strName]['name'] ) ) {
 
@@ -84,17 +84,22 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
                 if ( $this->strLabel == '' ) {
 
+                    $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['mdtryNoLabel'];
                     $arrReturn['success'] = false;
+
                     return $arrReturn;
 
                 } else {
 
+                    $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel );
                     $arrReturn['success'] = false;
+
                     return $arrReturn;
                 }
             }
 
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
@@ -108,17 +113,17 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
         catch ( \InvalidArgumentException $objError ) {
 
-            // @todo message
-
+            $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['filename'];
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
         if ( !\Validator::isValidFileName( $arrFile['name'] ) ) {
 
-            // @todo message
-
+            $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['filename'];
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
@@ -126,30 +131,40 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
             if ( $arrFile['error'] == 1 || $arrFile['error'] == 2 ) {
 
-                // @todo message
+                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filesize'], $intMaxSizeKb );
+                $arrReturn['success'] = false;
+
+                return $arrReturn;
             }
 
             if ( $arrFile['error'] == 3 ) {
 
-                // @todo message
+                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filepartial'], $arrFile['name'] );
+                $arrReturn['success'] = false;
+
+                return $arrReturn;
             }
 
             if ( $arrFile['error'] > 0 ) {
 
-                // @todo message
+                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['fileerror'], $arrFile['error'], $arrFile['name'] );
+                $arrReturn['success'] = false;
+
+                return $arrReturn;
             }
 
             unset( $_FILES[ $this->strName ] );
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
         if ( $this->maxlength > 0 && $arrFile['size'] > $this->maxlength ) {
 
-            // @todo message
-
+            $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filesize'], $intMaxSizeKb );
             unset( $_FILES[ $this->strName ] );
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
@@ -158,10 +173,10 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
         if ( !in_array( $objFile->extension, $arrUploadedTypes ) ) {
 
-            // @todo message
-
+            $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filetype'], $objFile->extension );
             unset( $_FILES[ $this->strName ] );
             $arrReturn['success'] = false;
+
             return $arrReturn;
         }
 
@@ -169,19 +184,19 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
             if ( $arrImageSize[0] > \Config::get('imageWidth') ) {
 
-                // @todo message
-
+                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filewidth'], $arrFile['name'], \Config::get('imageWidth') );
                 unset( $_FILES[ $this->strName ] );
                 $arrReturn['success'] = false;
+
                 return $arrReturn;
             }
 
             if ( $arrImageSize[1] > \Config::get('imageHeight') ) {
 
-                // @todo message
-
+                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['fileheight'], $arrFile['name'], \Config::get('imageHeight') );
                 unset( $_FILES[ $this->strName ] );
                 $arrReturn['success'] = false;
+
                 return $arrReturn;
             }
         }

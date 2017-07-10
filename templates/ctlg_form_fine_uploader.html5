@@ -125,8 +125,6 @@
 
          name: '<?= $this->name; ?>',
          multiple: <?= $this->multiple; ?>,
-         sizeLimit: <?= $this->maxlength; ?>,
-         allowedExtensions: <?= $this->extensions; ?>,
          REQUEST_TOKEN: '<?php echo REQUEST_TOKEN; ?>'
       });
 

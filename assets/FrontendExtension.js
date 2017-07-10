@@ -10,11 +10,17 @@ var CatalogManager = CatalogManager || {};
         objOptions = getOptions( objOptions );
 
         var objParams = {
-
-            validation: {},
+            
             element: objElement,
             debug: objOptions.debug,
             multiple: objOptions.multiple,
+
+            failedUploadTextDisplay: {
+
+                mode: 'custom',
+                maxChars: 512,
+                responseProperty: 'error'
+            },
 
             request: {
 
@@ -28,29 +34,6 @@ var CatalogManager = CatalogManager || {};
                 }
             }
         };
-
-        if ( !isEmpty( objOptions.sizeLimit ) && objOptions.sizeLimit != '0' ) {
-
-            objParams.validation.sizeLimit = objOptions.sizeLimit;
-        }
-
-        if ( !isEmpty( objOptions.allowedExtensions ) && objOptions.allowedExtensions.length ) {
-
-            var arrAllowedExtensions = [];
-
-            for ( var i = 0; i < objOptions.allowedExtensions.length; i++ ) {
-
-                if ( !isEmpty( objOptions.allowedExtensions[i] ) ) {
-
-                    arrAllowedExtensions.push( objOptions.allowedExtensions[i] );
-                }
-            }
-
-            if ( arrAllowedExtensions.length ) {
-
-                objParams.validation.allowedExtensions = arrAllowedExtensions;
-            }
-        }
 
         return new qq.FineUploader( objParams );
     };

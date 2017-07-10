@@ -106,8 +106,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
+        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbIgnoreEmptyValues',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbIgnoreEmptyValues',
     ],
 
     'fields' => [
@@ -486,6 +486,20 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'exclude' => true,
             'sql' => "blob NULL"
+        ],
+
+        'dbIgnoreEmptyValues' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'clr',
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
         ],
 
         'defaultValue' => [

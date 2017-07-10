@@ -23,6 +23,7 @@ class CatalogView extends CatalogController {
     protected $arrGroups = [];
     protected $arrCatalog = [];
     protected $arrActiveFields = [];
+    protected $arrEntityFields = [];
     protected $arrCatalogFields = [];
     protected $arrRelatedTables = [];
     protected $blnMapViewMode = false;
@@ -88,6 +89,8 @@ class CatalogView extends CatalogController {
 
                     $this->arrCatalogStaticFields[] = $strID;
                 }
+
+                $this->setFieldToTeaser( $arrField['fieldname'], $arrField );
             }
         }
 
@@ -170,6 +173,7 @@ class CatalogView extends CatalogController {
         $this->objMainTemplate->dateFormat = $this->strDateFormat;
         $this->objMainTemplate->catalogFields = $this->arrCatalogFields;
         $this->objMainTemplate->dateTimeFormat = $this->strDateTimeFormat;
+        $this->objMainTemplate->catalogEntityFields = $this->arrEntityFields;
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
 
@@ -215,6 +219,15 @@ class CatalogView extends CatalogController {
     public function getActiveCatalogFields() {
 
         return $this->arrActiveFields;
+    }
+
+
+    protected function setFieldToTeaser( $strFieldname, $arrField ) {
+
+        if ( !in_array( $strFieldname, [ 'title', 'alias', 'id', 'pid', 'sorting', 'tstamp' ] ) && $arrField['type'] != 'dbColumn' ) {
+
+            $this->arrEntityFields[ $strFieldname ] = $arrField;
+        }
     }
 
 
@@ -525,6 +538,7 @@ class CatalogView extends CatalogController {
             $arrCatalog['hasOperations'] = $this->blnHasOperations;
             $arrCatalog['catalogFields'] = $this->arrCatalogFields;
             $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
+            $arrCatalog['catalogEntityFields'] = $this->arrEntityFields;
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
             
@@ -798,12 +812,23 @@ class CatalogView extends CatalogController {
     }
 
 
+    protected function isFastMode( $strType = '' ) {
+
+        if ( $this->catalogFastMode && $this->strMode == 'view' && in_array( $strType, $this->arrDoNotRenderInFastMode ) ) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+
     protected function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
 
         $arrField = $this->arrCatalogFields[ $strFieldname ];
         $strType = $arrField['type'];
 
-        if ( $this->catalogFastMode && in_array( $strType, $this->arrDoNotRenderInFastMode ) ) {
+        if ( $this->isFastMode( $strType ) ) {
 
             return '';
         }

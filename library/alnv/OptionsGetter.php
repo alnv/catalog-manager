@@ -143,8 +143,9 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
             $blnValidValue = true;
+            $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'], $blnValidValue );
-            $arrQuery['allowEmptyValues'] = true;
+            $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
 
             if ( !$blnValidValue ) return null;
 
@@ -160,8 +161,9 @@ class OptionsGetter extends CatalogController {
             $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
         }
 
-        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy ) )->execute( $this->SQLQueryBuilder->getValues() );
-        
+        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
+        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute( $this->SQLQueryBuilder->getValues() );
+
         while ( $objDbOptions->next() ) {
 
             $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->getOptionLabel( $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
@@ -202,8 +204,10 @@ class OptionsGetter extends CatalogController {
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
 
+            $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-            $arrQuery['allowEmptyValues'] = true;
+            $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
+
             return $arrQuery;
         });
 
@@ -216,7 +220,8 @@ class OptionsGetter extends CatalogController {
             $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
         }
 
-        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy ) )->execute( $this->SQLQueryBuilder->getValues() );
+        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
+        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute( $this->SQLQueryBuilder->getValues() );
 
         if ( !$objEntities->numRows ) return $arrOptions;
 

@@ -6,6 +6,24 @@
       <h2><?= $this->title; ?></h2>
    <?php endif; ?>
 
+   <!-- you can overwrite this block with your own code -->
+   <?php if ( is_array( $this->catalogTeaserFields ) ):  ?>
+      <div class="ctlg_entities">
+         <?php foreach( $this->catalogTeaserFields as $strName => $arrField ): ?>
+            <?php if ( $this->{$strName} ): ?>
+               <?php $varValue = is_array( $this->{$strName} ) ? implode( ',', $this->{$strName} ) : $this->{$strName}; ?>
+               <?php if ( is_string( $varValue ) ): ?>
+                  <div class="ctlg_entity <?= $strName; ?>">
+                     <span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
+                     <div class="ctlg_entity_value"><?= $varValue; ?></div>
+                  </div>
+               <?php endif; ?>
+            <?php endif; ?>
+         <?php endforeach; ?>
+      </div>
+   <?php endif; ?>
+   <!---->
+
    <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
       <ul>
          <?php foreach( $this->operations as $arrOperation ): ?>

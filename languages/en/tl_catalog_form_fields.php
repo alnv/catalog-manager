@@ -36,6 +36,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Key column', 'P
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Column', 'Please select a column from chosen table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter the records.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Ignore empty values', 'Empty values will be not filtered.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];

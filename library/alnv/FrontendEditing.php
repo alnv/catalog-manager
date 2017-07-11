@@ -33,6 +33,7 @@ class FrontendEditing extends CatalogController {
         $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFineUploader' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -67,6 +68,12 @@ class FrontendEditing extends CatalogController {
             if ( $arrField['type'] == 'hidden' ) {
 
                 $arrDCField['inputType'] = 'hidden';
+            }
+
+            if ( $arrField['type'] == 'upload' && $arrField['useFineUploader'] ) {
+
+                $arrDCField['inputType'] = 'catalogFineUploader';
+                $this->CatalogFineUploader->loadAssets();
             }
 
             $arrDCField['_fieldname'] = $strFieldname;
@@ -288,6 +295,7 @@ class FrontendEditing extends CatalogController {
 
         $arrField = $this->convertWidgetToField( $arrField );
         $strClass = $this->fieldClassExist( $arrField['inputType'] );
+        $arrData = $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '' );
 
         if ( $strClass == false ) return null;
 
@@ -296,8 +304,18 @@ class FrontendEditing extends CatalogController {
             return null;
         }
 
-        $objWidget = new $strClass( $strClass::getAttributesFromDca( $arrField, $arrField['_fieldname'], $arrField['default'], '', '' ) );
+        if ( $arrField['inputType'] == 'catalogFineUploader' ) {
 
+            $arrData['configAttributes'] = [
+
+                'storeFile' => $this->catalogStoreFile,
+                'useHomeDir' => $this->catalogUseHomeDir,
+                'uploadFolder' => $this->catalogUploadFolder,
+                'doNotOverwrite' => $this->catalogDoNotOverwrite
+            ];
+        }
+
+        $objWidget = new $strClass( $arrData );
         $objWidget->storeValues = true;
         $objWidget->id = 'id_' . $arrField['_fieldname'];
         $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
@@ -331,15 +349,16 @@ class FrontendEditing extends CatalogController {
             $objWidget->addAttributes([ 'onchange' => 'this.form.submit()' ]);
         }
 
-        if ( $arrField['inputType'] == 'upload' ) {
+        if ( $arrField['inputType'] == 'upload' || $arrField['inputType'] == 'catalogFineUploader' ) {
 
             $objWidget->storeFile = $this->catalogStoreFile;
             $objWidget->useHomeDir = $this->catalogUseHomeDir;
             $objWidget->maxlength = $arrField['eval']['maxsize'];
+            $objWidget->multiple = $arrField['eval']['multiple'];
             $objWidget->uploadFolder = $this->catalogUploadFolder;
             $objWidget->extensions = $arrField['eval']['extensions'];
             $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
-            
+
             $this->blnHasUpload = true;
         }
 
@@ -464,24 +483,28 @@ class FrontendEditing extends CatalogController {
 
             $arrFiles = $_SESSION['FILES'];
 
-            if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) && $this->catalogStoreFile ) {
+            if ( isset( $arrFiles[$arrField['_fieldname']] ) && is_array( $arrFiles[$arrField['_fieldname']] ) && $this->catalogStoreFile ) {
 
-                $strRoot = TL_ROOT . '/';
-                $strUuid = $arrFiles[ $arrField['_fieldname'] ]['uuid'];
-                $strFile = substr( $arrFiles[ $arrField['_fieldname'] ]['tmp_name'], strlen( $strRoot ) );
-                $objFiles = \FilesModel::findByPath( $strFile );
+                if ( !Toolkit::isAssoc( $arrFiles[$arrField['_fieldname']] ) ) {
 
-                if ( $objFiles !== null ) {
+                    $arrUUIDValues = [];
 
-                    $strUuid = $objFiles->uuid;
+                    foreach ( $arrFiles[$arrField['_fieldname']] as $arrFile ) {
+
+                        $arrUUIDValues[] = $this->getFileUUID( $arrFile );
+                    }
+
+                    $strUUIDValue = serialize( $arrUUIDValues );
                 }
 
-                $this->arrValues[ $arrField['_fieldname'] ] = $strUuid;
-            }
+                else {
 
-            if ( !empty( $arrFiles ) && isset( $arrFiles[ $arrField['_fieldname'] ] ) ) {
+                    $strUUIDValue = $this->getFileUUID( $arrFiles[$arrField['_fieldname']] );
+                }
 
-                unset( $_SESSION['FILES'][ $arrField['_fieldname'] ] );
+                $this->arrValues[$arrField['_fieldname']] = $strUUIDValue;
+
+                unset( $_SESSION['FILES'][$arrField['_fieldname']] );
             }
         }
 
@@ -492,6 +515,22 @@ class FrontendEditing extends CatalogController {
 
             $this->arrPaletteNames[ $arrField['_palette'] ] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['_palette'] );
         }
+    }
+
+
+    protected function getFileUUID( $arrFile ) {
+
+        $strRoot = TL_ROOT . '/';
+        $strUuid = $arrFile['uuid'];
+        $strFile = substr( $arrFile['tmp_name'], strlen( $strRoot ) );
+        $objFiles = \FilesModel::findByPath( $strFile );
+
+        if ( $objFiles !== null ) {
+
+            $strUuid = $objFiles->uuid;
+        }
+
+        return $strUuid;
     }
 
 

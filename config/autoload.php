@@ -49,6 +49,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
     'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
+    'CatalogManager\CatalogFineUploader' => 'system/modules/catalog-manager/library/alnv/CatalogFineUploader.php',
     'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\CatalogDCAExtractor' => 'system/modules/catalog-manager/library/alnv/CatalogDCAExtractor.php',
@@ -69,6 +70,7 @@ ClassLoader::addClasses([
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
     'CatalogManager\FrontendEditingPermission' => 'system/modules/catalog-manager/library/alnv/FrontendEditingPermission.php',
     'CatalogManager\CatalogManagerInitializer' => 'system/modules/catalog-manager/library/alnv/CatalogManagerInitializer.php',
+    'CatalogManager\CatalogFineUploaderForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogFineUploaderForm.php',
     'CatalogManager\CatalogManagerVerification' => 'system/modules/catalog-manager/library/alnv/CatalogManagerVerification.php',
     'CatalogManager\FilterValuesInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValuesInsertTag.php',
     'CatalogManager\ContentCatalogFilterForm' => 'system/modules/catalog-manager/library/alnv/Elements/ContentCatalogFilterForm.php',
@@ -101,6 +103,7 @@ TemplateLoader::addFiles([
     'mod_catalog_universal' => 'system/modules/catalog-manager/templates',
     'ce_catalog_filterform' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_select' => 'system/modules/catalog-manager/templates',
+    'ctlg_form_fine_uploader' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
 ]);

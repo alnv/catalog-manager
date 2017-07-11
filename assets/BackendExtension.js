@@ -1,4 +1,4 @@
-var CatalogManager = {};
+var CatalogManager = CatalogManager || {};
 
 (function () {
 

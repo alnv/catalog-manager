@@ -63,6 +63,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximum characters', 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Do not copy value', 'The current field will not be duplicated if the record is duplicated.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Space to Underscore', 'Any whitespace character will be replaced by an underscore.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['useFineUploader'] = [ 'Use Fine Uploader', 'Here you can use <a href="https://fineuploader.com" target="_blank">Fine Uploader</a>.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'File type', 'Please select a file type.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'] = [ 'Use size', 'Here you can define image size.' ];

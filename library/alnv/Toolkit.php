@@ -49,6 +49,16 @@ class Toolkit {
     }
 
 
+    public static function isAssoc( $arrAssoc ) {
+
+        if ( !is_array( $arrAssoc ) ) return false;
+
+        $arrKeys = array_keys( $arrAssoc );
+
+        return array_keys( $arrKeys ) !== $arrKeys;
+    }
+    
+
     public static function prepareValues4Db( $arrValues ) {
 
         $arrReturn = [];

@@ -162,12 +162,13 @@ class Upload {
                 'downloadsTpl' => $strTemplate,
                 'sortBy' => $arrField['sortBy'],
                 'metaIgnore' => $arrField['metaIgnore'],
+                'useArrayFormat' => $arrField['useArrayFormat'],
             ]);
 
             return $objDownloads->render();
         }
 
-        return '';
+        return $arrField['useArrayFormat'] ? [] : '';
     }
 
 
@@ -175,10 +176,17 @@ class Upload {
 
         if ( !is_string( $varValue ) ) {
 
-            return '';
+            return $arrField['useArrayFormat'] ? [] : '';
         }
 
-        return static::generateImage( static::createImageArray( $varValue, $arrField, $arrCatalog ), $arrField );
+        $arrImage = static::createImageArray( $varValue, $arrField, $arrCatalog );
+
+        if ( $arrField['useArrayFormat'] ) {
+
+            return $arrImage;
+        }
+
+        return static::generateImage( $arrImage, $arrField );
     }
 
 
@@ -186,10 +194,17 @@ class Upload {
 
         if ( !is_string( $varValue ) ) {
 
-            return '';
+            return $arrField['useArrayFormat'] ? [] : '';
         }
 
-        return static::generateEnclosure( static::createEnclosureArray( $varValue, $arrField, $arrCatalog ), $arrField );
+        $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
+
+        if ( $arrField['useArrayFormat'] ) {
+
+            return $arrFile;
+        }
+
+        return static::generateEnclosure( $arrFile, $arrField );
     }
 
 

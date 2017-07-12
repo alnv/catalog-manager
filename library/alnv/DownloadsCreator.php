@@ -9,6 +9,7 @@ class DownloadsCreator extends \Frontend {
     public $orderSRC;
     public $metaIgnore;
     public $multiSRC = [];
+    public $useArrayFormat;
 
     protected $arrData = [];
     protected $objFiles = null;
@@ -248,6 +249,11 @@ class DownloadsCreator extends \Frontend {
 
                     break;
             }
+        }
+
+        if ( $this->useArrayFormat ) {
+            
+            return is_array( $arrFiles ) ? array_values( $arrFiles ) : [];
         }
 
         $this->arrData['files'] = $arrFiles;

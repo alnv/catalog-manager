@@ -90,7 +90,7 @@ class CatalogView extends CatalogController {
                     $this->arrCatalogStaticFields[] = $strID;
                 }
 
-                $this->setFieldToTeaser( $arrField['fieldname'], $arrField );
+                $this->setPreviewEntityFields( $arrField['fieldname'], $arrField );
             }
         }
 
@@ -212,6 +212,19 @@ class CatalogView extends CatalogController {
             $this->catalogActiveTableColumns = array_keys( $this->arrCatalogFields );
         }
 
+        foreach ( $this->catalogActiveTableColumns as $strIndex => $strActiveTableColumn ) {
+
+            $arrField = $this->arrCatalogFields[ $strActiveTableColumn ];
+
+            if ( is_array( $arrField ) ) {
+
+                if ( $arrField['type'] == 'upload' && $arrField['useArrayFormat'] ) {
+
+                    unset( $this->catalogActiveTableColumns[ $strIndex ] );
+                }
+            }
+        }
+
         return $this->catalogActiveTableColumns;
     }
 
@@ -222,12 +235,24 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function setFieldToTeaser( $strFieldname, $arrField ) {
+    protected function setPreviewEntityFields( $strFieldname, $arrField ) {
 
-        if ( !in_array( $strFieldname, [ 'title', 'alias', 'id', 'pid', 'sorting', 'tstamp' ] ) && $arrField['type'] != 'dbColumn' ) {
+        if ( in_array( $strFieldname, [ 'title', 'alias', 'id', 'pid', 'sorting', 'tstamp' ] ) ) {
 
-            $this->arrEntityFields[ $strFieldname ] = $arrField;
+            return null;
         }
+
+        if ( $arrField['type'] == 'dbColumn' ) {
+
+            return null;
+        }
+
+        if ( $arrField['type'] == 'upload' && $arrField['useArrayFormat'] ) {
+
+            return null;
+        }
+
+        $this->arrEntityFields[ $strFieldname ] = $arrField;
     }
 
 
@@ -841,7 +866,7 @@ class CatalogView extends CatalogController {
 
                 $varValue = Upload::parseValue( $varValue, $arrField, $arrCatalog );
 
-                if ( is_array( $varValue ) ) {
+                if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
 
                     if ( $varValue['preview'] ) {
 

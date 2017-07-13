@@ -256,7 +256,7 @@ class SQLQueryBuilder extends CatalogController {
                     if ( $intSubIndex ) $strStartSeparator = '';
                     if ( $intTotal == $intSubIndex ) $strEndSeparator = ')';
 
-                    $strWhereStatement .= $strStartSeparator . $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strEndSeparator );
+                    $strWhereStatement .= $strStartSeparator . $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strEndSeparator, $intTotal );
                 }
 
             } else {
@@ -271,7 +271,7 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
-    protected function createQueryStatement( $arrQuery, $strOperator, $strSeparator = '' ) {
+    protected function createQueryStatement( $arrQuery, $strOperator, $strSeparator = '', $intParentTotal = 0 ) {
 
         $strQuery = '';
 
@@ -284,7 +284,7 @@ class SQLQueryBuilder extends CatalogController {
 
                 foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
 
-                    if ( $intIndex ) $strQuerySeparator = '';
+                    if ( $intIndex || $intParentTotal ) $strQuerySeparator = '';
                     if ( $intTotal == $intIndex ) $strQuerySeparator = ')';
 
                     $strQuery .= $this->createQueryStatement([
@@ -293,7 +293,7 @@ class SQLQueryBuilder extends CatalogController {
                         'field' => $arrQuery['field'],
                         'operator' => $arrQuery['operator']
 
-                    ], ( $intIndex ? ' OR' : '' ), $strQuerySeparator );
+                    ], ( $intIndex || $intParentTotal ? ' OR' : '' ), $strQuerySeparator );
                 }
 
                 return $strQuery;

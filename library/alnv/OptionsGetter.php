@@ -345,7 +345,45 @@ class OptionsGetter extends CatalogController {
                     return null;
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $strTable ) )->limit(1)->execute( $strID )->row();
+                $arrQuery = [
+
+                    'table' => $strTable,
+
+                    'pagination' => [
+
+                        'limit' => 1
+                    ],
+
+                    'where' => [
+
+                        [
+                            'field' => 'id',
+                            'value' => $strID,
+                            'operator' => 'equal'
+                        ]
+                    ],
+
+                    'joins' => []
+                ];
+
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1' )->execute( $strTable );
+
+                if ( $objCatalog->numRows ) {
+
+                    if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $strTable ) ) {
+
+                        $arrQuery['joins'][] = [
+
+                            'field' => 'pid',
+                            'onField' => 'id',
+                            'multiple' => false,
+                            'table' => $strTable,
+                            'onTable' => $objCatalog->pTable
+                        ];
+                    }
+                }
+
+                $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
 
                 return null;
 
@@ -366,8 +404,42 @@ class OptionsGetter extends CatalogController {
                 }
 
                 $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
-                $this->arrActiveEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $objCatalog->tablename ) )->limit(1)->execute( $strID )->row();
 
+                $arrQuery = [
+
+                    'table' => $objCatalog->tablename,
+
+                    'pagination' => [
+
+                        'limit' => 1
+                    ],
+
+                    'where' => [
+
+                        [
+                            'field' => 'id',
+                            'value' => $strID,
+                            'operator' => 'equal'
+                        ]
+                    ],
+
+                    'joins' => []
+                ];
+
+                if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $objCatalog->tablename )) {
+
+                    $arrQuery['joins'][] = [
+
+                        'field' => 'pid',
+                        'onField' => 'id',
+                        'multiple' => false,
+                        'onTable' => $objCatalog->pTable,
+                        'table' => $objCatalog->tablename
+                    ];
+                }
+
+                $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
+                
                 break;
 
         }

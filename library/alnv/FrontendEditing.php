@@ -101,6 +101,8 @@ class FrontendEditing extends CatalogController {
         if ( in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
             $this->arrFormFields[ 'invisible' ] = $arrPredefinedDCFields['invisible'];
+            $this->arrFormFields[ 'start' ] = $arrPredefinedDCFields['start'];
+            $this->arrFormFields[ 'stop' ] = $arrPredefinedDCFields['stop'];
         }
 
         unset( $arrPredefinedDCFields['stop'] );
@@ -651,7 +653,7 @@ class FrontendEditing extends CatalogController {
                     'row' => $this->arrValues,
                     'table' => $this->catalogTablename,
                 ];
-
+                
                 $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
                 $this->CatalogEvents->addEventListener( 'create', $arrData );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );

@@ -16,17 +16,6 @@
          <?php endif; ?>
       <?php endforeach; ?>
 
-      <?php if ( !empty( $this->invisible ) && is_array( $this->invisible ) ): ?>
-         <?php foreach ( $this->invisible as $strPalette => $strInvisibleField ): ?>
-            <?php if (!empty($strInvisibleField)): ?>
-               <fieldset>
-                  <legend><?= $strPalette ?></legend>
-                  <?= implode( '', $strInvisibleField ) ?>
-               </fieldset>
-            <?php endif; ?>
-         <?php endforeach; ?>
-      <?php endif; ?>
-
       <?php if( $this->captchaWidget ): ?>
          <?= $this->captchaWidget; ?>
       <?php endif; ?>

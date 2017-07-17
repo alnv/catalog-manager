@@ -13,14 +13,6 @@
                <?= implode('', $strField) ?>
             <?php endif; ?>
          <?php endforeach; ?>
-
-         <?php if ( !empty( $this->invisible ) && is_array( $this->invisible ) ): ?>
-            <?php foreach ( $this->invisible as $strPalette => $strInvisibleField ): ?>
-               <?php if (!empty($strInvisibleField)): ?>
-                  <?= implode( '', $strInvisibleField ) ?>
-               <?php endif; ?>
-            <?php endforeach; ?>
-         <?php endif; ?>
       </div>
 
       <?php if( $this->captchaWidget ): ?>

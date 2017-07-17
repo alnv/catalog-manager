@@ -246,10 +246,10 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
-        $this->FrontendEditing->strAct = $this->strAct;
-        $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
+        $this->FrontendEditing->arrOptions = $this->arrData;
+        $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
@@ -270,6 +270,6 @@ class ModuleUniversalView extends \Module {
             return null;
         }
 
-        $this->Template->output = $this->FrontendEditing->getCatalogForm();
+        $this->Template->output = $this->FrontendEditing->render();
     }
 }

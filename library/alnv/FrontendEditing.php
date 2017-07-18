@@ -13,6 +13,7 @@ class FrontendEditing extends CatalogController {
     protected $arrValues = [];
     protected $arrCatalog = [];
     protected $arrPalettes = [];
+    protected $strRedirectID = '';
     protected $objTemplate = null;
     protected $strSubmitName = '';
     protected $blnNoSubmit = false;
@@ -25,6 +26,7 @@ class FrontendEditing extends CatalogController {
 
         parent::__construct();
 
+        $this->import( 'CatalogEvents' );
         $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
@@ -74,6 +76,16 @@ class FrontendEditing extends CatalogController {
         $this->arrCatalogFields = array_merge( $this->arrCatalogFields, $arrGeneralFields );
         $this->addDCFormatToCatalogFields();
         $this->setPalettes();
+
+        if ( $this->catalogFormRedirect && $this->catalogFormRedirect !== '0' ) {
+
+            $this->strRedirectID = $this->catalogFormRedirect;
+        }
+
+        else {
+
+            $this->strRedirectID = $objPage->id;
+        }
     }
 
 
@@ -108,9 +120,7 @@ class FrontendEditing extends CatalogController {
 
         if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strSubmitName  ) {
 
-            // @todo
-
-            exit;
+            $this->saveEntity();
         }
 
         $this->objTemplate->method = 'POST';
@@ -454,7 +464,28 @@ class FrontendEditing extends CatalogController {
 
     public function deleteEntity() {
 
-        // @todo
+        $this->import( 'SQLBuilder' );
+
+        if (  $this->SQLBuilder->Database->tableExists( $this->catalogTablename ) ) {
+
+            if ( $this->catalogNotifyDelete ) {
+                $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                $objCatalogNotification->notifyOnDelete( $this->catalogNotifyDelete, [] );
+            }
+
+            $arrData = [
+
+                'row' => [],
+                'id' => $this->strItemID,
+                'table' => $this->catalogTablename
+            ];
+
+            $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
+            $this->CatalogEvents->addEventListener( 'delete', $arrData );
+            $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
+        }
+
+        $this->redirectToFrontendPage( $this->strRedirectID );
     }
 
 
@@ -655,6 +686,221 @@ class FrontendEditing extends CatalogController {
 
     protected function saveEntity() {
 
-        // @todo
+        $strQuery = '';
+        $this->import( 'SQLBuilder' );
+
+        if ( $this->arrCatalog['useGeoCoordinates'] ) {
+
+            $this->getGeoCordValues();
+        }
+
+        if ( Toolkit::isEmpty( $this->arrValues['alias'] ) ) {
+
+            $objDCACallbacks = new DCACallbacks();
+            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
+        }
+
+        if ( \Input::get('pid') ) {
+
+            $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
+        }
+
+        $this->prepare();
+
+        switch ( $this->strAct ) {
+
+            case 'create':
+
+                if ( $this->SQLBuilder->Database->fieldExists( 'pid', $this->catalogTablename ) && $this->arrCatalog['pTable'] ) {
+
+                    if ( !\Input::get('pid') ) return null;
+
+                    $this->arrValues['pid'] = \Input::get('pid');
+                }
+
+                if ( $this->SQLBuilder->Database->fieldExists( 'sorting', $this->catalogTablename ) ) {
+
+                    $intSort = $this->SQLBuilder->Database->prepare( sprintf( 'SELECT MAX(sorting) FROM %s;', $this->catalogTablename ) )->execute()->row( 'MAX(sorting)' )[0];
+                    $this->arrValues['sorting'] = intval( $intSort ) + 100;
+                }
+
+
+                if ( $this->SQLBuilder->Database->fieldExists( 'tstamp', $this->catalogTablename ) ) {
+
+                    $this->arrValues['tstamp'] = \Date::floorToMinute();
+                }
+
+                $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                if ( $this->catalogNotifyInsert ) {
+
+                    $objCatalogNotification = new CatalogNotification( $this->catalogTablename );
+                    $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
+                }
+
+                $arrData = [
+
+                    'id' => '',
+                    'row' => $this->arrValues,
+                    'table' => $this->catalogTablename,
+                ];
+
+                $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
+                $this->CatalogEvents->addEventListener( 'create', $arrData );
+
+                $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
+
+                break;
+
+            case 'edit':
+
+                $blnReload = true;
+                $objEntity = $this->SQLBuilder->Database->prepare( 'SELECT * FROM '. $this->catalogTablename .' WHERE id = ?' )->limit(1)->execute( $this->strItemID );
+
+                if ( $objEntity->numRows ) {
+
+                    if ( $this->arrValues['alias'] && $this->arrValues['alias'] !== $objEntity->alias ) {
+
+                        $blnReload =  false;
+
+                        if ( $objEntity->pid ) {
+
+                            $strQuery = sprintf( '?pid=%s', $objEntity->pid );
+                        }
+                    }
+
+                    if ( $this->catalogNotifyUpdate ) {
+
+                        $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                        $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyUpdate, $this->arrValues );
+                    }
+
+                    $arrData = [
+
+                        'id' => $this->strItemID,
+                        'row' => $this->arrValues,
+                        'table' => $this->catalogTablename,
+                    ];
+
+                    $this->CatalogMessage->set( 'updateMessage', $arrData, $this->id );
+                    $this->CatalogEvents->addEventListener( 'update', $arrData );
+                    $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
+                }
+
+                if ( !$this->isVisible() ) $blnReload =  false;
+
+                if ( $blnReload && ( Toolkit::isEmpty( $this->catalogFormRedirect ) || $this->catalogFormRedirect == '0'  ) ) {
+
+                    $this->reload();
+                }
+
+                else {
+
+                    $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
+                }
+
+                break;
+
+            case 'copy':
+
+                unset( $this->arrValues['id'] );
+
+                $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                if ( $this->catalogNotifyInsert ) {
+
+                    $objCatalogNotification = new CatalogNotification();
+                    $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
+                }
+
+                $arrData = [
+
+                    'id' => '',
+                    'row' => $this->arrValues,
+                    'table' => $this->catalogTablename
+                ];
+
+                $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
+                $this->CatalogEvents->addEventListener( 'create', $arrData );
+                $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
+
+                break;
+        }
+    }
+
+
+    protected function redirectAfterInsertion( $intPage, $strAttributes = '', $blnReturn=false ) {
+
+        if ( ( $intPage = intval($intPage ) ) <= 0 ) return '';
+
+        $objPage = \PageModel::findWithDetails( $intPage );
+        $strUrl = $this->generateFrontendUrl( $objPage->row(), '', $objPage->language, true );
+
+        if ( strncmp( $strUrl, 'http://', 7 ) !== 0 && strncmp( $strUrl, 'https://', 8 ) !== 0 ) $strUrl = \Environment::get( 'base' ) . $strUrl;
+        if ( $strAttributes ) $strUrl .= $strAttributes;
+        if ( !$blnReturn ) $this->redirect( $strUrl );
+
+        return $strUrl;
+    }
+
+
+    protected function getGeoCordValues() {
+
+        $arrCords = [];
+        $objGeoCoding = new GeoCoding();
+        $strGeoInputType = $this->arrCatalog['addressInputType'];
+
+        switch ( $strGeoInputType ) {
+
+            case 'useSingleField':
+
+                $arrCords = $objGeoCoding->getCords( $this->arrValues[ $this->arrCatalog['geoAddress'] ], 'en', true );
+
+                break;
+
+            case 'useMultipleFields':
+
+                $objGeoCoding->setCity( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
+                $objGeoCoding->setStreet( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
+                $objGeoCoding->setPostal( $this->arrValues[ $this->arrCatalog['geoPostal'] ] );
+                $objGeoCoding->setCountry( $this->arrValues[ $this->arrCatalog['geoCountry'] ] );
+                $objGeoCoding->setStreetNumber( $this->arrValues[ $this->arrCatalog['geoStreetNumber'] ] );
+                $arrCords = $objGeoCoding->getCords( '', 'en', true );
+
+                break;
+        }
+
+        if ( ( $arrCords['lat'] || $arrCords['lng'] ) && ( $this->arrCatalog['lngField'] && $this->arrCatalog['latField'] ) ) {
+
+            $this->arrValues[ $this->arrCatalog['lngField'] ] = $arrCords['lng'];
+            $this->arrValues[ $this->arrCatalog['latField'] ] = $arrCords['lat'];
+        }
+    }
+
+
+    protected function prepare() {
+
+        if ( !empty( $this->arrValues ) && is_array( $this->arrValues ) ) {
+
+            foreach ( $this->arrValues as $strFieldname => $varValue ) {
+
+                $arrField = $this->arrCatalogFields[ $strFieldname ];
+                $varValue = Toolkit::prepareValue4Db( $varValue );
+
+                if ( $arrField['_type'] == 'date' || in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+
+                    $objDate = new \Date( $varValue );
+                    $intTime = $objDate->timestamp;
+                    $varValue = $intTime < 1 ? '' : $intTime;
+                }
+
+                if ( strpos( $arrField['sql'], 'int' ) && is_string( $varValue ) ) {
+
+                    $varValue = intval( $varValue );
+                }
+
+                $this->arrValues[ $strFieldname ] = $varValue;
+            }
+        }
     }
 }

@@ -259,6 +259,16 @@ class OptionsGetter extends CatalogController {
 
     protected function getParseQueryValue( $strValue = '', $strOperator = '', &$blnValidValue = true ) {
 
+        if ( !empty( $strValue ) && is_string( $strValue ) ) {
+
+            $strInsertTagValue = \Controller::replaceInsertTags( $strValue );
+
+            if ( !Toolkit::isEmpty( $strInsertTagValue ) ) {
+
+                $strValue = $strInsertTagValue;
+            }
+        }
+
         if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
             $strFieldnameValue = '';

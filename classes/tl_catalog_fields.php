@@ -349,8 +349,8 @@ class tl_catalog_fields extends \Backend {
 
             return [
 
-                'binary' => $arrSQLStatements['binary'],
-                'blob' => $arrSQLStatements['blob']
+                'blob' => $arrSQLStatements['blob'],
+                'binary' => $arrSQLStatements['binary']
             ];
         }
 

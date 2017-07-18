@@ -362,9 +362,12 @@ class DCABuilderHelper extends CatalogController {
 
             'start' => [
 
+                'flag' => 6,
+                'sort' => '1',
                 'type' => 'date',
                 'exclude' => '1',
                 'rgxp' => 'datim',
+                'invisible' => '',
                 'statement' => 'c16',
                 'datepicker' => true,
                 'fieldname' => 'start',
@@ -373,15 +376,17 @@ class DCABuilderHelper extends CatalogController {
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
-                'invisible' => '',
                 'cssID' => serialize( [ '', 'start' ] )
             ],
 
             'stop' => [
 
+                'flag' => 6,
+                'sort' => '1',
                 'type' => 'date',
                 'exclude' => '1',
                 'rgxp' => 'datim',
+                'invisible' => '',
                 'statement' => 'c16',
                 'datepicker' => true,
                 'fieldname' => 'stop',
@@ -390,7 +395,6 @@ class DCABuilderHelper extends CatalogController {
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
                 'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
-                'invisible' => '',
                 'cssID' => serialize( [ '', 'stop' ] )
             ]
         ];

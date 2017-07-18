@@ -2,4 +2,6 @@ todo
  - check date field for error if filter checkbox is active
  - implement export and import csv files
  - prevent loading optionsGetter class
- - fix problem with start and stop fields
+ - implement breadcrumb handler #see feedback
+ - add preview image for fine-uploader #23
+ - enable taxonomies/filter for tl_ tables #36

@@ -303,6 +303,15 @@ class tl_catalog extends \Backend {
 
         $strID = \Input::get('id');
         $this->arrDataContainerFields = [ 'id', 'title', 'alias', 'tstamp' ];
+        $arrOperators = Toolkit::deserialize( $dc->activeRecord->operations );
+
+        if ( in_array( 'invisible', $arrOperators ) && ( $this->Database->fieldExists( 'invisible', $dc->activeRecord->tablename ) ) ) {
+
+            $this->arrDataContainerFields[] = 'invisible';
+            $this->arrDataContainerFields[] = 'start';
+            $this->arrDataContainerFields[] = 'stop';
+        }
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ?' )->execute( $strID );
 
         while ( $objCatalogFields->next() ) {

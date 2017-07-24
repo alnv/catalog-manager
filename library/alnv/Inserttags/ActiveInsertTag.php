@@ -28,6 +28,9 @@ class ActiveInsertTag extends \Frontend {
                 $strSource = str_replace( '[&]', '&', $strSource );
                 $arrParams = explode( '&', $strSource );
 
+                $blnIsDate = false;
+                $strDateFormat = $objPage->dateFormat;
+
                 foreach ( $arrParams as $strParam ) {
 
                     list( $strKey, $strOption ) = explode( '=', $strParam );
@@ -42,27 +45,33 @@ class ActiveInsertTag extends \Frontend {
 
                         case 'isDate':
 
-                            $strOption = $strOption ? $strOption : $objPage->dateFormat;
+                            $blnIsDate = true;
 
-                            if ( is_array( $varValue ) ) {
+                            break;
 
-                                foreach ( $varValue as $strK => $strV ) {
+                        case 'dateFormat':
 
-                                    if ( !$strV ) continue;
-
-                                    $objDate = new \Date( $strV, $strOption );
-                                    $varValue[ $strK ] = $objDate->tstamp;
-                                }
-                            }
-
-                            elseif( $varValue ) {
-
-                                $objDate = new \Date( $varValue, $strOption );
-                                $varValue = $objDate->tstamp;
-                            }
+                            $strDateFormat = $strOption;
 
                             break;
                     }
+                }
+
+                if ( $blnIsDate && is_array( $varValue ) ) {
+
+                    foreach ( $varValue as $strK => $strV ) {
+
+                        if ( !$strV ) continue;
+
+                        $objDate = new \Date( $strV, $strDateFormat );
+                        $varValue[ $strK ] = $objDate->tstamp;
+                    }
+                }
+
+                if ( $blnIsDate && is_string( $varValue ) ) {
+
+                    $objDate = new \Date( $varValue, $strDateFormat );
+                    $varValue = $objDate->tstamp;
                 }
             }
 

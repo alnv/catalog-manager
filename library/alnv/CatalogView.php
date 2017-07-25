@@ -467,9 +467,7 @@ class CatalogView extends CatalogController {
 
             if ( !empty( $this->arrViewPage ) ) {
 
-                $strAlias = $strAlias = $this->getAliasWithParameters( '', $arrCatalog );
-                
-                $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, $strAlias );
+                $arrCatalog['goBackLink'] = $this->generateUrl( $this->arrViewPage, '' );
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
@@ -817,16 +815,31 @@ class CatalogView extends CatalogController {
                 return $strAlias;
             }
 
+            $intIndex = 0;
+            $intTotal = count( $this->arrRoutingParameter ) - 1;
+            $blnAutoItem = in_array( 'auto_item', $this->arrRoutingParameter );
+
             foreach ( $this->arrRoutingParameter as $strParameter ) {
+
+                ++$intIndex;
 
                 if ( $strParameter === 'auto_item' ) {
 
-                    $strAliasWithFragments .= $strAlias;
+                    if ( Toolkit::isEmpty( $strAlias ) ) continue;
+
+                    $strAliasWithFragments .= '/'. $strAlias;
+
+                    continue;
                 }
 
-                if ( $arrCatalog[ $strParameter ] || $arrCatalog[ $strParameter ] === '' ) {
+                if ( !Toolkit::isEmpty( $arrCatalog[ $strParameter ] ) ) {
 
-                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] ? $arrCatalog[ $strParameter ] . '/' : ' ' . '/' ;
+                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
+                }
+
+                else {
+
+                    $strAliasWithFragments .= ' ' . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
                 }
             }
 

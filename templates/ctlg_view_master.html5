@@ -7,7 +7,7 @@
       <div class="ctlg_entities">
          <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
             <?php if ( $this->{$strName} ): ?>
-               <?php $varValue = is_array( $this->{$strName} ) ? implode( ',', $this->{$strName} ) : $this->{$strName}; ?>
+               <?php $varValue = is_array( $this->{$strName} ) ? implode( ', ', $this->{$strName} ) : $this->{$strName}; ?>
                <?php if ( is_string( $varValue ) ): ?>
                   <div class="ctlg_entity <?= $strName; ?>">
                      <span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>

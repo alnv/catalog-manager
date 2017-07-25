@@ -8,7 +8,7 @@
       <?php endif; ?>
 
       <?php if ( is_array( $this->{$strColumnName} ) ): ?>
-         <td><?= implode( ',', $this->{$strColumnName} ); ?></td>
+         <td><?= implode( ', ', $this->{$strColumnName} ); ?></td>
          <?php continue; ?>
       <?php endif; ?>
 

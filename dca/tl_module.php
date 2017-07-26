@@ -37,8 +37,8 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseFrontendEditingViewPag
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogNotifyInsert,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogNotifyInsert,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRoutingSource_page'] = 'catalogPageRouting';

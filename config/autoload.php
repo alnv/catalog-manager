@@ -47,6 +47,7 @@ ClassLoader::addClasses([
     'CatalogManager\DownloadsCreator' => 'system/modules/catalog-manager/library/alnv/DownloadsCreator.php',
     'CatalogManager\DCABuilderHelper' => 'system/modules/catalog-manager/library/alnv/DCABuilderHelper.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
+    'CatalogManager\CatalogBreadcrumb' => 'system/modules/catalog-manager/library/alnv/CatalogBreadcrumb.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
     'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
     'CatalogManager\CatalogFineUploader' => 'system/modules/catalog-manager/library/alnv/CatalogFineUploader.php',

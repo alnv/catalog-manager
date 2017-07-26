@@ -359,4 +359,45 @@ class Toolkit {
 
         return $varValue;
     }
+
+
+    public static function isCoreTable( $strTable ) {
+
+        return is_string( $strTable ) && substr( $strTable, 0, 3 ) == 'tl_';
+    }
+
+
+    public static function getColumnsFromCoreTable( $strTable, $blnFullContext = false ) {
+
+        $arrReturn = [];
+
+        \System::loadLanguageFile( $strTable );
+        \Controller::loadDataContainer( $strTable );
+
+        $arrFields = $GLOBALS['TL_DCA'][$strTable]['fields'];
+
+        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
+
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                if ( !isset( $arrField['sql'] ) ) continue;
+
+                $varContext = $arrField;
+
+                if ( !$blnFullContext ) {
+
+                    $strTitle = $strFieldname;
+
+                    if ( is_array( $arrField['label'] ) ) {
+
+                        $varContext = $arrField['label'][0] ? $arrField['label'][0] : $strTitle;
+                    }
+                }
+
+                $arrReturn[ $strFieldname ] = $varContext;
+            }
+        }
+
+        return $arrReturn;
+    }
 }

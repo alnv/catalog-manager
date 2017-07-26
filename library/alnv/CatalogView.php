@@ -643,6 +643,8 @@ class CatalogView extends CatalogController {
         if ( !$this->catalogEnableFrontendEditing || empty( $this->catalogItemOperations ) ) {
 
             $this->blnHasOperations = false;
+
+            return null;
         }
 
         if ( isset( $this->catalogItemOperations[0] ) && !Toolkit::isEmpty( $this->catalogItemOperations[0] ) ) {

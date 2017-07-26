@@ -313,6 +313,7 @@ class DCABuilderHelper extends CatalogController {
             'title' => [
 
                 'sort' => '1',
+                'search' => '1',
                 'type' => 'text',
                 'fieldname' => 'title',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
@@ -329,6 +330,7 @@ class DCABuilderHelper extends CatalogController {
 
             'alias' => [
 
+                'search' => '1',
                 'type' => 'text',
                 'fieldname' => 'alias',
                 'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0],

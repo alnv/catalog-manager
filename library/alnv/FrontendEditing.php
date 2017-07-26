@@ -20,6 +20,7 @@ class FrontendEditing extends CatalogController {
     protected $blnHasUpload = false;
     protected $arrCatalogFields = [];
     protected $arrPaletteLabels = [];
+    protected $arrCatalogAttributes = [];
 
 
     public function __construct() {
@@ -75,6 +76,7 @@ class FrontendEditing extends CatalogController {
         $this->reIndexCatalogFieldsByFieldname();
         $this->arrCatalogFields = array_merge( $this->arrCatalogFields, $arrGeneralFields );
         $this->addDCFormatToCatalogFields();
+        $this->setCatalogAttributes();
         $this->setPalettes();
 
         if ( $this->catalogFormRedirect && $this->catalogFormRedirect !== '0' ) {
@@ -127,14 +129,91 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->categories = $arrCategories;
         $this->objTemplate->formId = $this->strSubmitName;
         $this->objTemplate->submitName = $this->strSubmitName;
-        $this->objTemplate->message = $this->CatalogMessage->get( $this->id );
+        $this->objTemplate->catalogAttributes = $this->arrCatalogAttributes;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
+        $this->objTemplate->message = $this->CatalogMessage->get( $this->id );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
         $this->objTemplate->captchaLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'];
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
         return $this->objTemplate->parse();
+    }
+
+
+    protected function setCatalogAttributes() {
+
+        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields  ) ) {
+
+            foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
+
+                $varValue = null;
+                $varDBValue = $this->arrValues[ $strFieldname ];
+
+                if ( $varDBValue === null ) continue;
+                if ( Toolkit::isEmpty( $varDBValue ) ) continue;
+
+                switch ( $arrField['type'] ) {
+
+                    case 'upload':
+
+                        $varValue = Upload::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
+
+                            if ( $varValue['preview'] ) $this->arrCatalogAttributes[ $strFieldname . 'Preview' ] = $varValue['preview'];
+
+                            $varValue = $varValue['gallery'];
+                        }
+
+                        break;
+
+                    case 'select':
+
+                        $varValue = Select::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'checkbox':
+
+                        $varValue = Checkbox::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'radio':
+
+                        $varValue = Radio::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'date':
+
+                        $varValue = DateInput::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'number':
+
+                        $varValue = Number::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'textarea':
+
+                        $varValue = Textarea::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+
+                    case 'dbColumn':
+
+                        $varValue = DbColumn::parseValue( $varDBValue, $arrField, $this->arrValues );
+
+                        break;
+                }
+
+                $this->arrCatalogAttributes[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $varDBValue : $varValue;
+            }
+        }
     }
 
 
@@ -205,7 +284,7 @@ class FrontendEditing extends CatalogController {
                 $objWidget->uploadFolder = $this->catalogUploadFolder;
                 $objWidget->extensions = $arrField['eval']['extensions'];
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
-
+                $objWidget->preview = $this->arrCatalogAttributes[ $strFieldname ];
                 $this->blnHasUpload = true;
             }
 
@@ -242,6 +321,8 @@ class FrontendEditing extends CatalogController {
                 $strDateFormat = \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] );
                 $objWidget->value = $objWidget->value ? \Date::parse( $strDateFormat, $objWidget->value ) : '';
             }
+
+            $objWidget->catalogAttributes = $this->arrCatalogAttributes;
 
             if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
 

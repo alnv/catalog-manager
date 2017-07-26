@@ -20,6 +20,10 @@
       <p class="error"><?= $this->getErrorAsString() ?></p>
    <?php endif; ?>
 
+   <?php if ( $this->preview && is_string( $this->preview ) ): ?>
+      <?= $this->preview ?>
+   <?php endif; ?>
+
    <div id="<?= $this->id; ?>"></div>
 
    <script type="text/template" id="qq-template">

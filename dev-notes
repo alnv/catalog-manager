@@ -1,4 +1,5 @@
 todo
  - check date field for error if filter checkbox is active
  - prevent loading optionsGetter class
- - enable taxonomies/filter for tl_ tables #36
+ - test taxonomies/filter for tl_ tables #36
+ - Allow to manipulate be title output

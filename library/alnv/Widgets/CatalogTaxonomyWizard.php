@@ -113,7 +113,11 @@ class CatalogTaxonomyWizard extends \Widget {
         }
 
         $this->arrFields = array_keys( $this->arrTaxonomies );
-        $this->arrTaxonomies = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrTaxonomies );
+
+        if ( !Toolkit::isCoreTable( $this->strTable ) ) {
+
+            $this->arrTaxonomies = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrTaxonomies );
+        }
 
         $strRowTemplate = '';
         $strHeadTemplate =

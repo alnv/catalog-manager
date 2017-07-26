@@ -94,7 +94,7 @@ class tl_catalog_form_fields extends \Backend {
 
     public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
 
-       return $this->getTableColumnsByTablename( $strTablename, [ 'upload', 'textarea' ], true );
+        return $this->getTableColumnsByTablename( $strTablename, [ 'upload', 'textarea' ], true );
     }
 
 
@@ -116,6 +116,11 @@ class tl_catalog_form_fields extends \Backend {
         $arrReturn = [];
 
         if ( !$strTable ) return $arrReturn;
+
+        if ( Toolkit::isCoreTable( $strTable ) ) {
+
+            return Toolkit::getColumnsFromCoreTable( $strTable, $blnFullContext );
+        }
 
         $this->import( 'DCABuilderHelper' );
         $arrPredefinedFields = $this->DCABuilderHelper->getPredefinedFields();

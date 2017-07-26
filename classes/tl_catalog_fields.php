@@ -393,6 +393,11 @@ class tl_catalog_fields extends \Backend {
 
         if ( !$strTablename ) return $arrReturn;
 
+        if ( Toolkit::isCoreTable( $strTablename ) ) {
+
+            return Toolkit::getColumnsFromCoreTable( $strTablename, true );
+        }
+
         $this->import( 'DCABuilderHelper' );
         $arrForbiddenTypes = [ 'upload', 'textarea' ];
         $arrReturn = $this->DCABuilderHelper->getPredefinedFields();

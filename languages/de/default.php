@@ -43,6 +43,10 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lte'] = 'Kleiner gleich';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSet'] = 'FIND_IN_SET';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
 
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['addQuery'] = 'Neue Abfrage hinzufügen.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] = 'Hier können Sie eine ODER-Abfrage hinzufügen.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteQuery'] = 'Hier können Sie die Abfrage mit der ID %s löschen.';
+
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteMessage'] = 'Ihr Datensatz wurde gelöscht.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['insertMessage'] = 'Ihr Datensatz wurde erstellt.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Ihr Datensatz wurde gespeichert.';

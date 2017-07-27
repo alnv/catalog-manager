@@ -43,6 +43,10 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gte'] = 'Greater then';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSet'] = 'FIND_IN_SET';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
 
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['addQuery'] = 'Add new query.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] = 'Here you can add an OR query.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteQuery'] = 'Here you can delete query with ID %s.';
+
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteMessage'] = 'Your record has been deleted.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['insertMessage'] = 'Your record has been created.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Your record has been saved.';

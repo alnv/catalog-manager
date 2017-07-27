@@ -105,7 +105,7 @@ class DCABuilder extends CatalogController {
                 }
             }
 
-            $this->arrFields[] = $objCatalogFieldsDb->row();
+            $this->arrFields[ $objCatalogFieldsDb->fieldname ] = $objCatalogFieldsDb->row();
         }
     }
 
@@ -282,11 +282,52 @@ class DCABuilder extends CatalogController {
             $arrReturn['format'] = $this->arrCatalog['format'];
         }
 
+        if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
+
+            $arrReturn['label_callback'] = function ( $arrRow ) {
+
+                $objDCACallback = new DCACallbacks();
+                
+                return $objDCACallback->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow );
+            };
+        }
+
+        if ( $this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $this->arrCatalog['groupFormat'] ) && $this->arrCatalog['mode'] != '5' ) {
+
+            $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
+
+                $objDCACallback = new DCACallbacks();
+
+                return $objDCACallback->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
+            };
+        }
+
         if ( $this->arrCatalog['mode'] == '5' ) {
 
             $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
 
-                return $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );
+                $objDCACallback = new DCACallbacks();
+                $strTemplate = $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );
+
+                if ( $this->arrCatalog['useOwnLabelFormat'] ) {
+
+                    $strTemplate .= !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
+                }
+
+                else {
+
+                    if ( !$arrRow['pid'] ) {
+
+                        $strTemplate .= ' <strong>##title##</strong>';
+                    }
+
+                    else {
+
+                        $strTemplate .= ' <span>##title##</span>';
+                    }
+                }
+
+                return $objDCACallback->labelCallback( $strTemplate, $this->arrFields, $arrRow );
             };
         }
 
@@ -322,8 +363,20 @@ class DCABuilder extends CatalogController {
             'headerFields' => $arrHeaderFields,
             'mode' => $this->arrCatalog['mode'],
             'flag' => $this->arrCatalog['flag'],
-            'child_record_callback' => [ 'DCACallbacks', 'createRowView' ],
         ];
+
+        $arrReturn['child_record_callback'] = function ( $arrRow ) {
+
+            $strTemplate = '##title##';
+            $objDCACallback = new DCACallbacks();
+
+            if ( $this->arrCatalog['useOwnLabelFormat'] ) {
+
+                $strTemplate = !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
+            }
+
+            return $objDCACallback->childRecordCallback( $strTemplate, $this->arrFields, $arrRow );
+        };
 
         if ( $this->arrCatalog['mode'] === '5' ) {
 

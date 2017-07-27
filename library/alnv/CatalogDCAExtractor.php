@@ -50,7 +50,14 @@ class CatalogDCAExtractor extends CatalogController {
 
             if ( !empty( $GLOBALS['TL_DCA'][ $this->strTable ]['list']['sorting'] ) && is_array( $GLOBALS['TL_DCA'][ $this->strTable ]['list']['sorting'] ) ) {
 
-                $this->extractDCASorting( $GLOBALS['TL_DCA'][ $this->strTable ]['list']['sorting'] );
+                $arrSorting = $GLOBALS['TL_DCA'][ $this->strTable ]['list']['sorting'];
+
+                if ( !Toolkit::isEmpty( $arrSorting['mode'] ) && in_array( $arrSorting['mode'], [ 5, 6 ] ) && empty( $arrSorting['fields'] ) ) {
+
+                    $arrSorting['fields'] = ['sorting'];
+                }
+
+                $this->extractDCASorting( $arrSorting );
             }
         }
     }
@@ -88,7 +95,9 @@ class CatalogDCAExtractor extends CatalogController {
                 $arrTemps[] = $strField;
             }
 
-            if ( stripos( $strField, 'asc' ) || stripos( $strField, 'desc' ) ) {
+            $strUpperCaseField = strtoupper( $strField );
+
+            if ( stripos( $strUpperCaseField, 'ASC' ) || stripos( $strUpperCaseField, 'DESC' ) ) {
 
                 $arrOrderBy[] = $strField;
 

@@ -11,6 +11,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Weiterleitungseinstellun
 $GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Berechtigungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['description_settings'] = 'Allgemeine-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel Layout-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['label_format_legend'] = 'Bezeichnung Format-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Gruppennamen Format-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Sprachwechsler-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Name', 'Bitte geben Sie den Names des Moduls ein.' ];
@@ -33,6 +35,12 @@ $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Eltern-Felder', 'Eines od
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sortierungs-Feld/er', 'Eines oder mehrere Felder, anhand derer die Tabelle sortiert wird.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Als mehrspaltige Tabelle anzeigen', 'Legt fest, ob Contao einen Tabellenkopf mit Spaltennamen ausgeben soll.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Berechtigungsart festlegen', 'Hier können Sie zwischen zwei Berechtigungsarten entscheiden. Bei der erweiterten Berechtigungsart müssen Datensätze explizit freigeschaltet werden.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'] = [ 'Gruppennamen-Format', 'Sie können mit SimpleTokens auf einzelne Tabellenwerte zugreifen z.B ##title##. HTML-Tags sind erlaubt.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'] = [ 'Gruppennamen überschreiben', 'Wird anstatt der Standardroutine zur Erstellung der Gruppennamen ausgeführt.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['labelFormat'] = [ 'Bezeichnung-Format', 'Sie können mit SimpleTokens auf einzelne Tabellenwerte zugreifen z.B ##title##. HTML-Tags sind erlaubt.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnLabelFormat'] = [ 'Bezeichnung überschreiben', 'Wird anstatt der Standardroutine zur Erstellung der Bezeichnung ausgeführt.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'Stadt', 'Bitte wählen Sie ein Feld für die Stadt aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Land', 'Bitte wählen Sie für den Land ein Eingabefeld.' ];

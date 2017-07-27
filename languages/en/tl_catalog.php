@@ -10,6 +10,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Permission settings';
+$GLOBALS['TL_LANG']['tl_catalog']['label_format_legend'] = 'Label format settings';
+$GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Group header Format settings';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
@@ -33,6 +35,12 @@ $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or mo
 $GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Permission Types', 'Here you can enable backend module permission.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'] = [ 'Group header Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'] = [ 'Overwrite Group header', 'Here you can overwrite the default routine to create the group header.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['labelFormat'] = [ 'Label Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnLabelFormat'] = [ 'Overwrite Label', 'Here you can overwrite the default routine to create the labels.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Address Type', 'Please select address type.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'City Column', 'Please select a column for city value.' ];

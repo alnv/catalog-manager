@@ -262,6 +262,7 @@ class DCABuilderHelper extends CatalogController {
             'id' => [
 
                 'sort' => '1',
+                'search' => true,
                 'invisible' => '',
                 'type' => 'number',
                 'fieldname' => 'id',

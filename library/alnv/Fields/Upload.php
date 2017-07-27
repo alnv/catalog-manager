@@ -99,6 +99,95 @@ class Upload {
     }
 
 
+    public static function parseThumbnails( $varValue, $arrField, $arrCatalog = [] ) {
+
+        switch ( $arrField['fileType'] ) {
+
+            case 'image':
+
+                return static::renderThumbnail( $varValue, $arrField );
+
+                break;
+
+            case 'gallery':
+
+                $strThumbnails = '';
+                $varValues = Toolkit::deserialize( $varValue );
+
+                if ( !empty( $varValues ) && is_array( $varValues ) ) {
+
+                    $strThumbnails .= '<ul>';
+
+                    foreach ( $varValues as $varValue ) {
+
+                        $strThumbnails .= '<li>' . static::renderThumbnail( $varValue, $arrField ) . '</li>';
+                    }
+
+                    $strThumbnails .= '</ul>';
+                }
+
+                return $strThumbnails;
+
+                break;
+
+            case 'file':
+
+                $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
+
+                if ( is_array( $arrFile ) ) {
+
+                    return $arrFile['name'] ? $arrFile['name'] : $varValue;
+                }
+
+                break;
+
+            case 'files':
+
+                $strFiles = '';
+                $varValues = Toolkit::deserialize( $varValue );
+
+                if ( !empty( $varValues ) && is_array( $varValues ) ) {
+
+                    $strFiles .= '<ul>';
+
+                    foreach ( $varValues as $varValue ) {
+
+                        $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
+
+                        if ( is_array( $arrFile ) ) {
+
+                            $strFiles .= '<li>' . ( $arrFile['name'] ? $arrFile['name'] : $varValue ) . '</li>';
+                        }
+                    }
+
+                    $strFiles .= '</ul>';
+                }
+
+                return $strFiles;
+
+                break;
+        }
+
+        return '';
+    }
+
+
+    public static function renderThumbnail( $varValue, $arrField = [] ) {
+
+        if ( $varValue != '' ) {
+
+            $objFile = \FilesModel::findByUuid( $varValue );
+
+            if ($objFile !== null) {
+
+                return \Image::getHtml( \Image::get( $objFile->path, 120, 120, 'center_top' ), '', 'class="'. $arrField['fieldname'] .'_preview"' );
+            }
+        }
+
+        return $varValue;
+    }
+
+
     public static function parseAttachment ( $varValue, $arrField, $arrCatalog = [] ) {
 
         $objFile = \FilesModel::findByUuid( $varValue );

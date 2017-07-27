@@ -400,4 +400,108 @@ class Toolkit {
 
         return $arrReturn;
     }
+
+
+    public static function parseCatalogValues( $arrData, $arrFields = [], $blnJustStrings = false ) {
+
+        if ( !empty( $arrData ) && is_array( $arrData ) ) {
+
+            foreach ( $arrData as $strFieldname => $varDBValue ) {
+
+                $varValue = null;
+
+                if ( Toolkit::isEmpty( $varDBValue ) ) {
+
+                    continue;
+                }
+
+                $arrField = $arrFields[ $strFieldname ];
+
+                if ( is_null( $arrField ) ) {
+
+                    continue;
+                }
+
+                if ( !$arrField['type'] ) {
+
+                    continue;
+                }
+
+                switch ( $arrField['type'] ) {
+
+                    case 'upload':
+
+                        if ( TL_MODE == 'FE' ) {
+
+                            $varValue = Upload::parseValue( $varDBValue, $arrField, $arrData );
+
+                            if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
+
+                                if ( $varValue['preview'] ) $arrData[ $strFieldname . 'Preview' ] = $varValue['preview'];
+
+                                $varValue = $varValue['gallery'];
+                            }
+                        }
+
+                        else {
+
+                            $varValue = Upload::parseThumbnails( $varDBValue, $arrField, $arrData );
+                        }
+
+                        break;
+
+                    case 'select':
+
+                        $varValue = Select::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+
+                    case 'checkbox':
+
+                        $varValue = Checkbox::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+
+                    case 'radio':
+
+                        $varValue = Radio::parseValue( $varDBValue, $arrField, $arrData);
+
+                        break;
+
+                    case 'date':
+
+                        $varValue = DateInput::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+
+                    case 'number':
+
+                        $varValue = Number::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+
+                    case 'textarea':
+
+                        $varValue = Textarea::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+
+                    case 'dbColumn':
+
+                        $varValue = DbColumn::parseValue( $varDBValue, $arrField, $arrData );
+
+                        break;
+                }
+
+                if ( $blnJustStrings && is_array( $varValue ) ) {
+
+                    $varValue = implode( ', ', $varValue );
+                }
+
+                $arrData[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $varDBValue : $varValue;
+            }
+        }
+
+        return $arrData;
+    }
 }

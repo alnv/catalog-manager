@@ -34,12 +34,7 @@ class IconGetter extends CatalogController {
 
         $strImageAttribute = trim( $strImageAttribute . ' data-icon="edit.gif" data-icon-disabled="header.gif" ');
 
-        if ( $arrRow['pid'] == '0' ) {
-
-            $strLabel = '<strong>' . $strLabel . '</strong>';
-        }
-
-        return \Image::getHtml( $strIcon, '', $strImageAttribute ) . ' <span>' . $strLabel . '</span>';
+        return \Image::getHtml( $strIcon, '', $strImageAttribute );
     }
 
 

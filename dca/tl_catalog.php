@@ -100,12 +100,14 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect' ],
-        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,format,sortingFields,labelFields,headerFields,showColumns;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
+        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,format,sortingFields,labelFields,headerFields,showColumns;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
     ],
 
     'subpalettes' => [
 
+        'useOwnLabelFormat' => 'labelFormat',
+        'useOwnGroupFormat' => 'groupFormat',
         'isBackendModule' => 'navArea,navPosition',
         'addressInputType_useSingleField' => 'geoAddress',
         'useRedirect' => 'internalUrlColumn,externalUrlColumn',
@@ -851,6 +853,70 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
-        ]
+        ],
+
+        'useOwnLabelFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['useOwnLabelFormat'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'doNotCopy' => true,
+                'tl_class' => 'clr',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'labelFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['labelFormat'],
+            'inputType' => 'textarea',
+
+            'eval' => [
+
+                'allowHtml' => true,
+                'doNotCopy' => true,
+                'tl_class' => 'clr',
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
+        ],
+
+        'useOwnGroupFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'doNotCopy' => true,
+                'tl_class' => 'clr',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'groupFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'],
+            'inputType' => 'textarea',
+
+            'eval' => [
+
+                'allowHtml' => true,
+                'doNotCopy' => true,
+                'tl_class' => 'clr',
+            ],
+
+            'exclude' => true,
+            'sql' => "text NULL"
+        ],
     ]
 ];

@@ -84,3 +84,43 @@ td.ctlg_button {
         min-width: 145px;
     }
 }
+
+ul.ctlg_thumbnails_preview {
+
+    overflow: hidden;
+    display: inline-block;
+}
+
+ul.ctlg_thumbnails_preview li {
+
+    width: 64px;
+    float: left;
+    height: 64px;
+    margin-right: 5px;
+    text-align: center;
+}
+
+ul.ctlg_thumbnails_preview img {
+
+    width: 100%;
+    height: 100%;
+    margin-left: -50%;
+    margin-right: -50%;
+}
+
+.ctlg_thumbnail_preview {
+
+    margin-right: .5em;
+    max-width: 64px;
+    height: auto;
+}
+
+ul.ctlg_files_preview {
+
+    display: inline-block;
+}
+
+ul.ctlg_files_preview li {
+
+    display: inline-block;
+}

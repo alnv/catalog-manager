@@ -116,7 +116,7 @@ class Upload {
 
                 if ( !empty( $varValues ) && is_array( $varValues ) ) {
 
-                    $strThumbnails .= '<ul>';
+                    $strThumbnails .= '<ul class="ctlg_thumbnails_preview">';
 
                     foreach ( $varValues as $varValue ) {
 
@@ -134,9 +134,9 @@ class Upload {
 
                 $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
 
-                if ( is_array( $arrFile ) ) {
+                if ( is_array( $arrFile ) && !Toolkit::isEmpty( $arrFile['name'] ) ) {
 
-                    return $arrFile['name'] ? $arrFile['name'] : $varValue;
+                    return $arrFile['name'];
                 }
 
                 break;
@@ -148,19 +148,20 @@ class Upload {
 
                 if ( !empty( $varValues ) && is_array( $varValues ) ) {
 
-                    $strFiles .= '<ul>';
+                    $arrNames = [];
+                    $strFiles .= '<ul class="ctlg_files_preview">';
 
                     foreach ( $varValues as $varValue ) {
 
                         $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
 
-                        if ( is_array( $arrFile ) ) {
+                        if ( is_array( $arrFile ) && !Toolkit::isEmpty( $arrFile['name'] ) ) {
 
-                            $strFiles .= '<li>' . ( $arrFile['name'] ? $arrFile['name'] : $varValue ) . '</li>';
+                            $arrNames[] = '<li>' . $arrFile['name'] . '</li>';
                         }
                     }
 
-                    $strFiles .= '</ul>';
+                    $strFiles .= implode( ', ' , $arrNames ) . '</ul>';
                 }
 
                 return $strFiles;
@@ -180,7 +181,7 @@ class Upload {
 
             if ($objFile !== null) {
 
-                return \Image::getHtml( \Image::get( $objFile->path, 120, 120, 'center_top' ), '', 'class="'. $arrField['fieldname'] .'_preview"' );
+                return \Image::getHtml( \Image::get( $objFile->path, 0, 0 ), '', 'class="'. $arrField['fieldname'] .'_preview ctlg_thumbnail_preview"' );
             }
         }
 

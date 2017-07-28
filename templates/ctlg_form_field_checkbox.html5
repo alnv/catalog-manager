@@ -6,8 +6,8 @@
    <?php $intIndex = 0; ?>
    <?php foreach( $this->options as $strKey => $strTitle ): ?>
       <div class="checkbox_container">
-         <label for="id_form_<?= $this->name ?>_<?= $intIndex ?>"><?= $strTitle ?></label>
          <input type="checkbox" id="id_form_<?= $this->name ?>_<?= $intIndex ?>" name="<?= $this->name ?>[]" value="<?= $strKey ?>" <?= ( !empty( $this->value ) && in_array( $strKey, $this->value ) ? 'checked' : '' ) ?> <?= $this->onchange ?>>
+         <label for="id_form_<?= $this->name ?>_<?= $intIndex ?>"><?= $strTitle ?></label>
       </div>
       <?php $intIndex++; ?>
    <?php endforeach; ?>

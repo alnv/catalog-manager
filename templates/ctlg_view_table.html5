@@ -1,14 +1,16 @@
-<tr class="ctlg_row<?= $this->cssClass ?>">
+<tr class="row_<?= ( $this->entityIndex[0] ? $this->entityIndex[0] -1 : 0 ) ?><?= $this->cssClass ?>">
+
+   <?php $intIndex = 0; ?>
 
    <?php foreach( $this->activeTableColumns as $strColumnName ): ?>
 
       <?php if ( is_string( $this->{$strColumnName} ) ): ?>
-         <td><?= $this->{$strColumnName}; ?></td>
+         <td class="col_<?= $intIndex++ ?> <?= $strColumnName ?>"><?= $this->{$strColumnName}; ?></td>
          <?php continue; ?>
       <?php endif; ?>
 
       <?php if ( is_array( $this->{$strColumnName} ) ): ?>
-         <td><?= implode( ', ', $this->{$strColumnName} ); ?></td>
+         <td class="col_<?= $intIndex++ ?> <?= $strColumnName ?>"><?= implode( ', ', $this->{$strColumnName} ); ?></td>
          <?php continue; ?>
       <?php endif; ?>
 
@@ -17,11 +19,11 @@
    <?php endforeach; ?>
 
    <?php if( $this->masterUrl ): ?>
-      <td><a href="<?= $this->masterUrl; ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></td>
+      <td class="col_<?= $intIndex++; ?> more"><a href="<?= $this->masterUrl; ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></td>
    <?php endif; ?>
 
    <?php if ( $this->hasOperations && is_array( $this->operations ) ): ?>
-      <td>
+      <td class="col_<?= $intIndex++; ?> operations">
          <div class="ctlg_operations">
             <?php foreach( $this->operations as $arrOperation ): ?>
                <a href="<?= $arrOperation['href']; ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes']; ?>><?= $arrOperation['image']; ?></a>
@@ -31,7 +33,7 @@
    <?php endif; ?>
 
    <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
-      <td>
+      <td class="col_<?= $intIndex++; ?> related">
          <div class="ctlg_relations">
             <?php foreach( $this->relations as $arrRelation ): ?>
                <a href="<?= $arrRelation['href']; ?>" title="<?= $arrRelation['description']; ?>"><?= $arrRelation['image']; ?></a>

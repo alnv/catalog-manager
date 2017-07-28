@@ -145,74 +145,7 @@ class FrontendEditing extends CatalogController {
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields  ) ) {
 
-            foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
-
-                $varValue = null;
-                $varDBValue = $this->arrValues[ $strFieldname ];
-
-                if ( $varDBValue === null ) continue;
-                if ( Toolkit::isEmpty( $varDBValue ) ) continue;
-
-                switch ( $arrField['type'] ) {
-
-                    case 'upload':
-
-                        $varValue = Upload::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
-
-                            if ( $varValue['preview'] ) $this->arrCatalogAttributes[ $strFieldname . 'Preview' ] = $varValue['preview'];
-
-                            $varValue = $varValue['gallery'];
-                        }
-
-                        break;
-
-                    case 'select':
-
-                        $varValue = Select::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'checkbox':
-
-                        $varValue = Checkbox::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'radio':
-
-                        $varValue = Radio::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'date':
-
-                        $varValue = DateInput::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'number':
-
-                        $varValue = Number::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'textarea':
-
-                        $varValue = Textarea::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-
-                    case 'dbColumn':
-
-                        $varValue = DbColumn::parseValue( $varDBValue, $arrField, $this->arrValues );
-
-                        break;
-                }
-
-                $this->arrCatalogAttributes[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $varDBValue : $varValue;
-            }
+            $this->arrCatalogAttributes = Toolkit::parseCatalogValues( $this->arrValues, $this->arrCatalogFields, false );
         }
     }
 

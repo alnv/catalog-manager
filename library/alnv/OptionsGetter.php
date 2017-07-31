@@ -162,7 +162,7 @@ class OptionsGetter extends CatalogController {
         }
 
         $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
-        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute( $this->SQLQueryBuilder->getValues() );
+        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
 
         while ( $objDbOptions->next() ) {
 

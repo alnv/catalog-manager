@@ -130,7 +130,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
     'image' => 'Bild',
     'file' => 'Datei',
-    'files' => 'Datein',
+    'files' => 'Dateien',
     'gallery' => 'Galerie'
 ];
 

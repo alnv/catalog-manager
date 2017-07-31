@@ -16,23 +16,32 @@ class DCACallbacks extends \Backend {
     function groupCallback ( $strTemplate, $arrCatalogField = [], $strGroup, $strMode, $strField, $arrRow, $dc ) {
         
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
-        
-        return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );
-    }
 
-
-    function labelCallback ( $strTemplate, $arrCatalogField = [], $arrRow ) {
-
-        $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
+        $arrRow['_mode'] = $strMode;
+        $arrRow['_group'] = $strGroup;
+        $arrRow['_field'] = $strField;
 
         return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );
     }
 
 
-    public function childRecordCallback( $strTemplate, $arrCatalogField = [], $arrRow ) {
+    function labelCallback ( $strTemplate, $arrCatalogField = [], $arrRow, $strLabel ) {
 
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
+
+        $arrRow['_label'] = $strLabel;
         
+        return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );
+    }
+
+
+    public function childRecordCallback( $strTemplate, $arrCatalogField = [], $arrRow, $strField ) {
+
+        $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
+
+        $arrRow['_field'] = $strField;
+        $arrRow['_label'] = !Toolkit::isEmpty( $arrRow[ $strField ] ) ? $arrRow[ $strField ] : '';
+
         return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );
     }
 

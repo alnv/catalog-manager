@@ -134,7 +134,6 @@ class DCABuilder extends CatalogController {
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
         $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
-        $GLOBALS['TL_LANG']['MOD'][ $this->strTable ] = $this->I18nCatalogTranslator->getModuleLabel( $this->strTable );
     }
 
 
@@ -284,11 +283,11 @@ class DCABuilder extends CatalogController {
 
         if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
 
-            $arrReturn['label_callback'] = function ( $arrRow ) {
+            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) {
 
                 $objDCACallback = new DCACallbacks();
                 
-                return $objDCACallback->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow );
+                return $objDCACallback->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow, $strLabel );
             };
         }
 
@@ -318,16 +317,16 @@ class DCABuilder extends CatalogController {
 
                     if ( !$arrRow['pid'] ) {
 
-                        $strTemplate .= ' <strong>##title##</strong>';
+                        $strTemplate .= ' <strong>' . $strLabel . '</strong>';
                     }
 
                     else {
 
-                        $strTemplate .= ' <span>##title##</span>';
+                        $strTemplate .= ' <span>' . $strLabel . '</span>';
                     }
                 }
 
-                return $objDCACallback->labelCallback( $strTemplate, $this->arrFields, $arrRow );
+                return $objDCACallback->labelCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
             };
         }
 
@@ -356,6 +355,11 @@ class DCABuilder extends CatalogController {
             $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
         }
 
+        if ( empty( $this->arrCatalog['labelFields'] ) || !is_array( $this->arrCatalog['labelFields'] ) ) {
+
+            $this->arrCatalog['labelFields'] = [ 'title' ];
+        }
+
         $arrReturn = [
 
             'fields' => $arrSortingFields,
@@ -367,7 +371,8 @@ class DCABuilder extends CatalogController {
 
         $arrReturn['child_record_callback'] = function ( $arrRow ) {
 
-            $strTemplate = '##title##';
+            $strLabel = $this->arrCatalog['labelFields'][0];
+            $strTemplate = '##' . $strLabel . '##';
             $objDCACallback = new DCACallbacks();
 
             if ( $this->arrCatalog['useOwnLabelFormat'] ) {
@@ -375,7 +380,7 @@ class DCABuilder extends CatalogController {
                 $strTemplate = !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
             }
 
-            return $objDCACallback->childRecordCallback( $strTemplate, $this->arrFields, $arrRow );
+            return $objDCACallback->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
         };
 
         if ( $this->arrCatalog['mode'] === '5' ) {

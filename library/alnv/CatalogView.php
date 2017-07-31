@@ -314,6 +314,13 @@ class CatalogView extends CatalogController {
 
             $arrQuery['where'][] = [
 
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => '0'
+            ];
+
+            $arrQuery['where'][] = [
+
                 [
                     'value' => '',
                     'field' => 'start',

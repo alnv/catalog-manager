@@ -4,7 +4,10 @@ namespace CatalogManager;
 
 class CatalogManagerInitializer {
 
-    
+
+    protected $arrModules = [];
+
+
     public function initialize() {
 
         if ( TL_MODE == 'BE' ) {
@@ -13,6 +16,40 @@ class CatalogManagerInitializer {
             \Database::getInstance();
 
             $this->createBackendModules();
+            $this->initializeBackendModules();
+        }
+    }
+
+
+    protected function initializeBackendModules() {
+
+        $strActiveModule = \Input::get('do');
+
+        if ( !empty( $this->arrModules[ $strActiveModule ] ) && is_array( $this->arrModules[ $strActiveModule ] ) && isset( $this->arrModules[ $strActiveModule ][ $strActiveModule ] ) ) {
+
+            $arrTables = $this->arrModules[ $strActiveModule ][ $strActiveModule ]['tables'];
+
+            if ( !empty( $arrTables ) && is_array( $arrTables ) ) {
+
+                foreach ( $arrTables as $strTable ) {
+
+                    if ( Toolkit::isEmpty( $strTable ) || Toolkit::isCoreTable( $strTable ) ) {
+
+                        continue;
+                    }
+
+                    $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+
+                    if ( empty( $arrCatalog ) ) continue;
+
+                    $this->createCatalogManagerDCA( $arrCatalog );
+
+                    if ( $arrCatalog['permissionType'] ) {
+
+                        $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
+                    }
+                }
+            }
         }
     }
 
@@ -20,7 +57,11 @@ class CatalogManagerInitializer {
     protected function createBackendModules() {
 
         $this->createDirectories();
+        $strTable = \Input::get( 'table' );
         $objDatabase = \Database::getInstance();
+
+        $objI18nCatalogTranslator = new I18nCatalogTranslator();
+        $objI18nCatalogTranslator->initialize();
 
         if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
 
@@ -42,18 +83,16 @@ class CatalogManagerInitializer {
 
             $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
 
-            $this->createCatalogManagerDCA( $arrCatalog );
+            $this->arrModules[ $arrCatalog['tablename'] ] = $this->createBackendModule( $arrCatalog );
 
             if ( $arrCatalog['isBackendModule'] && !$arrCatalog['pTable'] ) {
 
                 $this->insertModuleToBE_MOD( $arrCatalog );
-            }
-
-            if ( $arrCatalog['permissionType'] ) {
-
-                $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
+                $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->getModuleLabel( $arrCatalog['tablename'] );
             }
         }
+
+        if ( $strTable ) $GLOBALS['TL_LANG']['MOD'][ $strTable ] = $objI18nCatalogTranslator->getModuleTitle( $strTable );
     }
 
     

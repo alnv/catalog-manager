@@ -1,4 +1,2 @@
 todo
  - check date field for error if filter checkbox is active
- - prevent loading optionsGetter class
- - Allow to manipulate be title output

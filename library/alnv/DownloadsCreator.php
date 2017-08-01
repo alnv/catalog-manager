@@ -39,13 +39,15 @@ class DownloadsCreator extends \Frontend {
         $arrFiles = [];
         $arrAuxDate = [];
 
+        if ( $this->objFiles === null ) return '';
+
         $objFiles = $this->objFiles;
         $strDownload = \Input::get( 'file', true );
         $arrAllowedDownload = trimsplit( ',', strtolower( \Config::get('allowedDownload') ) );
 
         while ( $objFiles->next() ) {
 
-            if ( isset( $files[$objFiles->path] ) || !file_exists( TL_ROOT . '/' . $objFiles->path ) ) {
+            if ( isset( $files[ $objFiles->path ] ) || !file_exists( TL_ROOT . '/' . $objFiles->path ) ) {
 
                 continue;
             }

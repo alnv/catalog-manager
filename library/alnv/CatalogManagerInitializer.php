@@ -25,6 +25,16 @@ class CatalogManagerInitializer {
 
         $strActiveModule = \Input::get('do');
 
+        if ( !Toolkit::isEmpty( \Input::get('target') ) && $strActiveModule == 'files' ) {
+
+            $arrTarget = explode( '.', \Input::get('target') );
+
+            if ( !empty( $arrTarget ) && is_array( $arrTarget ) ) {
+
+                $strActiveModule = !Toolkit::isEmpty( $arrTarget[0] ) ? $arrTarget[0] : $strActiveModule;
+            }
+        }
+
         if ( !empty( $this->arrModules[ $strActiveModule ] ) && is_array( $this->arrModules[ $strActiveModule ] ) && isset( $this->arrModules[ $strActiveModule ][ $strActiveModule ] ) ) {
 
             $arrTables = $this->arrModules[ $strActiveModule ][ $strActiveModule ]['tables'];

@@ -137,7 +137,11 @@ class tl_catalog extends \Backend {
             $objSQLBuilder = new SQLBuilder();
             $objSQLBuilder->createSQLRenameTableStatement( $varValue, $dc->activeRecord->tablename );
             $this->renameAllTableDependencies( $dc->id, $varValue, $dc->activeRecord->tablename );
-            $this->renamePermissionFields( $varValue, $dc->activeRecord->tablename );
+
+            if ( $dc->activeRecord->permissionType ) {
+
+                $this->renamePermissionFields( $dc->activeRecord->tablename, $varValue, $dc->activeRecord->permissionType );
+            }
         }
 
         return $varValue;
@@ -186,18 +190,21 @@ class tl_catalog extends \Backend {
     }
 
 
-    protected function renamePermissionFields( $strOldFieldname, $strNewFieldname ) {
+    protected function renamePermissionFields( $strOldFieldname, $strNewFieldname, $strType ) {
 
         $objSQLBuilder = new SQLBuilder();
 
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strNewFieldname, $strOldFieldname, 'blob NULL' );
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strOldFieldname . 'p', $strNewFieldname . 'p', 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strOldFieldname . 'p', $strNewFieldname . 'p', 'blob NULL' );
 
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strNewFieldname, $strOldFieldname, 'blob NULL' );
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strOldFieldname, $strNewFieldname, 'blob NULL' );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strOldFieldname . 'p', $strNewFieldname . 'p', 'blob NULL' );
 
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strNewFieldname, $strOldFieldname, 'blob NULL' );
-        $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_member_group', $strNewFieldname . 'p', $strOldFieldname . 'p', 'blob NULL' );
+        if ( $strType == 'extended' ) {
+
+            $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user', $strOldFieldname, $strNewFieldname, 'blob NULL' );
+            $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strOldFieldname, $strNewFieldname, 'blob NULL' );
+        }
     }
 
 

@@ -273,6 +273,11 @@ class tl_catalog extends \Backend {
 
     public function checkTablename( $varValue ) {
 
+        if ( Toolkit::isCoreTable( $varValue ) ) {
+
+            throw new \Exception('"tl_" prefix is not allowed.');
+        }
+
         return Toolkit::parseConformSQLValue( $varValue );
     }
 

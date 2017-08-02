@@ -81,7 +81,7 @@ class DCABuilder extends CatalogController {
             $arrOperations = deserialize( $this->arrCatalog['operations'] );
         }
 
-        if ( !empty( $arrOperations ) && is_array($arrOperations) ) {
+        if ( !empty( $arrOperations ) && is_array( $arrOperations ) ) {
 
             foreach ( $arrOperations as $strOperation ) {
 
@@ -97,15 +97,17 @@ class DCABuilder extends CatalogController {
 
         while ( $objCatalogFieldsDb->next() ) {
 
+            $strFieldname = $objCatalogFieldsDb->fieldname ? $objCatalogFieldsDb->fieldname : $objCatalogFieldsDb->id;
+
             if ( !$this->Database->fieldExists( $objCatalogFieldsDb->fieldname, $this->strTable ) ) {
-                
+
                 if ( !in_array( $objCatalogFieldsDb->type, $this->DCABuilderHelper->arrNoFieldnameRequired ) ) {
 
                     continue;
                 }
             }
 
-            $this->arrFields[ $objCatalogFieldsDb->fieldname ] = $objCatalogFieldsDb->row();
+            $this->arrFields[ $strFieldname ] = $objCatalogFieldsDb->row();
         }
     }
 

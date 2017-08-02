@@ -255,6 +255,14 @@ class FrontendEditing extends CatalogController {
                 $objWidget->value = $objWidget->value ? \Date::parse( $strDateFormat, $objWidget->value ) : '';
             }
 
+            if ( in_array( $arrField['_type'], [ 'hidden', 'date' ] ) && $this->arrCatalogFields[ $arrField['_fieldname'] ]['tstampAsDefault'] ) {
+
+                if ( Toolkit::isEmpty( $objWidget->value ) ) {
+
+                    $objWidget->value = time();
+                }
+            }
+
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
 
             if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
@@ -717,6 +725,11 @@ class FrontendEditing extends CatalogController {
         if ( \Input::get('pid') ) {
 
             $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
+        }
+
+        if ( isset( $this->arrValues['tstamp'] ) ) {
+
+            $this->arrValues['tstamp'] = (string)time();
         }
 
         $this->prepare();

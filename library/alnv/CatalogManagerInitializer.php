@@ -35,7 +35,7 @@ class CatalogManagerInitializer {
             }
         }
 
-        if ( in_array( $strActiveModule, [ 'group', 'mgroup' ] ) || $strActiveModule == null ) {
+        if ( in_array( $strActiveModule, [ 'group', 'mgroup', 'user' ] ) || $strActiveModule == null ) {
 
             $arrModules = array_keys( $this->arrModules );
 

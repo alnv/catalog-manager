@@ -16,12 +16,12 @@ class CatalogManagerInitializer {
             \Database::getInstance();
 
             $this->createBackendModules();
-            $this->initializeBackendModules();
+            $this->initializeDataContainerArrays();
         }
     }
 
 
-    protected function initializeBackendModules() {
+    protected function initializeDataContainerArrays() {
 
         $strActiveModule = \Input::get('do');
 
@@ -33,6 +33,26 @@ class CatalogManagerInitializer {
 
                 $strActiveModule = !Toolkit::isEmpty( $arrTarget[0] ) ? $arrTarget[0] : $strActiveModule;
             }
+        }
+
+        if ( in_array( $strActiveModule, [ 'group', 'mgroup' ] ) || $strActiveModule == null ) {
+
+            $arrModules = array_keys( $this->arrModules );
+
+            if ( !empty( $arrModules ) && is_array( $arrModules ) ) {
+
+                foreach ( $arrModules as $strTable ) {
+
+                    if ( Toolkit::isEmpty( $strTable ) || Toolkit::isCoreTable( $strTable ) ) {
+
+                        continue;
+                    }
+
+                    $this->loadDataContainerArray( $strTable );
+                }
+            }
+
+            return null;
         }
 
         if ( !empty( $this->arrModules[ $strActiveModule ] ) && is_array( $this->arrModules[ $strActiveModule ] ) && isset( $this->arrModules[ $strActiveModule ][ $strActiveModule ] ) ) {
@@ -48,18 +68,24 @@ class CatalogManagerInitializer {
                         continue;
                     }
 
-                    $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
-
-                    if ( empty( $arrCatalog ) ) continue;
-
-                    $this->createCatalogManagerDCA( $arrCatalog );
-
-                    if ( $arrCatalog['permissionType'] ) {
-
-                        $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
-                    }
+                    $this->loadDataContainerArray( $strTable );
                 }
             }
+        }
+    }
+
+
+    protected function loadDataContainerArray( $strTable ) {
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+
+        if ( empty( $arrCatalog ) ) return null;
+
+        $this->createCatalogManagerDCA( $arrCatalog );
+
+        if ( $arrCatalog['permissionType'] ) {
+
+            $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
         }
     }
 

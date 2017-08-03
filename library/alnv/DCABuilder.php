@@ -56,7 +56,7 @@ class DCABuilder extends CatalogController {
 
                     if ( in_array( $strTable , $this->arrCatalog['cTables'] ) ) {
 
-                        $intPosition = array_search( $strTable , $this->arrCatalog['cTables'] );
+                        $intPosition = array_search( $strTable, $this->arrCatalog['cTables'] );
 
                         unset( $this->arrCatalog['cTables'][ $intPosition ] );
                     }

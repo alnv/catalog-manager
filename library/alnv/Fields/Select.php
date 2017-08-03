@@ -54,7 +54,7 @@ class Select {
                 $arrDCAField['eval']['submitOnChange'] = true;
                 $arrDCAField['eval']['tl_class'] .= $arrDCAField['eval']['tl_class'] ? ' wizard' : 'wizard';
             }
-         }
+        }
 
         return $arrDCAField;
     }

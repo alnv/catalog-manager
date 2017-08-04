@@ -72,6 +72,64 @@ class OptionsGetter extends CatalogController {
     }
 
 
+    public function getTableEntities() {
+
+        switch ( $this->arrField['optionsType'] ) {
+
+            case 'useDbOptions':
+
+                if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue'] ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
+
+                    return null;
+                }
+
+                return $this->getResults( true );
+
+                break;
+
+            case 'useActiveDbOptions':
+
+                $strDbColumn = $this->arrField['dbColumn'];
+
+                if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+
+                    return null;
+                }
+
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
+
+                    return null;
+                }
+
+                return $this->getResults( false );
+
+                break;
+        }
+
+        return [];
+    }
+
+
     protected function setValueToOption( $arrOptions, $strValue, $strLabel = '' ) {
 
         if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
@@ -112,25 +170,7 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getDbOptions() {
-
-        $strOrderBy = '';
-        $arrOptions = [];
-
-        if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue'] ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) || !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
+    protected function getResults( $blnUseValidValue = false ) {
 
         $arrSQLQuery = [
 
@@ -139,30 +179,58 @@ class OptionsGetter extends CatalogController {
         ];
 
         $this->getActiveEntityValues();
+        $strOrderBy = $this->getOrderBy();
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
-        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
+
+        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) use ( $blnUseValidValue ) {
 
             $blnValidValue = true;
             $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'], $blnValidValue );
             $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
 
-            if ( !$blnValidValue ) return null;
+            if ( !$blnValidValue && $blnUseValidValue ) return null;
 
             return $arrQuery;
         });
 
         $arrSQLQuery['where'] = $arrQueries;
-        $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
         $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
 
-        if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
+        if ( Toolkit::isEmpty( $strOrderBy ) ) {
 
-            $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
+            $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
+
+            if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
+
+                $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
+            }
+        }
+        
+        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] as $callback ) {
+
+                $this->import( $callback[0] );
+                $this->{$callback[0]}->{$callback[1]}( $strQuery, $arrSQLQuery, $this->arrField, $this->strModuleID );
+            }
         }
 
-        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
         $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
+
+        return $objDbOptions;
+    }
+
+
+    protected function getDbOptions() {
+
+        $arrOptions = [];
+        $objDbOptions = $this->getTableEntities();
+
+        if ( $objDbOptions === null ) return $arrOptions;
+        if ( !$objDbOptions->numRows ) return $arrOptions;
 
         while ( $objDbOptions->next() ) {
 
@@ -175,54 +243,11 @@ class OptionsGetter extends CatalogController {
     
     protected function getActiveDbOptions() {
 
-        $strOrderBy = '';
         $arrOptions = [];
+        $objEntities = $this->getTableEntities();
         $strDbColumn = $this->arrField['dbColumn'];
 
-        if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
-
-        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
-
-            return $arrOptions;
-        }
-
-        $arrSQLQuery = [
-
-            'table' => $this->arrField['dbTable'],
-            'where' => []
-        ];
-
-        $this->getActiveEntityValues();
-        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
-        $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) {
-
-            $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
-            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'] );
-            $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
-
-            return $arrQuery;
-        });
-
-        $arrSQLQuery['where'] = $arrQueries;
-        $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
-        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
-
-        if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
-
-            $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
-        }
-
-        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
-        $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute( $this->SQLQueryBuilder->getValues() );
-
+        if ( $objEntities === null ) return $arrOptions;
         if ( !$objEntities->numRows ) return $arrOptions;
 
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->arrField['dbTable'] );
@@ -459,6 +484,18 @@ class OptionsGetter extends CatalogController {
             $this->arrActiveEntity = [];
         }
     }
+
+
+    protected function getOrderBy() {
+
+        if ( !Toolkit::isEmpty( $this->arrField['_orderBy'] ) ) {
+
+            return ' ' . $this->arrField['_orderBy'];
+        }
+
+        return '';
+    }
+
 
     protected function isValidValue( $strValue ) {
 

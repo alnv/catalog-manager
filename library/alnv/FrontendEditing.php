@@ -181,6 +181,15 @@ class FrontendEditing extends CatalogController {
                 ];
             }
 
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'] as $callback ) {
+
+                    $this->import( $callback[0] );
+                    $this->{$callback[0]}->{$callback[1]}( $strFieldname, $strClass, $arrData, $this->arrCatalogFields[ $strFieldname ], $this->arrCatalog );
+                }
+            }
+            
             $objWidget = new $strClass( $arrData );
             $objWidget->storeValues = true;
             $objWidget->id = 'id_' . $arrField['_fieldname'];

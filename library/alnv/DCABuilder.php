@@ -582,9 +582,10 @@ class DCABuilder extends CatalogController {
 
         foreach ( $arrPalettes as $strPaletteTitle ) {
 
-            $strPalette .= sprintf( '{%s},%s;', $this->I18nCatalogTranslator->getLegendLabel( $strPaletteTitle, $arrPaletteTranslationMap[ $strPaletteTitle ] ), implode( ',', $arrDCAPalette[ $strPaletteTitle ] ) );
+            $GLOBALS['TL_LANG'][ $this->strTable ][ $strPaletteTitle ] = $this->I18nCatalogTranslator->getLegendLabel( $strPaletteTitle, $arrPaletteTranslationMap[ $strPaletteTitle ] );
+            $strPalette .= sprintf( '{%s},%s;', $strPaletteTitle, implode( ',', $arrDCAPalette[ $strPaletteTitle ] ) );
         }
-        
+
         return [ 'default' => $strPalette ];
     }
 

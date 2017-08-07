@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['method'] = [ 'Submission method', 'The d
 $GLOBALS['TL_LANG']['tl_catalog_form']['attributes'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['disableSubmit'] = [ 'Disable submit button', 'Here you can disable submit button.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['sendJsonHeader'] = [ 'application/json', 'Here you can set the HTTP Content-Type Header to "application/json".' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['disableOnAutoItem'] = [ 'Hide filter form', 'Here you can hide the filter form when the page is in the detail view.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['jumpTo'] = [ 'Redirect page', 'Please choose the page to which visitors will be redirected after submitting the form.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['resetForm'] = [ 'Add reset button to form', 'Allow to reset form filter in Frontend. Only with GET Submission method possible.' ];
 

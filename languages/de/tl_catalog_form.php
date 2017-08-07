@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['attributes'] = [ 'CSS-ID/Klasse', 'Hier 
 $GLOBALS['TL_LANG']['tl_catalog_form']['disableSubmit'] = [ 'Submit-Button entfernen', 'Hier können Sie den Submit-Button aus dem Filterformular entfernen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['sendJsonHeader'] = [ 'application/json', 'Hier können Sie den HTTP Content-Type Header auf "application/json" umstellen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['jumpTo'] = [ 'Weiterleitungsseite', 'Bitte wählen Sie die Seite aus, zu der Besucher nach dem Abschicken des Formulars weitergeleitet werden.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['disableOnAutoItem'] = [ 'Filter verstecken', 'Hier können Sie das Filterformular verstecken, wenn sich die Seite in der Detailansicht befindet.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['resetForm'] = [ 'Filtereinstellungen zurücksetzen erlauben', 'Die Besucher dürfen die Filtereinstellungen zurücksetzen. Nur mit der GET Übertragungsmethode möglich.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['reference']['sendJsonHeader'] = [

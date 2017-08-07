@@ -4,8 +4,8 @@ namespace CatalogManager;
 
 class ContentCatalogFilterForm extends \ContentElement {
 
-
     protected $arrForm = [];
+    protected $blnReady = false;
     protected $arrFormFields = [];
     protected $strTemplate = 'ce_catalog_filterform';
 
@@ -19,13 +19,25 @@ class ContentCatalogFilterForm extends \ContentElement {
         'checkbox' => 'ctlg_form_field_checkbox',
     ];
 
-    
+
+    public function generate() {
+
+        $this->blnReady = $this->initialize();
+
+        if ( !$this->blnReady ) return null;
+
+        if ( $this->arrForm['disableOnAutoItem'] && !Toolkit::isEmpty( \Input::get( 'auto_item' ) ) ) {
+
+            return null;
+        }
+
+        return parent::generate();
+    }
+
+
     protected function compile() {
 
         $arrFields = [];
-        $blnReady = $this->initialize();
-
-        if ( !$blnReady ) return;
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 

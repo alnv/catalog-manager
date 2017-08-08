@@ -1,2 +1,4 @@
 todo
  - check date field for error if filter checkbox is active
+ - foreign key change select menu value to label field
+ - add link to related entity: check for child table

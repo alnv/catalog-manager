@@ -1,7 +1,7 @@
 .tl_catalog_widget.tl_select {
 
+    max-width: 100%;
     min-width: 130px;
-    max-width: 210px;
 }
 
 table.ctlg_taxonomies_field_selector_table tbody td {

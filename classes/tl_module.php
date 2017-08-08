@@ -6,7 +6,6 @@ class tl_module extends \Backend {
 
 
     private $arrCatalogFieldsCache = [];
-    private $arrSortableCatalogFieldsCache = [];
 
 
     public function __construct() {
@@ -249,16 +248,14 @@ class tl_module extends \Backend {
     }
     
 
-    public function getSortableCatalogFieldsByTablename( $strTablename, $blnSettings = false ) {
-
-        if ( !empty( $this->arrSortableCatalogFieldsCache ) && is_array( $this->arrSortableCatalogFieldsCache ) ) {
-
-            return $this->arrSortableCatalogFieldsCache;
-        }
+    public function getSortableCatalogFieldsByTablename( $strTablename ) {
 
         $arrFields = [];
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $strTablename );
+
+        $objI18nCatalogTranslator = new I18nCatalogTranslator();
+        $objI18nCatalogTranslator->initialize();
 
         if ( is_array( $arrCatalog ) ) {
 
@@ -282,6 +279,8 @@ class tl_module extends \Backend {
             }
         }
 
+        if ( !$objCatalogFields->numRows ) return $arrFields;
+
         while ( $objCatalogFields->next() ) {
 
             if ( !$objCatalogFields->fieldname || !$objCatalogFields->type ) {
@@ -294,20 +293,11 @@ class tl_module extends \Backend {
                 continue;
             }
 
-            if ( !$blnSettings ) {
-
-                $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
-            }
-
-            else {
-
-                $arrFields[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
-            }
+            $arrLabels = $objI18nCatalogTranslator->getFieldLabel( $objCatalogFields->fieldname, $objCatalogFields->title, $objCatalogFields->description );
+            $arrFields[ $objCatalogFields->fieldname ] = $arrLabels[0] ? $arrLabels[0] : $objCatalogFields->fieldname;
         }
 
-        $this->arrSortableCatalogFieldsCache = $arrFields;
-
-        return $this->arrSortableCatalogFieldsCache;
+        return $arrFields;
     }
 
 

@@ -1175,6 +1175,8 @@ class CatalogView extends CatalogController {
 
             foreach ( $this->catalogRelatedChildTables as $arrRelatedTable ) {
 
+                if ( Toolkit::isEmpty( $arrRelatedTable['active'] ) ) continue;
+
                 $arrTableData = [];
                 $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $arrRelatedTable['table'] );
 

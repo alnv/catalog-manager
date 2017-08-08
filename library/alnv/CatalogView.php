@@ -1084,7 +1084,7 @@ class CatalogView extends CatalogController {
 
                 if ( $this->arrCatalog['pTable'] ) {
 
-                    $strActFragment .= sprintf( '&amp;pid=%s', \Input::get('pid' ) );
+                    $strActFragment .= sprintf( '&amp;pid=%s', ( \Input::get('pid' ) ? \Input::get('pid' ) : $arrCatalog['pid'] ) );
                 }
 
                 $arrReturn[ $strOperation ] = [

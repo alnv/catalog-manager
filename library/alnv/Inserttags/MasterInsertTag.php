@@ -51,10 +51,70 @@ class MasterInsertTag extends \Frontend {
 
         if ( Toolkit::isEmpty( $strAlias ) ) $this->arrMaster[ $strTable ] = [];
 
-        $objMaster = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $strTable ) )->limit(1)->execute( $strAlias, (int)$strAlias );
+        $arrMaster = [];
+        $this->import( 'SQLQueryBuilder' );
 
-        if ( $objMaster->numRows ) $this->arrMaster[ $strTable ] = $objMaster->row();
+        $arrQuery = [
 
-        if ( !isset( $this->arrMaster[ $strTable ] ) ) $this->arrMaster[ $strTable ] = [];
+            'table' => $strTable,
+
+            'pagination' => [
+
+                'limit' => 1,
+                'offset' => 0
+            ],
+
+            'where' => [
+
+                [
+                    [
+                        'field' => 'alias',
+                        'value' => $strAlias,
+                        'operator' => 'equal'
+                    ],
+
+                    [
+                        'field' => 'id',
+                        'operator' => 'equal',
+                        'value' => (int)$strAlias,
+                    ]
+                ]
+            ]
+
+        ];
+
+        $strPTable = '';
+        $objCatalog = $this->Database->prepare( sprintf( 'SELECT * FROM tl_catalog WHERE tablename = ?' ) )->limit(1)->execute( $strTable );
+
+        if ( $objCatalog->numRows ) {
+
+            if ( !Toolkit::isEmpty( $objCatalog->pTable ) ) {
+
+                $strPTable = $objCatalog->pTable;
+            }
+        }
+
+        if ( $strPTable ) {
+
+            if ( $this->Database->tableExists( $strPTable ) ) {
+
+                $arrQuery['joins'] = [
+
+                    [
+                        'onTable' => $strPTable,
+                        'table' => $strTable,
+                        'multiple' => false,
+                        'onField' => 'id',
+                        'field' => 'pid'
+                    ]
+                ];
+            }
+        }
+
+        $objMaster = $this->SQLQueryBuilder->execute( $arrQuery );
+        
+        if ( $objMaster->numRows ) $arrMaster = $objMaster->row();
+
+        $this->arrMaster[ $strTable ] = $arrMaster;
     }
 }

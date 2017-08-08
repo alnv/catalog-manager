@@ -78,32 +78,29 @@ class CatalogRelationRedirectWizard extends \Widget {
 
         $intTabindex = \Cache::get( 'tabindex' );
 
-        if ( is_array( $this->varValue ) && $this->varValue[0][0] ) {
+        if ( is_array( $this->varValue ) && Toolkit::isEmpty( $this->varValue[0]['table'] ) ) {
 
-            $arrTempOptions = [];
+            $arrValueTemp = [];
 
-            foreach ( $this->varValue as $varValue ) {
+            foreach ( $this->arrOptions as $arrOption ) {
 
-                if ( $varValue['table'] ) {
+                $arrValueTemp[] = [
 
-                    $arrTempOptions[] = [
-
-                        'value' => $varValue['table'],
-                        'label' => $varValue['table']
-                    ];
-                }
+                    'pageURL' => '',
+                    'table' => $arrOption['value']
+                ];
             }
 
-            $this->arrOptions = $arrTempOptions;
+            $this->varValue = $arrValueTemp;
         }
 
-        foreach ( $this->arrOptions as $intIndex => $arrOption ) {
+        foreach ( $this->varValue as $intIndex => $arrOption ) {
 
             $strButtons = '';
 
             foreach ( $arrButtons as $strButton ) {
 
-                $strButtons .= '<a href="'.$this->addToUrl( '&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord ).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="CatalogManager.CatalogRelationWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
+                $strButtons .= '<a href="'.$this->addToUrl( '&amp;'.$strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord . '&amp;rt='. \RequestToken::get() ).'" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['move_'.$strButton][1]).'" onclick="CatalogManager.CatalogRelationWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['move_'.$strButton][0], 'class="tl_checkbox_wizard_img"').'</a> ';
             }
 
             $arrRelatedTables[] = $this->generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons );
@@ -138,12 +135,12 @@ class CatalogRelationRedirectWizard extends \Widget {
 
     protected function generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons ) {
 
-        $arrModuleName = $this->I18nCatalogTranslator->getModuleLabel( $arrOption['value'] );
-        $strName = $arrModuleName[0] ? $arrModuleName[0] : $arrOption['label'];
+        $arrModuleName = $this->I18nCatalogTranslator->getModuleLabel( $arrOption['table'] );
+        $strName = $arrModuleName[0] ? $arrModuleName[0] : $arrOption['table'];
 
         $strTemplate =
             '<tr>'.
-                '<td><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="%s" tabindex="%s" %s></td>'.
+                '<td><input type="hidden" name="%s" value="%s"><input type="checkbox" name="%s" id="%s" class="tl_checkbox" value="1" tabindex="%s" %s></td>'.
                 '<td><label for="%s">%s</label></td>'.
                 '<td><input type="text" name="%s" id="%s" class="tl_text" value="%s" tabindex="%s"></td>'.
                 '<td style="white-space:nowrap; padding-left:3px">%s</td>'.
@@ -154,11 +151,12 @@ class CatalogRelationRedirectWizard extends \Widget {
 
             $strTemplate,
             $this->strId . '['. $intIndex .'][table]',
-            $this->strId . '_table_' . $intIndex,
-            $arrOption['value'],
+            $arrOption['table'],
+            $this->strId . '['. $intIndex .'][active]',
+            $this->strId . '_active_' . $intIndex,
             $intTabindex++,
-            $this->isCustomChecked( $arrOption['value'] ),
-            $this->strId . '_table_' . $intIndex,
+            $this->isCustomChecked( $intIndex ),
+            $this->strId . '_active_' . $intIndex,
             $strName,
             $this->strId . '[' . $intIndex . '][pageURL]',
             $this->strId . '_pageURL_' . $intIndex,
@@ -180,15 +178,15 @@ class CatalogRelationRedirectWizard extends \Widget {
 
     protected function getValues( $intIndex ) {
 
-        return isset( $this->varValue[$intIndex]['pageURL'] ) ? $this->varValue[$intIndex]['pageURL'] : '';
+        return isset( $this->varValue[ $intIndex ]['pageURL'] ) ? $this->varValue[ $intIndex ]['pageURL'] : '';
     }
 
 
-    protected function isCustomChecked( $strValue ) {
+    protected function isCustomChecked( $intIndex ) {
 
-        foreach ( $this->varValue as $arrValue ) {
+        if ( isset( $this->varValue[ $intIndex ] ) ) {
 
-            if ( $arrValue['table'] && $arrValue['table'] == $strValue ) {
+            if ( $this->varValue[ $intIndex ][ 'active' ] ) {
 
                 return 'checked';
             }

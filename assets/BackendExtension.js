@@ -83,21 +83,31 @@ var CatalogManager = CatalogManager || {};
 
                 for (j=0; j<childs.length; j++) {
 
-                    if (input = childs[j].getFirst('input')) {
+                    if (input = childs[j].getFirst('input') ) {
 
-                        input.set('tabindex', tabindex++);
-                        input.name = input.name.replace(/\[[0-9]+]/g, '[' + i + ']');
+                        reIndexInput( input, tabindex );
 
-                        if (input.type == 'checkbox') {
+                        if ( input = input.getNext('input') ) {
 
-                            input.id = input.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
-                        }
-
-                        if (input.type == 'text') {
-
-                            input.id = input.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
+                            reIndexInput( input, tabindex );
                         }
                     }
+                }
+            }
+
+            function reIndexInput( objInput, tabindex ) {
+
+                objInput.set( 'tabindex', tabindex++ );
+                objInput.name = objInput.name.replace(/\[[0-9]+]/g, '[' + i + ']');
+
+                if ( objInput.type == 'checkbox' ) {
+
+                    objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
+                }
+
+                if ( objInput.type == 'text' ) {
+
+                    objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
                 }
             }
 
@@ -199,7 +209,7 @@ var CatalogManager = CatalogManager || {};
                 }
             }
 
-            new Sortables(tbody, {
+            new Sortables( tbody, {
 
                 constrain: true,
                 opacity: 0.6,

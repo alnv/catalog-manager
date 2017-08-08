@@ -94,6 +94,7 @@ class GalleryCreator extends \Frontend {
 
                     'alt'       => $arrMeta['alt'],
                     'imageUrl'  => $arrMeta['link'],
+                    'linkTitle'  => $arrMeta['title'],
                     'caption'   => $arrMeta['caption']
                 ];
 
@@ -140,6 +141,7 @@ class GalleryCreator extends \Frontend {
 
                         'alt'       => $arrMeta['alt'],
                         'imageUrl'  => $arrMeta['link'],
+                        'linkTitle'  => $arrMeta['title'],
                         'caption'   => $arrMeta['caption']
                     ];
 

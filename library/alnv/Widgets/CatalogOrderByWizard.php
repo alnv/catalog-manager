@@ -75,7 +75,7 @@ class CatalogOrderByWizard extends \Widget {
 
         $this->import('Database');
         $strCommand = 'cmd_' . $this->strField;
-        $arrButtons = [ 'copy', 'drag', 'up', 'down', 'delete' ];
+        $arrButtons = [ 'copy', 'up', 'down', 'delete' ];
 
         if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord) {
 
@@ -162,7 +162,7 @@ class CatalogOrderByWizard extends \Widget {
                         $return .= '
                         <tr>
                           <td><select name="'.$this->strId.'['.$i.'][key]" id="'.$this->strId.'_key_'.$i.'" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateSelectOptions( $arrFieldOptions, 'key', $i ) . '</select></td>
-                          <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_value_'.$i.'" class="tl_select tl_chosen tl_catalog_widget  min-width">' . $this->generateSelectOptions( $arrOrderByOptions, 'value', $i ) . '</select></td>';
+                          <td><select name="'.$this->strId.'['.$i.'][value]" id="'.$this->strId.'_value_'.$i.'" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateSelectOptions( $arrOrderByOptions, 'value', $i ) . '</select></td>';
 
                                 $return .= '
                           <td style="white-space:nowrap;padding-left:3px">';
@@ -170,16 +170,7 @@ class CatalogOrderByWizard extends \Widget {
                                 foreach ( $arrButtons as $button ) {
 
                                     $class = ( $button == 'up' || $button == 'down' ) ? ' class="button-move"' : '';
-
-                                    if ( $button == 'drag' ) {
-
-                                        $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
-                                    }
-
-                                    else {
-
-                                        $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$button.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'</a> ';
-                                    }
+                                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$button.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'</a> ';
                                 }
                                 $return .= '</td>
                         </tr>';

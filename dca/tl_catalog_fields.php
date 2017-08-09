@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'usePreviewImage' => 'imageTemplate,previewImagePosition',
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useForeignKey' => 'dbTable,dbTableKey,addRelationWizard',
+        'optionsType_useForeignKey' => 'dbTable,dbTableValue,addRelationWizard',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
 
         'fileType_file' => 'fileTemplate,fileTitle,fileText,useArrayFormat',

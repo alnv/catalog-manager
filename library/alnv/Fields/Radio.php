@@ -24,6 +24,7 @@ class Radio {
 
         if ( $objOptionGetter->isForeignKey() ) {
 
+            $arrField['dbTableKey'] = 'id';
             $strForeignKey = $objOptionGetter->getForeignKey();
 
             if ( $strForeignKey ) {

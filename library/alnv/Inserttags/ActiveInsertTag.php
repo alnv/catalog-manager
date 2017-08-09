@@ -39,7 +39,7 @@ class ActiveInsertTag extends \Frontend {
 
                         case 'default':
 
-                            $varValue = $strOption;
+                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = $strOption;
 
                             break;
 
@@ -75,7 +75,7 @@ class ActiveInsertTag extends \Frontend {
                 }
             }
 
-            elseif( !$varValue ) {
+            elseif( Toolkit::isEmpty( $varValue ) ) {
 
                 $varValue = $arrTags[2] ? $arrTags[2] : '';
             }

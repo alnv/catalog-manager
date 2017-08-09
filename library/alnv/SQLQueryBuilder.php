@@ -210,6 +210,8 @@ class SQLQueryBuilder extends CatalogController {
 
         foreach ( $this->arrQuery['joins'] as $intIndex => $arrJoin ) {
 
+            $strType = $arrJoin['type'] ? $arrJoin['type'] : 'JOIN';
+
             if ( !$arrJoin['table'] || !$arrJoin['field'] || !$arrJoin['onTable'] || !$arrJoin['onField'] ) {
 
                 continue;
@@ -217,12 +219,12 @@ class SQLQueryBuilder extends CatalogController {
 
             if ( $arrJoin['multiple'] ) {
 
-                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' JOIN %s ON FIND_IN_SET(%s.`%s`,%s.`%s`)', $arrJoin['onTable'], $arrJoin['onTable'], $arrJoin['onField'], $arrJoin['table'], $arrJoin['field'] );
+                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' %s %s ON FIND_IN_SET(%s.`%s`,%s.`%s`)', $strType, $arrJoin['onTable'], $arrJoin['onTable'], $arrJoin['onField'], $arrJoin['table'], $arrJoin['field'] );
             }
 
             else {
 
-                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' JOIN %s ON %s.`%s` = %s.`%s`', $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
+                $strJoinStatement .= sprintf( ( $intIndex ? ' ' : '' ) . ' %s %s ON %s.`%s` = %s.`%s`', $strType, $arrJoin['onTable'], $arrJoin['table'], $arrJoin['field'], $arrJoin['onTable'], $arrJoin['onField'] );
             }
         }
 

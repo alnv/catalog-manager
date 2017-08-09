@@ -34,6 +34,24 @@ class tl_catalog_fields extends \Backend {
     }
 
 
+    public function validatePath( $strValue ) {
+
+        if ( Toolkit::isEmpty( $strValue ) ) return '';
+
+        if ( substr( $strValue, 0, 1 ) == '/' ) {
+
+            $strValue = substr( $strValue, 1, strlen( $strValue ) );
+        }
+
+        if ( !is_dir( $strValue ) ) {
+
+            throw new \Exception( 'Directory do not exist.' );
+        }
+
+        return $strValue;
+    }
+
+
     public function setOrderField( \DataContainer $dc ) {
         
         if ( \Input::get( 'act' ) != 'edit' ) return;
@@ -219,16 +237,13 @@ class tl_catalog_fields extends \Backend {
     }
 
 
-    public function fieldnameBlackList( $varValue ) {
+    public function checkBlacklist( $varValue ) {
 
-        $arrBlackList = [
+        $arrBlacklist = Toolkit::columnsBlacklist();
 
-            'id', 'title', 'sorting', 'tstamp', 'pid', 'alias', 'invisible', 'start', 'stop'
-        ];
+        if ( $varValue && in_array( $varValue, $arrBlacklist ) ) {
 
-        if ( $varValue && in_array( $varValue, $arrBlackList ) ) {
-
-            throw new \Exception('This fieldname already exist.');
+            throw new \Exception( sprintf( 'Fieldname "%s" is forbidden.', $varValue ) );
         }
 
         return $varValue;

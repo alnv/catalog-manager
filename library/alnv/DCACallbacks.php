@@ -279,10 +279,14 @@ class DCACallbacks extends \Backend {
 
         if ( !$objCatalogField->numRows ) return '';
 
-        $strTableAttribute = '';
         $arrField = $objCatalogField->row();
+
+        $strTableAttribute = '';
+        $strTitle = $arrField['description'] ? $arrField['description'] : $arrField['label'];
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrField['dbTable'] ];
-        $strTitle = $objCatalogField->description ? $objCatalogField->description : $objCatalogField->label;
+
+        $strModalTitle = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'], $dc->value );
+        $strModalIFrameOptions = sprintf( "{'width':768,'title':'%s','url':this.href}", $strModalTitle );
 
         if ( $arrCatalog['pTable'] ) {
 
@@ -294,8 +298,8 @@ class DCACallbacks extends \Backend {
 
             $strDoAttribute = sprintf( 'do=%s', $arrCatalog['tablename'] );
         }
-        
-        return '<a href="contao/main.php?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;rt=' . REQUEST_TOKEN . '" title="' . ( $strTitle ? $strTitle : '' ) . '" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
+
+        return '<a href="contao?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;popup=1&amp;nb=1&amp;rt=' . REQUEST_TOKEN . '" title="'. $strTitle .'" onclick="Backend.openModalIframe(' . $strModalIFrameOptions . ');return false" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
     }
 
 

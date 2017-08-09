@@ -352,12 +352,14 @@ class OptionsGetter extends CatalogController {
 
     protected function setForeignKey() {
 
-        if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] ) {
+        $strLabelColumn = $this->arrField['dbTableValue'] ? $this->arrField['dbTableValue'] : $this->arrField['dbTableKey'];
+
+        if ( !$this->arrField['dbTable'] || !$strLabelColumn ) {
 
             return '';
         }
 
-        return $this->arrField['dbTable'] . '.' . $this->arrField['dbTableKey'];
+        return $this->arrField['dbTable'] . '.' . $strLabelColumn;
     }
 
 

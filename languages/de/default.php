@@ -53,3 +53,5 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Ihr Datensatz 
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Wert';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Text';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'] = 'Das Quellelement ID %s bearbeiten.';

@@ -53,3 +53,5 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['updateMessage'] = 'Your record ha
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Value';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Label';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'] = 'Edit the source element ID %s.';

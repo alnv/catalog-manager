@@ -4,6 +4,23 @@ namespace CatalogManager;
 
 class Toolkit {
 
+
+    public static function columnsBlacklist() {
+
+        return [
+
+            'id',
+            'title',
+            'sorting',
+            'tstamp',
+            'pid',
+            'alias',
+            'invisible',
+            'start',
+            'stop'
+        ];
+    }
+
     
     public static function parseStringToArray( $strValue ) {
 

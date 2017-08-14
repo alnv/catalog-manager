@@ -29,6 +29,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['label'] = [ 'Feldbezeichnung', 'Bitte 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rte'] = [ 'Rich Text Editor', 'Bitte wählen Sie Ihren Rich Text Editor aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['statement'] = [ 'SQL Datentyp', 'Bitte wählen Sie einen SQL Datentypen aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['isHidden'] = [ 'Palette einklappen', 'Die Palette wird eingeklappt angezeigt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['message'] = [ 'Erklärungstext', 'Hier können Sie ein Erklärungstext eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['nospace'] = [ 'Keine Leerzeichen', 'Es dürfen keine Leerzeichen verwendet werden.' ];

@@ -17,7 +17,8 @@ class Toolkit {
             'alias',
             'invisible',
             'start',
-            'stop'
+            'stop',
+            'origin'
         ];
     }
 

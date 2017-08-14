@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID,useFineUploader;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
         'message' => '{general_legend},type,fieldname,title,message;{invisible_legend},invisible',
         'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
-        'fieldsetStart' => '{general_legend},type,title,label;{invisible_legend},invisible',
+        'fieldsetStart' => '{general_legend},type,title,label,isHidden;{invisible_legend},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible',
         'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy;{invisible_legend},invisible',
     ],
@@ -360,6 +360,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'multiple' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['multiple'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'isHidden' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['isHidden'],
             'inputType' => 'checkbox',
 
             'eval' => [

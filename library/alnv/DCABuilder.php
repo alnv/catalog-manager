@@ -540,53 +540,50 @@ class DCABuilder extends CatalogController {
 
     protected function createPaletteDataArray() {
 
-        $strPalette = '';
-        $strTemporaryPalette = 'general_legend';
-        $arrPaletteTranslationMap = [ 'general_legend' => '', 'invisible_legend' => '' ];
-        $arrDCAPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
+        $strReturn = '';
+        $arrTranslations = [];
+        $strPalette = 'general_legend';
+        $arrPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
 
         foreach ( $this->arrFields as $arrField ) {
 
-            if ( !$arrField['type'] ) continue;
+            if ( Toolkit::isEmpty( $arrField['type'] ) ) continue;
 
-            if ( $arrField['title'] && $arrField['type'] == 'fieldsetStart' ) {
+            if ( !Toolkit::isEmpty( $arrField['title'] ) && $arrField['type'] == 'fieldsetStart' ) {
 
-                $strTemporaryPalette = $arrField['title'];
-                $arrPaletteTranslationMap[ $arrField['title'] ] = $arrField['label'];
+                $strPalette = $arrField['title'] . ( $arrField['isHidden'] ? ':hide' : '' );
+                $arrTranslations[$strPalette] = $arrField['label'];
             }
 
-            if ( !$arrField['fieldname'] ) {
+            if ( Toolkit::isEmpty( $arrField['fieldname'] ) ) continue;
+            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrColumnsOnly ) ) continue;
+            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->DCABuilderHelper->arrReadOnlyInputTypes ) ) continue;
 
-                continue;
-            }
-
-            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrColumnsOnly ) ) {
-                
-               continue;
-            }
-
-            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->DCABuilderHelper->arrReadOnlyInputTypes ) ) {
-
-                continue;
-            }
-            
-            $arrDCAPalette[ $strTemporaryPalette ][] = $arrField['fieldname'];
+            $arrPalette[$strPalette][] = $arrField['fieldname'];
         }
 
         if ( $this->arrOperations['invisible'] ) {
 
-            $arrDCAPalette['invisible_legend'] = [ 'invisible', 'start', 'stop' ];
+            $arrPalette['invisible_legend:hide'] = [ 'invisible', 'start', 'stop' ];
         }
 
-        $arrPalettes = array_keys( $arrDCAPalette );
+        foreach ( $arrPalette as $strLegend => $arrFields ) {
 
-        foreach ( $arrPalettes as $strPaletteTitle ) {
+            $strHide = '';
+            $strLegendName = $strLegend;
+            $arrLegend = explode( ':', $strLegend );
 
-            $GLOBALS['TL_LANG'][ $this->strTable ][ $strPaletteTitle ] = $this->I18nCatalogTranslator->getLegendLabel( $strPaletteTitle, $arrPaletteTranslationMap[ $strPaletteTitle ] );
-            $strPalette .= sprintf( '{%s},%s;', $strPaletteTitle, implode( ',', $arrDCAPalette[ $strPaletteTitle ] ) );
+            if ( is_array( $arrLegend ) ) {
+
+                $strLegendName = $arrLegend[0];
+                $strHide = Toolkit::isEmpty( $arrLegend[1] ) ? '' : ':hide';
+            }
+
+            $GLOBALS['TL_LANG'][ $this->strTable ][$strLegendName] = $this->I18nCatalogTranslator->getLegendLabel( $strLegendName, $arrTranslations[$strLegend] );
+            $strReturn .= sprintf( '{%s%s},%s;', $strLegendName, $strHide, implode( ',', $arrFields ) );
         }
 
-        return [ 'default' => $strPalette ];
+        return [ 'default' => $strReturn ];
     }
 
 

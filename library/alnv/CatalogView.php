@@ -464,6 +464,7 @@ class CatalogView extends CatalogController {
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
+            $arrCatalog['origin'] = $arrCatalog;
 
             if ( $this->strMode === 'master' ) {
 

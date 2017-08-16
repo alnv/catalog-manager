@@ -114,28 +114,13 @@ class DCABuilder extends CatalogController {
             ],
 
             'palettes' => $this->createPaletteDataArray(),
-            'fields' => $this->getDcFields()
+            'fields' => $this->CatalogFieldBuilder->getDcFormatOnly()
         ];
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
         $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
     }
 
-
-    protected function getDcFields() {
-
-        $arrReturn = [];
-
-        foreach ( $this->arrFields as $strFieldname => $arrField ) {
-
-            if ( !empty( $arrField['_dcFormat'] ) && is_array( $arrField['_dcFormat'] ) ) {
-
-                $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
-            }
-        }
-
-        return $arrReturn;
-    }
 
     protected function createConfigDataArray() {
 

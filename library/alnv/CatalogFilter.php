@@ -28,15 +28,26 @@ class CatalogFilter extends CatalogController {
 
         $this->import( 'Database' );
         $this->import( 'CatalogInput' );
-        $this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFieldBuilder' );
     }
 
 
     public function initialize() {
 
         $this->setOptions();
-        $this->setCatalog();
-        $this->getFilterFields();
+
+        $this->CatalogFieldBuilder->initialize( $this->strTable );
+
+        $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
+        $arrFields = $this->CatalogFieldBuilder->getCatalogFields( true, null, true );
+
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            if ( in_array( $arrField['type'], $this->arrForbiddenFilterTypes ) ) continue;
+
+            $this->arrFields[ $arrField['id'] ] = $arrField['_dcFormat'];
+        }
+
         $this->setActiveFields();
     }
 
@@ -51,9 +62,7 @@ class CatalogFilter extends CatalogController {
             $arrFieldDependencies = Toolkit::deserialize( $this->catalogFilterFieldDependencies );
             $arrFieldsChangeOnSubmit = Toolkit::deserialize( $this->catalogFieldsChangeOnSubmit );
 
-            $arrDCFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrActiveFields, [], $this->arrCatalog );
-
-            foreach ( $arrDCFields as $arrField ) {
+            foreach ( $this->arrActiveFields as $arrField ) {
 
                 $arrField = $this->convertWidgetToField( $arrField );
                 $strClass = $this->fieldClassExist( $arrField['inputType'] );
@@ -160,25 +169,6 @@ class CatalogFilter extends CatalogController {
     }
 
 
-    protected function getFilterFields() {
-
-        if ( !$this->strTable ) return null;
-
-        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )')->execute( $this->strTable );
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( !$objCatalogFields->fieldname ) continue;
-
-            if ( in_array( $objCatalogFields->type, $this->arrForbiddenFilterTypes ) ) continue;
-
-            $this->arrFields[ $objCatalogFields->id ] = $objCatalogFields->row();
-        }
-
-        return $this->arrFields;
-    }
-
-
     protected function getValue( $strFieldname ) {
 
         if ( !$strFieldname ) return '';
@@ -205,19 +195,12 @@ class CatalogFilter extends CatalogController {
 
         if ( !empty( $this->catalogActiveFilterFields ) && is_array( $this->catalogActiveFilterFields ) ) {
 
-            foreach ( $this->catalogActiveFilterFields as $strFieldID ) {
+            foreach ( $this->catalogActiveFilterFields as $strID ) {
 
-                if ( !$this->arrFields[ $strFieldID ] ) continue;
-
-                $this->arrActiveFields[ $strFieldID ] = $this->arrFields[ $strFieldID ];
+                if ( !$this->arrFields[ $strID ] ) continue;
+                $this->arrActiveFields[ $strID ] = $this->arrFields[ $strID ];
             }
         }
-    }
-
-
-    protected function setCatalog() {
-
-        $this->arrCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $this->strTable )->row();
     }
 
 

@@ -34,7 +34,6 @@ class CatalogFilterFieldSelectWizard extends \Widget {
     public function generate() {
 
         $this->import('Database');
-        $this->import('DCABuilderHelper');
 
         if ( !$this->varValue ) $this->varValue = [];
         if ( !\Cache::has('tabindex') ) \Cache::set( 'tabindex', 1 );
@@ -146,7 +145,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
     protected function getTemplateOptions( $arrField, $intIndex ) {
 
         $strOptions = '<option value="">-</option>';
-        $strType = $this->DCABuilderHelper->setInputType( $arrField['type'] );
+        $strType = Toolkit::setDcConformInputType( $arrField['type'] );
         $arrTemplates = $this->getTemplateGroup( 'form_' . $strType );
 
         foreach ( $arrTemplates as $strValue => $strName ) {

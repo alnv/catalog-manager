@@ -103,9 +103,6 @@ class Toolkit {
     public static function isDcConformField( $arrField ) {
 
         if ( empty( $arrField ) && !is_array( $arrField ) ) return false;
-
-        if ( !$arrField['type'] ) return false;
-
         if ( in_array( $arrField['type'], self::excludeFromDc() ) ) return false;
 
         return true;

@@ -45,7 +45,7 @@ class CatalogView extends CatalogController {
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        $this->import( 'DCABuilderHelper' );
+        //$this->import( 'DCABuilderHelper' );
         $this->import( 'I18nCatalogTranslator' );
         $this->import( 'FrontendEditingPermission' );
     }
@@ -65,7 +65,7 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename ) return null;
 
-        $this->arrCatalogFields = $this->DCABuilderHelper->getPredefinedFields();
+        $this->arrCatalogFields = []; // $this->DCABuilderHelper->getPredefinedFields();
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], null, $this->arrCatalogFields );
 

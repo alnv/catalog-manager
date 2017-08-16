@@ -31,7 +31,7 @@ class FrontendEditing extends CatalogController {
         $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        $this->import( 'DCABuilderHelper' );
+        // $this->import( 'DCABuilderHelper' );
         $this->import( 'CatalogFineUploader' );
         $this->import( 'I18nCatalogTranslator' );
     }
@@ -46,7 +46,7 @@ class FrontendEditing extends CatalogController {
 
         $strPalette = 'general_legend';
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
-        $arrGeneralFields = $this->DCABuilderHelper->getPredefinedFields();
+        $arrGeneralFields = []; //$this->DCABuilderHelper->getPredefinedFields();
         $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], function ( $arrField, $strFieldname ) use( &$strPalette ) {
 
@@ -73,9 +73,9 @@ class FrontendEditing extends CatalogController {
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
         $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
-        $this->reIndexCatalogFieldsByFieldname();
+        // $this->reIndexCatalogFieldsByFieldname();
         $this->arrCatalogFields = array_merge( $this->arrCatalogFields, $arrGeneralFields );
-        $this->addDCFormatToCatalogFields();
+        // $this->addDCFormatToCatalogFields();
         $this->setCatalogAttributes();
         $this->setPalettes();
 
@@ -562,7 +562,7 @@ class FrontendEditing extends CatalogController {
         }
     }
 
-
+    /*
     protected function reIndexCatalogFieldsByFieldname() {
 
         $arrFields = [];
@@ -579,8 +579,9 @@ class FrontendEditing extends CatalogController {
 
         $this->arrCatalogFields = $arrFields;
     }
+    */
 
-
+    /*
     protected function addDCFormatToCatalogFields() {
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
@@ -602,6 +603,7 @@ class FrontendEditing extends CatalogController {
             }
         }
     }
+    */
 
 
     protected function getCaptcha() {

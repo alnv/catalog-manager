@@ -10,6 +10,7 @@ class DCABuilder extends CatalogController {
     protected $arrFields = [];
     protected $arrCatalog = [];
     protected $arrErrorTables = [];
+    protected $arrOverwritten = [];
     protected $strPermissionType = '';
 
     protected $arrOperations = [
@@ -27,7 +28,7 @@ class DCABuilder extends CatalogController {
         $this->import( 'Database' );
         $this->import( 'IconGetter' );
         $this->import( 'IconGetter' );
-        $this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFieldBuilder' );
         $this->import( 'I18nCatalogTranslator' );
 
         $this->arrCatalog = $arrCatalog;
@@ -36,6 +37,8 @@ class DCABuilder extends CatalogController {
         $this->strPermissionType = $arrCatalog['permissionType'];
 
         if ( !$this->strTable ) return null;
+
+        $this->CatalogFieldBuilder->initialize( $this->strTable );
 
         if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $this->arrCatalog['tablename'] ) {
 
@@ -91,32 +94,12 @@ class DCABuilder extends CatalogController {
     }
 
 
-    protected function getDCAFields() {
-
-        $objCatalogFieldsDb = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ? AND invisible != ? ORDER BY `sorting`' )->execute( $this->strID, "1" );
-
-        while ( $objCatalogFieldsDb->next() ) {
-
-            $strFieldname = $objCatalogFieldsDb->fieldname ? $objCatalogFieldsDb->fieldname : $objCatalogFieldsDb->id;
-
-            if ( !$this->Database->fieldExists( $objCatalogFieldsDb->fieldname, $this->strTable ) ) {
-
-                if ( !in_array( $objCatalogFieldsDb->type, $this->DCABuilderHelper->arrNoFieldnameRequired ) ) {
-
-                    continue;
-                }
-            }
-
-            $this->arrFields[ $strFieldname ] = $objCatalogFieldsDb->row();
-        }
-    }
-
-
     public function createDCA() {
 
         $this->initializeI18n();
         $this->determineOperations();
-        $this->getDCAFields();
+
+        $this->arrFields = $this->CatalogFieldBuilder->getCatalogFields( $this->strTable, true, null );
 
         $GLOBALS['TL_DCA'][ $this->strTable ] = [
 
@@ -131,7 +114,7 @@ class DCABuilder extends CatalogController {
             ],
 
             'palettes' => $this->createPaletteDataArray(),
-            'fields' => $this->parseDCAFields()
+            'fields' => $this->getDcFields()
         ];
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
@@ -139,66 +122,20 @@ class DCABuilder extends CatalogController {
     }
 
 
-    protected function parseDCAFields() {
+    protected function getDcFields() {
 
-        $arrDCAFields = $this->getDefaultDCFields();
+        $arrReturn = [];
 
-        if ( !empty( $this->arrFields ) && is_array( $this->arrFields ) ) {
+        foreach ( $this->arrFields as $strFieldname => $arrField ) {
 
-            $arrDCAFields = $this->DCABuilderHelper->convertCatalogFields2DCA( $this->arrFields, $arrDCAFields, $this->arrCatalog );
-        }
+            if ( !empty( $arrField['_dcFormat'] ) && is_array( $arrField['_dcFormat'] ) ) {
 
-        return $arrDCAFields;
-    }
-
-
-    protected function getDefaultDCFields() {
-
-        $arrReturn = $this->DCABuilderHelper->getPredefinedDCFields();
-
-        if ( !$this->arrOperations['invisible'] ) {
-
-            unset( $arrReturn['invisible'] );
-        }
-
-        if ( $this->arrCatalog['mode'] == '4' ) {
-
-            $arrReturn['sorting'] = [
-
-                'sql' => "int(10) unsigned NOT NULL default '0'"
-            ];
-        }
-
-        if ( $this->arrCatalog['pTable'] ) {
-
-            $arrReturn['pid'] = [
-
-                'sql' => "int(10) unsigned NOT NULL default '0'",
-            ];
-
-            if ( !$this->shouldBeUsedParentTable() ) {
-
-                $arrReturn['pid']['foreignKey'] = sprintf( '%s.id', $this->arrCatalog['pTable'] );
-                $arrReturn['pid']['relation'] = [
-
-                    'type' => 'belongsTo',
-                    'load' => 'eager'
-                ];
+                $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
             }
-        }
-
-        if ( $arrReturn['alias'] && is_array( $arrReturn['alias'] ) ) {
-
-            $arrReturn['alias']['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
-
-                $objDCACallbacks = new DCACallbacks();
-                return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
-            }];
         }
 
         return $arrReturn;
     }
-
 
     protected function createConfigDataArray() {
 
@@ -233,7 +170,7 @@ class DCABuilder extends CatalogController {
             $arrReturn['sql']['keys'][ $arrField['fieldname'] ] = $arrField['useIndex'];
         }
 
-        if ( $this->shouldBeUsedParentTable() ) {
+        if ( $this->CatalogFieldBuilder->shouldBeUsedParentTable() ) {
 
             $arrReturn['ptable'] = $this->arrCatalog['pTable'];
         }
@@ -543,7 +480,7 @@ class DCABuilder extends CatalogController {
         $strReturn = '';
         $arrTranslations = [];
         $strPalette = 'general_legend';
-        $arrPalette = [ 'general_legend' => [ 'title', 'alias' ] ];
+        $arrPalette = [ 'general_legend' => [] ];
 
         foreach ( $this->arrFields as $arrField ) {
 
@@ -556,15 +493,17 @@ class DCABuilder extends CatalogController {
             }
 
             if ( Toolkit::isEmpty( $arrField['fieldname'] ) ) continue;
-            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrColumnsOnly ) ) continue;
-            if ( in_array( $arrField['type'], $this->DCABuilderHelper->arrForbiddenInputTypes ) && !in_array( $arrField['type'], $this->DCABuilderHelper->arrReadOnlyInputTypes ) ) continue;
+
+            if ( in_array( $arrField['fieldname'], Toolkit::invisiblePaletteFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
 
             $arrPalette[$strPalette][] = $arrField['fieldname'];
         }
 
         if ( $this->arrOperations['invisible'] ) {
 
-            $arrPalette['invisible_legend:hide'] = [ 'invisible', 'start', 'stop' ];
+            $arrPalette['invisible_legend'] = Toolkit::invisiblePaletteFields();
         }
 
         foreach ( $arrPalette as $strLegend => $arrFields ) {
@@ -584,26 +523,5 @@ class DCABuilder extends CatalogController {
         }
 
         return [ 'default' => $strReturn ];
-    }
-
-
-    protected function shouldBeUsedParentTable() {
-
-        if ( !$this->arrCatalog['pTable'] ) {
-
-            return false;
-        }
-
-        if ( $this->arrCatalog['isBackendModule'] ) {
-
-            return false;
-        }
-
-        if ( !in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
-
-            return false;
-        }
-
-        return true;
     }
 }

@@ -51,14 +51,9 @@ class tl_catalog_form_fields extends \Backend {
 
         if ( empty( $arrFields ) || !is_array( $arrFields ) ) return $arrReturn;
 
-        foreach ( $arrFields as $arrField ) {
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            $strType = $arrField['type'];
-
-            if ( $strType && in_array( $strType, [ 'select', 'radio', 'checkbox' ] ) ) {
-
-                $arrReturn[ $arrField['fieldname'] ] = $arrField['title'] ? $arrField['title'] : $arrField['fieldname'];
-            }
+            $arrReturn[ $strFieldname ] = $arrField['label'][0] ? $arrField['label'][0] : $strFieldname;
         }
 
         return $arrReturn;
@@ -111,58 +106,29 @@ class tl_catalog_form_fields extends \Backend {
     }
 
 
-    protected function getTableColumnsByTablename( $strTable, $arrForbiddenTypes = [], $blnFullContext = false ) {
+    protected function getTableColumnsByTablename( $strTablename, $arrForbiddenTypes = [], $blnFullContext = false ) {
 
         $arrReturn = [];
 
-        if ( !$strTable ) return $arrReturn;
+        if ( !$strTablename ) return $arrReturn;
 
-        if ( Toolkit::isCoreTable( $strTable ) ) {
+        if ( Toolkit::isCoreTable( $strTablename ) ) {
 
-            return Toolkit::getColumnsFromCoreTable( $strTable, $blnFullContext );
+            return Toolkit::getColumnsFromCoreTable( $strTablename, $blnFullContext );
         }
 
-        $this->import( 'DCABuilderHelper' );
-        $arrPredefinedFields = $this->DCABuilderHelper->getPredefinedFields();
-        $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+        $objCatalogFieldBuilder = new CatalogFieldBuilder();
+        $objCatalogFieldBuilder->initialize( $strTablename );
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-        if ( !$arrCatalog || !is_array( $arrCatalog ) ) return $arrReturn;
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-        if ( !empty( $arrPredefinedFields ) && is_array( $arrPredefinedFields ) ) {
+            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
+            if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;
 
-            foreach ( $arrPredefinedFields as $arrField ) {
-
-                $strTitle = $arrField['title'] ? $arrField['title'] : $arrField['fieldname'];
-                $varContext = $blnFullContext ? $arrField : $strTitle;
-                $arrReturn[ $arrField['fieldname'] ] = $varContext;
-            }
-        }
-
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
-
-        foreach ( $arrReturn as $strFieldname => $arrField ) {
-
-            if ( !$this->Database->fieldExists( $strFieldname, $strTable ) ) {
-
-                unset( $arrReturn[ $strFieldname ] );
-            }
-        }
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( !$objCatalogFields->fieldname ) {
-
-                continue;
-            }
-
-            if ( in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
-
-                continue;
-            }
-
-            $strTitle = $objCatalogFields->title ? $objCatalogFields->title : $objCatalogFields->fieldname;
-            $varContext = $blnFullContext ? $objCatalogFields->row() : $strTitle;
-            $arrReturn[ $objCatalogFields->fieldname ] = $varContext;
+            $strTitle = $arrField['title'] ? $arrField['title'] : $strFieldname;
+            $varValue = $blnFullContext ? $arrField['_dcFormat'] : $strTitle;
+            $arrReturn[ $strFieldname ] = $varValue;
         }
 
         return $arrReturn;

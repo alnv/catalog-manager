@@ -11,8 +11,6 @@ class tl_module extends \Backend {
     public function __construct() {
 
         parent::__construct();
-
-        $this->import( 'DCABuilderHelper' );
     }
 
 
@@ -328,39 +326,26 @@ class tl_module extends \Backend {
     public function getTaxonomyFields( \DataContainer $dc, $strTablename, $arrForbiddenTypes = null ) {
 
         $arrReturn = [];
-        
-        if ( !$strTablename ) return $arrReturn;
 
-        $this->import( 'DCABuilderHelper' );
+        if ( !$strTablename ) return $arrReturn;
 
         if ( is_null( $arrForbiddenTypes ) || !is_array( $arrForbiddenTypes ) ) {
 
             $arrForbiddenTypes = [ 'upload', 'textarea' ];
         }
 
-        $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
-        $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+        $objCatalogFieldBuilder = new CatalogFieldBuilder();
+        $objCatalogFieldBuilder->initialize( $strTablename );
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-        if ( !$arrCatalog || !is_array( $arrCatalog ) ) return $arrReturn;
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
+            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
+            if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;
 
-        foreach ( $arrReturn as $strFieldname => $arrField ) {
-
-            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) {
-
-                unset( $arrReturn[ $strFieldname ] );
-            }
-        }
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) || in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
-
-                continue;
-            }
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+            $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
         }
 
         return $arrReturn;
@@ -378,7 +363,7 @@ class tl_module extends \Backend {
 
             if ( !$objCatalogFields->fieldname ) continue;
             if ( in_array( $objCatalogFields->type, [ 'upload', 'dbColumn' ] ) ) continue;
-            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) ) continue;
+            if ( in_array( $objCatalogFields->type, Toolkit::excludeFromDc() ) ) continue;
 
             $arrReturn[ $objCatalogFields->id ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>': $objCatalogFields->fieldname;
         }

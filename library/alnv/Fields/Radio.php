@@ -8,7 +8,7 @@ class Radio {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $arrCatalog = [], $objModule = null ) {
+    public static function generate( $arrDCAField, $arrField, $objModule = null ) {
 
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
         $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );

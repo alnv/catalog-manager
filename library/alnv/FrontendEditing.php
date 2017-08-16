@@ -88,6 +88,15 @@ class FrontendEditing extends CatalogController {
 
             $this->strRedirectID = $objPage->id;
         }
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing'] as $callback ) {
+
+                $this->import( $callback[0] );
+                $this->{$callback[0]}->{$callback[1]}( $this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrValues, $this );
+            }
+        }
     }
 
 
@@ -516,7 +525,15 @@ class FrontendEditing extends CatalogController {
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
 
-        $this->redirectToFrontendPage( $this->strRedirectID );
+        $strAttributes = '';
+        $objPage = \PageModel::findWithDetails( $this->strRedirectID );
+        $strUrl = $this->generateFrontendUrl( $objPage->row(), '', $objPage->language, true );
+
+        if ( strncmp( $strUrl, 'http://', 7 ) !== 0 && strncmp( $strUrl, 'https://', 8 ) !== 0 ) $strUrl = \Environment::get( 'base' ) . $strUrl;
+        if ( \Input::get( 'pid' ) ) $strAttributes .= '?pid=' .\Input::get( 'pid' );
+        if ( $strAttributes ) $strUrl .= $strAttributes;
+
+        $this->redirect( $strUrl );
     }
 
 
@@ -922,8 +939,10 @@ class FrontendEditing extends CatalogController {
 
             foreach ( $this->arrValues as $strFieldname => $varValue ) {
 
-                $arrField = $this->arrCatalogFields[ $strFieldname ];
+                $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
                 $varValue = Toolkit::prepareValue4Db( $varValue );
+
+                if ( is_null( $arrField ) ) continue;
 
                 if ( $arrField['_type'] == 'date' || in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
 

@@ -12,8 +12,6 @@ class tl_catalog_fields extends \Backend {
     public function __construct() {
 
         parent::__construct();
-
-        $this->import( 'DCABuilderHelper' );
     }
 
     
@@ -80,17 +78,17 @@ class tl_catalog_fields extends \Backend {
         $strID = $dc->activeRecord->pid;
         $objSQLBuilder = new SQLBuilder();
         $strIndex = $dc->activeRecord->useIndex;
-        $strStatement = $this->DCABuilderHelper->arrSQLStatements[ $dc->activeRecord->statement ];
+        $strStatement = Toolkit::getSqlDataType( $dc->activeRecord->statement );
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
 
-        if ( in_array( $dc->activeRecord->fieldname , $this->DCABuilderHelper->arrReservedFields ) ) {
+        if ( in_array( $dc->activeRecord->fieldname , Toolkit::columnsBlacklist() ) ) {
 
             throw new \Exception( sprintf( 'Fieldname "%s" is not allowed.', $dc->activeRecord->fieldname ) );
         }
 
         if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
 
-            if ( in_array( $dc->activeRecord->type , $this->DCABuilderHelper->arrForbiddenInputTypes ) ) {
+            if ( in_array( $dc->activeRecord->type, Toolkit::excludeFromDc() ) ) {
 
                 return null;
             }
@@ -105,7 +103,7 @@ class tl_catalog_fields extends \Backend {
 
         else {
             
-            if ( in_array( $dc->activeRecord->type , $this->DCABuilderHelper->arrForbiddenInputTypes ) ) {
+            if ( in_array( $dc->activeRecord->type , Toolkit::excludeFromDc() ) ) {
 
                 $this->dropFieldOnDelete( $dc );
 
@@ -211,7 +209,7 @@ class tl_catalog_fields extends \Backend {
             return $varValue;
         }
 
-        $strStatement = $this->DCABuilderHelper->arrSQLStatements[ $dc->activeRecord->statement ];
+        $strStatement = Toolkit::getSqlDataType( $dc->activeRecord->statement );
         $objCatalog = $this->Database->prepare( 'SELECT tablename FROM tl_catalog WHERE id = ? LIMIT 1' )->execute( $dc->activeRecord->pid );
 
         if ( !$objCatalog->count() ) {
@@ -239,9 +237,7 @@ class tl_catalog_fields extends \Backend {
 
     public function checkBlacklist( $varValue ) {
 
-        $arrBlacklist = Toolkit::columnsBlacklist();
-
-        if ( $varValue && in_array( $varValue, $arrBlacklist ) ) {
+        if ( $varValue && in_array( $varValue, Toolkit::columnsBlacklist() ) ) {
 
             throw new \Exception( sprintf( 'Fieldname "%s" is forbidden.', $varValue ) );
         }
@@ -358,7 +354,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getSQLStatements( \DataContainer $dc ) {
 
-        $arrSQLStatements = $this->DCABuilderHelper->arrSQLStatements;
+        $arrSQLStatements = Toolkit::$arrSqlTypes;
 
         if ( $dc->activeRecord->type == 'upload' ) {
 
@@ -405,6 +401,7 @@ class tl_catalog_fields extends \Backend {
     public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
 
         $arrReturn = [];
+        $arrForbiddenTypes = [ 'upload', 'textarea' ];
 
         if ( !$strTablename ) return $arrReturn;
 
@@ -413,33 +410,18 @@ class tl_catalog_fields extends \Backend {
             return Toolkit::getColumnsFromCoreTable( $strTablename, true );
         }
 
-        $this->import( 'DCABuilderHelper' );
-        $arrForbiddenTypes = [ 'upload', 'textarea' ];
-        $arrReturn = $this->DCABuilderHelper->getPredefinedFields();
-        $arrCatalog = &$GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? ORDER BY sorting' )->execute( $arrCatalog['id'] );
+        $objCatalogFieldBuilder = new CatalogFieldBuilder();
+        $objCatalogFieldBuilder->initialize( $strTablename );
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-        foreach ( $arrReturn as $strFieldname => $arrField ) {
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) {
+            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
+            if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;
 
-                unset( $arrReturn[ $strFieldname ] );
-            }
-        }
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrForbiddenInputTypes ) || in_array( $objCatalogFields->type, $arrForbiddenTypes ) ) {
-
-                continue;
-            }
-
-            if ( in_array( $objCatalogFields->type, $this->DCABuilderHelper->arrColumnsOnly ) ) {
-
-                continue;
-            }
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->row();
+            $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
         }
 
         return $arrReturn;

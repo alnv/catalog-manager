@@ -5,21 +5,149 @@ namespace CatalogManager;
 class Toolkit {
 
 
+    public static $arrSqlTypes = [
+
+        'c256' => "varchar(256) NOT NULL default ''",
+        'c1' => "char(1) NOT NULL default ''",
+        'c16' => "varchar(16) NOT NULL default ''",
+        'c32' => "varchar(32) NOT NULL default ''",
+        'c64' => "varchar(64) NOT NULL default ''",
+        'c128' => "varchar(128) NOT NULL default ''",
+        'c512' => "varchar(512) NOT NULL default ''",
+        'c1024' => "varchar(1024) NOT NULL default ''",
+        'c2048' => "varchar(2048) NOT NULL default ''",
+        'i5' => "smallint(5) unsigned NOT NULL default '0'",
+        'i10' => "int(10) unsigned NOT NULL default '0'",
+        'text' => "text NULL",
+        'blob' => "blob NULL",
+        'binary' => "binary(16) NULL"
+    ];
+
+
+    public static function invisiblePaletteFields() {
+
+        return [
+
+            'invisible',
+            'start',
+            'stop'
+        ];
+    }
+
+
+    public static function columnOnlyFields() {
+
+        return [
+
+            'dbColumn'
+        ];
+    }
+
+
+    public static function readOnlyFields() {
+
+        return [
+
+            'message'
+        ];
+    }
+
+
+    public static function wrapperFields() {
+
+        return [
+
+            'fieldsetStart',
+            'fieldsetStop'
+        ];
+    }
+
+
+    public static function excludeFromDc() {
+
+        return [
+
+            'map',
+            'fieldsetStop',
+            'fieldsetStart'
+        ];
+    }
+
+
+    public static function setDcConformInputType( $strType ) {
+
+        $arrInputTypes = [
+
+            'text' => 'text',
+            'date' => 'text',
+            'number' => 'text',
+            'hidden' => 'text',
+            'radio' => 'radio',
+            'select' => 'select',
+            'upload' => 'fileTree',
+            'textarea' => 'textarea',
+            'checkbox' => 'checkbox',
+            'message' => 'catalogMessageWidget'
+        ];
+
+        return $arrInputTypes[ $strType ] ? $arrInputTypes[ $strType ] : 'text';
+    }
+    
+    
+    public static function getSqlDataType( $strType ) {
+
+        return self::$arrSqlTypes[ $strType ] ? self::$arrSqlTypes[ $strType ] : "varchar(256) NOT NULL default ''";
+    }
+    
+
+    public static function isDcConformField( $arrField ) {
+
+        if ( empty( $arrField ) && !is_array( $arrField ) ) return false;
+
+        if ( !$arrField['type'] ) return false;
+
+        if ( in_array( $arrField['type'], self::excludeFromDc() ) ) return false;
+
+        return true;
+    }
+
+
     public static function columnsBlacklist() {
 
         return [
 
             'id',
-            'title',
-            'sorting',
-            'tstamp',
             'pid',
-            'alias',
+            'tstamp',
+            'origin',
+            'sorting',
             'invisible',
-            'start',
-            'stop',
-            'origin'
         ];
+    }
+
+
+    public static function customizeAbleFields() {
+
+        return [
+
+            'title',
+            'alias',
+            'start',
+            'stop'
+        ];
+    }
+
+
+    public static function parseCatalog( $arrCatalog ) {
+
+        $arrCatalog['cTables'] = self::parseStringToArray( $arrCatalog['cTables'] );
+        $arrCatalog['operations'] = self::parseStringToArray( $arrCatalog['operations'] );
+        $arrCatalog['panelLayout'] = self::parseStringToArray( $arrCatalog['panelLayout'] );
+        $arrCatalog['labelFields'] = self::parseStringToArray( $arrCatalog['labelFields'] );
+        $arrCatalog['headerFields'] = self::parseStringToArray( $arrCatalog['headerFields'] );
+        $arrCatalog['sortingFields'] = self::parseStringToArray( $arrCatalog['sortingFields'] );
+        
+        return $arrCatalog;
     }
 
     
@@ -85,7 +213,7 @@ class Toolkit {
 
             foreach ( $arrValues as $strKey => $varValue ) {
 
-                $arrReturn[ $strKey ] = static::prepareValue4Db( $varValue );
+                $arrReturn[ $strKey ] = self::prepareValue4Db( $varValue );
             }
         }
 
@@ -95,7 +223,7 @@ class Toolkit {
 
     public static function prepareValue4Db( $varValue ) {
 
-        if ( !static::isDefined( $varValue ) ) return $varValue;
+        if ( !self::isDefined( $varValue ) ) return $varValue;
 
         if ( is_array( $varValue ) ) return implode( ',', $varValue );
 
@@ -235,13 +363,13 @@ class Toolkit {
                     $arrQuery = $fnCallback( $arrQuery );
                 }
 
-                $arrQuery = static::parseQuery( $arrQuery );
+                $arrQuery = self::parseQuery( $arrQuery );
 
                 if ( is_null( $arrQuery ) ) continue;
 
                 if ( !empty( $arrQuery['subQueries'] ) && is_array( $arrQuery['subQueries'] ) ) {
 
-                    $arrSubQueries = static::parseQueries( $arrQuery['subQueries'] );
+                    $arrSubQueries = self::parseQueries( $arrQuery['subQueries'] );
 
                     array_insert( $arrSubQueries, 0, [[
 
@@ -315,7 +443,7 @@ class Toolkit {
             return null;
         }
 
-        $arrQuery['value'] = static::prepareValueForQuery( $arrQuery['value'] );
+        $arrQuery['value'] = self::prepareValueForQuery( $arrQuery['value'] );
 
         return $arrQuery;
     }

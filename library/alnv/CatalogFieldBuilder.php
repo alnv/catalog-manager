@@ -7,6 +7,7 @@ class CatalogFieldBuilder extends CatalogController {
 
     protected $strTable = '';
     protected $arrCatalog = [];
+    protected $arrCatalogFields = [];
 
 
     public function __construct() {
@@ -42,10 +43,15 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    public function getCatalogFields( $blnDcFormat = true, $objModule = null ) {
+    public function getCatalog() {
 
-        $arrReturn = [];
-        $arrFields = $this->getDefaultCatalogFields();
+        return $this->arrCatalog;
+    }
+
+
+    public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false ) {
+
+        $arrFields = $blnExcludeDefaults ? [] : $this->getDefaultCatalogFields();
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 ) AND invisible != ? ORDER BY `sorting`' )->execute( $this->strTable, '1' );
 
         if ( $objCatalogFields !== null ) {
@@ -65,26 +71,48 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        foreach ( $arrFields as $strFieldname => $arrField ) {
+        $this->arrCatalogFields = $this->parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule );
 
-            $arrField[ '_dcFormat' ] = null;
-
-            if ( $blnDcFormat &&  Toolkit::isDcConformField( $arrField ) ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttribute( $arrField, $objModule );
-
-            if ( $arrField == null ) continue;
+        return $this->arrCatalogFields;
+    }
 
 
+    public function getDcFormatOnly() {
 
-            $arrReturn[ $strFieldname ] = $arrField;
+        $arrReturn = [];
+
+        foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
+
+            if ( !empty( $arrField['_dcFormat'] ) && is_array( $arrField['_dcFormat'] ) ) {
+
+                $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
+            }
         }
-
-        unset( $arrFields );
 
         return $arrReturn;
     }
 
 
-    public function setDcFormatAttribute( $arrField, $objModule = null ) {
+    public function parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule = null ) {
+
+        $arrReturn = [];
+
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            $arrField[ '_dcFormat' ] = null;
+
+            if ( $blnDcFormat &&  Toolkit::isDcConformField( $arrField ) ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
+
+            if ( $arrField == null ) continue;
+
+            $arrReturn[ $strFieldname ] = $this->prepareDefaultFields( $arrField, $strFieldname );
+        }
+        
+        return $arrReturn;
+    }
+
+
+    public function setDcFormatAttributes( $arrField, $objModule = null ) {
 
         $strCSSBackendClasses = Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' );
 
@@ -414,12 +442,26 @@ class CatalogFieldBuilder extends CatalogController {
 
         switch ( $strFieldname ) {
 
+            case 'tstamp' :
+            case 'id' :
+
+                $arrField['_dcFormat'] = [
+
+                    'label' => $arrField['_dcFormat']['label'],
+                    'sql' => $arrField['_dcFormat']['sql']
+                ];
+
+                return $arrField;
+
+                break;
+
             case 'pid' :
 
                 if ( $this->arrCatalog['pTable'] ) {
 
                     $arrField['_dcFormat'] = [
 
+                        'label' => $arrField['_dcFormat']['label'],
                         'sql' => "int(10) unsigned NOT NULL default '0'",
                     ];
 
@@ -444,6 +486,7 @@ class CatalogFieldBuilder extends CatalogController {
 
                     $arrField['_dcFormat'] = [
 
+                        'label' => $arrField['_dcFormat']['label'],
                         'sql' => "int(10) unsigned NOT NULL default '0'"
                     ];
 

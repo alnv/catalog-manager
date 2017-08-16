@@ -1,2 +1,3 @@
-todo
- - check date field for error if filter checkbox is active
+- library/alnv/CatalogNotification.php
+- library/alnv/CatalogView.php
+- library/alnv/FrontendEditing.php

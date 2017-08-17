@@ -938,7 +938,7 @@ class FrontendEditing extends CatalogController {
                     $varValue = $intTime < 1 ? '' : $intTime;
                 }
 
-                if ( strpos( $arrField['sql'], 'int' ) && is_string( $varValue ) ) {
+                if ( strpos( $arrField['sql'], 'int' ) !== false && is_string( $varValue ) ) {
 
                     $varValue = intval( $varValue );
                 }

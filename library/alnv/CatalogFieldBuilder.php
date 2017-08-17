@@ -498,10 +498,11 @@ class CatalogFieldBuilder extends CatalogController {
 
             case 'alias':
 
+                if ( TL_MODE == 'FE' ) return $arrField;
+
                 $arrField['_dcFormat']['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
 
                     $objDCACallbacks = new DCACallbacks();
-
                     return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
                 }];
 

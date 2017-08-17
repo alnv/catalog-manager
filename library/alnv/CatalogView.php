@@ -45,7 +45,7 @@ class CatalogView extends CatalogController {
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        //$this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFieldBuilder' );
         $this->import( 'I18nCatalogTranslator' );
         $this->import( 'FrontendEditingPermission' );
     }
@@ -65,9 +65,10 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename ) return null;
 
-        $this->arrCatalogFields = []; // $this->DCABuilderHelper->getPredefinedFields();
-        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], null, $this->arrCatalogFields );
+        $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
+
+        $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
+        $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, $this->id );
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
 
@@ -139,8 +140,6 @@ class CatalogView extends CatalogController {
         $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
-        $this->arrCatalog['cTables'] = Toolkit::deserialize( $this->arrCatalog['cTables'] );
-        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
 
         $this->setRelatedTables();

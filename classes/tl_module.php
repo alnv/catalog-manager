@@ -493,7 +493,7 @@ class tl_module extends \Backend {
 
             foreach ( $arrColumns as $strFieldname => $arrField ) {
 
-                $arrReturn[ $strFieldname ] = $arrField['title'] ? $arrField['title'] . ' ['. $arrField['fieldname'] .']' : $arrField['fieldname'];
+                $arrReturn[ $strFieldname ] = $arrField['label'][0] ? $arrField['label'][0] . ' ['. $strFieldname .']' : $strFieldname;
             }
         }
 

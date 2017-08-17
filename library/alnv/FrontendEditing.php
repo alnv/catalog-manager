@@ -288,6 +288,11 @@ class FrontendEditing extends CatalogController {
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
+                if ( Toolkit::isEmpty( $varValue ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
+
+                    $varValue = $arrField['default'];
+                }
+
                 if ( $varValue && is_string( $varValue ) ) {
 
                     $varValue = $this->decodeValue( $varValue );
@@ -949,7 +954,7 @@ class FrontendEditing extends CatalogController {
                     $varValue = $intTime < 1 ? '' : $intTime;
                 }
 
-                if ( strpos( $arrField['sql'], 'int' ) && is_string( $varValue ) ) {
+                if ( strpos( $arrField['sql'], 'int' ) !== false && is_string( $varValue ) ) {
 
                     $varValue = intval( $varValue );
                 }

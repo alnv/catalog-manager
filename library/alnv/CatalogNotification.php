@@ -16,7 +16,7 @@ class CatalogNotification extends CatalogController {
         parent::__construct();
 
         $this->import( 'SQLQueryHelper' );
-        // $this->import( 'DCABuilderHelper' );
+        $this->import( 'CatalogFieldBuilder' );
 
         $this->blnEnable = ( class_exists( 'NotificationCenter\Model\Notification' ) && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( 'tl_nc_notification' ) );
         $this->strID = $strID;
@@ -24,9 +24,9 @@ class CatalogNotification extends CatalogController {
 
         if ( $this->blnEnable && $strTablename ) {
 
-            $this->arrCatalogFields = []; //$this->DCABuilderHelper->getPredefinedFields();
-            $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->strTablename );
-            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->strTablename, $this->arrCatalogFields );
+            $this->CatalogFieldBuilder->initialize( $strTablename );
+            $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
+            $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( $strTablename, false, null );
         }
     }
 

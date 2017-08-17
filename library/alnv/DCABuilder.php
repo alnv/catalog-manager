@@ -27,7 +27,6 @@ class DCABuilder extends CatalogController {
 
         $this->import( 'Database' );
         $this->import( 'IconGetter' );
-        $this->import( 'IconGetter' );
         $this->import( 'CatalogFieldBuilder' );
         $this->import( 'I18nCatalogTranslator' );
 
@@ -37,7 +36,7 @@ class DCABuilder extends CatalogController {
         $this->strPermissionType = $arrCatalog['permissionType'];
 
         if ( !$this->strTable ) return null;
-
+        
         $this->CatalogFieldBuilder->initialize( $this->strTable );
 
         if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $this->arrCatalog['tablename'] ) {

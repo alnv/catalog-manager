@@ -31,8 +31,8 @@ class FrontendEditing extends CatalogController {
         $this->import( 'CatalogMessage' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        // $this->import( 'DCABuilderHelper' );
         $this->import( 'CatalogFineUploader' );
+        $this->import( 'CatalogFieldBuilder' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -46,20 +46,40 @@ class FrontendEditing extends CatalogController {
 
         $strPalette = 'general_legend';
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
-        $arrGeneralFields = []; //$this->DCABuilderHelper->getPredefinedFields();
-        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->catalogTablename );
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogID( $this->arrCatalog['id'], function ( $arrField, $strFieldname ) use( &$strPalette ) {
 
-            if ( $arrField['type'] == 'fieldsetStart' ) {
+        $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
-                $strPalette = $arrField['title'];
-                $this->arrPaletteLabels[$strPalette] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+        $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( $this->catalogTablename, true, null );
+
+        if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
+
+            foreach ( $arrCatalogFields as $arrField ) {
+
+                $strPalette = $arrField['_palette'] ? $arrField['_palette'] : $strPalette;
+
+                if ( $arrField['type'] == 'fieldsetStart' ) {
+
+                    $strPalette = $arrField['title'];
+                    $this->arrPaletteLabels[ $strPalette ] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+                }
+
+                $arrField['_palette'] = $strPalette;
+
+                if ( Toolkit::isEmpty( $arrField['type'] ) ) continue;
+                if ( Toolkit::isEmpty( $arrField['fieldname'] ) || !Toolkit::isDcConformField( $arrField ) ) continue;
+
+                if ( $arrField['type'] == 'hidden' ) $arrField['_dcFormat']['inputType'] = 'hidden';
+
+                if ( $arrField['type'] == 'upload' && $arrField['useFineUploader'] ) {
+
+                    $arrField['_dcFormat']['inputType'] = 'catalogFineUploader';
+                    $this->CatalogFineUploader->loadAssets();
+                }
+
+                $this->arrCatalogFields[ $arrField['fieldname'] ] = $arrField;
             }
-
-            $arrField['_palette'] = $strPalette;
-
-           return $arrField;
-        });
+        }
 
         if ( $this->strItemID && $this->strAct && in_array( $this->strAct, [ 'copy', 'edit' ] ) ) {
 
@@ -71,11 +91,7 @@ class FrontendEditing extends CatalogController {
 
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
-        $this->arrCatalog['operations'] = Toolkit::deserialize( $this->arrCatalog['operations'] );
 
-        // $this->reIndexCatalogFieldsByFieldname();
-        $this->arrCatalogFields = array_merge( $this->arrCatalogFields, $arrGeneralFields );
-        // $this->addDCFormatToCatalogFields();
         $this->setCatalogAttributes();
         $this->setPalettes();
 
@@ -565,6 +581,20 @@ class FrontendEditing extends CatalogController {
 
             unset( $this->arrPalettes['invisible_legend'] );
         }
+
+        else {
+
+            $arrPalettes = array_keys( $this->arrPalettes );
+
+            if ( in_array( 'invisible_legend', $arrPalettes ) ) {
+
+                $arrInvisiblePalette = $this->arrPalettes['invisible_legend'];
+
+                unset( $this->arrPalettes['invisible_legend'] );
+
+                $this->arrPalettes['invisible_legend'] = $arrInvisiblePalette;
+            }
+        }
     }
 
 
@@ -578,49 +608,6 @@ class FrontendEditing extends CatalogController {
             }
         }
     }
-
-    /*
-    protected function reIndexCatalogFieldsByFieldname() {
-
-        $arrFields = [];
-
-        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
-
-            foreach ( $this->arrCatalogFields as $arrField ) {
-
-                if ( Toolkit::isEmpty( $arrField['fieldname'] ) || !$this->DCABuilderHelper->isValidField( $arrField ) ) continue;
-
-                $arrFields[ $arrField['fieldname'] ] = $arrField;
-            }
-        }
-
-        $this->arrCatalogFields = $arrFields;
-    }
-    */
-
-    /*
-    protected function addDCFormatToCatalogFields() {
-
-        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
-
-            foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
-
-                $arrDataContainerField = $this->DCABuilderHelper->convertCatalogField2DCA( $arrField, [], $this );
-                $arrDataContainerField['_fieldname'] = $strFieldname;
-
-                if ( $arrField['type'] == 'hidden' ) $arrDataContainerField['inputType'] = 'hidden';
-
-                if ( $arrField['type'] == 'upload' && $arrField['useFineUploader'] ) {
-
-                    $arrDataContainerField['inputType'] = 'catalogFineUploader';
-                    $this->CatalogFineUploader->loadAssets();
-                }
-
-                $this->arrCatalogFields[$strFieldname]['_dcFormat'] = $arrDataContainerField;
-            }
-        }
-    }
-    */
 
 
     protected function getCaptcha() {

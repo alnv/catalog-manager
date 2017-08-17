@@ -304,6 +304,11 @@ class FrontendEditing extends CatalogController {
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
+                if ( Toolkit::isEmpty( $varValue ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
+
+                    $varValue = $arrField['default'];
+                }
+
                 if ( $varValue && is_string( $varValue ) ) {
 
                     $varValue = $this->decodeValue( $varValue );

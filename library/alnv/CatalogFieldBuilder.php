@@ -59,14 +59,20 @@ class CatalogFieldBuilder extends CatalogController {
             if ( $objCatalogFields->numRows ) {
 
                 while ( $objCatalogFields->next() ) {
-                    
+
+                    $arrField = $objCatalogFields->row();
+
                     if ( $objCatalogFields->fieldname && in_array( $objCatalogFields->fieldname, Toolkit::customizeAbleFields() ) ) {
+
+                        $arrOrigin = $arrFields[ $objCatalogFields->fieldname ];
+
+                        if ( is_null( $arrOrigin ) ) continue;
 
                         unset( $arrFields[ $objCatalogFields->fieldname ] );
                     }
 
                     $strFieldname = $objCatalogFields->fieldname ? $objCatalogFields->fieldname : $objCatalogFields->id;
-                    $arrFields[ $strFieldname ] = $objCatalogFields->row();
+                    $arrFields[ $strFieldname ] = $arrField;
                 }
             }
         }
@@ -280,8 +286,6 @@ class CatalogFieldBuilder extends CatalogController {
                 'fieldname' => 'id',
                 'statement' => 'i10',
                 'disableFEE' => true,
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0]
             ],
 
@@ -294,8 +298,6 @@ class CatalogFieldBuilder extends CatalogController {
                 'statement' => 'i10',
                 'disableFEE' => true,
                 'fieldname' => 'tstamp',
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0]
             ],
 
@@ -306,8 +308,6 @@ class CatalogFieldBuilder extends CatalogController {
                 'disableFEE' => true,
                 'statement' => 'i10',
                 'fieldname' => 'pid',
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0],
-                'description' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][1],
                 'placeholder' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0]
             ],
 
@@ -318,8 +318,6 @@ class CatalogFieldBuilder extends CatalogController {
                 'statement' => 'i10',
                 'disableFEE' => true,
                 'fieldname' => 'sorting',
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0]
             ],
 
@@ -336,8 +334,6 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'title' ] ),
-                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
             ],
 
@@ -356,8 +352,6 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'alias' ] ),
-                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0]
             ],
 
@@ -371,8 +365,6 @@ class CatalogFieldBuilder extends CatalogController {
                 'fieldname' => 'invisible',
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'invisible' ] ),
-                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][1]
             ],
 
             'start' => [
@@ -389,8 +381,6 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'start' ] ),
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
-                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0]
             ],
 
@@ -408,8 +398,6 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'stop' ] ),
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
-                'title' =>  &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
-                'description' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][1],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0]
             ]
         ];

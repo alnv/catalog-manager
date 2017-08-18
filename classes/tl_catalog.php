@@ -4,23 +4,9 @@ namespace CatalogManager;
 
 class tl_catalog extends \Backend {
 
+
     private $arrCatalogFieldCache = [];
     private $arrDataContainerFields = [];
-    private $arrCreateSortingFieldOn = [ '4', '5' ];
-
-
-    private $arrRequiredTableFields = [
-
-        'stop' => "varchar(16) NOT NULL default ''",
-        'start' => "varchar(16) NOT NULL default ''",
-        'invisible' => "char(1) NOT NULL default ''",
-        'title' => "varchar(255) NOT NULL default ''",
-        'alias' => "varchar(255) NOT NULL default ''",
-        'pid' => "int(10) unsigned NOT NULL default '0'",
-        'id' => "int(10) unsigned NOT NULL auto_increment",
-        'tstamp' => "int(10) unsigned NOT NULL default '0'",
-        'sorting' => "int(10) unsigned NOT NULL default '0'"
-    ];
 
 
     public function checkPermission() {
@@ -32,73 +18,33 @@ class tl_catalog extends \Backend {
 
     public function createTableOnSubmit( \DataContainer $dc ) {
 
-        $blnVisibleField = false;
+        $strTablename = $dc->activeRecord->tablename;
 
-        if ( !$dc->activeRecord->tablename ) {
+        if ( !$strTablename ) return null;
+
+        $objDatabaseBuilder = new CatalogDatabaseBuilder();
+        $objDatabaseBuilder->initialize( $strTablename, $dc->activeRecord->row() );
+
+        if ( $dc->activeRecord->tstamp ) {
+
+            $objDatabaseBuilder->tableCheck();
 
             return null;
         }
 
-        if ( $dc->activeRecord->operations ) {
+        if ( $this->Database->tableExists( $strTablename ) ) {
 
-            $arrOperations = deserialize( $dc->activeRecord->operations );
-
-            if ( !empty( $arrOperations ) && is_array( $arrOperations ) ) {
-
-                $blnVisibleField = in_array( 'invisible' , $arrOperations );
-            }
+            return null;
         }
 
-        if ( !$this->Database->tableExists( $dc->activeRecord->tablename ) ) {
+        $objDatabaseBuilder->createTable();
 
-            $objSQLBuilder = new SQLBuilder();
-
-            if ( in_array( $dc->activeRecord->mode, [ '0' ] ) ) {
-
-                unset( $this->arrRequiredTableFields['sorting'] );
-            }
-
-            if ( !$dc->activeRecord->pTable || !in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
-
-                unset( $this->arrRequiredTableFields['pid'] );
-            }
-
-            if ( !$blnVisibleField ) {
-
-                unset( $this->arrRequiredTableFields['invisible'] );
-                unset( $this->arrRequiredTableFields['start'] );
-                unset( $this->arrRequiredTableFields['stop'] );
-            }
-
-            $objSQLBuilder->createSQLCreateStatement( $dc->activeRecord->tablename, $this->arrRequiredTableFields );
-        }
-
-        else {
-
-            $objSQLBuilder = new SQLBuilder();
-
-            if ( !in_array( $dc->activeRecord->mode, [ '0' ] ) ) {
-
-                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'sorting' , $this->arrRequiredTableFields['sorting'] );
-            }
-
-            if ( $dc->activeRecord->pTable || in_array( $dc->activeRecord->mode, $this->arrCreateSortingFieldOn ) ) {
-
-                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'pid' , $this->arrRequiredTableFields['pid'] );
-            }
-
-            if ( $blnVisibleField ) {
-
-                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'stop' , $this->arrRequiredTableFields['stop'] );
-                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'start' , $this->arrRequiredTableFields['start'] );
-                $objSQLBuilder->alterTableField( $dc->activeRecord->tablename , 'invisible' , $this->arrRequiredTableFields['invisible'] );
-            }
-        }
-
+        /*
         if ( $dc->activeRecord->permissionType ) {
 
             $this->insertPermissionFields( $dc->activeRecord->tablename, $dc->activeRecord->permissionType );
         }
+        */
     }
 
 
@@ -134,14 +80,16 @@ class tl_catalog extends \Backend {
 
         if ( !$this->Database->tableExists( $varValue ) ) {
 
-            $objSQLBuilder = new SQLBuilder();
-            $objSQLBuilder->createSQLRenameTableStatement( $varValue, $dc->activeRecord->tablename );
-            $this->renameAllTableDependencies( $dc->id, $varValue, $dc->activeRecord->tablename );
+            $objDatabaseBuilder = new CatalogDatabaseBuilder();
+            $objDatabaseBuilder->initialize( $dc->activeRecord->tablename, $dc->activeRecord->row() );
+            $objDatabaseBuilder->renameTable( $varValue );
 
+            /*
             if ( $dc->activeRecord->permissionType ) {
 
                 $this->renamePermissionFields( $dc->activeRecord->tablename, $varValue, $dc->activeRecord->permissionType );
             }
+            */
         }
 
         return $varValue;
@@ -150,13 +98,14 @@ class tl_catalog extends \Backend {
 
     public function dropTableOnDelete( \DataContainer $dc ) {
 
-        $objSQLBuilder = new SQLBuilder();
-        $objSQLBuilder->createSQLDropTableStatement( $dc->activeRecord->tablename );
+        $objDatabaseBuilder = new CatalogDatabaseBuilder();
+        $objDatabaseBuilder->initialize( $dc->activeRecord->tablename, $dc->activeRecord->row() );
+        $objDatabaseBuilder->dropTable();
 
-        $this->dropPermissionFields( $dc->activeRecord->tablename );
+        // $this->dropPermissionFields( $dc->activeRecord->tablename );
     }
 
-
+    /*
     protected function dropPermissionFields( $strField ) {
 
         $objSQLBuilder = new SQLBuilder();
@@ -170,8 +119,9 @@ class tl_catalog extends \Backend {
         $objSQLBuilder->dropTableField( 'tl_member_group' , $strField );
         $objSQLBuilder->dropTableField( 'tl_member_group' , $strField . 'p' );
     }
+    */
 
-
+    /*
     protected function insertPermissionFields( $strField, $strType ) {
 
         $objSQLBuilder = new SQLBuilder();
@@ -188,8 +138,9 @@ class tl_catalog extends \Backend {
             $objSQLBuilder->alterTableField( 'tl_user_group', $strField, 'blob NULL' );
         }
     }
+    */
 
-
+    /*
     protected function renamePermissionFields( $strOldFieldname, $strNewFieldname, $strType ) {
 
         $objSQLBuilder = new SQLBuilder();
@@ -206,45 +157,8 @@ class tl_catalog extends \Backend {
             $objSQLBuilder->createSQLRenameFieldnameStatement( 'tl_user_group', $strOldFieldname, $strNewFieldname, 'blob NULL' );
         }
     }
-
-
-    public function renameAllTableDependencies( $strID, $strTable, $strOldTable ) {
-
-        $objSQLBuilder = new SQLBuilder();
-        $objCatalogDb = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id != ?')->execute( $strID );
-
-        while ( $objCatalogDb->next() ) {
-
-            $arrItem = $objCatalogDb->row();
-
-            if ( $arrItem['cTables'] ) {
-
-                $arrCTables = deserialize( $arrItem['cTables'] );
-
-                foreach ( $arrCTables as $intIndex => $strCTable ) {
-
-                    if ( $strCTable == $strOldTable ) {
-
-                        $arrCTables[ $intIndex ] = $strTable;
-                    }
-                }
-
-                $arrItem['cTables'] = serialize( $arrCTables );
-            }
-
-            if ( $arrItem['pTable'] ) {
-
-                if ( $arrItem['pTable'] == $strOldTable ) {
-
-                    $arrItem['pTable'] = $strTable;
-                }
-            }
-
-            $objSQLBuilder->updateTableFieldByID( $arrItem['id'], 'tl_catalog', $arrItem );
-        }
-    }
-
-
+    */
+    
     public function getPanelLayouts() {
 
         return [ 'filter', 'sort', 'search', 'limit' ];
@@ -305,7 +219,7 @@ class tl_catalog extends \Backend {
         return $arrFields;
     }
 
-
+    // @todo improve
     public function getDataContainerFields( \DataContainer $dc ) {
 
         if ( !empty( $this->arrDataContainerFields ) && is_array( $this->arrDataContainerFields ) ) {

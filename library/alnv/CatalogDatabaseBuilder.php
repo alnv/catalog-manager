@@ -7,6 +7,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     protected $arrCatalog = [];
     protected $strTablename = null;
+    protected $arrPermissionColumns = [];
 
     protected $arrTableColumns = [
 
@@ -21,7 +22,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         'sorting' => "int(10) unsigned NOT NULL default '0'"
     ];
 
-
+    
     public function __construct() {
 
         parent::__construct();
@@ -45,6 +46,45 @@ class CatalogDatabaseBuilder extends CatalogController {
 
             $this->arrCatalog = Toolkit::parseCatalog( $arrCatalog );
         }
+
+        $this->arrPermissionColumns = [
+
+            [
+                'type' => 'default',
+                'table' => 'tl_user',
+                'field' => $this->strTablename . 'p'
+            ],
+
+            [
+                'type' => 'extended',
+                'table' => 'tl_user',
+                'field' => $this->strTablename
+            ],
+
+            [
+                'type' => 'default',
+                'table' => 'tl_user_group',
+                'field' => $this->strTablename . 'p'
+            ],
+
+            [
+                'type' => 'extended',
+                'table' => 'tl_user_group',
+                'field' => $this->strTablename
+            ],
+
+            [
+                'type' => 'default',
+                'table' => 'tl_member_group',
+                'field' => $this->strTablename . 'p'
+            ],
+
+            [
+                'type' => 'extended',
+                'table' => 'tl_member_group',
+                'field' => $this->strTablename
+            ]
+        ];
     }
 
 
@@ -71,6 +111,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $objSQLBuilder->createSQLCreateStatement( $this->strTablename, $arrColumns );
+        $this->checkPermissionFields( 'create' );
     }
 
 
@@ -79,6 +120,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLRenameTableStatement( $strNewTablename, $this->strTablename );
         $this->checkDependencies( $strNewTablename );
+        $this->checkPermissionFields( 'rename', $strNewTablename );
     }
 
 
@@ -86,6 +128,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLDropTableStatement( $this->strTablename );
+        $this->checkPermissionFields( 'drop' );
     }
     
     
@@ -111,6 +154,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'pid' , $this->arrTableColumns['pid'] );
         }
+
+        $this->checkPermissionFields( 'create' );
     }
 
 
@@ -175,6 +220,114 @@ class CatalogDatabaseBuilder extends CatalogController {
                 }
 
                 $objSQLBuilder->updateTableFieldByID( $arrCatalog['id'], 'tl_catalog', $arrCatalog );
+            }
+        }
+    }
+
+
+    protected function checkPermissionFields( $strEvent = '', $strNewTablename = '' ) {
+
+        if ( Toolkit::isEmpty( $this->arrCatalog['permissionType'] ) ) {
+
+            $this->resetPermissionFields();
+
+            return null;
+        }
+
+        switch ( $strEvent ) {
+
+            case 'create':
+
+                $this->addPermissionFields();
+
+                break;
+
+            case 'rename':
+
+                $this->renamePermissionFields( $strNewTablename );
+
+                break;
+
+            case 'drop':
+
+                $this->dropPermissionFields();
+
+                break;
+        }
+    }
+
+
+    protected function addPermissionFields() {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $this->getPermissionColumns( function( $arrPermissionColumn ) use( $objSQLBuilder ) {
+
+            $objSQLBuilder->alterTableField( $arrPermissionColumn['table'], $arrPermissionColumn['field'], 'blob NULL' );
+        });
+    }
+
+
+    protected function dropPermissionFields() {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $this->getPermissionColumns( function( $arrPermissionColumn ) use ( $objSQLBuilder ) {
+
+            $objSQLBuilder->dropTableField( $arrPermissionColumn['table'] , $arrPermissionColumn['field'] );
+        });
+    }
+
+
+    protected function renamePermissionFields( $strNewTablename ) {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $this->getPermissionColumns( function( $arrPermissionColumn ) use ( $objSQLBuilder ) {
+
+            $objSQLBuilder->createSQLRenameFieldnameStatement( $arrPermissionColumn['table'], $arrPermissionColumn['field'], $arrPermissionColumn['newField'], 'blob NULL' );
+
+        }, $strNewTablename );
+    }
+
+
+    protected function resetPermissionFields() {
+
+        $objSQLBuilder = new SQLBuilder();
+
+        $this->getPermissionColumns( function( $arrPermissionColumn ) use ( $objSQLBuilder ) {
+
+            if ( $objSQLBuilder->Database->fieldExists( $arrPermissionColumn['field'], $arrPermissionColumn['table'] ) ) {
+
+                $objSQLBuilder->dropTableField( $arrPermissionColumn['table'] , $arrPermissionColumn['field'] );
+            }
+        });
+    }
+
+
+    protected function getPermissionColumns( $arrCallback = null, $strNewTable = '' ) {
+
+        foreach ( $this->arrPermissionColumns as $arrPermissionColumn ) {
+
+            if ( $this->arrCatalog['permissionType'] == 'default' &&  $arrPermissionColumn['type'] == 'extended' ) {
+
+                continue;
+            }
+
+            if ( !Toolkit::isEmpty( $strNewTable ) ) {
+
+                $arrPermissionColumn['newField'] = $strNewTable;
+            }
+
+            if ( is_array( $arrCallback ) ) {
+
+                $this->import( $arrCallback[0] );
+                $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrPermissionColumn );
+            }
+
+            elseif( is_callable( $arrCallback ) ) {
+
+                $arrCallback( $arrPermissionColumn );
             }
         }
     }

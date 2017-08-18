@@ -1,3 +1,4 @@
 todo
  - check date field for error if filter checkbox is active
  - implement getBy Attribute for Master InsertTag
+ - implement and query for multiple fields

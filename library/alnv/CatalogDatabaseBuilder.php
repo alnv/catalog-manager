@@ -5,6 +5,7 @@ namespace CatalogManager;
 class CatalogDatabaseBuilder extends CatalogController {
 
 
+    protected $arrColumn = [];
     protected $arrCatalog = [];
     protected $strTablename = null;
     protected $arrPermissionColumns = [];
@@ -88,6 +89,15 @@ class CatalogDatabaseBuilder extends CatalogController {
     }
 
 
+    public function setColumn( $arrColumn ) {
+
+        if ( !empty( $arrColumn ) && is_array( $arrColumn ) ) {
+
+            $this->arrColumn = $arrColumn;
+        }
+    }
+
+
     public function createTable() {
 
         $arrColumns = $this->arrTableColumns;
@@ -156,6 +166,81 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'create' );
+    }
+
+
+    public function createColumn() {
+
+        if ( in_array( $this->arrColumn['type'], Toolkit::excludeFromDc() ) ) return null;
+
+        $objSQLBuilder = new SQLBuilder();
+        $strSQLData = Toolkit::getSqlDataType( $this->arrColumn['statement'] );
+        $objSQLBuilder->alterTableField( $this->strTablename, $this->arrColumn['fieldname'], $strSQLData );
+
+        if ( $this->arrColumn['useIndex'] ) {
+
+            $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
+        }
+    }
+
+
+    public function renameColumn( $strNewFieldname ) {
+
+        $objSQLBuilder = new SQLBuilder();
+        $strSQLData = Toolkit::getSqlDataType( $this->arrColumn['statement'] );
+        $objSQLBuilder->createSQLRenameFieldnameStatement( $this->strTablename, $this->arrColumn['fieldname'], $strNewFieldname, $strSQLData );
+    }
+
+
+    public function dropColumn() {
+
+        if ( in_array( $this->arrColumn['fieldname'], Toolkit::customizeAbleFields() ) ) {
+
+            return null;
+        }
+
+        $objSQLBuilder = new SQLBuilder();
+        $objSQLBuilder->dropTableField( $this->strTablename, $this->arrColumn['fieldname'] );
+    }
+
+
+    public function columnCheck() {
+
+        if ( in_array( $this->arrColumn['type'], Toolkit::excludeFromDc() ) && $this->Database->fieldExists( $this->arrColumn['fieldname'], $this->strTablename ) ) {
+
+            $this->dropColumn();
+
+            return null;
+        }
+
+        $objSQLBuilder = new SQLBuilder();
+        $arrColumns = $objSQLBuilder->showColumns( $this->strTablename );
+        $strSQLData = Toolkit::getSqlDataType( $this->arrColumn['statement'] );
+
+        if ( isset( $arrColumns[ $this->arrColumn['fieldname'] ] ) ) {
+
+            $arrColumnData = $arrColumns[ $this->arrColumn['fieldname'] ];
+        }
+
+        else {
+
+            return null;
+        }
+
+        if ( $arrColumnData['statement'] !== $strSQLData ) {
+
+            $objSQLBuilder->modifyTableField( $this->strTablename, $this->arrColumn['fieldname'], $strSQLData );
+        }
+
+        if ( !$this->arrColumn['useIndex'] && $arrColumnData['index'] ) {
+
+            $objSQLBuilder->dropIndex( $this->strTablename, $this->arrColumn['fieldname'] );
+        }
+
+        if ( $this->arrColumn['useIndex'] && $this->arrColumn['useIndex'] !== $arrColumnData['index'] ) {
+
+            $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
+        }
     }
 
 

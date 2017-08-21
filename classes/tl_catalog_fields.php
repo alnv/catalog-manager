@@ -43,7 +43,7 @@ class tl_catalog_fields extends \Backend {
 
         if ( !is_dir( $strValue ) ) {
 
-            throw new \Exception( 'Directory do not exist.' );
+            throw new \Exception( 'directory do not exist.' );
         }
 
         return $strValue;
@@ -75,63 +75,33 @@ class tl_catalog_fields extends \Backend {
 
     public function createFieldOnSubmit( \DataContainer $dc ) {
 
-        $strID = $dc->activeRecord->pid;
-        $objSQLBuilder = new SQLBuilder();
-        $strIndex = $dc->activeRecord->useIndex;
-        $strStatement = Toolkit::getSqlDataType( $dc->activeRecord->statement );
-        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
+        $strCatalogID = $dc->activeRecord->pid;
+        $strFieldname = $dc->activeRecord->fieldname;
 
-        if ( in_array( $dc->activeRecord->fieldname , Toolkit::columnsBlacklist() ) ) {
+        if ( !$strFieldname || !$strCatalogID ) return null;
 
-            throw new \Exception( sprintf( 'Fieldname "%s" is not allowed.', $dc->activeRecord->fieldname ) );
+        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `id` = ?')->limit(1)->execute( $strCatalogID )->row();
+        $strTablename = $arrCatalog['tablename'];
+
+        $objDatabaseBuilder = new CatalogDatabaseBuilder();
+        $objDatabaseBuilder->initialize( $strTablename, $arrCatalog );
+        $objDatabaseBuilder->setColumn( $dc->activeRecord->row() );
+
+        if ( in_array( $strFieldname, Toolkit::columnsBlacklist() ) ) {
+
+            throw new \Exception( sprintf( 'fieldname "%s" is not allowed.', $strFieldname ) );
         }
 
-        if ( !$this->Database->fieldExists( $dc->activeRecord->fieldname, $arrCatalog['tablename'] ) ) {
+        if ( $dc->activeRecord->tstamp ) {
 
-            if ( in_array( $dc->activeRecord->type, Toolkit::excludeFromDc() ) ) {
+            $objDatabaseBuilder->columnCheck();
 
-                return null;
-            }
-
-            $objSQLBuilder->alterTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
-
-            if ( $strIndex ) {
-
-                $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
-            }
+            return null;
         }
 
-        else {
-            
-            if ( in_array( $dc->activeRecord->type , Toolkit::excludeFromDc() ) ) {
+        if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) {
 
-                $this->dropFieldOnDelete( $dc );
-
-                return null;
-            }
-
-            $arrColumns = $objSQLBuilder->showColumns( $arrCatalog['tablename'] );
-
-            if ( !$arrColumns[ $dc->activeRecord->fieldname ] ) {
-
-                return null;
-            }
-
-            if ( $arrColumns[ $dc->activeRecord->fieldname ]['statement'] !== $strStatement ) {
-
-                $objSQLBuilder->modifyTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strStatement );
-            }
-
-            if ( $strIndex && $strIndex !== $arrColumns[ $dc->activeRecord->fieldname ]['index'] ) {
-
-                $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
-                $objSQLBuilder->addIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname, $strIndex );
-            }
-
-            if ( !$strIndex && $arrColumns[ $dc->activeRecord->fieldname ]['index'] ) {
-
-                $objSQLBuilder->dropIndex( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
-            }
+            $objDatabaseBuilder->createColumn();
         }
     }
 
@@ -142,7 +112,7 @@ class tl_catalog_fields extends \Backend {
 
         if ( $objFieldname->numRows && $objFieldname->pid == $dc->activeRecord->pid ) {
 
-            throw new \Exception('This fieldname already exist.');
+            throw new \Exception('this fieldname already exist.');
         }
 
         return $varValue;
@@ -204,25 +174,29 @@ class tl_catalog_fields extends \Backend {
     
     public function renameFieldname( $varValue, \DataContainer $dc ) {
 
-        if ( !$varValue || !$dc->activeRecord->fieldname || $dc->activeRecord->fieldname == $varValue ) {
+        $strFieldname = $dc->activeRecord->fieldname;
+
+        if ( Toolkit::isEmpty( $varValue ) || Toolkit::isEmpty( $strFieldname ) || $strFieldname == $varValue ) {
 
             return $varValue;
         }
 
-        $strStatement = Toolkit::getSqlDataType( $dc->activeRecord->statement );
-        $objCatalog = $this->Database->prepare( 'SELECT tablename FROM tl_catalog WHERE id = ? LIMIT 1' )->execute( $dc->activeRecord->pid );
+        $strCatalogID = $dc->activeRecord->pid;
+        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `id` = ?')->limit(1)->execute( $strCatalogID )->row();
 
-        if ( !$objCatalog->count() ) {
+        if ( $this->Database->fieldExists( $varValue, $arrCatalog['tablename'] ) ) {
 
-            return $varValue;
+            throw new \Exception( sprintf( 'fieldname "%s" already exist', $varValue ) );
         }
 
-        $strTable = $objCatalog->row()['tablename'];
+        $objDatabaseBuilder = new CatalogDatabaseBuilder();
+        $objDatabaseBuilder->initialize( $arrCatalog['tablename'], $arrCatalog );
 
-        if ( $this->Database->tableExists( $strTable ) ) {
+        $objDatabaseBuilder->setColumn( $dc->activeRecord->row() );
 
-            $objSQLBuilder = new SQLBuilder();
-            $objSQLBuilder->createSQLRenameFieldnameStatement( $strTable, $dc->activeRecord->fieldname, $varValue, $strStatement );
+        if ( $this->Database->fieldExists( $strFieldname, $arrCatalog['tablename'] ) ) {
+
+            $objDatabaseBuilder->renameColumn( $varValue );
         }
 
         return $varValue;
@@ -239,7 +213,7 @@ class tl_catalog_fields extends \Backend {
 
         if ( $varValue && in_array( $varValue, Toolkit::columnsBlacklist() ) ) {
 
-            throw new \Exception( sprintf( 'Fieldname "%s" is forbidden.', $varValue ) );
+            throw new \Exception( sprintf( 'fieldname "%s" is forbidden.', $varValue ) );
         }
 
         return $varValue;
@@ -248,11 +222,14 @@ class tl_catalog_fields extends \Backend {
     
     public function dropFieldOnDelete( \DataContainer $dc ) {
 
-        $strID = $dc->activeRecord->pid;
-        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE id = ? LIMIT 1')->execute( $strID )->row();
+        $strCatalogID = $dc->activeRecord->pid;
+        $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `id` = ?')->limit(1)->execute( $strCatalogID )->row();
+        
+        $objDatabaseBuilder = new CatalogDatabaseBuilder();
+        $objDatabaseBuilder->initialize( $arrCatalog['tablename'], $arrCatalog );
 
-        $objSQLBuilder = new SQLBuilder();
-        $objSQLBuilder->dropTableField( $arrCatalog['tablename'], $dc->activeRecord->fieldname );
+        $objDatabaseBuilder->setColumn( $dc->activeRecord->row() );
+        $objDatabaseBuilder->dropColumn();
     }
 
     

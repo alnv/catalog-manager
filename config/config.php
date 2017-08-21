@@ -69,6 +69,7 @@ $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionEx
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = [ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];
+$GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [ 'CatalogManager\CatalogWidgetAttributeParser', 'parseCatalogNavigationAreasWidget' ];
 
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];

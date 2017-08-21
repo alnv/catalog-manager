@@ -92,6 +92,18 @@ class I18nCatalogTranslator {
     }
 
 
+    public function getNavigationLabel( $strI18nKey, $strTitle = '' ) {
+
+        $strLabel = $GLOBALS['TL_LANG']['MOD'][ $strI18nKey ];
+
+        if ( !$strLabel ) $strLabel = $strTitle;
+
+        if ( !$strLabel ) $strLabel = $strI18nKey;
+
+        return $strLabel;
+    }
+
+
     public function getNewLabel() {
 
         return $GLOBALS['TL_LANG']['catalog_manager']['new'];

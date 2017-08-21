@@ -101,6 +101,23 @@ class CatalogManagerInitializer {
 
         if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
 
+        $arrNavigationAreas = \Config::get( 'catalogNavigationAreas' );
+        $arrNavigationAreas = deserialize( $arrNavigationAreas );
+
+        if ( !empty( $arrNavigationAreas ) && is_array( $arrNavigationAreas ) ) {
+
+            foreach ( $arrNavigationAreas as $intIndex => $arrNavigationArea ) {
+
+                if ( !Toolkit::isEmpty( $arrNavigationArea['key'] ) ) {
+
+                    $arrNav = [];
+                    $arrNav[ $arrNavigationArea['key'] ] = [];
+                    array_insert(  $GLOBALS['BE_MOD'], $intIndex, $arrNav );
+                    $GLOBALS['TL_LANG']['MOD'][ $arrNavigationArea['key'] ] = $objI18nCatalogTranslator->getNavigationLabel( $arrNavigationArea['key'], $arrNavigationArea['value'] );
+                }
+            }
+        }
+
         $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC' )->limit( 100 )->execute();
 
         while ( $objCatalogManagerDB->next() ) {

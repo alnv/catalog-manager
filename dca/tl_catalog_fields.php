@@ -628,7 +628,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'maxlength' => 12,
-                'tl_class' => 'w50 clr',
+                'tl_class' => 'w50',
             ],
 
             'exclude' => true,
@@ -821,13 +821,12 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'tl_class' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'],
-            'inputType' => 'select',
+            'inputType' => 'checkbox',
 
             'eval' => [
-
-                'chosen' => true,
+                
                 'multiple' => true,
-                'tl_class' => 'w50',
+                'tl_class' => 'clr',
             ],
 
             'options_callback' => [

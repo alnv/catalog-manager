@@ -6,7 +6,6 @@ class tl_catalog extends \Backend {
 
 
     private $arrCatalogFieldCache = [];
-    private $arrDataContainerFields = [];
 
 
     public function checkPermission() {
@@ -118,9 +117,9 @@ class tl_catalog extends \Backend {
 
     public function checkTablename( $varValue ) {
 
-        if ( Toolkit::isCoreTable( $varValue ) ) {
+        if ( Toolkit::isCoreTable( $varValue ) && !$this->Database->tableExists( $varValue ) ) {
 
-            throw new \Exception('"tl_" prefix is not allowed.');
+            throw new \Exception( sprintf( 'table "%s" do not exist.', $varValue ) );
         }
 
         return Toolkit::parseConformSQLValue( $varValue );

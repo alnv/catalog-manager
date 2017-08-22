@@ -17,90 +17,112 @@ class I18nCatalogTranslator {
     }
 
     
-    public function getModuleLabel( $strFieldname, $strAdditionalString = '' ) {
+    public function get( $strType, $strName, $arrOptions = [] ) {
 
-        $arrLabel = $GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ];
+        if ( !$strName ) return '';
 
-        if ( !isset( $arrLabel ) && empty( $arrLabel ) && !is_array( $arrLabel ) ) {
+        switch ( $strType ) {
+            
+            case 'module':
 
-            $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] ?
-                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] : '';
+                $blnTitle = $arrOptions['titleOnly'] ? true : false;
+                $arrLabels = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strName ];
 
-            $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] ?
-                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['description'] : '';
+                if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
 
-            $arrLabel = [ $strName, $strDescription ];
+                    $arrLabels = $this->setCatalogLabels( $strName );
+                }
+
+                if ( isset( $arrOptions['postfix'] ) && !Toolkit::isEmpty( $arrOptions['postfix'] ) ) {
+
+                    $arrLabels[0] .= ' ' . $arrOptions['postfix'];
+                }
+
+                if ( $blnTitle ) return $arrLabels[0] ? $arrLabels[0] : $strName;
+
+                return $arrLabels;
+
+                break;
+
+
+            case 'field':
+
+                $blnTitle = $arrOptions['titleOnly'] ? true : false;
+                $arrLabels = &$GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strName ];
+
+                if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
+
+                    $strTitle = $arrOptions['title'] ?: '';
+                    $strDescription = $arrOptions['descriptions'] ?: '';
+
+                    $arrLabels = [ $strTitle, $strDescription ];
+                }
+
+                if ( $blnTitle ) return $arrLabels[0] ? $arrLabels[0] : $strName;
+
+                return $arrLabels;
+
+                break;
+
+
+            case 'option':
+
+                $strOption = &$GLOBALS['TL_LANG']['catalog_manager']['options'][ $strName ];
+
+                if ( Toolkit::isEmpty( $strOption ) ) {
+
+                    $strOption = $arrOptions['title'] ?: '';
+                }
+
+                if ( Toolkit::isEmpty( $strOption ) ) {
+
+                    $strOption = $strName;
+                }
+
+                return $strOption;
+
+                break;
+
+
+            case 'legend':
+
+                $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strName ];
+
+                if ( Toolkit::isEmpty( $strLegend ) ) {
+
+                    $strLegend = $arrOptions['title'] ?: '';
+                }
+
+                if ( Toolkit::isEmpty( $strLegend ) ) {
+
+                    $strLegend = $strName;
+                }
+
+                return $strLegend;
+                
+                break;
+
+
+            case 'nav':
+
+                $strLabel = $GLOBALS['TL_LANG']['MOD'][ $strName ];
+
+                if ( Toolkit::isEmpty( $strLabel ) ) {
+
+                    $strLabel = $arrOptions['title'] ?: '';
+                }
+
+                if ( Toolkit::isEmpty( $strLabel ) ) {
+
+                    $strLabel = $strName;
+                }
+
+                return $strLabel;
+
+                break;
         }
 
-        if ( isset( $strAdditionalString ) && $strAdditionalString != '' ) {
-
-            $arrLabel[0] .= ' ' . $strAdditionalString;
-        }
-
-        return $arrLabel;
-    }
-
-
-    public function getModuleTitle( $strFieldname ) {
-
-        $strLabel = &$GLOBALS['TL_LANG']['catalog_manager']['module'][ $strFieldname ][0];
-
-        if ( !$strLabel ) {
-
-            $strLabel = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] ?
-                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strFieldname]['name'] : '';
-        }
-
-        return $strLabel;
-    }
-
-
-    public function getFieldLabel( $strI18nKey, $strTitle = '', $strDescription = '' ) {
-
-        $arrLabel = &$GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strI18nKey ];
-
-        if ( !isset( $arrLabel ) && empty( $arrLabel ) && !is_array( $arrLabel ) ) {
-
-            $arrLabel = [ $strTitle, $strDescription ];
-        }
-
-        return $arrLabel;
-    }
-
-    
-    public function getOptionLabel( $strI18nKey, $strGivenOption = '' ) {
-
-        $strOption = &$GLOBALS['TL_LANG']['catalog_manager']['options'][ $strI18nKey ];
-
-        if ( !$strOption ) return $strGivenOption;
-
-        if ( !$strGivenOption ) return $strI18nKey;
-
-        return $strOption;
-    }
-
-    
-    public function getLegendLabel( $strI18nKey, $strTitle = '' ) {
-
-        $strLegend = &$GLOBALS['TL_LANG']['catalog_manager']['legends'][ $strI18nKey ];
-
-        if ( !$strLegend ) $strLegend = $strTitle;
-
-        if ( !$strLegend ) $strLegend = $strI18nKey;
-
-        return $strLegend;
-    }
-
-
-    public function getNavigationLabel( $strI18nKey, $strTitle = '' ) {
-
-        $strLabel = $GLOBALS['TL_LANG']['MOD'][ $strI18nKey ];
-
-        if ( !$strLabel ) $strLabel = $strTitle;
-
-        if ( !$strLabel ) $strLabel = $strI18nKey;
-
-        return $strLabel;
+        return '';
     }
 
 
@@ -119,5 +141,14 @@ class I18nCatalogTranslator {
     public function getDeleteConfirmLabel() {
 
         return $GLOBALS['TL_LANG']['catalog_manager']['deleteConfirm'];
+    }
+
+
+    protected function setCatalogLabels( $strName ) {
+
+        $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['name'] ?: '';
+        $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['description'] ?: '';
+
+        return [ $strName, $strDescription ];
     }
 }

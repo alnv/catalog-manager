@@ -51,6 +51,13 @@ class CatalogFieldBuilder extends CatalogController {
 
     public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false ) {
 
+        if ( Toolkit::isCoreTable( $this->strTable ) ) {
+
+            $this->arrCatalogFields = $this->getCoreFields();
+
+            return $this->arrCatalogFields;
+        }
+
         $arrFields = $blnExcludeDefaults ? [] : $this->getDefaultCatalogFields();
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 ) AND invisible != ? ORDER BY `sorting`' )->execute( $this->strTable, '1' );
 
@@ -107,7 +114,7 @@ class CatalogFieldBuilder extends CatalogController {
 
             $arrField[ '_dcFormat' ] = null;
 
-            if ( $blnDcFormat &&  Toolkit::isDcConformField( $arrField ) ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
+            if ( $blnDcFormat && Toolkit::isDcConformField( $arrField ) ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
 
             if ( $arrField == null ) continue;
 
@@ -500,5 +507,33 @@ class CatalogFieldBuilder extends CatalogController {
         }
 
         return $arrField;
+    }
+
+
+    protected function getCoreFields() {
+
+        $arrReturn = [];
+
+        \Controller::loadLanguageFile( $this->strTable );
+        \Controller::loadDataContainer( $this->strTable );
+
+        $arrFields = $GLOBALS['TL_DCA'][ $this->strTable ]['fields'];
+
+        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
+
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                $arrReturn[ $strFieldname ] = [
+
+                    '_dcFormat' => $arrField,
+                    'fieldname' => $strFieldname,
+                    'title' => $arrField['label'][0] ?: '',
+                    'description' => $arrField['label'][1] ?: '',
+                    'type' => Toolkit::setCatalogConformInputType( $arrField['inputType'] )
+                ];
+            }
+        }
+        
+        return $arrReturn;
     }
 }

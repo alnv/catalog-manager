@@ -90,7 +90,24 @@ class Toolkit {
             'message' => 'catalogMessageWidget'
         ];
 
-        return $arrInputTypes[ $strType ] ? $arrInputTypes[ $strType ] : 'text';
+        return $arrInputTypes[ $strType ] ?: '';
+    }
+    
+
+    public static function setCatalogConformInputType( $strType ) {
+
+        $arrInputTypes = [
+
+            'text' => 'text',
+            'radio' => 'radio',
+            'select' => 'select',
+            'password' => 'text',
+            'fileTree' => 'upload',
+            'textarea' => 'textarea',
+            'checkbox' => 'checkbox',
+        ];
+        
+        return $arrInputTypes[ $strType ] ?: '';
     }
     
     

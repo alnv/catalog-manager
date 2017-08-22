@@ -100,6 +100,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     public function createTable() {
 
+        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
+
         $arrColumns = $this->arrTableColumns;
         $objSQLBuilder = new SQLBuilder();
 
@@ -127,6 +129,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     public function renameTable( $strNewTablename ) {
 
+        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
+
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLRenameTableStatement( $strNewTablename, $this->strTablename );
         $this->checkDependencies( $strNewTablename );
@@ -136,6 +140,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     public function dropTable() {
 
+        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
+
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLDropTableStatement( $this->strTablename );
         $this->checkPermissionFields( 'drop' );
@@ -143,6 +149,8 @@ class CatalogDatabaseBuilder extends CatalogController {
     
     
     public function tableCheck() {
+
+        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
 
         $objSQLBuilder = new SQLBuilder();
 

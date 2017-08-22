@@ -51,14 +51,16 @@ class CatalogFieldBuilder extends CatalogController {
 
     public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false ) {
 
-        if ( Toolkit::isCoreTable( $this->strTable ) ) {
+        $arrFields = [];
+        $blnIsCoreTable = Toolkit::isCoreTable( $this->strTable );
 
-            $this->arrCatalogFields = $this->getCoreFields();
+        if ( $blnIsCoreTable ) {
 
-            return $this->arrCatalogFields;
+            $blnExcludeDefaults = true;
+            $arrFields = $this->getCoreFields();
         }
 
-        $arrFields = $blnExcludeDefaults ? [] : $this->getDefaultCatalogFields();
+        $arrFields = $blnExcludeDefaults ? $arrFields : $this->getDefaultCatalogFields();
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 ) AND invisible != ? ORDER BY `sorting`' )->execute( $this->strTable, '1' );
 
         if ( $objCatalogFields !== null ) {
@@ -84,7 +86,7 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        $this->arrCatalogFields = $this->parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule );
+        $this->arrCatalogFields = $this->parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule, $blnIsCoreTable );
 
         return $this->arrCatalogFields;
     }
@@ -106,7 +108,9 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    public function parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule = null ) {
+    public function parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule = null, $blnCoreTable = false ) {
+
+        if ( $blnCoreTable ) return $arrFields;
 
         $arrReturn = [];
 
@@ -533,7 +537,7 @@ class CatalogFieldBuilder extends CatalogController {
                 ];
             }
         }
-        
+
         return $arrReturn;
     }
 }

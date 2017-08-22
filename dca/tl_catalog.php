@@ -14,7 +14,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'onsubmit_callback' => [
 
-            [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ]
+            [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ],
+            [ 'CatalogManager\tl_catalog', 'setCoreTableData' ]
         ],
 
         'ondelete_callback' => [
@@ -339,9 +340,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr',
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'tl_class' => 'clr'
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getParentDataContainerFields' ],
@@ -359,9 +358,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr',
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'tl_class' => 'clr'
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
@@ -379,9 +376,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr',
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'tl_class' => 'clr'
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],

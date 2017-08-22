@@ -15,6 +15,36 @@ class tl_catalog extends \Backend {
     }
 
 
+    public function setCoreTableData( \DataContainer $dc ) {
+
+        if ( $dc->activeRecord->tstamp || Toolkit::isEmpty( $dc->activeRecord->tablename ) ) return null;
+
+        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
+
+            $arrCatalog = $dc->activeRecord->row();
+            $objDCAExtractor = new CatalogDCAExtractor();
+            $objDCAExtractor->initialize( $dc->activeRecord->tablename );
+            $arrCatalogDefaultValues = $objDCAExtractor->getCatalogValuesFromDataContainerArray();
+
+            if ( is_array( $arrCatalogDefaultValues ) && !empty( $arrCatalogDefaultValues ) ) {
+
+                foreach ( $arrCatalogDefaultValues as $strKey => $strValue ) {
+
+                    if ( !Toolkit::isEmpty( $arrCatalog[ $strKey ] ) ) {
+
+                        unset( $arrCatalogDefaultValues[ $strKey ] );
+                    }
+                }
+            }
+
+            if ( !empty( $arrCatalogDefaultValues ) ) {
+
+                $this->Database->prepare( 'UPDATE tl_catalog %s WHERE id = ?' )->set( $arrCatalogDefaultValues )->execute( $dc->activeRecord->id );
+            }
+        }
+    }
+
+
     public function createTableOnSubmit( \DataContainer $dc ) {
 
         $strTablename = $dc->activeRecord->tablename;
@@ -97,7 +127,7 @@ class tl_catalog extends \Backend {
 
     public function getOperations() {
 
-        return [ 'cut', 'copy', 'invisible' ];
+        return Toolkit::$arrOperators;
     }
 
 
@@ -105,7 +135,7 @@ class tl_catalog extends \Backend {
 
         if ( $dc->activeRecord->pTable ) return [ '4' ];
 
-        return [ '0', '1', '2', '4', '5' ];
+        return Toolkit::$arrModeTypes;
     }
 
 

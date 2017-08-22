@@ -199,7 +199,8 @@ class OptionsGetter extends CatalogController {
 
         if ( Toolkit::isEmpty( $strOrderBy ) ) {
 
-            $this->CatalogDCAExtractor->extract( $this->arrField['dbTable'] );
+            $this->CatalogDCAExtractor->initialize( $this->arrField['dbTable'] );
+            $this->CatalogDCAExtractor->extract();
 
             if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
 

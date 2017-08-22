@@ -23,17 +23,7 @@ class CatalogManagerInitializer {
 
     protected function initializeDataContainerArrays() {
 
-        $strActiveModule = \Input::get('do');
-
-        if ( !Toolkit::isEmpty( \Input::get('target') ) && $strActiveModule == 'files' ) {
-
-            $arrTarget = explode( '.', \Input::get('target') );
-
-            if ( !empty( $arrTarget ) && is_array( $arrTarget ) ) {
-
-                $strActiveModule = !Toolkit::isEmpty( $arrTarget[0] ) ? $arrTarget[0] : $strActiveModule;
-            }
-        }
+        $strActiveModule = $this->getActiveModule();
 
         if ( in_array( $strActiveModule, [ 'group', 'mgroup', 'user' ] ) || $strActiveModule == null ) {
 
@@ -72,6 +62,24 @@ class CatalogManagerInitializer {
                 }
             }
         }
+    }
+
+
+    protected function getActiveModule() {
+
+        $strActiveModule = \Input::get('do');
+
+        if ( !Toolkit::isEmpty( \Input::get('target') ) && $strActiveModule == 'files' ) {
+
+            $arrTarget = explode( '.', \Input::get('target') );
+
+            if ( !empty( $arrTarget ) && is_array( $arrTarget ) ) {
+
+                $strActiveModule = !Toolkit::isEmpty( $arrTarget[0] ) ? $arrTarget[0] : $strActiveModule;
+            }
+        }
+
+        return $strActiveModule;
     }
 
 

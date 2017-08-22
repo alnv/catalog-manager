@@ -76,7 +76,7 @@ class CatalogView extends CatalogController {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
 
-                $arrFieldLabels = $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['title'], $arrField['description'] );
+                $arrFieldLabels = $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['title'], 'description' =>  $arrField['description'] ] );
 
                 $this->arrCatalogFields[ $strID ][ 'title' ] = $arrFieldLabels[0];
                 $this->arrCatalogFields[ $strID ][ 'description' ] = $arrFieldLabels[1];
@@ -1183,8 +1183,7 @@ class CatalogView extends CatalogController {
                 if ( !$objCatalog->numRows ) continue;
 
                 $arrCatalog = $objCatalog->row();
-                $strName = $this->I18nCatalogTranslator->getModuleLabel( $arrRelatedTable['table'] );
-                $strTitle = $strName[0] ? $strName[0] : $arrCatalog['name'];
+                $strTitle = $this->I18nCatalogTranslator->get( 'module', $arrRelatedTable['table'], [ 'titleOnly' => true ] );
 
                 $arrTableData['title'] = $strTitle;
                 $arrTableData['info'] = $arrCatalog['info'];

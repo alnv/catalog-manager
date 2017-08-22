@@ -125,7 +125,7 @@ class DCABuilder extends CatalogController {
 
         $arrReturn = [
 
-            'label' => $this->I18nCatalogTranslator->getModuleTitle( $this->strTable ),
+            'label' => $this->I18nCatalogTranslator->get( 'module', $this->strTable, [ 'titleOnly' => true ] ),
             'dataContainer' => 'Table',
 
             'oncut_callback' => [],
@@ -502,7 +502,7 @@ class DCABuilder extends CatalogController {
                 $strHide = Toolkit::isEmpty( $arrLegend[1] ) ? '' : ':hide';
             }
 
-            $GLOBALS['TL_LANG'][ $this->strTable ][$strLegendName] = $this->I18nCatalogTranslator->getLegendLabel( $strLegendName, $arrTranslations[$strLegend] );
+            $GLOBALS['TL_LANG'][ $this->strTable ][ $strLegendName ] = $this->I18nCatalogTranslator->get( 'legend', $strLegendName, [ 'title' => $arrTranslations[ $strLegend ] ] );
             $strReturn .= sprintf( '{%s%s},%s;', $strLegendName, $strHide, implode( ',', $arrFields ) );
         }
 

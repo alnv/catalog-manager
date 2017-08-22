@@ -135,8 +135,7 @@ class CatalogRelationRedirectWizard extends \Widget {
 
     protected function generateRelatedInputField( $arrOption, $intIndex, $intTabindex, $strButtons ) {
 
-        $arrModuleName = $this->I18nCatalogTranslator->getModuleLabel( $arrOption['table'] );
-        $strName = $arrModuleName[0] ? $arrModuleName[0] : $arrOption['table'];
+        $strName = $this->I18nCatalogTranslator->get( 'module', $arrOption['table'], [ 'titleOnly' => true ] );
 
         $strTemplate =
             '<tr>'.

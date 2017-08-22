@@ -291,8 +291,7 @@ class tl_module extends \Backend {
                 continue;
             }
 
-            $arrLabels = $objI18nCatalogTranslator->getFieldLabel( $objCatalogFields->fieldname, $objCatalogFields->title, $objCatalogFields->description );
-            $arrFields[ $objCatalogFields->fieldname ] = $arrLabels[0] ? $arrLabels[0] : $objCatalogFields->fieldname;
+            $arrFields[ $objCatalogFields->fieldname ] = $objI18nCatalogTranslator->get( 'field', $objCatalogFields->fieldname, [ 'title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true ] );
         }
 
         return $arrFields;

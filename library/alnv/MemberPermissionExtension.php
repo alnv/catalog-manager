@@ -33,8 +33,8 @@ class MemberPermissionExtension extends CatalogController {
 
     protected function extendMemberGroupDCA( $strCatalogname ){
 
-        $arrAccessLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname );
-        $arrPermissionLabel = $this->I18nCatalogTranslator->getModuleLabel( $strCatalogname, $this->getPermissionLabel() );
+        $arrAccessLabel = $this->I18nCatalogTranslator->get( 'module', $strCatalogname );
+        $arrPermissionLabel = $this->I18nCatalogTranslator->get( 'module', $strCatalogname, [ 'postfix' => $this->getPermissionLabel() ] );
 
         $arrAccessLabel[1] = $this->getPermissionInfo(0);
         $arrPermissionLabel[1] = $this->getPermissionInfo(1);

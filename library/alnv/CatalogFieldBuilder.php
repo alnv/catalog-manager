@@ -129,7 +129,7 @@ class CatalogFieldBuilder extends CatalogController {
 
         $arrDCAField = [
 
-            'label' => $this->I18nCatalogTranslator->getFieldLabel( $arrField['fieldname'], $arrField['label'], $arrField['description'] ),
+            'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
             'inputType' => Toolkit::setDcConformInputType( $arrField['type'] ),
 
             'eval' => [

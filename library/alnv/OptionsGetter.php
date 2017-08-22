@@ -134,7 +134,7 @@ class OptionsGetter extends CatalogController {
 
         if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
 
-            $arrOptions[ $strValue ] = $this->I18nCatalogTranslator->getOptionLabel( $strValue, $strLabel );
+            $arrOptions[ $strValue ] = $this->I18nCatalogTranslator->get( 'option', $strValue, [ 'title' => $strLabel ] );
         }
 
         return $arrOptions;
@@ -234,7 +234,7 @@ class OptionsGetter extends CatalogController {
 
         while ( $objDbOptions->next() ) {
 
-            $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->getOptionLabel( $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
+            $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->get( 'option', $objDbOptions->{$this->arrField['dbTableKey']}, [ 'title' => $objDbOptions->{$this->arrField['dbTableValue']} ] );
         }
 
         return $arrOptions;
@@ -341,7 +341,7 @@ class OptionsGetter extends CatalogController {
 
                 foreach ( $arrFieldOptions as $arrOption ) {
 
-                    $arrOptions[ $arrOption['key'] ] = $this->I18nCatalogTranslator->getOptionLabel( $arrOption['key'], $arrOption['value'] );
+                    $arrOptions[ $arrOption['key'] ] = $this->I18nCatalogTranslator->get( 'option', $arrOption['key'], [ 'title' => $arrOption['value'] ] );
                 }
             }
         }

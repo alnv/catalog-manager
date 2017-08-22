@@ -113,7 +113,7 @@ class CatalogManagerInitializer {
                     $arrNav = [];
                     $arrNav[ $arrNavigationArea['key'] ] = [];
                     array_insert(  $GLOBALS['BE_MOD'], $intIndex, $arrNav );
-                    $GLOBALS['TL_LANG']['MOD'][ $arrNavigationArea['key'] ] = $objI18nCatalogTranslator->getNavigationLabel( $arrNavigationArea['key'], $arrNavigationArea['value'] );
+                    $GLOBALS['TL_LANG']['MOD'][ $arrNavigationArea['key'] ] = $objI18nCatalogTranslator->get( 'nav', $arrNavigationArea['key'], [ 'title' => $arrNavigationArea['value'] ] );
                 }
             }
         }
@@ -136,11 +136,11 @@ class CatalogManagerInitializer {
             if ( $arrCatalog['isBackendModule'] && !$arrCatalog['pTable'] ) {
 
                 $this->insertModuleToBE_MOD( $arrCatalog );
-                $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->getModuleLabel( $arrCatalog['tablename'] );
+                $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->get( 'module', $arrCatalog['tablename'] );
             }
         }
 
-        if ( $strTable ) $GLOBALS['TL_LANG']['MOD'][ $strTable ] = $objI18nCatalogTranslator->getModuleTitle( $strTable );
+        if ( $strTable ) $GLOBALS['TL_LANG']['MOD'][ $strTable ] = $objI18nCatalogTranslator->get( 'module', $strTable, [ 'titleOnly' => true ] );
     }
 
     

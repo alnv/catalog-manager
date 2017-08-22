@@ -61,7 +61,7 @@ class FrontendEditing extends CatalogController {
                 if ( $arrField['type'] == 'fieldsetStart' ) {
 
                     $strPalette = $arrField['title'];
-                    $this->arrPaletteLabels[ $strPalette ] = $this->I18nCatalogTranslator->getLegendLabel( $arrField['title'], $arrField['label'] );
+                    $this->arrPaletteLabels[ $strPalette ] = $this->I18nCatalogTranslator->get( 'legend', $arrField['title'], [ 'title' => $arrField['label'] ] );
                 }
 
                 $arrField['_palette'] = $strPalette;
@@ -86,8 +86,8 @@ class FrontendEditing extends CatalogController {
             $this->setValues();
         }
 
-        $this->arrPaletteLabels['general_legend'] = $this->I18nCatalogTranslator->getLegendLabel( 'general_legend', '' );
-        $this->arrPaletteLabels['invisible_legend'] = $this->I18nCatalogTranslator->getLegendLabel( 'invisible_legend', '' );
+        $this->arrPaletteLabels['general_legend'] = $this->I18nCatalogTranslator->get( 'legend', 'general_legend' );
+        $this->arrPaletteLabels['invisible_legend'] =  $this->I18nCatalogTranslator->get( 'legend', 'invisible_legend' );
 
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );

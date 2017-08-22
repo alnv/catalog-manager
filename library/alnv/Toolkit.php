@@ -4,6 +4,8 @@ namespace CatalogManager;
 
 class Toolkit {
 
+    public static $arrModeTypes = [ '0', '1', '2', '4', '5' ];
+    public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
 
     public static $arrSqlTypes = [
 

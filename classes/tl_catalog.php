@@ -45,6 +45,23 @@ class tl_catalog extends \Backend {
     }
 
 
+    public function getCoreTables() {
+
+        $arrReturn = [];
+        $arrTables = $this->Database->listTables();
+
+        foreach ( $arrTables as $strTable ) {
+
+            if ( Toolkit::isCoreTable( $strTable ) ) {
+
+                $arrReturn[] = $strTable;
+            }
+        }
+
+        return $arrReturn;
+    }
+
+
     public function createTableOnSubmit( \DataContainer $dc ) {
 
         $strTablename = $dc->activeRecord->tablename;

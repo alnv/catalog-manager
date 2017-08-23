@@ -119,7 +119,7 @@ class CatalogTextFieldWidget extends \Widget {
                 specialchars( $this->varValue ),
                 $this->getAttributes(),
                 $this->strId,
-                ( $this->startsWith ?: '' ),
+                ( $this->startswith ?: '' ),
                 $this->wizard,
                 $this->generateDataList());
         }

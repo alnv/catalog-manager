@@ -1,2 +1,3 @@
 - implement string parser for palette names
 - fix problem with unique index
+- add dcPalette, dcLegend and dcField to multiple select menu

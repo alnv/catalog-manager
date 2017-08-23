@@ -4,14 +4,20 @@ namespace CatalogManager;
 
 class tl_catalog_fields extends \Backend {
 
-    
-    private $arrFieldsCache = [];
-    private $arrTextFieldsCache = [];
+
+    protected $strTable = '';
 
     
     public function __construct() {
 
         parent::__construct();
+
+        if ( \Input::get( 'act' ) && \Input::get( 'id' ) ) {
+
+            $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE id = ? LIMIT 1 )' )->limit(1)->execute( \Input::get( 'id' ) );
+
+            $this->strTable = $objCatalog->tablename;
+        }
     }
 
     
@@ -128,12 +134,6 @@ class tl_catalog_fields extends \Backend {
     public function getTextFieldsByParentID() {
 
         $arrReturn = [ 'title' ];
-
-        if ( !empty( $this->arrTextFieldsCache ) && is_array( $this->arrTextFieldsCache ) ) {
-
-            return $this->arrTextFieldsCache;
-        }
-
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
 
         while ( $objCatalogFields->next() ) {
@@ -146,29 +146,23 @@ class tl_catalog_fields extends \Backend {
             $arrReturn[] = $objCatalogFields->fieldname;
         }
 
-        $this->arrTextFieldsCache = $arrReturn;
-
-        return $this->arrTextFieldsCache;
+        return $arrReturn;
     }
 
     
     public function getCatalogFieldsByParentID() {
 
-        if ( !empty( $this->arrFieldsCache ) && is_array( $this->arrFieldsCache ) ) {
-
-            return $this->arrFieldsCache;
-        }
-
+        $arrReturn = [];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
 
         while ( $objCatalogFields->next() ) {
 
             if ( !$objCatalogFields->fieldname ) continue;
 
-            $this->arrFieldsCache[] = $objCatalogFields->fieldname;
+            $arrReturn[] = $objCatalogFields->fieldname;
         }
 
-        return $this->arrFieldsCache;
+        return $arrReturn;
     }
 
     
@@ -447,5 +441,34 @@ class tl_catalog_fields extends \Backend {
         }
 
         return $arrReturn;
+    }
+
+
+    public function addPalettePicker() {
+
+        if ( !$this->strTable ) return null;
+
+        if ( Toolkit::isCoreTable( $this->strTable ) ) {
+
+            $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes']['fieldsetStart'] = str_replace( 'isHidden;', 'isHidden;{dc_modifier_legend},dcPalette,dcLegend;', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes']['fieldsetStart'] );
+        }
+    }
+
+
+    public function getPalettes() {
+
+        $objDcModifier = new DcModifier();
+        $objDcModifier->initialize( $this->strTable );
+
+        return $objDcModifier->getPalettes();
+    }
+
+
+    public function getLegends( \DataContainer $dc ) {
+
+        $objDcModifier = new DcModifier();
+        $objDcModifier->initialize( $this->strTable );
+        
+        return $objDcModifier->getLegends( $dc->activeRecord->dcPalette );
     }
 }

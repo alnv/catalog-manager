@@ -11,7 +11,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ],
             [ 'CatalogManager\tl_catalog_fields', 'setOrderField' ],
-            [ 'CatalogManager\tl_catalog_fields', 'changeGlobals' ]
+            [ 'CatalogManager\tl_catalog_fields', 'changeGlobals' ],
+            [ 'CatalogManager\tl_catalog_fields', 'addPalettePicker' ],
         ],
 
         'onsubmit_callback' => [
@@ -1753,6 +1754,66 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'dcPalette' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPalette'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'maxlength' => 128,
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getPalettes' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dcLegend' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcLegend'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'maxlength' => 128,
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getLegends' ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'dcField' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcField'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'maxlength' => 128,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ]
     ]
 ];

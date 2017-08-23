@@ -30,12 +30,18 @@ class tl_catalog extends \Backend {
 
     public function getCoreTables() {
 
+        return $this->getTables();
+    }
+
+
+    protected function getTables( $arrExclude = [] ) {
+
         $arrReturn = [];
         $arrTables = $this->Database->listTables();
 
         foreach ( $arrTables as $strTable ) {
 
-            if ( Toolkit::isCoreTable( $strTable ) ) {
+            if ( Toolkit::isCoreTable( $strTable ) && !in_array( $strTable, $arrExclude ) ) {
 
                 $arrReturn[] = $strTable;
             }
@@ -207,15 +213,14 @@ class tl_catalog extends \Backend {
     public function getAllCTables( \DataContainer $dc ) {
 
         $arrReturn = [];
-        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename`, `pTable` FROM tl_catalog' )->execute();
+        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename`, `pTable` FROM tl_catalog WHERE `tablename` != ?' )->execute( $dc->activeRecord->tablename );
+
+        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
+
+            return $this->getTables( [ 'tl_content' ] );
+        }
 
         while ( $objCatalogTables->next() ) {
-
-            if ( $dc->activeRecord->tablename && $dc->activeRecord->tablename == $objCatalogTables->tablename ) {
-
-                continue;
-            }
-
             
             $arrReturn[] = $objCatalogTables->tablename;
         }
@@ -227,14 +232,15 @@ class tl_catalog extends \Backend {
     public function getAllPTables( \DataContainer $dc ) {
 
         $arrReturn = [];
-        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename` FROM tl_catalog' )->execute();
+
+        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
+
+            return $this->getTables( [ 'tl_content' ] );
+        }
+
+        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename` FROM tl_catalog WHERE `tablename` != ?' )->execute( $dc->activeRecord->tablename );
 
         while ( $objCatalogTables->next() ) {
-
-            if ( $dc->activeRecord->tablename && $dc->activeRecord->tablename == $objCatalogTables->tablename ) {
-
-                continue;
-            }
 
             $arrReturn[] = $objCatalogTables->tablename;
         }

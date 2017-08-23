@@ -17,30 +17,13 @@ class tl_catalog extends \Backend {
 
     public function setCoreTableData( \DataContainer $dc ) {
 
-        if ( $dc->activeRecord->tstamp || Toolkit::isEmpty( $dc->activeRecord->tablename ) ) return null;
+        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) && \Input::post( 'tl_loadDataContainer' ) ) {
 
-        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
-
-            $arrCatalog = $dc->activeRecord->row();
             $objDCAExtractor = new CatalogDCAExtractor();
             $objDCAExtractor->initialize( $dc->activeRecord->tablename );
-            $arrCatalogDefaultValues = $objDCAExtractor->getCatalogValuesFromDataContainerArray();
+            $arrContainerData = $objDCAExtractor->getCatalogValuesFromDataContainerArray();
 
-            if ( is_array( $arrCatalogDefaultValues ) && !empty( $arrCatalogDefaultValues ) ) {
-
-                foreach ( $arrCatalogDefaultValues as $strKey => $strValue ) {
-
-                    if ( !Toolkit::isEmpty( $arrCatalog[ $strKey ] ) ) {
-
-                        unset( $arrCatalogDefaultValues[ $strKey ] );
-                    }
-                }
-            }
-
-            if ( !empty( $arrCatalogDefaultValues ) ) {
-
-                $this->Database->prepare( 'UPDATE tl_catalog %s WHERE id = ?' )->set( $arrCatalogDefaultValues )->execute( $dc->activeRecord->id );
-            }
+            if ( !empty( $arrContainerData ) ) $this->Database->prepare( 'UPDATE tl_catalog %s WHERE id = ?' )->set( $arrContainerData )->execute( $dc->activeRecord->id );
         }
     }
 

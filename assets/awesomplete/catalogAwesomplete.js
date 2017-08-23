@@ -34,7 +34,7 @@
 
                     objAwesompleteConfig.data = function ( strText, strInput ) {
 
-                        if ( strInput.substr( objOptions.start, objOptions.end ) == objOptions.startswith ) {
+                        if ( startswith( strInput, objOptions.start, objOptions.end, objOptions.startswith ) ) {
 
                             return strText;
                         }
@@ -46,6 +46,11 @@
                 new Awesomplete( objField, objAwesompleteConfig );
             }
         }
+    }
+
+    function startswith( strInput, intStart, intEnd, $strPrefix ) {
+
+        return strInput.substr( intStart, intEnd ) == $strPrefix;
     }
 
 })();

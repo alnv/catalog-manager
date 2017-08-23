@@ -194,6 +194,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'maxlength' => 128,
                 'mandatory' => true,
                 'doNotCopy' => true,
+                'loadButton' => true,
                 'tl_class' => 'long',
                 'startswith' => 'tl_',
                 'spaceToUnderscore' => true,

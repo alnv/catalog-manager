@@ -4,9 +4,7 @@ namespace CatalogManager;
 
 class DcModifier extends CatalogController {
 
-
     protected $arrFields = [];
-    protected $strPalette = '';
     protected $arrPalettes = [];
     protected $strTablename = '';
 
@@ -24,7 +22,7 @@ class DcModifier extends CatalogController {
         \Controller::loadLanguageFile( $this->strTablename );
         \Controller::loadDataContainer( $this->strTablename );
 
-        // $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
+        $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
         $this->arrPalettes = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ?: [];
     }
 
@@ -47,9 +45,34 @@ class DcModifier extends CatalogController {
     }
 
 
-    public function getFields() {
+    public function getFields( $strName ) {
 
+        $arrReturn = [];
 
+        if ( !$strName ) return $arrReturn;
+
+        $strPalette = $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'][ $strName ];
+        $arrFields = preg_split( '/(,|;)/', $strPalette );
+
+        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
+
+            foreach ( $arrFields as $strField ) {
+
+                if ( in_array( $strField, $this->arrFields ) ) {
+
+                    $strLabel = $strField;
+
+                    if ( is_array( $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ] ) ) {
+
+                        $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ][0] ?: $strLabel;
+                    }
+                    
+                    $arrReturn[ $strField ] = $strLabel;
+                }
+            }
+        }
+
+        return $arrReturn;
     }
 
 

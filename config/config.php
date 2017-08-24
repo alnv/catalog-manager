@@ -85,7 +85,7 @@ $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
 $GLOBALS['TL_PERMISSIONS'][] = 'filterform';
 $GLOBALS['TL_PERMISSIONS'][] = 'filterformp';
 
-$GLOBALS['BE_FFL']['catalogOrderByWizard'] = 'CatalogManager\CatalogOrderByWizard';
+$GLOBALS['BE_FFL']['catalogSelectWizard'] = 'CatalogManager\CatalogSelectWizard';
 $GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';
 $GLOBALS['BE_FFL']['catalogTaxonomyWizard'] = 'CatalogManager\CatalogTaxonomyWizard';
 $GLOBALS['BE_FFL']['catalogTextFieldWidget'] = 'CatalogManager\CatalogTextFieldWidget';

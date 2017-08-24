@@ -5,6 +5,7 @@ namespace CatalogManager;
 class tl_catalog_fields extends \Backend {
 
 
+    protected $arrTypes = [];
     protected $strTable = '';
 
     
@@ -18,6 +19,24 @@ class tl_catalog_fields extends \Backend {
 
             $this->strTable = $objCatalog->tablename;
         }
+
+        $this->arrTypes = [
+
+            'map' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'text' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'date' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'radio' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'hidden' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'number' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'select' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'upload' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'checkbox' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'textarea' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'message' => [ 'dcPicker' => 'message;', 'dcType' => 'dcPaletteField' ],
+            'dbColumn' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
+            'fieldsetStart' => [  'dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend' ],
+            'fieldsetStop' => [],
+        ];
     }
 
     
@@ -250,7 +269,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getFieldTypes() {
 
-        return [ 'text', 'date', 'radio', 'hidden', 'number', 'select', 'upload', 'message', 'checkbox', 'textarea', 'dbColumn', 'map', 'fieldsetStart', 'fieldsetStop' ];
+        return array_keys( $this->arrTypes );
     }
 
     
@@ -447,15 +466,19 @@ class tl_catalog_fields extends \Backend {
     public function addPalettePicker() {
 
         if ( !$this->strTable ) return null;
+        if ( !Toolkit::isCoreTable( $this->strTable ) ) return null;
 
-        if ( Toolkit::isCoreTable( $this->strTable ) ) {
+        foreach ( $this->arrTypes as $strType => $arrType ) {
 
-            $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes']['fieldsetStart'] = str_replace( 'isHidden;', 'isHidden;{dc_modifier_legend},dcPalette,dcLegend;', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes']['fieldsetStart'] );
+            if ( !empty( $arrType ) && is_array( $arrType ) ) {
+
+                $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] = str_replace( $arrType['dcPicker'], $arrType['dcPicker'] . '{dc_modifier_legend},'. $arrType['dcType'] .';', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] );
+            }
         }
     }
 
 
-    public function getPalettes() {
+    public function getDcPalettes() {
 
         $objDcModifier = new DcModifier();
         $objDcModifier->initialize( $this->strTable );
@@ -464,11 +487,20 @@ class tl_catalog_fields extends \Backend {
     }
 
 
-    public function getLegends( \DataContainer $dc ) {
+    public function getDcLegends( $strCurrentPalette ) {
 
         $objDcModifier = new DcModifier();
         $objDcModifier->initialize( $this->strTable );
         
-        return $objDcModifier->getLegends( $dc->activeRecord->dcPalette );
+        return $objDcModifier->getLegends( $strCurrentPalette );
+    }
+
+
+    public function getDcFields( $strCurrentPalette ) {
+
+        $objDcModifier = new DcModifier();
+        $objDcModifier->initialize( $this->strTable );
+
+        return $objDcModifier->getFields( $strCurrentPalette );
     }
 }

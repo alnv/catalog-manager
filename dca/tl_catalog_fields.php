@@ -1756,64 +1756,44 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'sql' => "char(1) NOT NULL default ''"
         ],
 
-        'dcPalette' => [
+        'dcPaletteLegend' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPalette'],
-            'inputType' => 'select',
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'],
+            'inputType' => 'catalogSelectWizard',
 
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50',
-                'maxlength' => 128,
-                'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'includeBlankOption' => true,
+                'mainLabel' => '', // @todo
+                'dependedLabel' => '', // @todo
+                'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
+                'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcLegends' ],
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getPalettes' ],
-
             'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
+            'sql' => "blob NULL"
         ],
 
-        'dcLegend' => [
+        'dcPaletteField' => [
 
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcLegend'],
-            'inputType' => 'select',
-
-            'eval' => [
-
-                'chosen' => true,
-                'tl_class' => 'w50',
-                'maxlength' => 128,
-                'submitOnChange' => true,
-                'blankOptionLabel' => '-',
-                'includeBlankOption' => true
-            ],
-
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getLegends' ],
-
-            'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
-        ],
-
-        'dcField' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcField'],
-            'inputType' => 'select',
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteField'],
+            'inputType' => 'catalogSelectWizard',
 
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50',
-                'maxlength' => 128,
                 'blankOptionLabel' => '-',
-                'includeBlankOption' => true
+                'includeBlankOption' => true,
+                'mainLabel' => '', // @todo
+                'dependedLabel' => '', // @todo
+                'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
+                'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcFields' ],
             ],
 
             'exclude' => true,
-            'sql' => "varchar(128) NOT NULL default ''"
+            'sql' => "blob NULL"
         ]
     ]
 ];

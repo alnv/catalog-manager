@@ -246,55 +246,28 @@ class tl_module extends \Backend {
     }
     
 
-    public function getSortableCatalogFieldsByTablename( $strTablename ) {
+    public function getSortableFields( $objWidget ) {
 
-        $arrFields = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $strTablename );
+        $arrReturn = [];
+        $strTablename = $this->getCatalogTablename( $objWidget );
 
-        $objI18nCatalogTranslator = new I18nCatalogTranslator();
-        $objI18nCatalogTranslator->initialize();
+        if ( !$strTablename ) return $arrReturn;
 
-        if ( is_array( $arrCatalog ) ) {
+        $objCatalogFieldBuilder = new CatalogFieldBuilder();
+        $objCatalogFieldBuilder->initialize( $strTablename );
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-            $arrOperations = $arrCatalog['operations'];
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            $arrFields['id'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0];
-            $arrFields['title'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0];
-            $arrFields['alias'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0];
-            $arrFields['tstamp'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0];
+           if ( in_array( $arrField['type'], [ 'fieldsetStart', 'fieldsetStop', 'map', 'upload', 'textarea' ] ) ) {
 
-            if ( in_array( 'invisible', $arrOperations ) && $this->Database->fieldExists( 'invisible', $strTablename ) ) {
+               continue;
+           }
 
-                $arrFields['stop'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0];
-                $arrFields['start'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0];
-                $arrFields['invisible'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0];
-            }
-
-            if ( $this->Database->fieldExists( 'sorting', $strTablename ) ) {
-
-                $arrFields['sorting'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0];
-            }
+            $arrReturn[ $strFieldname ] = $arrField['_dcFormat']['label'][0] ?: $strFieldname;
         }
 
-        if ( !$objCatalogFields->numRows ) return $arrFields;
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( !$objCatalogFields->fieldname || !$objCatalogFields->type ) {
-
-                continue;
-            }
-
-            if ( in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'upload', 'textarea' ] ) ) {
-
-                continue;
-            }
-
-            $arrFields[ $objCatalogFields->fieldname ] = $objI18nCatalogTranslator->get( 'field', $objCatalogFields->fieldname, [ 'title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true ] );
-        }
-
-        return $arrFields;
+        return $arrReturn;
     }
 
 
@@ -548,5 +521,15 @@ class tl_module extends \Backend {
         }
 
         return [];
+    }
+
+
+    protected function getCatalogTablename( $objWidget ) {
+
+        $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $objWidget->strTable ) )->limit(1)->execute( $objWidget->currentRecord );
+
+        if ( $objModule->numRows && $objModule->catalogTablename ) return $objModule->catalogTablename;
+
+        return '';
     }
 }

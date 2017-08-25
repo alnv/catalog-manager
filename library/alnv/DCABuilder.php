@@ -261,7 +261,7 @@ class DCABuilder extends CatalogController {
 
         $arrHeaderFields = $this->arrCatalog['headerFields'];
         $arrSortingFields = $this->arrCatalog['sortingFields'];
-        $strPanelLayout = implode( ',', $this->arrCatalog['panelLayout'] );
+        $strPanelLayout = Toolkit::createPanelLayout( $this->arrCatalog['panelLayout'] );
 
         if ( empty( $arrSortingFields ) ) {
 
@@ -271,11 +271,6 @@ class DCABuilder extends CatalogController {
         if ( empty( $arrHeaderFields ) ) {
 
             $arrHeaderFields = [ 'id', 'title', 'alias' ];
-        }
-
-        if ( strpos( $strPanelLayout, 'filter' ) !== false ) {
-
-            $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1);
         }
 
         if ( empty( $this->arrCatalog['labelFields'] ) || !is_array( $this->arrCatalog['labelFields'] ) ) {

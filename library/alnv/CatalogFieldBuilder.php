@@ -275,7 +275,7 @@ class CatalogFieldBuilder extends CatalogController {
             return false;
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
 
             return false;
         }

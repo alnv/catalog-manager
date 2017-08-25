@@ -116,6 +116,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
     '0' => 'Records are not sorted',
     '1' => 'Records are sorted by a fixed field',
     '2' => 'Records are sorted by a switchable field',
+    '3' => 'Records are sorted by the parent table',
     '4' => 'Displays the child records of a parent record',
-    '5' => 'Records are displayed as tree'
+    '5' => 'Records are displayed as tree',
+    '6' => 'Displays the child records within a tree structure'
 ];

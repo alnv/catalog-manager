@@ -115,6 +115,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
     '0' => 'Keine Sortierung',
     '1' => 'Sortierung nach einem festen Feld',
     '2' => 'Sortierung nach einem variablen Feld',
+    '3' => 'Sortierung anhand der Elterntabelle',
     '4' => 'Darstellung der Kinddatensätze eines Elterndatensatzes',
-    '5' => 'Darstellung als Baum'
+    '5' => 'Darstellung als Baum',
+    '6' => 'Sortierung der Kinddatensätze anhand eines Baumes'
 ];

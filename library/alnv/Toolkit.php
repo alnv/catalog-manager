@@ -668,21 +668,9 @@ class Toolkit {
     }
 
     
-    public static function createPanelLayout( $arrPanelLayout, $arrForceFields = [] ) {
+    public static function createPanelLayout( $arrPanelLayout ) {
 
         $arrPanelLayout = is_array( $arrPanelLayout ) ? $arrPanelLayout : [];
-        
-        if ( is_array( $arrForceFields ) && !empty( $arrForceFields ) ) {
-
-            foreach ( $arrForceFields as $strForceField ) {
-
-                if ( !in_array( $strForceField, $arrPanelLayout ) ) {
-
-                    $arrPanelLayout[] = $strForceField;
-                }
-            }
-        }
-
         $strPanelLayout = implode( ',', $arrPanelLayout );
 
         if ( strpos( $strPanelLayout, 'filter' ) !== false ) {

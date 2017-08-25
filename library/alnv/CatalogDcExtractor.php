@@ -6,6 +6,7 @@ class CatalogDcExtractor extends CatalogController {
 
 
     protected $strTable = '';
+    protected $blnCore = false;
     protected $strOrderBy = '';
     protected $arrConvertMap = [
 
@@ -32,7 +33,7 @@ class CatalogDcExtractor extends CatalogController {
                 'showColumns'
             ],
 
-            'operations'
+            'operations' => []
         ]
     ];
 
@@ -47,6 +48,7 @@ class CatalogDcExtractor extends CatalogController {
     public function initialize( $strTablename ) {
 
         $this->strTable = $strTablename;
+        $this->blnCore = Toolkit::isCoreTable( $strTablename );
     }
 
 
@@ -74,15 +76,17 @@ class CatalogDcExtractor extends CatalogController {
 
                     $arrReturn = $this->convertDcLabelToCatalog( $arrReturn, $arrDataContainer, $varAttributes['label'], $strDcConfigType );
                     $arrReturn = $this->convertDcSortingToCatalog( $arrReturn, $arrDataContainer, $varAttributes['sorting'], $strDcConfigType );
-
-                    break;
-
-                case 'operations':
-
-                    $arrReturn = $this->convertDcOperationsToCatalog( $arrReturn, $arrDataContainer, $varAttributes, $strDcConfigType );
+                    $arrReturn = $this->convertDcOperationsToCatalog( $arrReturn, $arrDataContainer, $varAttributes['operations'], $strDcConfigType );
 
                     break;
             }
+        }
+
+        if ( $this->blnCore ) {
+
+            $arrReturn['navArea'] = '';
+            $arrReturn['navPosition'] = '';
+            $arrReturn['isBackendModule'] = '';
         }
 
         return $arrReturn;
@@ -111,12 +115,7 @@ class CatalogDcExtractor extends CatalogController {
 
                     $arrReturn = $this->convertCatalogToDcLabel( $arrReturn, $arrCatalog, $varAttributes['label'], $strDcConfigType );
                     $arrReturn = $this->convertCatalogToDcSorting( $arrReturn, $arrCatalog, $varAttributes['sorting'], $strDcConfigType );
-
-                    break;
-
-                case 'operations':
-
-                    $arrReturn = $this->convertCatalogToDcOperations( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType );
+                    $arrReturn = $this->convertCatalogToDcOperations( $arrReturn, $arrCatalog, $varAttributes['operations'], $strDcConfigType );
 
                     break;
 
@@ -187,6 +186,194 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
+    public function setDcSortingByMode( $strMode, $arrCatalog = [] ) {
+
+        $arrReturn = [
+
+            'mode' => $strMode ?: '0'
+        ];
+
+        switch ( $strMode ) {
+
+            case '0':
+
+                return $arrReturn;
+
+                break;
+
+            case '1':
+
+                if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
+
+                    $arrReturn['flag'] = $arrCatalog['flag'];
+                }
+
+                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
+
+                    $arrReturn['fields'] = $arrCatalog['sortingFields'];
+                }
+
+                else {
+
+                    $arrReturn['fields'] = [ 'title' ];
+                }
+
+                return $arrReturn;
+
+                break;
+
+            case '2':
+
+                $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $arrCatalog['panelLayout'] );
+
+                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
+
+                    $arrReturn['fields'] = $arrCatalog['sortingFields'];
+                }
+
+                else {
+
+                    $arrReturn['fields'] = [ 'title' ];
+                }
+
+                return $arrReturn;
+
+                break;
+
+            case '3':
+
+                return $arrReturn;
+
+                break;
+
+            case '4':
+
+                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
+
+                    $arrReturn['fields'] = $arrCatalog['sortingFields'];
+                }
+
+                else {
+
+                    $arrReturn['fields'] = [ 'title' ];
+                }
+
+                if ( !is_array( $arrCatalog['labelFields'] ) || empty( $arrCatalog['labelFields'] ) ) {
+
+                    $arrCatalog['labelFields'] = ['title'];
+                }
+
+                if ( is_array( $arrCatalog['headerFields'] ) && !empty( $arrCatalog['headerFields'] ) ) {
+
+                    $arrReturn['headerFields'] = $arrCatalog['headerFields'];
+                }
+
+                else {
+
+                    $arrReturn['headerFields'] = [ 'id', 'alias', 'title' ];
+                }
+
+                $arrReturn['child_record_callback'] = function () use ( $arrCatalog ) {
+
+                    return $arrCatalog['labelFields'][0];
+                };
+
+                break;
+
+            case '5':
+
+                return $arrReturn;
+
+                break;
+
+            case '6':
+
+                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
+
+                    $arrReturn['fields'] = $arrCatalog['sortingFields'];
+                }
+
+                else {
+
+                    $arrReturn['fields'] = [ 'title' ];
+                }
+
+                break;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function setDcLabelByMode( $strMode, $arrCatalog = [] ) {
+
+        $arrReturn = [];
+
+        if ( $strMode === '0' || $strMode === '1' || $strMode === '2' ) {
+
+            if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
+
+                $arrReturn['fields'] = $arrCatalog['labelFields'];
+            }
+
+            else {
+
+                $arrReturn['fields'] = [ 'title' ];;
+            }
+
+            $arrReturn['showColumns'] = $arrCatalog['showColumns'] ? true : false;
+
+            if ( !Toolkit::isEmpty( $arrCatalog['format'] ) ) $arrReturn['format'] = $arrCatalog['format'];
+
+            if ( $arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $arrCatalog['labelFormat'] ) ) {
+
+                $arrReturn['label_callback'] = '';
+            }
+
+            if ( $arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $arrCatalog['groupFormat'] ) ) {
+
+                $arrReturn['group_callback'] = '';
+            }
+
+            return $arrReturn;
+        }
+
+        if ( $strMode === '3' || $strMode === '4' ) {
+
+            return $arrReturn;
+        }
+
+        if ( $strMode === '5' || $strMode === '6' ) {
+
+            if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
+
+                $arrReturn['fields'] = $arrCatalog['labelFields'];
+            }
+
+            else {
+
+                $arrReturn['fields'] = [ 'title' ];
+            }
+
+            if ( !Toolkit::isEmpty( $arrCatalog['format'] ) ) $arrReturn['format'] = $arrCatalog['format'];
+
+            if ( $arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $arrCatalog['labelFormat'] ) ) {
+
+                $arrReturn['label_callback'] = '';
+            }
+
+            if ( $arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $arrCatalog['groupFormat'] ) ) {
+
+                $arrReturn['group_callback'] = '';
+            }
+
+            return $arrReturn;
+        }
+
+        return $arrReturn;
+    }
+
+
     protected function extractDCASorting( $arrSorting ) {
 
         $arrTemps = [];
@@ -251,7 +438,7 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( is_array( $arrDataContainer[ $strDcConfigType ]['sorting'] ) ) {
 
-            if ( isset( $arrDataContainer[ $strDcConfigType ]['sorting']['mode'] ) && in_array( $arrDataContainer[ $strDcConfigType ]['sorting']['mode'], Toolkit::$arrModeTypes ) ) {
+            if ( isset( $arrDataContainer[ $strDcConfigType ]['sorting']['mode'] ) ) {
 
                 $arrReturn['mode'] = $arrDataContainer[ $strDcConfigType ]['sorting']['mode'];
             }
@@ -324,6 +511,13 @@ class CatalogDcExtractor extends CatalogController {
 
 
     protected function convertDcOperationsToCatalog( $arrReturn, $arrDataContainer, $varAttributes, $strDcConfigType ) {
+
+        if ( $this->blnCore ) {
+
+            $arrReturn['operations'] = '';
+
+            return $arrReturn;
+        }
 
         if ( is_array( $arrDataContainer[ $strDcConfigType ]['operations'] ) ) {
 

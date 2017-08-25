@@ -217,8 +217,8 @@ class CatalogManagerInitializer {
 
     protected function createCatalogManagerDCA( $arrCatalog ) {
 
-        $objDCABuilder = new DCABuilder( $arrCatalog );
-        $objDCABuilder->createDCA();
+        $objDcBuilder = new DcBuilder( $arrCatalog );
+        $objDcBuilder->createDataContainerArray();
     }
 
 

@@ -9,7 +9,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'onload_callback' => [
 
-            [ 'CatalogManager\tl_catalog', 'checkPermission' ]
+            [ 'CatalogManager\tl_catalog', 'checkPermission' ],
+            [ 'CatalogManager\tl_catalog', 'checkEditMask' ]
         ],
 
         'onsubmit_callback' => [
@@ -325,8 +326,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'maxlength' => 128,
+                'allowHtml' => true,
                 'tl_class' => 'long clr',
-                'allowHtml' => true
             ],
 
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForFormat' ] ],
@@ -344,13 +345,14 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr'
+                'tl_class' => 'clr',
+                'maxlength' => 1024,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getParentDataContainerFields' ],
 
             'exclude' => true,
-            'sql' => "varchar(64) NOT NULL default ''"
+            'sql' => "varchar(1024) NOT NULL default ''"
         ],
 
         'sortingFields' => [
@@ -362,7 +364,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr'
+                'tl_class' => 'clr',
+                'maxlength' => 1024,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
@@ -380,7 +383,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
                 'chosen' => true,
                 'multiple' => true,
-                'tl_class' => 'clr'
+                'tl_class' => 'clr',
+                'maxlength' => 1024,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],

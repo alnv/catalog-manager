@@ -5,9 +5,6 @@ namespace CatalogManager;
 class tl_catalog extends \Backend {
 
 
-    private $arrCatalogFieldCache = [];
-
-
     public function checkPermission() {
 
         $objDCAPermission = new DCAPermission();
@@ -19,9 +16,9 @@ class tl_catalog extends \Backend {
 
         if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) && \Input::post( 'tl_loadDataContainer' ) ) {
 
-            $objDCAExtractor = new CatalogDCAExtractor();
+            $objDCAExtractor = new CatalogDcExtractor();
             $objDCAExtractor->initialize( $dc->activeRecord->tablename );
-            $arrContainerData = $objDCAExtractor->getCatalogValuesFromDataContainerArray();
+            $arrContainerData = $objDCAExtractor->convertDataContainerToCatalog();
 
             if ( !empty( $arrContainerData ) ) $this->Database->prepare( 'UPDATE tl_catalog %s WHERE id = ?' )->set( $arrContainerData )->execute( $dc->activeRecord->id );
         }
@@ -78,11 +75,6 @@ class tl_catalog extends \Backend {
 
     public function getCatalogFields( \DataContainer $dc ) {
 
-        if ( !empty( $this->arrCatalogFieldCache ) && is_array( $this->arrCatalogFieldCache ) ) {
-            
-            return $this->arrCatalogFieldCache;
-        }
-
         $arrReturn = [];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $dc->activeRecord->id );
 
@@ -93,9 +85,7 @@ class tl_catalog extends \Backend {
             $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title;
         }
 
-        $this->arrCatalogFieldCache = $arrReturn;
-
-        return $this->arrCatalogFieldCache;
+        return $arrReturn;
     }
 
 

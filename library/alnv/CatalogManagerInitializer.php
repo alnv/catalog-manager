@@ -132,12 +132,18 @@ class CatalogManagerInitializer {
 
             $arrCatalog = $objCatalogManagerDB->row();
 
-            if ( !$arrCatalog['tablename'] || !$arrCatalog['name'] ) continue;
+            if ( !$arrCatalog['tablename'] || Toolkit::isEmpty( $arrCatalog['name'] ) ) continue;
             if ( !$objDatabase->tableExists( $arrCatalog['tablename'] ) ) continue;
 
             $arrCatalog = Toolkit::parseCatalog( $arrCatalog );
-            
             $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
+
+            if ( Toolkit::isCoreTable( $arrCatalog['tablename'] ) ) {
+
+                $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'][] = $arrCatalog['tablename'];
+
+                continue;
+            }
 
             $this->arrModules[ $arrCatalog['tablename'] ] = $this->createBackendModule( $arrCatalog );
 

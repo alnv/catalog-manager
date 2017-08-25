@@ -4,7 +4,7 @@ namespace CatalogManager;
 
 class Toolkit {
 
-    public static $arrModeTypes = [ '0', '1', '2', '4', '5' ];
+    public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
 
     public static $arrSqlTypes = [
@@ -668,14 +668,22 @@ class Toolkit {
     }
 
     
-    public static function createPanelLayout( $arrPanelLayout ) {
+    public static function createPanelLayout( $arrPanelLayout, $arrForceFields = [] ) {
 
-        $strPanelLayout = '';
+        $arrPanelLayout = is_array( $arrPanelLayout ) ? $arrPanelLayout : [];
+        
+        if ( is_array( $arrForceFields ) && !empty( $arrForceFields ) ) {
 
-        if ( is_array( $arrPanelLayout ) ) {
+            foreach ( $arrForceFields as $strForceField ) {
 
-            $strPanelLayout = implode( ',', $arrPanelLayout );
+                if ( !in_array( $strForceField, $arrPanelLayout ) ) {
+
+                    $arrPanelLayout[] = $strForceField;
+                }
+            }
         }
+
+        $strPanelLayout = implode( ',', $arrPanelLayout );
 
         if ( strpos( $strPanelLayout, 'filter' ) !== false ) {
 

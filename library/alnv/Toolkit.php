@@ -666,4 +666,22 @@ class Toolkit {
 
         return $arrData;
     }
+
+    
+    public static function createPanelLayout( $arrPanelLayout ) {
+
+        $strPanelLayout = '';
+
+        if ( is_array( $arrPanelLayout ) ) {
+
+            $strPanelLayout = implode( ',', $arrPanelLayout );
+        }
+
+        if ( strpos( $strPanelLayout, 'filter' ) !== false ) {
+
+            $strPanelLayout = preg_replace( '/,/' , ';', $strPanelLayout, 1 );
+        }
+
+        return $strPanelLayout;
+    }
 }

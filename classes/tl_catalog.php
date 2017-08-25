@@ -25,6 +25,26 @@ class tl_catalog extends \Backend {
     }
 
 
+    public function checkEditMask( \DataContainer $dc ) {
+
+        if ( Toolkit::isEmpty( $dc->id ) ) return null;
+
+        $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE `id` = ?' )->limit(1)->execute( $dc->id );
+
+        if ( $objCatalog->tablename && Toolkit::isCoreTable( $objCatalog->tablename ) ) {
+
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navArea']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navArea']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navPosition']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navPosition']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['isBackendModule']['eval']['disabled'] = true;
+
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['operations']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['permissionType']['eval']['disabled'] = true;
+        }
+    }
+
+
     public function getCoreTables() {
 
         return $this->getTables();
@@ -57,14 +77,9 @@ class tl_catalog extends \Backend {
         $objDatabaseBuilder = new CatalogDatabaseBuilder();
         $objDatabaseBuilder->initialize( $strTablename, $dc->activeRecord->row() );
 
-        if ( $dc->activeRecord->tstamp ) {
+        if ( $this->Database->tableExists( $strTablename ) ) {
 
             $objDatabaseBuilder->tableCheck();
-
-            return null;
-        }
-
-        if ( $this->Database->tableExists( $strTablename ) ) {
 
             return null;
         }
@@ -129,7 +144,7 @@ class tl_catalog extends \Backend {
 
     public function getModeTypes ( \DataContainer $dc ) {
 
-        if ( $dc->activeRecord->pTable ) return [ '4' ];
+        if ( $dc->activeRecord->pTable ) return [ '3', '4' ];
 
         return Toolkit::$arrModeTypes;
     }
@@ -154,7 +169,7 @@ class tl_catalog extends \Backend {
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
-        if ( $varValue == '4' && !$dc->activeRecord->pTable ) {
+        if ( in_array( $varValue, [ '3', '4', '6' ] ) && !$dc->activeRecord->pTable ) {
 
             throw new \Exception('this mode required parent table.');
         }
@@ -241,7 +256,7 @@ class tl_catalog extends \Backend {
 
     public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
 
-        $arrNotAllowedModeTypes = [ '4', '5' ];
+        $arrNotAllowedModeTypes = [ '3', '4' ];
 
         if ( $varValue && in_array( $dc->activeRecord->mode , $arrNotAllowedModeTypes ) ) {
 

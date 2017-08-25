@@ -23,7 +23,7 @@ class OptionsGetter extends CatalogController {
         $this->import( 'CatalogInput' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
-        $this->import( 'CatalogDCAExtractor' );
+        $this->import( 'CatalogDcExtractor' );
         $this->import( 'I18nCatalogTranslator' );
     }
 
@@ -199,12 +199,12 @@ class OptionsGetter extends CatalogController {
 
         if ( Toolkit::isEmpty( $strOrderBy ) ) {
 
-            $this->CatalogDCAExtractor->initialize( $this->arrField['dbTable'] );
-            $this->CatalogDCAExtractor->extract();
+            $this->CatalogDcExtractor->initialize( $this->arrField['dbTable'] );
+            $this->CatalogDcExtractor->extract();
 
-            if ( $this->CatalogDCAExtractor->hasOrderByStatement() ) {
+            if ( $this->CatalogDcExtractor->hasOrderByStatement() ) {
 
-                $strOrderBy = ' ORDER BY ' . $this->CatalogDCAExtractor->getOrderByStatement();
+                $strOrderBy = ' ORDER BY ' . $this->CatalogDcExtractor->getOrderByStatement();
             }
         }
         

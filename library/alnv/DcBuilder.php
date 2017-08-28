@@ -180,8 +180,8 @@ class DcBuilder extends CatalogController {
 
             $arrReturn['onload_callback'][] = function() {
 
-                $objDCAPermission = new DCAPermission();
-                $objDCAPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p', $this->strPermissionType );
+                $objDcPermission = new DcPermission();
+                $objDcPermission->checkPermission( $this->strTable , $this->strTable, $this->strTable . 'p', $this->strPermissionType );
             };
         }
 

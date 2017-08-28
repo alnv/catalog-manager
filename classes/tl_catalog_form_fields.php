@@ -19,8 +19,8 @@ class tl_catalog_form_fields extends \Backend {
 
     public function checkPermission() {
 
-        $objDCAPermission = new DCAPermission();
-        $objDCAPermission->checkPermissionByParent( 'tl_catalog_form_fields' , 'tl_catalog_form', 'filterform', 'filterformp' );
+        $objDcPermission = new DcPermission();
+        $objDcPermission->checkPermissionByParent( 'tl_catalog_form_fields' , 'tl_catalog_form', 'filterform', 'filterformp' );
     }
 
 

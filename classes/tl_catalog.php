@@ -7,8 +7,8 @@ class tl_catalog extends \Backend {
 
     public function checkPermission() {
 
-        $objDCAPermission = new DCAPermission();
-        $objDCAPermission->checkPermission( 'tl_catalog' , 'catalog', 'catalogp' );
+        $objDcPermission = new DcPermission();
+        $objDcPermission->checkPermission( 'tl_catalog' , 'catalog', 'catalogp' );
     }
 
 

@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class DCAPermission extends CatalogController {
+class DcPermission extends CatalogController {
 
 
     public function __construct() {

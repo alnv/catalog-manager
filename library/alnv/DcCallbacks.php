@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class DCACallbacks extends \Backend {
+class DcCallbacks extends \Backend {
 
 
     public function __construct() {

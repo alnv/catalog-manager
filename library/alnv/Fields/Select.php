@@ -50,7 +50,7 @@ class Select {
 
             if ( $arrField['dbTable'] && $arrField['dbTableKey'] == 'id' ) {
                 
-                $arrDCAField['wizard'] = [ [ 'CatalogManager\DCACallbacks', 'generateRelationWizard' ] ];
+                $arrDCAField['wizard'] = [ [ 'CatalogManager\DcCallbacks', 'generateRelationWizard' ] ];
                 $arrDCAField['eval']['chosen'] = true;
                 $arrDCAField['eval']['submitOnChange'] = true;
                 $arrDCAField['eval']['tl_class'] .= $arrDCAField['eval']['tl_class'] ? ' wizard' : 'wizard';

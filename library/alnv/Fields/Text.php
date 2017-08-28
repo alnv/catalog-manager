@@ -30,7 +30,7 @@ class Text {
             $arrDCAField['eval']['decodeEntities'] = true;
             $arrDCAField['eval']['tl_class'] .= ' wizard';
 
-            $arrDCAField['wizard'][] = [ 'CatalogManager\DCACallbacks', 'pagePicker' ];
+            $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
         }
 
         return $arrDCAField;

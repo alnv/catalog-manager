@@ -14,7 +14,7 @@ class Upload {
 
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
-            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
+            $arrDCAField['load_callback'] = [ [ 'DcCallbacks', 'setMultiSrcFlags' ] ];
 
             if ( $arrField['sortBy'] == 'custom' && $arrField['orderField'] ) {
 
@@ -38,7 +38,7 @@ class Upload {
 
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
-            $arrDCAField['load_callback'] = [ [ 'DCACallbacks', 'setMultiSrcFlags' ] ];
+            $arrDCAField['load_callback'] = [ [ 'DcCallbacks', 'setMultiSrcFlags' ] ];
 
             if ( $arrField['sortBy'] == 'custom' && $arrField['orderField'] ) {
 

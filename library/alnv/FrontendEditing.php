@@ -361,8 +361,8 @@ class FrontendEditing extends CatalogController {
 
                 if ( $strFieldname == 'alias' ) {
 
-                    $objDCACallbacks = new DCACallbacks();
-                    $varValue = $objDCACallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
+                    $objDcCallbacks = new DcCallbacks();
+                    $varValue = $objDcCallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
                 }
 
                 if ( $objWidget->hasErrors() ) {
@@ -738,8 +738,8 @@ class FrontendEditing extends CatalogController {
 
         if ( Toolkit::isEmpty( $this->arrValues['alias'] ) ) {
 
-            $objDCACallbacks = new DCACallbacks();
-            $this->arrValues['alias'] = $objDCACallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
+            $objDcCallbacks = new DcCallbacks();
+            $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
         }
 
         if ( \Input::get('pid') ) {

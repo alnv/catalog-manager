@@ -501,8 +501,8 @@ class CatalogFieldBuilder extends CatalogController {
 
                 $arrField['_dcFormat']['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
 
-                    $objDCACallbacks = new DCACallbacks();
-                    return $objDCACallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
+                    $objDcCallbacks = new DcCallbacks();
+                    return $objDcCallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
                 }];
 
                 return $arrField;

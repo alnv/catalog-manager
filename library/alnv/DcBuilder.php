@@ -146,7 +146,7 @@ class DcBuilder extends CatalogController {
 
         if ( $this->arrCatalog['useGeoCoordinates'] ) {
 
-            $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'generateGeoCords' ];
+            $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'generateGeoCords' ];
         }
 
         foreach ( $this->arrFields as $arrField ) {
@@ -185,9 +185,9 @@ class DcBuilder extends CatalogController {
             };
         }
 
-        $arrReturn['oncut_callback'][] = [ 'CatalogManager\DCACallbacks', 'onCutCallback' ];
-        $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DCACallbacks', 'onSubmitCallback' ];
-        $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DCACallbacks', 'onDeleteCallback' ];
+        $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'onCutCallback' ];
+        $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'onSubmitCallback' ];
+        $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'onDeleteCallback' ];
 
         return $arrReturn;
     }
@@ -201,9 +201,8 @@ class DcBuilder extends CatalogController {
 
             $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) {
 
-                $objDCACallback = new DCACallbacks();
-
-                return $objDCACallback->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow, $strLabel );
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow, $strLabel );
             };
         }
 
@@ -211,9 +210,8 @@ class DcBuilder extends CatalogController {
 
             $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
 
-                $objDCACallback = new DCACallbacks();
-
-                return $objDCACallback->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
             };
         }
 
@@ -221,7 +219,7 @@ class DcBuilder extends CatalogController {
 
             $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
 
-                $objDCACallback = new DCACallbacks();
+                $objDcCallbacks = new DcCallbacks();
                 $strTemplate = $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );
 
                 if ( $this->arrCatalog['useOwnLabelFormat'] ) {
@@ -235,7 +233,7 @@ class DcBuilder extends CatalogController {
                     else $strTemplate .= ' <span>' . $strLabel . '</span>';
                 }
 
-                return $objDCACallback->labelCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
+                return $objDcCallbacks->labelCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
             };
         }
 
@@ -261,14 +259,14 @@ class DcBuilder extends CatalogController {
 
                 $strLabel = $arrLabelFields[0];
                 $strTemplate = '##' . $strLabel . '##';
-                $objDCACallback = new DCACallbacks();
+                $objDcCallbacks = new DcCallbacks();
 
                 if ( $this->arrCatalog['useOwnLabelFormat'] ) {
 
                     $strTemplate = !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
                 }
 
-                return $objDCACallback->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
+                return $objDcCallbacks->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
             };
         }
 
@@ -316,7 +314,7 @@ class DcBuilder extends CatalogController {
                 'icon' => 'visible.gif',
                 'href' => sprintf( 'catalogTable=%s', $this->strTable ),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility( this,%s,'. sprintf( "'%s'", $this->strTable ) .' )"',
-                'button_callback' => [ 'DCACallbacks',  'toggleIcon' ]
+                'button_callback' => [ 'DcCallbacks',  'toggleIcon' ]
             ],
 
             'show' => [
@@ -388,7 +386,7 @@ class DcBuilder extends CatalogController {
 
                         'href' => $strHref,
                         'icon' => $strInVisibleIcon,
-                        'button_callback' => [ 'DCACallbacks',  'toggleIcon' ],
+                        'button_callback' => [ 'DcCallbacks', 'toggleIcon' ],
                         'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggleIcon'],
                         'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,'. sprintf( "'%s'", $strVisibleIcon ) .', '. sprintf( "'%s'", $strInVisibleIcon ) .', '. sprintf( "'%s'", $strHref ) .' )"'
                     ];

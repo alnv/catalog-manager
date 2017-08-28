@@ -31,10 +31,10 @@ class CatalogDcExtractor extends CatalogController {
                 'format',
                 'fields',
                 'showColumns'
-            ],
+            ]
+        ],
 
-            'operations' => []
-        ]
+        'fields' => []
     ];
 
     public function __construct() {
@@ -42,6 +42,7 @@ class CatalogDcExtractor extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
+        $this->import( 'DcModifier' );
     }
 
 
@@ -94,39 +95,18 @@ class CatalogDcExtractor extends CatalogController {
 
 
     public function convertCatalogToDataContainer() {
-        
+
+        $this->DcModifier->initialize( $this->strTable );
         $arrReturn = $GLOBALS['TL_DCA'][ $this->strTable ];
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $this->strTable ];
 
         if ( !is_array( $arrCatalog ) ) return [];
         if ( !is_array( $arrReturn ) ) $arrReturn = [];
 
-        foreach ( $this->arrConvertMap as $strDcConfigType => $varAttributes ) {
-
-            switch ( $strDcConfigType ) {
-
-                case 'config':
-
-                    $arrReturn = $this->convertCatalogToDcConfig( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType );
-
-                    break;
-
-                case 'list':
-
-                    $arrReturn = $this->convertCatalogToDcLabel( $arrReturn, $arrCatalog, $varAttributes['label'], $strDcConfigType );
-                    $arrReturn = $this->convertCatalogToDcSorting( $arrReturn, $arrCatalog, $varAttributes['sorting'], $strDcConfigType );
-                    $arrReturn = $this->convertCatalogToDcOperations( $arrReturn, $arrCatalog, $varAttributes['operations'], $strDcConfigType );
-
-                    break;
-
-
-                case 'fields':
-
-                    $arrReturn = $this->convertCatalogFieldsToDcFields( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType );
-
-                    break;
-            }
-        }
+        $arrReturn = $this->convertCatalogFieldsToDcFields( $arrReturn, $arrCatalog, 'fields' );
+        $arrReturn = $this->convertCatalogToDcConfig( $arrReturn, $arrCatalog, 'config' );
+        $arrReturn = $this->convertCatalogToDcSorting( $arrReturn, $arrCatalog, 'list' );
+        $arrReturn = $this->convertCatalogToDcLabel( $arrReturn, $arrCatalog, 'list' );
 
         return $arrReturn;
     }
@@ -542,7 +522,7 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcConfig( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType ) {
+    protected function convertCatalogToDcConfig( $arrReturn, $arrCatalog, $strDcConfigType ) {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
@@ -570,7 +550,7 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcSorting( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType ) {
+    protected function convertCatalogToDcSorting( $arrReturn, $arrCatalog, $strDcConfigType ) {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
@@ -598,7 +578,7 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcLabel( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType ) {
+    protected function convertCatalogToDcLabel( $arrReturn, $arrCatalog, $strDcConfigType ) {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
@@ -614,17 +594,37 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcOperations( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType ) {
+    protected function convertCatalogFieldsToDcFields( $arrReturn, $arrCatalog, $strDcConfigType ) {
 
-        // @todo
+        $arrDcFields = [];
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $this->strTable );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
-        return $arrReturn;
-    }
+        if ( is_array( $arrFields ) && !empty( $arrFields ) ) {
 
+            foreach ( $arrFields as $strFieldname => $arrField ) {
 
-    protected function convertCatalogFieldsToDcFields( $arrReturn, $arrCatalog, $varAttributes, $strDcConfigType ) {
+                if ( $arrField['type'] == 'fieldsetStart' ) {
 
-        // @todo
+                    // @todo
+                }
+
+                if ( !in_array( $arrField['type'], [ 'fieldsetStart', 'fieldsetStop' ] ) && $arrField['dcPaletteField'] ) {
+
+                    $arrPickedPalettes =  deserialize( $arrField['dcPaletteField'] );
+
+                    if ( is_array( $arrPickedPalettes ) )  $this->DcModifier->addFieldToPalette( $arrField, $arrPickedPalettes, $arrReturn['palettes'] );
+                }
+
+                if ( isset( $arrField['_dcFormat'] ) ) {
+
+                    $arrDcFields[ $strFieldname ] = $arrField['_dcFormat'];
+                }
+            }
+        }
+
+        $arrReturn[ $strDcConfigType ] = $arrDcFields;
 
         return $arrReturn;
     }

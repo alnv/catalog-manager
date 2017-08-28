@@ -113,4 +113,53 @@ class DcModifier extends CatalogController {
 
         return $arrReturn;
     }
+
+
+    public function addFieldToPalette( $arrField, $arrPickedPalettes, &$arrPalettes = [] ) {
+
+        foreach ( $arrPickedPalettes as $arrPickedPalette ) {
+
+            $strField = $arrPickedPalette['value'];
+            $strPalette = $arrPickedPalette['key'];
+            $strFieldname = $arrField['fieldname'];
+
+            if ( !$strField || !$strPalette ) continue;
+
+            $strModifiedPalette = '';
+            $arrFieldsPlucked = preg_split( '/(,|;)/', $arrPalettes[ $strPalette ] );
+
+            foreach ( $arrFieldsPlucked as $intIndex => $strFieldPlucked ) {
+
+                $blnEnding = false;
+
+                if ( Toolkit::isEmpty( $strFieldPlucked ) ) continue;
+
+                if ( isset( $arrFieldsPlucked[ $intIndex +1 ] ) && $this->isLegend( $arrFieldsPlucked[ $intIndex +1 ] ) ) $blnEnding = true;
+
+                if ( $strFieldPlucked != $strFieldname ) $strModifiedPalette .= $strFieldPlucked;
+
+                if ( $strField == $strFieldPlucked ) $strModifiedPalette .= ',' . $strFieldname;
+
+                $strModifiedPalette .= ( $blnEnding ? ';' : ',' );
+            }
+
+            $arrPalettes[ $strPalette ] = $strModifiedPalette;
+        }
+
+
+        return $arrPalettes;
+    }
+
+
+    public function addLegendToPalette( $arrField, $arrDcPalette ) {
+
+        //
+    }
+
+    protected function isLegend( $strValue ) {
+
+        preg_match( '/{(([^{}]*|(?R))*)}/', $strValue, $arrMatch, PREG_OFFSET_CAPTURE, 0 );
+
+        return !empty( $arrMatch );
+    }
 }

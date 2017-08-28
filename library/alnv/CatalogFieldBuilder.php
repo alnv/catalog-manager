@@ -56,6 +56,7 @@ class CatalogFieldBuilder extends CatalogController {
 
         if ( $blnIsCoreTable ) {
 
+            $blnDcFormat = true;
             $blnExcludeDefaults = true;
             $arrFields = $this->getCoreFields();
         }
@@ -110,16 +111,12 @@ class CatalogFieldBuilder extends CatalogController {
 
     public function parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule = null, $blnCoreTable = false ) {
 
-        if ( $blnCoreTable ) return $arrFields;
-
         $arrReturn = [];
 
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            $arrField[ '_dcFormat' ] = null;
-
-            if ( $blnDcFormat && Toolkit::isDcConformField( $arrField ) ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
-
+            if ( !isset( $arrField[ '_dcFormat' ] ) ) $arrField[ '_dcFormat' ] = null;
+            if ( $blnDcFormat && Toolkit::isDcConformField( $arrField ) && !$arrField[ '_dcFormat' ] ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
             if ( $arrField == null ) continue;
 
             $arrReturn[ $strFieldname ] = $this->prepareDefaultFields( $arrField, $strFieldname );
@@ -133,12 +130,9 @@ class CatalogFieldBuilder extends CatalogController {
 
         $strCSSBackendClasses = Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' );
 
-        if ( Toolkit::isEmpty( $strCSSBackendClasses ) ) {
+        if ( Toolkit::isEmpty( $strCSSBackendClasses ) ) $strCSSBackendClasses = 'clr';
 
-            $strCSSBackendClasses = 'clr';
-        }
-
-        $arrDCAField = [
+        $arrDcField = [
 
             'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
             'inputType' => Toolkit::setDcConformInputType( $arrField['type'] ),
@@ -163,103 +157,97 @@ class CatalogFieldBuilder extends CatalogController {
             'sql' => Toolkit::getSqlDataType( $arrField['statement'] ),
         ];
 
-        $arrDCAField['_cssID'] = Toolkit::deserialize( $arrField['cssID'] );
-        $arrDCAField['_placeholder'] = $arrField['placeholder'];
-        $arrDCAField['_disableFEE'] = $arrField['disableFEE'];
-        $arrDCAField['_fieldname'] = $arrField['fieldname'];
-        $arrDCAField['_palette'] = $arrField['_palette'];
-        $arrDCAField['_type'] = $arrField['type'];
+        $arrDcField['_cssID'] = Toolkit::deserialize( $arrField['cssID'] );
+        $arrDcField['_placeholder'] = $arrField['placeholder'];
+        $arrDcField['_disableFEE'] = $arrField['disableFEE'];
+        $arrDcField['_fieldname'] = $arrField['fieldname'];
+        $arrDcField['_palette'] = $arrField['_palette'];
+        $arrDcField['_type'] = $arrField['type'];
 
-        if ( $arrField['flag'] ) {
-
-            $arrDCAField['flag'] = $arrField['flag'];
-        }
+        if ( $arrField['flag'] ) $arrDcField['flag'] = $arrField['flag'];
 
         if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
 
-            $arrDCAField['default'] = $arrField['value'];
+            $arrDcField['default'] = $arrField['value'];
         }
 
         if ( Toolkit::isDefined( $arrField['useIndex'] ) ) {
 
-            $arrDCAField['eval']['doNotCopy'] = true;
+            $arrDcField['eval']['doNotCopy'] = true;
 
-            if ( $arrField['useIndex'] == 'unique' ) {
-
-                $arrDCAField['eval']['unique'] = true;
-            }
+            if ( $arrField['useIndex'] == 'unique' ) $arrDcField['eval']['unique'] = true;
         }
 
         switch ( $arrField['type'] ) {
 
             case 'text':
 
-                $arrDCAField = Text::generate( $arrDCAField, $arrField );
+                $arrDcField = Text::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'date':
 
-                $arrDCAField = DateInput::generate( $arrDCAField, $arrField );
+                $arrDcField = DateInput::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'hidden':
 
-                $arrDCAField = Hidden::generate( $arrDCAField, $arrField );
+                $arrDcField = Hidden::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'number':
 
-                $arrDCAField = Number::generate( $arrDCAField, $arrField );
+                $arrDcField = Number::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'textarea':
 
-                $arrDCAField = Textarea::generate( $arrDCAField, $arrField );
+                $arrDcField = Textarea::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'select':
 
-                $arrDCAField = Select::generate( $arrDCAField, $arrField, $objModule );
+                $arrDcField = Select::generate( $arrDcField, $arrField, $objModule );
 
                 break;
 
             case 'radio':
 
-                $arrDCAField = Radio::generate( $arrDCAField, $arrField, $objModule );
+                $arrDcField = Radio::generate( $arrDcField, $arrField, $objModule );
 
                 break;
 
             case 'checkbox':
 
-                $arrDCAField = Checkbox::generate( $arrDCAField, $arrField, $objModule );
+                $arrDcField = Checkbox::generate( $arrDcField, $arrField, $objModule );
 
                 break;
 
             case 'upload':
 
-                $arrDCAField = Upload::generate( $arrDCAField, $arrField );
+                $arrDcField = Upload::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'message':
 
-                $arrDCAField = MessageInput::generate( $arrDCAField, $arrField );
+                $arrDcField = MessageInput::generate( $arrDcField, $arrField );
 
                 break;
 
             case 'dbColumn':
 
-                $arrDCAField = DbColumn::generate( $arrDCAField, $arrField );
+                $arrDcField = DbColumn::generate( $arrDcField, $arrField );
                 
                 break;
         }
 
-        return $arrDCAField;
+        return $arrDcField;
     }
 
 
@@ -529,11 +517,12 @@ class CatalogFieldBuilder extends CatalogController {
 
                 $arrReturn[ $strFieldname ] = [
 
+                    '_core' => true,
                     '_dcFormat' => $arrField,
                     'fieldname' => $strFieldname,
                     'title' => $arrField['label'][0] ?: '',
                     'description' => $arrField['label'][1] ?: '',
-                    'type' => Toolkit::setCatalogConformInputType( $arrField['inputType'] )
+                    'type' => Toolkit::setCatalogConformInputType( $arrField['inputType'] ),
                 ];
             }
         }

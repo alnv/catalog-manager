@@ -31,19 +31,15 @@ class tl_catalog extends \Backend {
 
         $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE `id` = ?' )->limit(1)->execute( $dc->id );
 
-        if ( $objCatalog->tablename && Toolkit::isCoreTable( $objCatalog->tablename ) ) {
+        if ( $objCatalog->type == 'default' ) {
 
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navArea']['eval']['chosen'] = false;
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navArea']['eval']['disabled'] = true;
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navPosition']['eval']['chosen'] = false;
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['navPosition']['eval']['disabled'] = true;
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['isBackendModule']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'text';
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['loadButton'] = false;
 
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['operations']['eval']['disabled'] = true;
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['permissionType']['eval']['disabled'] = true;
+            unset( $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] );
         }
     }
-
+    
 
     public function getCoreTables() {
 
@@ -144,9 +140,17 @@ class tl_catalog extends \Backend {
 
     public function getModeTypes ( \DataContainer $dc ) {
 
-        if ( $dc->activeRecord->pTable ) return [ '3', '4' ];
+        if ( $dc->activeRecord->pTable ) {
 
-        return Toolkit::$arrModeTypes;
+            return [ '3', '4' ];
+        }
+
+        $arrModes = Toolkit::$arrModeTypes;
+
+        unset( $arrModes[3] );
+        unset( $arrModes[4] );
+
+        return $arrModes;
     }
 
 
@@ -156,7 +160,12 @@ class tl_catalog extends \Backend {
     }
 
 
-    public function checkTablename( $varValue ) {
+    public function checkTablename( $varValue, \DataContainer $dc ) {
+
+        if ( $dc->activeRecord->type == 'default' && Toolkit::isCoreTable( $varValue ) ) {
+
+            throw new \Exception( '"tl_" prefix is not allowed.' );
+        }
 
         if ( Toolkit::isCoreTable( $varValue ) && !$this->Database->tableExists( $varValue ) ) {
 
@@ -256,9 +265,9 @@ class tl_catalog extends \Backend {
 
     public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
 
-        $arrNotAllowedModeTypes = [ '3', '4' ];
+        $arrModeTypes = [ '3', '4' ];
 
-        if ( $varValue && in_array( $dc->activeRecord->mode , $arrNotAllowedModeTypes ) ) {
+        if ( $varValue && in_array( $dc->activeRecord->mode , $arrModeTypes ) ) {
 
             throw new \Exception('you can not use format in this mode.');
         }

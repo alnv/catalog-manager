@@ -102,8 +102,9 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
-        'default' => '{table_settings},tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode,flag,format,sortingFields,labelFields,headerFields,showColumns;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage'
+        '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
+        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
+        'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
 
     'subpalettes' => [
@@ -117,7 +118,15 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'languageEntitySource_parentTable' => 'languageEntityColumn',
         'languageEntitySource_currentTable' => 'languageEntityColumn',
         'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
-        'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry'
+        'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
+
+        'mode_0' => 'labelFields,format,showColumns',
+        'mode_1' => 'flag,sortingFields,labelFields,format,showColumns',
+        'mode_2' => 'sortingFields,labelFields,format,showColumns',
+        'mode_3' => 'labelFields,format,showColumns',
+        'mode_4' => 'headerFields,labelFields,showColumns',
+        'mode_5' => 'labelFields,format,showColumns',
+        'mode_6' => 'sortingFields,labelFields,format,showColumns',
     ],
 
     'fields' => [
@@ -130,6 +139,26 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'tstamp' => [
 
             'sql' => "int(10) unsigned NOT NULL default '0'"
+        ],
+
+        'type' => [
+
+            'label' =>  &$GLOBALS['TL_LANG']['tl_catalog']['type'],
+            'inputType' => 'select',
+            'default' => 'default',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'submitOnChange' => true
+            ],
+
+            'options' => [ 'default', 'modifier' ],
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['reference']['type'],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
         ],
 
         'name' => [
@@ -193,10 +222,10 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'unique' => true,
                 'rgxp' => 'extnd',
                 'maxlength' => 128,
+                'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
                 'loadButton' => true,
-                'tl_class' => 'long',
                 'startswith' => 'tl_',
                 'spaceToUnderscore' => true,
             ],
@@ -236,13 +265,12 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'mode' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['mode'],
-            'inputType' => 'select',
+            'inputType' => 'radio',
             'default' => '0',
 
             'eval' => [
 
-                'chosen' => true,
-                'tl_class' => 'w50',
+                'tl_class' => 'clr',
                 'submitOnChange' => true,
             ],
 
@@ -343,7 +371,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'chosen' => true,
                 'multiple' => true,
                 'tl_class' => 'clr',
                 'maxlength' => 1024,
@@ -362,7 +389,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'chosen' => true,
                 'multiple' => true,
                 'tl_class' => 'clr',
                 'maxlength' => 1024,
@@ -381,7 +407,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'chosen' => true,
                 'multiple' => true,
                 'tl_class' => 'clr',
                 'maxlength' => 1024,

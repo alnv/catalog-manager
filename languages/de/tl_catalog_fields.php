@@ -3,6 +3,7 @@
 $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Eingabefeld erstellen', 'Hier können Sie ein neues Eingabefeld erstellen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Bild-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['palettes_legend'] = 'Paletten-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbankeinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'Allgemeine-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options_legend'] = 'Auswahlliste-Einstellungen';
@@ -62,9 +63,11 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Zeichenlänge', 'Bit
 $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Leerzeichen umwandeln', 'Leerzeichen werden zu Unterstrich ( _ ) umgewandelt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['trailingSlash'] = [ 'Schrägstrich hinzufügen', 'Hier können Sie am Ende des Feldwertes ein Schrägstrich hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteField'] = [ 'Feld Picker', 'Hier können Sie ein Feld auswählen. Dieses Feld wird nach dem ausgewähltem Feld hinzugefügt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Legt fest, ob das Formular bei der Änderung des Feldwertes automatisch abgeschickt wird.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausschließen', 'Blendet das Feld für reguläre Benutzer aus. Kann in den Gruppeneinstellungen festgelegt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'] = [ 'Fieldset Picker', 'Hier können Sie ein Fieldset auswählen. Der neue Fieldset wird nach dem ausgewähltem Fieldset hinzugefügt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useFineUploader'] = [ 'Fine Uploader verwenden', 'Hier können Sie den <a href="https://fineuploader.com" target="_blank">Fine Uploader</a> für das Frontend Editing verwenden.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'Dateityp', 'Bitte wählen Sie einen Dateityp aus.' ];
@@ -166,8 +169,8 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
     'textarea' => 'Textarea',
     'message' => 'Erklärung',
     'map' => 'Kartenansicht',
-    'fieldsetStart' => 'Palette öffnen',
-    'fieldsetStop' => 'Palette schließen',
+    'fieldsetStart' => 'Fieldset öffnen',
+    'fieldsetStop' => 'Fieldset schließen',
     'dbColumn' => 'Datenbank Spalte',
 ];
 

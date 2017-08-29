@@ -7,6 +7,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Image Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['general_legend'] = 'General Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Database Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Settings';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['palettes_legend'] = 'Palettes settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Visibility Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluations Settings';
 
@@ -63,7 +64,9 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['maxsize'] = [ 'Field size', 'Here you 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximum characters', 'Maximum number of characters that is allowed in the current field.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Do not copy value', 'The current field will not be duplicated if the record is duplicated.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['spaceToUnderscore'] = [ 'Space to Underscore', 'Any whitespace character will be replaced by an underscore.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteField'] = [ 'Field picker', 'Here you can choose a field. This field will be added after the chosen field.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'] = [ 'Palette picker', 'Here you can choose palette. The new Palette will be added after the chosen field.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useFineUploader'] = [ 'Use Fine Uploader', 'Here you can use <a href="https://fineuploader.com" target="_blank">Fine Uploader</a>.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'File type', 'Please select a file type.' ];
@@ -164,8 +167,8 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [
     'upload' => 'Upload',
     'textarea' => 'Textarea',
     'message' => 'Message',
-    'fieldsetStart' => 'Open Palette',
-    'fieldsetStop' => 'Close Palette',
+    'fieldsetStart' => 'Open fieldset',
+    'fieldsetStop' => 'Close fieldset',
     'dbColumn' => 'Database column'
 ];
 

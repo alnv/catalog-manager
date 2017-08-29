@@ -1766,8 +1766,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true,
-                'mainLabel' => '', // @todo
-                'dependedLabel' => '', // @todo
+                'mainLabel' => 'catalogPalette',
+                'dependedLabel' => 'catalogFieldset',
                 'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
                 'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcLegends' ],
             ],
@@ -1786,8 +1786,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true,
-                'mainLabel' => '', // @todo
-                'dependedLabel' => '', // @todo
+                'mainLabel' => 'catalogPalette',
+                'dependedLabel' => 'catalogField',
                 'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
                 'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcFields' ],
             ],

@@ -269,7 +269,7 @@ class tl_catalog extends \Backend {
 
         if ( $varValue && in_array( $dc->activeRecord->mode , $arrModeTypes ) ) {
 
-            throw new \Exception('you can not use format in this mode.');
+            return '';
         }
 
         return $varValue;

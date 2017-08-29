@@ -18,6 +18,7 @@
 .awesomplete > input {
 
     display: block;
+	width: 100%;
 }
 
 .awesomplete > ul {
@@ -118,3 +119,14 @@
 	color: inherit;
 }
 
+button.ctlg_loadWizard {
+
+	top: 47.5%;
+	right: 2.5%;
+	width: 20px;
+	height: 20px;
+	border: none;
+	cursor: pointer;
+	background: tomato;
+	position: absolute;
+}

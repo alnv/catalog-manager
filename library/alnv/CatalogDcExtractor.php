@@ -583,7 +583,7 @@ class CatalogDcExtractor extends CatalogController {
 
                     $arrFieldsetStart= [];
                     $arrPaletteFields = [];
-                    $blnFieldsetStart = true;
+                    $blnFieldsetStart = false;
                     $arrPickedPalettes = null;
 
                     continue;

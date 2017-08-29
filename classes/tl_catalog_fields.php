@@ -472,7 +472,7 @@ class tl_catalog_fields extends \Backend {
 
             if ( !empty( $arrType ) && is_array( $arrType ) ) {
 
-                $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] = str_replace( $arrType['dcPicker'], $arrType['dcPicker'] . '{dc_modifier_legend},'. $arrType['dcType'] .';', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] );
+                $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] = str_replace( $arrType['dcPicker'], $arrType['dcPicker'] . '{palettes_legend},'. $arrType['dcType'] .';', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][ $strType ] );
             }
         }
     }

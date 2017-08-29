@@ -4,9 +4,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Create new catalog', 'Here you can
 
 $GLOBALS['TL_LANG']['tl_catalog']['label_settings'] = 'Row settings';
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table settings';
-$GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'View settings';
+$GLOBALS['TL_LANG']['tl_catalog']['dcLabel_settings'] = 'View settings';
 $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Redirect Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
+$GLOBALS['TL_LANG']['tl_catalog']['dcSorting_settings'] = 'Sorting settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Permission settings';
@@ -15,7 +16,8 @@ $GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Group header Format 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
-$GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'View', 'Please select your view.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['type'] = [ 'Type', 'Please select module type.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Mode', 'Please select catalog mode.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sorting', 'Please select your sorting.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['tablename'] = [ 'Table', 'Please enter valid table name.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Module name', 'Please enter your module name.' ];
@@ -120,4 +122,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
     '4' => 'Displays the child records of a parent record',
     '5' => 'Records are displayed as tree',
     '6' => 'Displays the child records within a tree structure'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['type'] = [
+
+    'default' => 'Catalog',
+    'modifier' => 'Modifier'
 ];

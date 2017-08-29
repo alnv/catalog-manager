@@ -4,9 +4,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Neues Modul erstellen', 'Hier kön
 
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Datenbankeinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Geo-Einstellungen';
-$GLOBALS['TL_LANG']['tl_catalog']['sorting_settings'] = 'Darstellungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operatoren-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigationseinstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['dcLabel_settings'] = 'Darstellungseinstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['dcSorting_settings'] = 'Sortierungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Weiterleitungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Berechtigungseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['description_settings'] = 'Allgemeine-Einstellungen';
@@ -15,6 +16,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['label_format_legend'] = 'Bezeichnung Format-E
 $GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Gruppennamen Format-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Sprachwechsler-Einstellungen';
 
+$GLOBALS['TL_LANG']['tl_catalog']['type'] = [ 'Typ', 'Bitte wählen Sie ein Modul-Typ aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Name', 'Bitte geben Sie den Names des Moduls ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sortierung', 'Bitte wählen Sie eine Sortierung aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['navPosition'] = [ 'Position', 'Bitte wählen Sie eine Position aus.' ];
@@ -119,4 +121,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['reference']['mode'] = [
     '4' => 'Darstellung der Kinddatensätze eines Elterndatensatzes',
     '5' => 'Darstellung als Baum',
     '6' => 'Sortierung der Kinddatensätze anhand eines Baumes'
+];
+
+$GLOBALS['TL_LANG']['tl_catalog']['reference']['type'] = [
+
+    'default' => 'Katalog',
+    'modifier' => 'Modifizierer'
 ];

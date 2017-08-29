@@ -195,9 +195,12 @@ class DcBuilder extends CatalogController {
 
     protected function getLabelDc() {
 
-        $arrReturn = $this->CatalogDcExtractor->setDcLabelByMode( $this->arrCatalog['mode'], $this->arrCatalog );
+        $arrReturn = $this->CatalogDcExtractor->setDcLabelByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
 
-        if ( isset( $arrReturn['label_callback'] ) ) {
+            'fields' => [ 'title' ]
+        ]);
+
+        if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
 
             $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) {
 
@@ -206,7 +209,7 @@ class DcBuilder extends CatalogController {
             };
         }
 
-        if ( isset( $arrReturn['group_callback'] ) ) {
+        if ( $this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $this->arrCatalog['groupFormat'] ) ) {
 
             $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
 
@@ -243,7 +246,13 @@ class DcBuilder extends CatalogController {
 
     protected function getSortingDc() {
 
-        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode( $this->arrCatalog['mode'], $this->arrCatalog );
+        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
+            
+            'fields' => [ 'title' ],
+            'labelFields' => [ 'title' ],
+            'headerFields' => [ 'id', 'alias', 'title' ],
+        ]);
+
         $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $this->arrCatalog['panelLayout'] );
 
         if ( isset( $arrReturn['child_record_callback'] ) ) {

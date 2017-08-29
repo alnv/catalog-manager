@@ -31,12 +31,12 @@ class tl_catalog extends \Backend {
 
         $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE `id` = ?' )->limit(1)->execute( $dc->id );
 
-        if ( $objCatalog->type == 'default' ) {
+        if ( $objCatalog->type == 'modifier') {
 
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'text';
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['loadButton'] = false;
-
-            unset( $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] );
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['startswith'] = 'tl_';
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'catalogTextFieldWidget';
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] = [ 'CatalogManager\tl_catalog', 'getCoreTables' ];
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['wizard'][] = [ 'CatalogManager\DcCallbacks', 'getCoreTableLoaderButton' ];
         }
     }
     

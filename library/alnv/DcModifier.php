@@ -12,6 +12,8 @@ class DcModifier extends CatalogController {
     public function __construct() {
 
         parent::__construct();
+
+        $this->import( 'I18nCatalogTranslator' );
     }
 
 
@@ -22,6 +24,7 @@ class DcModifier extends CatalogController {
         \Controller::loadLanguageFile( $this->strTablename );
         \Controller::loadDataContainer( $this->strTablename );
 
+        $this->I18nCatalogTranslator->initialize();
         $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
         $this->arrPalettes = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ?: [];
     }
@@ -146,19 +149,52 @@ class DcModifier extends CatalogController {
             $arrPalettes[ $strPalette ] = $strModifiedPalette;
         }
 
-
         return $arrPalettes;
     }
 
 
-    public function addLegendToPalette( $arrField, $arrDcPalette ) {
+    public function addLegendToPalette( $arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart ) {
 
-        //
+        foreach ( $arrPickedPalettes as $arrPickedPalette ) {
+
+            $strPalette = $arrPickedPalette['key'];
+            $strLegend = $arrPickedPalette['value'];
+
+            if ( !$strLegend || !$strPalette ) continue;
+
+            $arrModifiedPalettes = [];
+            $arrPalettesPlucked = explode( ';', $arrPalettes[ $strPalette ] );
+
+            foreach ( $arrPalettesPlucked as $strFieldset ) {
+
+                if ( Toolkit::isEmpty( $strFieldset ) ) continue;
+
+                $arrModifiedPalettes[] = $strFieldset;
+
+                if ( $arrMatch = $this->isLegend( $strFieldset, true ) ) {
+
+                    $arrLegendName = isset( $arrMatch[1] ) ? $arrMatch[1][0] : '';
+                    $arrLegendName = explode( ':', $arrLegendName );
+
+                    if ( $arrLegendName[0] ==  $strLegend ) {
+
+                        $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ( $arrFieldsetStart['isHidden'] ? ':hide' : '' ) . '},' . implode( ',' , $arrFields );
+                        $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrFieldsetStart['title'] ] = $this->I18nCatalogTranslator->get( 'legend', $arrFieldsetStart['title'], [ 'title' => $arrFieldsetStart[ 'label' ] ] );
+                    }
+                }
+            }
+
+            $arrPalettes[ $strPalette ] = implode( ';', $arrModifiedPalettes );
+        }
+
     }
 
-    protected function isLegend( $strValue ) {
+
+    protected function isLegend( $strValue, $blnReturnMatch = false ) {
 
         preg_match( '/{(([^{}]*|(?R))*)}/', $strValue, $arrMatch, PREG_OFFSET_CAPTURE, 0 );
+
+        if ( $blnReturnMatch ) return $arrMatch;
 
         return !empty( $arrMatch );
     }

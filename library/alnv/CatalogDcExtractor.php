@@ -124,7 +124,7 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    public function setDcSortingByMode( $strMode, $arrCatalog = [] ) {
+    public function setDcSortingByMode( $strMode, $arrCatalog = [], $arrDefaults = [] ) {
 
         $arrReturn = [
 
@@ -143,7 +143,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
 
-                    $arrReturn['flag'] = $arrCatalog['flag'];
+                    $arrReturn['flag'] = !Toolkit::isEmpty( $arrCatalog['flag'] ) ? $arrCatalog['flag'] : $arrDefaults['flag'];
                 }
 
                 if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
@@ -153,7 +153,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 else {
 
-                    $arrReturn['fields'] = [ 'title' ];
+                    $arrReturn['fields'] = $arrDefaults['fields'];
                 }
 
                 return $arrReturn;
@@ -171,7 +171,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 else {
 
-                    $arrReturn['fields'] = [ 'title' ];
+                    $arrReturn['fields'] = $arrDefaults['fields'];
                 }
 
                 return $arrReturn;
@@ -193,12 +193,12 @@ class CatalogDcExtractor extends CatalogController {
 
                 else {
 
-                    $arrReturn['fields'] = [ 'title' ];
+                    $arrReturn['fields'] = $arrDefaults['fields'];
                 }
 
                 if ( !is_array( $arrCatalog['labelFields'] ) || empty( $arrCatalog['labelFields'] ) ) {
 
-                    $arrCatalog['labelFields'] = ['title'];
+                    $arrCatalog['labelFields'] = $arrDefaults['labelFields'];
                 }
 
                 if ( is_array( $arrCatalog['headerFields'] ) && !empty( $arrCatalog['headerFields'] ) ) {
@@ -208,7 +208,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 else {
 
-                    $arrReturn['headerFields'] = [ 'id', 'alias', 'title' ];
+                    $arrReturn['headerFields'] = $arrDefaults['headerFields'];
                 }
 
                 $arrReturn['child_record_callback'] = function () use ( $arrCatalog ) {
@@ -233,7 +233,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 else {
 
-                    $arrReturn['fields'] = [ 'title' ];
+                    $arrReturn['fields'] = $arrDefaults['fields'];
                 }
 
                 break;
@@ -243,7 +243,7 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    public function setDcLabelByMode( $strMode, $arrCatalog = [] ) {
+    public function setDcLabelByMode( $strMode, $arrCatalog = [], $arrDefaults = [] ) {
 
         $arrReturn = [];
 
@@ -256,22 +256,12 @@ class CatalogDcExtractor extends CatalogController {
 
             else {
 
-                $arrReturn['fields'] = [ 'title' ];;
+                $arrReturn['fields'] = $arrDefaults['fields'];
             }
 
             $arrReturn['showColumns'] = $arrCatalog['showColumns'] ? true : false;
 
             if ( !Toolkit::isEmpty( $arrCatalog['format'] ) ) $arrReturn['format'] = $arrCatalog['format'];
-
-            if ( $arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $arrCatalog['labelFormat'] ) ) {
-
-                $arrReturn['label_callback'] = '';
-            }
-
-            if ( $arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $arrCatalog['groupFormat'] ) ) {
-
-                $arrReturn['group_callback'] = '';
-            }
 
             return $arrReturn;
         }
@@ -290,20 +280,10 @@ class CatalogDcExtractor extends CatalogController {
 
             else {
 
-                $arrReturn['fields'] = [ 'title' ];
+                $arrReturn['fields'] = $arrDefaults['fields'];
             }
 
             if ( !Toolkit::isEmpty( $arrCatalog['format'] ) ) $arrReturn['format'] = $arrCatalog['format'];
-
-            if ( $arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $arrCatalog['labelFormat'] ) ) {
-
-                $arrReturn['label_callback'] = '';
-            }
-
-            if ( $arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $arrCatalog['groupFormat'] ) ) {
-
-                $arrReturn['group_callback'] = '';
-            }
 
             return $arrReturn;
         }
@@ -512,24 +492,21 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
-        if ( !Toolkit::isEmpty( $arrCatalog['mode'] )) {
+        $intFlag = $arrReturn[ $strDcConfigType ]['sorting']['flag'];
+        $arrFields = $arrReturn[ $strDcConfigType ]['sorting']['fields'];
+        $arrHeaderFields = $arrReturn[ $strDcConfigType ]['sorting']['headerFields'];
 
-            $arrReturn[ $strDcConfigType ]['sorting']['mode'] = $arrCatalog['mode'];
-        }
+        $arrReturn[ $strDcConfigType ]['sorting'] = $this->setDcSortingByMode( $arrCatalog['mode'], $arrCatalog, [
 
-        if ( !Toolkit::isEmpty( $arrCatalog['flag'] )) {
-
-            $arrReturn[ $strDcConfigType ]['sorting']['flag'] = $arrCatalog['flag'];
-        }
+            'flag' => $intFlag,
+            'fields' => $arrFields,
+            'headerFields' => $arrHeaderFields,
+            'labelFields' => $arrReturn[ $strDcConfigType ]['label']['fields']
+        ]);
 
         if ( !Toolkit::isEmpty( $arrCatalog['panelLayout'] ) ) {
 
             $arrReturn[ $strDcConfigType ]['sorting']['panelLayout'] = Toolkit::createPanelLayout( $arrCatalog['panelLayout'] );
-        }
-
-        if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
-
-            $arrReturn[ $strDcConfigType ]['sorting']['fields'] = $arrCatalog['sortingFields'];
         }
 
         return $arrReturn;
@@ -540,13 +517,12 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
-        $arrReturn[ $strDcConfigType ]['label']['format'] = $arrCatalog['format'];
-        $arrReturn[ $strDcConfigType ]['label']['showColumns'] =  $arrCatalog['showColumns'] ? true : false;
+        $arrFields = $arrReturn[ $strDcConfigType ]['label']['fields'];
 
-        if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
+        $arrReturn[ $strDcConfigType ]['label'] = $this->setDcLabelByMode( $arrCatalog['mode'], $arrCatalog, [
 
-            $arrReturn[ $strDcConfigType ]['label']['fields'] = $arrCatalog['labelFields'];
-        }
+            'fields' => $arrFields
+        ]);
 
         return $arrReturn;
     }

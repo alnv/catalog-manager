@@ -103,8 +103,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
-        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
-        'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{sorting_settings},mode;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{geoCoordinates_legend:hide},useGeoCoordinates;'
+        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,format,showColumns;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
+        'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
 
     'subpalettes' => [
@@ -120,13 +120,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
 
-        'mode_0' => 'labelFields,format,showColumns',
-        'mode_1' => 'flag,sortingFields,labelFields,format,showColumns',
-        'mode_2' => 'sortingFields,labelFields,format,showColumns',
-        'mode_3' => 'labelFields,format,showColumns',
-        'mode_4' => 'headerFields,labelFields,showColumns',
-        'mode_5' => 'labelFields,format,showColumns',
-        'mode_6' => 'sortingFields,labelFields,format,showColumns',
+        'mode_0' => '',
+        'mode_3' => '',
+        'mode_5' => '',
+        'mode_4' => 'headerFields',
+        'mode_2' => 'sortingFields',
+        'mode_6' => 'sortingFields',
+        'mode_1' => 'sortingFields,flag'
     ],
 
     'fields' => [

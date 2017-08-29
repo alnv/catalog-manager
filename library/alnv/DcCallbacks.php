@@ -13,6 +13,12 @@ class DcCallbacks extends \Backend {
     }
 
 
+    public function getCoreTableLoaderButton() {
+
+        return '<button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="ctlg_loadWizard" title="'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] .'"></button>';
+    }
+
+
     function groupCallback ( $strTemplate, $arrCatalogField = [], $strGroup, $strMode, $strField, $arrRow, $dc ) {
         
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );

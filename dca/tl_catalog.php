@@ -215,7 +215,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'tablename' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['tablename'],
-            'inputType' => 'catalogTextFieldWidget',
+            'inputType' => 'text',
 
             'eval' => [
 
@@ -225,18 +225,14 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'doNotCopy' => true,
-                'loadButton' => true,
-                'startswith' => 'tl_',
                 'spaceToUnderscore' => true,
             ],
-
+                
             'save_callback' => [
 
                 [ 'CatalogManager\tl_catalog', 'checkTablename' ],
                 [ 'CatalogManager\tl_catalog', 'renameTable' ]
             ],
-
-            'options_callback' =>  [ 'CatalogManager\tl_catalog', 'getCoreTables' ],
 
             'search' => true,
             'sorting' => true,

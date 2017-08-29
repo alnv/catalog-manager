@@ -105,10 +105,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
+        '__selector__' => [ 'type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
 
         'default' => '{general_legend},type',
-        'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
+        'text' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{autocompletion_legend},autoCompletionType;{evaluation_legend},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'number' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
         'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
@@ -129,6 +129,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'useSize' => 'size',
         'addMapInfoBox' => 'mapInfoBoxContent',
         'usePreviewImage' => 'imageTemplate,previewImagePosition',
+
+        'autoCompletionType_useDbOptions' => 'dbTable,dbTableValue,dbTaxonomy',
 
         'optionsType_useOptions' => 'options',
         'optionsType_useForeignKey' => 'dbTable,dbTableValue,addRelationWizard',
@@ -1185,6 +1187,31 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'useOptions',
                 'useDbOptions',
                 'useForeignKey'
+            ],
+
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
+        ],
+
+        'autoCompletionType' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['autoCompletionType'],
+            'inputType' => 'radio',
+
+            'eval' => [
+
+                'maxlength' => 16,
+                'tl_class' => 'clr',
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=>true,
+            ],
+
+            'options' => [
+
+                'useDbOptions'
             ],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['optionsType'],

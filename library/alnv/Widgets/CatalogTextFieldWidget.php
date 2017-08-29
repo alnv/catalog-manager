@@ -104,13 +104,13 @@ class CatalogTextFieldWidget extends \Widget {
 
             $this->arrOptions = [[]];
         }
-
+        
         if ( !$this->multiple ) {
 
             if ( $this->rgxp == 'url' ) $this->varValue = \Idna::decode( $this->varValue );
             elseif ( $this->rgxp == 'email' || $this->rgxp == 'friendly' ) $this->varValue = \Idna::decodeEmail( $this->varValue );
 
-            return sprintf( '<input type="%s" name="%s" id="ctrl_%s" class="tl_text%s ctlg_awesomplete" value="%s"%s list="ctrl_dl_%s" data-startswith="%s" onfocus="Backend.getScrollOffset()">%s%s%s',
+            return sprintf( '<input type="%s" name="%s" id="ctrl_%s" class="tl_text%s ctlg_awesomplete" value="%s"%s list="ctrl_dl_%s" data-startswith="%s" onfocus="Backend.getScrollOffset()">%s%s',
 
                 $strType,
                 $this->strName,
@@ -121,7 +121,6 @@ class CatalogTextFieldWidget extends \Widget {
                 $this->strId,
                 ( $this->startswith ?: '' ),
                 $this->wizard,
-                ( $this->loadButton ? $this->generateButton() : '' ),
                 $this->generateDataList());
         }
 
@@ -165,16 +164,5 @@ class CatalogTextFieldWidget extends \Widget {
             $this->strId,
             $strOptions
         );
-    }
-
-
-    protected function generateButton() {
-        
-        if ( Toolkit::isEmpty( $this->varValue ) || Toolkit::isCoreTable( $this->varValue ) ) {
-
-            return '<div class=""><strong><label>Data Container Einstellungen </label></strong><button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="">laden</button></div>';
-        }
-
-        return '';
     }
 }

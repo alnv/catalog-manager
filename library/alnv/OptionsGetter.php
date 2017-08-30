@@ -126,7 +126,7 @@ class OptionsGetter extends CatalogController {
                 break;
         }
 
-        return [];
+        return null;
     }
 
 

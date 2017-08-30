@@ -4,8 +4,9 @@ namespace CatalogManager;
 
 class CatalogManagerInitializer {
 
-
+    
     protected $arrModules = [];
+    protected $arrLoadDc = [ 'group', 'mgroup', 'user' ];
 
 
     public function initialize() {
@@ -25,7 +26,7 @@ class CatalogManagerInitializer {
 
         $strActiveModule = $this->getActiveModule();
 
-        if ( in_array( $strActiveModule, [ 'group', 'mgroup', 'user' ] ) || $strActiveModule == null ) {
+        if ( in_array( $strActiveModule, $this->arrLoadDc ) || $strActiveModule == null ) {
 
             $arrModules = array_keys( $this->arrModules );
 
@@ -89,7 +90,7 @@ class CatalogManagerInitializer {
 
         if ( empty( $arrCatalog ) ) return null;
 
-        $this->createCatalogManagerDCA( $arrCatalog );
+        $this->createCatalogManagerDc( $arrCatalog );
 
         if ( $arrCatalog['permissionType'] ) {
 
@@ -141,7 +142,7 @@ class CatalogManagerInitializer {
             if ( Toolkit::isCoreTable( $arrCatalog['tablename'] ) ) {
 
                 $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'][] = $arrCatalog['tablename'];
-
+                $this->modifyBackendModule( $arrCatalog );
                 continue;
             }
 
@@ -149,7 +150,7 @@ class CatalogManagerInitializer {
 
             if ( $arrCatalog['isBackendModule'] && !$arrCatalog['pTable'] ) {
 
-                $this->insertModuleToBE_MOD( $arrCatalog );
+                $this->setBackendModule( $arrCatalog );
                 $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->get( 'module', $arrCatalog['tablename'] );
             }
         }
@@ -158,12 +159,44 @@ class CatalogManagerInitializer {
     }
 
     
-    protected function insertModuleToBE_MOD( $arrCatalog ) {
+    protected function setBackendModule( $arrCatalog ) {
 
         $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
         $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
 
-        array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->createBackendModule( $arrCatalog ) );
+        array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->arrModules[ $arrCatalog['tablename'] ] );
+    }
+
+
+    protected function modifyBackendModule( $arrCatalog ) {
+
+        $strModule = \Input::get('do');
+
+        if ( !$strModule ) return null;
+
+        foreach ( $GLOBALS['BE_MOD'] as $strArea => $arrModules ) {
+
+            if ( isset( $arrModules[ $strModule ] ) && is_array( $arrModules[ $strModule ] ) ) {
+
+                $arrModule = $arrModules[ $strModule ];
+
+                if ( is_array( $arrModule['tables'] ) && in_array( $arrCatalog['tablename'], $arrModule['tables'] ) ) {
+
+                    $arrTables = $this->createBackendModule( $arrCatalog )[ $arrCatalog['tablename'] ]['tables'];
+
+                    foreach ( $arrTables as $strTable ) {
+
+                        if ( !in_array( $strTable, $arrModule['tables'] ) ) {
+
+                            $arrModule['tables'][] = $strTable;
+                        }
+                    }
+
+                    $this->arrLoadDc[] = $strModule;
+                    $GLOBALS['BE_MOD'][ $strArea ][ $strModule ] = $arrModule;
+                }
+            }
+        }
     }
 
 
@@ -215,7 +248,7 @@ class CatalogManagerInitializer {
     }
 
 
-    protected function createCatalogManagerDCA( $arrCatalog ) {
+    protected function createCatalogManagerDc( $arrCatalog ) {
 
         $objDcBuilder = new DcBuilder( $arrCatalog );
         $objDcBuilder->createDataContainerArray();

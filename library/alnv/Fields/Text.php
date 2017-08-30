@@ -5,7 +5,7 @@ namespace CatalogManager;
 class Text {
 
     
-    public static function generate( $arrDCAField, $arrField ) {
+    public static function generate( $arrDCAField, $arrField, $objModule = null ) {
 
         $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
 
@@ -29,8 +29,16 @@ class Text {
             $arrDCAField['eval']['rgxp'] = 'url';
             $arrDCAField['eval']['decodeEntities'] = true;
             $arrDCAField['eval']['tl_class'] .= ' wizard';
-
             $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
+        }
+
+        if ( $arrField['autoCompletionType'] ) {
+
+            $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
+            $objAutoCompletion = new CatalogAutoCompletion( $arrField, $strModuleID );
+
+            $arrDCAField['options'] = $objAutoCompletion->getOptions();
+            $arrDCAField['inputType'] = 'catalogTextFieldWidget';
         }
 
         return $arrDCAField;

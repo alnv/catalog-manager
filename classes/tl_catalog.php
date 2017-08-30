@@ -224,44 +224,23 @@ class tl_catalog extends \Backend {
     }
 
 
-    public function getAllCTables( \DataContainer $dc ) {
+    public function getSystemTables( \DataContainer $dc ) {
 
-        $arrReturn = [];
-        $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename`, `pTable` FROM tl_catalog WHERE `tablename` != ?' )->execute( $dc->activeRecord->tablename );
-
-        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
-
-            return $this->getTables( [ 'tl_content' ] );
-        }
-
-        while ( $objCatalogTables->next() ) {
-            
-            $arrReturn[] = $objCatalogTables->tablename;
-        }
-
-        return $arrReturn;
-    }
-
-
-    public function getAllPTables( \DataContainer $dc ) {
-
-        $arrReturn = [];
-
-        if ( Toolkit::isCoreTable( $dc->activeRecord->tablename ) ) {
-
-            return $this->getTables( [ 'tl_content' ] );
-        }
-
+        $blnCore = $dc->activeRecord->type === 'modifier';
+        $arrReturn = $blnCore ? $this->getTables( [ 'tl_content' ] ) : [];
         $objCatalogTables = $this->Database->prepare( 'SELECT `id`, `name`, `tablename` FROM tl_catalog WHERE `tablename` != ?' )->execute( $dc->activeRecord->tablename );
 
         while ( $objCatalogTables->next() ) {
 
-            $arrReturn[] = $objCatalogTables->tablename;
+            if ( !in_array( $objCatalogTables->tablename, $arrReturn ) ) {
+
+                $arrReturn[] = $objCatalogTables->tablename;
+            }
         }
 
         return $arrReturn;
     }
-
+    
 
     public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
 

@@ -1,3 +1,4 @@
 - implement string parser for palette names
 - fix problem with unique index
 - use selectWizard widget for backend sorting
+- add module name field for backend module

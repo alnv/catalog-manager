@@ -16,6 +16,7 @@ class CatalogDcExtractor extends CatalogController {
 
         $this->import( 'Database' );
         $this->import( 'DcModifier' );
+        $this->import( 'IconGetter' );
     }
 
 
@@ -61,10 +62,11 @@ class CatalogDcExtractor extends CatalogController {
         if ( !is_array( $arrCatalog ) ) return [];
         if ( !is_array( $arrReturn ) ) $arrReturn = [];
 
-        $arrReturn = $this->convertCatalogFieldAndPalettesToDcFields( $arrReturn, $arrCatalog, 'fields' );
         $arrReturn = $this->convertCatalogToDcConfig( $arrReturn, $arrCatalog, 'config' );
         $arrReturn = $this->convertCatalogToDcSorting( $arrReturn, $arrCatalog, 'list' );
         $arrReturn = $this->convertCatalogToDcLabel( $arrReturn, $arrCatalog, 'list' );
+        $arrReturn = $this->convertCatalogToDcOperations( $arrReturn, $arrCatalog, 'list' );
+        $arrReturn = $this->convertCatalogToDcFieldsAndPalettes( $arrReturn, $arrCatalog, 'fields' );
 
         return $arrReturn;
     }
@@ -211,11 +213,6 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['headerFields'] = $arrDefaults['headerFields'];
                 }
 
-                $arrReturn['child_record_callback'] = function () use ( $arrCatalog ) {
-
-                    return $arrCatalog['labelFields'][0];
-                };
-
                 break;
 
             case '5':
@@ -333,9 +330,9 @@ class CatalogDcExtractor extends CatalogController {
 
     protected function convertDcConfigToCatalog( $arrReturn, $arrDataContainer, $strDcConfigType ) {
 
-        if ( $arrDataContainer[ $strDcConfigType ]['pTable'] ) {
+        if ( $arrDataContainer[ $strDcConfigType ]['ptable'] ) {
 
-            $arrReturn['pTable'] = $arrDataContainer['config']['pTable'];
+            $arrReturn['pTable'] = $arrDataContainer['config']['ptable'];
         }
 
         if ( is_array( $arrDataContainer[ $strDcConfigType ]['ctable'] ) && !empty( $arrDataContainer['config']['ctable'] ) ) {
@@ -397,6 +394,11 @@ class CatalogDcExtractor extends CatalogController {
                 }
 
                 $arrReturn['sortingFields'] = serialize( $arrFields );
+            }
+
+            if ( is_array( $arrDataContainer[ $strDcConfigType ]['sorting']['headerFields'] ) && !empty( $arrDataContainer[ $strDcConfigType ]['sorting']['headerFields'] ) ) {
+
+                $arrReturn['headerFields'] = $arrDataContainer[ $strDcConfigType ]['sorting']['headerFields'];
             }
         }
 
@@ -464,24 +466,41 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
-        if ( $arrCatalog['pTable'] ) {
+        $arrConfigDc = [
 
-            $arrReturn[ $strDcConfigType ]['pTable'] = $arrCatalog['pTable'];
+            '_tables' => [],
+            'ptable' => $arrReturn[ $strDcConfigType ]['pTable'],
+            'ctable' => $arrReturn[ $strDcConfigType ]['ctable']
+        ];
+
+        if ( !Toolkit::isEmpty( $arrCatalog['pTable'] ) ) {
+
+            $arrConfigDc['ptable'] = $arrCatalog['pTable'];
+
+            if ( $arrCatalog['pTable'] !== $arrConfigDc['ptable'] ) $arrConfigDc['_tables'][] = $arrCatalog['pTable'];
         }
 
         if ( is_array( $arrCatalog['cTables'] ) && !empty( $arrCatalog['cTables'] ) ) {
 
-            $arrReturn[ $strDcConfigType ]['ctable'] = $arrCatalog['cTables'];
+            foreach ( $arrCatalog['cTables'] as $strTable ) {
+
+                if ( !in_array( $strTable, $arrConfigDc['ctable'] ) ) {
+
+                    $arrConfigDc['ctable'][] = $strTable;
+                    $arrConfigDc['_tables'][] = $strTable;
+                }
+            }
         }
 
-        if ( $arrCatalog['addContentElements'] ) {
+        if ( $arrCatalog['addContentElements'] && !in_array( 'tl_content', $arrConfigDc['ctable'] ) ) {
 
-            if ( !is_array( $arrReturn[ $strDcConfigType ]['ctable'] ) ) {
+            $arrConfigDc['ctable'][] = 'tl_content';
+            $arrConfigDc['_tables'][] = 'tl_content';
+        }
 
-                $arrReturn[ $strDcConfigType ]['ctable'] = [];
-            }
+        foreach ( $arrConfigDc as $strKey => $strValue ) {
 
-            $arrReturn[ $strDcConfigType ]['ctable'][] = 'tl_content';
+            $arrReturn[ $strDcConfigType ][ $strKey ] = $strValue;
         }
 
         return $arrReturn;
@@ -492,21 +511,19 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
-        $intFlag = $arrReturn[ $strDcConfigType ]['sorting']['flag'];
-        $arrFields = $arrReturn[ $strDcConfigType ]['sorting']['fields'];
-        $arrHeaderFields = $arrReturn[ $strDcConfigType ]['sorting']['headerFields'];
+        $arrDefaults = [
 
-        $arrReturn[ $strDcConfigType ]['sorting'] = $this->setDcSortingByMode( $arrCatalog['mode'], $arrCatalog, [
+            'flag' => $arrReturn[ $strDcConfigType ]['sorting']['flag'],
+            'fields' => $arrReturn[ $strDcConfigType ]['sorting']['fields'],
+            'panelLayout' => $arrReturn[ $strDcConfigType ]['sorting']['panelLayout'],
+            'headerFields' => $arrReturn[ $strDcConfigType ]['sorting']['headerFields']
+        ];
 
-            'flag' => $intFlag,
-            'fields' => $arrFields,
-            'headerFields' => $arrHeaderFields,
-            'labelFields' => $arrReturn[ $strDcConfigType ]['label']['fields']
-        ]);
+        $arrSortingDc = $this->setDcSortingByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
 
-        if ( !Toolkit::isEmpty( $arrCatalog['panelLayout'] ) ) {
+        foreach ( $arrSortingDc as $strKey => $strValue ) {
 
-            $arrReturn[ $strDcConfigType ]['sorting']['panelLayout'] = Toolkit::createPanelLayout( $arrCatalog['panelLayout'] );
+            $arrReturn[ $strDcConfigType ]['sorting'][ $strKey ] = $strValue;
         }
 
         return $arrReturn;
@@ -517,18 +534,23 @@ class CatalogDcExtractor extends CatalogController {
 
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
-        $arrFields = $arrReturn[ $strDcConfigType ]['label']['fields'];
+        $arrDefaults = [
 
-        $arrReturn[ $strDcConfigType ]['label'] = $this->setDcLabelByMode( $arrCatalog['mode'], $arrCatalog, [
+            'fields' => $arrReturn[ $strDcConfigType ]['sorting']['fields']
+        ];
 
-            'fields' => $arrFields
-        ]);
+        $arrLabelDc = $this->setDcLabelByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
+
+        foreach ( $arrLabelDc as $strKey => $strValue ) {
+
+            $arrReturn[ $strDcConfigType ]['label'][ $strKey ] = $strValue;
+        }
 
         return $arrReturn;
     }
 
 
-    protected function convertCatalogFieldAndPalettesToDcFields( $arrReturn, $arrCatalog, $strDcConfigType ) {
+    protected function convertCatalogToDcFieldsAndPalettes( $arrReturn, $arrCatalog, $strDcConfigType ) {
 
         $arrDcFields = [];
         $blnFieldsetStart = false;
@@ -584,6 +606,65 @@ class CatalogDcExtractor extends CatalogController {
         }
 
         $arrReturn[ $strDcConfigType ] = $arrDcFields;
+
+        return $arrReturn;
+    }
+
+
+    protected function convertCatalogToDcOperations( $arrReturn, $arrCatalog, $strDcConfigType ) {
+
+        $arrErrorTables = [];
+        $objReviseRelatedTables = new ReviseRelatedTables();
+
+        if ( $objReviseRelatedTables->reviseCatalogTables( $this->strTable, $arrReturn['config']['ptable'], $arrReturn['config']['ctable'] ) ) {
+
+            foreach ( $objReviseRelatedTables->getErrorTables() as $strTable ) {
+
+                \Message::addError( sprintf( "Table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable ) );
+
+                $arrErrorTables[] = $strTable;
+
+                if ( $strTable == $arrReturn['config']['ptable'] ) {
+
+                    $arrReturn['config']['ptable'] = '';
+                }
+
+                if ( in_array( $strTable , $arrReturn['config']['ctable'] ) ) {
+
+                    $intIndex = array_search( $strTable, $arrReturn['config']['ctable'] );
+
+                    unset( $arrReturn['config']['ctable'][ $intIndex ] );
+                }
+            }
+        }
+
+        if ( is_array( $arrReturn['config']['ctable'] ) ) {
+
+            foreach ( $arrReturn['config']['ctable'] as $strTable ) {
+
+                if ( is_array( $arrReturn['config']['_tables'] ) && !in_array( $strTable, $arrReturn['config']['_tables'] ) ) continue;
+
+                $arrOperator = [];
+                $strOperation = sprintf( 'go_to_%s', $strTable );
+
+                $arrOperator[ $strOperation ] = [
+
+                    'href' => sprintf( 'table=%s', $strTable ),
+                    'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $strTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTable ) ],
+                    'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
+                ];
+
+                array_insert( $arrReturn[$strDcConfigType]['operations'], 1, $arrOperator );
+            }
+        }
+
+        if ( is_array( $arrReturn['fields'] ) ) {
+
+            foreach ( $arrReturn['fields'] as $strFieldname => $arrField ) {
+
+                // @todo
+            }
+        }
 
         return $arrReturn;
     }

@@ -11,6 +11,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['mapField_legend'] = 'Kartenansicht-Ein
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Eingabefeld-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Sichtbarkeitseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Layout-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['autocompletion_legend'] = 'Autovervollständigung-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['step'] = [ 'Interval', 'Bitte geben Sie den Interval ein.' ];
@@ -89,6 +90,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Spalte', 'Bitte
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle für den Fremdschlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie eine Spalte für den angezeigten Text aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Auswahlliste einbinden', 'Hier können Sie eine Auswahlliste an Werten erstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['autoCompletionType'] = [ 'Autovervollständigung einbinden', 'Hier können Sie eine Autovervollständigung erstellen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Spalte für den tatsächlichen Wert aus. Dieser Wert wird in der Datenbank gespeichert.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];

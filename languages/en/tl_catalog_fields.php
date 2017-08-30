@@ -10,6 +10,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['panelLayout_legend'] = 'Panel Settings
 $GLOBALS['TL_LANG']['tl_catalog_fields']['palettes_legend'] = 'Palettes settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['invisible_legend'] = 'Visibility Settings';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['evaluation_legend'] = 'Evaluations Settings';
+$GLOBALS['TL_LANG']['tl_catalog_fields']['autocompletion_legend'] = 'Autocompletion Settings';
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rows'] = [ 'Rows', 'Please enter number of rows.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useIndex'] = [ 'Index', 'Set index on this field.' ];
@@ -89,6 +90,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Enable options', 'H
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Table', 'Please select table for the foreign key.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Column', 'Please select column for the foreign key.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['autoCompletionType'] = [ 'Enable autocompletion', 'Here you can enable autocompletion.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];

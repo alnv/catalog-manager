@@ -450,17 +450,14 @@ class CatalogFieldBuilder extends CatalogController {
 
                         'label' => $arrField['_dcFormat']['label'],
                         'sql' => "int(10) unsigned NOT NULL default '0'",
-                    ];
+                        'foreignKey' => sprintf( '%s.id', $this->arrCatalog['pTable'] ),
 
-                    if ( !$this->shouldBeUsedParentTable() ) {
-
-                        $arrField['_dcFormat']['foreignKey'] = sprintf( '%s.id', $this->arrCatalog['pTable'] );
-                        $arrField['_dcFormat']['relation'] = [
+                        'relation' => [
 
                             'type' => 'belongsTo',
                             'load' => 'eager'
-                        ];
-                    }
+                        ]
+                    ];
 
                     return $arrField;
                 }

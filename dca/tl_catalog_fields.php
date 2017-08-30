@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'addMapInfoBox' => 'mapInfoBoxContent',
         'usePreviewImage' => 'imageTemplate,previewImagePosition',
 
-        'autoCompletionType_useDbOptions' => 'dbTable,dbTableValue,dbTaxonomy',
+        'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy',
 
         'optionsType_useOptions' => 'options',
         'optionsType_useForeignKey' => 'dbTable,dbTableValue,addRelationWizard',
@@ -1247,7 +1247,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'mandatory' => true,
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption'=> true,
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTables' ],
@@ -1285,7 +1285,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'maxlength' => 128,
                 'tl_class' => 'w50',
-                'mandatory' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=> true
             ],
 
             'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByDbTable' ],

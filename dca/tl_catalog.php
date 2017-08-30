@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     'palettes' => [
 
         '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
-        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,format,showColumns;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
+        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
         'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
 
@@ -293,7 +293,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllPTables' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getSystemTables' ],
             'save_callback' => [ [ 'CatalogManager\tl_catalog', 'checkModeTypeForBackendModule' ] ],
 
             'search' => true,
@@ -313,7 +313,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getAllCTables' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getSystemTables' ],
 
             'search' => true,
             'exclude' => true,

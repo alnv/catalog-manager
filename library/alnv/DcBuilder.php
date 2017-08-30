@@ -255,7 +255,7 @@ class DcBuilder extends CatalogController {
 
         $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $this->arrCatalog['panelLayout'] );
 
-        if ( isset( $arrReturn['child_record_callback'] ) ) {
+        if ( in_array( $this->arrCatalog['mode'], [ 3, 4 ] ) ) {
 
             $arrLabelFields = [ 'title' ];
 
@@ -334,7 +334,7 @@ class DcBuilder extends CatalogController {
             ]
         ];
 
-        if ( in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
+        if ( in_array( $this->arrCatalog['mode'], [ '3', '4', '5' ] ) ) {
 
             $arrReturn['copy']['href'] = 'act=paste&amp;mode=copy';
         }
@@ -359,21 +359,21 @@ class DcBuilder extends CatalogController {
             }
         }
 
-        foreach ( $this->arrCatalog['cTables'] as $arrCTable ) {
+        foreach ( $this->arrCatalog['cTables'] as $strTable ) {
 
-            if ( in_array( $arrCTable, $this->arrErrorTables ) ) continue;
+            if ( in_array( $strTable, $this->arrErrorTables ) ) continue;
 
-            $arrChildTable = [];
-            $strOperationName = sprintf( 'go_to_%s', $arrCTable );
+            $arrOperator = [];
+            $strOperationName = sprintf( 'go_to_%s', $strTable );
 
-            $arrChildTable[ $strOperationName ] = [
+            $arrOperator[ $strOperationName ] = [
 
-                'href' => sprintf( 'table=%s', $arrCTable ),
-                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $arrCTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $arrCTable ) ],
-                'icon' => $arrCTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $arrCTable ) : 'articles.gif'
+                'href' => sprintf( 'table=%s', $strTable ),
+                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $strTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTable ) ],
+                'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
             ];
 
-            array_insert( $arrReturn, 1, $arrChildTable );
+            array_insert( $arrReturn, 1, $arrOperator );
         }
 
         if ( !empty( $this->arrFields ) && is_array( $this->arrFields ) ) {

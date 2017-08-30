@@ -156,7 +156,7 @@ class CatalogTextFieldWidget extends \Widget {
 
         foreach ( $this->arrOptions as $arrOption ) {
 
-            $strOptions .= sprintf( '<option>%s</option>', $arrOption['value'] );
+            $strOptions .= sprintf( '<option value="%s">%s</option>', $arrOption['value'], $arrOption['label'] );
         }
 
         return sprintf( '<datalist id="ctrl_dl_%s">%s</datalist>',

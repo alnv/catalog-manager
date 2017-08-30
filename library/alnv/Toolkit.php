@@ -348,7 +348,7 @@ class Toolkit {
 
             foreach ( $arrColumns as $arrColumn ) {
 
-                if ( $arrColumn['name'] == 'PRIMARY' ) {
+                if ( $arrColumn['name'] == 'PRIMARY' || $arrColumn['type'] == 'index' ) {
 
                     continue;
                 }

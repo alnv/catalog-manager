@@ -37,8 +37,9 @@ class Text {
             $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
             $objAutoCompletion = new CatalogAutoCompletion( $arrField, $strModuleID );
 
-            $arrDCAField['options'] = $objAutoCompletion->getOptions();
             $arrDCAField['inputType'] = 'catalogTextFieldWidget';
+            $arrDCAField['options'] = $objAutoCompletion->getOptions();
+            $arrDCAField['eval']['multipleValues'] = $arrField['multiple'] ? true : false;
         }
 
         return $arrDCAField;

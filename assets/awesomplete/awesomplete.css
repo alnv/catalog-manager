@@ -126,7 +126,8 @@ button.ctlg_loadWizard {
 	width: 20px;
 	height: 20px;
 	border: none;
+	outline: none;
 	cursor: pointer;
-	background: tomato;
 	position: absolute;
+	background: url("/system/modules/catalog-manager/assets/icons/catalog-setting-loader.svg") no-repeat center;
 }

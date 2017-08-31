@@ -176,6 +176,17 @@ class tl_catalog extends \Backend {
     }
 
 
+    public function parseModulename( $varValue, \DataContainer $dc ) {
+
+        if ( Toolkit::isEmpty( $varValue ) && $dc->activeRecord->isBackendModule ) {
+
+            $varValue = \StringUtil::generateAlias( $dc->activeRecord->name );
+        }
+
+        return $varValue;
+    }
+
+
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
         if ( in_array( $varValue, [ '3', '4', '6' ] ) && !$dc->activeRecord->pTable ) {

@@ -111,8 +111,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         'useOwnLabelFormat' => 'labelFormat',
         'useOwnGroupFormat' => 'groupFormat',
-        'isBackendModule' => 'navArea,navPosition',
         'addressInputType_useSingleField' => 'geoAddress',
+        'isBackendModule' => 'modulename,navArea,navPosition',
         'useRedirect' => 'internalUrlColumn,externalUrlColumn',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
         'languageEntitySource_parentTable' => 'languageEntityColumn',
@@ -462,6 +462,30 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'modulename' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['modulename'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'unique' => true,
+                'rgxp' => 'extnd',
+                'maxlength' => 128,
+                'tl_class' => 'w50',
+                'doNotCopy' => true,
+                'spaceToUnderscore' => true,
+            ],
+
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog', 'parseModulename' ],
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(128) NOT NULL default ''"
         ],
 
         'navArea' => [

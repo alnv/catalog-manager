@@ -332,7 +332,7 @@ class tl_catalog_fields extends \Backend {
     
     public function getTLClasses() {
 
-        return [ 'w50', 'long', 'm12', 'clr' ];
+        return [ 'clr', 'w50', 'long', 'm12' ];
     }
 
     
@@ -394,11 +394,6 @@ class tl_catalog_fields extends \Backend {
         $arrForbiddenTypes = [ 'upload', 'textarea' ];
 
         if ( !$strTablename ) return $arrReturn;
-
-        if ( Toolkit::isCoreTable( $strTablename ) ) {
-
-            return Toolkit::getColumnsFromCoreTable( $strTablename, true );
-        }
 
         $objCatalogFieldBuilder = new CatalogFieldBuilder();
         $objCatalogFieldBuilder->initialize( $strTablename );

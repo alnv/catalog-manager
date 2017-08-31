@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Darstellung', 'Bitte wählen Sie 
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Beschreibung des Moduls', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Anzeige-Feld/er', 'Eines oder mehrere Felder, die in der Liste angezeigt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente verwenden.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['modulename'] = [ 'Modulname', 'Bitte tragen Sie den Names des Moduls in maschinell lesbarer Form ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Backend Modul einblenden', 'Dieses Backend Modul wird in der Hauptnavigation sichtbar.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Eltern-Felder', 'Eines oder mehrere Felder, die im Header des Parent View angezeigt werden' ];
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sortierungs-Feld/er', 'Eines oder mehrere Felder, anhand derer die Tabelle sortiert wird.' ];

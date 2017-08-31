@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here y
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or more fields that will be shown in the list.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['modulename'] = [ 'Modulename', 'Please enter your modulename in machine-readable form.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Permission Types', 'Here you can enable backend module permission.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];

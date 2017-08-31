@@ -112,11 +112,6 @@ class tl_catalog_form_fields extends \Backend {
 
         if ( !$strTablename ) return $arrReturn;
 
-        if ( Toolkit::isCoreTable( $strTablename ) ) {
-
-            return Toolkit::getColumnsFromCoreTable( $strTablename, $blnFullContext );
-        }
-
         $objCatalogFieldBuilder = new CatalogFieldBuilder();
         $objCatalogFieldBuilder->initialize( $strTablename );
         $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );

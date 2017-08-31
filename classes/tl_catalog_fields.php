@@ -418,6 +418,17 @@ class tl_catalog_fields extends \Backend {
     }
 
 
+    public function parseTitle( $varValue, \DataContainer $dc ) {
+
+        if ( !Toolkit::isEmpty( $varValue ) && in_array( $dc->activeRecord->type, [ 'fieldsetStart', 'fieldsetStop' ] ) ) {
+
+            $varValue = \StringUtil::generateAlias( $varValue );
+        }
+
+        return $varValue;
+    }
+
+
     public function getImageTemplates() {
 
         return $this->getTemplateGroup( 'ce_image' );

@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
         '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
         'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{permission_legend},permissionType;{redirect_legend:hide},useRedirect;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
-        'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{label_format_legend},useOwnLabelFormat;{group_format_legend},useOwnGroupFormat;{geoCoordinates_legend:hide},useGeoCoordinates;'
+        'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
 
     'subpalettes' => [
@@ -571,7 +571,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -592,7 +592,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -636,7 +636,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -656,7 +656,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -676,7 +676,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -696,7 +696,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -716,7 +716,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -736,7 +736,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -818,7 +818,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog', 'getCatalogFields' ],
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getDataContainerFields' ],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"

@@ -5,6 +5,9 @@ namespace CatalogManager;
 class tl_catalog extends \Backend {
 
 
+    protected $arrDataContainerFields = [];
+
+
     public function checkPermission() {
 
         $objDcPermission = new DcPermission();
@@ -81,22 +84,6 @@ class tl_catalog extends \Backend {
         }
 
         $objDatabaseBuilder->createTable();
-    }
-
-
-    public function getCatalogFields( \DataContainer $dc ) {
-
-        $arrReturn = [];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $dc->activeRecord->id );
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( !$objCatalogFields->fieldname ) continue;
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title;
-        }
-
-        return $arrReturn;
     }
 
 
@@ -200,26 +187,36 @@ class tl_catalog extends \Backend {
 
     public function getParentDataContainerFields( \DataContainer $dc ) {
 
-        $strPTable = $dc->activeRecord->pTable;
+        $arrReturn = [];
+        $strTablename = $dc->activeRecord->pTable;
 
-        if ( !$strPTable || !$this->Database->tableExists( $strPTable ) ) return [];
+        if ( Toolkit::isEmpty( $strTablename ) ) return $arrReturn;
 
-        $objSQLBuilder = new SQLBuilder();
-        $arrFields = array_keys( $objSQLBuilder->showColumns( $strPTable ) );
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTablename );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
-        return $arrFields;
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            if ( !Toolkit::isDcConformField( $arrField ) ) continue;
+
+            $arrReturn[ $strFieldname ] = $this->getFieldlabel( $arrField['_dcFormat']['label'], $strFieldname );
+        }
+
+        return $arrReturn;
     }
 
 
     public function getDataContainerFields( \DataContainer $dc ) {
 
-        $arrReturn = [];
         $strTablename = $dc->activeRecord->tablename;
 
-        if ( !$strTablename ) return $arrReturn;
+        if ( Toolkit::isEmpty( $strTablename ) ) return [];
+        if ( isset( $this->arrDataContainerFields[ $strTablename ] ) ) return $this->arrDataContainerFields[ $strTablename ];
 
         $objFieldBuilder = new CatalogFieldBuilder();
-        $objFieldBuilder->initialize( $dc->activeRecord->tablename );
+        $objFieldBuilder->initialize( $strTablename );
+        $this->arrDataContainerFields[ $strTablename ] = [];
         $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
         foreach ( $arrFields as $strFieldname => $arrField ) {
@@ -228,10 +225,10 @@ class tl_catalog extends \Backend {
 
             if ( in_array( $arrField['type'], [ 'upload' ] ) ) continue;
 
-            $arrReturn[ $strFieldname ] = $arrField['_dcFormat']['label'][0] ? $arrField['_dcFormat']['label'][0] : $strFieldname;
+            $this->arrDataContainerFields[ $strTablename ][ $strFieldname ] = $this->getFieldlabel( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
-        return $arrReturn;
+        return $this->arrDataContainerFields[ $strTablename ];
     }
 
 
@@ -293,25 +290,15 @@ class tl_catalog extends \Backend {
         $arrReturn = [];
         $arrModules = $GLOBALS['BE_MOD'] ? $GLOBALS['BE_MOD'] : [];
 
-        if ( !is_array( $arrModules ) ) {
-
-            return [];
-        }
+        if ( !is_array( $arrModules ) ) return [];
 
         foreach ( $arrModules as $strName => $arrModule ) {
 
             $arrLabel = $GLOBALS['TL_LANG']['MOD'][ $strName ];
             $strModuleName = $strName;
 
-            if ( $arrLabel && is_array( $arrLabel ) ) {
-
-                $strModuleName = $arrLabel[0];
-            }
-
-            if ( is_string( $arrLabel ) ) {
-
-                $strModuleName = $arrLabel;
-            }
+            if ( $arrLabel && is_array( $arrLabel ) ) $strModuleName = $arrLabel[0];
+            if ( is_string( $arrLabel ) ) $strModuleName = $arrLabel;
 
             $arrReturn[ $strName ] = $strModuleName;
         }
@@ -331,10 +318,7 @@ class tl_catalog extends \Backend {
         $strTable = '';
         $arrReturn = [];
 
-        if ( !$dc->activeRecord->languageEntitySource ) {
-
-            return $arrReturn;
-        }
+        if ( !$dc->activeRecord->languageEntitySource ) return $arrReturn;
 
         switch ( $dc->activeRecord->languageEntitySource ) {
 
@@ -351,10 +335,7 @@ class tl_catalog extends \Backend {
                 break;
         }
 
-        if ( !$strTable ) {
-
-            return $arrReturn;
-        }
+        if ( !$strTable ) return $arrReturn;
 
         if ( $this->Database->tableExists( $strTable ) ) {
 
@@ -408,5 +389,17 @@ class tl_catalog extends \Backend {
     public function getPermissionTypes() {
 
         return [ 'default', 'extended' ];
+    }
+
+
+    protected function getFieldlabel( $varLabel, $strFallback = '' ) {
+
+        if ( Toolkit::isEmpty( $varLabel ) ) return $strFallback;
+
+        if ( is_array( $varLabel ) ) return $varLabel[0] ?: '';
+
+        if ( is_string( $varLabel ) ) return $varLabel ?: '';
+
+        return $strFallback;
     }
 }

@@ -5,8 +5,12 @@ namespace CatalogManager;
 class CatalogManagerInitializer {
 
     
-    protected $arrModules = [];
-    protected $arrLoadDc = [ 'group', 'mgroup', 'user' ];
+    protected $objIconGetter;
+    protected $arrCatalogs = [];
+    protected $arrCoreTables = [];
+    protected $arrBackendModules = [];
+    protected $objI18nCatalogTranslator;
+    protected $arrActiveBackendModules = [ 'group', 'mgroup', 'user' ];
 
 
     public function initialize() {
@@ -16,8 +20,131 @@ class CatalogManagerInitializer {
             \BackendUser::getInstance();
             \Database::getInstance();
 
-            $this->createBackendModules();
+            $this->objIconGetter = new IconGetter();
+            $this->objIconGetter->createCatalogManagerDirectories();
+
+            $this->objI18nCatalogTranslator = new I18nCatalogTranslator();
+            $this->objI18nCatalogTranslator->initialize();
+
+            $this->setCatalogs();
+            $this->setNavigation();
+            $this->modifyCoreModules();
+            $this->setBackendModules();
             $this->initializeDataContainerArrays();
+        }
+    }
+
+
+    protected function setCatalogs() {
+
+        $objDatabase = \Database::getInstance();
+
+        if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
+
+        $objCatalog = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC' )->execute();
+
+        if ( $objCatalog->numRows ) {
+
+            while ( $objCatalog->next() ) {
+
+                $arrCatalog = Toolkit::parseCatalog( $objCatalog->row() );
+                $strType = Toolkit::isCoreTable( $objCatalog->tablename ) ? 'arrCoreTables' : 'arrCatalogs';
+
+                $this->{$strType}[ $objCatalog->tablename ] = $arrCatalog;
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $objCatalog->tablename ] = $arrCatalog;
+            }
+        }
+
+        $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = array_keys( $this->arrCoreTables );
+    }
+
+
+    protected function setNavigation() {
+
+        $arrNavigationAreas = \Config::get( 'catalogNavigationAreas' );
+        $arrNavigationAreas = deserialize( $arrNavigationAreas );
+
+        if ( !empty( $arrNavigationAreas ) && is_array( $arrNavigationAreas ) ) {
+
+            foreach ( $arrNavigationAreas as $intIndex => $arrNavigationArea ) {
+
+                if ( !Toolkit::isEmpty( $arrNavigationArea['key'] ) ) {
+
+                    $arrNav = [];
+                    $arrNav[ $arrNavigationArea['key'] ] = [];
+                    array_insert(  $GLOBALS['BE_MOD'], $intIndex, $arrNav );
+                    $GLOBALS['TL_LANG']['MOD'][ $arrNavigationArea['key'] ] = $this->objI18nCatalogTranslator->get( 'nav', $arrNavigationArea['key'], [ 'title' => $arrNavigationArea['value'] ] );
+                }
+            }
+        }
+    }
+
+
+    protected function setBackendModules() {
+
+        foreach ( $this->arrCatalogs as $strTablename => $arrCatalog ) {
+
+            if ( $arrCatalog['isBackendModule'] && Toolkit::isEmpty( $arrCatalog['pTable'] ) ) {
+
+                $arrBackendModule = [];
+                $intIndex = (int) $arrCatalog['navPosition'];
+                $strArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
+                $strModulename = $arrCatalog['modulename'] ? $arrCatalog['modulename'] : $strTablename;
+                $arrBackendModule[ $strModulename ] = $this->createBackendModuleDc( $strTablename, $arrCatalog );
+
+                $this->arrActiveBackendModules[] = $strModulename;
+                array_insert( $GLOBALS['BE_MOD'][ $strArea ], $intIndex, $arrBackendModule );
+                $this->arrBackendModules[ $strModulename ] = $arrBackendModule[ $strModulename ];
+                $GLOBALS['TL_LANG']['MOD'][ $strModulename ] = $this->objI18nCatalogTranslator->get( 'module', $strTablename );
+            }
+        }
+    }
+
+
+    protected function modifyCoreModules() {
+
+        $strActiveModule = \Input::get('do');
+        $arrCoreTables = array_keys( $this->arrCoreTables );
+        
+        if ( Toolkit::isEmpty( $strActiveModule ) || empty( $arrCoreTables ) ) return null;
+        
+        foreach ( $GLOBALS['BE_MOD'] as $strArea => $arrModules ) {
+
+            if ( isset( $arrModules[ $strActiveModule ] ) && is_array( $arrModules[ $strActiveModule ] ) ) {
+
+                $arrBackendModule = [];
+                $arrModule = $arrModules[ $strActiveModule ];
+                $arrModule['tables'] = is_array( $arrModule['tables'] ) ? $arrModule['tables'] : [];
+
+                foreach ( $arrCoreTables as $strTablename ) {
+
+                    if ( in_array( $strTablename, $arrModule['tables'] ) ) {
+
+                        $arrBackendModule = $this->createBackendModuleDc( $strTablename, $this->arrCoreTables[ $strTablename ] );
+                    }
+                }
+
+                if ( !empty( $arrBackendModule ) && is_array( $arrBackendModule ) ) {
+
+                    $arrTables = $arrBackendModule['tables'];
+
+                    if ( !in_array( $strActiveModule, $this->arrActiveBackendModules ) ) {
+
+                        $this->arrActiveBackendModules[] = $strActiveModule;
+                    }
+
+                    foreach ( $arrTables as $strTable ) {
+
+                        if ( !in_array( $strTable, $arrModule['tables'] ) ) {
+
+                            $arrModule['tables'][] = $strTable;
+                        }
+                    }
+
+                    $this->arrBackendModules[ $strActiveModule ] = $arrModule;
+                    $GLOBALS['BE_MOD'][ $strArea ][ $strActiveModule ] = $arrModule;
+                }
+            }
         }
     }
 
@@ -26,43 +153,89 @@ class CatalogManagerInitializer {
 
         $strActiveModule = $this->getActiveModule();
 
-        if ( in_array( $strActiveModule, $this->arrLoadDc ) || $strActiveModule == null ) {
+        if ( in_array( $strActiveModule, $this->arrActiveBackendModules ) ) {
 
-            $arrModules = array_keys( $this->arrModules );
+            $arrModule = $this->arrBackendModules[ $strActiveModule ];
 
-            if ( !empty( $arrModules ) && is_array( $arrModules ) ) {
+            if ( is_array( $arrModule['tables'] ) ) {
 
-                foreach ( $arrModules as $strTable ) {
+                foreach ( $arrModule['tables'] as $strTablename ) {
 
-                    if ( Toolkit::isEmpty( $strTable ) || Toolkit::isCoreTable( $strTable ) ) {
+                    if ( Toolkit::isCoreTable( $strTablename ) ) continue;
 
-                        continue;
-                    }
-
-                    $this->loadDataContainerArray( $strTable );
+                    $this->initializeDcByTablename( $strTablename );
                 }
             }
 
             return null;
         }
 
-        if ( !empty( $this->arrModules[ $strActiveModule ] ) && is_array( $this->arrModules[ $strActiveModule ] ) && isset( $this->arrModules[ $strActiveModule ][ $strActiveModule ] ) ) {
+        if ( Toolkit::isEmpty( $strActiveModule ) ) {
 
-            $arrTables = $this->arrModules[ $strActiveModule ][ $strActiveModule ]['tables'];
+            foreach ( $this->arrCatalogs as $strTablename => $arrCatalog ) {
 
-            if ( !empty( $arrTables ) && is_array( $arrTables ) ) {
-
-                foreach ( $arrTables as $strTable ) {
-
-                    if ( Toolkit::isEmpty( $strTable ) || Toolkit::isCoreTable( $strTable ) ) {
-
-                        continue;
-                    }
-
-                    $this->loadDataContainerArray( $strTable );
-                }
+                $this->initializeDcByTablename( $strTablename, $arrCatalog );
             }
         }
+    }
+
+
+    protected function initializeDcByTablename( $strTablename, $arrCatalog = [] ) {
+
+        if ( empty( $arrCatalog ) ) $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+        if ( $arrCatalog === null ) return null;
+
+        $objDcBuilder = new DcBuilder( $arrCatalog );
+        $objDcBuilder->createDataContainerArray();
+
+        if ( !Toolkit::isEmpty( $arrCatalog['permissionType'] ) ) {
+
+            $GLOBALS['TL_PERMISSIONS'][] = $strTablename . 'p';
+
+            if ( $arrCatalog['permissionType'] == 'extended' ) {
+
+                $GLOBALS['TL_PERMISSIONS'][] = $strTablename;
+            }
+
+            $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = [
+
+                'type' => $arrCatalog['permissionType'],
+                'tablename' => $strTablename
+            ];
+
+            \Controller::loadDataContainer( 'tl_user', true );
+            \Controller::loadDataContainer( 'tl_user_group', true );
+            \Controller::loadDataContainer( 'tl_member_group', true );
+        }
+    }
+
+
+    protected function createBackendModuleDc( $strTablename, $arrCatalog ) {
+
+        $arrTables[] = $strTablename;
+        $blnAddContentElements = $arrCatalog['addContentElements'] ? true : false;
+
+        foreach ( $arrCatalog[ 'cTables' ] as $strTable ) {
+
+            $arrTables[] = $strTable;
+        }
+
+        if ( !empty( $arrCatalog[ 'cTables' ] ) && is_array( $arrCatalog[ 'cTables' ] ) ) {
+
+            $this->getNestedChildTables( $arrTables, $arrCatalog[ 'cTables' ], '' );
+        }
+
+        if ( $blnAddContentElements || $this->existContentElementInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
+
+            $arrTables[] = 'tl_content';
+        }
+
+        return [
+
+            'icon' => $this->objIconGetter->setCatalogIcon( $strTablename ),
+            'name' => $arrCatalog['name'],
+            'tables' => $arrTables
+        ];
     }
 
 
@@ -81,184 +254,6 @@ class CatalogManagerInitializer {
         }
 
         return $strActiveModule;
-    }
-
-
-    protected function loadDataContainerArray( $strTable ) {
-
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
-
-        if ( empty( $arrCatalog ) ) return null;
-
-        $this->createCatalogManagerDc( $arrCatalog );
-
-        if ( $arrCatalog['permissionType'] ) {
-
-            $this->createPermissions( $arrCatalog['tablename'], $arrCatalog['permissionType'] );
-        }
-    }
-
-
-    protected function createBackendModules() {
-
-        $this->createDirectories();
-        $strTable = \Input::get( 'table' );
-        $objDatabase = \Database::getInstance();
-
-        $objI18nCatalogTranslator = new I18nCatalogTranslator();
-        $objI18nCatalogTranslator->initialize();
-
-        if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
-
-        $arrNavigationAreas = \Config::get( 'catalogNavigationAreas' );
-        $arrNavigationAreas = deserialize( $arrNavigationAreas );
-
-        if ( !empty( $arrNavigationAreas ) && is_array( $arrNavigationAreas ) ) {
-
-            foreach ( $arrNavigationAreas as $intIndex => $arrNavigationArea ) {
-
-                if ( !Toolkit::isEmpty( $arrNavigationArea['key'] ) ) {
-
-                    $arrNav = [];
-                    $arrNav[ $arrNavigationArea['key'] ] = [];
-                    array_insert(  $GLOBALS['BE_MOD'], $intIndex, $arrNav );
-                    $GLOBALS['TL_LANG']['MOD'][ $arrNavigationArea['key'] ] = $objI18nCatalogTranslator->get( 'nav', $arrNavigationArea['key'], [ 'title' => $arrNavigationArea['value'] ] );
-                }
-            }
-        }
-
-        $objCatalogManagerDB = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC' )->limit( 100 )->execute();
-
-        while ( $objCatalogManagerDB->next() ) {
-
-            $arrCatalog = $objCatalogManagerDB->row();
-
-            if ( !$arrCatalog['tablename'] || Toolkit::isEmpty( $arrCatalog['name'] ) ) continue;
-            if ( !$objDatabase->tableExists( $arrCatalog['tablename'] ) ) continue;
-
-            $arrCatalog = Toolkit::parseCatalog( $arrCatalog );
-            $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrCatalog['tablename'] ] = $arrCatalog;
-
-            if ( Toolkit::isCoreTable( $arrCatalog['tablename'] ) ) {
-
-                $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'][] = $arrCatalog['tablename'];
-                $this->modifyBackendModule( $arrCatalog );
-                continue;
-            }
-
-            $this->arrModules[ $arrCatalog['tablename'] ] = $this->createBackendModule( $arrCatalog );
-
-            if ( $arrCatalog['isBackendModule'] && !$arrCatalog['pTable'] ) {
-
-                $this->setBackendModule( $arrCatalog );
-                $GLOBALS['TL_LANG']['MOD'][ $arrCatalog['tablename'] ] = $objI18nCatalogTranslator->get( 'module', $arrCatalog['tablename'] );
-            }
-        }
-
-        if ( $strTable ) $GLOBALS['TL_LANG']['MOD'][ $strTable ] = $objI18nCatalogTranslator->get( 'module', $strTable, [ 'titleOnly' => true ] );
-    }
-
-    
-    protected function setBackendModule( $arrCatalog ) {
-
-        $strNavigationArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
-        $strNavigationPosition = $arrCatalog['navPosition'] ? intval( $arrCatalog['navPosition'] ) : 0;
-
-        array_insert( $GLOBALS['BE_MOD'][ $strNavigationArea ], $strNavigationPosition, $this->arrModules[ $arrCatalog['tablename'] ] );
-    }
-
-
-    protected function modifyBackendModule( $arrCatalog ) {
-
-        $strModule = \Input::get('do');
-
-        if ( !$strModule ) return null;
-
-        foreach ( $GLOBALS['BE_MOD'] as $strArea => $arrModules ) {
-
-            if ( isset( $arrModules[ $strModule ] ) && is_array( $arrModules[ $strModule ] ) ) {
-
-                $arrModule = $arrModules[ $strModule ];
-
-                if ( is_array( $arrModule['tables'] ) && in_array( $arrCatalog['tablename'], $arrModule['tables'] ) ) {
-
-                    $arrTables = $this->createBackendModule( $arrCatalog )[ $arrCatalog['tablename'] ]['tables'];
-
-                    foreach ( $arrTables as $strTable ) {
-
-                        if ( !in_array( $strTable, $arrModule['tables'] ) ) {
-
-                            $arrModule['tables'][] = $strTable;
-                        }
-                    }
-
-                    $this->arrLoadDc[] = $strModule;
-                    $GLOBALS['BE_MOD'][ $strArea ][ $strModule ] = $arrModule;
-                }
-            }
-        }
-    }
-
-
-    protected function createPermissions( $strPermissionName, $strType ) {
-
-        $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName . 'p';
-
-        if ( $strType == 'extended' ) $GLOBALS['TL_PERMISSIONS'][] = $strPermissionName;
-
-        $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = [
-
-            'type' => $strType,
-            'tablename' => $strPermissionName
-        ];
-    }
-
-
-    protected function createBackendModule( $arrCatalog ) {
-
-        $arrTables = [];
-        $arrBackendModule = [];
-        $objIconGetter = new IconGetter();
-        $arrTables[] = $arrCatalog['tablename'];
-        $blnAddContentElements = $arrCatalog['addContentElements'] ? true : false;
-
-        foreach ( $arrCatalog[ 'cTables' ] as $strTablename ) {
-
-            $arrTables[] = $strTablename;
-        }
-
-        if ( !empty( $arrCatalog[ 'cTables' ] ) && is_array( $arrCatalog[ 'cTables' ] ) ) {
-
-            $this->getNestedChildTables( $arrTables, $arrCatalog[ 'cTables' ], '' );
-        }
-        
-        if ( $blnAddContentElements || $this->existContentElementInChildrenCatalogs( $arrCatalog[ 'cTables' ] ) ) {
-
-            $arrTables[] = 'tl_content';
-        }
-
-        $arrBackendModule[ $arrCatalog['tablename'] ] = [
-
-            'icon' => $objIconGetter->setCatalogIcon( $arrCatalog['tablename'] ),
-            'name' => $arrCatalog['name'],
-            'tables' => $arrTables
-        ];
-
-        return $arrBackendModule;
-    }
-
-
-    protected function createCatalogManagerDc( $arrCatalog ) {
-
-        $objDcBuilder = new DcBuilder( $arrCatalog );
-        $objDcBuilder->createDataContainerArray();
-    }
-
-
-    protected function createDirectories() {
-
-        $objIconGetter = new IconGetter();
-        $objIconGetter->createCatalogManagerDirectories();
     }
 
 

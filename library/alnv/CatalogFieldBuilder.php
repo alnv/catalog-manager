@@ -401,7 +401,7 @@ class CatalogFieldBuilder extends CatalogController {
             ]
         ];
 
-        if ( !$this->arrCatalog['pTable'] ) {
+        if ( !$this->arrCatalog['pTable'] && !in_array( $this->arrCatalog['mode'], [ '5', '6' ] ) ) {
 
             unset( $arrFields['pid'] );
         }

@@ -104,13 +104,13 @@ class CatalogTextFieldWidget extends \Widget {
 
             $this->arrOptions = [[]];
         }
-        
+
         if ( !$this->multiple ) {
 
             if ( $this->rgxp == 'url' ) $this->varValue = \Idna::decode( $this->varValue );
             elseif ( $this->rgxp == 'email' || $this->rgxp == 'friendly' ) $this->varValue = \Idna::decodeEmail( $this->varValue );
 
-            return sprintf( '<input type="%s" name="%s" id="ctrl_%s" class="tl_text%s ctlg_awesomplete" value="%s"%s list="ctrl_dl_%s" data-startswith="%s" onfocus="Backend.getScrollOffset()">%s%s',
+            return sprintf( '<input type="%s" name="%s" id="ctrl_%s" class="tl_text%s ctlg_awesomplete" value="%s"%s list="ctrl_dl_%s" data-startswith="%s"%s onfocus="Backend.getScrollOffset()">%s%s',
 
                 $strType,
                 $this->strName,
@@ -120,6 +120,7 @@ class CatalogTextFieldWidget extends \Widget {
                 $this->getAttributes(),
                 $this->strId,
                 ( $this->startswith ?: '' ),
+                ( $this->multipleValues ? ' data-multiple="1"' : '' ),
                 $this->wizard,
                 $this->generateDataList());
         }
@@ -131,14 +132,16 @@ class CatalogTextFieldWidget extends \Widget {
 
         for ( $i=0; $i < $this->size; $i++ ) {
 
-            $arrFields[] = sprintf('<input type="%s" name="%s[]" id="ctrl_%s" class="tl_text_%s" value="%s"%s onfocus="Backend.getScrollOffset()">',
+            $arrFields[] = sprintf('<input type="%s" name="%s[]" id="ctrl_%s" class="tl_text_%s" value="%s"%s%s onfocus="Backend.getScrollOffset()">',
 
                 $strType,
                 $this->strName,
                 $this->strId.'_'.$i,
                 $this->size,
                 specialchars( @$this->varValue[ $i ] ),
-                $this->getAttributes());
+                $this->getAttributes(),
+                ( $this->multipleValues ? ' data-multiple="1"' : '' )
+            );
         }
 
         return sprintf('<div id="ctrl_%s"%s>%s</div>%s',

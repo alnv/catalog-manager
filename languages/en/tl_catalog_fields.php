@@ -42,11 +42,11 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['chosen'] = [ 'Use Chosen-Select', 'Nat
 $GLOBALS['TL_LANG']['tl_catalog_fields']['message'] = [ 'Declaration text', 'Here you can enter a declaration text.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['filter'] = [ 'Filter able', 'This field is filter able in layout palette.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['search'] = [ 'Search able', 'This field is search able in layout palette.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Backend CSS-Classes', 'Please select back end CSS-Classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['submitOnChange'] = [ 'Submit on change', 'Page will be reloaded by submit.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['includeBlankOption'] = [ 'Add blank option', 'Here you can add blank option.'];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Timestamp', 'Timestamp will be add as default value.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Backend CSS-Classes', 'Please select one or more CSS classes' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['enableToggleIcon'] = [ 'Enable toggle-Icon', 'Here you can enable toggle icon.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rgxp'] = [ 'Regular expression', 'Here you can select your regular expression.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter your option entities.' ];
@@ -151,10 +151,10 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'] = [
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [
 
-    'clr' => 'Clear',
-    'w50' => 'Float',
-    'm12' => 'Margin top',
-    'long' => 'Fullsize'
+    'clr' => 'New row',
+    'long' => 'Fullsize',
+    'w50' => 'two columns',
+    'm12' => 'Additional margin'
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [

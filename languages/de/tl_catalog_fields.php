@@ -37,7 +37,6 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['description'] = [ 'Beschreibung', 'Bit
 $GLOBALS['TL_LANG']['tl_catalog_fields']['nospace'] = [ 'Keine Leerzeichen', 'Es dürfen keine Leerzeichen verwendet werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['pagePicker'] = [ 'Page picker verwenden', 'Hier können Sie den page picker verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['search'] = [ 'Suchbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Backend CSS-Klassen', 'Bitte geben Sie Ihre Back end CSS-Klassen ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['minlength'] = [ 'Minimale Zeichenlänge', 'Hier können Sie die Zeichenlänge beschränken.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['maxlength'] = [ 'Maximale Zeichenlänge', 'Hier können Sie die Zeichenlänge beschränken.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['sort'] = [ 'Sortierbar', 'Hier können Sie das Feld für die Layout-Palette freischalten.' ];
@@ -50,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['maxval'] = [ 'Maximaler Zahlenwert', '
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Hier können Sie die Datensätze zusätzlich filtern.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['extensions'] = [ 'Erlaubte Dateitypen', 'Eine kommagetrennte Liste gültiger Dateiendungen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['tl_class'] = [ 'Backend CSS-Klassen', 'Bitte wählen Sie eine oder mehrere CSS-Klassen aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['tstampAsDefault'] = [ 'Zeitstempel', 'Der Zeitstempel wird als der Standard-Wert verwendet.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['path'] = [ 'Zielverzeichnis', 'Bitte wählen Sie das Zielverzeichnis aus der Dateiübersicht.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['doNotCopy'] = [ 'Wert nicht duplizieren', 'Beim duplizieren wird der Wert nicht übertragen.' ];
@@ -152,10 +152,10 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['sortBy'] = [
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['tl_class'] = [
 
-    'clr' => 'Clear',
-    'w50' => 'Float',
-    'm12' => 'Margin top',
-    'long' => 'Fullsize'
+    'clr' => 'Neue Zeile',
+    'w50' => 'Zweispaltig',
+    'long' => 'Komplette Breite',
+    'm12' => 'Zusätzlicher Abstand',
 ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['type'] = [

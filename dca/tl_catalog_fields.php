@@ -209,6 +209,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 255
             ],
 
+            'save_callback' => [
+
+                [ 'CatalogManager\tl_catalog_fields', 'parseTitle' ],
+            ],
+
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],

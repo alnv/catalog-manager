@@ -53,7 +53,7 @@ class I18nCatalogTranslator {
                 if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
 
                     $strTitle = $arrOptions['title'] ?: '';
-                    $strDescription = $arrOptions['descriptions'] ?: '';
+                    $strDescription = $arrOptions['description'] ?: '';
 
                     $arrLabels = [ $strTitle, $strDescription ];
                 }

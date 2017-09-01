@@ -127,7 +127,16 @@ class tl_catalog extends \Backend {
 
     public function getModeTypes ( \DataContainer $dc ) {
 
-        if ( $dc->activeRecord->pTable ) {
+        $blnDynamicPtable = false;
+        $strTablename = $dc->activeRecord->tablename;
+
+        if ( Toolkit::isCoreTable( $strTablename ) ) {
+
+            \Controller::loadDataContainer( $strTablename );
+            $blnDynamicPtable = $GLOBALS['TL_DCA'][ $strTablename ]['config']['dynamicPtable'] ?: false;
+        }
+
+        if ( $dc->activeRecord->pTable || $blnDynamicPtable ) {
 
             return [ '3', '4' ];
         }
@@ -176,7 +185,16 @@ class tl_catalog extends \Backend {
 
     public function checkModeTypeRequirements( $varValue, \DataContainer $dc ) {
 
-        if ( in_array( $varValue, [ '3', '4', '6' ] ) && !$dc->activeRecord->pTable ) {
+        $blnDynamicPtable = false;
+        $strTablename = $dc->activeRecord->tablename;
+
+        if ( Toolkit::isCoreTable( $strTablename ) ) {
+
+            \Controller::loadDataContainer( $strTablename );
+            $blnDynamicPtable = $GLOBALS['TL_DCA'][ $strTablename ]['config']['dynamicPtable'] ?: false;
+        }
+
+        if ( in_array( $varValue, [ '3', '4', '6' ] ) && ( Toolkit::isEmpty( $dc->activeRecord->pTable ) && !$blnDynamicPtable ) ) {
 
             throw new \Exception('this mode required parent table.');
         }

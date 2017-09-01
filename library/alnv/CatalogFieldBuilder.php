@@ -58,7 +58,7 @@ class CatalogFieldBuilder extends CatalogController {
 
             $blnDcFormat = true;
             $blnExcludeDefaults = true;
-            $arrFields = $this->getCoreFields();
+            $arrFields = $this->getCoreFields( $blnDcFormat );
         }
 
         $arrFields = $blnExcludeDefaults ? $arrFields : $this->getDefaultCatalogFields();
@@ -374,8 +374,8 @@ class CatalogFieldBuilder extends CatalogController {
                 'exclude' => '1',
                 'rgxp' => 'datim',
                 'invisible' => '',
+                'datepicker' => '1',
                 'statement' => 'c16',
-                'datepicker' => true,
                 'fieldname' => 'start',
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'start' ] ),
@@ -391,8 +391,8 @@ class CatalogFieldBuilder extends CatalogController {
                 'exclude' => '1',
                 'rgxp' => 'datim',
                 'invisible' => '',
+                'datepicker' => '1',
                 'statement' => 'c16',
-                'datepicker' => true,
                 'fieldname' => 'stop',
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'stop' ] ),
@@ -499,7 +499,7 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    protected function getCoreFields() {
+    protected function getCoreFields( $blnDcFormat ) {
 
         $arrReturn = [];
 
@@ -512,14 +512,36 @@ class CatalogFieldBuilder extends CatalogController {
 
             foreach ( $arrFields as $strFieldname => $arrField ) {
 
+                $strType = Toolkit::setCatalogConformInputType( $arrField );
+
+                $arrField['_type'] = $strType;
+                $arrField['_disableFEE'] = '';
+                $arrField['_placeholder'] = '';
+                $arrField['_fieldname'] = $strFieldname;
+                $arrField['_palette'] = 'general_legend';
+                $arrField['_cssID'] = [ '', $strFieldname ];
+                
+                if ( TL_MODE == 'FE' ) {
+
+                    unset( $arrField['options_callback'] );
+                    unset( $arrField['save_callback'] );
+                    unset( $arrField['load_callback'] );
+                }
+
                 $arrReturn[ $strFieldname ] = [
 
                     '_core' => true,
-                    '_dcFormat' => $arrField,
+                    'type' => $strType,
                     'fieldname' => $strFieldname,
+                    '_palette' => 'general_legend',
                     'title' => $arrField['label'][0] ?: '',
+                    'rgxp' => $arrField['eval']['rgxp'] ?: '',
                     'description' => $arrField['label'][1] ?: '',
-                    'type' => Toolkit::setCatalogConformInputType( $arrField['inputType'] ),
+                    'exclude' => $arrField['exclude'] ? '1' : '',
+                    'cssID' => serialize( [ '', $strFieldname ] ),
+                    '_dcFormat' => $blnDcFormat ? $arrField : null,
+                    'tl_class' =>  $arrField['eval']['tl_class'] ?: '',
+                    'datepicker' => $arrField['eval']['datepicker'] ? '1': ''
                 ];
             }
         }

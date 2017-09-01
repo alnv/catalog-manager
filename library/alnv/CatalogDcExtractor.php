@@ -469,7 +469,7 @@ class CatalogDcExtractor extends CatalogController {
         $arrConfigDc = [
 
             '_tables' => [],
-            'ptable' => $arrReturn[ $strDcConfigType ]['pTable'],
+            'ptable' => $arrReturn[ $strDcConfigType ]['ptable'],
             'ctable' => $arrReturn[ $strDcConfigType ]['ctable']
         ];
 

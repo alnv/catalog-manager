@@ -13,12 +13,15 @@ class tl_catalog_fields extends \Backend {
 
         parent::__construct();
 
-        if ( \Input::get( 'act' ) && \Input::get( 'id' ) ) {
+        $strId = \Input::get( 'id' ) ?: '';
+        if ( Toolkit::isEmpty( $strId ) ) return;
 
-            $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE id = ? LIMIT 1 )' )->limit(1)->execute( \Input::get( 'id' ) );
+        $strQuery = 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE id = ? LIMIT 1 )';
 
-            $this->strTable = $objCatalog->tablename;
-        }
+        if ( \Input::get( 'act' ) == 'editAll' ) $strQuery = 'SELECT * FROM tl_catalog WHERE id = ?';
+
+        $objCatalog = $this->Database->prepare( $strQuery )->limit(1)->execute( $strId );
+        $this->strTable = $objCatalog->tablename;
 
         $this->arrTypes = [
 
@@ -283,12 +286,12 @@ class tl_catalog_fields extends \Backend {
 
         if ( $dc->activeRecord->type && $dc->activeRecord->type == 'number') {
 
-            return [ 'digit', 'natural', 'prcnt' ];
+            return Toolkit::$arrDigitRgxp;
         }
 
         if ( $dc->activeRecord->type && $dc->activeRecord->type == 'date') {
 
-            return [ 'date', 'time', 'datim' ];
+            return Toolkit::$arrDateRgxp;
         }
 
         return [ 'url', 'time', 'date', 'alias', 'alnum', 'alpha', 'datim', 'digit', 'email', 'extnd', 'phone', 'prcnt', 'locale', 'emails', 'natural', 'friendly', 'language', 'folderalias' ];

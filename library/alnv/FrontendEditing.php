@@ -50,7 +50,7 @@ class FrontendEditing extends CatalogController {
         $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
-        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( $this->catalogTablename, true, null );
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( true, null );
 
         if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
 
@@ -181,18 +181,17 @@ class FrontendEditing extends CatalogController {
 
         foreach ( $arrFieldNames as $strFieldname ) {
 
-            if ( in_array( $strFieldname, $this->catalogExcludedFields ) ) {
+            if ( in_array( $strFieldname, $this->catalogExcludedFields ) ) continue;
 
-                continue;
-            }
-
-            $arrField = $this->arrCatalogFields[$strFieldname]['_dcFormat'];
+            $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
             $arrField = $this->convertWidgetToField( $arrField );
 
             $strClass = $this->fieldClassExist( $arrField['inputType'] );
+
+            if ( $strClass === false ) continue;
+
             $arrData = $strClass::getAttributesFromDca( $arrField, $strFieldname, $arrField['default'], '', '' );
 
-            if ( $strClass == false ) continue;
             if ( is_bool( $arrField['_disableFEE'] ) && $arrField['_disableFEE'] == true ) continue;
 
             if ( $arrField['inputType'] == 'catalogFineUploader' ) {
@@ -661,6 +660,11 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'catalogMessageForm';
         }
 
+        if ( $arrField['inputType'] == 'catalogTextFieldWidget' ) {
+
+            $arrField['inputType'] = 'text';
+        }
+
         $arrField['eval']['tableless'] = '1';
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 
@@ -670,7 +674,7 @@ class FrontendEditing extends CatalogController {
 
     protected function fieldClassExist( $strInputType ) {
 
-        $strClass = $GLOBALS['TL_FFL'][$strInputType];
+        $strClass = $GLOBALS['TL_FFL'][ $strInputType ];
         if ( !class_exists( $strClass ) ) return false;
 
         return $strClass;
@@ -688,7 +692,7 @@ class FrontendEditing extends CatalogController {
 
             foreach ( $this->arrValues as $strFieldname => $varValue ) {
 
-                $this->arrValues[$strFieldname] = \Input::post( $strFieldname ) !== null ? \Input::post( $strFieldname ) : $varValue;
+                $this->arrValues[ $strFieldname ] = \Input::post( $strFieldname ) !== null ? \Input::post( $strFieldname ) : $varValue;
             }
         }
     }

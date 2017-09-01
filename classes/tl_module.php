@@ -5,7 +5,7 @@ namespace CatalogManager;
 class tl_module extends \Backend {
 
 
-    private $arrCatalogFieldsCache = [];
+    protected $arrFields = [];
 
 
     public function __construct() {
@@ -167,25 +167,20 @@ class tl_module extends \Backend {
     public function getJoinAbleFields( \DataContainer $dc ) {
 
         $arrReturn = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+        $strTablename = $dc->activeRecord->catalogTablename;
 
-        if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
+        if ( Toolkit::isEmpty( $strTablename ) ) return $arrReturn;
 
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ?' )->execute( $arrCatalog['id'] );
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTablename );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
-        while ( $objCatalogFields->next() ) {
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            if ( !in_array( $objCatalogFields->type, [ 'select', 'checkbox', 'radio' ] ) ) {
+            if ( !in_array( $arrField['type'], [ 'select', 'checkbox', 'radio' ] ) ) continue;
+            if ( !$arrField['optionsType'] || $arrField['optionsType'] == 'useOptions' ) continue;
 
-                continue;
-            }
-
-            if ( !$objCatalogFields->optionsType || $objCatalogFields->optionsType == 'useOptions' ) {
-
-                continue;
-            }
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' [' . $objCatalogFields->fieldname . ']' : $objCatalogFields->fieldname;
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
         return $arrReturn;
@@ -228,21 +223,23 @@ class tl_module extends \Backend {
 
     public function getCatalogFieldsByTablename( \DataContainer $dc ) {
 
-        $strTable = $dc->activeRecord->catalogTablename;
+        $strTablename = $dc->activeRecord->catalogTablename;
 
-        if ( !empty( $this->arrCatalogFieldsCache ) && is_array( $this->arrCatalogFieldsCache ) ) {
+        if ( Toolkit::isEmpty( $strTablename ) ) return [];
+        if ( isset( $this->arrFields[ $strTablename ] ) ) return $this->arrFields[ $strTablename ];
 
-            return $this->arrCatalogFieldsCache;
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTablename );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            if ( !Toolkit::isDcConformField( $arrField ) ) continue;
+
+            $this->arrFields[ $strTablename ][ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
-        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
-
-            $arrColumns = $this->Database->listFields( $strTable );
-
-            $this->arrCatalogFieldsCache = Toolkit::parseColumns( $arrColumns );
-        }
-
-        return $this->arrCatalogFieldsCache;
+        return $this->arrFields[ $strTablename ];
     }
     
 
@@ -264,7 +261,7 @@ class tl_module extends \Backend {
                continue;
            }
 
-            $arrReturn[ $strFieldname ] = $arrField['_dcFormat']['label'][0] ?: $strFieldname;
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
         return $arrReturn;
@@ -413,40 +410,23 @@ class tl_module extends \Backend {
 
     public function getExcludedCatalogFields( \DataContainer $dc ) {
 
-        if ( !$dc->activeRecord->catalogTablename ) return [];
-
         $arrReturn = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? LIMIT 1 ) ORDER BY sorting' )->execute( $dc->activeRecord->catalogTablename );
+        $strTablename = $dc->activeRecord->catalogTablename;
 
-        if ( is_array( $arrCatalog ) ) {
+        if ( !$strTablename ) return $arrReturn;
 
-            $arrOperations = $arrCatalog['operations'];
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTablename );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
-            $arrReturn['title'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0] . ' [title]';
-            $arrReturn['alias'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0] . ' [alias]';
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            if ( in_array( 'invisible', $arrOperations ) && $this->Database->fieldExists( 'invisible', $dc->activeRecord->catalogTablename ) ) {
+            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::readOnlyFields() ) ) continue;
+            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
 
-                $arrReturn['stop'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0] . ' [stop]';
-                $arrReturn['start'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0] . ' [start]';
-                $arrReturn['invisible'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0] . ' [invisible]';
-            }
-        }
-
-        while ( $objCatalogFields->next() ) {
-
-            if ( !$objCatalogFields->type || !$objCatalogFields->fieldname ) {
-
-                continue;
-            }
-
-            if ( in_array( $objCatalogFields->type, [ 'fieldsetStart', 'fieldsetStop', 'map', 'message', 'dbColumn' ] ) ) {
-
-                continue;
-            }
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' ['. $objCatalogFields->fieldname .']' : $objCatalogFields->fieldname;
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
         return $arrReturn;
@@ -465,7 +445,7 @@ class tl_module extends \Backend {
 
             foreach ( $arrColumns as $strFieldname => $arrField ) {
 
-                $arrReturn[ $strFieldname ] = $arrField['label'][0] ? $arrField['label'][0] . ' ['. $strFieldname .']' : $strFieldname;
+                $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['label'], $strFieldname ) . '['. $strFieldname .']';
             }
         }
 

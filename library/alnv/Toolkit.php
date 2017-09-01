@@ -4,8 +4,10 @@ namespace CatalogManager;
 
 class Toolkit {
 
-    public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
+    public static $arrDateRgxp = [ 'date', 'time', 'datim' ];
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
+    public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
+    public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
 
     public static $arrSqlTypes = [
 
@@ -96,7 +98,16 @@ class Toolkit {
     }
     
 
-    public static function setCatalogConformInputType( $strType ) {
+    public static function setCatalogConformInputType( $strField ) {
+
+        $strType = $strField['inputType'];
+
+        if ( Toolkit::isEmpty( $strType ) ) return '';
+
+        if ( !Toolkit::isEmpty( $strField['eval']['rgxp'] ) ) {
+
+            if ( in_array( $strField['eval']['rgxp'], self::$arrDateRgxp ) ) return 'date';
+        }
 
         $arrInputTypes = [
 
@@ -109,7 +120,7 @@ class Toolkit {
             'checkbox' => 'checkbox',
         ];
         
-        return $arrInputTypes[ $strType ] ?: '';
+        return $arrInputTypes[ $strType ] ?: 'text';
     }
     
     
@@ -679,5 +690,17 @@ class Toolkit {
         }
 
         return $strPanelLayout;
+    }
+
+
+    public static function getLabelValue( $varValue, $strFallback ) {
+
+        if ( Toolkit::isEmpty( $varValue ) ) return $strFallback;
+
+        if ( is_array( $varValue ) ) return $varValue[0] ?: '';
+
+        if ( is_string( $varValue ) ) return $varValue ?: '';
+
+        return $strFallback;
     }
 }

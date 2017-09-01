@@ -311,7 +311,7 @@ class CatalogTaxonomyWizard extends \Widget {
                 '<option value="%s" %s>%s</option>',
                 $strField,
                 ( $strValue == $strField ? 'selected' : '' ),
-                $this->arrTaxonomies[$strField]['label'][0] ? $this->arrTaxonomies[$strField]['label'][0] . ' <span style="color:#333;font-size:12px;display:inline;">[ '. $strField .' ]</span>' : $strField
+                Toolkit::getLabelValue( $this->arrTaxonomies[ $strField ]['label'], $strField ) . ' <span style="color:#333;font-size:12px;display:inline;">['. $strField .']</span>'
             );
         }
 

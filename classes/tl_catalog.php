@@ -200,7 +200,7 @@ class tl_catalog extends \Backend {
 
             if ( !Toolkit::isDcConformField( $arrField ) ) continue;
 
-            $arrReturn[ $strFieldname ] = $this->getFieldlabel( $arrField['_dcFormat']['label'], $strFieldname );
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
         return $arrReturn;
@@ -225,7 +225,7 @@ class tl_catalog extends \Backend {
 
             if ( in_array( $arrField['type'], [ 'upload' ] ) ) continue;
 
-            $this->arrDataContainerFields[ $strTablename ][ $strFieldname ] = $this->getFieldlabel( $arrField['_dcFormat']['label'], $strFieldname );
+            $this->arrDataContainerFields[ $strTablename ][ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
         return $this->arrDataContainerFields[ $strTablename ];
@@ -389,17 +389,5 @@ class tl_catalog extends \Backend {
     public function getPermissionTypes() {
 
         return [ 'default', 'extended' ];
-    }
-
-
-    protected function getFieldlabel( $varLabel, $strFallback = '' ) {
-
-        if ( Toolkit::isEmpty( $varLabel ) ) return $strFallback;
-
-        if ( is_array( $varLabel ) ) return $varLabel[0] ?: '';
-
-        if ( is_string( $varLabel ) ) return $varLabel ?: '';
-
-        return $strFallback;
     }
 }

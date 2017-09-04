@@ -158,17 +158,24 @@ class tl_catalog extends \Backend {
 
     public function checkTablename( $varValue, \DataContainer $dc ) {
 
-        if ( $dc->activeRecord->type == 'default' && Toolkit::isCoreTable( $varValue ) ) {
+        $strTablename = Toolkit::parseConformSQLValue( $varValue );
+
+        if ( !$this->Database->isUniqueValue( 'tl_catalog', 'tablename', $strTablename, $dc->activeRecord->id ) ) {
+
+            throw new \Exception( sprintf( 'table "%s" already exists in catalog manager.', $strTablename ) );
+        }
+
+        if ( $dc->activeRecord->type == 'default' && Toolkit::isCoreTable( $strTablename ) ) {
 
             throw new \Exception( '"tl_" prefix is not allowed.' );
         }
 
-        if ( Toolkit::isCoreTable( $varValue ) && !$this->Database->tableExists( $varValue ) ) {
+        if ( Toolkit::isCoreTable( $strTablename ) && !$this->Database->tableExists( $strTablename ) ) {
 
-            throw new \Exception( sprintf( 'table "%s" do not exist.', $varValue ) );
+            throw new \Exception( sprintf( 'table "%s" do not exist.', $strTablename ) );
         }
 
-        return Toolkit::parseConformSQLValue( $varValue );
+        return $strTablename;
     }
 
 

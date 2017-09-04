@@ -202,10 +202,6 @@ class CatalogManagerInitializer {
                 'type' => $arrCatalog['permissionType'],
                 'tablename' => $strTablename
             ];
-
-            \Controller::loadDataContainer( 'tl_user', true );
-            \Controller::loadDataContainer( 'tl_user_group', true );
-            \Controller::loadDataContainer( 'tl_member_group', true );
         }
     }
 

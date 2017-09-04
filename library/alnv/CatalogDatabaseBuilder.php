@@ -29,6 +29,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         parent::__construct();
 
         $this->import( 'Database' );
+        $this->import( 'Automator' );
     }
 
 
@@ -75,13 +76,13 @@ class CatalogDatabaseBuilder extends CatalogController {
             ],
 
             [
-                'type' => 'default',
+                'type' => 'permanent',
                 'table' => 'tl_member_group',
                 'field' => $this->strTablename . 'p'
             ],
 
             [
-                'type' => 'extended',
+                'type' => 'permanent',
                 'table' => 'tl_member_group',
                 'field' => $this->strTablename
             ]
@@ -124,6 +125,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         $objSQLBuilder->createSQLCreateStatement( $this->strTablename, $arrColumns );
         $this->checkPermissionFields( 'create' );
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -135,6 +138,8 @@ class CatalogDatabaseBuilder extends CatalogController {
         $objSQLBuilder->createSQLRenameTableStatement( $strNewTablename, $this->strTablename );
         $this->checkDependencies( $strNewTablename );
         $this->checkPermissionFields( 'rename', $strNewTablename );
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -145,6 +150,8 @@ class CatalogDatabaseBuilder extends CatalogController {
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->createSQLDropTableStatement( $this->strTablename );
         $this->checkPermissionFields( 'drop' );
+
+        $this->Automator->purgeInternalCache();
     }
     
     
@@ -174,6 +181,8 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'create' );
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -189,6 +198,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
             $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
         }
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -197,6 +208,8 @@ class CatalogDatabaseBuilder extends CatalogController {
         $objSQLBuilder = new SQLBuilder();
         $strSQLData = Toolkit::getSqlDataType( $this->arrColumn['statement'] );
         $objSQLBuilder->createSQLRenameFieldnameStatement( $this->strTablename, $this->arrColumn['fieldname'], $strNewFieldname, $strSQLData );
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -209,6 +222,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->dropTableField( $this->strTablename, $this->arrColumn['fieldname'] );
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -249,6 +264,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
             $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
         }
+
+        $this->Automator->purgeInternalCache();
     }
 
 
@@ -320,13 +337,6 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     protected function checkPermissionFields( $strEvent = '', $strNewTablename = '' ) {
 
-        if ( Toolkit::isEmpty( $this->arrCatalog['permissionType'] ) ) {
-
-            $this->resetPermissionFields();
-
-            return null;
-        }
-
         switch ( $strEvent ) {
 
             case 'create':
@@ -356,6 +366,9 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         $this->getPermissionColumns( function( $arrPermissionColumn ) use( $objSQLBuilder ) {
 
+            if ( Toolkit::isEmpty( $this->arrCatalog['permissionType'] ) && in_array( $arrPermissionColumn['type'], [ 'default', 'extended' ] ) ) return null;
+            if ( $this->arrCatalog['permissionType'] == 'default' && $arrPermissionColumn['type'] == 'extended' ) return null;
+
             $objSQLBuilder->alterTableField( $arrPermissionColumn['table'], $arrPermissionColumn['field'], 'blob NULL' );
         });
     }
@@ -378,23 +391,12 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         $this->getPermissionColumns( function( $arrPermissionColumn ) use ( $objSQLBuilder ) {
 
+            if ( Toolkit::isEmpty( $this->arrCatalog['permissionType'] ) && in_array( $arrPermissionColumn['type'], [ 'default', 'extended' ] ) ) return null;
+            if ( $this->arrCatalog['permissionType'] == 'default' && $arrPermissionColumn['type'] == 'extended' ) return null;
+
             $objSQLBuilder->createSQLRenameFieldnameStatement( $arrPermissionColumn['table'], $arrPermissionColumn['field'], $arrPermissionColumn['newField'], 'blob NULL' );
 
         }, $strNewTablename );
-    }
-
-
-    protected function resetPermissionFields() {
-
-        $objSQLBuilder = new SQLBuilder();
-
-        $this->getPermissionColumns( function( $arrPermissionColumn ) use ( $objSQLBuilder ) {
-
-            if ( $objSQLBuilder->Database->fieldExists( $arrPermissionColumn['field'], $arrPermissionColumn['table'] ) ) {
-
-                $objSQLBuilder->dropTableField( $arrPermissionColumn['table'] , $arrPermissionColumn['field'] );
-            }
-        });
     }
 
 
@@ -402,15 +404,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         foreach ( $this->arrPermissionColumns as $arrPermissionColumn ) {
 
-            if ( $this->arrCatalog['permissionType'] == 'default' &&  $arrPermissionColumn['type'] == 'extended' ) {
-
-                continue;
-            }
-
-            if ( !Toolkit::isEmpty( $strNewTable ) ) {
-
-                $arrPermissionColumn['newField'] = $strNewTable;
-            }
+            if ( !Toolkit::isEmpty( $strNewTable ) ) $arrPermissionColumn['newField'] = $strNewTable;
 
             if ( is_array( $arrCallback ) ) {
 

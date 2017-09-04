@@ -8,6 +8,7 @@ class CatalogDatabaseBuilder extends CatalogController {
     protected $arrColumn = [];
     protected $arrCatalog = [];
     protected $strTablename = null;
+    protected $blnCoreTable = false;
     protected $arrPermissionColumns = [];
 
     protected $arrTableColumns = [
@@ -52,41 +53,50 @@ class CatalogDatabaseBuilder extends CatalogController {
         $this->arrPermissionColumns = [
 
             [
+                'postfix' => true,
                 'type' => 'default',
                 'table' => 'tl_user',
                 'field' => $this->strTablename . 'p'
             ],
 
             [
+                'postfix' => false,
                 'type' => 'extended',
                 'table' => 'tl_user',
                 'field' => $this->strTablename
             ],
 
             [
+                'postfix' => true,
                 'type' => 'default',
                 'table' => 'tl_user_group',
                 'field' => $this->strTablename . 'p'
             ],
 
             [
+                'postfix' => false,
                 'type' => 'extended',
                 'table' => 'tl_user_group',
                 'field' => $this->strTablename
             ],
 
             [
+                'postfix' => true,
                 'type' => 'permanent',
                 'table' => 'tl_member_group',
                 'field' => $this->strTablename . 'p'
             ],
 
             [
+                'postfix' => false,
                 'type' => 'permanent',
                 'table' => 'tl_member_group',
                 'field' => $this->strTablename
             ]
         ];
+
+        $this->blnCoreTable = Toolkit::isCoreTable( $strTablename );
+        if ( $this->blnCoreTable ) $this->arrCatalog['permissionType'] = '';
     }
 
 
@@ -100,8 +110,6 @@ class CatalogDatabaseBuilder extends CatalogController {
 
 
     public function createTable() {
-
-        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
 
         $arrColumns = $this->arrTableColumns;
         $objSQLBuilder = new SQLBuilder();
@@ -123,65 +131,67 @@ class CatalogDatabaseBuilder extends CatalogController {
             unset( $arrColumns['pid'] );
         }
 
-        $objSQLBuilder->createSQLCreateStatement( $this->strTablename, $arrColumns );
-        $this->checkPermissionFields( 'create' );
+        if ( !$this->blnCoreTable ) {
 
+            $objSQLBuilder->createSQLCreateStatement( $this->strTablename, $arrColumns );
+        }
+
+        $this->checkPermissionFields( 'create' );
         $this->Automator->purgeInternalCache();
     }
 
 
     public function renameTable( $strNewTablename ) {
 
-        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
+        if ( !$this->blnCoreTable ) {
 
-        $objSQLBuilder = new SQLBuilder();
-        $objSQLBuilder->createSQLRenameTableStatement( $strNewTablename, $this->strTablename );
-        $this->checkDependencies( $strNewTablename );
+            $objSQLBuilder = new SQLBuilder();
+            $objSQLBuilder->createSQLRenameTableStatement( $strNewTablename, $this->strTablename );
+            $this->checkDependencies( $strNewTablename );
+        }
+
         $this->checkPermissionFields( 'rename', $strNewTablename );
-
         $this->Automator->purgeInternalCache();
     }
 
 
     public function dropTable() {
 
-        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
+        if ( !$this->blnCoreTable ) {
 
-        $objSQLBuilder = new SQLBuilder();
-        $objSQLBuilder->createSQLDropTableStatement( $this->strTablename );
+            $objSQLBuilder = new SQLBuilder();
+            $objSQLBuilder->createSQLDropTableStatement( $this->strTablename );
+        }
+
         $this->checkPermissionFields( 'drop' );
-
         $this->Automator->purgeInternalCache();
     }
     
     
     public function tableCheck() {
 
-        if ( Toolkit::isCoreTable( $this->strTablename ) ) return null;
-
         $objSQLBuilder = new SQLBuilder();
 
         if ( !$this->Database->tableExists( $this->strTablename ) ) return null;
 
-        if ( $this->arrCatalog['mode'] ) {
+        if ( $this->arrCatalog['mode'] && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'sorting' , $this->arrTableColumns['sorting'] );
         }
 
-        if ( $this->hasOperator( 'invisible' ) ) {
+        if ( $this->hasOperator( 'invisible' ) && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'stop' , $this->arrTableColumns['stop'] );
             $objSQLBuilder->alterTableField( $this->strTablename, 'start' , $this->arrTableColumns['start'] );
             $objSQLBuilder->alterTableField( $this->strTablename, 'invisible', $this->arrTableColumns['invisible'] );
         }
 
-        if ( $this->hasParent() ) {
+        if ( $this->hasParent() && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'pid' , $this->arrTableColumns['pid'] );
         }
 
         $this->checkPermissionFields( 'create' );
-
         $this->Automator->purgeInternalCache();
     }
 
@@ -404,7 +414,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         foreach ( $this->arrPermissionColumns as $arrPermissionColumn ) {
 
-            if ( !Toolkit::isEmpty( $strNewTable ) ) $arrPermissionColumn['newField'] = $strNewTable;
+            if ( !Toolkit::isEmpty( $strNewTable ) ) $arrPermissionColumn['newField'] = $strNewTable . ( $arrPermissionColumn['postfix'] ? 'p' : '' );
 
             if ( is_array( $arrCallback ) ) {
 

@@ -218,8 +218,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'inputType' => 'text',
 
             'eval' => [
-
-                'unique' => true,
+                
                 'rgxp' => 'extnd',
                 'maxlength' => 128,
                 'tl_class' => 'w50',

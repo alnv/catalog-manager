@@ -40,7 +40,7 @@ if ( \Input::get('do') ) {
 
             if ( !$arrCatalog['tablename'] ) continue;
 
-            if ( $arrCatalog['tablename'] == \Input::get( 'do' ) ) {
+            if ( $arrCatalog['tablename'] == \Input::get( 'do' ) || $arrCatalog['modulename'] ==  \Input::get( 'do' ) ) {
 
                 $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
                 

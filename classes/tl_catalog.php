@@ -160,6 +160,7 @@ class tl_catalog extends \Backend {
     public function checkTablename( $varValue, \DataContainer $dc ) {
 
         $strTablename = Toolkit::parseConformSQLValue( $varValue );
+        $strTablename = \StringUtil::generateAlias( $strTablename );
 
         if ( !$this->Database->isUniqueValue( 'tl_catalog', 'tablename', $strTablename, $dc->activeRecord->id ) ) {
 

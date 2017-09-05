@@ -13,7 +13,7 @@ class CatalogDcAdapter extends CatalogController {
 
     public function initialize( $strTablename ) {
 
-        if ( $this->loadDc( $strTablename ) ) {
+        if ( $this->shouldLoadDc( $strTablename ) ) {
 
             $objDcExtractor = new CatalogDcExtractor();
             $objDcExtractor->initialize( $strTablename );
@@ -22,7 +22,7 @@ class CatalogDcAdapter extends CatalogController {
     }
 
 
-    protected function loadDc( $strTablename ) {
+    protected function shouldLoadDc( $strTablename ) {
 
         return in_array( $strTablename, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) && ( \Input::get('do') != 'catalog-manager' || \Input::get('table') == 'tl_catalog_fields' );
     }

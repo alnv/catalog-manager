@@ -462,7 +462,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMasterTemplate'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogOrderBy'],
-    'inputType' => 'catalogSelectWizard',
+    'inputType' => 'catalogDuplexSelectWizard',
 
     'eval' => [
 

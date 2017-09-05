@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class CatalogSelectWizard extends \Widget {
+class CatalogDuplexSelectWizard extends \Widget {
 
 
     protected $strTablename;

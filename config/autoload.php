@@ -69,7 +69,6 @@ ClassLoader::addClasses([
     'CatalogManager\ModuleUniversalView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleUniversalView.php',
     'CatalogManager\UserPermissionExtension' => 'system/modules/catalog-manager/library/alnv/UserPermissionExtension.php',
     'CatalogManager\ModuleCatalogFilter' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogFilter.php',
-    'CatalogManager\CatalogSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogSelectWizard.php',
     'CatalogManager\CatalogMessageWidget' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogMessageWidget.php',
     'CatalogManager\CatalogTaxonomyWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogTaxonomyWizard.php',
     'CatalogManager\MemberPermissionExtension' => 'system/modules/catalog-manager/library/alnv/MemberPermissionExtension.php',
@@ -82,6 +81,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogWidgetAttributeParser' => 'system/modules/catalog-manager/library/alnv/CatalogWidgetAttributeParser.php',
     'CatalogManager\ContentCatalogFilterForm' => 'system/modules/catalog-manager/library/alnv/Elements/ContentCatalogFilterForm.php',
     'CatalogManager\ModuleCatalogTaxonomyTree' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogTaxonomyTree.php',
+    'CatalogManager\CatalogDuplexSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogDuplexSelectWizard.php',
     'CatalogManager\CatalogRelationRedirectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationRedirectWizard.php',
     'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
 ]);

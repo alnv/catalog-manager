@@ -257,6 +257,8 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         else {
 
+            $this->createColumn();
+
             return null;
         }
 

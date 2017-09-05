@@ -25,24 +25,40 @@ class tl_catalog_fields extends \Backend {
 
         $this->arrTypes = [
 
-            'map' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'text' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'date' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'radio' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'hidden' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'number' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'select' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'upload' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'checkbox' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
-            'textarea' => [ 'dcPicker' => 'cssID;', 'dcType' => 'dcPaletteField' ],
+            'text' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'date' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'radio' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'hidden' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'number' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'select' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
             'message' => [ 'dcPicker' => 'message;', 'dcType' => 'dcPaletteField' ],
-            'dbColumn' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
+            'map' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
+            'upload' => [ 'dcPicker' => 'statement;', 'dcType' => 'dcPaletteField' ],
+            'checkbox' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'textarea' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+            'dbColumn' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
             'fieldsetStart' => [  'dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend' ],
             'fieldsetStop' => [],
         ];
     }
 
-    
+
+    public function generateFieldname( $varValue, \DataContainer $dc ) {
+
+        if ( Toolkit::isEmpty( $varValue ) && !Toolkit::isEmpty( $dc->activeRecord->title ) ) {
+
+            $varValue = \StringUtil::generateAlias( $dc->activeRecord->title );
+            $objField = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE fieldname = ? AND id != ?' )->limit(1)->execute( $varValue, $dc->activeRecord->id );
+
+            if ( $objField->numRows ) $varValue .= '_' . $objField->id;
+
+            return $varValue;
+        }
+
+        return $varValue;
+    }
+
+
     public function checkPermission() {
 
         $objDcPermission = new DcPermission();
@@ -221,7 +237,9 @@ class tl_catalog_fields extends \Backend {
     
     public function checkFieldname( $varValue ) {
 
-        return Toolkit::parseConformSQLValue( $varValue );
+        $varValue = Toolkit::parseConformSQLValue( $varValue );
+
+        return \StringUtil::generateAlias( $varValue );
     }
 
 

@@ -282,6 +282,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'save_callback' => [
 
+                [ 'CatalogManager\tl_catalog_fields', 'generateFieldname' ],
                 [ 'CatalogManager\tl_catalog_fields', 'checkBlacklist' ],
                 [ 'CatalogManager\tl_catalog_fields', 'checkFieldname' ],
                 [ 'CatalogManager\tl_catalog_fields', 'checkUniqueValue' ],
@@ -1792,7 +1793,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'dcPaletteLegend' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'],
-            'inputType' => 'catalogSelectWizard',
+            'inputType' => 'catalogDuplexSelectWizard',
 
             'eval' => [
 
@@ -1812,7 +1813,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'dcPaletteField' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteField'],
-            'inputType' => 'catalogSelectWizard',
+            'inputType' => 'catalogDuplexSelectWizard',
 
             'eval' => [
 

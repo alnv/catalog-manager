@@ -577,7 +577,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 if ( $arrField['type'] == 'fieldsetStop' ) {
 
-                    $this->DcModifier->addLegendToPalette( $arrPaletteFields, $arrPickedPalettes, $arrReturn['palettes'], $arrFieldsetStart );
+                    if ( is_array( $arrPickedPalettes ) ) $this->DcModifier->addLegendToPalette( $arrPaletteFields, $arrPickedPalettes, $arrReturn['palettes'], $arrFieldsetStart );
 
                     $arrFieldsetStart= [];
                     $arrPaletteFields = [];

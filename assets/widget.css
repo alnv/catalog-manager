@@ -124,3 +124,8 @@ ul.ctlg_files_preview li {
 
     display: inline-block;
 }
+
+.w50.wizard {
+
+    position: relative;
+}

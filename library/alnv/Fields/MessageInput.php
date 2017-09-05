@@ -7,7 +7,11 @@ class MessageInput {
     
     public static function generate( $arrDCAField, $arrField ) {
 
-        unset( $arrDCAField['label'][1] );
+        if ( isset( $arrDCAField['label'][1] ) ) {
+
+            unset( $arrDCAField['label'][1] );
+        }
+
         unset( $arrDCAField['exclude'] );
         unset( $arrDCAField['sorting'] );
         unset( $arrDCAField['filter'] );

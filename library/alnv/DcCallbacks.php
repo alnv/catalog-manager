@@ -293,17 +293,15 @@ class DcCallbacks extends \Backend {
 
         $strModalTitle = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'], $dc->value );
         $strModalIFrameOptions = sprintf( "{'width':768,'title':'%s','url':this.href}", $strModalTitle );
+        $strDoAttribute = $this->getDoAttribute( $arrCatalog );
 
         if ( $arrCatalog['pTable'] ) {
 
             $strTableAttribute = sprintf( '&amp;table=%s', $arrCatalog['tablename'] );
-            $strDoAttribute = sprintf( 'do=%s', $arrCatalog['pTable'] );
+            $strDoAttribute = sprintf( 'do=%s', $strDoAttribute );
         }
 
-        else {
-
-            $strDoAttribute = sprintf( 'do=%s', $arrCatalog['tablename'] );
-        }
+        else $strDoAttribute = sprintf( 'do=%s', $strDoAttribute );
 
         return '<a href="contao?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;popup=1&amp;nb=1&amp;rt=' . REQUEST_TOKEN . '" title="'. $strTitle .'" onclick="Backend.openModalIframe(' . $strModalIFrameOptions . ');return false" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
     }
@@ -380,5 +378,18 @@ class DcCallbacks extends \Backend {
         }
 
         return false;
+    }
+
+
+    protected function getDoAttribute( $arrCatalog ) {
+
+        if ( $arrCatalog === null ) return '';
+
+        if ( $arrCatalog['isBackendModule'] && !Toolkit::isEmpty( $arrCatalog['modulename'] ) ) {
+
+            return $arrCatalog['modulename'];
+        }
+
+        return $arrCatalog['tablename'] ?: '';
     }
 }

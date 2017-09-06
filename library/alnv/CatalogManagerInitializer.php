@@ -10,7 +10,7 @@ class CatalogManagerInitializer {
     protected $arrCoreTables = [];
     protected $arrBackendModules = [];
     protected $objI18nCatalogTranslator;
-    protected $arrActiveBackendModules = [ 'group', 'mgroup', 'user' ];
+    protected $arrActiveBackendModules = [];
 
 
     public function initialize() {
@@ -165,17 +165,14 @@ class CatalogManagerInitializer {
 
                     $this->initializeDcByTablename( $strTablename );
                 }
-            }
 
-            return null;
+                return null;
+            }
         }
 
-        if ( Toolkit::isEmpty( $strActiveModule ) ) {
+        foreach ( $this->arrCatalogs as $strTablename => $arrCatalog ) {
 
-            foreach ( $this->arrCatalogs as $strTablename => $arrCatalog ) {
-
-                $this->initializeDcByTablename( $strTablename, $arrCatalog );
-            }
+            $this->initializeDcByTablename( $strTablename, $arrCatalog );
         }
     }
 

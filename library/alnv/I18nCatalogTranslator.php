@@ -18,9 +18,7 @@ class I18nCatalogTranslator {
 
     
     public function get( $strType, $strName, $arrOptions = [] ) {
-
-        if ( !$strName ) return '';
-
+        
         switch ( $strType ) {
             
             case 'module':

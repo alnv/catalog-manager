@@ -14,9 +14,9 @@ class MemberPermissionExtension extends CatalogController {
     }
 
 
-    public function initialize( $strDCAName ) {
+    public function initialize( $strDcName ) {
 
-        if ( $strDCAName == 'tl_member' || $strDCAName == 'tl_member_group' ) {
+        if ( $strDcName == 'tl_member_group' ) {
 
             $arrCatalogs = array_keys( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] );
 

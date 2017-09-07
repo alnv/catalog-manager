@@ -128,11 +128,6 @@ class CatalogManagerInitializer {
 
                     $arrTables = $arrBackendModule['tables'];
 
-                    if ( !in_array( $strActiveModule, $this->arrActiveBackendModules ) ) {
-
-                        $this->arrActiveBackendModules[] = $strActiveModule;
-                    }
-
                     foreach ( $arrTables as $strTable ) {
 
                         if ( !in_array( $strTable, $arrModule['tables'] ) ) {

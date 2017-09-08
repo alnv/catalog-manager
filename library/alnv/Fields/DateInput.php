@@ -28,10 +28,7 @@ class DateInput {
     
     private static function setRGXP( $strRgxp ) {
 
-        if ( !$strRgxp ) {
-
-            return 'date';
-        }
+        if ( Toolkit::isEmpty( $strRgxp ) ) return 'date';
 
         return $strRgxp;
     }
@@ -39,11 +36,20 @@ class DateInput {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog ) {
 
-        if ( !$varValue ) return '';
+        if ( Toolkit::isEmpty( $varValue ) ) return '';
 
-        $strRgxp = $arrField['rgxp'] ? $arrField['rgxp'] : 'datim';
+        $strRgxp = $arrField['rgxp'] ?: 'datim';
         $strDateFormat = \Date::getFormatFromRgxp( $strRgxp );
-        $objDate = new \Date( $varValue, $strDateFormat );
+
+        try {
+
+            $objDate = new \Date( $varValue, $strDateFormat );
+        }
+
+        catch ( \OutOfBoundsException $objError ) {
+
+            return '';
+        }
 
         switch ( $strRgxp ) {
 

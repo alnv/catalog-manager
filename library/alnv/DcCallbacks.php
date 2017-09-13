@@ -235,9 +235,26 @@ class DcCallbacks extends \Backend {
 
         if ( !$dc->activeRecord ) return null;
 
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ \Input::get('do') ];
+        $arrCatalog = [];
+        $strTable = \Input::get('table');
+        
+        if ( !Toolkit::isEmpty( $strTable ) ) {
 
-        if ( !$arrCatalog ) return null;
+            $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+        }
+
+        else {
+
+            $strDo = \Input::get( 'do' );
+            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute( $strDo );
+
+            if ( is_array( $arrTables ) && isset( $arrTables[0] ) ) {
+
+                $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrTables[0] ];
+            }
+        }
+
+        if ( empty( $arrCatalog ) || !is_array( $arrCatalog ) ) return null;
 
         $arrCords = [];
         $objGeoCoding = new GeoCoding();

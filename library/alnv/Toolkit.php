@@ -703,4 +703,24 @@ class Toolkit {
 
         return $strFallback;
     }
+
+
+    public static function getBackendModuleTablesByDoAttribute( $strDo ) {
+
+        if ( is_array( $GLOBALS['BE_MOD'] ) && TL_MODE == 'BE' && !Toolkit::isEmpty( $strDo ) ) {
+
+            foreach ( $GLOBALS['BE_MOD'] as $arrModules ) {
+
+                foreach ( $arrModules as $strModulename => $arrModule ) {
+                    
+                    if ( $strModulename == $strDo ) {
+
+                        return is_array( $arrModule['tables'] ) ? $arrModule['tables'] : [];
+                    }
+                }
+            }
+        }
+
+        return [];
+    }
 }

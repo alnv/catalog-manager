@@ -875,10 +875,9 @@ class CatalogView extends CatalogController {
         $arrField = $this->arrCatalogFields[ $strFieldname ];
         $strType = $arrField['type'];
 
-        if ( $this->isFastMode( $strType ) ) {
-
-            return '';
-        }
+        if ( $arrField['_isDate'] != null && $arrField['_isDate'] === true ) $strType = 'date';
+        if ( Toolkit::isEmpty( $strType ) ) return $varValue;
+        if ( $this->isFastMode( $strType ) ) return '';
 
         switch ( $strType ) {
 

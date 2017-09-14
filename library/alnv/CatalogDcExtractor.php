@@ -470,7 +470,7 @@ class CatalogDcExtractor extends CatalogController {
 
             '_tables' => [],
             'ptable' => $arrReturn[ $strDcConfigType ]['ptable'],
-            'ctable' => $arrReturn[ $strDcConfigType ]['ctable'],
+            'ctable' => is_array( $arrReturn[ $strDcConfigType ]['ctable'] ) ? $arrReturn[ $strDcConfigType ]['ctable'] : [],
             'onsubmit_callback' => is_array( $arrReturn[ $strDcConfigType ]['onsubmit_callback'] ) ? $arrReturn[ $strDcConfigType ]['onsubmit_callback'] : []
         ];
 
@@ -655,7 +655,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 $arrOperator[ $strOperation ] = [
 
-                    'href' => sprintf( 'table=%s', $strTable ),
+                    'href' => sprintf( 'table=%s&ctlg_table=%s', $strTable, $this->strTable ),
                     'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $strTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTable ) ],
                     'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
                 ];

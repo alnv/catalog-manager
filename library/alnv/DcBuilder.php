@@ -368,7 +368,7 @@ class DcBuilder extends CatalogController {
 
             $arrOperator[ $strOperationName ] = [
 
-                'href' => sprintf( 'table=%s', $strTable ),
+                'href' => sprintf( 'table=%s&ctlg_table=%s', $strTable, $this->strTable ),
                 'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $strTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTable ) ],
                 'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
             ];

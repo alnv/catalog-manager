@@ -87,15 +87,16 @@ class GalleryCreator extends \Frontend {
 
                 $arrImages[ $this->objFiles->path ] = [
 
-                    'id'        => $this->objFiles->id,
-                    'uuid'      => $this->objFiles->uuid,
+                    'id' => $this->objFiles->id,
+                    'uuid' => $this->objFiles->uuid,
+                    'name' => $this->objFiles->basename,
                     'singleSRC' => $this->objFiles->path,
-                    'name'      => $this->objFiles->basename,
 
-                    'alt'       => $arrMeta['alt'],
-                    'imageUrl'  => $arrMeta['link'],
-                    'linkTitle'  => $arrMeta['title'],
-                    'caption'   => $arrMeta['caption']
+                    'alt' => $arrMeta['alt'],
+                    'title'  => $arrMeta['title'],
+                    'imageUrl' => $arrMeta['link'],
+                    'linkTitle' => $arrMeta['title'],
+                    'caption' => $arrMeta['caption']
                 ];
 
                 $arrAuxDate[] = $objFile->mtime;
@@ -134,15 +135,16 @@ class GalleryCreator extends \Frontend {
 
                     $arrImages[ $objSubFiles->path ] = [
 
-                        'id'        => $objSubFiles->id,
-                        'uuid'      => $objSubFiles->uuid,
-                        'name'      => $objFile->basename,
+                        'id' => $objSubFiles->id,
+                        'uuid' => $objSubFiles->uuid,
+                        'name' => $objFile->basename,
                         'singleSRC' => $objSubFiles->path,
 
-                        'alt'       => $arrMeta['alt'],
-                        'imageUrl'  => $arrMeta['link'],
-                        'linkTitle'  => $arrMeta['title'],
-                        'caption'   => $arrMeta['caption']
+                        'alt' => $arrMeta['alt'],
+                        'title'  => $arrMeta['title'],
+                        'imageUrl' => $arrMeta['link'],
+                        'linkTitle' => $arrMeta['title'],
+                        'caption' => $arrMeta['caption']
                     ];
 
                     $arrAuxDate[] = $objFile->mtime;

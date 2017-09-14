@@ -294,6 +294,7 @@ class CatalogFieldBuilder extends CatalogController {
                 'type' => '',
                 'sort' => '1',
                 'invisible' => '',
+                '_isDate' => true,
                 'statement' => 'i10',
                 'disableFEE' => true,
                 'fieldname' => 'tstamp',

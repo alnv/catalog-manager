@@ -297,6 +297,7 @@ class CatalogFieldBuilder extends CatalogController {
                 'statement' => 'i10',
                 'disableFEE' => true,
                 'fieldname' => 'tstamp',
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0]
             ],
 

@@ -30,29 +30,15 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogForm'] = [
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
 
-if ( \Input::get('do') ) {
+if ( \Input::get('do') && \Input::get('ctlg_table') ) {
     
-    $arrCatalogs = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'];
+    $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ \Input::get('ctlg_table') ];
 
-    if ( !empty( $arrCatalogs ) && is_array( $arrCatalogs ) ) {
+    if ( is_array( $arrCatalog ) && !empty( $arrCatalog ) ) {
 
-        foreach ( $arrCatalogs as $strTablename => $arrCatalog ) {
+        if ( $arrCatalog['tablename'] ) {
 
-            if ( !$arrCatalog['tablename'] ) continue;
-
-            if ( $arrCatalog['tablename'] == \Input::get( 'do' ) || $arrCatalog['modulename'] ==  \Input::get( 'do' ) ) {
-
-                $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
-                
-                break;
-            }
-
-            if ( $arrCatalog['pTable'] == \Input::get( 'do' ) ) {
-
-                $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
-                
-                break;
-            }
+            $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
         }
     }
 }

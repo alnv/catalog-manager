@@ -415,9 +415,9 @@ class DcBuilder extends CatalogController {
 
             'all' => [
 
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href' => 'act=select',
                 'class' => 'header_edit_all',
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => sprintf( 'act=select&ctlg_table=%s', $this->strTable ),
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
             ]
         ];

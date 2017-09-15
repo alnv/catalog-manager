@@ -649,6 +649,11 @@ class CatalogDcExtractor extends CatalogController {
             }
         }
 
+        if ( !is_array( $arrReturn[ $strDcConfigType ]['operations'] ) ) {
+
+            $arrReturn[ $strDcConfigType ]['operations'] = [];
+        }
+
         if ( is_array( $arrReturn['config']['ctable'] ) ) {
 
             foreach ( $arrReturn['config']['ctable'] as $strTable ) {
@@ -665,15 +670,7 @@ class CatalogDcExtractor extends CatalogController {
                     'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
                 ];
 
-                array_insert( $arrReturn[$strDcConfigType]['operations'], 1, $arrOperator );
-            }
-        }
-
-        if ( is_array( $arrReturn['fields'] ) ) {
-
-            foreach ( $arrReturn['fields'] as $strFieldname => $arrField ) {
-
-                // @todo
+                array_insert( $arrReturn[ $strDcConfigType ]['operations'], 1, $arrOperator );
             }
         }
 

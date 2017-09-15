@@ -290,7 +290,7 @@ class DcBuilder extends CatalogController {
             'edit' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
-                'href' => 'act=edit',
+                'href' => sprintf( 'act=edit&ctlg_table=%s', $this->strTable ),
                 'icon' => 'header.gif'
             ],
 

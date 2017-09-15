@@ -371,7 +371,7 @@ class OptionsGetter extends CatalogController {
             case 'BE':
 
                 $strID = \Input::get('id');
-                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('do');
+                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('ctlg_table');
 
                 if ( !$strID || !$strTable ) {
 

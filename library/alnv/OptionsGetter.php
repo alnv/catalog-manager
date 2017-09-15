@@ -9,6 +9,7 @@ class OptionsGetter extends CatalogController {
     protected $arrCache = [];
     protected $arrField = [];
     protected $arrCatalog = [];
+    protected $strActiveTable = '';
     protected $arrActiveEntity = [];
     protected $arrCatalogFields = [];
 
@@ -178,6 +179,7 @@ class OptionsGetter extends CatalogController {
             'where' => []
         ];
 
+        $this->getActiveTable();
         $this->getActiveEntityValues();
         $strOrderBy = $this->getOrderBy();
         $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
@@ -222,6 +224,19 @@ class OptionsGetter extends CatalogController {
         $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
 
         return $objDbOptions;
+    }
+
+
+    protected function getActiveTable() {
+
+        $this->strActiveTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('ctlg_table');
+
+        if ( Toolkit::isEmpty( $this->strActiveTable ) && \Input::get('do') ) {
+
+            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute( \Input::get('do') );
+
+            if ( is_array( $arrTables ) && isset( $arrTables[0] ) ) $this->strActiveTable = $arrTables[0];
+        }
     }
 
 
@@ -297,28 +312,22 @@ class OptionsGetter extends CatalogController {
 
         if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
-            $strFieldnameValue = '';
+            $strActiveValue = '';
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
             if ( $strTag ) {
 
-                $strFieldnameValue = $this->arrActiveEntity[ $strTag ];
+                $strActiveValue = $this->arrActiveEntity[ $strTag ];
             }
 
-            if ( TL_MODE == 'FE' && ( is_null( $strFieldnameValue ) || $strFieldnameValue === '' ) ) {
+            if ( Toolkit::isEmpty( $strActiveValue ) && TL_MODE == 'FE' ) {
 
-                $strFieldnameValue = $this->CatalogInput->getValue( $strTag );
+                $strActiveValue = $this->CatalogInput->getValue( $strTag );
             }
 
-            if ( Toolkit::isEmpty( $strFieldnameValue ) ) {
-
-                $blnValidValue = $this->isValidValue( $strFieldnameValue );
-                $strFieldnameValue = '';
-            }
-
-            $strValue = $strFieldnameValue;
-
+            $blnValidValue = $this->isValidValue( $strActiveValue );
+            $strValue = $strActiveValue;
         }
 
         if ( $strOperator == 'contain' && is_string( $strValue ) ) {
@@ -371,21 +380,20 @@ class OptionsGetter extends CatalogController {
             case 'BE':
 
                 $strID = \Input::get('id');
-                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('ctlg_table');
 
-                if ( !$strID || !$strTable ) {
+                if ( Toolkit::isEmpty( $strID  )|| Toolkit::isEmpty( $this->strActiveTable ) ) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $strTable ) ) {
+                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->strActiveTable  ) ) {
 
                     return null;
                 }
 
                 $arrQuery = [
 
-                    'table' => $strTable,
+                    'table' => $this->strActiveTable ,
 
                     'pagination' => [
 
@@ -404,18 +412,18 @@ class OptionsGetter extends CatalogController {
                     'joins' => []
                 ];
 
-                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1' )->execute( $strTable );
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1' )->execute( $this->strActiveTable  );
 
                 if ( $objCatalog->numRows ) {
 
-                    if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $strTable ) ) {
+                    if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $this->strActiveTable  ) ) {
 
                         $arrQuery['joins'][] = [
 
                             'field' => 'pid',
                             'onField' => 'id',
                             'multiple' => false,
-                            'table' => $strTable,
+                            'table' => $this->strActiveTable,
                             'onTable' => $objCatalog->pTable
                         ];
                     }
@@ -477,7 +485,7 @@ class OptionsGetter extends CatalogController {
                 }
 
                 $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
-                
+
                 break;
 
         }
@@ -509,9 +517,8 @@ class OptionsGetter extends CatalogController {
             case 'BE':
 
                 $strID = \Input::get('id');
-                $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('do');
 
-                if ( !$strID || !$strTable ) return false;
+                if ( Toolkit::isEmpty( $strID ) || Toolkit::isEmpty( $this->strActiveTable ) ) return false;
 
                 break;
 

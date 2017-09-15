@@ -50,7 +50,7 @@ class FrontendEditing extends CatalogController {
         $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
-        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( true, null );
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( true, $this );
 
         if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
 
@@ -145,7 +145,7 @@ class FrontendEditing extends CatalogController {
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
-        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strSubmitName  ) {
+        if ( !$this->blnNoSubmit && \Input::post( $this->strSubmitName  ) ) {
 
             $this->saveEntity();
         }

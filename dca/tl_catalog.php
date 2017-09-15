@@ -123,10 +123,10 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'mode_0' => '',
         'mode_3' => '',
         'mode_5' => '',
-        'mode_4' => 'headerFields',
         'mode_2' => 'sortingFields',
         'mode_6' => 'sortingFields',
-        'mode_1' => 'sortingFields,flag'
+        'mode_1' => 'sortingFields,flag',
+        'mode_4' => 'headerFields,sortingFields,flag'
     ],
 
     'fields' => [

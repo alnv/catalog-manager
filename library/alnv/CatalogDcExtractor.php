@@ -198,6 +198,11 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
 
+                if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
+
+                    $arrReturn['flag'] = $arrCatalog['flag'];
+                }
+
                 if ( !is_array( $arrCatalog['labelFields'] ) || empty( $arrCatalog['labelFields'] ) ) {
 
                     $arrCatalog['labelFields'] = $arrDefaults['labelFields'];

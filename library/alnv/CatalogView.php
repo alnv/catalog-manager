@@ -68,7 +68,7 @@ class CatalogView extends CatalogController {
         $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
-        $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, $this->id );
+        $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, $this );
 
         if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
 

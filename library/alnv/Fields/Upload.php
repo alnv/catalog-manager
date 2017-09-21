@@ -219,6 +219,7 @@ class Upload {
                 'metaIgnore' => $arrField['metaIgnore'],
                 'numberOfItems' => $arrField['numberOfItems'],
 
+                'imageTemplate' => $arrField['imageTemplate'],
                 'useArrayFormat' => $arrField['useArrayFormat'],
                 'usePreviewImage' => $arrField['usePreviewImage'],
                 'previewImagePosition' => $arrField['previewImagePosition'],

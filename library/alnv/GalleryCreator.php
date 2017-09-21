@@ -360,7 +360,10 @@ class GalleryCreator extends \Frontend {
 
     public function getPreviewImage() {
         
-        return Upload::generateImage( $this->arrPreviewImage );
+        return Upload::generateImage( $this->arrPreviewImage, [
+
+            'imageTemplate' => $this->imageTemplate
+        ]);
     }
 
 

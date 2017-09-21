@@ -162,7 +162,7 @@ class tl_catalog extends \Backend {
         $strTablename = Toolkit::parseConformSQLValue( $varValue );
         $strValidname = \StringUtil::generateAlias( $strTablename );
 
-        if ( $strValidname != $strTablename ) {
+        if ( $strValidname != $strTablename && Toolkit::strictMode() ) {
 
             throw new \Exception( sprintf( 'invalid tablename. Please try with "%s"', $strValidname ) );
         }

@@ -239,7 +239,7 @@ class tl_catalog_fields extends \Backend {
 
         $varValue = Toolkit::parseConformSQLValue( $varValue );
         $strValidname = \StringUtil::generateAlias( $varValue );
-        if ( $strValidname != $varValue ) throw new \Exception( sprintf( 'invalid fieldname. Please try with "%s"', $strValidname ) );
+        if ( $strValidname != $varValue && Toolkit::strictMode() ) throw new \Exception( sprintf( 'invalid fieldname. Please try with "%s"', $strValidname ) );
 
         return $varValue;
     }

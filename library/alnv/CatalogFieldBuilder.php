@@ -335,6 +335,7 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'title' ] ),
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
             ],
 
@@ -353,6 +354,7 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'alias' ] ),
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0]
             ],
 
@@ -366,6 +368,7 @@ class CatalogFieldBuilder extends CatalogController {
                 'fieldname' => 'invisible',
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'invisible' ] ),
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
             ],
 
             'start' => [
@@ -382,6 +385,7 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'start' ] ),
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0]
             ],
 
@@ -399,6 +403,7 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'invisible_legend',
                 'cssID' => serialize( [ '', 'stop' ] ),
                 'tl_class' =>  serialize( [ 'w50 wizard' ] ),
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['stop'][0]
             ]
         ];
@@ -436,7 +441,9 @@ class CatalogFieldBuilder extends CatalogController {
 
                 $arrField['_dcFormat'] = [
 
+                    'sorting' => $arrField['_dcFormat']['sorting'],
                     'label' => $arrField['_dcFormat']['label'],
+                    'flag' => $arrField['_dcFormat']['flag'],
                     'sql' => $arrField['_dcFormat']['sql']
                 ];
 

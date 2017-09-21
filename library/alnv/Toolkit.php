@@ -723,4 +723,12 @@ class Toolkit {
 
         return [];
     }
+
+
+    public static function strictMode() {
+
+        if ( !isset( $GLOBALS['TL_CONFIG']['ctlg_strict_mode'] ) || !is_bool( $GLOBALS['TL_CONFIG']['ctlg_strict_mode'] )  ) return true;
+
+        return $GLOBALS['TL_CONFIG']['ctlg_strict_mode'] ? true : false;
+    }
 }

@@ -2,7 +2,6 @@
 
    <h1><?= $this->title; ?></h1>
 
-   <!-- you can overwrite this block with your own code -->
    <?php if ( is_array( $this->catalogEntityFields ) ):  ?>
       <div class="ctlg_entities">
          <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
@@ -18,7 +17,6 @@
          <?php endforeach; ?>
       </div>
    <?php endif; ?>
-   <!---->
 
    <?php if( $this->contentElements ): ?>
       <div class="catalog_master_content"><?= $this->contentElements; ?></div>

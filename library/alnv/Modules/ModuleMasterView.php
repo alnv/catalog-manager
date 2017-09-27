@@ -73,10 +73,12 @@ class ModuleMasterView extends \Module {
         
         if ( empty( $strOutput ) ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $this->CatalogView->arrMasterPage['id'] );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $objPage->id );
+
+            exit;
         }
 
         if ( $this->catalogSendJsonHeader ) {

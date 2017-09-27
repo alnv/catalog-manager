@@ -100,18 +100,22 @@ class ModuleUniversalView extends \Module {
 
         if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $this->FrontendEditing->strPageID );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $objPage->id );
+
+            exit;
         }
 
         if ( !$blnIsVisible ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $this->FrontendEditing->strPageID );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $objPage->id );
+
+            exit;
         }
 
         $this->FrontendEditing->deleteEntity();
@@ -214,10 +218,12 @@ class ModuleUniversalView extends \Module {
 
         if ( empty( $strOutput ) ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $this->CatalogView->strPageID );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $objPage->id );
+            
+            exit;
         }
 
         $this->Template->showAsGroup = false;
@@ -256,18 +262,22 @@ class ModuleUniversalView extends \Module {
 
         if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $this->FrontendEditing->strPageID );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
+            $objHandler->generate( $objPage->id );
+
+            exit;
         }
 
         if ( !$blnIsVisible && $this->strAct != 'create' ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $this->FrontendEditing->strPageID );
+            global $objPage;
 
-            return null;
+            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+            $objHandler->generate( $objPage->id );
+
+            exit;
         }
 
         $this->Template->output = $this->FrontendEditing->render();

@@ -8,11 +8,9 @@ class SearchIndexBuilder extends \Frontend {
     public function initialize( $arrPages, $intRoot = 0, $blnIsSitemap = false ) {
 
         $arrRoot = [];
+        $this->import( 'SQLQueryBuilder' );
 
-        if ( $intRoot > 0 ) {
-
-            $arrRoot = $this->Database->getChildRecords( $intRoot, 'tl_page' );
-        }
+        if ( $intRoot > 0 ) $arrRoot = $this->Database->getChildRecords( $intRoot, 'tl_page' );
 
         $arrProcessed = [];
         $objModules = $this->Database->prepare( 'SELECT * FROM tl_module WHERE type = ? OR type = ?' )->execute( 'catalogUniversalView', 'catalogMasterView' );
@@ -37,8 +35,48 @@ class SearchIndexBuilder extends \Frontend {
                 $arrProcessed[ $objModules->catalogMasterPage ] = $strDomain . $this->generateFrontendUrl( $objParent->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? '/%s' : '/items/%s' ), $objParent->language );
             }
 
+            $arrQuery = [
+
+                'where' => [],
+                'table' => $objModules->catalogTablename
+            ];
+
             $strUrl = $arrProcessed[ $objModules->catalogMasterPage ];
-            $objEntities = $this->Database->prepare( sprintf( 'SELECT * FROM %s', $objModules->catalogTablename ) )->execute(); // todo taxonomies
+            $strQuery = sprintf( 'SELECT * FROM %s', $objModules->catalogTablename );
+
+            if ( $objModules->type == 'catalogUniversalView' && $objModules->catalogTaxonomies ) {
+
+                $arrTaxonomies = Toolkit::parseStringToArray( $objModules->catalogTaxonomies );
+
+                if ( is_array( $arrTaxonomies ) && isset( $arrTaxonomies['query'] ) ) {
+
+                    $arrQuery['where'] = Toolkit::parseQueries( $arrTaxonomies['query'] );
+                }
+            }
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+
+            $strQuery = $strQuery . $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
+            $arrValues = $this->SQLQueryBuilder->getValues();
+
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerGetSearchablePagesQuery'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerGetSearchablePagesQuery'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerGetSearchablePagesQuery'] as $arrCallback )  {
+
+                    if ( is_array( $arrCallback ) ) {
+
+                        $this->import( $arrCallback[0] );
+                        $strQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strQuery, $arrValues, $objModules->row() );
+                    }
+                }
+            }
+
+            $objEntities = $this->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
 
             if ( !$objEntities->numRows ) continue;
 
@@ -52,7 +90,6 @@ class SearchIndexBuilder extends \Frontend {
 
                 if ( $strSiteMapUrl && !in_array( $strSiteMapUrl, $arrPages ) ) $arrPages[] = $strSiteMapUrl;
             }
-
         }
 
         return $arrPages;

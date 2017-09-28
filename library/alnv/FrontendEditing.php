@@ -756,6 +756,18 @@ class FrontendEditing extends CatalogController {
             $this->arrValues['tstamp'] = (string)time();
         }
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $this->arrValues = $this->{$arrCallback[0]}->{$arrCallback[1]}( $this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields );
+                }
+            }
+        }
+
         $this->prepare();
 
         switch ( $this->strAct ) {

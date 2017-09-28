@@ -35,6 +35,12 @@ class SearchIndexBuilder extends \Frontend {
                 $arrProcessed[ $objModules->catalogMasterPage ] = $strDomain . $this->generateFrontendUrl( $objParent->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? '/%s' : '/items/%s' ), $objParent->language );
             }
 
+            $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $objModules->catalogTablename );
+
+            if ( !$objCatalog->numRows ) continue;
+
+            $arrCatalog = Toolkit::parseCatalog( $objCatalog->row() );
+
             $arrQuery = [
 
                 'where' => [],
@@ -54,12 +60,47 @@ class SearchIndexBuilder extends \Frontend {
                 }
             }
 
-            $arrQuery['where'][] = [
+            if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
 
-                'field' => 'invisible',
-                'operator' => 'not',
-                'value' => '1'
-            ];
+                $dteTime = \Date::floorToMinute();
+
+                $arrQuery['where'][] = [
+
+                    [
+                        'value' => '',
+                        'field' => 'start',
+                        'operator' => 'equal'
+                    ],
+
+                    [
+                        'field' => 'start',
+                        'operator' => 'lte',
+                        'value' => $dteTime
+                    ]
+                ];
+
+                $arrQuery['where'][] = [
+
+                    [
+                        'value' => '',
+                        'field' => 'stop',
+                        'operator' => 'equal'
+                    ],
+
+                    [
+                        'field' => 'stop',
+                        'operator' => 'gt',
+                        'value' => $dteTime
+                    ]
+                ];
+
+                $arrQuery['where'][] = [
+
+                    'field' => 'invisible',
+                    'operator' => 'not',
+                    'value' => '1'
+                ];
+            }
 
             $strQuery = $strQuery . $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
             $arrValues = $this->SQLQueryBuilder->getValues();
@@ -71,22 +112,18 @@ class SearchIndexBuilder extends \Frontend {
                     if ( is_array( $arrCallback ) ) {
 
                         $this->import( $arrCallback[0] );
-                        $strQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strQuery, $arrValues, $objModules->row() );
+                        $strQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strQuery, $objModules->catalogTablename, $arrQuery );
                     }
                 }
             }
 
-            $objEntities = $this->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
+            $objEntities = $this->Database->prepare( $strQuery )->execute( $arrValues );
 
             if ( !$objEntities->numRows ) continue;
 
-            $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $objModules->catalogTablename );
-
-            if ( !$objCatalog->numRows ) $objCatalog = null;
-
             while ( $objEntities->next() ) {
 
-                $strSiteMapUrl = $this->createMasterUrl( $objCatalog, $objEntities, $strUrl );
+                $strSiteMapUrl = $this->createMasterUrl( $arrCatalog, $objEntities, $strUrl );
 
                 if ( $strSiteMapUrl && !in_array( $strSiteMapUrl, $arrPages ) ) $arrPages[] = $strSiteMapUrl;
             }
@@ -96,32 +133,29 @@ class SearchIndexBuilder extends \Frontend {
     }
 
 
-    protected function createMasterUrl( $objCatalog, $objEntities, $strUrl ) {
+    protected function createMasterUrl( $arrCatalog, $objEntities, $strUrl ) {
 
         $strBase = '';
         $strUrl = rawurldecode( $strUrl );
 
-        if ( !is_null( $objCatalog ) ) {
+        if ( $arrCatalog['useRedirect'] && $arrCatalog['internalUrlColumn'] ) {
 
-            if ( $objCatalog->useRedirect && $objCatalog->internalUrlColumn ) {
+            if ( $objEntities->{$arrCatalog['internalUrlColumn']} ) {
 
-                if ( $objEntities->{$objCatalog->internalUrlColumn} ) {
+                $intPageID = intval( preg_replace('/[^0-9]+/', '', $objEntities->{$arrCatalog['internalUrlColumn']} ) );
 
-                    $intPageID = intval( preg_replace('/[^0-9]+/', '', $objEntities->{$objCatalog->internalUrlColumn} ) );
+                $objParent = $this->getPageModelWithDetailsByID( $intPageID );
+                $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
 
-                    $objParent = $this->getPageModelWithDetailsByID( $intPageID );
-                    $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
-
-                    return $strDomain . $this->generateFrontendUrl( $objParent->row() );
-                }
+                return $strDomain . $this->generateFrontendUrl( $objParent->row() );
             }
+        }
 
-            if ( $objCatalog->useRedirect && $objCatalog->externalUrlColumn ) {
+        if ( $arrCatalog['useRedirect'] && $arrCatalog['externalUrlColumn'] ) {
 
-                if ( $objEntities->{$objCatalog->externalUrlColumn} ) {
+            if ( $objEntities->{$arrCatalog['externalUrlColumn']} ) {
 
-                    return null;
-                }
+                return null;
             }
         }
 

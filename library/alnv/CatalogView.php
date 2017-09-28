@@ -542,8 +542,8 @@ class CatalogView extends CatalogController {
             if ( $this->blnMapViewMode ) {
 
                 $this->arrCatalogMapViewOptions['mapInfoBoxContent'] = Map::parseInfoBoxContent( $this->catalogMapInfoBoxContent, $arrCatalog );
-                $this->arrCatalogMapViewOptions['locationLat'] = $arrCatalog[$this->catalogFieldLat];
-                $this->arrCatalogMapViewOptions['locationLng'] = $arrCatalog[$this->catalogFieldLng];
+                $this->arrCatalogMapViewOptions['locationLat'] = $arrCatalog[ $this->catalogFieldLat ];
+                $this->arrCatalogMapViewOptions['locationLng'] = $arrCatalog[ $this->catalogFieldLng ];
 
                 $arrCatalog['map'] = $this->arrCatalogMapViewOptions;
             }

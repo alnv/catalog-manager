@@ -64,11 +64,18 @@ class GeoCoding extends CatalogController {
             return $arrReturn;
         }
 
-        $objResponse = $objRequest->response ? json_decode( $objRequest->response, true ) : [];
+        $arrResponse = $objRequest->response ? json_decode( $objRequest->response, true ) : [];
 
-        if( !empty( $objResponse ) && is_array( $objResponse ) ) {
+        if ( isset( $arrResponse['error_message'] ) && $arrResponse['error_message'] ) {
 
-            $arrGeometry = $objResponse['results'][0]['geometry'];
+            \System::log( $arrResponse['error_message'], '\CatalogManager\GeoCoding\getCords', 'Google Maps' );
+
+            return $arrReturn;
+        }
+
+        if( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
+
+            $arrGeometry = $arrResponse['results'][0]['geometry'];
 
             $arrReturn['lat'] = $arrGeometry['location'] ? $arrGeometry['location']['lat'] : '';
             $arrReturn['lng'] = $arrGeometry['location'] ? $arrGeometry['location']['lng'] : '';

@@ -392,14 +392,17 @@ class CatalogView extends CatalogController {
                     $strDistance = '50';
                 }
 
-                $arrQuery['distance'] = [
+                if ( $arrCords['lat'] && $arrCords['lng'] ) {
 
-                    'value' => $strDistance,
-                    'latCord' => $arrCords['lat'],
-                    'lngCord' => $arrCords['lng'],
-                    'latField' => $this->catalogFieldLat,
-                    'lngField' => $this->catalogFieldLng
-                ];
+                    $arrQuery['distance'] = [
+
+                        'value' => $strDistance,
+                        'latCord' => $arrCords['lat'],
+                        'lngCord' => $arrCords['lng'],
+                        'latField' => $this->catalogFieldLat,
+                        'lngField' => $this->catalogFieldLng
+                    ];
+                }
             }
         }
 

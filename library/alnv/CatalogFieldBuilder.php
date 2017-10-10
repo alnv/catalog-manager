@@ -550,8 +550,16 @@ class CatalogFieldBuilder extends CatalogController {
                     'cssID' => serialize( [ '', $strFieldname ] ),
                     '_dcFormat' => $blnDcFormat ? $arrField : null,
                     'tl_class' =>  $arrField['eval']['tl_class'] ?: '',
+                    'multiple' => $arrField['eval']['multiple'] ? '1': '',
                     'datepicker' => $arrField['eval']['datepicker'] ? '1': ''
                 ];
+
+                if ( $strType == 'upload' ) {
+
+                    $arrReturn[ $strFieldname ]['fileType'] = $arrField['_fileType'] ?: '';
+                    $arrReturn[ $strFieldname ]['extensions'] = $arrField['eval']['extensions'] ?: '';
+                    $arrReturn[ $strFieldname ]['filesOnly'] = $arrField['eval']['filesOnly'] ? '1' : '';
+                }
             }
         }
 

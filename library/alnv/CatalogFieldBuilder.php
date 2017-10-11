@@ -49,7 +49,7 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false ) {
+    public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false, $blnVisible = true ) {
 
         $arrFields = [];
         $blnIsCoreTable = Toolkit::isCoreTable( $this->strTable );
@@ -62,7 +62,7 @@ class CatalogFieldBuilder extends CatalogController {
         }
 
         $arrFields = $blnExcludeDefaults ? $arrFields : $this->getDefaultCatalogFields();
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 ) AND invisible != ? ORDER BY `sorting`' )->execute( $this->strTable, '1' );
+        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 )' . ( $blnVisible ? ' AND invisible != "1" ' : '' ) . 'ORDER BY `sorting`' )->execute( $this->strTable );
 
         if ( $objCatalogFields !== null ) {
 

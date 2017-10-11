@@ -249,8 +249,8 @@ class tl_catalog extends \Backend {
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTablename );
         $this->arrDataContainerFields[ $strTablename ] = [];
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
-
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null, false, false );
+        
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
             if ( !Toolkit::isDcConformField( $arrField ) ) continue;

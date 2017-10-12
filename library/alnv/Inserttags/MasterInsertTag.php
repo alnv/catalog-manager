@@ -30,6 +30,7 @@ class MasterInsertTag extends \Frontend {
         if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_MASTER' && $objPage->catalogUseMaster ) {
 
             $strDefaultValue = '';
+            $blnParseValues = false;
             $blnPreventCache = false;
             $strFieldname = $arrTags[1];
             $this->strTable = $objPage->catalogMasterTable;
@@ -52,6 +53,13 @@ class MasterInsertTag extends \Frontend {
                         case 'default':
 
                             $strDefaultValue = $strOption;
+
+                            break;
+
+                        case 'parse':
+
+                            $blnPreventCache = $this->strHash != md5( $strSource );
+                            $blnParseValues = $strOption ? true : false;
 
                             break;
 
@@ -98,7 +106,7 @@ class MasterInsertTag extends \Frontend {
 
             if ( empty( $this->arrMaster ) || $blnPreventCache ) {
 
-                $this->getMasterEntity();
+                $this->getMasterEntity( $blnParseValues );
             }
 
             if ( Toolkit::isEmpty( $this->arrMaster[ $strFieldname ] ) && !Toolkit::isEmpty( $strDefaultValue ) ) {
@@ -106,7 +114,19 @@ class MasterInsertTag extends \Frontend {
                 return $strDefaultValue;
             }
 
-            return Toolkit::isEmpty( $this->arrMaster[ $strFieldname ] ) ? '' : $this->arrMaster[ $strFieldname ];
+            $varValue = Toolkit::isEmpty( $this->arrMaster[ $strFieldname ] ) ? '' : $this->arrMaster[ $strFieldname ];
+
+            if ( is_array( $varValue ) ) {
+
+                $strKeyname = $arrTags[3] ?: '';
+
+                if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) {
+
+                    $varValue = $varValue[ $strKeyname ];
+                }
+            }
+
+            return $varValue;
         }
 
         return false;
@@ -152,7 +172,7 @@ class MasterInsertTag extends \Frontend {
     }
 
 
-    protected function getMasterEntity() {
+    protected function getMasterEntity( $blnParseValues ) {
 
         $this->import( 'SQLQueryBuilder' );
         $strAlias = \Input::get('auto_item');
@@ -204,8 +224,20 @@ class MasterInsertTag extends \Frontend {
         }
 
         $objMaster = $this->SQLQueryBuilder->execute( $arrQuery );
-        
-        if ( $objMaster->numRows ) $this->arrMaster = $objMaster->row();
+
+        if ( $objMaster->numRows ) {
+
+            $this->arrMaster = $objMaster->row();
+
+            if ( $blnParseValues ) {
+
+                $objFieldBuilder = new CatalogFieldBuilder();
+                $objFieldBuilder->initialize(  $this->strTable );
+                $arrFields = $objFieldBuilder->getCatalogFields( false, null, false, false );
+
+                $this->arrMaster = Toolkit::parseCatalogValues( $this->arrMaster, $arrFields );
+            }
+        }
     }
 
 

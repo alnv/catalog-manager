@@ -471,8 +471,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
         'includeBlankOption' => true,
         'mainLabel' => 'catalogManagerFields',
         'dependedLabel' => 'catalogManagerOrder',
-        'mainOptions' => [ 'CatalogManager\tl_module', 'getSortableFields' ],
-        'dependedOptions' => [ 'CatalogManager\tl_module', 'getOrderByItems' ]
+        'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
+        'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
     ],
 
     'exclude' => true,

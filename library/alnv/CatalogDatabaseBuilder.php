@@ -114,7 +114,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $arrColumns = $this->arrTableColumns;
         $objSQLBuilder = new SQLBuilder();
 
-        if ( !$this->arrCatalog['mode'] ) {
+        if ( !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
 
             unset( $arrColumns['sorting'] );
         }

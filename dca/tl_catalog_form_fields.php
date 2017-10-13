@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'optionsType_useOptions' => 'options',
         'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbIgnoreEmptyValues',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
     ],
 
     'fields' => [

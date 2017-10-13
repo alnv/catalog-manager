@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'optionsType_useOptions' => 'options',
         'optionsType_useForeignKey' => 'dbTable,dbTableValue,addRelationWizard',
-        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,addRelationWizard',
+        'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbOrderBy,addRelationWizard',
 
         'fileType_file' => 'fileTemplate,fileTitle,fileText,useArrayFormat',
         'fileType_files' => 'filesTemplate,sortBy,orderField,metaIgnore,useArrayFormat',
@@ -1312,6 +1312,26 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'dcTable' => 'tl_catalog_fields',
                 'taxonomyTable' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyTable' ],
                 'taxonomyEntities' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyFields' ]
+            ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
+        ],
+
+        'dbOrderBy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['dbOrderBy'],
+            'inputType' => 'catalogDuplexSelectWizard',
+
+            'eval' => [
+
+                'chosen' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true,
+                'mainLabel' => 'catalogManagerFields',
+                'dependedLabel' => 'catalogManagerOrder',
+                'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
+                'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
             ],
 
             'exclude' => true,

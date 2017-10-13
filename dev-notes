@@ -1,3 +1,7 @@
 new features:
  - CTLG_MATER::myField::?parse=1::OptionalArrayKey
  - OrderBy for filter generator (OrderByHelper)
+ - OrderBy for BE select fields
+
+ to improve:
+  - sorting field in different modes

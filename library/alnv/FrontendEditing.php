@@ -89,6 +89,7 @@ class FrontendEditing extends CatalogController {
         $this->arrPaletteLabels['general_legend'] = $this->I18nCatalogTranslator->get( 'legend', 'general_legend' );
         $this->arrPaletteLabels['invisible_legend'] =  $this->I18nCatalogTranslator->get( 'legend', 'invisible_legend' );
 
+        $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
 
@@ -754,6 +755,17 @@ class FrontendEditing extends CatalogController {
         if ( isset( $this->arrValues['tstamp'] ) ) {
 
             $this->arrValues['tstamp'] = (string)time();
+        }
+
+        if ( is_array( $this->catalogDefaultValues ) && $this->catalogDefaultValues[0] ) {
+
+            foreach ( $this->catalogDefaultValues as $arrDefaultValue ) {
+
+                if ( Toolkit::isEmpty( $this->arrValues[ $arrDefaultValue['key'] ] ) ) {
+
+                    $this->arrValues[ $arrDefaultValue['key'] ] = $this->replaceInsertTags( $arrDefaultValue['value'] );
+                }
+            }
         }
 
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) ) {

@@ -35,6 +35,7 @@ ClassLoader::addClasses([
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',
     'CatalogManager\CatalogFilter' => 'system/modules/catalog-manager/library/alnv/CatalogFilter.php',
     'CatalogManager\CatalogEvents' => 'system/modules/catalog-manager/library/alnv/CatalogEvents.php',
+    'CatalogManager\OrderByHelper' => 'system/modules/catalog-manager/library/alnv/OrderByHelper.php',
     'CatalogManager\CatalogMessage' => 'system/modules/catalog-manager/library/alnv/CatalogMessage.php',
     'CatalogManager\GalleryCreator' => 'system/modules/catalog-manager/library/alnv/GalleryCreator.php',
     'CatalogManager\SQLQueryHelper' => 'system/modules/catalog-manager/library/alnv/SQLQueryHelper.php',

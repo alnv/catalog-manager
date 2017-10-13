@@ -471,4 +471,35 @@ class tl_module extends \Backend {
 
         return [];
     }
+
+
+    public function getKeyColumns( $objWidget ) {
+
+        $arrReturn = [];
+        $strTablename = '';
+        $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $objWidget->strTable ) )->limit(1)->execute( $objWidget->currentRecord );
+
+        if ( $objModule->numRows ) {
+
+            if ( $objModule->catalogTablename ) $strTablename = $objModule->catalogTablename;
+        }
+
+        if ( !$strTablename ) return $arrReturn;
+
+        $objCatalogFieldBuilder = new CatalogFieldBuilder();
+        $objCatalogFieldBuilder->initialize( $strTablename );
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null, false, false );
+
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            if ( in_array( $arrField['type'], [ 'fieldsetStart', 'fieldsetStop', 'map' ] ) ) {
+
+                continue;
+            }
+
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
+        }
+
+        return $arrReturn;
+    }
 }

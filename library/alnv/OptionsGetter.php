@@ -22,6 +22,7 @@ class OptionsGetter extends CatalogController {
         $this->strModuleID = $strModuleID;
 
         $this->import( 'CatalogInput' );
+        $this->import( 'OrderByHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
         $this->import( 'CatalogDcExtractor' );
@@ -210,7 +211,7 @@ class OptionsGetter extends CatalogController {
             }
         }
         
-        $strQuery = sprintf( 'SELECT * FROM %s %s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
+        $strQuery = sprintf( 'SELECT * FROM %s%s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
 
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) ) {
 
@@ -498,6 +499,16 @@ class OptionsGetter extends CatalogController {
 
 
     protected function getOrderBy() {
+
+        if ( $this->arrField['dbOrderBy'] ) {
+
+            $arrOrderBy = deserialize( $this->arrField['dbOrderBy'] );
+
+            if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+
+                $this->arrField['_orderBy'] = $this->OrderByHelper->getOrderByQuery( $arrOrderBy, $this->arrField['dbTable'] );
+            }
+        }
 
         if ( !Toolkit::isEmpty( $this->arrField['_orderBy'] ) ) {
 

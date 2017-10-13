@@ -86,6 +86,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Bezeichnung', 'Bitte w
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie die zu nutzende Tabelle aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Auswahlliste', 'Bitte geben Sie die Werte für die Auswahlliste ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbOrderBy'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Datensätze festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyField'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte für den Fremdschlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle für den Fremdschlüssel aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie eine Spalte für den angezeigten Text aus.' ];

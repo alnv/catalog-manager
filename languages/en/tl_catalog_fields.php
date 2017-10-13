@@ -86,6 +86,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['fileText'] = [ 'Description', 'Please 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['options'] = [ 'Options', 'Please enter your options.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableKey'] = [ 'Key column', 'Please select a key column.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dbOrderBy'] = [ 'Sort order', 'Here you can order the entities.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['optionsType'] = [ 'Enable options', 'Here you can enable options.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['foreignKeyTable'] = [ 'Table', 'Please select table for the foreign key.' ];

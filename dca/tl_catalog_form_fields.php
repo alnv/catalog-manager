@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
-        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbIgnoreEmptyValues',
+        'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbIgnoreEmptyValues',
     ],
 
@@ -500,6 +500,26 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'dbOrderBy' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'],
+            'inputType' => 'catalogDuplexSelectWizard',
+
+            'eval' => [
+
+                'chosen' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true,
+                'mainLabel' => 'catalogManagerFields',
+                'dependedLabel' => 'catalogManagerOrder',
+                'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
+                'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
+            ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
         ],
 
         'defaultValue' => [

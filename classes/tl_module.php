@@ -241,37 +241,6 @@ class tl_module extends \Backend {
 
         return $this->arrFields[ $strTablename ];
     }
-    
-
-    public function getSortableFields( $objWidget ) {
-
-        $arrReturn = [];
-        $strTablename = $this->getCatalogTablename( $objWidget );
-
-        if ( !$strTablename ) return $arrReturn;
-
-        $objCatalogFieldBuilder = new CatalogFieldBuilder();
-        $objCatalogFieldBuilder->initialize( $strTablename );
-        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
-
-        foreach ( $arrFields as $strFieldname => $arrField ) {
-
-           if ( in_array( $arrField['type'], [ 'fieldsetStart', 'fieldsetStop', 'map', 'upload', 'textarea' ] ) ) {
-
-               continue;
-           }
-
-            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
-        }
-
-        return $arrReturn;
-    }
-
-
-    public function getOrderByItems() {
-
-        return [ 'ASC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'], 'DESC' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] ];
-    }
 
     
     public function getTaxonomyTable( \DataContainer $dc ) {
@@ -501,15 +470,5 @@ class tl_module extends \Backend {
         }
 
         return [];
-    }
-
-
-    protected function getCatalogTablename( $objWidget ) {
-
-        $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $objWidget->strTable ) )->limit(1)->execute( $objWidget->currentRecord );
-
-        if ( $objModule->numRows && $objModule->catalogTablename ) return $objModule->catalogTablename;
-
-        return '';
     }
 }

@@ -79,6 +79,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogFineUploaderForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogFineUploaderForm.php',
     'CatalogManager\CatalogManagerVerification' => 'system/modules/catalog-manager/library/alnv/CatalogManagerVerification.php',
     'CatalogManager\FilterValuesInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/FilterValuesInsertTag.php',
+    'CatalogManager\CatalogValueSetterWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogValueSetterWizard.php',
     'CatalogManager\CatalogWidgetAttributeParser' => 'system/modules/catalog-manager/library/alnv/CatalogWidgetAttributeParser.php',
     'CatalogManager\ContentCatalogFilterForm' => 'system/modules/catalog-manager/library/alnv/Elements/ContentCatalogFilterForm.php',
     'CatalogManager\ModuleCatalogTaxonomyTree' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogTaxonomyTree.php',

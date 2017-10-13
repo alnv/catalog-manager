@@ -423,7 +423,7 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], [ '4' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], [ '4', '5', '6' ] ) ) {
 
             unset( $arrFields['sorting'] );
         }
@@ -475,7 +475,7 @@ class CatalogFieldBuilder extends CatalogController {
 
             case 'sorting' :
 
-                if ( $this->arrCatalog['mode'] == '4' ) {
+                if ( in_array( $this->arrCatalog['mode'], [ '4', '5', '6' ] ) ) {
 
                     $arrField['_dcFormat'] = [
 

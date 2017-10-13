@@ -146,6 +146,11 @@ var CatalogManager = CatalogManager || {};
 
                             next.getFirst().value = input.value;
                         }
+
+                        if (input = childs[i].getFirst('input')) {
+
+                            next.getFirst().value = input.value;
+                        }
                     }
 
                     tr.inject(parent, 'after');
@@ -199,12 +204,18 @@ var CatalogManager = CatalogManager || {};
                     $$( childs[j].getElement('.chzn-container') ).destroy();
                     $$( childs[j].getElement('.tl_select_column') ).destroy();
 
-                    if (input = childs[j].getFirst('select')) {
+                    if (input = childs[j].getFirst('select') ) {
 
                         input.set('tabindex', tabindex++);
                         input.name = input.name.replace(/\[[0-9]+]/g, '[' + i + ']');
 
                         new Chosen( childs[j].getFirst('select.tl_chosen') );
+                    }
+
+                    if (input = childs[j].getFirst('input') ) {
+
+                        input.set('tabindex', tabindex++ );
+                        input.name = input.name.replace(/\[[0-9]+]/g, '[' + i + ']');
                     }
                 }
             }

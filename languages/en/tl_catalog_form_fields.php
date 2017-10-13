@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Source', 'Here
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Key column', 'Please select a key column.'  ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Sort order', 'Here you can order the entities.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Column', 'Please select a column from chosen table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter the records.' ];

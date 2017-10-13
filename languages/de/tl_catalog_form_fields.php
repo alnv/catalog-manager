@@ -38,6 +38,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Spalte', 'Bitte w
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie für die Tabelle ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie für den Text ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Datensätze festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Hier können Sie die Datensätze zusätzlich filtern.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Leere Werte ignorieren', 'Die Filterung ignoriert leere Werte.' ];
 

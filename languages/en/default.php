@@ -25,6 +25,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] ='Sort sequ
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] = 'Reset all filter settings.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'No images were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Your license key is invalid.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogValueSetterWizard'] = [ 'Column', 'Default value' ];
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Output "%s <em>[%s]</em>" field in template';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Overwrite catalog settings with origin table values.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Following fields were found in <em>"%s"</em> template';

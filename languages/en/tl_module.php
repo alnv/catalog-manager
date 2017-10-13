@@ -110,6 +110,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module tem
 $GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Submission method', 'The default form submission method is POST.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Sort order', 'Here you can order taxonomy entities.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFastMode'] = [ 'Fast Mode', 'Here you can enable the fast mode. The following elements are not rendered: file upload and map view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDefaultValues'] = [ 'Default values', 'Here you can define default values.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

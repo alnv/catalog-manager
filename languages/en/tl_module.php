@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalog_fieldDependencies_legend'] = 'Field de
 $GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomy settings';
 $GLOBALS['TL_LANG']['tl_module']['catalog_json_legend']= 'JSON settings';
 $GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Permission settings';
+$GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];
@@ -111,6 +112,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Submission method', '
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Sort order', 'Here you can order taxonomy entities.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFastMode'] = [ 'Fast Mode', 'Here you can enable the fast mode. The following elements are not rendered: file upload and map view.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDefaultValues'] = [ 'Default values', 'Here you can define default values.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseSocialSharingButtons'] = [ 'Use social sharing', 'Here you can enable social sharing buttons.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingButtons'] = [ 'Social networks', 'Please select one or more social networks.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template', 'Please select a template.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 
@@ -142,4 +146,13 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [
 
     'internal' => 'Internal redirect',
     'external' => 'External redirect'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSocialSharingButtons'] = [
+
+    'xing' => 'Xing',
+    'mail' => 'Email',
+    'twitter' => 'Twitter',
+    'facebook' => 'Facebook',
+    'linkedin' => 'LinkedIn',
 ];

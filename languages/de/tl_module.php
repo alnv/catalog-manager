@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalog_fieldDependencies_legend'] = 'Feldabh�
 $GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomie-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_json_legend'] = 'JSON-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Berechtigungseinstellungen';
+$GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
@@ -113,6 +114,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogFormMethod'] = [ 'Übertragungsmethode'
 $GLOBALS['TL_LANG']['tl_module']['catalogOrderByTaxonomies'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Taxonomies festlegen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFastMode'] = [ 'Fast Mode', 'Hier können Sie den Fast Mode aktivieren. Folgende Elemente werden nicht gerendert: Datei-Upload und Kartenansicht.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDefaultValues'] = [ 'Standardwerte festlegen', 'Hier können Sie bestimmte Felder mit standardwerten vorbelegen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseSocialSharingButtons'] = [ 'Social-Sharing aktivieren', 'Hier können Sie die Social-Sharing-Buttons einblenden.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingButtons'] = [ 'Netzwerke auswählen', 'Bitte wählen Sie ein oder mehrere Netzwerke aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 
@@ -144,4 +148,13 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [
 
     'internal' => 'Interne Weiterleitung',
     'external' => 'Externe Weiterleitung'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSocialSharingButtons'] = [
+
+    'xing' => 'Xing',
+    'mail' => 'E-Mail',
+    'twitter' => 'Twitter',
+    'facebook' => 'Facebook',
+    'linkedin' => 'LinkedIn',
 ];

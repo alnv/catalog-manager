@@ -8,6 +8,7 @@ class Toolkit {
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
     public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
     public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
+    public static $arrSocialSharingButtons = [ 'mail', 'twitter', 'facebook', 'xing', 'linkedin' ];
 
     public static $arrSqlTypes = [
 

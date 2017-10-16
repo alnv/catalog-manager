@@ -22,6 +22,10 @@
       <div class="catalog_master_content"><?= $this->contentElements; ?></div>
    <?php endif; ?>
 
+   <?php if ( $this->useSocialSharingButtons ): ?>
+      <?= $this->socialSharingButtons; ?>
+   <?php endif; ?>
+
    <?php if( $this->goBackLink ): ?>
       <p class="back"><a href="<?= $this->goBackLink ?>"><?= $this->goBackLabel; ?></a></p>
    <?php endif; ?>

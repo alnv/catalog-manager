@@ -181,6 +181,13 @@ class CatalogView extends CatalogController {
             $this->FrontendEditingPermission->initialize();
         }
 
+        if ( $this->catalogUseSocialSharingButtons ) {
+
+            $this->import( 'SocialSharingButtons' );
+            $arrSocialSharingButtons = Toolkit::deserialize( $this->catalogSocialSharingButtons );
+            $this->SocialSharingButtons->initialize( $arrSocialSharingButtons, $this->catalogSocialSharingTemplate );
+        }
+
         $this->setHasOperationsFlag();
     }
 
@@ -281,6 +288,8 @@ class CatalogView extends CatalogController {
 
     public function getCatalogView( $arrQuery ) {
 
+        global $objPage;
+        
         $strPageID = 'page_e' . $this->id;
         $intOffset = $this->catalogOffset;
         $intPerPage = $this->catalogPerPage;
@@ -466,6 +475,8 @@ class CatalogView extends CatalogController {
         while ( $objQueryBuilderResults->next() ) {
 
             $arrCatalog = $objQueryBuilderResults->row();
+
+            $arrCatalog['useSocialSharingButtons'] = $this->catalogUseSocialSharingButtons ? true : false;
             $arrCatalog['origin'] = $arrCatalog;
 
             if ( $this->strMode === 'master' ) {
@@ -553,17 +564,8 @@ class CatalogView extends CatalogController {
 
             if ( $this->strMode == 'master' ) {
 
-                global $objPage;
-
-                if ( $this->catalogSEOTitle ) {
-
-                    $objPage->pageTitle = $arrCatalog[ $this->catalogSEOTitle ] ? strip_tags( $arrCatalog[ $this->catalogSEOTitle ] ) : '';
-                }
-
-                if ( $this->catalogSEODescription ) {
-
-                    $objPage->description = $arrCatalog[ $this->catalogSEODescription ] ? strip_tags( $arrCatalog[ $this->catalogSEODescription ] ) : '';
-                }
+                if ( $this->catalogSEOTitle ) $objPage->pageTitle = $arrCatalog[$this->catalogSEOTitle] ? strip_tags( $arrCatalog[$this->catalogSEOTitle] ) : $objPage->pageTitle;
+                if ( $this->catalogSEODescription ) $objPage->description = $arrCatalog[$this->catalogSEODescription] ? strip_tags( $arrCatalog[$this->catalogSEODescription] ) : $objPage->description;
             }
 
             $arrCatalog['timeFormat'] = $this->strTimeFormat;
@@ -588,6 +590,11 @@ class CatalogView extends CatalogController {
 
                     $this->arrGroups[ $strGroupName ] = [];
                 }
+            }
+
+            if ( $arrCatalog['useSocialSharingButtons'] ) {
+
+                $arrCatalog['socialSharingButtons'] = $this->SocialSharingButtons->render( $arrCatalog, $this->catalogSEOTitle, $this->catalogSEODescription );
             }
 
             $arrCatalogs[] = $arrCatalog;

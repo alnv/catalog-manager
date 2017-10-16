@@ -502,4 +502,16 @@ class tl_module extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getSocialSharingButtons() {
+
+        return Toolkit::$arrSocialSharingButtons;
+    }
+
+
+    public function getSocialSharingTemplates() {
+
+        return $this->getTemplateGroup('ctlg_social_sharing_buttons');
+    }
 }

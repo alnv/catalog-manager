@@ -60,3 +60,8 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Wert';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Text';
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'] = 'Das Quellelement ID %s bearbeiten.';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['mail'] = 'E-Mail';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'] = 'Teilen';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'] = 'Twittern';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'] = 'Teilen';

@@ -60,3 +60,8 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'] = 'Value';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'] = 'Label';
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'] = 'Edit the source element ID %s.';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['mail'] = 'Email';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'] = 'Tweet';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'] = 'Share';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'] = 'Share';

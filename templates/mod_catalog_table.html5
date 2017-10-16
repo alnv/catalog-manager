@@ -31,7 +31,7 @@
                   <th class="head_<?= $intIndex++ ?> related"><?= $this->relationsColumnTitle; ?></th>
                <?php endif; ?>
                <?php if ( $this->catalogUseSocialSharingButtons ): ?>
-                  <th class="head_<?= $intIndex++ ?> social_sharing_buttons">Teilen</th>
+                  <th class="head_<?= $intIndex++ ?> social_sharing_buttons"><?= $this->sharingButtonsColumnTitle ?></th>
                <?php endif; ?>
             </tr>
          </thead>

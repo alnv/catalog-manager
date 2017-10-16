@@ -1,0 +1,3 @@
+<div class="ctlg_social_sharing_buttons">
+   <?= $this->output; ?>
+</div>

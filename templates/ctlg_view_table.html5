@@ -42,4 +42,10 @@
       </td>
    <?php endif; ?>
 
+   <?php if ( $this->useSocialSharingButtons ): ?>
+      <td class="col_<?= $intIndex++; ?> social_sharing_buttons">
+         <?= $this->socialSharingButtons; ?>
+      </td>
+   <?php endif; ?>
+
 </tr>

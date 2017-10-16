@@ -3,7 +3,9 @@ new features:
  - OrderBy for filter generator (OrderByHelper)
  - OrderBy for BE select fields
  - default values setter for frontend editing
+ - social sharing buttons
 
  to improve:
   - sorting field in different modes
   - token in wizards
+  - test seo title & description

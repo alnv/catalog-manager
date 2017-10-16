@@ -58,6 +58,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\tl_catalog_form_fields' => 'system/modules/catalog-manager/classes/tl_catalog_form_fields.php',
+    'CatalogManager\SocialSharingButtons' => 'system/modules/catalog-manager/library/alnv/SocialSharingButtons.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',
     'CatalogManager\MasterInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterInsertTag.php',
@@ -115,4 +116,11 @@ TemplateLoader::addFiles([
     'ctlg_form_fine_uploader' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
+
+    'ctlg_social_button_mail' => 'system/modules/catalog-manager/templates',
+    'ctlg_social_button_xing' => 'system/modules/catalog-manager/templates',
+    'ctlg_social_button_twitter' => 'system/modules/catalog-manager/templates',
+    'ctlg_social_button_linkedin' => 'system/modules/catalog-manager/templates',
+    'ctlg_social_button_facebook' => 'system/modules/catalog-manager/templates',
+    'ctlg_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
 ]);

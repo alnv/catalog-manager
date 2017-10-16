@@ -22,13 +22,17 @@ class SocialSharingButtons extends CatalogController {
         $strSocialButtons = '';
         $objMainTemplate = new \FrontendTemplate( $this->strTemplate );
         $strShareUrl = \Idna::decode( \Environment::get('base') ) . $arrData['masterUrl'];
-
+        
         $arrSocialShareData = [
 
             'data' => $arrData,
             'shareUrl' => $strShareUrl,
-            'title' => $arrData[ $strTitleColumn ] ? $arrData[ $strTitleColumn ] : $objPage->pageTitle,
-            'description' => $arrData[ $strDescriptionColumn ] ? $arrData[ $strDescriptionColumn ] : $objPage->description
+            'title' => $arrData[ $strTitleColumn ] ? strip_tags( $arrData[ $strTitleColumn ] ) : $objPage->pageTitle,
+            'description' => $arrData[ $strDescriptionColumn ] ? strip_tags( $arrData[ $strDescriptionColumn ] ) : $objPage->description,
+
+            'mail' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['mail'],
+            'share' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'],
+            'tweet' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'],
         ];
 
         foreach ( $this->arrSocialSharingButtons as $strButton ) {

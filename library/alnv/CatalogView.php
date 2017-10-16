@@ -164,6 +164,7 @@ class CatalogView extends CatalogController {
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
             $this->objMainTemplate->relationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'];
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
+            $this->objMainTemplate->sharingButtonsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'];
         }
 
         $this->blnShowAsGroup = $this->catalogGroupBy && $this->strMode == 'view' ? true : false;

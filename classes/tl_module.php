@@ -512,6 +512,6 @@ class tl_module extends \Backend {
 
     public function getSocialSharingTemplates() {
 
-        return $this->getTemplateGroup('ctlg_social_sharing_buttons');
+        return $this->getTemplateGroup('ce_social_sharing_buttons');
     }
 }

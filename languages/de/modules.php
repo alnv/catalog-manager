@@ -10,4 +10,5 @@ $GLOBALS['TL_LANG']['FMD']['catalogFilter'] = [ 'Catalog Filterformular', 'Hier 
 $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog Listenansicht', 'Hier können Sie eine Listenansicht für Ihre Catalog Datensätze erstellen.' ];
 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = ['Catalog Manager', 'Alle Inhaltselemente des Catalog Managers'];
+$GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social-Sharing-Buttons', 'Social-Sharing-Buttons als Inhaltselement.' ];
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog Filterformular', 'Hier können Sie einen Filterformular als Inhaltselement einbinden.'];

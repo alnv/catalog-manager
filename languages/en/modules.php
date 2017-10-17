@@ -10,3 +10,4 @@ $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog list view', 'Her
 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = ['Catalog Manager', 'All content elements of Catalog Manager'];
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog filter form', 'Here you can include a catalog filter form.'];
+$GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social sharing buttons', 'Social sharing huttons as Content Type.' ];

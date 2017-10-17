@@ -149,12 +149,3 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [
     'internal' => 'Interne Weiterleitung',
     'external' => 'Externe Weiterleitung'
 ];
-
-$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSocialSharingButtons'] = [
-
-    'xing' => 'Xing',
-    'mail' => 'E-Mail',
-    'twitter' => 'Twitter',
-    'facebook' => 'Facebook',
-    'linkedin' => 'LinkedIn',
-];

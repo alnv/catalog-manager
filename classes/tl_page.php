@@ -5,24 +5,19 @@ namespace CatalogManager;
 class tl_page extends \Backend {
 
 
-    private $arrCatalogCache = [];
+    public function getCatalogTables() {
 
-
-    public function getCatalogTables( \DataContainer $dc ) {
-
-        if ( !empty( $this->arrCatalogCache ) && is_array( $this->arrCatalogCache ) ) {
-            
-            return $this->arrCatalogCache;
-        }
-
+        $arrReturn = [];
         $objCatalogs = $this->Database->prepare( 'SELECT * FROM tl_catalog' )->execute();
+
+        if ( !$objCatalogs->numRows ) return $arrReturn;
 
         while ( $objCatalogs->next() ) {
 
-            $this->arrCatalogCache[ $objCatalogs->tablename ] = $objCatalogs->name ? $objCatalogs->name . ' [' . $objCatalogs->tablename . ']' : $objCatalogs->tablename;
+            $arrReturn[ $objCatalogs->tablename ] = $objCatalogs->name ? $objCatalogs->name . ' [' . $objCatalogs->tablename . ']' : $objCatalogs->tablename;
         }
 
-        return $this->arrCatalogCache;
+        return $arrReturn;
     }
 
 

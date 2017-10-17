@@ -39,7 +39,8 @@ array_insert( $GLOBALS['TL_CTE'], 3, [
 
     'catalog-manager' => [
 
-        'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm'
+        'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm',
+        'catalogSocialSharingButtons' => 'CatalogManager\ContentSocialSharingButtons'
     ]
 ]);
 

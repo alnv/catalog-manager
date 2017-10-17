@@ -6,7 +6,7 @@ class SocialSharingButtons extends CatalogController {
 
 
     protected $arrSocialSharingButtons = [];
-    protected $strTemplate = 'ctlg_social_sharing_buttons';
+    protected $strTemplate = 'ce_social_sharing_buttons';
 
 
     public function initialize( $arrSocialSharingButtons, $strTemplate = '' ) {
@@ -18,12 +18,22 @@ class SocialSharingButtons extends CatalogController {
 
     public function render( $arrData, $strTitleColumn, $strDescriptionColumn ) {
 
-        global $objPage;
-        $strSocialButtons = '';
         $objMainTemplate = new \FrontendTemplate( $this->strTemplate );
+        $arrData = $this->getSocialSharingButtons( $arrData, $strTitleColumn, $strDescriptionColumn );
+        $objMainTemplate->setData( $arrData);
+
+        return $objMainTemplate->parse();
+    }
+
+
+    public function getSocialSharingButtons( $arrData, $strTitleColumn, $strDescriptionColumn ) {
+
+        global $objPage;
+
+        $strOutput= '';
         $strShareUrl = \Idna::decode( \Environment::get('base') ) . $arrData['masterUrl'];
-        
-        $arrSocialShareData = [
+
+        $arrReturn = [
 
             'data' => $arrData,
             'shareUrl' => $strShareUrl,
@@ -39,13 +49,13 @@ class SocialSharingButtons extends CatalogController {
 
             $strTemplate = 'ctlg_social_button_' . $strButton;
             $objTemplate = new \FrontendTemplate( $strTemplate );
-            $objTemplate->setData( $arrSocialShareData );
-            $strSocialButtons .= $objTemplate->parse();
+            $objTemplate->setData( $arrReturn );
+
+            $strOutput .= $objTemplate->parse();
         }
 
-        $arrSocialShareData['output'] = $strSocialButtons;
-        $objMainTemplate->setData( $arrSocialShareData );
+        $arrReturn['output'] = $strOutput;
 
-        return $objMainTemplate->parse();
+        return $arrReturn;
     }
 }

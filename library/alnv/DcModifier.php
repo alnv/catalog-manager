@@ -25,8 +25,16 @@ class DcModifier extends CatalogController {
         \Controller::loadDataContainer( $this->strTablename );
 
         $this->I18nCatalogTranslator->initialize();
-        $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
-        $this->arrPalettes = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ?: [];
+
+        if ( !empty( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) && is_array( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ){
+
+            $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
+        }
+
+        if ( !empty( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) && is_array( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ) {
+
+            $this->arrPalettes = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ?: [];
+        }
     }
 
 

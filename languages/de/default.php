@@ -64,4 +64,13 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'] = 'Das Quellel
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['mail'] = 'E-Mail';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'] = 'Teilen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'] = 'Twittern';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'] = 'Teilen';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharing'] = 'Teilen';
+
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'] = [
+
+    'xing' => 'Xing',
+    'mail' => 'E-Mail',
+    'twitter' => 'Twitter',
+    'facebook' => 'Facebook',
+    'linkedin' => 'LinkedIn',
+];

@@ -53,6 +53,7 @@ ClassLoader::addClasses([
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
     'CatalogManager\CatalogSQLCompiler' => 'system/modules/catalog-manager/library/alnv/CatalogSQLCompiler.php',
     'CatalogManager\CatalogDcExtractor' => 'system/modules/catalog-manager/library/alnv/CatalogDcExtractor.php',
+    'CatalogManager\CatalogMasterEntity' => 'system/modules/catalog-manager/library/alnv/CatalogMasterEntity.php',
     'CatalogManager\CatalogFieldBuilder' => 'system/modules/catalog-manager/library/alnv/CatalogFieldBuilder.php',
     'CatalogManager\CatalogFineUploader' => 'system/modules/catalog-manager/library/alnv/CatalogFineUploader.php',
     'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
@@ -85,6 +86,7 @@ ClassLoader::addClasses([
     'CatalogManager\ContentCatalogFilterForm' => 'system/modules/catalog-manager/library/alnv/Elements/ContentCatalogFilterForm.php',
     'CatalogManager\ModuleCatalogTaxonomyTree' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogTaxonomyTree.php',
     'CatalogManager\CatalogDuplexSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogDuplexSelectWizard.php',
+    'CatalogManager\ContentSocialSharingButtons' => 'system/modules/catalog-manager/library/alnv/Elements/ContentSocialSharingButtons.php',
     'CatalogManager\CatalogRelationRedirectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationRedirectWizard.php',
     'CatalogManager\CatalogFilterFieldSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogFilterFieldSelectWizard.php'
 ]);
@@ -116,11 +118,11 @@ TemplateLoader::addFiles([
     'ctlg_form_fine_uploader' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
+    'ce_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
 
     'ctlg_social_button_mail' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_xing' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_twitter' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_linkedin' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_facebook' => 'system/modules/catalog-manager/templates',
-    'ctlg_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
 ]);

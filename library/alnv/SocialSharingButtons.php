@@ -4,15 +4,19 @@ namespace CatalogManager;
 
 class SocialSharingButtons extends CatalogController {
 
-
+    protected $arrCssID = [];
+    protected $arrHeadline = [];
     protected $arrSocialSharingButtons = [];
     protected $strTemplate = 'ce_social_sharing_buttons';
 
 
-    public function initialize( $arrSocialSharingButtons, $strTemplate = '', $blnDefaultTheme = true ) {
+    public function initialize( $arrSocialSharingButtons, $strTemplate = '', $blnDefaultTheme = true, $arrTemplateData = [] ) {
 
         $this->strTemplate = $strTemplate ? $strTemplate : $this->strTemplate;
         $this->arrSocialSharingButtons = is_array( $arrSocialSharingButtons ) ? $arrSocialSharingButtons : [];
+
+        $this->arrCssID = Toolkit::deserialize( $arrTemplateData['catalogSocialSharingCssID'] );
+        $this->arrHeadline = Toolkit::deserialize( $arrTemplateData['catalogSocialSharingHeadline'] );
 
         if ( TL_MODE == 'FE' && $blnDefaultTheme ) {
 
@@ -27,7 +31,13 @@ class SocialSharingButtons extends CatalogController {
 
         $objMainTemplate = new \FrontendTemplate( $this->strTemplate );
         $arrData = $this->getSocialSharingButtons( $arrData, $strTitleColumn, $strDescriptionColumn );
-        $objMainTemplate->setData( $arrData);
+
+        $arrData['customID'] = Toolkit::isEmpty( $this->arrCssID[0] ) ? '' : $this->arrCssID[0];
+        $arrData['customClass'] = Toolkit::isEmpty( $this->arrCssID[1] ) ? '' : ' ' . $this->arrCssID[1];
+        $arrData['hl'] = Toolkit::isEmpty( $this->arrHeadline['unit'] ) ? '' : $this->arrHeadline['unit'];
+        $arrData['headline'] = Toolkit::isEmpty( $this->arrHeadline['value'] ) ? '' : $this->arrHeadline['value'];
+
+        $objMainTemplate->setData( $arrData );
 
         return $objMainTemplate->parse();
     }

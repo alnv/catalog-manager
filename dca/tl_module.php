@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseFrontendEditingViewPag
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRoutingSource_module'] = 'catalogTablename,catalogRoutingParameter';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons'] = 'catalogSocialSharingButtons,catalogSocialSharingTemplate';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons'] = 'catalogSocialSharingButtons,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogDefaultValues,catalogNotifyInsert,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect';
@@ -1695,4 +1695,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingTemplate'] = [
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogDisableSocialSharingCSS'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogDisableSocialSharingCSS'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
 ];

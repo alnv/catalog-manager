@@ -1,7 +1,7 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogFilterForm'] = '{type_legend},type,headline;{include_legend},catalogForm;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
-$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogSocialSharingButtons'] = '{type_legend},type;{social_sharing_legend},catalogSocialSharingTable,catalogSocialSharingTitle,catalogSocialSharingDescription,catalogSocialSharingTemplate,catalogSocialSharingButtons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogSocialSharingButtons'] = '{type_legend},type;{social_sharing_legend},catalogSocialSharingButtons,catalogSocialSharingTable,catalogSocialSharingTitle,catalogSocialSharingDescription,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['catalogForm'] = [
 
@@ -124,6 +124,20 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogSocialSharingTemplate'] = [
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogDisableSocialSharingCSS'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogDisableSocialSharingCSS'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
 ];
 
 if ( \Input::get('do') && \Input::get('ctlg_table') ) {

@@ -185,8 +185,9 @@ class CatalogView extends CatalogController {
         if ( $this->catalogUseSocialSharingButtons ) {
 
             $this->import( 'SocialSharingButtons' );
+            $blnDefaultTheme = $this->catalogDisableSocialSharingCSS ? false : true;
             $arrSocialSharingButtons = Toolkit::deserialize( $this->catalogSocialSharingButtons );
-            $this->SocialSharingButtons->initialize( $arrSocialSharingButtons, $this->catalogSocialSharingTemplate );
+            $this->SocialSharingButtons->initialize( $arrSocialSharingButtons, $this->catalogSocialSharingTemplate, $blnDefaultTheme );
         }
 
         $this->setHasOperationsFlag();

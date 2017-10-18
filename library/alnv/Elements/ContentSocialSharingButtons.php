@@ -24,13 +24,14 @@ class ContentSocialSharingButtons extends \ContentElement {
 
         $strTitleColumn = $this->catalogSocialSharingTitle;
         $strDescriptionColumn = $this->catalogSocialSharingDescription;
+        $blnDefaultTheme = $this->catalogDisableSocialSharingCSS ? false : true;
         $arrSocialButtons = Toolkit::deserialize( $this->catalogSocialSharingButtons );
 
         $this->CatalogMasterEntity->initialize( $this->catalogSocialSharingTable, [], false );
         $arrEntity = $this->CatalogMasterEntity->getMasterEntity();
         $arrEntity['masterUrl'] = \Idna::decode( \Environment::get('base') ) . \Environment::get('indexFreeRequest');
 
-        $this->SocialSharingButtons->initialize( $arrSocialButtons, $this->catalogSocialSharingTemplate );
+        $this->SocialSharingButtons->initialize( $arrSocialButtons, $this->catalogSocialSharingTemplate, $blnDefaultTheme );
         $arrData = $this->SocialSharingButtons->getSocialSharingButtons( $arrEntity, $strTitleColumn, $strDescriptionColumn );
 
         $this->Template->setData( $arrData );

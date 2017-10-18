@@ -9,10 +9,17 @@ class SocialSharingButtons extends CatalogController {
     protected $strTemplate = 'ce_social_sharing_buttons';
 
 
-    public function initialize( $arrSocialSharingButtons, $strTemplate = '' ) {
+    public function initialize( $arrSocialSharingButtons, $strTemplate = '', $blnDefaultTheme = true ) {
 
         $this->strTemplate = $strTemplate ? $strTemplate : $this->strTemplate;
         $this->arrSocialSharingButtons = is_array( $arrSocialSharingButtons ) ? $arrSocialSharingButtons : [];
+
+        if ( TL_MODE == 'FE' && $blnDefaultTheme ) {
+
+            $GLOBALS['TL_CSS']['catalogManagerSocialSharingButtons'] = $GLOBALS['TL_CONFIG']['debugMode']
+                ? 'system/modules/catalog-manager/assets/social-sharing-buttons.css'
+                : 'system/modules/catalog-manager/assets/social-sharing-buttons.css';
+        }
     }
 
 

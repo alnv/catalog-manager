@@ -1,3 +1,8 @@
-<div class="ctlg_social_sharing_buttons">
-   <?= $this->output; ?>
+<div <?php if ( $this->customID ): ?>id="<?= $this->customID ?>"<?php endif; ?>class="ctlg_social_sharing_buttons<?= $this->customClass ?>">
+   <?php if ( $this->headline ): ?>
+      <<?= $this->hl ?>><?= $this->headline ?></<?= $this->hl ?>>
+   <?php endif; ?>
+   <div class="ctlg_social_sharing_buttons_container">
+      <?= $this->output; ?>
+   </div>
 </div>

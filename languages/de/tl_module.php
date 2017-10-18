@@ -117,6 +117,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogDefaultValues'] = [ 'Standardwerte fest
 $GLOBALS['TL_LANG']['tl_module']['catalogUseSocialSharingButtons'] = [ 'Social-Sharing aktivieren', 'Hier können Sie die Social-Sharing-Buttons einblenden.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingButtons'] = [ 'Netzwerke auswählen', 'Bitte wählen Sie ein oder mehrere Netzwerke aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDisableSocialSharingCSS'] = [ 'Standard-Styles deaktivieren', 'Hier kannst du die Standard-Styles für die Social-Sharing-Buttons deaktivieren.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

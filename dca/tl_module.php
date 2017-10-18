@@ -1722,7 +1722,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingHeadline'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
+    'options' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p' ],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"

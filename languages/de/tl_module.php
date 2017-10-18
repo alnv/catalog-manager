@@ -83,8 +83,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExternalFormRedirect'] = [ 'Seiten-URL'
 $GLOBALS['TL_LANG']['tl_module']['catalogInternalFormRedirect'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates', 'Hier können Sie jedem Feld ein individuelles Template zuweisen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Feldabhängigkeit', 'Hier können Sie jedem Feld eine Feldabhängigkeit zuweisen.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Bitte wählen Sie für den Title ein Eingabefeld. Dieses Eingabefeld wird für den Title Meta-Tag verwendet.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Beschreibung', 'Bitte wählen Sie für die Beschreibung ein Eingabefeld. Dieses Eingabefeld wird für das Description Meta-Tag verwendet.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Meta-Title', 'Bitte wählen Sie eine Spalte, aus der der Titel generiert werden sollen. Diese Spalte wird auch für Social-Sharing-Buttons verwendet.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Meta-Description', 'Bitte wählen Sie eine Spalte, aus der die Beschreibung generiert werden sollen. Diese Spalte wird auch für Social-Sharing-Buttons verwendet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Filter verstecken', 'Hier können Sie das Filterformular verstecken, wenn sich die Seite in der Detailansicht befindet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Felder deaktivieren', 'Hier können Sie Felder aus dem Formular ausschließen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Debugmodus aktivieren', 'Hier können Sie den Debugmodus aktivieren. Dabei werden nützliche Informationen bereitgestellt.' ];
@@ -118,6 +118,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogUseSocialSharingButtons'] = [ 'Social-S
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingButtons'] = [ 'Netzwerke auswählen', 'Bitte wählen Sie ein oder mehrere Netzwerke aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDisableSocialSharingCSS'] = [ 'Standard-Styles deaktivieren', 'Hier kannst du die Standard-Styles für die Social-Sharing-Buttons deaktivieren.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingHeadline'] = [ 'Überschrift', 'Hier können Sie eine Überschrift für die Social-Sharing-Buttons erstellen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingCssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

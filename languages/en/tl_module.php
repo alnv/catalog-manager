@@ -82,8 +82,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExternalFormRedirect'] = [ 'Page url', 
 $GLOBALS['TL_LANG']['tl_module']['catalogInternalFormRedirect'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldTemplates'] = [ 'Templates', 'Here you can assign individual templates for filter fields' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFilterFieldDependencies'] = [ 'Field dependencies', 'Here you can set up field dependencies.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Title', 'Please select a title column. This title will be used for search enginses.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Description', 'Please select a description column. This description will be used for search engines.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'] = [ 'Meta-Title', 'Please select a title column. This title will be used for search engines and social sharing buttons.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSEODescription'] = [ 'Meta-Description', 'Please select a description column. This description will be used for search engines and social sharing buttons.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreFilterOnAutoItem'] = [ 'Hide filter form', 'Here you can hide the filter form when the page is in the detail view.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'] = [ 'Disable fields', 'Here you can disable fields.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTemplateDebug'] = [ 'Enable template debug mode', 'Here you can enable template debug mode.' ];
@@ -116,6 +116,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogUseSocialSharingButtons'] = [ 'Use soci
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingButtons'] = [ 'Social networks', 'Please select one or more social networks.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDisableSocialSharingCSS'] = [ 'Disable default styles', 'Here you can disable default styles for social sharing buttons.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingHeadline'] = [ 'Headline', 'Here you can add a headline to the social sharing buttons.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingCssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

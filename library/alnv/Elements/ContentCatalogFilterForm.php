@@ -4,6 +4,7 @@ namespace CatalogManager;
 
 class ContentCatalogFilterForm extends \ContentElement {
 
+    
     protected $arrForm = [];
     protected $blnReady = false;
     protected $arrFormFields = [];
@@ -21,6 +22,14 @@ class ContentCatalogFilterForm extends \ContentElement {
 
 
     public function generate() {
+
+        if ( TL_MODE == 'BE' ) {
+
+            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . utf8_strtoupper( $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'][0] ) . ' ###';
+
+            return $objTemplate->parse();
+        }
 
         $this->blnReady = $this->initialize();
 

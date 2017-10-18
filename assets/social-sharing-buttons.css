@@ -3,8 +3,8 @@
     position: relative;
 }
 
-.ctlg_social_sharing_buttons:after,
-.ctlg_social_sharing_buttons:before {
+.ctlg_social_sharing_buttons_container:after,
+.ctlg_social_sharing_buttons_container:before {
 
     display: block;
     content: '';
@@ -19,7 +19,7 @@
     fill: currentColor;
 }
 
-.social_button {
+.ctlg_social_sharing_buttons .social_button {
 
     margin-right: 5px;
     display: block;
@@ -27,12 +27,12 @@
     width: auto;
 }
 
-.social_button:last-child {
+.ctlg_social_sharing_buttons .social_button:last-child {
 
     margin-right: 0;
 }
 
-.social_button a {
+.ctlg_social_sharing_buttons .social_button a {
 
     width: 35px;
     height: 35px;
@@ -45,14 +45,14 @@
     text-decoration: none;
 }
 
-.social_button a:focus,
-.social_button a:hover {
+.ctlg_social_sharing_buttons .social_button a:focus,
+.ctlg_social_sharing_buttons .social_button a:hover {
 
     color: #fff;
     opacity: 0.8;
 }
 
-.social_button .social-share-icon {
+.ctlg_social_sharing_buttons .social_button .social-share-icon {
 
     vertical-align: middle;
     display: table-cell;
@@ -61,25 +61,25 @@
     height: 100%;
 }
 
-.social_button .social-share-label {
+.ctlg_social_sharing_buttons .social_button .social-share-label {
 
     display: none;
 }
 
 @media screen and (min-width: 768px) {
 
-    .social_button a {
+    .ctlg_social_sharing_buttons .social_button a {
 
         width: 100%;
     }
 
-    .social_button .social-share-icon {
+    .ctlg_social_sharing_buttons .social_button .social-share-icon {
 
         text-align: left;
         padding-right: 5px;
     }
 
-    .social_button .social-share-label {
+    .ctlg_social_sharing_buttons .social_button .social-share-label {
 
         line-height: 0;
         font-size: 14px;
@@ -88,44 +88,44 @@
     }
 }
 
-.ctlg_social_button_facebook a {
+.ctlg_social_sharing_buttons .ctlg_social_button_facebook a {
 
     background-color: #3B589E;
 }
 
-.ctlg_social_button_twitter a {
+.ctlg_social_sharing_buttons .ctlg_social_button_twitter a {
 
     background-color: #00AFE9;
 }
 
-.ctlg_social_button_linkedin a {
+.ctlg_social_sharing_buttons .ctlg_social_button_linkedin a {
 
     background-color: #006599;
 }
 
-.ctlg_social_button_xing a {
+.ctlg_social_sharing_buttons .ctlg_social_button_xing a {
 
     background-color: #0b6159;
 }
 
-.ctlg_social_button_mail a {
+.ctlg_social_sharing_buttons .ctlg_social_button_mail a {
 
     background-color: #701834;
 }
 
-td.social_sharing_buttons .social_button a {
+td.social_sharing_buttons .ctlg_social_sharing_buttons .social_button a {
 
     padding: 0;
     width: 35px;
 }
 
-td.social_sharing_buttons .social_button .social-share-icon {
+td.social_sharing_buttons .ctlg_social_sharing_buttons .social_button .social-share-icon {
 
     text-align: center;
     padding-right: 0;
 }
 
-td.social_sharing_buttons .social_button .social-share-label {
+td.social_sharing_buttons .ctlg_social_sharing_buttons .social_button .social-share-label {
 
     display: none;
 }

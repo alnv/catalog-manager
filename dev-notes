@@ -5,8 +5,15 @@ new features:
  - default values setter for frontend editing
  - social sharing buttons
 
- to improve:
+to improve:
   - sorting field in different modes
   - token in wizards
   - test seo title & description
   - CTLG_MASTER CACHE
+
+todo
+    - versioning
+    - joins for child tables
+    - random insert tag
+    - improve seo title and description labels
+    - improve backend fe module label for catalog content types

@@ -335,6 +335,11 @@ class CatalogDcExtractor extends CatalogController {
 
     protected function convertDcConfigToCatalog( $arrReturn, $arrDataContainer, $strDcConfigType ) {
 
+        if ( $arrDataContainer[ $strDcConfigType ]['enableVersioning'] ) {
+
+            $arrReturn['useVC'] = $arrDataContainer['config']['enableVersioning'] ? '1' : '';
+        }
+
         if ( $arrDataContainer[ $strDcConfigType ]['ptable'] ) {
 
             $arrReturn['pTable'] = $arrDataContainer['config']['ptable'];
@@ -475,6 +480,7 @@ class CatalogDcExtractor extends CatalogController {
 
             '_tables' => [],
             'ptable' => $arrReturn[ $strDcConfigType ]['ptable'],
+            'enableVersioning' => $arrCatalog['useVC'] ? true : false,
             'ctable' => is_array( $arrReturn[ $strDcConfigType ]['ctable'] ) ? $arrReturn[ $strDcConfigType ]['ctable'] : [],
             'onsubmit_callback' => is_array( $arrReturn[ $strDcConfigType ]['onsubmit_callback'] ) ? $arrReturn[ $strDcConfigType ]['onsubmit_callback'] : []
         ];

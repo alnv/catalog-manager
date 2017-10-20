@@ -4,14 +4,13 @@ new
     - OrderBy for BE select fields
     - default values setter for frontend editing
     - social sharing buttons
+    - Versioning
+    - Joins for child tables
+    - CTLG_TIMESTAMP Insert tag {{CTLG_TIMESTAMP::?add=604800}}
+    - CTLG_RANDOM_ENTITY_IDS Insert tag {{CTLG_RANDOM_ENTITY_IDS::ctlg_vereine::?limit=1}}
 
 improve
     - sorting field in different modes
     - token in wizards
     - test seo title & description
     - CTLG_MASTER CACHE
-
-todo
-    - versioning
-    - joins for child tables
-    - random insert tag

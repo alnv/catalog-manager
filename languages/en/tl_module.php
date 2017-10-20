@@ -118,6 +118,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingTemplate'] = [ 'Template',
 $GLOBALS['TL_LANG']['tl_module']['catalogDisableSocialSharingCSS'] = [ 'Disable default styles', 'Here you can disable default styles for social sharing buttons.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingHeadline'] = [ 'Headline', 'Here you can add a headline to the social sharing buttons.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingCssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogJoinCTables'] = [ 'Join child tables', 'Here you can join child tables.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

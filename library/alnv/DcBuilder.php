@@ -127,8 +127,9 @@ class DcBuilder extends CatalogController {
 
         $arrReturn = [
 
-            'label' => $this->I18nCatalogTranslator->get( 'module', $this->strTable, [ 'titleOnly' => true ] ),
             'dataContainer' => 'Table',
+            'label' => $this->I18nCatalogTranslator->get( 'module', $this->strTable, [ 'titleOnly' => true ] ),
+            'enableVersioning' => $this->arrCatalog['useVC'] ? true : false,
 
             'oncut_callback' => [],
             'onload_callback' => [],

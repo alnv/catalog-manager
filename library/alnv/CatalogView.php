@@ -140,6 +140,7 @@ class CatalogView extends CatalogController {
         $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
+        $this->catalogJoinCTables = Toolkit::parseStringToArray( $this->catalogJoinCTables );
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
 
         $this->setRelatedTables();
@@ -301,20 +302,23 @@ class CatalogView extends CatalogController {
         $intPerPage = $this->catalogPerPage;
         $intPagination = \Input::get( $strPageID );
         $arrQuery['table'] = $this->catalogTablename;
+        $arrQuery['joins'] = [];
 
-        if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) {
-
-            return '';
-        }
+        if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) return '';
 
         if ( !empty( $this->catalogJoinFields ) || is_array( $this->catalogJoinFields ) ) {
 
-            $arrQuery['joins'] = $this->prepareJoinData();
+            $this->prepareJoinData( $arrQuery['joins'] );
+        }
+
+        if ( !empty( $this->catalogJoinCTables ) || is_array( $this->catalogJoinCTables ) ) {
+
+            $this->prepareCTablesJoinData( $arrQuery['joins'] );
         }
 
         if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
 
-            $arrQuery['joins'][] = $this->preparePTableJoinData();
+            $this->preparePTableJoinData( $arrQuery['joins'] );
         }
 
         if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
@@ -454,8 +458,16 @@ class CatalogView extends CatalogController {
             }
         }
 
-        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrQuery );
-        $intTotal = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT COUNT(*) FROM %s%s', $this->catalogTablename, $strWhereStatement ) )->execute( $this->SQLQueryBuilder->getValues() )->row()[ 'COUNT(*)' ];
+        $intTotal = $this->SQLQueryBuilder->execute( $arrQuery )->count();
+
+        if ( $this->strMode == 'view' ) {
+
+            $arrQuery['pagination'] = [
+
+                'limit' => $this->catalogPerPage,
+                'offset' => $this->catalogOffset
+            ];
+        }
 
         if ( $this->catalogOffset ) {
 
@@ -475,12 +487,12 @@ class CatalogView extends CatalogController {
         }
 
         $arrCatalogs = [];
-        $objQueryBuilderResults = $this->SQLQueryBuilder->execute( $arrQuery );
-        $intResultRows = $objQueryBuilderResults->numRows;
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+        $intNumRows = $objEntities->numRows;
 
-        while ( $objQueryBuilderResults->next() ) {
+        while ( $objEntities->next() ) {
 
-            $arrCatalog = $objQueryBuilderResults->row();
+            $arrCatalog = $objEntities->row();
 
             $arrCatalog['useSocialSharingButtons'] = $this->catalogUseSocialSharingButtons ? true : false;
             $arrCatalog['origin'] = $arrCatalog;
@@ -649,7 +661,7 @@ class CatalogView extends CatalogController {
         
         if ( $this->catalogUseArray ) {
 
-            return $this->getArrayValue( $arrCatalogs, $intResultRows );
+            return $this->getArrayValue( $arrCatalogs, $intNumRows );
         }
 
         if ( $this->blnShowAsGroup ) {
@@ -657,7 +669,7 @@ class CatalogView extends CatalogController {
             return $this->getGroupedValue( $arrCatalogs );
         }
 
-        return $this->getTemplateValue( $arrCatalogs, $intResultRows );
+        return $this->getTemplateValue( $arrCatalogs, $intNumRows );
     }
 
 
@@ -704,7 +716,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function getTemplateValue( $arrCatalogs, $intResultRows ) {
+    protected function getTemplateValue( $arrCatalogs, $intNumRows ) {
 
         $strContent = '';
         $objTemplate = new \FrontendTemplate( $this->strTemplate );
@@ -712,14 +724,14 @@ class CatalogView extends CatalogController {
         foreach ( $arrCatalogs as $intIndex => $arrCatalog ) {
 
             $arrCatalog['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
-            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intResultRows ];
+            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intNumRows ];
 
             if ( !$intIndex ) {
 
                 $arrCatalog['cssClass'] .= ' first';
             }
 
-            if ( $intIndex == ( $intResultRows - 1 ) ) {
+            if ( $intIndex == ( $intNumRows - 1 ) ) {
 
                 $arrCatalog['cssClass'] .= ' last';
             }
@@ -732,19 +744,19 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function getArrayValue( $arrCatalogs, $intResultRows ) {
+    protected function getArrayValue( $arrCatalogs, $intNumRows ) {
 
         for ( $intIndex = 0; $intIndex < count( $arrCatalogs ); $intIndex++ ) {
 
             $arrCatalogs[ $intIndex ]['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
-            $arrCatalogs[ $intIndex ]['entityIndex'] = [ $intIndex + 1, $intResultRows ];
+            $arrCatalogs[ $intIndex ]['entityIndex'] = [ $intIndex + 1, $intNumRows ];
 
             if ( !$intIndex ) {
 
                 $arrCatalogs[ $intIndex ]['cssClass'] .= ' first';
             }
 
-            if ( $intIndex == ( $intResultRows - 1 ) ) {
+            if ( $intIndex == ( $intNumRows - 1 ) ) {
 
                 $arrCatalogs[ $intIndex ]['cssClass'] .= ' last';
             }
@@ -1036,9 +1048,7 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function prepareJoinData () {
-
-        $arrReturn = [];
+    protected function prepareJoinData ( &$arrReturn ) {
 
         foreach ( $this->catalogJoinFields as $strFieldJoinID ) {
 
@@ -1064,8 +1074,6 @@ class CatalogView extends CatalogController {
 
             $arrReturn[] = $arrRelatedJoinData;
         }
-
-        return $arrReturn;
     }
 
 
@@ -1155,11 +1163,11 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function preparePTableJoinData () {
+    protected function preparePTableJoinData ( &$arrReturn ) {
 
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], $this->arrCatalogFields, true );
 
-        return [
+        $arrReturn[] = [
 
             'field' => 'pid',
             'onField' => 'id',
@@ -1167,6 +1175,24 @@ class CatalogView extends CatalogController {
             'table' => $this->catalogTablename,
             'onTable' => $this->arrCatalog['pTable']
         ];
+    }
+
+
+    protected function prepareCTablesJoinData( &$arrReturn ) {
+
+        foreach ( $this->catalogJoinCTables as $strTable ) {
+
+            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $strTable, $this->arrCatalogFields, true );
+
+            $arrReturn[] = [
+
+                'field' => 'id',
+                'onField' => 'pid',
+                'multiple' => false,
+                'onTable' => $strTable,
+                'table' => $this->catalogTablename
+            ];
+        }
     }
 
 

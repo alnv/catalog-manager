@@ -30,6 +30,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['panelLayout'] = [ 'Panel Layout', 'Hier könn
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Bitte geben Sie eine kurze Information über die Tabelle ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Darstellung', 'Bitte wählen Sie eine Darstellung für das Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Beschreibung des Moduls', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useVC'] = [ 'Versionierung', 'Hier können Sie die Contao interne Versionierung aktivieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Anzeige-Feld/er', 'Eines oder mehrere Felder, die in der Liste angezeigt werden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['modulename'] = [ 'Modulname', 'Bitte tragen Sie den Names des Moduls in maschinell lesbarer Form ein.' ];

@@ -32,6 +32,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Header fields', 'Please s
 $GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Description', 'Please enter short module description.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here you can show multiple columns.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['useVC'] = [ 'Versioning', 'Here you can activate the Contao internal versioning.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or more fields that will be shown in the list.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['modulename'] = [ 'Modulename', 'Please enter your modulename in machine-readable form.' ];

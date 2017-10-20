@@ -54,9 +54,8 @@ class TimestampInsertTag extends \Frontend {
 
                         case 'divide':
 
-                            if ( $strOption > 0 )
+                            if ( $strOption > 0 ) {
 
-                            {
                                 $intTimestamp = $intTimestamp / $strOption;
                             }
 

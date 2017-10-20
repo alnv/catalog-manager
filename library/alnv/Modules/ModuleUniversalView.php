@@ -130,13 +130,7 @@ class ModuleUniversalView extends \Module {
         $arrQuery = [
 
             'where' => [],
-            'orderBy' => [],
-
-            'pagination' => [
-
-                'limit' => $this->catalogPerPage,
-                'offset' => $this->catalogOffset
-            ]
+            'orderBy' => []
         ];
         
         $this->CatalogView->strMode = 'view';

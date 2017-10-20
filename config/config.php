@@ -61,7 +61,9 @@ $GLOBALS['TL_HOOKS']['catalogManagerEntityOnDelete'] = [];
 
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\ActiveInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterInsertTag', 'getInsertTagValue' ];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\TimestampInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValuesInsertTag', 'getInsertTagValue' ];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue' ];
 
 $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [ 'CatalogManager\RoutingBuilder', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\CatalogDcAdapter', 'initialize' ];

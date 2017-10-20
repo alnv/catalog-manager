@@ -192,9 +192,22 @@ class tl_module extends \Backend {
         $arrReturn = [];
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
 
-        if ( !$arrCatalog || empty( $arrCatalog ) || !is_array( $arrCatalog )  ) return $arrReturn;
+        if ( is_array( $arrCatalog ) && isset( $arrCatalog['cTables'] ) ) {
 
-        return ( is_array( $arrCatalog['cTables'] ) ? $arrCatalog['cTables'] : deserialize( $arrCatalog['cTables'] ) );
+            $arrTables = Toolkit::deserialize( $arrCatalog['cTables'] );
+
+            foreach ( $arrTables as $strTable ) {
+
+                if ( is_array( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) ) {
+
+                    $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['name'];
+
+                    $arrReturn[ $strTable ] = $strName ? $strName : $strTable;
+                }
+            }
+        }
+
+        return $arrReturn;
     }
 
 

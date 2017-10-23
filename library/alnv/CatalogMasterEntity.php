@@ -10,6 +10,7 @@ class CatalogMasterEntity extends CatalogController {
     protected $arrJoinFields = [];
     protected $arrCatalogFields = [];
     protected $blnJoinParent = false;
+    protected $blnJoinFields = false;
 
 
     public function __construct() {
@@ -21,10 +22,13 @@ class CatalogMasterEntity extends CatalogController {
     }
 
 
-    public function initialize( $strTablename, $arrJoinOnly = [], $blnJoinParent = false ) {
+    public function initialize( $strTablename, $arrOptions  = [] ) {
 
         $this->strTable = $strTablename;
-        $this->blnJoinParent = $blnJoinParent;
+
+        $this->blnJoinFields = isset( $arrOptions['joinFields'] ) &&  $arrOptions['joinFields'] ? true : false;
+        $this->blnJoinParent = isset( $arrOptions['joinParent'] ) &&  $arrOptions['joinParent'] ? true : false;
+        $arrJoinOnly = isset( $arrOptions['joinOnly'] ) &&  $arrOptions['joinOnly'] ? $arrOptions['joinOnly'] : [];
 
         $objCatalog = $this->Database->prepare( sprintf( 'SELECT * FROM tl_catalog WHERE tablename = ?' ) )->limit(1)->execute( $this->strTable );
 
@@ -95,7 +99,7 @@ class CatalogMasterEntity extends CatalogController {
 
         ];
 
-        if ( !empty( $this->arrJoinFields ) && is_array( $this->arrJoinFields ) ) {
+        if ( !empty( $this->arrJoinFields ) && is_array( $this->arrJoinFields ) && $this->blnJoinFields ) {
 
             $arrQuery['joins'] = $this->joinFields();
         }

@@ -147,7 +147,7 @@ class CatalogDuplexSelectWizard extends \Widget {
                                 foreach ( $arrButtons as $button ) {
 
                                     $class = ( $button == 'up' || $button == 'down' ) ? ' class="button-move"' : '';
-                                    $return .= '<a href="'.$this->addToUrl( '&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord ).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$button.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'</a> ';
+                                    $return .= '<a href="'.$this->addToUrl( '&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;rt='. REQUEST_TOKEN . '&amp;id='.$this->currentRecord ).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$button.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$button]).'</a> ';
                                 }
                                 $return .= '</td>
                         </tr>';

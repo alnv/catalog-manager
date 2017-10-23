@@ -138,7 +138,7 @@ class CatalogValueSetterWizard extends \Widget {
         foreach ( $this->arrButtons as $strButton ) {
 
             $strClass = '';
-            $strReturn .= '<a href="'. $this->addToUrl( '&amp;'.$this->strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;id='.$this->currentRecord ).'"' . $strClass . ' title="'.specialchars( $GLOBALS['TL_LANG']['MSC']['ow_'.$strButton] ).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$strButton]).'</a> ';
+            $strReturn .= '<a href="'. $this->addToUrl( '&amp;'.$this->strCommand.'='.$strButton.'&amp;cid='.$intIndex.'&amp;rt='. REQUEST_TOKEN .'&amp;id='.$this->currentRecord ).'"' . $strClass . ' title="'.specialchars( $GLOBALS['TL_LANG']['MSC']['ow_'.$strButton] ).'" onclick="CatalogManager.CatalogOrderByWizard(this,\''.$strButton.'\',\'ctrl_'.$this->strId.'\');return false">'.\Image::getHtml($strButton.'.gif', $GLOBALS['TL_LANG']['MSC']['ow_'.$strButton]).'</a> ';
         }
 
         return $strReturn;

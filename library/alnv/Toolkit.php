@@ -97,7 +97,28 @@ class Toolkit {
 
         return $arrInputTypes[ $strType ] ?: '';
     }
-    
+
+
+    public static function convertCatalogTypeToFormType( $strType ) {
+
+        $arrFormTypes = [
+
+            'radio' => 'radio',
+            'map' => 'textfield',
+            'select' => 'select',
+            'upload' => 'upload',
+            'text' => 'textfield',
+            'date' => 'textfield',
+            'number' => 'textfield',
+            'hidden' => 'textfield',
+            'textarea' => 'textarea',
+            'checkbox' => 'checkbox',
+            'message' => 'catalogMessageWidget'
+        ];
+
+        return $arrFormTypes[ $strType ] ?: '';
+    }
+
 
     public static function setCatalogConformInputType( $strField ) {
 

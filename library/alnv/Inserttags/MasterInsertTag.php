@@ -5,17 +5,6 @@ namespace CatalogManager;
 class MasterInsertTag extends \Frontend {
 
 
-    protected $arrCatalogFields = [];
-    protected $blnJoinParent = false;
-    protected $blnJoinFields = false;
-    protected $arrJoinFields = [];
-    protected $arrJoinOnly = [];
-    protected $arrCatalog = [];
-    protected $arrMaster = [];
-    protected $strHash = '';
-    protected $strTable;
-    
-
     public function getInsertTagValue( $strTag ) {
 
         global $objPage;
@@ -31,13 +20,15 @@ class MasterInsertTag extends \Frontend {
 
             $this->import( 'CatalogMasterEntity' );
 
+            $arrJoinOnly = [];
             $strDefaultValue = '';
+            $blnJoinParent = false;
+            $blnJoinFields = false;
             $blnParseValues = false;
-            $blnPreventCache = false;
-            $strFieldname = $arrTags[1];
-            $this->strTable = $objPage->catalogMasterTable;
+            $strFieldname = $arrTags[1] ?: '';
+            $strTable = $objPage->catalogMasterTable;
 
-            if ( !$strFieldname || !$this->strTable ) return false;
+            if ( !$strFieldname || !$strTable ) return false;
 
             if ( isset( $arrTags[2] ) && strpos( $arrTags[2], '?' ) !== false ) {
 
@@ -54,46 +45,40 @@ class MasterInsertTag extends \Frontend {
 
                         case 'default':
 
-                            $strDefaultValue = $strOption;
+                            $strDefaultValue = $strOption ?: '';
 
                             break;
 
                         case 'parse':
 
-                            $blnPreventCache = $this->strHash != md5( $strSource );
                             $blnParseValues = $strOption ? true : false;
 
                             break;
 
                         case 'joinParent':
 
-                            $blnPreventCache = $this->strHash != md5( $strSource );
-                            $this->blnJoinParent = $strOption ? true : false;
+                            $blnJoinParent = $strOption ? true : false;
 
                             break;
 
                         case 'joinFields':
 
-                            $blnPreventCache = $this->strHash != md5( $strSource );
-                            $this->blnJoinFields = $strOption ? true : false;
+                            $blnJoinFields = $strOption ? true : false;
 
                             break;
 
                         case 'joinOnly':
 
-                            $blnPreventCache = $this->strHash != md5( $strSource );
                             $arrFields = explode( ',', $strOption );
 
                             if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
 
-                                $this->arrJoinOnly = $arrFields;
+                                $arrJoinOnly = $arrFields;
                             }
 
                             break;
                     }
                 }
-
-                $this->strHash = md5( $strSource );
             }
 
             else {
@@ -101,37 +86,32 @@ class MasterInsertTag extends \Frontend {
                 $strDefaultValue = Toolkit::isEmpty( $arrTags[2] ) ? '' : $arrTags[2];
             }
 
-            if ( empty( $this->arrCatalog ) ) {
+            $this->CatalogMasterEntity->initialize( $strTable, [
 
-                $this->CatalogMasterEntity->initialize( $this->strTable, $this->arrJoinOnly );
+                'joinOnly' => $arrJoinOnly,
+                'joinFields' => $blnJoinFields,
+                'joinParent' => $blnJoinParent
+            ]);
 
-                $this->arrCatalog = $this->CatalogMasterEntity->getCatalog();
-                $this->arrJoinFields = $this->CatalogMasterEntity->getJoinFields();
-                $this->arrCatalogFields = $this->CatalogMasterEntity->getCatalogFields();
+            $arrMaster = $this->CatalogMasterEntity->getMasterEntity( $blnParseValues );
 
-            }
-
-            if ( empty( $this->arrMaster ) || $blnPreventCache ) {
-
-                $this->arrMaster = $this->CatalogMasterEntity->getMasterEntity( $blnParseValues );
-            }
-
-            if ( Toolkit::isEmpty( $this->arrMaster[ $strFieldname ] ) && !Toolkit::isEmpty( $strDefaultValue ) ) {
+            if ( Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) && !Toolkit::isEmpty( $strDefaultValue ) ) {
 
                 return $strDefaultValue;
             }
 
-            $varValue = Toolkit::isEmpty( $this->arrMaster[ $strFieldname ] ) ? '' : $this->arrMaster[ $strFieldname ];
+            $varValue = Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) ? '' : $arrMaster[ $strFieldname ];
 
-            if ( is_array( $varValue ) ) {
+            if ( !is_array( $varValue ) ) return $varValue;
+
+            if ( Toolkit::isAssoc( $varValue ) ) {
 
                 $strKeyname = $arrTags[3] ?: '';
 
-                if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) {
-
-                    $varValue = $varValue[ $strKeyname ];
-                }
+                if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) $varValue = $varValue[ $strKeyname ];
             }
+
+            if ( is_array( $varValue ) ) return implode( ', ' , $varValue );
 
             return $varValue;
         }

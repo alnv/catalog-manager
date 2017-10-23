@@ -5,8 +5,7 @@ namespace CatalogManager;
 class CatalogFilterFieldSelectWizard extends \Widget {
 
 
-    private $blnEmpty = true;
-    
+    protected $blnEmpty = true;
     protected $arrCatalogFields = [];
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
@@ -145,7 +144,7 @@ class CatalogFilterFieldSelectWizard extends \Widget {
     protected function getTemplateOptions( $arrField, $intIndex ) {
 
         $strOptions = '<option value="">-</option>';
-        $strType = Toolkit::setDcConformInputType( $arrField['type'] );
+        $strType = Toolkit::convertCatalogTypeToFormType( $arrField['type'] );
         $arrTemplates = $this->getTemplateGroup( 'form_' . $strType );
 
         foreach ( $arrTemplates as $strValue => $strName ) {

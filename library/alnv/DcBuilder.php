@@ -256,7 +256,7 @@ class DcBuilder extends CatalogController {
 
         $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $this->arrCatalog['panelLayout'] );
 
-        if ( in_array( $this->arrCatalog['mode'], [ 3, 4 ] ) ) {
+        if ( $this->arrCatalog['mode'] == '4' ) {
 
             $arrLabelFields = [ 'title' ];
 
@@ -335,7 +335,7 @@ class DcBuilder extends CatalogController {
             ]
         ];
 
-        if ( in_array( $this->arrCatalog['mode'], [ '3', '4', '5' ] ) ) {
+        if ( in_array( $this->arrCatalog['mode'], [ '4', '5', '6' ] ) ) {
 
             $arrReturn['copy']['href'] = 'act=paste&amp;mode=copy';
         }

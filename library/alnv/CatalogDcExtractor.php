@@ -249,7 +249,7 @@ class CatalogDcExtractor extends CatalogController {
 
         $arrReturn = [];
 
-        if ( $strMode === '0' || $strMode === '1' || $strMode === '2' ) {
+        if ( in_array( $strMode, [ '0', '1', '2', '3' ] ) ) {
 
             if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
 
@@ -268,7 +268,7 @@ class CatalogDcExtractor extends CatalogController {
             return $arrReturn;
         }
 
-        if ( $strMode === '3' || $strMode === '4' ) {
+        if ( $strMode === '4' ) {
 
             return $arrReturn;
         }

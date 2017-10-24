@@ -114,7 +114,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $arrColumns = $this->arrTableColumns;
         $objSQLBuilder = new SQLBuilder();
 
-        if ( !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
             unset( $arrColumns['sorting'] );
         }
@@ -174,7 +174,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         if ( !$this->Database->tableExists( $this->strTablename ) ) return null;
 
-        if ( $this->arrCatalog['mode'] && !$this->blnCoreTable ) {
+        if ( in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'sorting' , $this->arrTableColumns['sorting'] );
         }
@@ -299,7 +299,7 @@ class CatalogDatabaseBuilder extends CatalogController {
             return true;
         }
 
-        if ( in_array( $this->arrCatalog['mode'], [ '4', '5' ] ) ) {
+        if ( in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
             return true;
         }

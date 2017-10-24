@@ -263,7 +263,7 @@ class CatalogFieldBuilder extends CatalogController {
             return false;
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
             return false;
         }
@@ -408,7 +408,7 @@ class CatalogFieldBuilder extends CatalogController {
             ]
         ];
 
-        if ( !$this->arrCatalog['pTable'] && !in_array( $this->arrCatalog['mode'], [ '5', '6' ] ) ) {
+        if ( !$this->arrCatalog['pTable'] && !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
             unset( $arrFields['pid'] );
         }
@@ -423,7 +423,7 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
             unset( $arrFields['sorting'] );
         }
@@ -475,7 +475,7 @@ class CatalogFieldBuilder extends CatalogController {
 
             case 'sorting' :
 
-                if ( in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) ) {
+                if ( in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
 
                     $arrField['_dcFormat'] = [
 

@@ -284,9 +284,7 @@ class tl_catalog extends \Backend {
 
     public function checkModeTypeForFormat( $varValue, \DataContainer $dc ) {
 
-        $arrModeTypes = [ '3', '4' ];
-
-        if ( $varValue && in_array( $dc->activeRecord->mode , $arrModeTypes ) ) {
+        if ( $varValue && $dc->activeRecord->mode == '4' ) {
 
             return '';
         }

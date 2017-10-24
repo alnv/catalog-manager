@@ -761,7 +761,7 @@ class FrontendEditing extends CatalogController {
 
             foreach ( $this->catalogDefaultValues as $arrDefaultValue ) {
 
-                if ( Toolkit::isEmpty( $this->arrValues[ $arrDefaultValue['key'] ] ) ) {
+                if ( !Toolkit::isEmpty( $this->arrValues[ $arrDefaultValue['key'] ] ) ) {
 
                     $this->arrValues[ $arrDefaultValue['key'] ] = $this->replaceInsertTags( $arrDefaultValue['value'] );
                 }

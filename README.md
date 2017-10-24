@@ -9,7 +9,7 @@ Please visit the official [Catalog Manager][1] Site. Here you can find Catalog M
 
 You can install Catalog Manager in Extension Repository. Just search for "Catalog-Manager" :)
 
-**Contao 4.3**
+**Contao 4.4**
 
 - Download latest [Catalog Manager][2] Version
 - Unzip and rename the folder into "catalog-manager"

@@ -8,6 +8,3 @@ new
     - Joins for child tables
     - CTLG_TIMESTAMP Insert tag {{CTLG_TIMESTAMP::?add=604800}}
     - CTLG_RANDOM_ENTITY_IDS Insert tag {{CTLG_RANDOM_ENTITY_IDS::ctlg_vereine::?limit=1}}
-
-improve
-    - sorting field in different modes

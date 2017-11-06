@@ -1692,7 +1692,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingButtons'] = [
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getSocialSharingButtons' ],
-    'reference' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'],
+    'reference' => &$GLOBALS['TL_LANG']['MSC']['sharingButtons'],
 
     'exclude' => true,
     'sql' => "blob NULL"

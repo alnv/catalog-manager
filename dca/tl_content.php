@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogSocialSharingButtons'] = [
         'tl_class' => 'clr',
     ],
 
-    'reference' => &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'],
+    'reference' => &$GLOBALS['TL_LANG']['MSC']['sharingButtons'],
     'options_callback' => [ 'CatalogManager\tl_content', 'getSocialSharingButtons' ],
 
     'exclude' => true,

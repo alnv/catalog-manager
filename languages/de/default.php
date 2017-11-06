@@ -66,7 +66,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'] = 'Teilen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'] = 'Twittern';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharing'] = 'Teilen';
 
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharingButtons'] = [
+$GLOBALS['TL_LANG']['MSC']['sharingButtons'] = [
 
     'xing' => 'Xing',
     'mail' => 'E-Mail',

@@ -119,6 +119,22 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
         'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*' ]
     ],
 
+    'ctlg_entity_status_duplicate'   => [
+
+        'recipients' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
+        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ]
+    ],
+
     'ctlg_entity_status_update' => [
 
         'recipients' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],

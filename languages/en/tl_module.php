@@ -105,6 +105,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'] = [ 'application/json'
 $GLOBALS['TL_LANG']['tl_module']['catalogGroupBy'] = [ 'Group By', 'Here you can group the records according to a specific field.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogGroupHeadlineTag'] = [ 'Headline size', 'Here you can define the headline size.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [insert]', 'Manage notifications.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'] = [ 'Notifications [duplicate]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'] = [ 'Notifications [delete]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'] = [ 'Notifications [update]', 'Manage notifications.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogCustomTemplate'] = [ 'Custom module template', 'Here you can overwrite the default module template.' ];

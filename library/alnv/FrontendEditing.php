@@ -887,10 +887,10 @@ class FrontendEditing extends CatalogController {
 
                 $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
 
-                if ( $this->catalogNotifyInsert ) {
+                if ( $this->catalogNotifyDuplicate ) {
 
-                    $objCatalogNotification = new CatalogNotification();
-                    $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
+                    $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                    $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyDuplicate, $this->arrValues );
                 }
 
                 $arrData = [

@@ -4,29 +4,30 @@ namespace CatalogManager;
 
 class CatalogNotification extends CatalogController {
 
-    protected $strID = null;
+
     protected $arrCatalog = [];
+    protected $strItemID = null;
+    protected $objModule = null;
     protected $blnEnable = false;
-    protected $strTablename = null;
     protected $arrCatalogFields = [];
 
 
-    public function __construct( $strTablename = null, $strID = null ) {
+    public function __construct( $objModule, $strID = null ) {
 
         parent::__construct();
 
+        $this->strItemID = $strID;
+        $this->objModule = $objModule;
         $this->import( 'SQLQueryHelper' );
         $this->import( 'CatalogFieldBuilder' );
 
         $this->blnEnable = ( class_exists( 'NotificationCenter\Model\Notification' ) && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( 'tl_nc_notification' ) );
-        $this->strID = $strID;
-        $this->strTablename = $strTablename;
 
-        if ( $this->blnEnable && $strTablename ) {
+        if ( $this->blnEnable && $this->objModule->catalogTablename ) {
 
-            $this->CatalogFieldBuilder->initialize( $strTablename );
+            $this->CatalogFieldBuilder->initialize( $this->objModule->catalogTablename );
             $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
-            $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( $strTablename, false, null );
+            $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( $this->objModule->catalogTablename, false, null );
         }
     }
 
@@ -95,9 +96,9 @@ class CatalogNotification extends CatalogController {
 
     protected function getOldData( $arrTokens = [] ) {
 
-        if ( $this->strID && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->strTablename ) ) {
+        if ( $this->strItemID && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->objModule->catalogTablename ) ) {
 
-            $objData =  $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->strTablename ) )->limit( 1 )->execute( $this->strID );
+            $objData =  $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->objModule->catalogTablename ) )->limit(1)->execute( $this->strItemID );
 
             if ( $objData->numRows ) {
 
@@ -157,6 +158,18 @@ class CatalogNotification extends CatalogController {
             foreach ( $this->arrCatalog as $strOptionName => $strOptionValue ) {
 
                 $arrTokens[ 'table_' .  $strOptionName ] = $strOptionValue;
+            }
+        }
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerSetCustomNotificationTokens'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerSetCustomNotificationTokens'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerSetCustomNotificationTokens'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $arrTokens = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrTokens, $arrData, $this->objModule );
+                }
             }
         }
 

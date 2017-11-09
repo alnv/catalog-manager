@@ -530,7 +530,8 @@ class FrontendEditing extends CatalogController {
         if (  $this->SQLBuilder->Database->tableExists( $this->catalogTablename ) ) {
 
             if ( $this->catalogNotifyDelete ) {
-                $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+
+                $objCatalogNotification = new CatalogNotification( $this, $this->strItemID );
                 $objCatalogNotification->notifyOnDelete( $this->catalogNotifyDelete, [] );
             }
 
@@ -780,7 +781,7 @@ class FrontendEditing extends CatalogController {
                 if ( is_array( $arrCallback ) ) {
 
                     $this->import( $arrCallback[0] );
-                    $this->arrValues = $this->{$arrCallback[0]}->{$arrCallback[1]}( $this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields );
+                    $this->arrValues = $this->{$arrCallback[0]}->{$arrCallback[1]}( $this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields, $this );
                 }
             }
         }
@@ -814,7 +815,7 @@ class FrontendEditing extends CatalogController {
 
                 if ( $this->catalogNotifyInsert ) {
 
-                    $objCatalogNotification = new CatalogNotification( $this->catalogTablename );
+                    $objCatalogNotification = new CatalogNotification( $this );
                     $objCatalogNotification->notifyOnInsert( $this->catalogNotifyInsert, $this->arrValues );
                 }
 
@@ -851,7 +852,7 @@ class FrontendEditing extends CatalogController {
 
                     if ( $this->catalogNotifyUpdate ) {
 
-                        $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                        $objCatalogNotification = new CatalogNotification( $this, $this->strItemID );
                         $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyUpdate, $this->arrValues );
                     }
 
@@ -889,7 +890,7 @@ class FrontendEditing extends CatalogController {
 
                 if ( $this->catalogNotifyDuplicate ) {
 
-                    $objCatalogNotification = new CatalogNotification( $this->catalogTablename, $this->strItemID );
+                    $objCatalogNotification = new CatalogNotification( $this, $this->strItemID );
                     $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyDuplicate, $this->arrValues );
                 }
 

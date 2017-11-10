@@ -13,6 +13,18 @@ class DcCallbacks extends \Backend {
     }
 
 
+    public function removeDcFormOperations( &$arrButtons ) {
+
+        if ( \Input::get('ctlg_table') ) {
+
+            unset( $arrButtons['saveNcreate'] );
+            unset( $arrButtons['saveNduplicate'] );
+        }
+
+        return $arrButtons;
+    }
+
+
     public function getCoreTableLoaderButton() {
 
         return '<button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="ctlg_loadWizard" title="'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] .'"></button>';
@@ -34,7 +46,6 @@ class DcCallbacks extends \Backend {
     function labelCallback ( $strTemplate, $arrCatalogField = [], $arrRow, $strLabel ) {
 
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
-
         $arrRow['_label'] = $strLabel;
         
         return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );

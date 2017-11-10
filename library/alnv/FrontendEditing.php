@@ -42,10 +42,14 @@ class FrontendEditing extends CatalogController {
         global $objPage;
 
         $this->setOptions();
+        
         \System::loadLanguageFile('catalog_manager');
 
         $strPalette = 'general_legend';
         $this->strSubmitName = 'catalog_' . $this->catalogTablename;
+        $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
+        $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
+        $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
 
         $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
@@ -56,7 +60,7 @@ class FrontendEditing extends CatalogController {
 
             foreach ( $arrCatalogFields as $arrField ) {
 
-                $strPalette = $arrField['_palette'] ? $arrField['_palette'] : $strPalette;
+                $strPalette = $arrField['_palette'] && !in_array( $arrField['fieldname'], $this->catalogExcludedFields ) ? $arrField['_palette'] : $strPalette;
 
                 if ( $arrField['type'] == 'fieldsetStart' ) {
 
@@ -88,10 +92,6 @@ class FrontendEditing extends CatalogController {
 
         $this->arrPaletteLabels['general_legend'] = $this->I18nCatalogTranslator->get( 'legend', 'general_legend' );
         $this->arrPaletteLabels['invisible_legend'] =  $this->I18nCatalogTranslator->get( 'legend', 'invisible_legend' );
-
-        $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
-        $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
-        $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
 
         $this->setCatalogAttributes();
         $this->setPalettes();

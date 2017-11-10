@@ -365,12 +365,20 @@ class DcBuilder extends CatalogController {
             if ( in_array( $strTable, $this->arrErrorTables ) ) continue;
 
             $arrOperator = [];
+            $strDescription = '';
+            $strTitle = $strTable;
             $strOperationName = sprintf( 'go_to_%s', $strTable );
+
+            if ( isset( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) && is_array( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) ) {
+
+                $strTitle = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['name'] ?: $strTable;
+                $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['description'] ?: sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTitle );
+            }
 
             $arrOperator[ $strOperationName ] = [
 
+                'label' => [ $strTitle, $strDescription ],
                 'href' => sprintf( 'table=%s&ctlg_table=%s', $strTable, $this->strTable ),
-                'label' => [ sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][0], $strTable ), sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTable ) ],
                 'icon' => $strTable !== 'tl_content' ?  $this->IconGetter->setCatalogIcon( $strTable ) : 'articles.gif'
             ];
 
@@ -397,7 +405,7 @@ class DcBuilder extends CatalogController {
                         'href' => $strHref,
                         'icon' => $strInVisibleIcon,
                         'button_callback' => [ 'DcCallbacks', 'toggleIcon' ],
-                        'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggleIcon'],
+                        'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
                         'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,'. sprintf( "'%s'", $strVisibleIcon ) .', '. sprintf( "'%s'", $strInVisibleIcon ) .', '. sprintf( "'%s'", $strHref ) .' )"'
                     ];
 

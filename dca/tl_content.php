@@ -140,15 +140,17 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogDisableSocialSharingCSS'] = [
     'sql' => "char(1) NOT NULL default ''"
 ];
 
+if ( !isset( $GLOBALS['TL_DCA']['tl_content']['edit'] ) ) $GLOBALS['TL_DCA']['tl_content']['edit'] = [];
+if ( !isset( $GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'] ) ) $GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'] = [];
+
+$GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'][] = [ 'CatalogManager\DcCallbacks', 'removeDcFormOperations' ];
+
 if ( \Input::get('do') && \Input::get('ctlg_table') ) {
     
     $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ \Input::get('ctlg_table') ];
 
     if ( is_array( $arrCatalog ) && !empty( $arrCatalog ) ) {
 
-        if ( $arrCatalog['tablename'] ) {
-
-            $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
-        }
+        if ( $arrCatalog['addContentElements'] ) $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
     }
 }

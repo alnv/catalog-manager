@@ -120,6 +120,18 @@ class DcBuilder extends CatalogController {
 
         $GLOBALS['TL_LANG'][ $this->strTable ]['new'] = $this->I18nCatalogTranslator->getNewLabel();
         $GLOBALS['TL_LANG'][ $this->strTable ]['show'] = $this->I18nCatalogTranslator->getShowLabel();
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $this->strTable, $this );
+                }
+            }
+        }
     }
 
 

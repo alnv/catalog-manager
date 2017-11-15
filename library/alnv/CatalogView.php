@@ -76,7 +76,7 @@ class CatalogView extends CatalogController {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
 
-                $arrFieldLabels = $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['title'], 'description' =>  $arrField['description'] ] );
+                $arrFieldLabels = $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->catalogTablename, 'title' => $arrField['title'], 'description' =>  $arrField['description'] ] );
 
                 $this->arrCatalogFields[ $strID ][ 'title' ] = $arrFieldLabels[0];
                 $this->arrCatalogFields[ $strID ][ 'description' ] = $arrFieldLabels[1];
@@ -1215,6 +1215,8 @@ class CatalogView extends CatalogController {
         if ( !empty( $this->catalogRelatedChildTables )  && is_array( $this->catalogRelatedChildTables ) ) {
 
             foreach ( $this->catalogRelatedChildTables as $arrRelatedTable ) {
+
+                if ( !is_array( $arrRelatedTable ) ) continue;
 
                 if ( Toolkit::isEmpty( $arrRelatedTable['active'] ) ) continue;
 

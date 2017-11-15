@@ -220,6 +220,7 @@ class FrontendEditing extends CatalogController {
             $objWidget->id = 'id_' . $arrField['_fieldname'];
             $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
             $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
+            $objWidget->description = is_array( $arrField['label'] ) && isset( $arrField['label'][1] ) ? $arrField['label'][1] : '';
 
             if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
 

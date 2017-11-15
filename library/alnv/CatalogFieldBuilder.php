@@ -134,7 +134,7 @@ class CatalogFieldBuilder extends CatalogController {
 
         $arrDcField = [
 
-            'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
+            'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->strTable, 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
             'inputType' => Toolkit::setDcConformInputType( $arrField['type'] ),
 
             'eval' => [
@@ -335,6 +335,7 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'title' ] ),
+                'mandatory' => \Config::get('mandatoryTitle') ? '1' : '',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
             ],

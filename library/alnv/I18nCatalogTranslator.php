@@ -42,11 +42,19 @@ class I18nCatalogTranslator {
 
                 break;
 
-
             case 'field':
 
                 $blnTitle = $arrOptions['titleOnly'] ? true : false;
-                $arrLabels = $GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strName ];
+
+                if ( $arrOptions['table'] && isset( $GLOBALS['TL_LANG']['catalog_manager'][ $arrOptions['table'] ] ) && isset( $GLOBALS['TL_LANG']['catalog_manager'][ $arrOptions['table'] ][ $strName ] ) ) {
+
+                    $arrLabels = $GLOBALS['TL_LANG']['catalog_manager'][ $arrOptions['table'] ][ $strName ];
+                }
+
+                else {
+
+                    $arrLabels = $GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strName ];
+                }
 
                 if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
 

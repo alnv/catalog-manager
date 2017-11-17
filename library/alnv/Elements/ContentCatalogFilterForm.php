@@ -133,16 +133,19 @@ class ContentCatalogFilterForm extends \ContentElement {
  
     protected function getActionAttr() {
 
-        if ( $this->arrForm['jumpTo'] ) {
+        $strPageID = $this->arrForm['jumpTo'];
 
-            $objPage = new \PageModel();
-            $arrPage = $objPage->findPublishedById( $this->arrForm['jumpTo'] );
+        if ( !$strPageID ) {
 
-            if ( $arrPage != null ) {
+            global $objPage;
 
-                return $this->generateFrontendUrl( $arrPage->row() );
-            }
+            $strPageID = $objPage->id;
         }
+
+        $objPageModel = new \PageModel();
+        $arrPage = $objPageModel->findPublishedById( $strPageID );
+
+        if ( $arrPage != null ) return $this->generateFrontendUrl( $arrPage->row() );
 
         return ampersand( \Environment::get('indexFreeRequest') );
     }

@@ -602,12 +602,7 @@ class CatalogView extends CatalogController {
 
             if ( $this->blnShowAsGroup ) {
 
-                $strGroupName = $arrCatalog[ $this->catalogGroupBy ];
-
-                if ( !isset( $this->arrGroups[ $strGroupName ] ) && $strGroupName ) {
-
-                    $this->arrGroups[ $strGroupName ] = [];
-                }
+                $this->createGroups( $arrCatalog[ $this->catalogGroupBy ] );
             }
 
             if ( $arrCatalog['useSocialSharingButtons'] ) {
@@ -694,25 +689,58 @@ class CatalogView extends CatalogController {
     }
 
 
+    protected function createGroups( $varGroupName ) {
+
+        if ( is_array( $varGroupName ) ) {
+
+            foreach ( $varGroupName as $strGroup ) {
+
+                $this->createGroups( $strGroup );
+            }
+        }
+
+        if ( $varGroupName && is_string( $varGroupName ) && !isset( $this->arrGroups[ $varGroupName ] ) ) {
+
+            $this->arrGroups[ $varGroupName ] = [];
+        }
+    }
+
+
     protected function getGroupedValue( $arrCatalogs ) {
 
         $arrIndexes = [];
-        $objTemplate = new \FrontendTemplate( $this->strTemplate );
 
         foreach ( $arrCatalogs as $arrCatalog ) {
 
-            $strGroupName = $arrCatalog[ $this->catalogGroupBy ];
-
-            if ( !isset( $this->arrGroups[ $strGroupName ] ) ) $arrIndexes[ $strGroupName ] = 0;
-            $arrCatalog['cssClass'] = $arrIndexes[ $strGroupName ] % 2 ? ' even' : ' odd';
-            $objTemplate->setData( $arrCatalog );
-
-            $this->arrGroups[ $strGroupName ][] = $objTemplate->parse();
-
-            $arrIndexes[ $strGroupName ]++;
+            $varGroupName = $arrCatalog[ $this->catalogGroupBy ];
+            $this->groupByValue( $varGroupName, $arrCatalog, $arrIndexes );
         }
 
         return $this->arrGroups;
+    }
+
+
+    protected function groupByValue( $varGroupName, $arrCatalog, &$arrIndexes ) {
+
+        if ( is_array( $varGroupName ) ) {
+
+            foreach ( $varGroupName as $strGroupName ) {
+
+                $this->groupByValue( $strGroupName, $arrCatalog, $arrIndexes );
+            }
+        }
+
+        if ( $varGroupName && is_string( $varGroupName ) ) {
+
+            $objTemplate = new \FrontendTemplate( $this->strTemplate );
+            if ( !$this->arrGroups[ $varGroupName ] ) $arrIndexes[ $varGroupName ] = 0;
+
+            $arrCatalog['cssClass'] = $arrIndexes[ $varGroupName ] % 2 ? ' even' : ' odd';
+            $objTemplate->setData( $arrCatalog );
+
+            $this->arrGroups[ $varGroupName ][] = $objTemplate->parse();
+            $arrIndexes[ $varGroupName ]++;
+        }
     }
 
 

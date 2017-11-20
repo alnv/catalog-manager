@@ -335,9 +335,9 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'title' ] ),
-                'mandatory' => \Config::get('mandatoryTitle') ? '1' : '',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
-                'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
+                'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
+                'mandatory' => \Config::get( 'mandatory_title_' . $this->strTable ) ? '1' : ''
             ],
 
             'alias' => [

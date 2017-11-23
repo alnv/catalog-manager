@@ -6,24 +6,21 @@
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
-
+      <?php $intIndex = 0; ?>
       <?php foreach ( $this->categories as $strPalette => $strField ): ?>
          <?php if (!empty($strField)): ?>
-            <fieldset>
+            <fieldset id="fs_<?= $intIndex++ ?>">
                <legend><?= $strPalette ?></legend>
                <?= implode('', $strField) ?>
             </fieldset>
          <?php endif; ?>
       <?php endforeach; ?>
-
       <?php if( $this->captchaWidget ): ?>
          <?= $this->captchaWidget; ?>
       <?php endif; ?>
-
       <div class="submit_container">
          <input type="submit" name="<?= $this->submitName; ?>" value="<?= $this->submit; ?>">
       </div>
-
    </form>
 </div>
 <!-- indexer::continue -->

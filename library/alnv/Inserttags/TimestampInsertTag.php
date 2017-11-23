@@ -62,9 +62,9 @@ class TimestampInsertTag extends \Frontend {
                             break;
                     }
                 }
-                
-                return $intTimestamp;
             }
+            
+            return $intTimestamp;
         }
 
         return false;

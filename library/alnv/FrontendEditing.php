@@ -943,7 +943,7 @@ class FrontendEditing extends CatalogController {
             case 'useMultipleFields':
 
                 $objGeoCoding->setCity( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
-                $objGeoCoding->setStreet( $this->arrValues[ $this->arrCatalog['geoCity'] ] );
+                $objGeoCoding->setStreet( $this->arrValues[ $this->arrCatalog['geoStreet'] ] );
                 $objGeoCoding->setPostal( $this->arrValues[ $this->arrCatalog['geoPostal'] ] );
                 $objGeoCoding->setCountry( $this->arrValues[ $this->arrCatalog['geoCountry'] ] );
                 $objGeoCoding->setStreetNumber( $this->arrValues[ $this->arrCatalog['geoStreetNumber'] ] );

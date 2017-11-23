@@ -23,7 +23,7 @@ class GeoCoding extends CatalogController {
 
         $arrReturn = [ 'lat' => '', 'lng' => '' ];
 
-        if ( !$strAddress ) {
+        if ( Toolkit::isEmpty( $strAddress ) ) {
 
             $arrAddress = [];
 

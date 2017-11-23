@@ -20,6 +20,18 @@
     display: block;
 }
 
+.w50.wizard .awesomplete input {
+
+	width: 100%;
+}
+
+.w50.wizard .awesomplete {
+
+	width: 90%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .awesomplete > ul {
 
     position: absolute;

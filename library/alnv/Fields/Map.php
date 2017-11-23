@@ -94,6 +94,7 @@ class Map {
                 'function loadGoogleMaps() {'.
                     ' var objJSScript=document.createElement("script");'.
                     ' objJSScript.src="' . $strScript . '";'.
+                    ' objJSScript.id="id_ctlg_gm_api";'.
                     ' objJSScript.onload=loadGoogleMapsInfoBoxLibrary;'.
                     ' document.body.appendChild( objJSScript );'.
                 '};'.
@@ -101,6 +102,7 @@ class Map {
                 'function loadGoogleMapsInfoBoxLibrary() {'.
                     ' var objJSScript=document.createElement("script");'.
                     ' objJSScript.src="system/modules/catalog-manager/assets/InfoBox.js";'.
+                    ' objJSScript.id="id_ctlg_ib";'.
                     ' objJSScript.onload=loadCatalogManagerMaps;'.
                     ' document.body.appendChild( objJSScript );'.
                 '};'.

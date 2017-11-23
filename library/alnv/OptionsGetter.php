@@ -166,6 +166,12 @@ class OptionsGetter extends CatalogController {
                 return Radio::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;
+
+            case 'text':
+
+                return Text::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
         }
 
         return $varValue;

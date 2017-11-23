@@ -975,6 +975,12 @@ class CatalogView extends CatalogController {
 
                 break;
 
+            case 'text':
+
+                return Text::parseValue( $varValue, $arrField, $arrCatalog );
+
+                break;
+
             case 'date':
 
                 return DateInput::parseValue( $varValue, $arrField, $arrCatalog );

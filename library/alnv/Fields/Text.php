@@ -35,13 +35,38 @@ class Text {
         if ( $arrField['autoCompletionType'] ) {
 
             $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
-            $objAutoCompletion = new CatalogAutoCompletion( $arrField, $strModuleID );
 
             $arrDCAField['inputType'] = 'catalogTextFieldWidget';
+            $arrDCAField['eval']['multiple'] = Toolkit::getBooleanByValue( $arrField['multiple'] );
+
+            $objAutoCompletion = new CatalogAutoCompletion( $arrField, $strModuleID );
             $arrDCAField['options'] = $objAutoCompletion->getOptions();
-            $arrDCAField['eval']['multipleValues'] = $arrField['multiple'] ? true : false;
         }
 
         return $arrDCAField;
+    }
+
+
+    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+        
+        if ( Toolkit::isEmpty( $varValue ) ) return $arrField['multiple'] ? [] : '';
+
+        if ( $arrField['multiple'] ) {
+
+            $arrReturn = [];
+            $varValue = Toolkit::parseMultipleOptions( $varValue );
+
+            if ( !empty( $varValue ) && is_array( $varValue ) ) {
+
+                foreach ( $varValue as $strValue ) {
+
+                    $arrReturn[ $strValue ] = $strValue;
+                }
+            }
+
+            return $arrReturn;
+        }
+
+        return $varValue;
     }
 }

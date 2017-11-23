@@ -216,7 +216,8 @@ class ContentCatalogFilterForm extends \ContentElement {
         
         if ( in_array( $arrField['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
 
-            $arrField['options'] = $this->setOptions( $arrField );
+            $objOptionGetter = new OptionsGetter( $arrField );
+            $arrField['options'] = $objOptionGetter->getOptions();
         }
 
         $arrField['value'] = $this->getActiveOptions( $arrField );
@@ -227,14 +228,6 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
 
         return $arrField;
-    }
-
-
-    protected function setOptions( $arrField ) {
-
-        $objOptionGetter = new OptionsGetter( $arrField );
-
-        return $objOptionGetter->getOptions();
     }
 
 

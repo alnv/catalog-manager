@@ -16,8 +16,9 @@ class TimestampInsertTag extends \Frontend {
 
         if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_TIMESTAMP' ) {
 
-            $objDate = new \Date();
-            $intTimestamp = $objDate->tstamp;
+            $objToday = new \Date();
+            $objDate = new \Date( $objToday->date );
+            $intTstamp = $objDate->tstamp;
 
             if ( isset( $arrTags[1] ) && strpos( $arrTags[1], '?' ) !== false ) {
 
@@ -36,19 +37,19 @@ class TimestampInsertTag extends \Frontend {
 
                         case 'add':
 
-                            $intTimestamp = $intTimestamp + $strOption;
+                            $intTstamp = $intTstamp + $strOption;
 
                             break;
 
                         case 'subtract':
 
-                            $intTimestamp = $intTimestamp - $strOption;
+                            $intTstamp = $intTstamp - $strOption;
 
                             break;
 
                         case 'multiply':
 
-                            $intTimestamp = $intTimestamp * $strOption;
+                            $intTstamp = $intTstamp * $strOption;
 
                             break;
 
@@ -56,7 +57,7 @@ class TimestampInsertTag extends \Frontend {
 
                             if ( $strOption > 0 ) {
 
-                                $intTimestamp = $intTimestamp / $strOption;
+                                $intTstamp = $intTstamp / $strOption;
                             }
 
                             break;
@@ -64,7 +65,7 @@ class TimestampInsertTag extends \Frontend {
                 }
             }
             
-            return $intTimestamp;
+            return $intTstamp;
         }
 
         return false;

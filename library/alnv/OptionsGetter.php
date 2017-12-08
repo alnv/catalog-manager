@@ -57,6 +57,14 @@ class OptionsGetter extends CatalogController {
 
                 break;
 
+            case 'useForeignKey':
+
+                $this->arrField['dbTableKey'] = 'id';
+
+                return $this->getDbOptions();
+
+                break;
+
             case 'useDbOptions':
 
                 return $this->getDbOptions();
@@ -79,6 +87,7 @@ class OptionsGetter extends CatalogController {
         switch ( $this->arrField['optionsType'] ) {
 
             case 'useDbOptions':
+            case 'useForeignKey':
 
                 if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue'] ) {
 

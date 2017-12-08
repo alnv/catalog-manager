@@ -555,10 +555,36 @@ class CatalogFieldBuilder extends CatalogController {
                     'datepicker' => $arrField['eval']['datepicker'] ? '1': ''
                 ];
 
+                if ( !Toolkit::isEmpty( $arrField['foreignKey'] ) ) {
+
+                    $arrForeignKeys = explode( '.', $arrField['foreignKey'] );
+                    $arrReturn[ $strFieldname ]['optionsType'] = 'useForeignKey';
+                    $arrReturn[ $strFieldname ]['dbTable'] = $arrForeignKeys[0] ?: '';
+                    $arrReturn[ $strFieldname ]['dbTableValue'] = $arrForeignKeys[1] ?: '';
+                }
+
                 if ( $strType == 'upload' ) {
 
-                    $arrReturn[ $strFieldname ]['fileType'] = $arrField['_fileType'] ?: '';
-                    $arrReturn[ $strFieldname ]['extensions'] = $arrField['eval']['extensions'] ?: '';
+                    $strFileType = $arrField['_fileType'];
+                    $strExtensions = $arrField['eval']['extensions'] ?: '';
+
+                    if ( $strExtensions && !$strFileType ) {
+
+                        $arrExtensions = explode( ',', $strExtensions );
+
+                        if ( empty( array_intersect( $arrExtensions, Toolkit::$arrFileExtensions ) ) ) {
+
+                            $strFileType = $arrField['eval']['multiple'] ? 'gallery' : 'image';
+                        }
+
+                        else {
+
+                            $strFileType = $arrField['eval']['multiple'] ? 'files' : 'file';
+                        }
+                    }
+
+                    $arrReturn[ $strFieldname ]['fileType'] = $strFileType;
+                    $arrReturn[ $strFieldname ]['extensions'] = $strExtensions;
                     $arrReturn[ $strFieldname ]['filesOnly'] = $arrField['eval']['filesOnly'] ? '1' : '';
                 }
             }

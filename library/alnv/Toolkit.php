@@ -4,13 +4,15 @@ namespace CatalogManager;
 
 class Toolkit {
 
+
     public static $arrDateRgxp = [ 'date', 'time', 'datim' ];
     public static $arrRequireSortingModes = [ '4', '5', '6' ];
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
     public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
     public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
     public static $arrSocialSharingButtons = [ 'mail', 'twitter', 'facebook', 'xing', 'linkedin' ];
-
+    public static $arrImageExtensions = [ 'jpg', 'jpeg', 'gif', 'png', 'svg', 'svgz', 'bmp', 'tiff', 'tif' ];
+    public static $arrFileExtensions = [ 'odt', 'ods', 'odp', 'odg', 'ott', 'ots', 'otp', 'otg', 'pdf', 'doc', 'docx', 'dot', 'dotx', 'xls', 'xlsx','xlt', 'xltx', 'ppt', 'pptx', 'pot', 'potx', 'mp3', 'mp4', 'm4a','m4v','webm','ogg','ogv', 'wma', 'wmv', 'ram', 'rm', 'mov', 'zip', 'rar', '7z' ];
     public static $arrSqlTypes = [
 
         'c256' => "varchar(256) NOT NULL default ''",
@@ -28,7 +30,6 @@ class Toolkit {
         'blob' => "blob NULL",
         'binary' => "binary(16) NULL"
     ];
-
 
     public static function invisiblePaletteFields() {
 
@@ -606,22 +607,12 @@ class Toolkit {
 
                 $varValue = null;
 
-                if ( Toolkit::isEmpty( $varDBValue ) ) {
-
-                    continue;
-                }
+                if ( Toolkit::isEmpty( $varDBValue ) ) continue;
 
                 $arrField = $arrFields[ $strFieldname ];
 
-                if ( is_null( $arrField ) ) {
-
-                    continue;
-                }
-
-                if ( !$arrField['type'] ) {
-
-                    continue;
-                }
+                if ( is_null( $arrField ) ) continue;
+                if ( !$arrField['type'] ) continue;
 
                 switch ( $arrField['type'] ) {
 
@@ -719,9 +710,7 @@ class Toolkit {
     public static function getLabelValue( $varValue, $strFallback ) {
 
         if ( Toolkit::isEmpty( $varValue ) ) return $strFallback;
-
         if ( is_array( $varValue ) ) return $varValue[0] ?: '';
-
         if ( is_string( $varValue ) ) return $varValue ?: '';
 
         return $strFallback;

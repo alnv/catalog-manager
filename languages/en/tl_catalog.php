@@ -9,6 +9,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['redirect_legend'] = 'Redirect Settings';
 $GLOBALS['TL_LANG']['tl_catalog']['panel_layout_legend'] = 'Panel settings';
 $GLOBALS['TL_LANG']['tl_catalog']['dcSorting_settings'] = 'Sorting settings';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operation settings';
+$GLOBALS['TL_LANG']['tl_catalog']['field_settings_legend'] = 'Field settings';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigation settings';
 $GLOBALS['TL_LANG']['tl_catalog']['permission_legend'] = 'Permission settings';
 $GLOBALS['TL_LANG']['tl_catalog']['label_format_legend'] = 'Label format settings';
@@ -65,6 +66,9 @@ $GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Use changelanguage m
 $GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Internal field', 'Here you can chose a field for internal redirect.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'External field', 'Here you can chose a field for external redirect.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Overwrite redirect', 'Here you can define a internal or external redirect.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = [ 'Mandatory (Clear name)', 'The clear name becomes a mandatory field.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Default value for clear name', 'Here you can set a default value for the clear name.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['copy'] = [ 'Copy catalog', 'Copy catalog ID "%s".' ];

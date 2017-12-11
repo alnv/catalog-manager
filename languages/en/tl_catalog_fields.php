@@ -69,6 +69,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteField'] = [ 'Field picker', '
 $GLOBALS['TL_LANG']['tl_catalog_fields']['charLength'] = [ 'Characters length', 'Allows to specify the number of characters that are used to build sorting groups.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'] = [ 'Palette picker', 'Here you can choose palette. The new Palette will be added after the chosen field.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useFineUploader'] = [ 'Use Fine Uploader', 'Here you can use <a href="https://fineuploader.com" target="_blank">Fine Uploader</a>.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dynValue'] = [ 'Dynamic value', 'Here you can generate the field value dynamically. You can access the field values ​​via simple tokens, eg ##my_field## ##my_other_field##' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'File type', 'Please select a file type.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'] = [ 'Use size', 'Here you can define image size.' ];

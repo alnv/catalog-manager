@@ -4,6 +4,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Neues Modul erstellen', 'Hier kön
 
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Datenbankeinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Geo-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog']['field_settings_legend'] = 'Feld-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['operations_legend'] = 'Operatoren-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['navigation_legend'] = 'Navigationseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['dcLabel_settings'] = 'Darstellungseinstellungen';
@@ -64,6 +65,9 @@ $GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 
 $GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Feld für interne Weiterleitung', 'Hier können Sie ein Eingabefeld für interne Weiterleitung verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe Weiterleitung', 'Hier können Sie ein Eingabefeld für externe Weiterleitung verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie eine externe oder interne Weiterleitungsseite definieren.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = [ 'Pflichtfeld (Eindeutige Bezeichnung)', 'Die eindeutige Bezeichnung wird zum Pflichtfeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Standardwert für eindeutige Bezeichnung', 'Hier können Sie ein Standardwert für die eindeutige Bezeichnung festlegen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Backend Modul löschen', 'Backend Modul mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Backend Modul bearbeiten', 'Backend Modul mit der ID %s bearbeiten.' ];

@@ -11,11 +11,12 @@ class FrontendEditing extends CatalogController {
     public $strTemplate = '';
 
     protected $arrValues = [];
+    protected $strFormId = '';
     protected $arrCatalog = [];
     protected $arrPalettes = [];
+    protected $strOnChangeId = '';
     protected $strRedirectID = '';
     protected $objTemplate = null;
-    protected $strSubmitName = '';
     protected $blnNoSubmit = false;
     protected $blnHasUpload = false;
     protected $arrCatalogFields = [];
@@ -46,7 +47,8 @@ class FrontendEditing extends CatalogController {
         \System::loadLanguageFile('catalog_manager');
 
         $strPalette = 'general_legend';
-        $this->strSubmitName = 'catalog_' . $this->catalogTablename;
+        $this->strFormId = md5( 'id_' . $this->catalogTablename );
+        $this->strOnChangeId = md5( 'change_' . $this->catalogTablename );
         $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
@@ -146,15 +148,15 @@ class FrontendEditing extends CatalogController {
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
-        if ( !$this->blnNoSubmit && \Input::post( $this->strSubmitName  ) ) {
+        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
             $this->saveEntity();
         }
 
         $this->objTemplate->method = 'POST';
+        $this->objTemplate->formId = $this->strFormId;
         $this->objTemplate->categories = $arrCategories;
-        $this->objTemplate->formId = $this->strSubmitName;
-        $this->objTemplate->submitName = $this->strSubmitName;
+        $this->objTemplate->onChangeId = $this->strOnChangeId;
         $this->objTemplate->catalogAttributes = $this->arrCatalogAttributes;
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->message = $this->CatalogMessage->get( $this->id );
@@ -298,9 +300,14 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
+            if ( \Input::post('FORM_SUBMIT') == $this->strOnChangeId && !Toolkit::isEmpty( \Input::post( $strFieldname ) ) ) {
+
+                $objWidget->value = \Input::post( $strFieldname );
+            }
+
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
 
-            if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
+            if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -644,7 +651,7 @@ class FrontendEditing extends CatalogController {
 
         $objCaptcha = new $strClass( $arrCaptcha );
 
-        if ( \Input::post('FORM_SUBMIT') == $this->strSubmitName ) {
+        if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
             $objCaptcha->validate();
 

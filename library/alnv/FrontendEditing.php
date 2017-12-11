@@ -338,17 +338,26 @@ class FrontendEditing extends CatalogController {
 
                     foreach ( $arrField['save_callback'] as $arrCallback ) {
 
+                        $objDataContainer = new \stdClass();
+                        $objDataContainer->value = $varValue;
+                        $objDataContainer->id = $this->strItemID;
+                        $objDataContainer->table = $this->catalogTablename;
+                        $objDataContainer->field = $arrField['_fieldname'];
+                        $objDataContainer->ptable = $this->arrCatalog['pTable'];
+                        $objDataContainer->ctable = $this->arrCatalog['cTables'];
+                        $objDataContainer->activeRecord = (object) $this->arrValues;
+
                         try {
 
                             if ( is_array( $arrCallback ) ) {
 
                                 $this->import( $arrCallback[0] );
-                                $varValue = $this->{$arrCallback[0]}->{$arrCallback[1]}( $varValue, null );
+                                $varValue = $this->{$arrCallback[0]}->{$arrCallback[1]}( $varValue, $objDataContainer );
                             }
 
                             elseif( is_callable( $arrCallback ) ) {
 
-                                $varValue = $arrCallback( $varValue, null );
+                                $varValue = $arrCallback( $varValue, $objDataContainer );
                             }
                         }
 

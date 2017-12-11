@@ -332,10 +332,7 @@ class OptionsGetter extends CatalogController {
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
-            if ( $strTag ) {
-
-                $strActiveValue = $this->arrActiveEntity[ $strTag ];
-            }
+            if ( $strTag ) $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
 
             if ( Toolkit::isEmpty( $strActiveValue ) && TL_MODE == 'FE' ) {
 
@@ -552,6 +549,8 @@ class OptionsGetter extends CatalogController {
 
                 $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
 
+                if ( \Input::get( 'act'. $this->strModuleID ) ) return true;
+                
                 if ( !$strID ) return false;
 
                 break;

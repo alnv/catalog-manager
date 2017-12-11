@@ -4,8 +4,8 @@
       <?= $this->message ?>
    <?php endif; ?>
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
-      <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+      <input type="hidden" name="FORM_SUBMIT" value="<?=$this->onChangeId ?>" />
       <?php $intIndex = 0; ?>
       <?php foreach ( $this->categories as $strPalette => $strField ): ?>
          <?php if (!empty($strField)): ?>
@@ -18,9 +18,7 @@
       <?php if( $this->captchaWidget ): ?>
          <?= $this->captchaWidget; ?>
       <?php endif; ?>
-      <div class="submit_container">
-         <input type="submit" name="<?= $this->submitName; ?>" value="<?= $this->submit; ?>">
-      </div>
+      <div class="submit_container"><button type="submit" name="FORM_SUBMIT" value="<?= $this->formId ?>"><?= $this->submit; ?></button></div>
    </form>
 </div>
 <!-- indexer::continue -->

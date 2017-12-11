@@ -30,6 +30,33 @@ class DcCallbacks extends \Backend {
         return '<button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="ctlg_loadWizard" title="'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] .'"></button>';
     }
 
+    
+    public function setDynValue( $varValue, $objDc = null ) {
+
+        if ( is_null( $objDc ) ) return $varValue;
+
+        $objFields = new CatalogFieldBuilder();
+        $objFields->initialize(  $objDc->table );
+        $arrFields = $objFields->getCatalogFields( false );
+
+        if ( is_object( $objDc->activeRecord ) && method_exists( $objDc->activeRecord, 'row' )) {
+
+            $arrValues = $objDc->activeRecord->row();
+        }
+
+        else {
+
+            $arrValues = (array) $objDc->activeRecord;
+        }
+
+        if ( isset( $arrFields[ $objDc->field ] ) && $arrFields[ $objDc->field ]['dynValue'] ) {
+
+            $varValue = \StringUtil::parseSimpleTokens( $arrFields[ $objDc->field ]['dynValue'],  $arrValues );
+        }
+
+        return $varValue;
+    }
+
 
     function groupCallback ( $strTemplate, $arrCatalogField = [], $strGroup, $strMode, $strField, $arrRow, $dc ) {
         

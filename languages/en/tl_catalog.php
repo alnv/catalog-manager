@@ -68,7 +68,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'External field', 'He
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Overwrite redirect', 'Here you can define a internal or external redirect.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = [ 'Mandatory (Clear name)', 'The clear name becomes a mandatory field.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Default value for clear name', 'Here you can set a default value for the clear name.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Dynamic value for clear name', 'Here you can generate the field value dynamically. You can access the field values ​​via simple tokens, eg ##my_field## ##my_other_field##' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog']['copy'] = [ 'Copy catalog', 'Copy catalog ID "%s".' ];

@@ -67,7 +67,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe We
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie eine externe oder interne Weiterleitungsseite definieren.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = [ 'Pflichtfeld (Eindeutige Bezeichnung)', 'Die eindeutige Bezeichnung wird zum Pflichtfeld.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Standardwert für eindeutige Bezeichnung', 'Hier können Sie ein Standardwert für die eindeutige Bezeichnung festlegen.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Dynamischer-Wert für eindeutige Bezeichnung', 'Hier können Sie den Wert dynamisch vor belegen. Dieser wird beim abspeichern des Datensatzes erzeugt (save_callback). Sie können auf die Feldwerte per simple Tokens zugreifen z.B ##my_field## ##my_other_field##.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Backend Modul löschen', 'Backend Modul mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Backend Modul bearbeiten', 'Backend Modul mit der ID %s bearbeiten.' ];

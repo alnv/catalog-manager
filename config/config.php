@@ -68,6 +68,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\RandomEntitiesID
 $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [ 'CatalogManager\RoutingBuilder', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\CatalogDcAdapter', 'initialize' ];
 $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [ 'CatalogManager\CatalogBreadcrumb', 'initialize' ];
+$GLOBALS['TL_HOOKS']['sqlCompileCommands'][] = [ 'CatalogManager\SqlCompileCommands', 'initialize' ];
 $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [ 'CatalogManager\SearchIndexBuilder', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = [ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];

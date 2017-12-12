@@ -32,6 +32,12 @@ class CatalogManagerInitializer {
             $this->setBackendModules();
             $this->initializeDataContainerArrays();
         }
+
+        if ( TL_MODE == 'FE' ) {
+
+            \Database::getInstance();
+            $this->setCatalogs();
+        }
     }
 
 

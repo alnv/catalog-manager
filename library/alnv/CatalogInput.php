@@ -5,6 +5,9 @@ namespace CatalogManager;
 class CatalogInput extends CatalogController {
 
 
+    protected $strFilterFormId = 'tl_filter';
+
+
     public function __construct() {
 
         parent::__construct();
@@ -15,36 +18,29 @@ class CatalogInput extends CatalogController {
 
     protected function getPostCookie( $strName ) {
 
-        $varReturn = '';
+        $strReturn = '';
+        $objSession = \Session::getInstance();
         $strPost = $this->Input->post( $strName );
-        
-        if ( $this->Input->post( 'FORM_SUBMIT' ) == 'tl_filter' ) {
+
+        if ( $this->Input->post( 'FORM_SUBMIT' ) == $this->strFilterFormId ) {
 
             $strCookie = $strPost;
 
             if ( !is_null( $strCookie ) && $strCookie != '' ) $strCookie = serialize( $strPost );
 
-            \System::setCookie( $strName, $strCookie, time() + 3000  );
-
-            $varReturn = $strPost;
+            $objSession->set( $strName, $strCookie );
+            $strReturn = $strPost;
         }
 
-        if ( Toolkit::isEmpty( $varReturn ) && $this->Input->post( 'FORM_SUBMIT' ) != 'tl_filter' ) {
+        if ( Toolkit::isEmpty( $strReturn ) && $this->Input->post( 'FORM_SUBMIT' ) != $this->strFilterFormId ) {
 
-            $varReturn = $this->Input->cookie( $strName );
+            $strReturn = $objSession->get( $strName );
 
-            if ( !is_null( $varReturn ) && $varReturn != '' ) {
-
-                $varReturn = unserialize( $varReturn );
-            }
-
-            if ( is_bool( $varReturn ) ) {
-
-                $varReturn = $varReturn ? '1' : '0';
-            }
+            if ( !is_null( $strReturn ) && $strReturn != '' ) $strReturn = unserialize( $strReturn );
+            if ( is_bool( $strReturn ) ) $strReturn = $strReturn ? '1' : '0';
         }
 
-        return $varReturn;
+        return $strReturn;
     }
 
 
@@ -52,10 +48,7 @@ class CatalogInput extends CatalogController {
 
         $strPostCookie = $this->getPostCookie( $strName );
 
-        if ( !is_null( $strPostCookie ) && $strPostCookie != '' ) {
-
-            return $strPostCookie;
-        }
+        if ( !is_null( $strPostCookie ) && $strPostCookie != '' ) return $strPostCookie;
 
         return '';
     }
@@ -65,10 +58,7 @@ class CatalogInput extends CatalogController {
 
         $strGet = $this->Input->get( $strName );
 
-        if ( !is_null( $strGet ) && $strGet != '' ) {
-
-            return $strGet;
-        }
+        if ( !is_null( $strGet ) && $strGet != '' ) return $strGet;
 
         return '';
     }
@@ -76,17 +66,11 @@ class CatalogInput extends CatalogController {
 
     public function getActiveValue( $strName ) {
 
-        if ( $this->get( $strName ) != '' ) {
-
-            return $this->get( $strName );
-        }
-
+        if ( $this->get( $strName ) != '' ) return $this->get( $strName );
+        
         $strPost = $this->post( $strName );
 
-        if ( $strPost != '' ) {
-
-            return $strPost;
-        }
+        if ( $strPost != '' ) return $strPost;
 
         return '';
     }

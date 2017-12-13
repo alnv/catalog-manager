@@ -89,10 +89,7 @@ class Select {
     
     protected static function getOptionsFromCache( $strFieldname, $arrField ) {
 
-        if ( !static::$arrCache[ $strFieldname ]  ) {
-
-            static::$arrCache[ $strFieldname ] = [];
-        }
+        if ( !static::$arrCache[ $strFieldname ]  ) static::$arrCache[ $strFieldname ] = [];
 
         if ( empty( static::$arrCache[ $strFieldname ] ) && is_array( static::$arrCache[ $strFieldname ] ) ) {
 

@@ -219,8 +219,8 @@ class FrontendEditing extends CatalogController {
             
             $objWidget = new $strClass( $arrData );
             $objWidget->storeValues = true;
-            $objWidget->id = 'id_' . $arrField['_fieldname'];
-            $objWidget->value = $this->arrValues[ $arrField['_fieldname'] ];
+            $objWidget->id = 'id_' . $strFieldname;
+            $objWidget->value = $this->arrValues[ $strFieldname ];
             $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
             $objWidget->description = is_array( $arrField['label'] ) && isset( $arrField['label'][1] ) ? $arrField['label'][1] : '';
 
@@ -292,7 +292,7 @@ class FrontendEditing extends CatalogController {
                 $objWidget->value = $objWidget->value ? \Date::parse( $strDateFormat, $objWidget->value ) : '';
             }
 
-            if ( in_array( $arrField['_type'], [ 'hidden', 'date' ] ) && $this->arrCatalogFields[ $arrField['_fieldname'] ]['tstampAsDefault'] ) {
+            if ( in_array( $arrField['_type'], [ 'hidden', 'date' ] ) && $this->arrCatalogFields[ $strFieldname ]['tstampAsDefault'] ) {
 
                 if ( Toolkit::isEmpty( $objWidget->value ) ) {
 
@@ -348,8 +348,8 @@ class FrontendEditing extends CatalogController {
                         $objDataContainer = new \stdClass();
                         $objDataContainer->value = $varValue;
                         $objDataContainer->id = $this->strItemID;
+                        $objDataContainer->field = $strFieldname;
                         $objDataContainer->table = $this->catalogTablename;
-                        $objDataContainer->field = $arrField['_fieldname'];
                         $objDataContainer->ptable = $this->arrCatalog['pTable'];
                         $objDataContainer->ctable = $this->arrCatalog['cTables'];
                         $objDataContainer->activeRecord = (object) $this->arrValues;

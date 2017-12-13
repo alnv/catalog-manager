@@ -20,7 +20,7 @@ class DcModifier extends CatalogController {
     public function initialize( $strTablename ) {
 
         $this->strTablename = $strTablename;
-
+        $this->I18nCatalogTranslator->initialize();
         \Controller::loadLanguageFile( $this->strTablename );
         \Controller::loadDataContainer( $this->strTablename );
 
@@ -71,12 +71,9 @@ class DcModifier extends CatalogController {
 
                 if ( in_array( $strField, $this->arrFields ) ) {
 
-                    $strLabel = $strField;
+                    $strLabel = $this->I18nCatalogTranslator->get( 'field', $strField, [ 'table' => $this->strTablename, 'title' => $strField, 'titleOnly' => true ] );
 
-                    if ( is_array( $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ] ) ) {
-
-                        $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ][0] ?: $strLabel;
-                    }
+                    if ( is_array( $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ] ) ) $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ][0] ?: $strLabel;
                     
                     $arrReturn[ $strField ] = $strLabel;
                 }
@@ -165,12 +162,18 @@ class DcModifier extends CatalogController {
 
         foreach ( $arrPickedPalettes as $arrPickedPalette ) {
 
+            $arrModifiedPalettes = [];
             $strPalette = $arrPickedPalette['key'];
             $strLegend = $arrPickedPalette['value'];
 
-            if ( !$strLegend || !$strPalette ) continue;
+            if ( Toolkit::isEmpty( $strPalette ) ) continue;
 
-            $arrModifiedPalettes = [];
+            if ( Toolkit::isEmpty( $strLegend ) ) {
+
+                $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ( $arrFieldsetStart['isHidden'] ? ':hide' : '' ) . '},' . implode( ',' , $arrFields );
+                $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrFieldsetStart['title'] ] = $this->I18nCatalogTranslator->get( 'legend', $arrFieldsetStart['title'], [ 'title' => $arrFieldsetStart[ 'label' ] ] );
+            }
+
             $arrPalettesPlucked = explode( ';', $arrPalettes[ $strPalette ] );
 
             foreach ( $arrPalettesPlucked as $strFieldset ) {

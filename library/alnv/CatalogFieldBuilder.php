@@ -57,11 +57,11 @@ class CatalogFieldBuilder extends CatalogController {
         if ( $blnIsCoreTable ) {
 
             $blnDcFormat = true;
-            $blnExcludeDefaults = true;
             $arrFields = $this->getCoreFields( $blnDcFormat );
         }
 
-        $arrFields = $blnExcludeDefaults ? $arrFields : $this->getDefaultCatalogFields();
+        if ( !$blnExcludeDefaults ) array_insert( $arrFields, 0, $this->getDefaultCatalogFields() );
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 )' . ( $blnVisible ? ' AND invisible != "1" ' : '' ) . 'ORDER BY `sorting`' )->execute( $this->strTable );
 
         if ( $objCatalogFields !== null ) {
@@ -178,6 +178,13 @@ class CatalogFieldBuilder extends CatalogController {
             if ( $arrField['useIndex'] == 'unique' ) $arrDcField['eval']['unique'] = true;
         }
 
+        if ( $this->arrCatalog['tablename'] == 'tl_member' ) {
+
+            $arrDcField['eval']['feEditable'] = true;
+            $arrDcField['eval']['feViewable'] = true;
+            $arrDcField['eval']['feGroup'] = 'personal';
+        }
+
         switch ( $arrField['type'] ) {
 
             case 'text':
@@ -272,7 +279,7 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    protected function getDefaultCatalogFields() {
+    protected function getDefaultCatalogFields( $arrIncludeOnly = [] ) {
 
         $arrFields = [
 
@@ -430,6 +437,17 @@ class CatalogFieldBuilder extends CatalogController {
             unset( $arrFields['sorting'] );
         }
 
+        if (  $this->arrCatalog['type'] == 'modifier' ) {
+
+            unset( $arrFields['id'] );
+            unset( $arrFields['pid'] );
+            unset( $arrFields['stop'] );
+            unset( $arrFields['start'] );
+            unset( $arrFields['tstamp'] );
+            unset( $arrFields['sorting'] );
+            unset( $arrFields['invisible'] );
+        }
+
         return $arrFields;
     }
 
@@ -512,10 +530,14 @@ class CatalogFieldBuilder extends CatalogController {
 
     protected function getCoreFields( $blnDcFormat ) {
 
-        $arrReturn = [];
-
         \Controller::loadLanguageFile( $this->strTable );
         \Controller::loadDataContainer( $this->strTable );
+
+        $arrReturn = [];
+        $objDataContainer = new \stdClass();
+        $objDataContainer->table = $this->strTable;
+        $objDataContainer->ptable = $GLOBALS['TL_DCA']['config']['ptable'];
+        $objDataContainer->ctable = $GLOBALS['TL_DCA']['config']['ctable'];
 
         $arrFields = $GLOBALS['TL_DCA'][ $this->strTable ]['fields'];
 
@@ -523,21 +545,11 @@ class CatalogFieldBuilder extends CatalogController {
 
             foreach ( $arrFields as $strFieldname => $arrField ) {
 
+                if ( !isset( $arrField['eval'] ) ) $arrField['eval'] = [];
+
+                $arrOptions = $arrField['options'];
+                $objDataContainer->field = $strFieldname;
                 $strType = Toolkit::setCatalogConformInputType( $arrField );
-
-                $arrField['_type'] = $strType;
-                $arrField['_disableFEE'] = '';
-                $arrField['_placeholder'] = '';
-                $arrField['_fieldname'] = $strFieldname;
-                $arrField['_palette'] = 'general_legend';
-                $arrField['_cssID'] = [ '', $strFieldname ];
-                
-                if ( TL_MODE == 'FE' ) {
-
-                    unset( $arrField['options_callback'] );
-                    unset( $arrField['save_callback'] );
-                    unset( $arrField['load_callback'] );
-                }
 
                 $arrReturn[ $strFieldname ] = [
 
@@ -562,6 +574,34 @@ class CatalogFieldBuilder extends CatalogController {
                     $arrReturn[ $strFieldname ]['optionsType'] = 'useForeignKey';
                     $arrReturn[ $strFieldname ]['dbTable'] = $arrForeignKeys[0] ?: '';
                     $arrReturn[ $strFieldname ]['dbTableValue'] = $arrForeignKeys[1] ?: '';
+                }
+
+                if (is_array( $arrField['options_callback'] ) ) {
+
+                    $arrCallback = $arrField['options_callback'];
+                    $arrOptions = static::importStatic( $arrCallback[0] )->{$arrCallback[1]}( $objDataContainer );
+                }
+
+                elseif ( is_callable( $arrField['options_callback'] ) ) {
+
+                    $arrOptions = $arrField['options_callback']( $objDataContainer );
+                }
+
+                if ( is_array( $arrOptions ) && !empty( $arrOptions ) ) {
+
+                    $arrKeyValueOptions = [];
+
+                    foreach ( $arrOptions as $strKey => $strValue ) {
+
+                        $arrKeyValueOptions[] = [
+
+                            'key' => $strKey,
+                            'value' => $strValue
+                        ];
+                    }
+
+                    $arrReturn[ $strFieldname ]['optionsType'] = 'useOptions';
+                    $arrReturn[ $strFieldname ]['options'] = serialize( $arrKeyValueOptions );
                 }
 
                 if ( $strType == 'upload' ) {

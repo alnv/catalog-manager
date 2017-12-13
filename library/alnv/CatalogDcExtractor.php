@@ -617,6 +617,16 @@ class CatalogDcExtractor extends CatalogController {
 
                 if ( isset( $arrField['_dcFormat'] ) ) {
 
+                    if ( $arrField['_core'] ) {
+
+                        $arrField['_dcFormat']['_disableFEE'] = '';
+                        $arrField['_dcFormat']['_placeholder'] = '';
+                        $arrField['_dcFormat']['_fieldname'] = $strFieldname;
+                        $arrField['_dcFormat']['_palette'] = 'general_legend';
+                        $arrField['_dcFormat']['_cssID'] = [ '', $strFieldname ];
+                        $arrField['_dcFormat']['_type'] = $arrField['_dcFormat']['inputType'] ?: '';
+                    }
+
                     $arrDcFields[ $strFieldname ] = $arrField['_dcFormat'];
                 }
             }

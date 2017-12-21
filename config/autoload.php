@@ -60,6 +60,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogNotification' => 'system/modules/catalog-manager/library/alnv/CatalogNotification.php',
     'CatalogManager\ReviseRelatedTables' => 'system/modules/catalog-manager/library/alnv/ReviseRelatedTables.php',
     'CatalogManager\tl_catalog_form_fields' => 'system/modules/catalog-manager/classes/tl_catalog_form_fields.php',
+    'CatalogManager\CatalogDataContainer' => 'system/modules/catalog-manager/library/alnv/CatalogDataContainer.php',
     'CatalogManager\SocialSharingButtons' => 'system/modules/catalog-manager/library/alnv/SocialSharingButtons.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',

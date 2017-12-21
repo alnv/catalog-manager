@@ -99,10 +99,10 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
 
         $this->Template->fields = $arrFields;
-        $this->Template->formSubmit = 'tl_filter';
         $this->Template->reset = $this->getResetLink();
         $this->Template->action = $this->getActionAttr();
         $this->Template->method = $this->getMethodAttr();
+        $this->Template->formSubmit = md5( 'tl_filter' );
         $this->Template->disableSubmit = $this->arrForm['disableSubmit'];
         $this->Template->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );

@@ -334,7 +334,7 @@ class OptionsGetter extends CatalogController {
 
             if ( $strTag ) $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
 
-            if ( Toolkit::isEmpty( $strActiveValue ) && TL_MODE == 'FE' ) {
+            if ( $this->CatalogInput->getValue( $strTag ) && TL_MODE == 'FE' ) {
 
                 $strActiveValue = $this->CatalogInput->getValue( $strTag );
             }

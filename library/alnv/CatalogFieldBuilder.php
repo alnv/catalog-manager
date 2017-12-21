@@ -60,7 +60,13 @@ class CatalogFieldBuilder extends CatalogController {
             $arrFields = $this->getCoreFields( $blnDcFormat );
         }
 
-        if ( !$blnExcludeDefaults ) array_insert( $arrFields, 0, $this->getDefaultCatalogFields() );
+        if ( !$blnExcludeDefaults ) {
+
+            foreach ( $this->getDefaultCatalogFields() as $strFieldname => $arrField ) {
+
+                $arrFields[ $strFieldname ] = $arrField;
+            }
+        }
 
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 )' . ( $blnVisible ? ' AND invisible != "1" ' : '' ) . 'ORDER BY `sorting`' )->execute( $this->strTable );
 
@@ -534,11 +540,6 @@ class CatalogFieldBuilder extends CatalogController {
         \Controller::loadDataContainer( $this->strTable );
 
         $arrReturn = [];
-        $objDataContainer = new \stdClass();
-        $objDataContainer->table = $this->strTable;
-        $objDataContainer->ptable = $GLOBALS['TL_DCA']['config']['ptable'];
-        $objDataContainer->ctable = $GLOBALS['TL_DCA']['config']['ctable'];
-
         $arrFields = $GLOBALS['TL_DCA'][ $this->strTable ]['fields'];
 
         if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
@@ -548,7 +549,6 @@ class CatalogFieldBuilder extends CatalogController {
                 if ( !isset( $arrField['eval'] ) ) $arrField['eval'] = [];
 
                 $arrOptions = $arrField['options'];
-                $objDataContainer->field = $strFieldname;
                 $strType = Toolkit::setCatalogConformInputType( $arrField );
 
                 $arrReturn[ $strFieldname ] = [
@@ -576,32 +576,11 @@ class CatalogFieldBuilder extends CatalogController {
                     $arrReturn[ $strFieldname ]['dbTableValue'] = $arrForeignKeys[1] ?: '';
                 }
 
-                if (is_array( $arrField['options_callback'] ) ) {
-
-                    $arrCallback = $arrField['options_callback'];
-                    $arrOptions = static::importStatic( $arrCallback[0] )->{$arrCallback[1]}( $objDataContainer );
-                }
-
-                elseif ( is_callable( $arrField['options_callback'] ) ) {
-
-                    $arrOptions = $arrField['options_callback']( $objDataContainer );
-                }
-
                 if ( is_array( $arrOptions ) && !empty( $arrOptions ) ) {
 
-                    $arrKeyValueOptions = [];
-
-                    foreach ( $arrOptions as $strKey => $strValue ) {
-
-                        $arrKeyValueOptions[] = [
-
-                            'key' => $strKey,
-                            'value' => $strValue
-                        ];
-                    }
-
+                    $arrKeyValue = Toolkit::flatter( $arrOptions );
                     $arrReturn[ $strFieldname ]['optionsType'] = 'useOptions';
-                    $arrReturn[ $strFieldname ]['options'] = serialize( $arrKeyValueOptions );
+                    $arrReturn[ $strFieldname ]['options'] = serialize( $arrKeyValue );
                 }
 
                 if ( $strType == 'upload' ) {

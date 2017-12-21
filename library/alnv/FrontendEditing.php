@@ -345,14 +345,14 @@ class FrontendEditing extends CatalogController {
 
                     foreach ( $arrField['save_callback'] as $arrCallback ) {
 
-                        $objDataContainer = new \stdClass();
+                        $objDataContainer = new CatalogDataContainer( $this->catalogTablename );
+
                         $objDataContainer->value = $varValue;
                         $objDataContainer->id = $this->strItemID;
                         $objDataContainer->field = $strFieldname;
-                        $objDataContainer->table = $this->catalogTablename;
+                        $objDataContainer->activeRecord = $this->arrValues;
                         $objDataContainer->ptable = $this->arrCatalog['pTable'];
                         $objDataContainer->ctable = $this->arrCatalog['cTables'];
-                        $objDataContainer->activeRecord = (object) $this->arrValues;
 
                         try {
 

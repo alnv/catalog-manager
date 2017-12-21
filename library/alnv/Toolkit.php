@@ -743,4 +743,31 @@ class Toolkit {
 
         return $GLOBALS['TL_CONFIG']['ctlg_strict_mode'] ? true : false;
     }
+
+
+    public static function dump( $varDump ) {
+
+        echo '<pre>' . var_export( $varDump, true ) . '</pre>';
+    }
+
+
+    public static function flatter( $arrValues, &$arrFlattedArray = [] ) {
+
+        foreach ( $arrValues as $strKey => $varValue ) {
+
+            if ( is_array( $varValue ) ) {
+
+                static::flatter( $varValue, $arrFlattedArray );
+                continue;
+            }
+
+            $arrFlattedArray[] = [
+
+                'key' => $strKey,
+                'value' => $varValue
+            ];
+        }
+
+        return $arrFlattedArray;
+    }
 }

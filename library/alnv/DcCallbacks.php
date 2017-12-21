@@ -34,24 +34,15 @@ class DcCallbacks extends \Backend {
     public function setDynValue( $varValue, $objDc = null ) {
 
         if ( is_null( $objDc ) ) return $varValue;
+        if ( is_null( $objDc->activeRecord ) ) return $varValue;
 
         $objFields = new CatalogFieldBuilder();
         $objFields->initialize(  $objDc->table );
         $arrFields = $objFields->getCatalogFields( false );
 
-        if ( is_object( $objDc->activeRecord ) && method_exists( $objDc->activeRecord, 'row' )) {
-
-            $arrValues = $objDc->activeRecord->row();
-        }
-
-        else {
-
-            $arrValues = (array) $objDc->activeRecord;
-        }
-
         if ( isset( $arrFields[ $objDc->field ] ) && $arrFields[ $objDc->field ]['dynValue'] ) {
 
-            $varValue = \StringUtil::parseSimpleTokens( $arrFields[ $objDc->field ]['dynValue'],  $arrValues );
+            $varValue = \StringUtil::parseSimpleTokens( $arrFields[ $objDc->field ]['dynValue'],  $objDc->activeRecord->row() );
         }
 
         return $varValue;

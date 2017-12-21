@@ -5,42 +5,38 @@ namespace CatalogManager;
 class CatalogInput extends CatalogController {
 
 
-    protected $strFilterFormId = 'tl_filter';
+    protected $strFormId;
 
 
     public function __construct() {
 
         parent::__construct();
 
+        $this->strFormId = md5( 'tl_filter' );
         $this->import( 'Input' );
     }
 
 
     protected function getPostCookie( $strName ) {
 
-        $strReturn = '';
         $objSession = \Session::getInstance();
-        $strPost = $this->Input->post( $strName );
+        $strActiveValue = $this->Input->post( $strName );
+        $arrEditingMode = preg_grep ( '/^act(\d+)/i', array_keys( $_GET ) );
+        $arrPagination = preg_grep ( '/^page_e(\d+)/i', array_keys( $_GET ) );
 
-        if ( $this->Input->post( 'FORM_SUBMIT' ) == $this->strFilterFormId ) {
+        if ( $this->Input->post( 'FORM_SUBMIT' ) == $this->strFormId ) $objSession->set( $strName, $strActiveValue );
 
-            $strCookie = $strPost;
+        if ( !empty( $arrPagination ) || ( Toolkit::isEmpty( $strActiveValue ) && !Toolkit::isEmpty( $objSession->get( $strName ) ) ) ) {
 
-            if ( !is_null( $strCookie ) && $strCookie != '' ) $strCookie = serialize( $strPost );
-
-            $objSession->set( $strName, $strCookie );
-            $strReturn = $strPost;
+            $strActiveValue = $objSession->get( $strName );
         }
 
-        if ( Toolkit::isEmpty( $strReturn ) && $this->Input->post( 'FORM_SUBMIT' ) != $this->strFilterFormId ) {
+        if ( !empty( $arrEditingMode ) ) {
 
-            $strReturn = $objSession->get( $strName );
-
-            if ( !is_null( $strReturn ) && $strReturn != '' ) $strReturn = unserialize( $strReturn );
-            if ( is_bool( $strReturn ) ) $strReturn = $strReturn ? '1' : '0';
+            $strActiveValue = $this->Input->post( $strName );
         }
 
-        return $strReturn;
+        return $strActiveValue;
     }
 
 

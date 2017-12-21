@@ -332,11 +332,19 @@ class OptionsGetter extends CatalogController {
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
-            if ( $strTag ) $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
+            if ( $strTag ) {
 
-            if ( $this->CatalogInput->getValue( $strTag ) && TL_MODE == 'FE' ) {
+                $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
 
-                $strActiveValue = $this->CatalogInput->getValue( $strTag );
+                if ( TL_MODE == 'FE' ) {
+
+                    $strActiveValue = $this->CatalogInput->getActiveValue( $strTag );
+                }
+
+                if ( TL_MODE == 'FE' && ( Toolkit::isEmpty( \Input::post( 'FORM_SUBMIT' ) ) && \Input::get( 'act' . $this->strModuleID ) ) ) {
+
+                    $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
+                }
             }
 
             $blnValidValue = $this->isValidValue( $strActiveValue );

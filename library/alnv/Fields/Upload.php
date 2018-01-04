@@ -68,6 +68,9 @@ class Upload {
 
             case 'image':
 
+                $varValue = Toolkit::deserialize( $varValue );
+                $varValue = $varValue[0];
+
                 return static::renderImage( $varValue, $arrField, $arrCatalog );
 
                 break;
@@ -104,6 +107,9 @@ class Upload {
         switch ( $arrField['fileType'] ) {
 
             case 'image':
+
+                $varValue = Toolkit::deserialize( $varValue );
+                $varValue = $varValue[0];
 
                 return static::renderThumbnail( $varValue, $arrField );
 

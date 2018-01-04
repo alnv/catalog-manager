@@ -65,7 +65,7 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename ) return null;
 
-        $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
+        $this->CatalogFieldBuilder->initialize( $this->catalogTablename );
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
         $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, $this );
@@ -196,6 +196,18 @@ class CatalogView extends CatalogController {
         }
 
         $this->setHasOperationsFlag();
+
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $this );
+                }
+            }
+        }
     }
 
 
@@ -458,6 +470,18 @@ class CatalogView extends CatalogController {
             }
         }
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerViewQuery'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerViewQuery'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerViewQuery'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrQuery, $this );
+                }
+            }
+        }
+
         $intTotal = $this->SQLQueryBuilder->execute( $arrQuery )->count();
 
         if ( $this->strMode == 'view' ) {
@@ -608,6 +632,18 @@ class CatalogView extends CatalogController {
             if ( $arrCatalog['useSocialSharingButtons'] ) {
 
                 $arrCatalog['socialSharingButtons'] = $this->SocialSharingButtons->render( $arrCatalog, $this->catalogSEOTitle, $this->catalogSEODescription );
+            }
+
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] as $arrCallback )  {
+
+                    if ( is_array( $arrCallback ) ) {
+
+                        $this->import( $arrCallback[0] );
+                        $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrCatalog, $this->catalogTablename, $this );
+                    }
+                }
             }
 
             $arrCatalogs[] = $arrCatalog;

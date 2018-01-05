@@ -64,12 +64,13 @@ class Upload {
 
     public static function parseValue ( $varValue, $arrField, $arrCatalog = [] ) {
 
+        $varValues = Toolkit::deserialize( $varValue );
+
         switch ( $arrField['fileType'] ) {
 
             case 'image':
 
-                $varValue = Toolkit::deserialize( $varValue );
-                $varValue = $varValue[0];
+                $varValue = $varValues[0];
 
                 return static::renderImage( $varValue, $arrField, $arrCatalog );
 
@@ -77,13 +78,13 @@ class Upload {
 
             case 'gallery':
 
-                $varValue = Toolkit::deserialize( $varValue );
-
-                return static::renderGallery( $varValue, $arrField, $arrCatalog );
+                return static::renderGallery( $varValues, $arrField, $arrCatalog );
 
                 break;
 
             case 'file':
+
+                $varValue = $varValues[0];
 
                 return static::renderFile( $varValue, $arrField, $arrCatalog );
 
@@ -91,9 +92,7 @@ class Upload {
 
             case 'files':
 
-                $varValue = Toolkit::deserialize( $varValue );
-
-                return static::renderFiles( $varValue, $arrField, $arrCatalog );
+                return static::renderFiles( $varValues, $arrField, $arrCatalog );
 
                 break;
         }
@@ -104,12 +103,13 @@ class Upload {
 
     public static function parseThumbnails( $varValue, $arrField, $arrCatalog = [] ) {
 
+        $varValues = Toolkit::deserialize( $varValue );
+
         switch ( $arrField['fileType'] ) {
 
             case 'image':
 
-                $varValue = Toolkit::deserialize( $varValue );
-                $varValue = $varValue[0];
+                $varValue = $varValues[0];
 
                 return static::renderThumbnail( $varValue, $arrField );
 
@@ -118,7 +118,6 @@ class Upload {
             case 'gallery':
 
                 $strThumbnails = '';
-                $varValues = Toolkit::deserialize( $varValue );
 
                 if ( !empty( $varValues ) && is_array( $varValues ) ) {
 
@@ -138,6 +137,7 @@ class Upload {
 
             case 'file':
 
+                $varValue = $varValues[0];
                 $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
 
                 if ( is_array( $arrFile ) && !Toolkit::isEmpty( $arrFile['name'] ) ) {
@@ -150,7 +150,6 @@ class Upload {
             case 'files':
 
                 $strFiles = '';
-                $varValues = Toolkit::deserialize( $varValue );
 
                 if ( !empty( $varValues ) && is_array( $varValues ) ) {
 

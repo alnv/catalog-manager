@@ -1,4 +1,4 @@
-// Fine Uploader 5.14.5 - (c) 2013-present Widen Enterprises, Inc. MIT licensed. http://fineuploader.com
+// Fine Uploader 5.15.5 - MIT licensed. http://fineuploader.com
 (function(global) {
     var qq = function(element) {
         "use strict";
@@ -585,7 +585,7 @@
         };
         qq.Error.prototype = new Error();
     })();
-    qq.version = "5.14.5";
+    qq.version = "5.15.5";
     qq.supportedFeatures = function() {
         "use strict";
         var supportsUploading, supportsUploadingBlobs, supportsFileDrop, supportsAjaxFileUploading, supportsFolderDrop, supportsChunking, supportsResume, supportsUploadViaPaste, supportsUploadCors, supportsDeleteFileXdr, supportsDeleteFileCorsXhr, supportsDeleteFileCors, supportsFolderSelection, supportsImagePreviews, supportsUploadProgress;
@@ -5693,9 +5693,6 @@
             return fileDrag;
         }
         function leavingDocumentOut(e) {
-            if (qq.firefox()) {
-                return !e.relatedTarget;
-            }
             if (qq.safari()) {
                 return e.x < 0 || e.y < 0;
             }
@@ -5735,8 +5732,10 @@
                 maybeHideDropZones();
             });
             disposeSupport.attach(document, "drop", function(e) {
-                e.preventDefault();
-                maybeHideDropZones();
+                if (isFileDrag(e)) {
+                    e.preventDefault();
+                    maybeHideDropZones();
+                }
             });
             disposeSupport.attach(document, HIDE_ZONES_EVENT_NAME, maybeHideDropZones);
         }
@@ -5813,7 +5812,7 @@
             }
             var effectTest, dt = e.dataTransfer, isSafari = qq.safari();
             effectTest = qq.ie() && qq.supportedFeatures.fileDrop ? true : dt.effectAllowed !== "none";
-            return dt && effectTest && (dt.files || !isSafari && dt.types.contains && dt.types.contains("Files"));
+            return dt && effectTest && (dt.files && dt.files.length || !isSafari && dt.types.contains && dt.types.contains("Files") || dt.types.includes && dt.types.includes("Files"));
         }
         function isOrSetDropDisabled(isDisabled) {
             if (isDisabled !== undefined) {
@@ -5896,6 +5895,8 @@
                 return element;
             }
         });
+        this._testing = {};
+        this._testing.isValidFileDrag = isValidFileDrag;
     };
     (function() {
         "use strict";
@@ -6624,7 +6625,7 @@
             dropProcessing: "qq-drop-processing-selector",
             dropProcessingSpinner: "qq-drop-processing-spinner-selector",
             thumbnail: "qq-thumbnail-selector"
-        }, previewGeneration = {}, cachedThumbnailNotAvailableImg = new qq.Promise(), cachedWaitingForThumbnailImg = new qq.Promise(), log, isEditElementsExist, isRetryElementExist, templateHtml, container, fileList, showThumbnails, serverScale, cacheThumbnailPlaceholders = function() {
+        }, previewGeneration = {}, cachedThumbnailNotAvailableImg = new qq.Promise(), cachedWaitingForThumbnailImg = new qq.Promise(), log, isEditElementsExist, isRetryElementExist, templateDom, container, fileList, showThumbnails, serverScale, cacheThumbnailPlaceholders = function() {
             var notAvailableUrl = options.placeholders.thumbnailNotAvailable, waitingUrl = options.placeholders.waitingForThumbnail, spec = {
                 maxSize: thumbnailMaxSize,
                 scale: serverScale
@@ -6756,7 +6757,7 @@
             });
             return notAvailableImgPlacement;
         }, parseAndGetTemplate = function() {
-            var scriptEl, scriptHtml, fileListNode, tempTemplateEl, fileListHtml, defaultButton, dropArea, thumbnail, dropProcessing, dropTextEl, uploaderEl;
+            var scriptEl, scriptHtml, fileListNode, tempTemplateEl, fileListEl, defaultButton, dropArea, thumbnail, dropProcessing, dropTextEl, uploaderEl;
             log("Parsing template");
             if (options.templateIdOrEl == null) {
                 throw new Error("You MUST specify either a template element or ID!");
@@ -6820,15 +6821,15 @@
             if (fileListNode == null) {
                 throw new Error("Could not find the file list container in the template!");
             }
-            fileListHtml = fileListNode.innerHTML;
+            fileListEl = fileListNode.children[0].cloneNode(true);
             fileListNode.innerHTML = "";
             if (tempTemplateEl.getElementsByTagName("DIALOG").length) {
                 document.createElement("dialog");
             }
             log("Template parsing complete");
             return {
-                template: qq.trimStr(tempTemplateEl.innerHTML),
-                fileTemplate: qq.trimStr(fileListHtml)
+                template: tempTemplateEl,
+                fileTemplate: fileListEl
             };
         }, prependFile = function(el, index, fileList) {
             var parentEl = fileList, beforeEl = parentEl.firstChild;
@@ -6934,13 +6935,13 @@
         }
         container = options.containerEl;
         showThumbnails = options.imageGenerator !== undefined;
-        templateHtml = parseAndGetTemplate();
+        templateDom = parseAndGetTemplate();
         cacheThumbnailPlaceholders();
         qq.extend(this, {
             render: function() {
                 log("Rendering template in DOM.");
                 generatedThumbnails = 0;
-                container.innerHTML = templateHtml.template;
+                container.appendChild(templateDom.template.cloneNode(true));
                 hide(getDropProcessing());
                 this.hideTotalProgress();
                 fileList = options.fileContainerEl || getTemplateEl(container, selectorClasses.list);
@@ -6952,6 +6953,7 @@
                 container.appendChild(cantRenderEl);
             },
             reset: function() {
+                container.innerHTML = "";
                 this.render();
             },
             clearFiles: function() {
@@ -6961,7 +6963,7 @@
                 isCancelDisabled = true;
             },
             addFile: function(id, name, prependInfo, hideForever, batch) {
-                var fileEl = qq.toElement(templateHtml.fileTemplate), fileNameEl = getTemplateEl(fileEl, selectorClasses.file), uploaderEl = getTemplateEl(container, selectorClasses.uploader), fileContainer = batch ? fileBatch.content : fileList, thumb;
+                var fileEl = templateDom.fileTemplate.cloneNode(true), fileNameEl = getTemplateEl(fileEl, selectorClasses.file), uploaderEl = getTemplateEl(container, selectorClasses.uploader), fileContainer = batch ? fileBatch.content : fileList, thumb;
                 if (batch) {
                     fileBatch.map[id] = fileEl;
                 }

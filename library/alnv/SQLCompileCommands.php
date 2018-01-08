@@ -2,7 +2,7 @@
 
 namespace CatalogManager;
 
-class SqlCompileCommands extends CatalogController{
+class SQLCompileCommands extends CatalogController {
 
 
     protected $arrCatalogs = [];

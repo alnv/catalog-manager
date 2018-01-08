@@ -19,10 +19,25 @@ class CatalogWidgetAttributeParser extends CatalogController {
 
             foreach ( $arrCoreAreas as $strArea ) {
 
+                $strNavigationTitle = $GLOBALS['TL_LANG']['MOD'][ $strArea ];
+
+                if ( is_array( $strNavigationTitle ) ) {
+
+                    if ( isset ( $strNavigationTitle[0] ) ) {
+
+                        $strNavigationTitle = $strNavigationTitle[0] ? $strNavigationTitle[0] : '';
+                    }
+
+                    else {
+
+                        $strNavigationTitle = '';
+                    }
+                }
+
                 $arrValue[] = [
 
                     'key' => $strArea,
-                    'value' => $GLOBALS['TL_LANG']['MOD'][ $strArea ]
+                    'value' => $strNavigationTitle
                 ];
             }
 

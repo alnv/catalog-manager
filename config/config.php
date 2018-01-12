@@ -65,6 +65,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\TimestampInsertT
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValuesInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue' ];
 
+$GLOBALS['TL_HOOKS']['getAllEvents'][] = [ 'CatalogManager\CatalogParser', 'getAllEvents' ];
 $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [ 'CatalogManager\RoutingBuilder', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\CatalogDcAdapter', 'initialize' ];
 $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [ 'CatalogManager\CatalogBreadcrumb', 'initialize' ];

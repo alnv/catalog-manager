@@ -32,6 +32,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogInput' => 'system/modules/catalog-manager/library/alnv/CatalogInput.php',
     'CatalogManager\tl_catalog_form' => 'system/modules/catalog-manager/classes/tl_catalog_form.php',
     'CatalogManager\DateInput' => 'system/modules/catalog-manager/library/alnv/Fields/DateInput.php',
+    'CatalogManager\CatalogParser' => 'system/modules/catalog-manager/library/alnv/CatalogParser.php',
     'CatalogManager\OptionsGetter' => 'system/modules/catalog-manager/library/alnv/OptionsGetter.php',
     'CatalogManager\CatalogFilter' => 'system/modules/catalog-manager/library/alnv/CatalogFilter.php',
     'CatalogManager\CatalogEvents' => 'system/modules/catalog-manager/library/alnv/CatalogEvents.php',

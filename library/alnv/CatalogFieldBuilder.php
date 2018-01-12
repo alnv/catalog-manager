@@ -26,6 +26,8 @@ class CatalogFieldBuilder extends CatalogController {
         if ( TL_MODE == 'BE' && !Toolkit::isEmpty( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ] ) ) {
 
             $this->arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
+
+            return true;
         }
 
         else {
@@ -37,9 +39,13 @@ class CatalogFieldBuilder extends CatalogController {
                 if ( $objCatalog->numRows ) {
 
                     $this->arrCatalog = Toolkit::parseCatalog( $objCatalog->row() );
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
 

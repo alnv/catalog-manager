@@ -1,28 +1,34 @@
 <?php
 
-$GLOBALS['BE_MOD']['system']['catalog-manager'] = [
+array_insert( $GLOBALS['BE_MOD'], 3, [
 
-    'name' => 'catalog-manager',
-    'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
+    'catalog-manager-extensions' => [
 
-    'tables' => [
-        
-        'tl_catalog',
-        'tl_catalog_fields'
+        'catalog-manager' => [
+
+            'name' => 'catalog-manager',
+            'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
+
+            'tables' => [
+
+                'tl_catalog',
+                'tl_catalog_fields'
+            ]
+        ],
+
+        'filterform' => [
+
+            'name' => 'filterform',
+            'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
+
+            'tables' => [
+
+                'tl_catalog_form',
+                'tl_catalog_form_fields'
+            ]
+        ]
     ]
-];
-
-$GLOBALS['BE_MOD']['content']['filterform'] = [
-
-    'name' => 'filterform',
-    'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
-
-    'tables' => [
-
-        'tl_catalog_form',
-        'tl_catalog_form_fields'
-    ]
-];
+]);
 
 array_insert( $GLOBALS['FE_MOD'], 3, [
 

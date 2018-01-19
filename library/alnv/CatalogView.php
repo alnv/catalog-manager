@@ -195,8 +195,6 @@ class CatalogView extends CatalogController {
             ]);
         }
 
-        $this->setHasOperationsFlag();
-
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) ) {
 
             foreach ( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] as $arrCallback )  {
@@ -208,6 +206,8 @@ class CatalogView extends CatalogController {
                 }
             }
         }
+
+        $this->setHasOperationsFlag();
     }
 
 
@@ -1307,5 +1307,11 @@ class CatalogView extends CatalogController {
                 $this->arrRelatedTables[ $arrRelatedTable['table'] ] = $arrTableData;
             }
         }
+    }
+
+
+    public function getCatalog() {
+
+        return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
     }
 }

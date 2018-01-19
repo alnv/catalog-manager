@@ -507,6 +507,18 @@ class FrontendEditing extends CatalogController {
             ];
         }
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrQuery, $this );
+                }
+            }
+        }
+
         $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 
         return $objEntities->numRows ? true : false;
@@ -1002,5 +1014,11 @@ class FrontendEditing extends CatalogController {
                 $this->arrValues[ $strFieldname ] = $varValue;
             }
         }
+    }
+
+
+    public function getCatalog() {
+
+        return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
     }
 }

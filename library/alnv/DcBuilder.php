@@ -494,4 +494,10 @@ class DcBuilder extends CatalogController {
 
         return [ 'default' => $strReturn ];
     }
+
+    
+    public function getCatalog() {
+
+        return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
+    }
 }

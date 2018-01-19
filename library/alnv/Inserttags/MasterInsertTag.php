@@ -20,7 +20,9 @@ class MasterInsertTag extends \Frontend {
 
             $this->import( 'CatalogMasterEntity' );
 
+            $strText = '';
             $arrJoinOnly = [];
+            $blnAddText = false;
             $strDefaultValue = '';
             $blnJoinParent = false;
             $blnJoinFields = false;
@@ -67,6 +69,13 @@ class MasterInsertTag extends \Frontend {
 
                             break;
 
+                        case 'addText':
+
+                            $blnAddText = true;
+                            $strText = $strOption ? $strOption : '';
+
+                            break;
+
                         case 'joinOnly':
 
                             $arrFields = explode( ',', $strOption );
@@ -101,21 +110,30 @@ class MasterInsertTag extends \Frontend {
             }
 
             $varValue = Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) ? '' : $arrMaster[ $strFieldname ];
+            $varValue = $this->setValue( $varValue );
 
-            if ( !is_array( $varValue ) ) return $varValue;
-
-            if ( Toolkit::isAssoc( $varValue ) ) {
-
-                $strKeyname = $arrTags[3] ?: '';
-
-                if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) $varValue = $varValue[ $strKeyname ];
-            }
-
-            if ( is_array( $varValue ) ) return implode( ', ' , $varValue );
+            if ( $blnAddText && $varValue ) $varValue .= $strText;
 
             return $varValue;
         }
 
         return false;
+    }
+
+
+    protected function setValue( $varValue ) {
+
+        if ( !is_array( $varValue ) ) return $varValue;
+
+        if ( Toolkit::isAssoc( $varValue ) ) {
+
+            $strKeyname = $arrTags[3] ?: '';
+
+            if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) $varValue = $varValue[ $strKeyname ];
+        }
+
+        if ( is_array( $varValue ) ) return implode( ', ' , $varValue );
+
+        return $varValue;
     }
 }

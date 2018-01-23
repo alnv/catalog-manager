@@ -13,3 +13,6 @@ $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog list view', 'Her
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = ['Catalog Manager', 'All content elements of Catalog Manager'];
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog filter form', 'Here you can include a catalog filter form.'];
 $GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social sharing buttons', 'Social sharing huttons as Content Type.' ];
+
+$GLOBALS['TL_LANG']['FFL']['catalogFineUploader'] = [ 'FineUploader', 'This is fineUploader by catalog catalog.' ];
+$GLOBALS['TL_LANG']['FFL']['catalogMessageForm'] = [ 'Message', 'This is message field by catalog catalog.' ];

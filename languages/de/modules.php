@@ -13,3 +13,6 @@ $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog Listenansicht', 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = ['Catalog Manager', 'Alle Inhaltselemente des Catalog Managers'];
 $GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social-Sharing-Buttons', 'Social-Sharing-Buttons als Inhaltselement.' ];
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog Filterformular', 'Hier können Sie einen Filterformular als Inhaltselement einbinden.'];
+
+$GLOBALS['TL_LANG']['FFL']['catalogFineUploader'] = [ 'FineUploader', 'FineUploader vom Catalog Manager' ];
+$GLOBALS['TL_LANG']['FFL']['catalogMessageForm'] = [ 'Mittleilung', 'Mittleilungsfeld vom Catalog Manager' ];

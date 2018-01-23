@@ -94,4 +94,10 @@ class tl_content extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getFilterFormTemplates() {
+
+        return $this->getTemplateGroup( 'ce_catalog_filterform' );
+    }
 }

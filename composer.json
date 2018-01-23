@@ -4,7 +4,7 @@
   "keywords": [ "contao", "catalog", "filter", "taxonomy", "tags", "frontend", "editing" ],
   "type": "contao-module",
   "homepage": "https://catalog-manager.alexandernaumov.de",
-  "license": "commercial",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Alexander Naumov",

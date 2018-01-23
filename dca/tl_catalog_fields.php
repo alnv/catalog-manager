@@ -203,7 +203,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'doNotCopy' => true,
                 'mandatory' => true,
                 'tl_class' => 'w50',
                 'maxlength' => 255
@@ -225,7 +224,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'doNotCopy' => true,
                 'tl_class' => 'w50',
                 'maxlength' => 255
             ],
@@ -242,7 +240,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'tl_class' => 'clr long',
-                'doNotCopy' => true,
                 'maxlength' => 512
             ],
 
@@ -1348,7 +1345,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],
@@ -1369,7 +1365,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true
             ],
@@ -1858,7 +1853,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'allowHtml' => true,
-                'doNotCopy' => true,
                 'maxlength' => 255,
                 'tl_class' => 'w50',
             ],

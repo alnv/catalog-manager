@@ -193,7 +193,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'mandatory' => true,
-                'doNotCopy' => true,
                 'tl_class' => 'w50',
                 'maxlength' => 255
             ],
@@ -210,7 +209,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50',
-                'doNotCopy' => true,
                 'maxlength' => 255
             ],
 
@@ -226,7 +224,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'clr long',
-                'doNotCopy' => true,
                 'maxlength' => 512
             ],
 
@@ -242,7 +239,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'eval' => [
 
                 'tl_class' => 'w50',
-                'doNotCopy' => true,
                 'maxlength' => 255
             ],
 

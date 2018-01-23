@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogEnableFr
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseSocialSharingButtons';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseFrontendEditingViewPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalog_taxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect;{catalog_taxonomy_legend},catalogUseTaxonomies;{catalog_orderBy_legend:hide},catalogOrderByTaxonomies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalog_taxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect;{catalog_taxonomy_legend},catalogUseTaxonomies;{catalog_orderBy_legend:hide},catalogOrderByTaxonomies;{template_legend:hide},catalogCustomTemplate,catalogTaxonomyNavTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_filterFields_legend},catalogActiveFilterFields;{catalog_filterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogFormMethod,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalog_filterRedirect_legend:hide},catalogRedirectType;{catalog_filterTemplates_legend:hide},catalogFilterFieldTemplates;{catalog_fieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename,catalogTemplateDebug;{catalog_master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{social_sharing_legend},catalogUseSocialSharingButtons;{template_legend:hide},catalogMasterTemplate,catalogCustomTemplate;{catalog_join_legend:hide},catalogJoinFields,catalogJoinParentTable;{catalog_relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{catalog_json_legend:hide},catalogUseArray,catalogSendJsonHeader;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename,catalogTemplateDebug;{catalog_master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalog_view_legend:hide},catalogDisableMasterLink,catalogFastMode,enableTableView;{catalog_taxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter;{catalog_orderBy_legend:hide},catalogOrderBy,catalogGroupBy,catalogGroupHeadlineTag,catalogRandomSorting;{catalog_pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{catalog_join_legend:hide},catalogJoinFields,catalogJoinCTables,catalogJoinParentTable;{catalog_relation_legend:hide},catalogUseRelation;{catalog_frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalog_map_legend:hide},catalogUseMap;{catalog_radiusSearch_legend:hide},catalogUseRadiusSearch;{social_sharing_legend},catalogUseSocialSharingButtons;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,catalogCustomTemplate;{catalog_json_legend:hide},catalogUseArray,catalogSendJsonHeader;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -56,7 +56,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
         'maxlength' => 128,
         'tl_class' => 'w50',
         'mandatory' => true,
-        'doNotCopy' => true,
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption'=>true,
@@ -77,7 +76,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRoutingParameter'] = [
 
         'multiple' => true,
         'mandatory' => true,
-        'doNotCopy' => true,
         'tl_class' => 'clr',
     ],
 
@@ -95,7 +93,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPageRouting'] = [
     'eval' => [
 
         'mandatory' => true,
-        'doNotCopy' => true,
         'tl_class' => 'clr',
         'blankOptionLabel' => '-',
         'includeBlankOption'=>true
@@ -115,7 +112,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRoutingSource'] = [
     'eval' => [
 
         'tl_class' => 'clr',
-        'doNotCopy' => true,
         'mandatory' => true,
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
@@ -142,7 +138,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveFilterFields'] = [
     'eval' => [
 
         'multiple' => true,
-        'doNotCopy' => true,
         'submitOnChange' => true
     ],
 
@@ -606,7 +601,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinFields'] = [
         'multiple' => true,
         'maxlength' => 255,
         'tl_class' => 'clr',
-        'doNotCopy' => true,
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getJoinAbleFields' ],
@@ -622,7 +616,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
         'tl_class' => 'clr m12'
     ],
 
@@ -640,7 +633,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinCTables'] = [
         'multiple' => true,
         'maxlength' => 255,
         'tl_class' => 'clr',
-        'doNotCopy' => true,
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getChildTablesByTablename' ],
@@ -668,10 +660,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRelatedChildTables'],
     'inputType' => 'catalogRelationRedirectWizard',
 
-    'eval' => [
-
-        'doNotCopy' => true
-    ],
+    'eval' => [],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getChildTablesByTablename' ],
     
@@ -1018,7 +1007,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLat'] = [
         'maxlength' => 128,
         'mandatory' => true,
         'tl_class' => 'w50',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1040,7 +1028,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLng'] = [
         'maxlength' => 128,
         'mandatory' => true,
         'tl_class' => 'w50',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1229,7 +1216,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
         'chosen' => true,
         'maxlength' => 128,
         'tl_class' => 'w50',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1247,7 +1233,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseTaxonomies'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
         'tl_class' => 'm12 clr',
         'submitOnChange' => true
     ],
@@ -1281,7 +1266,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEODescription'] = [
 
         'chosen' => true,
         'tl_class' => 'w50',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1301,7 +1285,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEOTitle'] = [
 
         'chosen' => true,
         'tl_class' => 'w50',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1336,8 +1319,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTemplateDebug'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
-        'tl_class' => 'w50 m12',
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,
@@ -1351,8 +1333,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDisableMasterLink'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
-        'tl_class' => 'w50 m12',
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,
@@ -1366,9 +1347,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['enableTableView'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
         'tl_class' => 'w50 m12',
-        'submitOnChange' => true,
+        'submitOnChange' => true
     ],
 
     'exclude' => true,
@@ -1383,7 +1363,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveTableColumns'] = [
     'eval' => [
 
         'multiple' => true,
-        'tl_class' => 'clr',
+        'tl_class' => 'clr'
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
@@ -1436,9 +1416,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogEnableFrontendEditing'] = [
 
     'eval' => [
 
-        'doNotCopy' => true,
         'tl_class' => 'clr m12',
-        'submitOnChange' => true,
+        'submitOnChange' => true
     ],
 
     'exclude' => true,
@@ -1507,7 +1486,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSendJsonHeader'] = [
 
         'maxlength' => 16,
         'tl_class' => 'clr',
-        'doNotCopy' => true,
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
@@ -1637,6 +1615,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogCustomTemplate'] = [
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getCustomTemplate' ],
+
+    'exclude' => true,
+    'sql' => "varchar(64) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogTaxonomyNavTemplate'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyNavTemplate'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen'=>true,
+        'tl_class'=>'w50',
+        'maxlength' => 64,
+        'includeBlankOption'=>true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getTaxonomyNavTemplate' ],
 
     'exclude' => true,
     'sql' => "varchar(64) NOT NULL default ''"

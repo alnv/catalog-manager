@@ -40,6 +40,8 @@ class ContentCatalogFilterForm extends \ContentElement {
             return null;
         }
 
+        if ( TL_MODE == 'FE' && !Toolkit::isEmpty( $this->customCatalogElementTpl ) ) $this->strTemplate = $this->customCatalogElementTpl;
+
         return parent::generate();
     }
 

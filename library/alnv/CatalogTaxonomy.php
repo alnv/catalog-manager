@@ -16,6 +16,8 @@ class CatalogTaxonomy extends CatalogController {
     protected $arrRedirectPage = [];
     protected $arrTaxonomyTree = [];
     protected $arrCatalogFields = [];
+    protected $strTemplate = 'ctlg_taxonomy_nav';
+
 
     public function __construct() {
 
@@ -74,6 +76,8 @@ class CatalogTaxonomy extends CatalogController {
             $this->strOrderBy = $this->catalogOrderByTaxonomies;
         }
 
+        if ( !Toolkit::isEmpty( $this->arrOptions['catalogTaxonomyNavTemplate'] ) ) $this->strTemplate = $this->arrOptions['catalogTaxonomyNavTemplate'];
+
         $this->setTaxonomyTree();
 
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyTaxonomyTree'] ) ) {
@@ -102,7 +106,7 @@ class CatalogTaxonomy extends CatalogController {
             $arrTaxonomies[] = $this->setSubTaxonomies( $arrTree );
         }
 
-        $objTemplate = new \FrontendTemplate( 'ctlg_taxonomy_nav' );
+        $objTemplate = new \FrontendTemplate( $this->strTemplate );
         $objTemplate->setData(['arrItems' => $arrTaxonomies ]);
         $strResults .= $objTemplate->parse();
 

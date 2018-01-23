@@ -486,6 +486,12 @@ class tl_module extends \Backend {
     }
 
 
+    public function getTaxonomyNavTemplate() {
+
+        return $this->getTemplateGroup( 'ctlg_taxonomy_nav' );
+    }
+
+
     public function getKeyColumns( $objWidget ) {
 
         $arrReturn = [];

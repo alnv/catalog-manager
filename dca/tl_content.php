@@ -1,6 +1,6 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogFilterForm'] = '{type_legend},type,headline;{include_legend},catalogForm;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogFilterForm'] = '{type_legend},type,headline;{include_legend},catalogForm;{template_legend:hide},customCatalogElementTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogSocialSharingButtons'] = '{type_legend},type,headline;{social_sharing_legend},catalogSocialSharingButtons,catalogSocialSharingTable,catalogSocialSharingTitle,catalogSocialSharingDescription,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['catalogForm'] = [
@@ -138,6 +138,24 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogDisableSocialSharingCSS'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['customCatalogElementTpl'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['customTpl'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'includeBlankOption' =>true,
+        'tl_class' =>'w50',
+        'chosen' =>true,
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_content', 'getFilterFormTemplates'  ],
+
+    'exclude'  => true,
+    'sql' => "varchar(64) NOT NULL default ''"
 ];
 
 if ( !isset( $GLOBALS['TL_DCA']['tl_content']['edit'] ) ) $GLOBALS['TL_DCA']['tl_content']['edit'] = [];

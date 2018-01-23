@@ -1021,4 +1021,10 @@ class FrontendEditing extends CatalogController {
 
         return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
     }
+
+
+    public function getRedirectID() {
+
+        return $this->strRedirectID;
+    }
 }

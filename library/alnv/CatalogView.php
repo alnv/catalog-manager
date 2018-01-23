@@ -1314,4 +1314,16 @@ class CatalogView extends CatalogController {
 
         return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
     }
+
+
+    public function changeItemOperations( $arrItemOperations ) {
+
+        $this->catalogItemOperations = $arrItemOperations;
+    }
+
+
+    public function getItemOperations() {
+
+        return $this->catalogItemOperations;
+    }
 }

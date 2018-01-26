@@ -61,7 +61,7 @@ class ContentCatalogFilterForm extends \ContentElement {
                     $arrFields[ $strName ] = sprintf( '<input type="hidden" name="%s" value="%s">',
 
                         $this->arrFormFields[ $strName ]['name'],
-                        $this->arrFormFields[ $strName ]['value']
+                        $this->arrFormFields[ $strName ]['value'] ? $this->arrFormFields[ $strName ]['value'] : $this->arrFormFields[ $strName ]['defaultValue']
                     );
 
                     continue;

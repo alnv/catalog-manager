@@ -9,7 +9,6 @@ class GeoCoding extends CatalogController {
     private $strPostal;
     private $strCountry;
     private $strStreetNumber;
-
     private $arrGoogleMapsCache = [];
 
 
@@ -77,8 +76,8 @@ class GeoCoding extends CatalogController {
 
             $arrGeometry = $arrResponse['results'][0]['geometry'];
 
-            $arrReturn['lat'] = $arrGeometry['location'] ? $arrGeometry['location']['lat'] : '';
-            $arrReturn['lng'] = $arrGeometry['location'] ? $arrGeometry['location']['lng'] : '';
+            $arrReturn['lat'] = $arrGeometry['location'] ? preg_replace( '/,/', '.', (string) $arrGeometry['location']['lat'] ) : '';
+            $arrReturn['lng'] = $arrGeometry['location'] ? preg_replace( '/,/', '.', (string) $arrGeometry['location']['lng'] ) : '';
 
             $this->arrGoogleMapsCache[ $strCacheID ] = $arrReturn;
 

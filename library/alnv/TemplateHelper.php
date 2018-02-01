@@ -35,8 +35,8 @@ class TemplateHelper extends CatalogController {
 
         if ( $strPage < 1 || $strPage > max(ceil( $intTotal / $intPerPage ), 1 ) ) {
 
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate($pageID);
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
         }
 
         $objPagination = new \Pagination( $intTotal, $intPerPage, \Config::get('maxPaginationLinks'), $strPageID );

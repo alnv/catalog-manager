@@ -270,8 +270,8 @@ class GalleryCreator extends \Frontend {
 
             if ( $intPage < 1 || $intPage > max( ceil( $intTotal/$this->perPage ), 1 ) ) {
 
-                $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                $objHandler->generate( $objPage->id );
+                $objCatalogException = new CatalogException();
+                $objCatalogException->set404();
             }
 
             $intOffset = ( $intPage - 1) * $this->perPage;

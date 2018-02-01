@@ -100,22 +100,14 @@ class ModuleUniversalView extends \Module {
 
         if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
-            global $objPage;
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $objPage->id );
-
-            exit;
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set403();
         }
 
         if ( !$blnIsVisible ) {
 
-            global $objPage;
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $objPage->id );
-
-            exit;
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
         }
 
         $this->FrontendEditing->deleteEntity();
@@ -212,12 +204,8 @@ class ModuleUniversalView extends \Module {
 
         if ( empty( $strOutput ) ) {
 
-            global $objPage;
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $objPage->id );
-            
-            exit;
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
         }
 
         $this->Template->showAsGroup = false;
@@ -256,22 +244,14 @@ class ModuleUniversalView extends \Module {
 
         if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
 
-            global $objPage;
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate( $objPage->id );
-
-            exit;
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set403();
         }
 
         if ( !$blnIsVisible && $this->strAct != 'create' ) {
 
-            global $objPage;
-
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate( $objPage->id );
-
-            exit;
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
         }
 
         $this->Template->output = $this->FrontendEditing->render();

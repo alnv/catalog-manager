@@ -201,6 +201,7 @@ class DcBuilder extends CatalogController {
         $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'onCutCallback' ];
         $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'onSubmitCallback' ];
         $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'onDeleteCallback' ];
+        $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'checkForDynValues' ];
 
         return $arrReturn;
     }

@@ -295,7 +295,7 @@ class SQLQueryBuilder extends CatalogController {
                         'field' => $arrQuery['field'],
                         'operator' => $arrQuery['operator']
 
-                    ], ( $intIndex || $intParentTotal ? ' OR' : '' ), $strQuerySeparator );
+                    ], ( $intIndex || $intParentTotal ? ' OR' : '' ), ( count( $arrQuery['value'] ) > 1 ? $strQuerySeparator : '' ) );
                 }
 
                 return $strQuery;

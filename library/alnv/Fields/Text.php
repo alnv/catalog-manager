@@ -43,13 +43,6 @@ class Text {
             $arrDCAField['options'] = $objAutoCompletion->getOptions();
         }
 
-        if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
-
-            if ( !is_array( $arrField['save_callback'] ) ) $arrField['save_callback'] = [];
-            
-            $arrDCAField['save_callback'][] = [ 'CatalogManager\DcCallbacks', 'setDynValue' ];
-        }
-
         return $arrDCAField;
     }
 

@@ -31,21 +31,32 @@ class DcCallbacks extends \Backend {
     }
 
     
-    public function setDynValue( $varValue, $objDc = null ) {
+    public function checkForDynValues( \DataContainer $objDc ) {
 
-        if ( is_null( $objDc ) ) return $varValue;
-        if ( is_null( $objDc->activeRecord ) ) return $varValue;
+        $strId = \Input::get('id') ? \Input::get('id') : $objDc->id;
 
+        if ( !$strId ) return null;
+        if ( is_null( $objDc ) ) return null;
+        if ( $_POST['SUBMIT_TYPE'] == 'auto' ) return null;
+        if ( is_null( $objDc->activeRecord ) ) return null;
+        if ( !$objDc->table || !$this->Database->tableExists( $objDc->table ) ) return null;
+
+        $arrValues = [];
         $objFields = new CatalogFieldBuilder();
         $objFields->initialize(  $objDc->table );
         $arrFields = $objFields->getCatalogFields( false );
 
-        if ( isset( $arrFields[ $objDc->field ] ) && $arrFields[ $objDc->field ]['dynValue'] ) {
+        foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            $varValue = \StringUtil::parseSimpleTokens( $arrFields[ $objDc->field ]['dynValue'],  $objDc->activeRecord->row() );
+            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
+
+                $arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], $objDc->activeRecord->row() );
+
+                if ( $strFieldname == 'title' ) $arrValues['alias'] = $this->generateFEAlias( '', $arrValues[ $strFieldname ], $objDc->table, $strId );
+            }
         }
 
-        return $varValue;
+        if ( is_array( $arrValues ) && count( $arrValues ) > 0 ) $this->Database->prepare( 'UPDATE '. $objDc->table .' %s WHERE id = ?' )->set( $arrValues )->execute( \Input::get('id') );
     }
 
 
@@ -193,13 +204,12 @@ class DcCallbacks extends \Backend {
 
     public function generateAlias( $varValue, \DataContainer $dc, $strField = 'title', $strTable = '' ) {
 
+        if ( $_POST['SUBMIT_TYPE'] == 'auto' ) return $varValue;
+
         $blnAutoAlias = false;
         $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : $strTable;
 
-        if ( !$strTable ) {
-
-            return $varValue . uniqid( '_' );
-        }
+        if ( !$strTable ) return $varValue . uniqid( '_' );
 
         if ( !$varValue ) {
 

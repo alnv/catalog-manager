@@ -376,12 +376,6 @@ class FrontendEditing extends CatalogController {
                     }
                 }
 
-                if ( $strFieldname == 'alias' ) {
-
-                    $objDcCallbacks = new DcCallbacks();
-                    $varValue = $objDcCallbacks->generateFEAlias( $varValue, $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
-                }
-
                 if ( $objWidget->hasErrors() ) {
 
                     $this->blnNoSubmit = true;
@@ -771,12 +765,6 @@ class FrontendEditing extends CatalogController {
             $this->getGeoCordValues();
         }
 
-        if ( Toolkit::isEmpty( $this->arrValues['alias'] ) ) {
-
-            $objDcCallbacks = new DcCallbacks();
-            $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias( '', $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
-        }
-
         if ( \Input::get('pid') ) {
 
             $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
@@ -802,6 +790,14 @@ class FrontendEditing extends CatalogController {
                 }
             }
         }
+
+        foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
+
+            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) $this->arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], $this->arrValues );
+        }
+
+        $objDcCallbacks = new DcCallbacks();
+        $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias( $this->arrValues['alias'], $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id );
 
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] ) ) {
 

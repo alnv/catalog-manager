@@ -793,7 +793,7 @@ class FrontendEditing extends CatalogController {
 
         foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
 
-            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) $this->arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], $this->arrValues );
+            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) $this->arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], Toolkit::prepareValues4Db( $this->arrValues ) );
         }
 
         $objDcCallbacks = new DcCallbacks();

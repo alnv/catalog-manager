@@ -93,7 +93,7 @@ class CatalogTaxonomyWizard extends \Widget {
                     break;
             }
 
-            $this->Database->prepare( sprintf( 'UPDATE %s SET `%s`=? WHERE id=? ', \Input::get('table'), $this->strField ) )->execute( serialize( $this->varValue ), $this->currentRecord );
+            $this->Database->prepare( sprintf( 'UPDATE %s SET `%s`=? WHERE id=? ', $this->dcTable, $this->strField ) )->execute( serialize( $this->varValue ), $this->currentRecord );
             $strRedirectUrl = \Environment::get('request');
             $strRedirectUrl = preg_replace( '/&(amp;)?cid=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', $strRedirectUrl ));
             $strRedirectUrl = preg_replace( '/&(amp;)?subId=[^&]*/i', '', preg_replace( '/&(amp;)?' . preg_quote( $strCommand, '/' ) . '=[^&]*/i', '', $strRedirectUrl ));

@@ -53,7 +53,7 @@ class DcCallbacks extends \Backend {
                 $arrActiveRecords = Toolkit::prepareValues4Db( $objDc->activeRecord->row() );
                 $arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], $arrActiveRecords );
 
-                if ( $strFieldname == 'title' ) $arrValues['alias'] = $this->generateFEAlias( '', $arrValues[ $strFieldname ], $objDc->table, $strId );
+                if ( $strFieldname == 'title' && Toolkit::hasDynAlias() ) $arrValues['alias'] = $this->generateFEAlias( '', $arrValues[ $strFieldname ], $objDc->table, $strId );
             }
         }
 

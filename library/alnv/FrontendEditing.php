@@ -797,7 +797,7 @@ class FrontendEditing extends CatalogController {
 
                 $this->arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], Toolkit::prepareValues4Db( $this->arrValues ) );
 
-                if ( $strFieldname == 'title' ) $this->arrValues['alias'] = '';
+                if ( $strFieldname == 'title' && Toolkit::hasDynAlias() ) $this->arrValues['alias'] = '';
             }
         }
 

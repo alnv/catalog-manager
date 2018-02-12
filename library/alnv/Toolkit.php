@@ -770,4 +770,10 @@ class Toolkit {
 
         return $arrFlattedArray;
     }
+
+
+    public static function hasDynAlias() {
+
+        return is_bool( \Config::get('dynAlias') ) && \Config::get('dynAlias') === true;
+    }
 }

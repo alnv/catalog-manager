@@ -121,6 +121,14 @@ $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingHeadline'] = [ 'Headline',
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingCssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogJoinCTables'] = [ 'Join child tables', 'Here you can join child tables.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyNavTemplate'] = [ 'Navigation template', 'Here you can select a navigation template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSitemap'] = [ 'Show in sitemap', 'Here you can define whether the page is shown in the sitemap.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogNoSearch'] = [ 'Do not search', 'Exclude the page from the search index.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
+
+    'map_default' => 'Default',
+    'map_never' => 'Show never'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

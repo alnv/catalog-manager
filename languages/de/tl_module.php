@@ -123,6 +123,14 @@ $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingHeadline'] = [ 'Überschri
 $GLOBALS['TL_LANG']['tl_module']['catalogSocialSharingCssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogJoinCTables'] = [ 'Kind-Tabellenverknüpfung', 'Hier können Sie die Kind-Tabellen verknüpfen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyNavTemplate'] = [ 'Navigation Template', 'Hier können Sie ein Template für die Navigation auswählen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogSitemap'] = [ 'In der Sitemap zeigen', 'Hier können Sie festlegen, ob die Seite in der Sitemap angezeigt wird.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogNoSearch'] = [ 'Nicht durchsuchen', 'Diese Seite nicht in den Suchindex aufnehmen.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
+
+    'map_default' => 'Standard',
+    'map_never' => 'Nie anzeigen'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'] = [
 

@@ -9,6 +9,7 @@ class Toolkit {
     public static $arrRequireSortingModes = [ '4', '5', '6' ];
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
     public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
+    public static $nullableOperators = [ 'isNotEmpty', 'isEmpty' ];
     public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
     public static $arrSocialSharingButtons = [ 'mail', 'twitter', 'facebook', 'xing', 'linkedin' ];
     public static $arrImageExtensions = [ 'jpg', 'jpeg', 'gif', 'png', 'svg', 'svgz', 'bmp', 'tiff', 'tif' ];
@@ -404,15 +405,9 @@ class Toolkit {
 
             foreach ( $arrQueries as $arrQuery ) {
 
-                if ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) {
+                if ( in_array( $arrQuery['operator'], self::$nullableOperators ) ) $arrQuery['allowEmptyValues'] = '1';
 
-                    return null;
-                }
-
-                if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) ) {
-
-                    $arrQuery = $fnCallback( $arrQuery );
-                }
+                if ( !is_null( $fnCallback ) && is_callable( $fnCallback ) )  $arrQuery = $fnCallback( $arrQuery );
 
                 $arrQuery = self::parseQuery( $arrQuery );
 

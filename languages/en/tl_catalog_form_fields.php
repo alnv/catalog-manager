@@ -11,7 +11,6 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template set
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Title', 'Please enter a title.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Field type', 'Please select a field type.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'field name', 'Please enter valid field name.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Field label', 'Please enter your field label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Multiple', 'Make the input field multiple.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Placeholder', 'Please enter your placeholder.' ];
@@ -28,7 +27,9 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab index', 'The 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'] = [ 'Replace blank option', 'Here you can replace blank option.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Range (to)', 'Here you can adjust the accuracy of the circumference.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Range (from)', 'Here you can adjust the accuracy of the circumference.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Fieldname', 'Fieldname is a unique name for identifying the field, for example for the CTLG_ACTIVE insert tag. {{CTLG_ACTIVE :: *Fieldname}}' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['options'] = [ 'List', 'Please insert your select list.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Source', 'Here you can select a source from which the selection list should be generated.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Table', 'Please select a Table.' ];

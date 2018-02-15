@@ -5,34 +5,35 @@ namespace CatalogManager;
 class SearchIndexBuilder extends \Frontend {
 
 
+    protected $arrRoutings = [];
+
+
     public function initialize( $arrPages, $intRoot = 0, $blnIsSitemap = false ) {
 
         $arrRoot = [];
+        $this->arrRoutings = [];
         $this->import( 'SQLQueryBuilder' );
 
         if ( $intRoot > 0 ) $arrRoot = $this->Database->getChildRecords( $intRoot, 'tl_page' );
 
         $arrProcessed = [];
-        $objModules = $this->Database->prepare( 'SELECT * FROM tl_module WHERE type = ? OR type = ?' )->execute( 'catalogUniversalView', 'catalogMasterView' );
+        $objModules = $this->Database->prepare( 'SELECT * FROM tl_module WHERE type = ?' )->execute( 'catalogUniversalView' );
 
         while ( $objModules->next() ) {
 
             if ( !$objModules->catalogUseMasterPage ) continue;
-
             if ( !$objModules->catalogMasterPage ) continue;
-
             if ( !$objModules->catalogTablename ) continue;
 
             if ( !empty( $arrRoot ) && !in_array( $objModules->catalogMasterPage, $arrRoot ) ) continue;
 
             if ( !isset( $arrProcessed[ $objModules->catalogMasterPage ] ) ) {
 
-                $objParent = $this->getPageModelWithDetailsByID( $objModules->catalogMasterPage );
+                $objParent = $this->getPageModelWithDetailsByID( $objModules->catalogMasterPage, $objModules, $blnIsSitemap );
 
-                if ( !$objParent ) continue;
+                if ( $objParent === null ) continue;
 
-                $strDomain = ( $objParent->rootUseSSL ? 'https://' : 'http://' ) . ( $objParent->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
-                $arrProcessed[ $objModules->catalogMasterPage ] = $strDomain . $this->generateFrontendUrl( $objParent->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? '/%s' : '/items/%s' ), $objParent->language );
+                $arrProcessed[ $objModules->catalogMasterPage ] = $this->setProcessedDomain( $objParent, $objModules->catalogTablename );
             }
 
             $objCatalog = $this->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $objModules->catalogTablename );
@@ -123,7 +124,7 @@ class SearchIndexBuilder extends \Frontend {
 
             while ( $objEntities->next() ) {
 
-                $strSiteMapUrl = $this->createMasterUrl( $arrCatalog, $objEntities, $strUrl );
+                $strSiteMapUrl = $this->createMasterUrl( $arrCatalog, $objEntities, $strUrl, $objModules->catalogTablename );
 
                 if ( $strSiteMapUrl && !in_array( $strSiteMapUrl, $arrPages ) ) $arrPages[] = $strSiteMapUrl;
             }
@@ -133,7 +134,7 @@ class SearchIndexBuilder extends \Frontend {
     }
 
 
-    protected function createMasterUrl( $arrCatalog, $objEntities, $strUrl ) {
+    protected function createMasterUrl( $arrCatalog, $objEntities, $strUrl, $strTablename ) {
 
         $strBase = '';
         $strUrl = rawurldecode( $strUrl );
@@ -159,24 +160,56 @@ class SearchIndexBuilder extends \Frontend {
             }
         }
 
-        return $strBase . sprintf( $strUrl, ( ( $objEntities->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objEntities->alias : $objEntities->id ) );
+        $arrParameters = [];
+
+        if ( isset( $this->arrRoutings[ $strTablename ] ) && is_array( $this->arrRoutings[ $strTablename ] ) ) {
+
+            foreach ( $this->arrRoutings[ $strTablename ] as $strParameter ) {
+
+                $arrParameters[] = $objEntities->{$strParameter} ? $objEntities->{$strParameter} : ' ';
+            }
+        }
+
+        $arrParameters[] = ( $objEntities->alias != '' && !\Config::get( 'disableAlias' ) ) ? $objEntities->alias : $objEntities->id;
+
+        return $strBase . vsprintf( $strUrl, $arrParameters );
     }
 
 
-    protected function getPageModelWithDetailsByID( $intPageID ) {
+    protected function getPageModelWithDetailsByID( $intPageID, $objCatalog = null, $blnIsSitemap = false ) {
 
         $dteTime = \Date::floorToMinute();
         $objPage = \PageModel::findWithDetails( $intPageID );
 
         if ( $objPage === null ) return null;
 
-        if ( !$objPage->published || ( $objPage->start != '' && $objPage->start > $dteTime ) || ( $objPage->stop != '' && $objPage->stop <= ( $dteTime + 60 ) ) ) {
+        if ( !$objPage->published || ( $objPage->start != '' && $objPage->start > $dteTime ) || ( $objPage->stop != '' && $objPage->stop <= ( $dteTime + 60 ) ) ) return null;
 
-            return null;
-        }
-
-        if ( $objPage->sitemap == 'map_never' ) return null;
+        if ( $objCatalog !== null && $objCatalog->catalogNoSearch ) return null;
+        if ( $objCatalog !== null && $blnIsSitemap && $objCatalog->catalogSitemap == 'map_never' ) return null;
 
         return $objPage;
+    }
+
+
+    protected function setProcessedDomain( $objPage, $strTablename  ) {
+
+        $strRoutings = '';
+        $strDomain = ( $objPage->rootUseSSL ? 'https://' : 'http://' ) . ( $objPage->domain ?: \Environment::get( 'host' ) ) . TL_PATH . '/';
+
+        if ( $objPage->catalogUseRouting ) {
+
+            $this->arrRoutings[ $strTablename ] = Toolkit::getRoutingParameter( $objPage->catalogRouting );
+
+            if ( in_array( 'auto_item', $this->arrRoutings[ $strTablename ] ) ) unset( $this->arrRoutings[ $strTablename ]['auto_item'] );
+        }
+
+        if ( isset( $this->arrRoutings[ $strTablename ] ) && is_array( $this->arrRoutings[ $strTablename ] ) ) {
+
+            $arrRoutings = array_keys( $this->arrRoutings[ $strTablename ] );
+            $strRoutings = implode( '', array_fill( 0, count( $arrRoutings ), '/%s' ) );
+        }
+
+        return $strDomain . $this->generateFrontendUrl( $objPage->row(), ( ( \Config::get( 'useAutoItem' ) && !\Config::get( 'disableAlias' ) ) ? $strRoutings . '/%s' : $strRoutings . '/items/%s' ), $objPage->language );
     }
 }

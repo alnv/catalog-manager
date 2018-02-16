@@ -35,7 +35,9 @@ class CatalogManagerInitializer {
 
         if ( TL_MODE == 'FE' ) {
 
+            \FrontendUser::getInstance();
             \Database::getInstance();
+
             $this->setCatalogs();
         }
     }

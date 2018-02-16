@@ -6,7 +6,7 @@
    <?php endif; ?>
 
    <?php if ( $this->message ): ?>
-      <?= $this->message; ?>
+      <p class="ctlg_view_message"><?= $this->message; ?></p>
    <?php endif; ?>
 
    <?php $intIndex = 0; ?>

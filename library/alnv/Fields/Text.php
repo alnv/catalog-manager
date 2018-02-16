@@ -5,7 +5,7 @@ namespace CatalogManager;
 class Text {
 
     
-    public static function generate( $arrDCAField, $arrField, $objModule = null ) {
+    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
 
         $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
 
@@ -32,7 +32,7 @@ class Text {
             $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
         }
 
-        if ( $arrField['autoCompletionType'] ) {
+        if ( $arrField['autoCompletionType'] && $blnActive ) {
 
             $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
 

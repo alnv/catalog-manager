@@ -308,11 +308,14 @@ class CatalogView extends CatalogController {
     public function getCatalogView( $arrQuery ) {
 
         global $objPage;
-        
-        $strPageID = 'page_e' . $this->id;
+
+        $this->catalogOffset = (int) $this->catalogOffset;
+
         $intOffset = $this->catalogOffset;
-        $intPerPage = $this->catalogPerPage;
-        $intPagination = \Input::get( $strPageID );
+        $strPageID = 'page_e' . $this->id;
+        $intPerPage = intval( $this->catalogPerPage );
+        $intPagination = intval( \Input::get( $strPageID ) );
+
         $arrQuery['table'] = $this->catalogTablename;
         $arrQuery['joins'] = [];
 
@@ -493,10 +496,7 @@ class CatalogView extends CatalogController {
             ];
         }
 
-        if ( $this->catalogOffset ) {
-
-            $intTotal -= $intOffset;
-        }
+        if ( $this->catalogOffset ) $intTotal -= $intOffset;
 
         if ( \Input::get( $strPageID ) && $this->catalogAddPagination ) {
 
@@ -511,12 +511,16 @@ class CatalogView extends CatalogController {
         }
 
         $arrCatalogs = [];
+        $intCurrentEntity = 0;
         $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
         $intNumRows = $objEntities->numRows;
+
+        if ( $this->strMode == 'view' ) $this->objMainTemplate->entityIndex = [ $intNumRows, $intTotal ];
 
         while ( $objEntities->next() ) {
 
             $arrCatalog = $objEntities->row();
+            $intCurrentEntity++;
 
             $arrCatalog['useSocialSharingButtons'] = $this->catalogUseSocialSharingButtons ? true : false;
             $arrCatalog['origin'] = $arrCatalog;
@@ -577,10 +581,7 @@ class CatalogView extends CatalogController {
 
                         case 'map':
 
-                            if ( !$this->blnGoogleMapScript ) {
-
-                                $this->blnGoogleMapScript = true;
-                            }
+                            if ( !$this->blnGoogleMapScript ) $this->blnGoogleMapScript = true;
 
                             $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField, $arrCatalog );
 
@@ -618,7 +619,15 @@ class CatalogView extends CatalogController {
             $arrCatalog['catalogEntityFields'] = $this->arrEntityFields;
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
             $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
-            
+
+            if ( $this->strMode == 'view' ) {
+
+                $intPageNumber = $intPagination - 1;
+                $intPageOffset = !$this->catalogOffset ? $intPerPage : $this->catalogOffset;
+                $intMultiplicator = $intPageNumber > 0 ? $intPageOffset * $intPageNumber : 0;
+                $arrCatalog['entityIndex'] = [ $intCurrentEntity + $intMultiplicator, $intTotal ];
+            }
+
             if ( $this->enableTableView && $this->strMode == 'view' ) {
 
                 $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
@@ -685,20 +694,11 @@ class CatalogView extends CatalogController {
             $this->objMainTemplate->debug = $objDebugTemplate->parse();
         }
 
-        if ( $this->catalogRandomSorting ) {
+        if ( $this->catalogRandomSorting ) shuffle( $arrCatalogs );
 
-            shuffle( $arrCatalogs );
-        }
-        
-        if ( $this->catalogUseArray ) {
+        if ( $this->catalogUseArray ) return $this->getArrayValue( $arrCatalogs, $intNumRows );
 
-            return $this->getArrayValue( $arrCatalogs, $intNumRows );
-        }
-
-        if ( $this->blnShowAsGroup ) {
-
-            return $this->getGroupedValue( $arrCatalogs );
-        }
+        if ( $this->blnShowAsGroup ) return $this->getGroupedValue( $arrCatalogs );
 
         return $this->getTemplateValue( $arrCatalogs, $intNumRows );
     }
@@ -769,6 +769,7 @@ class CatalogView extends CatalogController {
         if ( $varGroupName && is_string( $varGroupName ) ) {
 
             $objTemplate = new \FrontendTemplate( $this->strTemplate );
+
             if ( !$this->arrGroups[ $varGroupName ] ) $arrIndexes[ $varGroupName ] = 0;
 
             $arrCatalog['cssClass'] = $arrIndexes[ $varGroupName ] % 2 ? ' even' : ' odd';
@@ -788,19 +789,12 @@ class CatalogView extends CatalogController {
         foreach ( $arrCatalogs as $intIndex => $arrCatalog ) {
 
             $arrCatalog['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
-            $arrCatalog['entityIndex'] = [ $intIndex + 1, $intNumRows ];
 
-            if ( !$intIndex ) {
-
-                $arrCatalog['cssClass'] .= ' first';
-            }
-
-            if ( $intIndex == ( $intNumRows - 1 ) ) {
-
-                $arrCatalog['cssClass'] .= ' last';
-            }
+            if ( !$intIndex ) $arrCatalog['cssClass'] .= ' first';
+            if ( $intIndex == ( $intNumRows - 1 ) ) $arrCatalog['cssClass'] .= ' last';
 
             $objTemplate->setData( $arrCatalog );
+
             $strContent .= $objTemplate->parse();
         }
 
@@ -813,17 +807,9 @@ class CatalogView extends CatalogController {
         for ( $intIndex = 0; $intIndex < count( $arrCatalogs ); $intIndex++ ) {
 
             $arrCatalogs[ $intIndex ]['cssClass'] = $intIndex % 2 ? ' even' : ' odd';
-            $arrCatalogs[ $intIndex ]['entityIndex'] = [ $intIndex + 1, $intNumRows ];
 
-            if ( !$intIndex ) {
-
-                $arrCatalogs[ $intIndex ]['cssClass'] .= ' first';
-            }
-
-            if ( $intIndex == ( $intNumRows - 1 ) ) {
-
-                $arrCatalogs[ $intIndex ]['cssClass'] .= ' last';
-            }
+            if ( !$intIndex ) $arrCatalogs[ $intIndex ]['cssClass'] .= ' first';
+            if ( $intIndex == ( $intNumRows - 1 ) )  $arrCatalogs[ $intIndex ]['cssClass'] .= ' last';
         }
 
         return $arrCatalogs;

@@ -9,6 +9,7 @@ class DcBuilder extends CatalogController {
     protected $strTable;
     protected $arrFields = [];
     protected $arrCatalog = [];
+    protected $blnActive = true;
     protected $arrErrorTables = [];
     protected $arrOverwritten = [];
     protected $strPermissionType = '';
@@ -21,7 +22,7 @@ class DcBuilder extends CatalogController {
     ];
 
 
-    public function __construct( $arrCatalog ) {
+    public function __construct( $arrCatalog, $blnActive ) {
 
         parent::__construct();
 
@@ -31,6 +32,7 @@ class DcBuilder extends CatalogController {
         $this->import( 'CatalogFieldBuilder' );
         $this->import( 'I18nCatalogTranslator' );
 
+        $this->blnActive = $blnActive;
         $this->arrCatalog = $arrCatalog;
         $this->strID = $arrCatalog['id'];
         $this->strTable = $arrCatalog['tablename'];
@@ -39,7 +41,7 @@ class DcBuilder extends CatalogController {
         if ( !$this->strTable ) return null;
 
         $this->CatalogDcExtractor->initialize( $this->strTable );
-        $this->CatalogFieldBuilder->initialize( $this->strTable );
+        $this->CatalogFieldBuilder->initialize( $this->strTable, $this->blnActive );
 
         if ( \Input::get( 'do' ) && \Input::get( 'do' ) == $this->arrCatalog['tablename'] ) {
 

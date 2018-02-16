@@ -164,7 +164,7 @@ class CatalogManagerInitializer {
 
                     if ( Toolkit::isCoreTable( $strTablename ) ) continue;
 
-                    $this->initializeDcByTablename( $strTablename );
+                    $this->initializeDcByTablename( $strTablename, [], true );
                 }
 
                 return null;
@@ -173,17 +173,17 @@ class CatalogManagerInitializer {
 
         foreach ( $this->arrCatalogs as $strTablename => $arrCatalog ) {
 
-            $this->initializeDcByTablename( $strTablename, $arrCatalog );
+            $this->initializeDcByTablename( $strTablename, $arrCatalog, false );
         }
     }
 
 
-    protected function initializeDcByTablename( $strTablename, $arrCatalog = [] ) {
+    protected function initializeDcByTablename( $strTablename, $arrCatalog = [], $blnActive = true ) {
 
         if ( empty( $arrCatalog ) ) $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
         if ( $arrCatalog === null ) return null;
 
-        $objDcBuilder = new DcBuilder( $arrCatalog );
+        $objDcBuilder = new DcBuilder( $arrCatalog, $blnActive );
         $objDcBuilder->createDataContainerArray();
 
         if ( !Toolkit::isEmpty( $arrCatalog['permissionType'] ) ) {

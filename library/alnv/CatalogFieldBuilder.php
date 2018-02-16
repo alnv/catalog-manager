@@ -7,6 +7,7 @@ class CatalogFieldBuilder extends CatalogController {
 
     protected $strTable = '';
     protected $arrCatalog = [];
+    protected $blnActive = true;
     protected $arrCatalogFields = [];
 
 
@@ -19,8 +20,9 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    public function initialize( $strTablename ) {
+    public function initialize( $strTablename, $blnActive = true ) {
 
+        $this->blnActive = $blnActive;
         $this->strTable = $strTablename;
 
         if ( TL_MODE == 'BE' && !Toolkit::isEmpty( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ] ) ) {
@@ -201,7 +203,7 @@ class CatalogFieldBuilder extends CatalogController {
 
             case 'text':
 
-                $arrDcField = Text::generate( $arrDcField, $arrField );
+                $arrDcField = Text::generate( $arrDcField, $arrField, null, $this->blnActive );
 
                 break;
 
@@ -231,19 +233,19 @@ class CatalogFieldBuilder extends CatalogController {
 
             case 'select':
 
-                $arrDcField = Select::generate( $arrDcField, $arrField, $objModule );
+                $arrDcField = Select::generate( $arrDcField, $arrField, $objModule, $this->blnActive );
 
                 break;
 
             case 'radio':
 
-                $arrDcField = Radio::generate( $arrDcField, $arrField, $objModule );
+                $arrDcField = Radio::generate( $arrDcField, $arrField, $objModule, $this->blnActive );
 
                 break;
 
             case 'checkbox':
 
-                $arrDcField = Checkbox::generate( $arrDcField, $arrField, $objModule );
+                $arrDcField = Checkbox::generate( $arrDcField, $arrField, $objModule, $this->blnActive );
 
                 break;
 

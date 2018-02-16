@@ -142,10 +142,9 @@ class ModuleUniversalView extends \Module {
         $this->Template->output = is_string( $varView ) ? $varView : '';
         $this->Template->hasOperations = $this->CatalogView->getHasOperationFlag();
 
-        if ( empty( $varView ) ) {
-
-            $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
-        }
+        if ( $this->Template->entityIndex[1] > 1 ) $this->Template->message = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['entitiesAmount'], $this->Template->entityIndex[1] );
+        if ( $this->Template->entityIndex[1] == 1 ) $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'];
+        if ( !$this->Template->entityIndex[1] ) $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
 
         if ( $this->catalogSendJsonHeader ) {
 

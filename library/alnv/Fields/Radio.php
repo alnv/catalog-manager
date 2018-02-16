@@ -8,7 +8,7 @@ class Radio {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $objModule = null ) {
+    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
 
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
         $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
@@ -20,23 +20,8 @@ class Radio {
         }
 
         $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
-        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID );
 
-        if ( $objOptionGetter->isForeignKey() ) {
-
-            $arrField['dbTableKey'] = 'id';
-            $strForeignKey = $objOptionGetter->getForeignKey();
-
-            if ( $strForeignKey ) {
-
-                $arrDCAField['foreignKey'] = $strForeignKey;
-            }
-        }
-
-        else {
-
-            $arrDCAField['options'] = $objOptionGetter->getOptions();
-        }
+        if ( $blnActive ) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
 
         return $arrDCAField;
     }
@@ -69,5 +54,29 @@ class Radio {
             $objOptionGetter = new OptionsGetter( $arrField );
             static::$arrCache[ $strFieldname ] = $objOptionGetter->getOptions();
         }
+    }
+
+
+    protected static function getOptions( $arrDCAField, $arrField, $strID, $blnActive ) {
+
+        $objOptionGetter = new OptionsGetter( $arrField, $strID );
+
+        if ( $objOptionGetter->isForeignKey() ) {
+
+            $arrField['dbTableKey'] = 'id';
+            $strForeignKey = $objOptionGetter->getForeignKey();
+
+            if ( $strForeignKey ) {
+
+                $arrDCAField['foreignKey'] = $strForeignKey;
+            }
+        }
+
+        else {
+
+            $arrDCAField['options'] = $objOptionGetter->getOptions();
+        }
+
+        return $arrDCAField;
     }
 }

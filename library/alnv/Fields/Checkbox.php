@@ -8,38 +8,16 @@ class Checkbox {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $objModule = null ) {
+    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
 
+        $arrDCAField['eval']['csv'] = ',';
         $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
         $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
         $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
 
         $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
-        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID );
 
-        if ( $objOptionGetter->isForeignKey() ) {
-
-            $arrField['dbTableKey'] = 'id';
-            $strForeignKey = $objOptionGetter->getForeignKey();
-
-            if ( $strForeignKey ) {
-
-                $arrDCAField['foreignKey'] = $strForeignKey;
-            }
-        }
-
-        else {
-
-            $arrOptions = $objOptionGetter->getOptions();
-
-            if ( !empty( $arrOptions ) ) {
-
-                $arrDCAField['options'] = $arrOptions;
-                $arrDCAField['reference'] = $arrDCAField['options'];
-            }
-        }
-
-        $arrDCAField['eval']['csv'] = ',';
+        if ( $blnActive ) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
 
         return $arrDCAField;
     }
@@ -84,5 +62,35 @@ class Checkbox {
             $objOptionGetter = new OptionsGetter( $arrField );
             static::$arrCache[ $strFieldname ] = $objOptionGetter->getOptions();
         }
+    }
+
+
+    protected static function getOptions( $arrDCAField, $arrField, $strID, $blnActive ) {
+
+        $objOptionGetter = new OptionsGetter( $arrField, $strID );
+
+        if ( $objOptionGetter->isForeignKey() ) {
+
+            $arrField['dbTableKey'] = 'id';
+            $strForeignKey = $objOptionGetter->getForeignKey();
+
+            if ( $strForeignKey ) {
+
+                $arrDCAField['foreignKey'] = $strForeignKey;
+            }
+        }
+
+        else {
+
+            $arrOptions = $objOptionGetter->getOptions();
+
+            if ( !empty( $arrOptions ) ) {
+
+                $arrDCAField['options'] = $arrOptions;
+                $arrDCAField['reference'] = $arrDCAField['options'];
+            }
+        }
+
+        return $arrDCAField;
     }
 }

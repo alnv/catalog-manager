@@ -142,8 +142,8 @@ class ModuleUniversalView extends \Module {
         $this->Template->output = is_string( $varView ) ? $varView : '';
         $this->Template->hasOperations = $this->CatalogView->getHasOperationFlag();
 
-        if ( $this->Template->entityIndex[1] > 1 ) $this->Template->message = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['entitiesAmount'], $this->Template->entityIndex[1] );
-        if ( $this->Template->entityIndex[1] == 1 ) $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'];
+        if ( $this->Template->entityIndex[1] > 1 && $this->catalogShowQuantity ) $this->Template->message = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['entitiesAmount'], $this->Template->entityIndex[1] );
+        if ( $this->Template->entityIndex[1] == 1 && $this->catalogShowQuantity ) $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'];
         if ( !$this->Template->entityIndex[1] ) $this->Template->message = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'];
 
         if ( $this->catalogSendJsonHeader ) {
@@ -202,6 +202,13 @@ class ModuleUniversalView extends \Module {
         $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
 
         if ( empty( $strOutput ) ) {
+
+            if ( $this->catalogAutoRedirect && $this->catalogViewPage ) {
+
+                \Controller::redirectToFrontendPage( $this->catalogViewPage );
+
+                return null;
+            }
 
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();

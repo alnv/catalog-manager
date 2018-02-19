@@ -24,10 +24,7 @@ class ModuleMasterView extends \Module {
             return $objTemplate->parse();
         }
 
-        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) {
-
-            $this->strTemplate = $this->catalogCustomTemplate;
-        }
+        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) $this->strTemplate = $this->catalogCustomTemplate;
 
         $this->strMasterAlias = \Input::get( 'auto_item' );
 
@@ -72,6 +69,13 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
         
         if ( empty( $strOutput ) ) {
+
+            if ( $this->catalogAutoRedirect && $this->catalogViewPage ) {
+
+                \Controller::redirectToFrontendPage( $this->catalogViewPage );
+
+                return null;
+            }
 
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();

@@ -123,6 +123,8 @@ $GLOBALS['TL_LANG']['tl_module']['catalogJoinCTables'] = [ 'Join child tables', 
 $GLOBALS['TL_LANG']['tl_module']['catalogTaxonomyNavTemplate'] = [ 'Navigation template', 'Here you can select a navigation template.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogSitemap'] = [ 'Show in sitemap', 'Here you can define whether the page is shown in the sitemap.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogNoSearch'] = [ 'Do not search', 'Exclude the page from the search index.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAutoRedirect'] = [ 'Redirect invalid auto items', 'Invalid / empty auto items will be redirected to the "back page".' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Show number of records', 'Show the number of records in the template.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

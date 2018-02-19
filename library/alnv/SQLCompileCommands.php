@@ -21,6 +21,12 @@ class SQLCompileCommands extends CatalogController {
         if ( !is_array( $arrSQLCommands ) || empty( $arrSQLCommands ) ) return $arrSQLCommands;
         if ( !$this->Database->tableExists( 'tl_catalog' ) ) return $arrSQLCommands;
 
+        if ( !\Config::get('catalogLicence') ) {
+
+            $objCatalogManagerVerification = new CatalogManagerVerification();
+            $objCatalogManagerVerification->verify();
+        }
+
         $objCatalog = $this->Database->prepare('SELECT tl_catalog.tablename, tl_catalog.id FROM tl_catalog')->execute('');
 
         if ( !$objCatalog->numRows ) return $arrSQLCommands;

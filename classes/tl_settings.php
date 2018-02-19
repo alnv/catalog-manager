@@ -22,10 +22,7 @@ class tl_settings extends \Backend {
 
         if ( !$varValue ) return '';
 
-        if ( !$blnValidLicence ) {
-
-            throw new \Exception( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] );
-        }
+        if ( !$blnValidLicence ) throw new \Exception( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] );
 
         return $varValue;
     }

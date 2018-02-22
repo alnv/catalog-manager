@@ -270,19 +270,13 @@ class Upload {
 
     public static function renderImage( $varValue, $arrField, $arrCatalog ) {
 
-        if ( !is_string( $varValue ) ) {
+        $blnArray = $arrField['useArrayFormat'] ? true : false;
 
-            return $arrField['useArrayFormat'] ? [] : '';
-        }
+        if ( !is_string( $varValue ) ) return $blnArray ? [] : '';
 
         $arrImage = static::createImageArray( $varValue, $arrField, $arrCatalog );
 
-        if ( $arrField['useArrayFormat'] ) {
-
-            return $arrImage;
-        }
-
-        return static::generateImage( $arrImage, $arrField );
+        return static::generateImage( $arrImage, $arrField, $blnArray);
     }
 
 
@@ -392,14 +386,14 @@ class Upload {
     }
 
 
-    public static function generateImage( $arrImage, $arrField = [] ) {
+    public static function generateImage( $arrImage, $arrField = [], $blnArray = false ) {
 
         $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
         $objPicture = new \FrontendTemplate( $strTemplate );
 
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
-        return $objPicture->parse();
+        return $blnArray ? $objPicture->getData() : $objPicture->parse();
     }
 
 

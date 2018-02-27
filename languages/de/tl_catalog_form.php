@@ -4,16 +4,16 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['expert_legend'] = 'Experten-Einstellunge
 $GLOBALS['TL_LANG']['tl_catalog_form']['catalog_json_legend'] = 'JSON-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form']['general_legend'] = 'Allgemeine-Einstellungen';
 
-$GLOBALS['TL_LANG']['tl_catalog_form']['new'] = [ 'Filter Formular erstellen', 'Hier können Sie ein Filter Formular erstellen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['new'] = [ 'Filterformular erstellen', 'Hier können Sie ein Filterformular erstellen.' ];
 
-$GLOBALS['TL_LANG']['tl_catalog_form']['delete'] = [ 'Filter Formular löschen', 'Filter Formular mit der ID %s löschen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form']['edit'] = [ 'Filter Formular bearbeiten', 'Filter Formular mit der ID %s bearbeiten.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form']['copy'] = [ 'Filter Formular duplizieren', 'Filter Formular mit der ID %s duplizieren.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form']['show'] = [ 'Details des Filter Formulars anzeigen', 'Die Details des Filter Formulars mit der ID %s anzeigen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form']['editFields'] = [ 'Filter Formular Felder bearbeiten', 'Die Felder des Filter Formulars mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['delete'] = [ 'Filterformular löschen', 'Filterformular mit der ID %s löschen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['edit'] = [ 'Filterformular bearbeiten', 'Filterformular mit der ID %s bearbeiten.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['copy'] = [ 'Filterformular duplizieren', 'Filterformular mit der ID %s duplizieren.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['show'] = [ 'Details des Filterformulars anzeigen', 'Die Details des Filterformulars mit der ID %s anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['editFields'] = [ 'Filterformular Felder bearbeiten', 'Die Felder des Filterformulars mit der ID %s bearbeiten.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['method'] = [ 'Übertragungsmethode', 'Die Standard-Übertragungsmethode ist GET.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form']['title'] = [ 'Bezeichnung', 'Bitte geben Sie eine Bezeichnung für diesen Filter Formular ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['title'] = [ 'Bezeichnung', 'Bitte geben Sie eine Bezeichnung für diesen Filterformular ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['formID'] = [ 'Formular-ID', 'Die Formular-ID wird zur Ansteuerung eines Contao-Moduls benötigt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['attributes'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['disableSubmit'] = [ 'Submit-Button entfernen', 'Hier können Sie den Submit-Button aus dem Filterformular entfernen.' ];

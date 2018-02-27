@@ -170,6 +170,7 @@ class tl_module extends \Backend {
         $strTablename = $dc->activeRecord->catalogTablename;
 
         if ( Toolkit::isEmpty( $strTablename ) ) return $arrReturn;
+        if ( !$this->Database->tableExists( $strTablename ) ) return $arrReturn;
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTablename );
@@ -239,6 +240,7 @@ class tl_module extends \Backend {
         $strTablename = $dc->activeRecord->catalogTablename;
 
         if ( Toolkit::isEmpty( $strTablename ) ) return [];
+        if ( !$this->Database->tableExists( $strTablename ) ) return [];
         if ( isset( $this->arrFields[ $strTablename ] ) ) return $this->arrFields[ $strTablename ];
 
         $objFieldBuilder = new CatalogFieldBuilder();
@@ -260,14 +262,13 @@ class tl_module extends \Backend {
 
         $strTable = $dc->activeRecord->catalogTablename ? $dc->activeRecord->catalogTablename : '';
 
+        if ( !$this->Database->tableExists( $strTable ) ) return '';
+
         if ( $dc->activeRecord->type == 'catalogTaxonomyTree' && $dc->activeRecord->catalogRoutingSource == 'page' && $dc->activeRecord->catalogPageRouting ) {
 
             $objPage = $this->Database->prepare( 'SELECT * FROM tl_page WHERE id = ?' )->limit(1)->execute( $dc->activeRecord->catalogPageRouting );
 
-            if ( $objPage->numRows ) {
-
-                $strTable = $objPage->catalogUseRouting ? $objPage->catalogRoutingTable : $strTable;
-            }
+            if ( $objPage->numRows ) $strTable = $objPage->catalogUseRouting ? $objPage->catalogRoutingTable : $strTable;
         }
 
         return $strTable;
@@ -279,6 +280,7 @@ class tl_module extends \Backend {
         $arrReturn = [];
 
         if ( !$strTablename ) return $arrReturn;
+        if ( !$this->Database->tableExists( $strTablename ) ) return $arrReturn;
 
         if ( is_null( $arrForbiddenTypes ) || !is_array( $arrForbiddenTypes ) ) {
 
@@ -396,6 +398,7 @@ class tl_module extends \Backend {
         $strTablename = $dc->activeRecord->catalogTablename;
 
         if ( !$strTablename ) return $arrReturn;
+        if ( !$this->Database->tableExists( $strTablename ) ) return [];
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTablename );
@@ -498,12 +501,10 @@ class tl_module extends \Backend {
         $strTablename = '';
         $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $objWidget->strTable ) )->limit(1)->execute( $objWidget->currentRecord );
 
-        if ( $objModule->numRows ) {
-
-            if ( $objModule->catalogTablename ) $strTablename = $objModule->catalogTablename;
-        }
+        if ( $objModule->numRows ) if ( $objModule->catalogTablename ) $strTablename = $objModule->catalogTablename;
 
         if ( !$strTablename ) return $arrReturn;
+        if ( !$this->Database->tableExists( $strTablename ) ) return $arrReturn;
 
         $objCatalogFieldBuilder = new CatalogFieldBuilder();
         $objCatalogFieldBuilder->initialize( $strTablename );

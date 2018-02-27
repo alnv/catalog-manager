@@ -5,6 +5,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'config' => [
 
         'dataContainer' => 'Table',
+        'enableVersioning' => true,
         'ptable' => 'tl_catalog_form',
 
         'onload_callback' => [

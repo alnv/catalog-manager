@@ -8,6 +8,7 @@ class Toolkit {
     public static $arrDateRgxp = [ 'date', 'time', 'datim' ];
     public static $arrRequireSortingModes = [ '4', '5', '6' ];
     public static $arrOperators = [ 'cut', 'copy', 'invisible' ];
+    public static $arrDoNotRenderInFastMode = [ 'upload', 'map' ];
     public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
     public static $nullableOperators = [ 'isNotEmpty', 'isEmpty' ];
     public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];

@@ -33,7 +33,7 @@ class CatalogView extends CatalogController {
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
-    protected $arrDoNotRenderInFastMode = [ 'upload', 'map' ];
+    // protected $arrDoNotRenderInFastMode = [ 'upload', 'map' ];
 
 
     public function __construct() {
@@ -142,6 +142,7 @@ class CatalogView extends CatalogController {
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogJoinCTables = Toolkit::parseStringToArray( $this->catalogJoinCTables );
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
+        $this->catalogPreventFieldFromFastMode = Toolkit::deserialize( $this->catalogPreventFieldFromFastMode );
 
         $this->setRelatedTables();
 
@@ -937,9 +938,11 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function isFastMode( $strType = '' ) {
+    protected function isFastMode( $strType = '', $strFieldname = '' ) {
 
-        if ( $this->catalogFastMode && $this->strMode == 'view' && in_array( $strType, $this->arrDoNotRenderInFastMode ) ) {
+        if ( $this->catalogFastMode && $this->strMode == 'view' && in_array( $strType, Toolkit::$arrDoNotRenderInFastMode ) ) {
+
+            if ( $strFieldname && is_array( $this->catalogPreventFieldFromFastMode ) && in_array( $strFieldname, $this->catalogPreventFieldFromFastMode )  ) return false;
 
             return true;
         }
@@ -955,7 +958,7 @@ class CatalogView extends CatalogController {
 
         if ( $arrField['_isDate'] != null && $arrField['_isDate'] === true ) $strType = 'date';
         if ( Toolkit::isEmpty( $strType ) ) return $varValue;
-        if ( $this->isFastMode( $strType ) ) return '';
+        if ( $this->isFastMode( $strType, $strFieldname ) ) return '';
 
         switch ( $strType ) {
 

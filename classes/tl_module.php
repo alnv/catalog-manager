@@ -398,7 +398,7 @@ class tl_module extends \Backend {
         $strTablename = $dc->activeRecord->catalogTablename;
 
         if ( !$strTablename ) return $arrReturn;
-        if ( !$this->Database->tableExists( $strTablename ) ) return [];
+        if ( !$this->Database->tableExists( $strTablename ) ) return $arrReturn;
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTablename );
@@ -410,6 +410,29 @@ class tl_module extends \Backend {
             if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::readOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
+
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getFastModeFields( \DataContainer $dc ) {
+
+        $arrReturn = [];
+        $strTablename = $dc->activeRecord->catalogTablename;
+
+        if ( !$strTablename ) return $arrReturn;
+        if ( !$this->Database->tableExists( $strTablename ) ) return $arrReturn;
+
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTablename );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+
+        foreach ( $arrFields as $strFieldname => $arrField ) {
+
+            if ( !in_array( $arrField['type'], Toolkit::$arrDoNotRenderInFastMode ) ) continue;
 
             $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }

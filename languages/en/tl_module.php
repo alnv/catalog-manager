@@ -125,6 +125,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogSitemap'] = [ 'Show in sitemap', 'Here 
 $GLOBALS['TL_LANG']['tl_module']['catalogNoSearch'] = [ 'Do not search', 'Exclude the page from the search index.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogAutoRedirect'] = [ 'Redirect invalid auto items', 'Invalid / empty auto items will be redirected to the "back page".' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Show number of records', 'Show the number of records in the template.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Exclude fields', 'Here you can exclude fields from "Fast Mode".' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

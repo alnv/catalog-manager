@@ -33,7 +33,6 @@ class CatalogView extends CatalogController {
     protected $blnGoogleMapScript = false;
     protected $arrCatalogStaticFields = [];
     protected $arrCatalogMapViewOptions = [];
-    // protected $arrDoNotRenderInFastMode = [ 'upload', 'map' ];
 
 
     public function __construct() {

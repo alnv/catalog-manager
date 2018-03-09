@@ -391,6 +391,8 @@ class Upload {
         $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
         $objPicture = new \FrontendTemplate( $strTemplate );
 
+        if ( Toolkit::isEmpty( $arrImage['singleSRC'] ) ) return $blnArray ? [] : '';
+
         \Controller::addImageToTemplate( $objPicture, $arrImage );
 
         return $blnArray ? $objPicture->getData() : $objPicture->parse();

@@ -40,7 +40,7 @@ class tl_catalog_form_fields extends \Backend {
 
     public function setBackendRow( $arrRow ) {
 
-        return $arrRow['title'];
+        return $arrRow["title"] . '<span style="color: #cccccc;"> ['. $arrRow["name"] .']</span>';
     }
 
 

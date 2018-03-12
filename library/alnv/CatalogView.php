@@ -436,6 +436,9 @@ class CatalogView extends CatalogController {
                         'latField' => $this->catalogFieldLat,
                         'lngField' => $this->catalogFieldLng
                     ];
+
+                    $this->arrCatalogMapViewOptions['lat'] = $arrCords['lat'];
+                    $this->arrCatalogMapViewOptions['lng'] = $arrCords['lng'];
                 }
             }
         }

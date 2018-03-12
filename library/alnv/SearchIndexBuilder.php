@@ -126,6 +126,18 @@ class SearchIndexBuilder extends \Frontend {
 
                 $strSiteMapUrl = $this->createMasterUrl( $arrCatalog, $objEntities, $strUrl, $objModules->catalogTablename );
 
+                if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerAlterSitemapUrl'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerAlterSitemapUrl'] ) ) {
+
+                    foreach ( $GLOBALS['TL_HOOKS']['catalogManagerAlterSitemapUrl'] as $arrCallback )  {
+
+                        if ( is_array( $arrCallback ) ) {
+
+                            $this->import( $arrCallback[0] );
+                            $strSiteMapUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strSiteMapUrl, $objModules->catalogTablename, $strUrl );
+                        }
+                    }
+                }
+
                 if ( $strSiteMapUrl && !in_array( $strSiteMapUrl, $arrPages ) ) $arrPages[] = $strSiteMapUrl;
             }
         }

@@ -1,6 +1,12 @@
 <?php $this->extend('block_searchable'); ?>
 <?php $this->block('content'); ?>
+
+   <?php if ( $this->message ): ?>
+      <p class="ctlg_view_message"><?= $this->message; ?></p>
+   <?php endif; ?>
+
    <div id="id_<?= $this->map['id'] ?>" class="catalog_map_default" style="width: 100%; height: 768px;"></div>
+   
    <script async defer>
 
       'use strict';
@@ -16,6 +22,7 @@
          objCatalogMapBounds_<?= $this->map['id'] ?> = new google.maps.LatLngBounds();
          objCatalogMapView_<?= $this->map['id'] ?> = new google.maps.Map( document.getElementById( "id_<?= $this->map['id'] ?>" ), {
 
+		 	maxZoom: 15,
             center: objLatLng,
             zoom: <?= $this->map['mapZoom']; ?>,
             scrollwheel: <?= $this->map['mapScrollWheel']; ?>,

@@ -12,6 +12,7 @@ class Toolkit {
     public static $arrDigitRgxp = [ 'digit', 'natural', 'prcnt' ];
     public static $nullableOperators = [ 'isNotEmpty', 'isEmpty' ];
     public static $arrModeTypes = [ '0', '1', '2', '3', '4', '5', '6' ];
+    public static $arrArrayOptions = [ 'origin', 'catalogFields', 'catalogEntityFields' ];
     public static $arrSocialSharingButtons = [ 'mail', 'twitter', 'facebook', 'xing', 'linkedin' ];
     public static $arrImageExtensions = [ 'jpg', 'jpeg', 'gif', 'png', 'svg', 'svgz', 'bmp', 'tiff', 'tif' ];
     public static $arrFileExtensions = [ 'odt', 'ods', 'odp', 'odg', 'ott', 'ots', 'otp', 'otg', 'pdf', 'doc', 'docx', 'dot', 'dotx', 'xls', 'xlsx','xlt', 'xltx', 'ppt', 'pptx', 'pot', 'potx', 'mp3', 'mp4', 'm4a','m4v','webm','ogg','ogv', 'wma', 'wmv', 'ram', 'rm', 'mov', 'zip', 'rar', '7z' ];

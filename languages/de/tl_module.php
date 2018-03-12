@@ -128,6 +128,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogNoSearch'] = [ 'Nicht durchsuchen', 'Di
 $GLOBALS['TL_LANG']['tl_module']['catalogAutoRedirect'] = [ 'Ungültige auto items umleiten', 'Ungültigen/leere auto items werden auf die "Zurück Seite" umgeleitet.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Anzahl der Datensätze anzeigen', 'Die Anzahl der Datensätze im Template anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Felder ausschließen', 'Hier können Sie die Felder vom "Fast Mode" ausschließen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Optionen ausschließen', 'Hier können Sie einige der mitgelieferten Optionen ausschließen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

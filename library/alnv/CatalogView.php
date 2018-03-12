@@ -141,6 +141,7 @@ class CatalogView extends CatalogController {
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogJoinCTables = Toolkit::parseStringToArray( $this->catalogJoinCTables );
         $this->catalogRelatedChildTables = Toolkit::deserialize( $this->catalogRelatedChildTables );
+        $this->catalogExcludeArrayOptions = Toolkit::deserialize( $this->catalogExcludeArrayOptions );
         $this->catalogPreventFieldFromFastMode = Toolkit::deserialize( $this->catalogPreventFieldFromFastMode );
 
         $this->setRelatedTables();
@@ -656,6 +657,13 @@ class CatalogView extends CatalogController {
                         $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrCatalog, $this->catalogTablename, $this );
                     }
                 }
+            }
+
+            if ( $this->catalogUseArray ) {
+
+                if ( in_array( 'origin', $this->catalogExcludeArrayOptions ) ) unset( $arrCatalog['origin'] );
+                if ( in_array( 'catalogFields', $this->catalogExcludeArrayOptions ) ) unset( $arrCatalog['catalogFields'] );
+                if ( in_array( 'catalogEntityFields', $this->catalogExcludeArrayOptions ) ) unset( $arrCatalog['catalogEntityFields'] );
             }
 
             $arrCatalogs[] = $arrCatalog;

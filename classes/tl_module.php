@@ -557,4 +557,10 @@ class tl_module extends \Backend {
 
         return $this->getTemplateGroup('ce_social_sharing_buttons');
     }
+
+
+    public function getArrayOptions() {
+
+        return Toolkit::$arrArrayOptions;
+    }
 }

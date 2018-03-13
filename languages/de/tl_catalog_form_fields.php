@@ -12,9 +12,11 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependency_legend'] = 'Feldabhän
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben Sie ein Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['mandatory'] = [ 'Pflichtfeld', 'Dieses Feld zum Pflichtfeld machen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible'] = [ 'Verstecken', 'Hier können Sie dieses Feld ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'] = [ 'Bezugsfeld', 'Bitte wählen Sie ein Bezugsfeld aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Platzhalter', 'Bitte geben Sie einen Platzhalter ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rgxp'] = [ 'Eingabeprüfung', 'Hier können Sie eine Validierung auswählen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Mehrfachauswahl', 'Für dieses Feld Mehrfachauswahl erlauben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['description'] = [ 'Beschreibung', 'Bitte geben Sie eine kurze Beschreibung ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS-ID/Klasse', 'Hier können Sie eine ID und beliebig viele Klassen eingeben.' ];
@@ -76,4 +78,26 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeGreatType'] = [
 
     'gt' => 'Größer',
     'gte' => 'Größer gleich',
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'] = [
+
+    'url' => 'Gültige URL.',
+    'time' => 'Gültige Uhrzeit.',
+    'date' => 'Gültiges Datum.',
+    'alias' => 'Gültiges Alias.',
+    'alnum' => 'Alphanumerische Zeichen.',
+    'alpha' => 'Alphabetische Zeichen.',
+    'datim' => 'Datum mit Uhrzeit.' ,
+    'digit' => 'Numerische Zeichen.',
+    'email' => 'Gültige E-Mail-Adresse.' ,
+    'extnd' => 'Alles außer "#&()/<=>"',
+    'phone' => 'Gültige Telefonnummer.',
+    'prcnt' => 'Gültige Prozentzahlen.',
+    'locale' => 'Gültige Länderkürzel.',
+    'emails' => 'Gültigen E-Mail-Adressen.',
+    'natural' => 'Keine negativen Zahlen.',
+    'friendly' => 'Gültige E-Mail-Adresse im "friendly name format"',
+    'language' => 'Gültige Sprachkürzel.',
+    'folderalias' => 'Gültiges Ordner-URL Alias.'
 ];

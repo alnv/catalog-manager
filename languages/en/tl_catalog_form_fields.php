@@ -11,6 +11,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template set
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Title', 'Please enter a title.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Please select a template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Field type', 'Please select a field type.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['mandatory'] = [ 'Mandatory', 'Make this field mandatory.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Field label', 'Please enter your field label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['multiple'] = [ 'Multiple', 'Make the input field multiple.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['placeholder'] = [ 'Placeholder', 'Please enter your placeholder.' ];
@@ -23,6 +24,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['submitOnChange'] = [ 'Submit on c
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Add blank option', 'Here you can add blank option.'];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['cssID'] = [ 'CSS ID/class', 'Here you can set an ID and one or more classes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatLabel'] = [ 'Field label (great)', 'Please enter your field label.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rgxp'] = [ 'Regular expression', 'Here you can select your regular expression.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab index', 'The position of the form field in the tabbing order.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'] = [ 'Replace blank option', 'Here you can replace blank option.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Range (to)', 'Here you can adjust the accuracy of the circumference.' ];
@@ -73,4 +75,26 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rangeGreatType'] = [
 
     'gt' => 'Greater',
     'gte' => 'Greater equal',
+];
+
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'] = [
+
+    'url' => 'Valid URL.',
+    'time' => 'Valid time.',
+    'date' => 'Valid date.',
+    'alias' => 'Valid alias.',
+    'alnum' => 'Alphanumeric characters.',
+    'alpha' => 'Alphabetic characters.',
+    'datim' => 'Valid date and time.' ,
+    'digit' => 'Numeric Values.',
+    'email' => 'Valid E Mail Address.' ,
+    'extnd' => 'Disallows "#&()/<=>"',
+    'phone' => 'Valid phone number.',
+    'prcnt' => 'Valid percent values.',
+    'locale' => 'Valid locale (de-CH).',
+    'emails' => 'Valid list of E Mails.',
+    'natural' => 'Allows non-negative numbers.',
+    'friendly' => 'Valid E-Mail Address "friendly name format".',
+    'language' => 'Valid language code.',
+    'folderalias' => 'Valid folder URL alias.'
 ];

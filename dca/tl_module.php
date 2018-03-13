@@ -1363,7 +1363,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDisableMasterLink'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50'
+        'tl_class' => 'w50 m12'
     ],
 
     'exclude' => true,

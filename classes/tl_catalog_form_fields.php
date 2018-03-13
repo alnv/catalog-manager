@@ -152,4 +152,10 @@ class tl_catalog_form_fields extends \Backend {
 
         return $arrReturn;
     }
+
+
+    public function getRGXPTypes() {
+
+        return [ 'url', 'time', 'date', 'alias', 'alnum', 'alpha', 'datim', 'digit', 'email', 'extnd', 'phone', 'prcnt', 'locale', 'emails', 'natural', 'friendly', 'language', 'folderalias' ];
+    }
 }

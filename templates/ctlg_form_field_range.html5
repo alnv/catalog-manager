@@ -11,4 +11,7 @@
       <?php endif; ?>
       <input type="text" id="id_form_<?= $this->gtName ?>" name="<?= $this->gtName ?>" value="<?= $this->value['gtValue'] ?>">
    </div>
+   <?php if( $this->description ): ?>
+      <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
+   <?php endif; ?>
 </div>

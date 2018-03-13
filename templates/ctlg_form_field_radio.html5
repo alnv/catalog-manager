@@ -2,16 +2,13 @@
    <?php if( $this->label ): ?>
       <p><?= $this->label ?></p>
    <?php endif; ?>
-
    <?php $intIndex = 0; ?>
-
    <?php if( $this->includeBlankOption ): ?>
       <div class="radio_container">
          <label for="id_<?= $this->name ?>_blank"><?= ( $this->blankOptionLabel ? $this->blankOptionLabel : '-' ) ?></label>
          <input type="radio" id="id_<?= $this->name ?>_blank" name="<?= $this->name ?>" value="" <?= ( $this->value == $strKey ? 'checked' : '' ) ?> <?= $this->onchange ?>>
       </div>
    <?php endif; ?>
-
    <?php foreach( $this->options as $strKey => $strTitle ): ?>
       <div class="radio_container">
          <input type="radio" id="id_form_<?= $this->name ?>_<?= $intIndex ?>" name="<?= $this->name ?>" value="<?= $strKey ?>" <?= ( $this->value == $strKey ? 'checked' : '' ) ?> <?= $this->onchange ?>>
@@ -19,8 +16,7 @@
       </div>
       <?php $intIndex++; ?>
    <?php endforeach; ?>
-
    <?php if( $this->description ): ?>
-      <p class="description"><?= $this->description ?></p>
+      <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
    <?php endif; ?>
 </div>

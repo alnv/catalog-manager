@@ -4,6 +4,6 @@
    <?php endif; ?>
    <input type="text" id="id_form_<?= $this->name ?>" name="<?= $this->name ?>" value="<?= $this->value; ?>" placeholder="<?= $this->placeholder ?>" <?= $this->tabindex ?>>
    <?php if( $this->description ): ?>
-      <p class="description"><?= $this->description ?></p>
+      <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
    <?php endif; ?>
 </div>

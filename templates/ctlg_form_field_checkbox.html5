@@ -2,7 +2,6 @@
    <?php if( $this->label ): ?>
       <p><?= $this->label ?></p>
    <?php endif; ?>
-
    <?php $intIndex = 0; ?>
    <?php foreach( $this->options as $strKey => $strTitle ): ?>
       <div class="checkbox_container">
@@ -11,8 +10,7 @@
       </div>
       <?php $intIndex++; ?>
    <?php endforeach; ?>
-
    <?php if( $this->description ): ?>
-      <p class="description"><?= $this->description ?></p>
+      <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
    <?php endif; ?>
 </div>

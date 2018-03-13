@@ -7,11 +7,11 @@ class ContentCatalogFilterForm extends \ContentElement {
     
     protected $arrForm = [];
     protected $blnReady = false;
+    protected $blnIsValid = true;
     protected $arrFormFields = [];
     protected $strTemplate = 'ce_catalog_filterform';
 
-
-    private $arrTemplateMap = [
+    protected $arrTemplateMap = [
       
         'text' => 'ctlg_form_field_text',
         'radio' => 'ctlg_form_field_radio',
@@ -19,7 +19,6 @@ class ContentCatalogFilterForm extends \ContentElement {
         'select' => 'ctlg_form_field_select',
         'checkbox' => 'ctlg_form_field_checkbox',
     ];
-
 
     public function generate() {
 
@@ -49,6 +48,7 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function compile() {
 
         $arrFields = [];
+        $strSubmitId = md5( $this->id );
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
@@ -69,26 +69,23 @@ class ContentCatalogFilterForm extends \ContentElement {
 
                 if ( $this->arrFormFields[ $strName ]['dependOnField'] ) {
 
-                    $varValue = $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] );
-
-                    if ( empty( $varValue ) && is_array( $varValue ) ) {
-
-                        continue;
-
-                    }elseif( count( $varValue ) <= 1 && Toolkit::isEmpty( $varValue[0] ) ) {
-
-                       continue;
-                    }
-
-                    if ( Toolkit::isEmpty( $varValue ) ) {
-
-                        continue;
-                    }
+                    if ( !$this->validValue( $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] ) ) ) continue;
                 }
 
                 $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
 
                 if ( !$strTemplate ) continue;
+
+                if ( $this->getInput( '_submit' ) == $strSubmitId ) {
+
+                    if ( $this->arrFormFields[ $strName ]['mandatory'] && !$this->validValue( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['type'] ) ) {
+
+                        $this->blnIsValid = false;
+                        $this->arrFormFields[ $strName ]['invalid'] = true;
+                        $this->arrFormFields[ $strName ]['cssClass'] .= 'error ';
+                        $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[ $strName ]['title'] );
+                    }
+                }
 
                 $objTemplate = new \FrontendTemplate( $strTemplate );
                 $objTemplate->setData( $this->arrFormFields[ $strName ] );
@@ -101,6 +98,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
 
         $this->Template->fields = $arrFields;
+        $this->Template->submitId = $strSubmitId;
         $this->Template->reset = $this->getResetLink();
         $this->Template->action = $this->getActionAttr();
         $this->Template->method = $this->getMethodAttr();
@@ -132,8 +130,26 @@ class ContentCatalogFilterForm extends \ContentElement {
         }
     }
 
- 
+
+    protected function validValue( $varValue, $strType = '' ) {
+
+        if ( is_array( $varValue ) ) $varValue = array_values( $varValue );
+
+        if ( empty( $varValue ) && is_array( $varValue ) ) return false;
+
+        if ( count( $varValue ) >= 1 && Toolkit::isEmpty( $varValue[0] ) ) return false;
+
+        if ( $strType == 'range' && Toolkit::isEmpty( $varValue[1] ) ) return false;
+
+        if ( Toolkit::isEmpty( $varValue ) ) return false;
+
+        return true;
+    }
+
+
     protected function getActionAttr() {
+
+        if ( !$this->blnIsValid ) return ampersand( \Environment::get('indexFreeRequest') );
 
         $strPageID = $this->arrForm['jumpTo'];
 
@@ -222,8 +238,11 @@ class ContentCatalogFilterForm extends \ContentElement {
             $arrField['options'] = $objOptionGetter->getOptions();
         }
 
+        $arrField['message'] = '';
+        $arrField['invalid'] = false;
         $arrField['value'] = $this->getActiveOptions( $arrField );
         $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
+        $arrField['required'] = $arrField['mandatory'] ? 'required' : '';
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
         $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';

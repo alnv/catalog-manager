@@ -13,7 +13,7 @@
    <?php endif; ?>
    <?php if( !$this->disableSubmit ): ?>
       <div class="submit_container">
-         <input type="submit" value="<?= $this->submit;?>">
+         <button type="submit" name="_submit" value="<?= $this->submitId ?>"><?= $this->submit;?></button>
       </div>
    <?php endif; ?>
 </form>

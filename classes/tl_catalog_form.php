@@ -16,4 +16,10 @@ class tl_catalog_form extends \Backend {
         
         return is_array( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] ) ? array_keys( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] ) : [];
     }
+
+
+    public function getFormTemplates() {
+
+        return $this->getTemplateGroup( 'ce_catalog_filterform' );
+    }
 }

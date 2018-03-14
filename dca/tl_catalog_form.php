@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,jumpTo,method,resetForm,disableSubmit,disableOnAutoItem;{expert_legend:hide},attributes;{catalog_json_legend:hide},sendJsonHeader;'
+        'default' => '{general_legend},title,jumpTo,method,resetForm,disableSubmit,disableOnAutoItem;{submit_legend},disableSubmit,submitAttributes;{expert_legend:hide},template,attributes;{catalog_json_legend:hide},sendJsonHeader;'
     ],
 
     'fields' => [
@@ -182,13 +182,32 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             'eval' => [
 
                 'maxlength' => 8,
-                'tl_class'=>'w50'
+                'tl_class' => 'w50'
             ],
 
             'options' => [ 'GET', 'POST' ],
 
             'exclude' => true,
             'sql' => "varchar(8) NOT NULL default ''"
+        ],
+
+        'template' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['template'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 64,
+                'tl_class' => 'w50',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_form', 'getFormTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(64) NOT NULL default ''"
         ],
 
         'attributes' => [
@@ -198,9 +217,25 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'eval' => [
 
-                'size'=>2,
-                'multiple'=>true,
-                'tl_class'=>'w50'
+                'size' => 2,
+                'multiple' => true,
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ],
+
+        'submitAttributes' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['submitAttributes'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'size' => 2,
+                'multiple' => true,
+                'tl_class' => 'w50'
             ],
 
             'exclude' => true,

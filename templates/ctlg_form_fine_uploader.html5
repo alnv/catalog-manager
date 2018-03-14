@@ -28,7 +28,7 @@
 
    <script type="text/template" id="qq-template">
 
-      <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="Drop files here">
+      <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="<?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['drop'] ?>">
 
          <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
             <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
@@ -39,11 +39,11 @@
          </div>
 
          <div class="qq-upload-button-selector qq-upload-button">
-            <div>Upload a file</div>
+            <div><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['upload'] ?></div>
          </div>
 
          <span class="qq-drop-processing-selector qq-drop-processing">
-            <span>Processing dropped files...</span>
+            <span><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['processing'] ?></span>
             <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
          </span>
 
@@ -64,7 +64,7 @@
 
                <button type="button" class="qq-upload-retry-selector qq-upload-retry">
                   <span class="qq-btn qq-retry-icon" aria-label="Retry"></span>
-                  Retry
+                  <?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['retry'] ?>
                </button>
 
                <div class="qq-file-info">
@@ -98,15 +98,15 @@
          <dialog class="qq-alert-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-               <button type="button" class="qq-cancel-button-selector">Close</button>
+               <button type="button" class="qq-cancel-button-selector"><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['close'] ?></button>
             </div>
          </dialog>
 
          <dialog class="qq-confirm-dialog-selector">
             <div class="qq-dialog-message-selector"></div>
             <div class="qq-dialog-buttons">
-               <button type="button" class="qq-cancel-button-selector">No</button>
-               <button type="button" class="qq-ok-button-selector">Yes</button>
+               <button type="button" class="qq-cancel-button-selector"><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['no'] ?></button>
+               <button type="button" class="qq-ok-button-selector"><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['yes'] ?></button>
             </div>
          </dialog>
 
@@ -114,8 +114,8 @@
             <div class="qq-dialog-message-selector"></div>
             <input type="text">
             <div class="qq-dialog-buttons">
-               <button type="button" class="qq-cancel-button-selector">Cancel</button>
-               <button type="button" class="qq-ok-button-selector">Ok</button>
+               <button type="button" class="qq-cancel-button-selector"><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['cancel'] ?></button>
+               <button type="button" class="qq-ok-button-selector"><?= $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['ok'] ?></button>
             </div>
          </dialog>
 

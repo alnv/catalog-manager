@@ -33,6 +33,16 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Overwrite ca
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Following fields were found in <em>"%s"</em> template';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Here you can allow access to catalog operations.', 'Here you can define the permissions.' ];
 
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['no'] = 'No';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['ok'] = 'Ok';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['yes'] = 'Yes';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['retry'] = 'Retry';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['close'] = 'Close';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['cancel'] = 'Cancel';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['upload'] = 'Upload a file';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['drop'] = 'Drop files here';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['processing'] = 'Processing dropped files …';
+
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Edit';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detail view';

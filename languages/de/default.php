@@ -33,6 +33,16 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Catalog Eins
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.' ];
 
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['yes'] = 'Ja';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['no'] = 'Nein';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['ok'] = 'Okay';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['close'] = 'Schließen';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['cancel'] = 'Abbrechen';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['drop'] = 'Datei ablegen';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['retry'] = 'Erneut versuchen';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['upload'] = 'Datei hochladen';
+$GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['processing'] = 'Dateien werden verarbeitet …';
+
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detailansicht';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Bearbeiten';

@@ -46,7 +46,7 @@ class CatalogAjaxController extends CatalogController {
             case 'permanent':
 
                 header('Content-Type: application/json');
-                echo json_encode( $this->arrData );
+                echo json_encode( $this->arrData, 512 );
                 exit;
 
                 break;
@@ -61,7 +61,7 @@ class CatalogAjaxController extends CatalogController {
                     }
 
                     header('Content-Type: application/json');
-                    echo json_encode( $this->arrData );
+                    echo json_encode( $this->arrData, 512 );
                     exit;
                 }
 

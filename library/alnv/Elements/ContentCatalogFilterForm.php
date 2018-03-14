@@ -39,6 +39,7 @@ class ContentCatalogFilterForm extends \ContentElement {
             return null;
         }
 
+        if ( TL_MODE == 'FE' && !Toolkit::isEmpty( $this->arrForm['template'] ) ) $this->strTemplate = $this->arrForm['template'];
         if ( TL_MODE == 'FE' && !Toolkit::isEmpty( $this->customCatalogElementTpl ) ) $this->strTemplate = $this->customCatalogElementTpl;
 
         return parent::generate();
@@ -48,7 +49,7 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected function compile() {
 
         $arrFields = [];
-        $strSubmitId = md5( $this->id );
+        $strFormId = md5( $this->id );
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
 
@@ -76,7 +77,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
                 if ( !$strTemplate ) continue;
 
-                if ( $this->getInput( '_submit' ) == $strSubmitId ) {
+                if ( $this->getInput( '_submit' ) == $strFormId ) {
 
                     if ( $this->arrFormFields[ $strName ]['mandatory'] && !$this->validValue( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['type'] ) ) {
 
@@ -95,10 +96,13 @@ class ContentCatalogFilterForm extends \ContentElement {
         }
 
         $arrAttributes = Toolkit::deserialize( $this->arrForm['attributes'] );
+        $arrSubmitAttributes = Toolkit::deserialize( $this->arrForm['submitAttributes'] );
+
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
 
+        $this->Template->submitId = '';
         $this->Template->fields = $arrFields;
-        $this->Template->submitId = $strSubmitId;
+        $this->Template->formId = $strFormId;
         $this->Template->reset = $this->getResetLink();
         $this->Template->action = $this->getActionAttr();
         $this->Template->method = $this->getMethodAttr();
@@ -107,6 +111,9 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
         $this->Template->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
+        $this->Template->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
+
+        if ( isset( $arrSubmitAttributes[0] ) && $arrSubmitAttributes[0] ) $this->Template->submitId = sprintf( 'id="%s"', $arrSubmitAttributes[0] );
 
         if ( $this->arrForm['sendJsonHeader'] ) {
 

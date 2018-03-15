@@ -1,8 +1,8 @@
 <div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field select">
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
-   <?php endif; ?>
-   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?><?php if ( $this->multiple ): ?>[]<?php endif; ?>"<?= $this->multiple ?> <?= $this->tabindex ?> <?= $this->onchange ?>>
+   <?php endif; ?> 
+   <select id="id_form_<?= $this->name ?>" name="<?= $this->name ?><?php if ( $this->multiple ): ?>[]<?php endif; ?>"<?= $this->multiple ?> <?= $this->tabindex ?> <?= $this->onchange ?> <?= $this->attributes ?>>
       <?php if( $this->includeBlankOption ): ?>
          <option value=""><?= ( $this->blankOptionLabel ? $this->blankOptionLabel : '-' ) ?></option>
       <?php endif; ?>

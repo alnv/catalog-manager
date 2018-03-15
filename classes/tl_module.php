@@ -284,7 +284,7 @@ class tl_module extends \Backend {
 
         if ( is_null( $arrForbiddenTypes ) || !is_array( $arrForbiddenTypes ) ) {
 
-            $arrForbiddenTypes = [ 'upload', 'textarea' ];
+            $arrForbiddenTypes = [ 'upload' ];
         }
 
         $objCatalogFieldBuilder = new CatalogFieldBuilder();
@@ -296,6 +296,7 @@ class tl_module extends \Backend {
             if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
+            if ( $arrField['type'] == 'textarea' && $arrField['rte'] ) continue;
             if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;
 
             $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];

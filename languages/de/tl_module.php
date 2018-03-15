@@ -129,6 +129,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogAutoRedirect'] = [ 'Ungültige auto ite
 $GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Anzahl der Datensätze anzeigen', 'Die Anzahl der Datensätze im Template anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Felder ausschließen', 'Hier können Sie die Felder vom "Fast Mode" ausschließen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Optionen ausschließen', 'Hier können Sie einige der mitgelieferten Optionen ausschließen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente zu der Listenansicht hinzufügen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

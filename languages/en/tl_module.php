@@ -127,6 +127,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogAutoRedirect'] = [ 'Redirect invalid au
 $GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Show number of records', 'Show the number of records in the template.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Exclude fields', 'Here you can exclude fields from "Fast Mode".' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Exclude options', 'Here you can exclude some options.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Use content elements', 'Here you can use content elements for your list view.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

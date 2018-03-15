@@ -562,7 +562,7 @@ class CatalogView extends CatalogController {
 
             $arrCatalog['contentElements'] = '';
 
-            if ( $this->strMode === 'master' && $this->arrCatalog['addContentElements'] ) {
+            if ( ( $this->strMode === 'master' || $this->catalogAddContentElements ) && $this->arrCatalog['addContentElements'] ) {
 
                 $objContent = \ContentModel::findPublishedByPidAndTable( $arrCatalog['id'] , $this->catalogTablename );
 

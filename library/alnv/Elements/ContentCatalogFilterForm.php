@@ -101,6 +101,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->id;
 
         $this->Template->submitId = '';
+        $this->Template->attributes = '';
         $this->Template->fields = $arrFields;
         $this->Template->formId = $strFormId;
         $this->Template->reset = $this->getResetLink();
@@ -114,6 +115,8 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
 
         if ( isset( $arrSubmitAttributes[0] ) && $arrSubmitAttributes[0] ) $this->Template->submitId = sprintf( 'id="%s"', $arrSubmitAttributes[0] );
+
+        if ( $this->arrForm['disableHtml5Validation'] ) $this->Template->attributes .= 'novalidate';
 
         if ( $this->arrForm['sendJsonHeader'] ) {
 
@@ -246,14 +249,16 @@ class ContentCatalogFilterForm extends \ContentElement {
         }
 
         $arrField['message'] = '';
+        $arrField['attributes'] = '';
         $arrField['invalid'] = false;
         $arrField['value'] = $this->getActiveOptions( $arrField );
         $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
-        $arrField['required'] = $arrField['mandatory'] ? 'required' : '';
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
         $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
+
+        if ( $arrField['mandatory'] ) $arrField['attributes'] .= 'required';
 
         return $arrField;
     }

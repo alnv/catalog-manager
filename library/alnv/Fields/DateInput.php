@@ -70,6 +70,18 @@ class DateInput {
                 return $objDate->datim;
 
                 break;
+
+            case 'monthBegin':
+
+                return $objDate->monthBegin;
+
+                break;
+
+            case 'yearBegin':
+
+                return $objDate->yearBegin;
+
+                break;
         }
 
         return $objDate->timestamp;

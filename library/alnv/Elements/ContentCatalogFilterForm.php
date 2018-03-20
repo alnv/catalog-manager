@@ -244,6 +244,12 @@ class ContentCatalogFilterForm extends \ContentElement {
         
         if ( in_array( $arrField['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
 
+            if ( $arrField['dbParseDate'] ) {
+
+                $arrField['dbParseDate'] = true;
+                $arrField['dbDateFormat'] = $arrField['dbDateFormat'] ? $arrField['dbDateFormat'] : 'monthBegin';
+            }
+
             $objOptionGetter = new OptionsGetter( $arrField );
             $arrField['options'] = $objOptionGetter->getOptions();
         }

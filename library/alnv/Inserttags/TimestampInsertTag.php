@@ -31,29 +31,41 @@ class TimestampInsertTag extends \Frontend {
 
                     list( $strKey, $strOption ) = explode( '=', $strParam );
 
-                    $strOption = $strOption ? (int) $strOption : 0;
-
                     switch ( $strKey ) {
+
+                        case 'watch':
+
+                            $objInput = new CatalogInput();
+                            $intWatchValue = $objInput->getValue( $strOption );
+
+                            if ( $intWatchValue ) $intTstamp = (int) $intWatchValue;
+
+                            break;
 
                         case 'add':
 
+                            $strOption = $strOption ? (int) $strOption : 0;
                             $intTstamp = $intTstamp + $strOption;
 
                             break;
 
                         case 'subtract':
 
+                            $strOption = $strOption ? (int) $strOption : 0;
                             $intTstamp = $intTstamp - $strOption;
 
                             break;
 
                         case 'multiply':
 
+                            $strOption = $strOption ? (int) $strOption : 0;
                             $intTstamp = $intTstamp * $strOption;
 
                             break;
 
                         case 'divide':
+
+                            $strOption = $strOption ? (int) $strOption : 0;
 
                             if ( $strOption > 0 ) {
 

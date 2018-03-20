@@ -141,11 +141,31 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function setValueToOption( $arrOptions, $strValue, $strLabel = '' ) {
+    protected function setValueToOption( &$arrOptions, $strValue, $strLabel = '' ) {
 
         if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
 
-            $arrOptions[ $strValue ] = $this->I18nCatalogTranslator->get( 'option', $strValue, [ 'title' => $strLabel ] );
+            $strTitle = $strValue;
+
+            if ( $this->arrField['dbParseDate'] ) {
+
+                $strFormat = 'F Y';
+
+                if ( $this->arrField['dbDateFormat'] == 'yearBegin' ) {
+
+                    $strFormat = 'Y';
+                }
+
+                $strValue = DateInput::parseValue( $strValue, [ 'rgxp' => $this->arrField['dbDateFormat'] ], [] );
+                $strTitle = \Controller::parseDate( $strFormat, $strValue );
+            }
+
+            else {
+
+                $strTitle = $this->I18nCatalogTranslator->get( 'option', $strTitle, [ 'title' => $strLabel ] );
+            }
+
+            $arrOptions[ $strValue ] = $strTitle;
         }
 
         return $arrOptions;
@@ -299,14 +319,14 @@ class OptionsGetter extends CatalogController {
 
                     foreach ( $arrLabels as $intPosition => $strLabel ) {
 
-                        $arrOptions = $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
+                        $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
                     }
                 }
             }
 
             else {
 
-                $arrOptions = $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
+                $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
             }
         }
 

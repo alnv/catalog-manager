@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['new'] = [ 'Neues Eingabefeld erstellen', 'Hier können Sie ein neues Eingabefeld erstellen.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['date_legend'] = 'Datum-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['general_legend'] = 'Allgemeine-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['option_legend'] = 'Auswahlliste-Einstellungen';
@@ -39,17 +40,25 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'] = [ 'Quelle', 'Hier
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Spalte', 'Bitte wählen Sie eine Spalte aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTable'] = [ 'Tabelle', 'Bitte wählen Sie für die Tabelle ein Eingabefeld.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDateFormat'] = [ 'Datumsformat', 'Hier können Sie das Datumsformat bestimmen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableKey'] = [ 'Wertspalte', 'Bitte wählen Sie eine Tabelle für den Wert aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Textspalte', 'Bitte wählen Sie für den Text ein Eingabefeld.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Datensätze festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Hier können Sie die Datensätze zusätzlich filtern.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Leere Werte ignorieren', 'Die Filterung ignoriert leere Werte.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Datum ausgeben', 'Hier können Sie das Datum anstelle des Timestamps in der Auswahlliste anzeigen.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Eingabefeld bearbeiten', 'Eingabefeld mit der ID %s bearbeiten.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'] = [ 'Eingabefeld duplizieren', 'Eingabefeld mit der ID %s duplizieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['toggle'] = [ 'Eingabefeld ausblenden', 'Eingabefeld mit der ID %s ein/ausblenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'] = [ 'Details des Eingabefelds anziegen', 'Die Details des Eingabefelds mit der ID %s anzeigen.' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'] = [
+
+    'monthBegin' => 'Monat und Jahr',
+    'yearBegin' => 'Jahr'
+];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
 

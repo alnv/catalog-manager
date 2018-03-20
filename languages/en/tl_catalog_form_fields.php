@@ -2,11 +2,12 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['new'] = [ 'Create Input field', 'Here you can create new input field.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['date_legend'] = 'Date settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['option_legend'] = 'Option settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['general_legend'] = 'General settings';
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible_legend'] = 'Visibility settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['field_type_legend'] = 'Input field settings';
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template settings';
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Title', 'Please enter a title.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Please select a template.' ];
@@ -40,13 +41,21 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Sort order', 'He
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Value column', 'Please select a value column.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Column', 'Please select a column from chosen table.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter the records.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDateFormat'] = [ 'Date format', 'Here you can specify the date format.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Ignore empty values', 'Empty values will be not filtered.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Parse date', 'Here you can display date instead of timestamp in the selection list.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'] = [ 'Delete field', 'Delete field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['toggle'] = [ 'Hide field', 'Disable or Enable field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'] = [ 'Show field', 'Show the details of field ID "%s".' ];
+
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'] = [
+
+    'monthBegin' => 'Month and year',
+    'yearBegin' => 'Year'
+];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['type'] = [
 

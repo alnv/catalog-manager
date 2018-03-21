@@ -149,12 +149,10 @@ class OptionsGetter extends CatalogController {
 
             if ( $this->arrField['dbParseDate'] ) {
 
-                $strFormat = 'F Y';
+                $strFormat = $this->arrField['dbMonthBeginFormat'] ? $this->arrField['dbMonthBeginFormat'] : 'F Y';
 
-                if ( $this->arrField['dbDateFormat'] == 'yearBegin' ) {
-
-                    $strFormat = 'Y';
-                }
+                if ( $this->arrField['dbDateFormat'] == 'yearBegin' ) $strFormat =  $this->arrField['dbYearBeginFormat'] ? $this->arrField['dbYearBeginFormat'] : 'Y';
+                if ( $this->arrField['dbDateFormat'] == 'dayBegin' ) $strFormat =  $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
 
                 $strValue = DateInput::parseValue( $strValue, [ 'rgxp' => $this->arrField['dbDateFormat'] ], [] );
                 $strTitle = \Controller::parseDate( $strFormat, $strValue );
@@ -286,7 +284,7 @@ class OptionsGetter extends CatalogController {
 
         while ( $objDbOptions->next() ) {
 
-            $arrOptions[ $objDbOptions->{$this->arrField['dbTableKey']} ] = $this->I18nCatalogTranslator->get( 'option', $objDbOptions->{$this->arrField['dbTableKey']}, [ 'title' => $objDbOptions->{$this->arrField['dbTableValue']} ] );
+           $this->setValueToOption( $arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
         }
 
         return $arrOptions;
@@ -392,7 +390,7 @@ class OptionsGetter extends CatalogController {
 
                 foreach ( $arrFieldOptions as $arrOption ) {
 
-                    $arrOptions[ $arrOption['key'] ] = $this->I18nCatalogTranslator->get( 'option', $arrOption['key'], [ 'title' => $arrOption['value'] ] );
+                    $this->setValueToOption( $arrOptions, $arrOption['key'], $arrOption['value'] );
                 }
             }
         }

@@ -44,6 +44,9 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filt
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDateFormat'] = [ 'Date format', 'Here you can specify the date format.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Ignore empty values', 'Empty values will be not filtered.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Parse date', 'Here you can display date instead of timestamp in the selection list.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'] = [ 'Day, month and year date format', 'The date and time format string will be parsed with the PHP date() function. Default: l, F Y' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'] = [ 'Month and year date format', 'The date and time format string will be parsed with the PHP date() function. Default: F Y' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbYearBeginFormat'] = [ 'Year date format', 'The date and time format string will be parsed with the PHP date() function. Default: Y' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Edit field', 'Edit field ID "%s".' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'] = [ 'Copy field', 'Copy field ID "%s".' ];
@@ -53,6 +56,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'] = [ 'Show field', 'Show th
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'] = [
 
+    'dayBegin' => 'Day, month and year',
     'monthBegin' => 'Month and year',
     'yearBegin' => 'Year'
 ];

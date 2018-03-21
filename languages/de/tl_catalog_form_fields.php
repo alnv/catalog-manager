@@ -46,7 +46,10 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Textspalte', 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Datensätze festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Hier können Sie die Datensätze zusätzlich filtern.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Leere Werte ignorieren', 'Die Filterung ignoriert leere Werte.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Datum ausgeben', 'Hier können Sie das Datum anstelle des Timestamps in der Auswahlliste anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Datum formatieren', 'Hier können Sie das Datum anstelle des Timestamps in der Auswahlliste anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'] = [ 'Tag, Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: l, F Y' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'] = [ 'Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: F Y' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbYearBeginFormat'] = [ 'Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: Y' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'] = [ 'Eingabefeld löschen', 'Eingabefeld mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'] = [ 'Eingabefeld bearbeiten', 'Eingabefeld mit der ID %s bearbeiten.' ];
@@ -56,6 +59,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'] = [ 'Details des Eingabefe
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'] = [
 
+    'dayBegin' => 'Tag, Monat und Jahr',
     'monthBegin' => 'Monat und Jahr',
     'yearBegin' => 'Jahr'
 ];

@@ -93,19 +93,21 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'optionsType' ],
+        '__selector__' => [ 'type', 'optionsType', 'dbParseDate' ],
 
         'default' => '{field_type_legend},type,name,title;',
-        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,mandatory,tabindex,cssID;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,mandatory,tabindex,cssID;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
         'hidden' => '{field_type_legend},type,name,title,defaultValue;{invisible_legend},invisible;',
-        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,mandatory,cssID;{option_legend},optionsType;{date_legend},dbParseDate,dbDateFormat;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
-        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,mandatory,tabindex,cssID;{option_legend},optionsType;{date_legend},dbParseDate,dbDateFormat;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
-        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,mandatory,cssID;{option_legend},optionsType;{date_legend},dbParseDate,dbDateFormat;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,mandatory,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
+        'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,mandatory,tabindex,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
+        'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,mandatory,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend},dependOnField;{template_legend:hide},template;{invisible_legend},invisible;',
+        'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,mandatory,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
     ],
 
     'subpalettes' => [
 
         'optionsType_useOptions' => 'options',
+        'dbParseDate' => 'dbDateFormat,dbDayBeginFormat,dbMonthBeginFormat,dbYearBeginFormat',
         'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
     ],
@@ -505,7 +507,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50 m12',
+                'tl_class' => 'w50',
+                'submitOnChange' => true
             ],
 
             'exclude' => true,
@@ -520,13 +523,60 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'eval' => [
 
+                'maxlength' => 12,
+                'tl_class' => 'clr',
+            ],
+
+            'options' => [ 'dayBegin', 'monthBegin', 'yearBegin' ],
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'],
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+
+        'dbYearBeginFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbYearBeginFormat'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
                 'tl_class' => 'w50',
             ],
 
-            'options' => [ 'monthBegin', 'yearBegin' ],
-            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'],
             'exclude' => true,
-            'sql' => "varchar(255) NOT NULL default ''"
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'dbMonthBeginFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
+        ],
+
+        'dbDayBeginFormat' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 12,
+                'tl_class' => 'w50',
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(12) NOT NULL default ''"
         ],
 
         'dbOrderBy' => [

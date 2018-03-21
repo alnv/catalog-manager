@@ -82,6 +82,12 @@ class DateInput {
                 return $objDate->yearBegin;
 
                 break;
+
+            case 'dayBegin':
+
+                return $objDate->dayBegin;
+
+                break;
         }
 
         return $objDate->timestamp;

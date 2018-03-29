@@ -573,7 +573,7 @@ class CatalogDcExtractor extends CatalogController {
         $blnFieldsetStart = false;
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $this->strTable );
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null, true );
 
         $arrPaletteFields = [];
         $arrFieldsetStart = [];

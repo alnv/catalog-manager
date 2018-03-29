@@ -62,6 +62,7 @@ class RoutingBuilder extends \Frontend {
                         $intFragmentIndex++;
                     }
                 }
+
                 return $arrReturn;
             }
         }

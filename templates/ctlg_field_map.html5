@@ -28,28 +28,21 @@
          var objGoogleMap = new google.maps.Map( document.getElementById( "id_<?= $this->id; ?>" ), objGoogleMapOption );
 
          <?php if ( $this->mapMarker == 'true' ): ?>
-
+            
             var objMarker = new google.maps.Marker({
 
                map: objGoogleMap,
                position: objLatLng,
                title: objCatalog.title,
             });
-
+            
          <?php endif;?>
 
          <?php if ( $this->addMapInfoBox == 'true' ): ?>
 
-            var objInfoBox = new InfoBox({
+            var objInfoBox = new google.maps.InfoWindow({
 
-               content: '<div class="infobox"><?= $this->mapInfoBoxContent; ?></div>',
-
-               boxStyle: {
-
-                  background: '#fff',
-                  width: "200px",
-                  padding: "10px"
-               }
+               content: '<div class="infobox"><?= $this->mapInfoBoxContent; ?></div>'
             });
 
             google.maps.event.addListener( objMarker, 'click', function () {

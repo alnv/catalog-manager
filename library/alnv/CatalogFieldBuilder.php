@@ -301,11 +301,12 @@ class CatalogFieldBuilder extends CatalogController {
 
                 'type' => '',
                 'sort' => '1',
-                'search' => true,
+                'search' => '1',
                 'invisible' => '',
                 'fieldname' => 'id',
                 'statement' => 'i10',
                 'disableFEE' => true,
+                'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0]
             ],
 
@@ -476,6 +477,7 @@ class CatalogFieldBuilder extends CatalogController {
                 $arrField['_dcFormat'] = [
 
                     'sorting' => $arrField['_dcFormat']['sorting'],
+                    'search' => $arrField['_dcFormat']['search'],
                     'label' => $arrField['_dcFormat']['label'],
                     'flag' => $arrField['_dcFormat']['flag'],
                     'sql' => $arrField['_dcFormat']['sql']

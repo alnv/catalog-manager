@@ -234,81 +234,70 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createWhereStatement() {
 
-        $strWhereStatement = '';
+        $strStatement = '';
 
         if ( !$this->arrQuery['where'] || empty( $this->arrQuery['where'] ) || !is_array( $this->arrQuery['where'] ) ) {
 
-            return $strWhereStatement;
+            return $strStatement;
         }
 
-        $strWhereStatement .= ' WHERE';
+        $strStatement .= ' WHERE';
 
-        foreach ( $this->arrQuery['where'] as $intIndex => $arrQuery ) {
+        foreach ( $this->arrQuery['where'] as $intLevel1 => $arrQuery ) {
 
-            if ( $intIndex ) $strWhereStatement .= ' AND';
+            if ( !Toolkit::isAssoc( $arrQuery ) ) {
 
-            if ( !empty( $arrQuery[0] ) && is_array( $arrQuery[0] ) ) {
+                $intLevel2 = 0;
 
-                $strEndSeparator = '';
-                $strStartSeparator = '(';
-                $intTotal = count( $arrQuery ) - 1;
+                if ( $intLevel1 ) $strStatement .= ' AND ';
+                if ( !$intLevel2 && count( $arrQuery ) > 1 ) $strStatement .= ' ( ';
 
-                foreach ( $arrQuery as $intSubIndex => $arrSubQuery ) {
+                foreach ( $arrQuery as $arrOrQuery ) {
 
-                    if ( $intSubIndex ) $strStartSeparator = '';
-                    if ( $intTotal == $intSubIndex ) $strEndSeparator = ')';
+                    if ( $intLevel2 ) $strStatement .= ' OR ';
 
-                    $strWhereStatement .= $strStartSeparator . $this->createQueryStatement( $arrSubQuery, ( $intSubIndex ? ' OR' : '' ), $strEndSeparator, $intTotal );
+                    $this->createMultipleValueQueries( $strStatement, $arrOrQuery );
+
+                    $intLevel2++;
                 }
 
-            } else {
+                if ( $intLevel2 && $intLevel2 == count( $arrQuery ) && count( $arrQuery ) > 1 ) $strStatement .= ' ) ';
+            }
 
-                if ( !$arrQuery['operator'] ) continue;
+            else {
 
-                $strWhereStatement .= $this->createQueryStatement( $arrQuery, '' );
+                if ( $intLevel1 ) $strStatement .= ' AND ';
+
+                $this->createMultipleValueQueries( $strStatement, $arrQuery );
             }
         }
 
-        return $strWhereStatement;
+        return $strStatement;
     }
 
 
-    protected function createQueryStatement( $arrQuery, $strOperator, $strSeparator = '', $intParentTotal = 0 ) {
+    protected function createMultipleValueQueries( &$strQuery, $arrQuery ) {
 
-        $strQuery = '';
+        if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) ) {
 
-        if ( is_bool( $arrQuery['multiple'] ) &&  $arrQuery['multiple'] == true ) {
-            
-            if ( !empty( $arrQuery['value'] ) && is_array( $arrQuery['value'] ) ) {
+            $strQuery .= ' ( ';
 
-                $strQuerySeparator = '(';
-                $intTotal = count( $arrQuery['value'] ) - 1;
+            foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
 
-                foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
+                if ( $intIndex ) $strQuery .= ' OR ';
 
-                    if ( $intIndex || $intParentTotal ) $strQuerySeparator = '';
-                    if ( $intTotal == $intIndex ) $strQuerySeparator = ')';
-
-                    $strQuery .= $this->createQueryStatement([
-
-                        'value' => $strValue,
-                        'field' => $arrQuery['field'],
-                        'operator' => $arrQuery['operator']
-
-                    ], ( $intIndex || $intParentTotal ? ' OR' : '' ), ( count( $arrQuery['value'] ) > 1 ? $strQuerySeparator : '' ) );
-                }
-
-                return $strQuery;
+                $strQuery .= ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] );
             }
+
+            $strQuery .= ' ) ';
+        }
+
+        else {
+
+            $strQuery .= ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] );
         }
 
         $this->setValue( $arrQuery['value'], $arrQuery['field'] );
-        $strEndSeparator = ( $strSeparator == ')' ? $strSeparator : '' );
-        $strStartSeparator = ( $strSeparator == '(' ? $strSeparator : '' );
-
-        $strQuery .= $strStartSeparator . $strOperator . ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] ) . $strEndSeparator;
-
-        return $strQuery;
     }
 
 

@@ -518,7 +518,7 @@ class CatalogView extends CatalogController {
         $intCurrentEntity = 0;
         $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
         $intNumRows = $objEntities->numRows;
-        
+
         if ( $this->strMode == 'view' ) $this->objMainTemplate->entityIndex = [ $intNumRows, $intTotal ];
 
         while ( $objEntities->next() ) {

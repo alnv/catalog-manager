@@ -784,4 +784,15 @@ class Toolkit {
 
         return is_bool( \Config::get('dynAlias') ) && \Config::get('dynAlias') === true;
     }
+
+
+    public static function setTokens( $arrRow, $strName, &$arrTokens = [] ) {
+
+        foreach ( $arrRow as $strFieldname => $strValue ) {
+
+            $arrTokens[ $strName . $strFieldname ] = $strValue;
+        }
+
+        return $arrTokens;
+    }
 }

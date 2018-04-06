@@ -303,6 +303,11 @@ class ContentCatalogFilterForm extends \ContentElement {
             ];
         }
 
+        if ( is_array( $strValue ) && $arrField['type'] == 'text' ) {
+
+            return implode( ' ', $strValue );
+        }
+
         return $strValue;
     }
 

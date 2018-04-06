@@ -566,7 +566,7 @@ class FrontendEditing extends CatalogController {
             ];
 
             $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
-            $this->CatalogEvents->addEventListener( 'delete', $arrData );
+            $this->CatalogEvents->addEventListener( 'delete', $arrData, $this );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
         }
 
@@ -857,7 +857,7 @@ class FrontendEditing extends CatalogController {
                 ];
 
                 $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
-                $this->CatalogEvents->addEventListener( 'create', $arrData );
+                $this->CatalogEvents->addEventListener( 'create', $arrData, $this );
 
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
@@ -894,7 +894,7 @@ class FrontendEditing extends CatalogController {
                     ];
 
                     $this->CatalogMessage->set( 'updateMessage', $arrData, $this->id );
-                    $this->CatalogEvents->addEventListener( 'update', $arrData );
+                    $this->CatalogEvents->addEventListener( 'update', $arrData, $this );
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
                 }
 
@@ -932,7 +932,7 @@ class FrontendEditing extends CatalogController {
                 ];
 
                 $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
-                $this->CatalogEvents->addEventListener( 'create', $arrData );
+                $this->CatalogEvents->addEventListener( 'create', $arrData, $this );
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
                 break;

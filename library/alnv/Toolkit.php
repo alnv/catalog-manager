@@ -293,6 +293,9 @@ class Toolkit {
 
             $arrReturn = [];
 
+            $varValue = array_filter( $varValue );
+            $varValue = array_unique( $varValue );
+
             foreach ( $varValue as $strKey => $strValue ) {
 
                 $arrReturn[ $strKey ] = Toolkit::prepareValueForQuery( $strValue );
@@ -471,16 +474,6 @@ class Toolkit {
             }
         }
 
-        if ( is_string( $arrQuery['value'] ) && $arrQuery['operator'] == 'regexp' ) {
-
-            if ( strpos( $arrQuery['value'], ' ' ) ) {
-
-                $arrQuery['value'] = explode( ' ' , $arrQuery['value'] );
-                $arrQuery['value'] = array_filter( $arrQuery['value'] );
-                $arrQuery['value'] = array_unique( $arrQuery['value'] );
-            }
-        }
-
         if ( is_string( $arrQuery['value'] ) ) {
 
             $arrQuery['value'] = \Controller::replaceInsertTags( $arrQuery['value'] );
@@ -488,6 +481,14 @@ class Toolkit {
             if ( strpos( $arrQuery['value'], ',' ) ) {
 
                 $arrQuery['value'] = explode( ',' , $arrQuery['value'] );
+            }
+
+            if ( is_string( $arrQuery['value'] ) && $arrQuery['operator'] == 'regexp' ) {
+
+                if ( strpos( $arrQuery['value'], ' ' ) ) {
+
+                    $arrQuery['value'] = explode( ' ' , $arrQuery['value'] );
+                }
             }
         }
 

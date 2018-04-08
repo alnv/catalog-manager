@@ -79,6 +79,9 @@ class SQLQueryBuilder extends CatalogController {
             $this->createOrderByStatement(),
             $this->createPaginationStatement()
         );
+
+        // echo($this->strQuery);
+        // exit;
     }
 
 
@@ -208,10 +211,7 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createHavingDistanceStatement() {
 
-        if ( !$this->arrQuery['distance'] || empty( $this->arrQuery['distance'] ) || !is_array( $this->arrQuery['distance'] ) ) {
-
-            return '';
-        }
+        if ( !$this->arrQuery['distance'] || empty( $this->arrQuery['distance'] ) || !is_array( $this->arrQuery['distance'] ) ) return '';
 
         return sprintf( ' HAVING _distance < %s', $this->arrQuery['distance']['value'] );
     }
@@ -400,7 +400,7 @@ class SQLQueryBuilder extends CatalogController {
 
         return sprintf(
 
-            ",3956 * 1.6 * 2 * ASIN(SQRT(POWER(SIN((%s-abs(%s)) * pi()/180 / 2),2) + COS(%s * pi()/180) * COS(abs(%s) *  pi()/180) * POWER( SIN( (%s-%s) *  pi()/180 / 2 ), 2 ))) AS _distance",
+            ",3956 * 1.6 * 2 * ASIN(SQRT(POWER(SIN((%s-abs(`%s`)) * pi()/180 / 2),2) + COS(%s * pi()/180) * COS(abs(`%s`) *  pi()/180) * POWER( SIN( (%s-`%s`) *  pi()/180 / 2 ), 2 ))) AS _distance",
             $this->arrQuery['distance']['latCord'],
             $this->arrQuery['distance']['latField'],
             $this->arrQuery['distance']['latCord'],

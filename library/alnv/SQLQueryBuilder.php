@@ -296,7 +296,7 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createMultipleValueQueries( &$strQuery, $arrQuery ) {
 
-        if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'between', 'contain' ] ) ) {
+        if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'between' ] ) ) {
 
             $strQuery .= ' ( ';
 

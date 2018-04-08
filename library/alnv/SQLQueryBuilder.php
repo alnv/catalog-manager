@@ -100,9 +100,21 @@ class SQLQueryBuilder extends CatalogController {
     }
 
 
+    protected function regexpExact( $strField ) {
+
+        return $this->regexp( $strField );
+    }
+
+
     protected function findInSet( $strField ) {
 
         return sprintf( 'FIND_IN_SET(?,LOWER(CAST(%s.`%s` AS CHAR)))', $this->strTable, $strField );
+    }
+
+
+    protected function findInSetExact( $strField ) {
+
+        return $this->findInSet( $strField );
     }
 
 
@@ -135,6 +147,12 @@ class SQLQueryBuilder extends CatalogController {
         $strPlaceholder = $this->arrMultipleValues[ $strField ] ? implode ( ',', array_fill( 0, $this->arrMultipleValues[ $strField ], '?' ) ) : '?';
 
         return sprintf( 'LOWER(%s.`%s`) IN ('. $strPlaceholder .')', $this->strTable, $strField );
+    }
+
+
+    protected function containExact( $strField ) {
+
+        return $this->contain( $strField );
     }
 
 
@@ -254,7 +272,7 @@ class SQLQueryBuilder extends CatalogController {
 
                 foreach ( $arrQuery as $arrOrQuery ) {
 
-                    if ( $intLevel2 ) $strStatement .= ' OR ';
+                    if ( $intLevel2 ) $strStatement .= strpos( $arrOrQuery['operator'], 'Exact' ) !== false ? ' AND ' : ' OR ';
 
                     $this->createMultipleValueQueries( $strStatement, $arrOrQuery );
 
@@ -284,7 +302,7 @@ class SQLQueryBuilder extends CatalogController {
 
             foreach ( $arrQuery['value'] as $intIndex => $strValue ) {
 
-                if ( $intIndex ) $strQuery .= ' OR ';
+                if ( $intIndex ) $strQuery .= strpos( $arrQuery['operator'], 'Exact' ) !== false ? ' AND ' : ' OR ';
 
                 $strQuery .= ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] );
             }

@@ -795,4 +795,21 @@ class Toolkit {
 
         return $arrTokens;
     }
+
+
+    public static function parsePseudoInserttag( $strValue = '', $arrPostData = [] ) {
+
+        if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
+
+            $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
+            $strTag = implode( '', $arrTags );
+
+            if ( $strTag && isset( $arrPostData['row'] ) && is_array( $arrPostData['row'] ) ) {
+
+                return Toolkit::isEmpty( $arrPostData['row'][ $strTag ] ) ? '' : $arrPostData['row'][ $strTag ];
+            }
+        }
+
+        return $strValue;
+    }
 }

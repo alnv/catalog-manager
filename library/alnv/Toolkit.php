@@ -797,16 +797,16 @@ class Toolkit {
     }
 
 
-    public static function parsePseudoInserttag( $strValue = '', $arrPostData = [] ) {
+    public static function parsePseudoInserttag( $strValue = '', $arrData = [] ) {
 
         if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
             $strTag = implode( '', $arrTags );
 
-            if ( $strTag && isset( $arrPostData['row'] ) && is_array( $arrPostData['row'] ) ) {
+            if ( $strTag && isset( $arrData ) && is_array( $arrData ) ) {
 
-                return Toolkit::isEmpty( $arrPostData['row'][ $strTag ] ) ? '' : $arrPostData['row'][ $strTag ];
+                return Toolkit::isEmpty( $arrData[ $strTag ] ) ? '' : $arrData[ $strTag ];
             }
         }
 

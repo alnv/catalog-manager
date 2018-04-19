@@ -257,12 +257,28 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['message'] = '';
         $arrField['attributes'] = '';
         $arrField['invalid'] = false;
+        $arrField['hasAutoCompletion'] = false;
         $arrField['value'] = $this->getActiveOptions( $arrField );
         $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
         $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
+
+        if ( $arrField['type'] == 'text' && $arrField['autoCompletionType'] ) {
+
+            if ( \Input::get('ctlg_autocomplete_query') ) {
+
+                $objCatalogAutoCompletion = new CatalogAutoCompletion( $arrField );
+                $objCatalogAutoCompletion->getAutoCompletionByQuery( \Input::get('ctlg_autocomplete_query') );
+
+                exit;
+            }
+
+            $arrField['hasAutoCompletion'] = true;
+            $GLOBALS['TL_HEAD']['CatalogManagerCSSAwesomplete'] = '<link href="/system/modules/catalog-manager/assets/awesomplete/awesomplete.css" rel="stylesheet" type="text/css"></link>';
+            $GLOBALS['TL_HEAD']['CatalogManagerJSAwesomplete'] = '<script src="/system/modules/catalog-manager/assets/awesomplete/awesomplete.min.js"></script>';
+        }
 
         if ( $arrField['mandatory'] ) $arrField['attributes'] .= 'required';
 

@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['new'] = [ 'Neues Eingabefeld erstellen', 'Hier können Sie ein neues Eingabefeld erstellen.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['frontend_legend'] = 'Frontend-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['file_type_legend'] = 'Bild-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['palettes_legend'] = 'Paletten-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_fields']['database_legend'] = 'Datenbankeinstellungen';
@@ -15,6 +16,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['autocompletion_legend'] = 'Autovervoll
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['title'] = [ 'Titel', 'Bitte geben Sie den Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['step'] = [ 'Interval', 'Bitte geben Sie den Interval ein.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['template'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['isUnique'] = [ 'Einzigartig', 'Der Wert muss einzigartig sein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useIndex'] = [ 'Index', 'Hier können Sie die Spalte indexieren.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['rows'] = [ 'Zeilen', 'Bitte geben Sie die Anzahl an Zeilen ein.' ];

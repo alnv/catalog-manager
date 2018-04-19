@@ -108,20 +108,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         '__selector__' => [ 'type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
 
         'default' => '{general_legend},type',
-        'text' => '{general_legend},type,title,label,description,value,dynValue,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{autocompletion_legend},autoCompletionType;{evaluation_legend},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'number' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'hidden' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'date' => '{general_legend},type,tType,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'textarea' => '{general_legend},type,title,label,description,value,placeholder,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag;{invisible_legend},invisible',
-        'select' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,chosen,submitOnChange,disabled,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'radio' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,disabled,submitOnChange,includeBlankOption,blankOptionLabel,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'checkbox' => '{general_legend},type,title,label,description,value,tabindex,cssID;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend},mandatory,doNotCopy,multiple,enableToggleIcon,disabled,submitOnChange,tl_class;{panelLayout_legend},exclude,filter,search,sort,flag,charLength;{invisible_legend},invisible',
-        'upload' => '{general_legend},type,title,label,description,value,tabindex,cssID,useFineUploader;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend},mandatory,doNotCopy,disabled,filesOnly,extensions,path,maxsize,tl_class;{panelLayout_legend},exclude;{invisible_legend},invisible',
-        'message' => '{general_legend},type,fieldname,title,message;{invisible_legend},invisible',
-        'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend},invisible',
-        'fieldsetStart' => '{general_legend},type,title,label,isHidden;{invisible_legend},invisible',
-        'fieldsetStop' => '{general_legend},type,title;{invisible_legend},invisible',
-        'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend},mandatory,doNotCopy;{invisible_legend},invisible',
+        'text' => '{general_legend},type,title,description,value,dynValue;{database_legend},fieldname,statement,useIndex;{autocompletion_legend:hide},autoCompletionType;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{frontend_legend:hide},label,placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'number' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,minval,maxval,rgxp,tl_class;{frontend_legend:hide},label,placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'hidden' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,doNotSaveEmpty,tstampAsDefault,minlength,maxlength,rgxp;{frontend_legend:hide},label,placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'date' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,readonly,doNotSaveEmpty,tstampAsDefault,rgxp,tl_class;{frontend_legend:hide},label,placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'textarea' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},mandatory,doNotCopy,spaceToUnderscore,allowHtml,nospace,doNotSaveEmpty,readonly,rte,cols,rows,minlength,maxlength,rgxp,tl_class;{frontend_legend:hide},label,placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag;{invisible_legend:hide},invisible',
+        'select' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend:hide},mandatory,doNotCopy,multiple,chosen,submitOnChange,disabled,includeBlankOption,blankOptionLabel,tl_class;{frontend_legend:hide},label,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'radio' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend:hide},mandatory,doNotCopy,disabled,submitOnChange,includeBlankOption,blankOptionLabel,tl_class;{frontend_legend:hide},label,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'checkbox' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend:hide},mandatory,doNotCopy,multiple,enableToggleIcon,disabled,submitOnChange,tl_class;{frontend_legend:hide},label,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
+        'upload' => '{general_legend},type,title,description,value;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend:hide},mandatory,doNotCopy,disabled,filesOnly,extensions,path,maxsize,tl_class;{frontend_legend:hide},label,tabindex,template,cssID,useFineUploader;{panelLayout_legend:hide},exclude;{invisible_legend:hide},invisible',
+        'message' => '{general_legend},type,fieldname,title,message;{invisible_legend:hide},invisible',
+        'map' => '{general_legend},type,fieldname,title,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{frontend_legend:hide},label;{invisible_legend:hide},invisible',
+        'fieldsetStart' => '{general_legend},type,title,isHidden;{frontend_legend:hide},label;{invisible_legend:hide},invisible',
+        'fieldsetStop' => '{general_legend},type,title;{invisible_legend:hide},invisible',
+        'dbColumn' => '{general_legend},type,title,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},mandatory,doNotCopy;{frontend_legend:hide},label;{invisible_legend:hide},invisible',
     ],
 
     'subpalettes' => [
@@ -239,7 +239,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'clr long',
+                'tl_class' => 'w50',
                 'maxlength' => 512
             ],
 
@@ -312,7 +312,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -356,7 +356,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'exclude' => true,
@@ -370,7 +370,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'exclude' => true,
@@ -380,7 +380,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'isHidden' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['isHidden'],
-            'inputType' => 'checkbox',
+            'inputType' => 'checkbox m12',
 
             'eval' => [
 
@@ -455,7 +455,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'exclude' => true,
@@ -531,7 +531,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -676,7 +676,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -690,7 +690,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -704,7 +704,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -718,7 +718,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -732,7 +732,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -746,7 +746,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -775,7 +775,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'maxlength' => 64,
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -789,7 +789,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -803,7 +803,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -817,7 +817,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -854,7 +854,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -864,7 +864,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'search' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['search'],
-            'inputType' => 'checkbox',
+            'inputType' => 'checkbox m12',
 
             'eval' => [
 
@@ -878,7 +878,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'sort' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['sort'],
-            'inputType' => 'checkbox',
+            'inputType' => 'checkbox m12',
 
             'eval' => [
 
@@ -896,7 +896,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -949,7 +949,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -972,7 +972,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -1545,7 +1545,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'exclude' => true,
@@ -1798,6 +1798,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
+                'submitOnChange' => true,
                 'tl_class' => 'w50 m12'
             ],
 
@@ -1860,5 +1861,25 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],
+
+        'template' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['template'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 255,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldTemplates' ],
+
+            'exclude' => true,
+            'sql' => "varchar(255) NOT NULL default ''"
+        ]
     ]
 ];

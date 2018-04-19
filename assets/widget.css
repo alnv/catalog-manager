@@ -129,3 +129,9 @@ ul.ctlg_files_preview li {
 
     position: relative;
 }
+
+.widget .awesomplete {
+
+    display: block;
+    width: 100%;
+}

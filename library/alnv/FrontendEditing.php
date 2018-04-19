@@ -22,6 +22,7 @@ class FrontendEditing extends CatalogController {
     protected $arrCatalogFields = [];
     protected $arrPaletteLabels = [];
     protected $arrCatalogAttributes = [];
+    protected $arrValidFormTemplates = [];
 
 
     public function __construct() {
@@ -49,6 +50,7 @@ class FrontendEditing extends CatalogController {
         $strPalette = 'general_legend';
         $this->strFormId = md5( 'id_' . $this->catalogTablename );
         $this->strOnChangeId = md5( 'change_' . $this->catalogTablename );
+        $this->arrValidFormTemplates = array_keys( Toolkit::$arrFormTemplates );
         $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
         $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
@@ -57,6 +59,7 @@ class FrontendEditing extends CatalogController {
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
         $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( true, $this );
+
 
         if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
 
@@ -223,6 +226,8 @@ class FrontendEditing extends CatalogController {
             $objWidget->value = $this->arrValues[ $strFieldname ];
             $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
             $objWidget->description = is_array( $arrField['label'] ) && isset( $arrField['label'][1] ) ? $arrField['label'][1] : '';
+
+            if ( $this->arrCatalogFields[ $strFieldname ]['template'] && in_array( $this->arrCatalogFields[ $strFieldname ]['type'], $this->arrValidFormTemplates ) ) $objWidget->template = $this->arrCatalogFields[ $strFieldname ]['template'];
 
             if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
 

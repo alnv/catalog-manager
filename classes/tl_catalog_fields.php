@@ -532,4 +532,19 @@ class tl_catalog_fields extends \Backend {
 
         return $objDcModifier->getFields( $strCurrentPalette );
     }
+
+
+    public function getFieldTemplates( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord->type ) return [];
+
+        $strType = Toolkit::$arrFormTemplates[ $dc->activeRecord->type ];
+
+        if ( $dc->activeRecord->type == 'upload' && $dc->activeRecord->useFineUploader ) {
+
+            $strType = 'ctlg_form_fine_uploader';
+        }
+
+        return $this->getTemplateGroup( $strType );
+    }
 }

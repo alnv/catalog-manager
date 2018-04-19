@@ -34,6 +34,19 @@ class Toolkit {
         'binary' => "binary(16) NULL"
     ];
 
+    public static $arrFormTemplates = [
+
+        'checkbox' => 'form_checkbox',
+        'textarea' => 'form_textarea',
+        'number' => 'form_textfield',
+        'text' => 'form_textfield',
+        'date' => 'form_textfield',
+        'select' => 'form_select',
+        'upload' => 'form_upload',
+        'hidden' => 'form_hidden',
+        'radio' => 'form_radio'
+    ];
+
     public static function invisiblePaletteFields() {
 
         return [

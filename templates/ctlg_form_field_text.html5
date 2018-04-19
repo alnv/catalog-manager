@@ -1,4 +1,4 @@
-<div <?= $this->fieldID ?> class="<?= $this->cssClass ?>ctlg_form_field text">
+3<div <?= $this->fieldID ?> class="<?= $this->cssClass ?>ctlg_form_field text">
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>
@@ -7,3 +7,47 @@
       <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
    <?php endif; ?>
 </div>
+<?php if ( $this->hasAutoCompletion ): ?>
+	<script>
+		(function(){
+	
+			'use strict';
+			
+			var strRequest = location.protocol + '//' + location.host + location.pathname;
+			var objInput = document.getElementById( "id_form_<?= $this->name ?>" );
+			var objAwesomplete = new Awesomplete( objInput, { list: [] });
+			
+			objInput.addEventListener('keyup', function( objEvent ) {
+				
+				objEvent.preventDefault()
+				
+				var intCode = ( objEvent.keyCode || objEvent.which )
+			
+				if ( intCode === 37 || intCode === 38 || intCode === 39 || intCode === 40 || intCode === 27 || intCode === 13 ) {
+			    	
+			    	return false;
+				}
+				
+				var objAutoCompletionRequest = new XMLHttpRequest();
+				var strQuery = objEvent.target.value;
+				
+				if ( strQuery ) {
+			
+					objAutoCompletionRequest.open( "GET", strRequest + '?ctlg_autocomplete_query=' + strQuery , true );
+				
+					objAutoCompletionRequest.onload = function() {
+					
+						var arrWords = JSON.parse( objAutoCompletionRequest.responseText ).words;
+						
+						objAwesomplete.list = arrWords;
+					};
+					
+					objAutoCompletionRequest.send();
+				}
+				
+				return false;
+			});
+			
+		})();
+	</script>
+<?php endif; ?>

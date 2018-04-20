@@ -110,6 +110,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'] = [
     'emails' => 'Valid list of E Mails.',
     'natural' => 'Allows non-negative numbers.',
     'friendly' => 'Valid E-Mail Address "friendly name format".',
+    'dateTime' => 'Valid date and time',
     'language' => 'Valid language code.',
     'folderalias' => 'Valid folder URL alias.'
 ];

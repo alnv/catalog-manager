@@ -114,5 +114,6 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'] = [
     'natural' => 'Keine negativen Zahlen.',
     'friendly' => 'Gültige E-Mail-Adresse im "friendly name format"',
     'language' => 'Gültige Sprachkürzel.',
+    'dateTime' => 'Gültiges Datum und Uhrzeit',
     'folderalias' => 'Gültiges Ordner-URL Alias.'
 ];

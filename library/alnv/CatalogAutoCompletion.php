@@ -50,7 +50,7 @@ class CatalogAutoCompletion extends OptionsGetter {
     }
 
 
-    public function getAutoCompletionByQuery( $strQueryRequest ) {
+    public function getAutoCompletionByQuery( $strKeyword ) {
 
         $arrWords = [];
         $strQuery = '';
@@ -58,11 +58,11 @@ class CatalogAutoCompletion extends OptionsGetter {
         $strTable = $this->arrField['dbTable'] ? $this->arrField['dbTable'] : 'tl_search_index';
         $strKeyColumn = $this->arrField['dbTableKey'] ? $this->arrField['dbTableKey'] : 'word';
 
-        $arrQueryRequests = explode( ' ', $strQueryRequest );
+        $arrKeywords = explode( ' ', $strKeyword );
 
-        if ( is_array( $arrQueryRequests ) && !empty( $arrQueryRequests ) ) {
+        if ( is_array( $arrKeywords ) && !empty( $arrKeywords ) ) {
 
-            foreach ( $arrQueryRequests as $intIndex => $strQ ) {
+            foreach ( $arrKeywords as $intIndex => $strWord ) {
 
                 $strQuery .= ( $intIndex ? ' OR ' : 'WHERE ' ) .
                     sprintf(
@@ -71,7 +71,7 @@ class CatalogAutoCompletion extends OptionsGetter {
                         $strKeyColumn
                     );
 
-                $arrValues[] = $strQ;
+                $arrValues[] = $strWord;
             }
         }
 
@@ -89,12 +89,12 @@ class CatalogAutoCompletion extends OptionsGetter {
             . "END "
             . "LIMIT 10";
 
-        $arrValues[] = $strWord;
-        $arrValues[] = $strWord;
-        $arrValues[] = $strWord;
-        $arrValues[] = $strWord;
-        $arrValues[] = $strWord;
-        $arrValues[] = $strWord;
+        $arrValues[] = $strKeyword;
+        $arrValues[] = $strKeyword;
+        $arrValues[] = "$strKeyword %";
+        $arrValues[] = "$strKeyword%";
+        $arrValues[] = "%$strKeyword";
+        $arrValues[] = "%$strKeyword%";
 
         $objSuggests = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s ', $strTable ) . $strQuery )->execute( $arrValues );
 
@@ -110,9 +110,11 @@ class CatalogAutoCompletion extends OptionsGetter {
 
         echo json_encode( [
 
-            'word' => $strQueryRequest,
+            'word' => $strKeyword,
             'words' => $arrWords
 
         ], 128 );
+
+        exit;
     }
 }

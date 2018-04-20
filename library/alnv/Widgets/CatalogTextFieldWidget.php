@@ -18,7 +18,7 @@ class CatalogTextFieldWidget extends \Widget {
 
         $GLOBALS['TL_CSS']['catalogAwesomplete'] = 'system/modules/catalog-manager/assets/awesomplete/awesomplete.css';
         $GLOBALS['TL_JAVASCRIPT']['catalogAwesompleteFramework'] = $GLOBALS['TL_CONFIG']['debugMode'] ? 'system/modules/catalog-manager/assets/awesomplete/awesomplete.js' : 'system/modules/catalog-manager/assets/awesomplete/awesomplete.min.js';
-        $GLOBALS['TL_JAVASCRIPT']['catalogAwesompleteWidget'] = 'system/modules/catalog-manager/assets/awesomplete/catalogAwesomplete.js';
+        $GLOBALS['TL_JAVASCRIPT']['catalogAwesompleteWidget'] = 'system/modules/catalog-manager/assets/awesomplete/awesomplete.setup.backend.js';
     }
 
 

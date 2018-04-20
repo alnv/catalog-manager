@@ -96,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         '__selector__' => [ 'type', 'optionsType', 'dbParseDate', 'autoCompletionType' ],
 
         'default' => '{field_type_legend},type,name,title;',
-        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,mandatory,tabindex,cssID;{autocompletion_legend:hide},autoCompletionType;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
+        'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,rgxp,mandatory,tabindex,cssID;{autocompletion_legend:hide},autoCompletionType;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
         'hidden' => '{field_type_legend},type,name,title,defaultValue;{invisible_legend},invisible;',
         'radio' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,includeBlankOption,blankOptionLabel,mandatory,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
         'select' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,multiple,includeBlankOption,blankOptionLabel,mandatory,tabindex,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
@@ -699,7 +699,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption'=> true,
             ],
 
             'options' => [
@@ -712,5 +712,40 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"
         ],
+
+        'rgxp' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['rgxp'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'maxlength' => 16,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=> true,
+            ],
+
+            'options' => [ 'date', 'time', 'dateTime' ],
+            'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
+        ],
+
+        'useDatePicker' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['useDatePicker'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'tl_class' => 'm12 w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ]
     ]
 ];

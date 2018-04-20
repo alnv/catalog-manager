@@ -278,8 +278,6 @@ class ContentCatalogFilterForm extends \ContentElement {
 
                 $objCatalogAutoCompletion = new CatalogAutoCompletion( $arrField );
                 $objCatalogAutoCompletion->getAutoCompletionByQuery( \Input::get('ctlg_autocomplete_query') );
-
-                exit;
             }
 
             $this->arrScripts['awesomplete.min.js'] = true;

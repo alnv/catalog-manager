@@ -14,7 +14,9 @@ document.addEventListener( 'DOMContentLoaded', function( objDomEvent ) {
 
         var objConfig = {
 
-            list: []
+            list: [],
+            sort: false,
+            autoFirst: true
         };
 
         if ( objInput.classList.contains('multiple') ) {

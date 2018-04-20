@@ -22,7 +22,8 @@ class ContentCatalogFilterForm extends \ContentElement {
 
     protected $arrScripts = [
 
-        'awesomplete.min.js' => false
+        'awesomplete.min.js' => false,
+        'pikaday.min.js' => false
     ];
 
     public function generate() {
@@ -90,6 +91,16 @@ class ContentCatalogFilterForm extends \ContentElement {
                         $this->arrFormFields[ $strName ]['invalid'] = true;
                         $this->arrFormFields[ $strName ]['cssClass'] .= 'error ';
                         $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[ $strName ]['title'] );
+                    }
+
+                    // only date
+                    if ( $this->arrFormFields[ $strName ]['rgxp'] && $this->arrFormFields[ $strName ]['type'] == 'text' && !$this->validate( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['rgxp'] ) ) {
+
+                        $this->blnIsValid = false;
+                        $this->arrFormFields[ $strName ]['value'] = '';
+                        $this->arrFormFields[ $strName ]['invalid'] = true;
+                        $this->arrFormFields[ $strName ]['cssClass'] .= 'error ';
+                        $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR'][ $this->arrFormFields[ $strName ]['rgxp'] ], $this->arrFormFields[ $strName ]['dateFormat'] );
                     }
                 }
 
@@ -161,6 +172,16 @@ class ContentCatalogFilterForm extends \ContentElement {
         if ( Toolkit::isEmpty( $varValue ) ) return false;
 
         return true;
+    }
+
+
+    protected function validate( $varValue, $strType ) {
+
+        if ( $strType == 'date' ) return \Validator::isDate( $varValue ) ? true : false;
+        if ( $strType == 'time' ) return \Validator::isTime( $varValue ) ? true : false;
+        if ( $strType == 'dateTime' ) return \Validator::isDatim( $varValue ) ? true : false;
+
+        return false;
     }
 
 
@@ -261,6 +282,15 @@ class ContentCatalogFilterForm extends \ContentElement {
             $arrField['options'] = $objOptionGetter->getOptions();
         }
 
+        if ( $arrField['type'] == 'text' && $arrField['rgxp'] && in_array( $arrField['rgxp'], [ 'date', 'time', 'dateTime' ] ) ) {
+
+            global $objPage;
+
+            $strFormat = ( $arrField['rgxp'] == 'dateTime' ? 'datim' : $arrField['rgxp'] ) . 'Format';
+
+            $arrField['dateFormat'] = $objPage->{$strFormat};
+        }
+
         $arrField['message'] = '';
         $arrField['attributes'] = '';
         $arrField['invalid'] = false;
@@ -271,6 +301,8 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
         $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
+
+        if ( $arrField['mandatory'] ) $arrField['attributes'] .= ' required';
 
         if ( $arrField['type'] == 'text' && $arrField['autoCompletionType'] ) {
 
@@ -284,7 +316,14 @@ class ContentCatalogFilterForm extends \ContentElement {
             $arrField['fieldCssClass'] .= ' awesomplete-field' . ( $arrField['multiple'] ? ' multiple' : '' );
         }
 
-        if ( $arrField['mandatory'] ) $arrField['attributes'] .= 'required';
+        /*
+        if ( $arrField['type'] == 'text' && $arrField['useDatePicker'] ) {
+
+            $this->arrScripts['pikaday.min.js'] = true;
+            $arrField['fieldCssClass'] .= ' datepicker-field';
+            $arrField['attributes'] .= sprintf( ' data-date-format="%s"', $arrField['dateFormat'] );
+        }
+        */
 
         return $arrField;
     }
@@ -353,6 +392,16 @@ class ContentCatalogFilterForm extends \ContentElement {
                     $GLOBALS['TL_HEAD']['CatalogManagerCSSAwesomplete'] = '<link href="/system/modules/catalog-manager/assets/awesomplete/awesomplete.css" rel="stylesheet" type="text/css"></link>';
                     $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteFrameworkd'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/%s"></script>', $strScript );
                     $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteSetup'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/awesomplete.setup.frontend.js"></script>' );
+
+                    break;
+
+                case 'pikaday.min.js':
+
+                    if ( !$blnActive ) return null;
+
+                    // $GLOBALS['TL_HEAD']['CatalogManagerCSSDatepicker'] = '<link href="/system/modules/catalog-manager/assets/datepicker/pikaday.css" rel="stylesheet" type="text/css"></link>';
+                    // $GLOBALS['TL_HEAD']['CatalogManagerJSDatepickerFrameworkd'] = sprintf( '<script src="/system/modules/catalog-manager/assets/datepicker/%s"></script>', $strScript );
+                    // $GLOBALS['TL_HEAD']['CatalogManagerJSDatepickerSetup'] = sprintf( '<script src="/system/modules/catalog-manager/assets/datepicker/datepicker.setup.frontend.js"></script>' );
 
                     break;
             }

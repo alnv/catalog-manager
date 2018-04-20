@@ -108,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
         'optionsType_useOptions' => 'options',
         'dbParseDate' => 'dbDateFormat,dbDayBeginFormat,dbMonthBeginFormat,dbYearBeginFormat',
-        'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,multiple',
+        'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTaxonomy,multiple',
         'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
     ],

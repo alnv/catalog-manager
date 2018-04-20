@@ -9,6 +9,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['option_legend'] = 'Auswahlliste-E
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['field_type_legend'] = 'Eingabefeld-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible_legend'] = 'Sichtbarkeitseinstellungen';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependency_legend'] = 'Feldabhängigkeit-Einstellungen';
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['autocompletion_legend'] = 'Autovervollständigung-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Titel', 'Bitte geben Sie ein Titel ein.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'] = [ 'Feldtyp', 'Bitte wählen Sie ein Feldtyp aus.' ];

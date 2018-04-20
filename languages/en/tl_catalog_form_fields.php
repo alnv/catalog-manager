@@ -8,6 +8,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['general_legend'] = 'General setti
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template_legend'] = 'Template settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['invisible_legend'] = 'Visibility settings';
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['field_type_legend'] = 'Input field settings';
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['autocompletion_legend'] = 'Autocompletion settings';
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['title'] = [ 'Title', 'Please enter a title.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['template'] = [ 'Template', 'Please select a template.' ];

@@ -20,6 +20,11 @@ class ContentCatalogFilterForm extends \ContentElement {
         'checkbox' => 'ctlg_form_field_checkbox',
     ];
 
+    protected $arrScripts = [
+
+        'awesomplete.min.js' => false
+    ];
+
     public function generate() {
 
         if ( TL_MODE == 'BE' ) {
@@ -113,6 +118,8 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
         $this->Template->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
         $this->Template->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
+
+        $this->loadScripts();
 
         if ( isset( $arrSubmitAttributes[0] ) && $arrSubmitAttributes[0] ) $this->Template->submitId = sprintf( 'id="%s"', $arrSubmitAttributes[0] );
 
@@ -257,7 +264,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         $arrField['message'] = '';
         $arrField['attributes'] = '';
         $arrField['invalid'] = false;
-        $arrField['hasAutoCompletion'] = false;
+        $arrField['fieldCssClass'] = $arrField['type'];
         $arrField['value'] = $this->getActiveOptions( $arrField );
         $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
@@ -275,9 +282,8 @@ class ContentCatalogFilterForm extends \ContentElement {
                 exit;
             }
 
-            $arrField['hasAutoCompletion'] = true;
-            $GLOBALS['TL_HEAD']['CatalogManagerCSSAwesomplete'] = '<link href="/system/modules/catalog-manager/assets/awesomplete/awesomplete.css" rel="stylesheet" type="text/css"></link>';
-            $GLOBALS['TL_HEAD']['CatalogManagerJSAwesomplete'] = '<script src="/system/modules/catalog-manager/assets/awesomplete/awesomplete.min.js"></script>';
+            $this->arrScripts['awesomplete.min.js'] = true;
+            $arrField['fieldCssClass'] .= ' awesomplete-field' . ( $arrField['multiple'] ? ' multiple' : '' );
         }
 
         if ( $arrField['mandatory'] ) $arrField['attributes'] .= 'required';
@@ -333,5 +339,25 @@ class ContentCatalogFilterForm extends \ContentElement {
         if ( !$strFieldname ) return $strDefault;
 
         return $this->CatalogInput->getActiveValue( $strFieldname );
+    }
+
+
+    protected function loadScripts() {
+
+        foreach ( $this->arrScripts as $strScript => $blnActive ) {
+
+            switch ( $strScript ) {
+
+                case 'awesomplete.min.js':
+
+                    if ( !$blnActive ) return null;
+
+                    $GLOBALS['TL_HEAD']['CatalogManagerCSSAwesomplete'] = '<link href="/system/modules/catalog-manager/assets/awesomplete/awesomplete.css" rel="stylesheet" type="text/css"></link>';
+                    $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteFrameworkd'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/%s"></script>', $strScript );
+                    $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteSetup'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/awesomplete.setup.frontend.js"></script>' );
+
+                    break;
+            }
+        }
     }
 }

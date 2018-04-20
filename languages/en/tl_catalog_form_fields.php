@@ -43,6 +43,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbColumn'] = [ 'Column', 'Please 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Here you can filter the records.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDateFormat'] = [ 'Date format', 'Here you can specify the date format.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Ignore empty values', 'Empty values will be not filtered.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['autoCompletionType'] = [ 'Enable autocompletion', 'Here you can enable autocompletion.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Parse date', 'Here you can display date instead of timestamp in the selection list.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'] = [ 'Day, month and year date format', 'The date and time format string will be parsed with the PHP date() function. Default: l, F Y' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'] = [ 'Month and year date format', 'The date and time format string will be parsed with the PHP date() function. Default: F Y' ];

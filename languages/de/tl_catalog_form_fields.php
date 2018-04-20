@@ -46,6 +46,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTableValue'] = [ 'Textspalte', 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'] = [ 'Reihenfolge', 'Hier können Sie die Reihenfolge der Datensätze festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filter', 'Hier können Sie die Datensätze zusätzlich filtern.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Leere Werte ignorieren', 'Die Filterung ignoriert leere Werte.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['autoCompletionType'] = [ 'Autovervollständigung einbinden', 'Hier können Sie eine Autovervollständigung erstellen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Datum formatieren', 'Hier können Sie das Datum anstelle des Timestamps in der Auswahlliste anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'] = [ 'Tag, Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: l, F Y' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'] = [ 'Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: F Y' ];

@@ -50,45 +50,59 @@ class CatalogAutoCompletion extends OptionsGetter {
     }
 
 
-    public function getAutoCompletionByQuery( $strWord ) {
+    public function getAutoCompletionByQuery( $strQueryRequest ) {
 
         $arrWords = [];
-
         $strQuery = '';
-        $strValueColumn = $this->arrField['dbTableValue'] ? $this->arrField['dbTableValue'] : 'word';
+        $arrValues = [];
         $strTable = $this->arrField['dbTable'] ? $this->arrField['dbTable'] : 'tl_search_index';
         $strKeyColumn = $this->arrField['dbTableKey'] ? $this->arrField['dbTableKey'] : 'word';
+
+        $arrQueryRequests = explode( ' ', $strQueryRequest );
+
+        if ( is_array( $arrQueryRequests ) && !empty( $arrQueryRequests ) ) {
+
+            foreach ( $arrQueryRequests as $intIndex => $strQ ) {
+
+                $strQuery .= ( $intIndex ? ' OR ' : 'WHERE ' ) .
+                    sprintf(
+                        'LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)',
+                        $strTable,
+                        $strKeyColumn
+                    );
+
+                $arrValues[] = $strQ;
+            }
+        }
 
         if ( $strTable == 'tl_search_index' ) $strQuery .= ' AND language = "' . $GLOBALS['TL_LANGUAGE'] . '"';
 
         $strQuery .= " ORDER BY "
             . "CASE "
-            . "WHEN (LOCATE(?, " . $strValueColumn . ") = 0) THEN 10 "
-            . "WHEN " . $strValueColumn . " = ? THEN 1 "
-            . "WHEN " . $strValueColumn . " LIKE ? THEN 2 "
-            . "WHEN " . $strValueColumn . " LIKE ? THEN 3 "
-            . "WHEN " . $strValueColumn . " LIKE ? THEN 4 "
-            . "WHEN " . $strValueColumn . " LIKE ? THEN 5 "
+            . "WHEN (LOCATE(?, " . $strKeyColumn . ") = 0) THEN 10 "
+            . "WHEN " . $strKeyColumn . " = ? THEN 1 "
+            . "WHEN " . $strKeyColumn . " LIKE ? THEN 2 "
+            . "WHEN " . $strKeyColumn . " LIKE ? THEN 3 "
+            . "WHEN " . $strKeyColumn . " LIKE ? THEN 4 "
+            . "WHEN " . $strKeyColumn . " LIKE ? THEN 5 "
             . "ELSE 6 "
             . "END "
             . "LIMIT 10";
 
-        $objSuggests = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf(
+        $arrValues[] = $strWord;
+        $arrValues[] = $strWord;
+        $arrValues[] = $strWord;
+        $arrValues[] = $strWord;
+        $arrValues[] = $strWord;
+        $arrValues[] = $strWord;
 
-            'SELECT * FROM %s WHERE LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?) OR LOWER(CAST(%s.`%s` AS CHAR)) REGEXP LOWER(?)' . $strQuery,
-            $strTable,
-            $strTable,
-            $strKeyColumn,
-            $strTable,
-            $strValueColumn
-
-        ) )->execute( $strWord, $strWord, $strWord, $strWord, $strWord, $strWord, $strWord, $strWord );
+        $objSuggests = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s ', $strTable ) . $strQuery )->execute( $arrValues );
 
         if ( $objSuggests->numRows ) {
 
             while ( $objSuggests->next() ) {
 
-                $arrWords[] = $objSuggests->{$strValueColumn};
+                $arrWords[] = $objSuggests->{$strKeyColumn};
             }
         }
 
@@ -96,7 +110,7 @@ class CatalogAutoCompletion extends OptionsGetter {
 
         echo json_encode( [
 
-            'word' => $strQuery,
+            'word' => $strQueryRequest,
             'words' => $arrWords
 
         ], 128 );

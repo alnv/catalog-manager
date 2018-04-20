@@ -63,17 +63,35 @@ class ActiveInsertTag extends \Frontend {
 
                         if ( !$strV ) continue;
 
-                        $objDate = new \Date( $strV, $strDateFormat );
-                        $intTimestamp = $objDate->tstamp;
-                        if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->tstamp;
+                        try {
+
+                            $objDate = new \Date( $strV, $strDateFormat );
+                            $intTimestamp = $objDate->tstamp;
+
+                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->tstamp;
+                        }
+
+                        catch ( \Exception $objException ) {
+
+                            $varValue = '';
+                        }
                     }
                 }
 
                 if ( $blnIsDate && is_string( $varValue ) && !Toolkit::isEmpty( $varValue ) ) {
 
-                    $objDate = new \Date( $varValue, $strDateFormat );
-                    $intTimestamp = $objDate->tstamp;
-                    if ( $intTimestamp > 0 ) $varValue = $objDate->tstamp;
+                    try {
+
+                        $objDate = new \Date( $varValue, $strDateFormat );
+                        $intTimestamp = $objDate->tstamp;
+
+                        if ( $intTimestamp > 0 ) $varValue = $objDate->tstamp;
+                    }
+
+                    catch ( \Exception $objException ) {
+
+                        $varValue = '';
+                    }
                 }
             }
 

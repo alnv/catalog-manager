@@ -1,8 +1,8 @@
-3<div <?= $this->fieldID ?> class="<?= $this->cssClass ?>ctlg_form_field text">
+<div <?= $this->fieldID ?> class="<?= $this->cssClass ?>ctlg_form_field text">
    <?php if( $this->label ): ?>
       <label for="id_form_<?= $this->name ?>"><?= $this->label ?></label>
    <?php endif; ?>
-   <input type="text" id="id_form_<?= $this->name ?>" class="<?= $this->fieldCssClass ?>" name="<?= $this->name ?>" class="text" value="<?= $this->value ?>" placeholder="<?= $this->placeholder ?>" <?= $this->tabindex ?> <?= $this->attributes ?>>
+   <input type="text" id="id_form_<?= $this->name ?>" class="<?= $this->fieldCssClass ?>" name="<?= $this->name ?>" value="<?= $this->value ?>" placeholder="<?= $this->placeholder ?>" <?= $this->tabindex ?> <?= $this->attributes ?>>
    <?php if( $this->description ): ?>
       <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
    <?php endif; ?>

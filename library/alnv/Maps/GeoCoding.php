@@ -60,6 +60,8 @@ class GeoCoding extends CatalogController {
 
         if ( $objRequest->hasError() ) {
 
+            \System::log( $objRequest->error, __METHOD__, TL_GENERAL );
+
             return $arrReturn;
         }
 

@@ -266,6 +266,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'tl_class' => 'clr',
+                'mandatory' => true,
                 'submitOnChange' => true,
             ],
 

@@ -380,11 +380,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'isHidden' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['isHidden'],
-            'inputType' => 'checkbox m12',
+            'inputType' => 'checkbox',
 
             'eval' => [
 
-                'tl_class' => 'w50'
+                'tl_class' => 'w50 m12'
             ],
 
             'exclude' => true,
@@ -864,11 +864,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'search' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['search'],
-            'inputType' => 'checkbox m12',
+            'inputType' => 'checkbox',
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,
@@ -878,11 +878,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'sort' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['sort'],
-            'inputType' => 'checkbox m12',
+            'inputType' => 'checkbox',
 
             'eval' => [
 
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 m12',
             ],
 
             'exclude' => true,

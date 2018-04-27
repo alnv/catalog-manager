@@ -219,7 +219,7 @@ class FrontendEditing extends CatalogController {
                     $this->{$callback[0]}->{$callback[1]}( $strFieldname, $strClass, $arrData, $this->arrCatalogFields[ $strFieldname ], $this->arrCatalog );
                 }
             }
-            
+
             $objWidget = new $strClass( $arrData );
             $objWidget->storeValues = true;
             $objWidget->id = 'id_' . $strFieldname;
@@ -311,6 +311,15 @@ class FrontendEditing extends CatalogController {
             }
 
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
+
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'] as $callback ) {
+
+                    $this->import( $callback[0] );
+                    $this->{$callback[0]}->{$callback[1]}( $objWidget, $strFieldname, $this->arrCatalogFields, $this->arrCatalog, $arrData, $this );
+                }
+            }
 
             if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
@@ -1032,5 +1041,11 @@ class FrontendEditing extends CatalogController {
     public function getRedirectID() {
 
         return $this->strRedirectID;
+    }
+
+
+    public function getValues() {
+
+        return $this->arrValues;
     }
 }

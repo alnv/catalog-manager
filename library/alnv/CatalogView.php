@@ -156,6 +156,14 @@ class CatalogView extends CatalogController {
             $this->arrRoutingParameter = Toolkit::getRoutingParameter( $objPage->catalogRouting );
         }
 
+        if ( empty( $this->arrRoutingParameter ) && $this->catalogUseMasterPage ) {
+
+            if ( $this->arrMasterPage['catalogUseRouting'] ) {
+
+                $this->arrRoutingParameter = Toolkit::getRoutingParameter( $this->arrMasterPage['catalogRouting'] );
+            }
+        }
+
         if ( $this->enableTableView && $this->strMode == 'view' ) {
 
             $this->strTemplate = $this->catalogTableBodyViewTemplate;

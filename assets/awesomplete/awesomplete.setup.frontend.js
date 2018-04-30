@@ -1,14 +1,16 @@
-document.addEventListener( 'DOMContentLoaded', function( objDomEvent ) {
+document.addEventListener( 'DOMContentLoaded', function() {
 
     'use strict';
 
     var strRequest = location.protocol + '//' + location.host + location.pathname;
     var arrFields = document.querySelectorAll( '.awesomplete-field' );
 
+
     function isNull( varValue ) {
 
         return varValue === null && typeof varValue === "object";
     }
+
 
     function setupAwesomplete( objInput ) {
 
@@ -24,28 +26,28 @@ document.addEventListener( 'DOMContentLoaded', function( objDomEvent ) {
             objConfig.filter = function ( strText, input ) {
 
                 return Awesomplete.FILTER_CONTAINS( strText, input.match(/[^ ]*$/)[0] );
-            },
+            };
 
             objConfig.item = function ( strText, input ) {
 
                 return Awesomplete.ITEM( strText, input.match(/[^ ]*$/)[0] );
-            },
+            };
 
             objConfig.replace = function ( strText ) {
 
                 var before = this.input.value.match(/^.+ \s*|/)[0];
 
                 this.input.value = before + strText + " ";
-            }
+            };
         }
 
         var objAwesomplete = new Awesomplete( objInput, objConfig );
 
         objInput.addEventListener('keyup', function( objEvent ) {
 
-            objEvent.preventDefault()
+            objEvent.preventDefault();
 
-            var intCode = ( objEvent.keyCode || objEvent.which )
+            var intCode = ( objEvent.keyCode || objEvent.which );
 
             if ( intCode === 37 || intCode === 38 || intCode === 39 || intCode === 40 || intCode === 27 || intCode === 13 ) {
 
@@ -60,18 +62,16 @@ document.addEventListener( 'DOMContentLoaded', function( objDomEvent ) {
                 var arrQueries = strQuery.split(' ');
                 var intQueryLength = arrQueries.length;
 
-                strQuery = arrQueries[ intQueryLength - 1 ];
+                strQuery = arrQueries[ intQueryLength - 1 ].replace(/ /g,'');
             }
 
-            if ( strQuery.length > 2 ) {
+            if ( strQuery.length > 1 ) {
 
                 objAutoCompletionRequest.open( "GET", strRequest + '?ctlg_autocomplete_query=' + strQuery , true );
 
                 objAutoCompletionRequest.onload = function() {
 
-                    var arrWords = JSON.parse( objAutoCompletionRequest.responseText ).words;
-
-                    objAwesomplete.list = arrWords;
+                    objAwesomplete.list = JSON.parse( objAutoCompletionRequest.responseText ).words;
                 };
 
                 objAutoCompletionRequest.send();
@@ -81,7 +81,8 @@ document.addEventListener( 'DOMContentLoaded', function( objDomEvent ) {
         });
     }
 
-    if ( !isNull( arrFields ) && typeof arrFields == 'object' && typeof arrFields.length != 'undefined' ) {
+
+    if ( !isNull( arrFields ) && typeof arrFields === 'object' && typeof arrFields.length !== 'undefined' ) {
 
         for ( var index = 0; index < arrFields.length; index++ ) {
 

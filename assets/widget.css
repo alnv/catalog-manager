@@ -135,3 +135,16 @@ ul.ctlg_files_preview li {
     display: block;
     width: 100%;
 }
+
+button.ctlg_loadWizard {
+
+    top: 47.5%;
+    right: 2.5%;
+    width: 20px;
+    height: 20px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+    background: url("/system/modules/catalog-manager/assets/icons/catalog-setting-loader.svg") no-repeat center;
+}

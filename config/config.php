@@ -100,7 +100,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'filterformp';
 
 $GLOBALS['BE_FFL']['catalogMessageWidget'] = 'CatalogManager\CatalogMessageWidget';
 $GLOBALS['BE_FFL']['catalogTaxonomyWizard'] = 'CatalogManager\CatalogTaxonomyWizard';
-$GLOBALS['BE_FFL']['catalogTextFieldWidget'] = 'CatalogManager\CatalogTextFieldWidget';
 $GLOBALS['BE_FFL']['catalogValueSetterWizard'] = 'CatalogManager\CatalogValueSetterWizard';
 $GLOBALS['BE_FFL']['catalogDuplexSelectWizard'] = 'CatalogManager\CatalogDuplexSelectWizard';
 $GLOBALS['BE_FFL']['catalogRelationRedirectWizard'] = 'CatalogManager\CatalogRelationRedirectWizard';

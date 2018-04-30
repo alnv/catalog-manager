@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'addMapInfoBox' => 'mapInfoBoxContent',
         'usePreviewImage' => 'imageTemplate,previewImagePosition',
 
-        'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,multiple',
+        'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTaxonomy,multiple',
 
         'optionsType_useOptions' => 'options',
         'optionsType_useForeignKey' => 'dbTable,dbTableValue,addRelationWizard',

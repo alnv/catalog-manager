@@ -32,15 +32,26 @@ class Text {
             $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
         }
 
-        if ( $arrField['autoCompletionType'] && $blnActive ) {
+        if ( $arrField['autoCompletionType'] ) {
 
-            $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
+            if ( \Input::get( 'ctlg_autocomplete_query' ) && \Input::get('ctlg_fieldname') == $arrField['fieldname'] && $blnActive ) {
 
-            $arrDCAField['inputType'] = 'catalogTextFieldWidget';
-            $arrDCAField['eval']['multiple'] = Toolkit::getBooleanByValue( $arrField['multiple'] );
+                $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
 
-            $objAutoCompletion = new CatalogAutoCompletion( $arrField, $strModuleID );
-            $arrDCAField['options'] = $objAutoCompletion->getOptions();
+                $arrField['optionsType'] = 'useDbOptions';
+                $arrField['dbTableValue'] = $arrField['dbTableKey'];
+
+                static::sendJsonResponse( $arrField, $strModuleID, \Input::get( 'ctlg_autocomplete_query' ) );
+            }
+
+            $arrDCAField['eval']['tl_class'] .= ' ctlg_awesomplete';
+            $arrDCAField['eval']['tl_class'] .= ( $arrField['multiple'] ? ' multiple' : '' );
+            $arrDCAField['eval']['tl_class'] .= ( version_compare(VERSION, '4.0', '>=') ? ' _contao4' : ' _contao3' );
+
+            $GLOBALS['TL_CSS']['catalogAwesomplete'] = 'system/modules/catalog-manager/assets/awesomplete/awesomplete.css';
+
+            $GLOBALS['TL_JAVASCRIPT']['catalogAwesompleteFramework'] = $GLOBALS['TL_CONFIG']['debugMode'] ? 'system/modules/catalog-manager/assets/awesomplete/awesomplete.js' : 'system/modules/catalog-manager/assets/awesomplete/awesomplete.min.js';
+            $GLOBALS['TL_JAVASCRIPT']['catalogAwesompleteWidget'] = 'system/modules/catalog-manager/assets/awesomplete/awesomplete.setup.backend.js';
         }
 
         return $arrDCAField;
@@ -71,5 +82,23 @@ class Text {
         }
 
         return $varValue;
+    }
+
+
+    protected static function sendJsonResponse( $arrField, $strModuleID, $strKeyword ) {
+
+        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID, [ $strKeyword ] );
+        $arrWords = array_values( $objOptionGetter->getOptions() );
+
+        header('Content-Type: application/json');
+
+        echo json_encode( [
+
+            'word' => $strKeyword,
+            'words' => $arrWords
+
+        ], 12 );
+
+        exit;
     }
 }

@@ -308,8 +308,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
             if ( \Input::get('ctlg_autocomplete_query') ) {
 
-                $objCatalogAutoCompletion = new CatalogAutoCompletion( $arrField );
-                $objCatalogAutoCompletion->getAutoCompletionByQuery( \Input::get('ctlg_autocomplete_query') );
+                $this->sendJsonResponse( $arrField, \Input::get('ctlg_autocomplete_query') );
             }
 
             $this->arrScripts['awesomplete.min.js'] = true;
@@ -406,5 +405,23 @@ class ContentCatalogFilterForm extends \ContentElement {
                     break;
             }
         }
+    }
+
+
+    protected function sendJsonResponse( $arrField, $strKeyword ) {
+
+        $objOptionGetter = new OptionsGetter( $arrField, null, [ $strKeyword ] );
+        $arrWords = array_values( $objOptionGetter->getOptions() );
+
+        header('Content-Type: application/json');
+
+        echo json_encode( [
+
+            'word' => $strKeyword,
+            'words' => $arrWords
+
+        ], 12 );
+
+        exit;
     }
 }

@@ -699,11 +699,6 @@ class FrontendEditing extends CatalogController {
             $arrField['inputType'] = 'catalogMessageForm';
         }
 
-        if ( $arrField['inputType'] == 'catalogTextFieldWidget' ) {
-
-            $arrField['inputType'] = 'text';
-        }
-
         $arrField['eval']['tableless'] = '1';
         $arrField['eval']['required'] = $arrField['eval']['mandatory'];
 

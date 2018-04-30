@@ -36,9 +36,9 @@ class tl_catalog extends \Backend {
 
         if ( $objCatalog->type == 'modifier') {
 
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['startswith'] = 'tl_';
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'select';
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['chosen'] = true;
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['tl_class'] = 'w50 wizard';
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'catalogTextFieldWidget';
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] = [ 'CatalogManager\tl_catalog', 'getCoreTables' ];
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['wizard'][] = [ 'CatalogManager\DcCallbacks', 'getCoreTableLoaderButton' ];
         }

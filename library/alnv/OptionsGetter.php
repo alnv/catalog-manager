@@ -8,18 +8,21 @@ class OptionsGetter extends CatalogController {
     protected $strModuleID;
     protected $arrCache = [];
     protected $arrField = [];
+    protected $arrQueries = [];
     protected $arrCatalog = [];
     protected $strActiveTable = '';
     protected $arrActiveEntity = [];
     protected $arrCatalogFields = [];
 
 
-    public function __construct( $arrField, $strModuleID = '' ) {
+    public function __construct( $arrField, $strModuleID = '', $arrQueries = [] ) {
 
         parent::__construct();
 
         $this->arrField = $arrField;
         $this->strModuleID = $strModuleID;
+
+        foreach ( $arrQueries as $strQuery )  if ( !Toolkit::isEmpty( $strQuery ) ) $this->arrQueries[] = '^' . $strQuery;
 
         $this->import( 'CatalogInput' );
         $this->import( 'OrderByHelper' );
@@ -216,7 +219,8 @@ class OptionsGetter extends CatalogController {
         $this->getActiveTable();
         $this->getActiveEntityValues();
         $strOrderBy = $this->getOrderBy();
-        $arrQueries = Toolkit::deserialize( $this->arrField['dbTaxonomy'] )['query'];
+        $arrDbTaxonomies = Toolkit::deserialize( $this->arrField['dbTaxonomy'] );
+        $arrQueries = is_array( $arrDbTaxonomies ) && isset( $arrDbTaxonomies['query'] ) ? $arrDbTaxonomies['query'] : [];
 
         $arrQueries = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) use ( $blnUseValidValue ) {
 
@@ -231,6 +235,18 @@ class OptionsGetter extends CatalogController {
         });
 
         $arrSQLQuery['where'] = $arrQueries;
+
+        if ( is_array( $this->arrQueries ) && !empty( $this->arrQueries )  ) {
+
+            $arrSQLQuery['where'][] = [
+
+                'multiple' => true,
+                'operator' =>'regexp',
+                'field' => $this->arrField['dbTableKey'],
+                'value' => implode(',', $this->arrQueries )
+            ];
+        }
+
         $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
 
         if ( Toolkit::isEmpty( $strOrderBy ) ) {

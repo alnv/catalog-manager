@@ -1,97 +1,95 @@
-(function () {
+document.addEventListener( 'DOMContentLoaded', function() {
 
     'use strict';
 
-    if ( typeof window.addEventListener != 'undefined' ) {
+    var arrFields = document.querySelectorAll( 'div.ctlg_awesomplete' );
 
-        window.addEventListener( 'DOMContentLoaded', initialize, false );
+
+    function isNull( varValue ) {
+
+        return varValue === null && typeof varValue === "object";
     }
 
-    function initialize() {
 
-        var arrFields = document.querySelectorAll( '.ctlg_awesomplete' );
+    function setupAwesomplete( objInput ) {
 
-        if ( typeof arrFields != 'undefined' && arrFields.length ) {
+        var objConfig = {
 
-            var objOptions = {
+            list: [],
+            sort: false,
+            autoFirst: true
+        };
 
-                end: 3,
-                start: 0,
-                startswith: '',
-                multiple: false
+        var objField = objInput.querySelector('.tl_text');
+
+        if ( objInput.classList.contains('multiple') ) {
+
+            objConfig.filter = function ( strText, input ) {
+
+                return Awesomplete.FILTER_CONTAINS( strText, input.match(/[^,]*$/)[0] );
             };
 
-            for ( var i = 0; i < arrFields.length; i++ ) {
+            objConfig.item = function ( strText, input ) {
 
-                var objField = arrFields[i];
+                return Awesomplete.ITEM( strText, input.match(/[^,]*$/)[0] );
+            };
 
-                objOptions.startswith = objField.dataset.startswith;
-                objOptions.end = objField.dataset.end ? objField.dataset.end : 3;
-                objOptions.start = objField.dataset.start ? objField.dataset.start : 0;
-                objOptions.multiple = objField.dataset.multiple ? true : false;
+            objConfig.replace = function ( strText ) {
 
-                var objAwesompleteConfig = {};
+                var before = this.input.value.match(/^.+,\s*|/)[0];
 
-                if ( objOptions.startswith.length ) {
+                this.input.value = before + strText + ", ";
+            };
+        }
 
-                    objAwesompleteConfig.data = function ( strText, strInput ) {
+        var objAwesomplete = new Awesomplete( objField, objConfig );
 
-                        if ( startswith( strInput, objOptions.start, objOptions.end, objOptions.startswith ) ) {
+        objField.addEventListener('keyup', function( objEvent ) {
 
-                            return strText;
-                        }
-                    };
+            objEvent.preventDefault();
 
-                    objAwesompleteConfig.filter = Awesomplete.FILTER_STARTSWITH;
-                }
+            var intCode = ( objEvent.keyCode || objEvent.which );
 
-                if ( objOptions.multiple ) {
+            if ( intCode === 37 || intCode === 38 || intCode === 39 || intCode === 40 || intCode === 27 || intCode === 13 ) {
 
-                    objAwesompleteConfig.filter = function ( strText, strInput ) {
-
-                        return Awesomplete.FILTER_CONTAINS( strText, strInput.match(/[^,]*$/)[0] );
-                    };
-
-                    objAwesompleteConfig.item = function ( strText, strInput ) {
-
-                        return Awesomplete.ITEM( strText, strInput.match(/[^,]*$/)[0] );
-                    };
-
-                    objAwesompleteConfig.replace = function ( strText ) {
-
-                        var strName = this.input.name;
-                        var strDatalist = 'ctrl_dl_' +  strName;
-                        var strBefore = this.input.value.match(/^.+,\s*|/)[0];
-                        var objDatalist = document.getElementById( strDatalist );
-
-                        if ( typeof objDatalist.options != 'undefined' && objDatalist.options.length ) {
-
-                            for ( var i = 0; i < objDatalist.options.length; i++ ) {
-
-                                if ( objDatalist.options[i].text == strBefore ) {
-
-                                    strBefore = objDatalist.options[i].value;
-                                }
-
-                                if ( objDatalist.options[i].text == strText ) {
-
-                                    strText = objDatalist.options[i].value;
-                                }
-                            }
-                        }
-
-                        this.input.value = strBefore + strText + ', ';
-                    };
-                }
-
-                new Awesomplete( objField, objAwesompleteConfig );
+                return false;
             }
+
+            var objAutoCompletionRequest = new XMLHttpRequest();
+            var strQuery = objEvent.target.value;
+
+            var strRequest = location.href + '&ctlg_fieldname=' + this.name;
+
+            if ( strQuery ) {
+
+                var arrQueries = strQuery.split(',');
+                var intQueryLength = arrQueries.length;
+
+                strQuery = arrQueries[ intQueryLength - 1 ].replace(/ /g,'');
+            }
+
+            if ( strQuery.length > 1 ) {
+
+                objAutoCompletionRequest.open( "GET", strRequest + '&ctlg_autocomplete_query=' + strQuery, true );
+
+                objAutoCompletionRequest.onload = function() {
+
+                    objAwesomplete.list = JSON.parse( objAutoCompletionRequest.responseText ).words;
+                };
+
+                objAutoCompletionRequest.send();
+            }
+
+            return false;
+        });
+    }
+
+
+    if ( !isNull( arrFields ) && typeof arrFields === 'object' && typeof arrFields.length !== 'undefined' ) {
+
+        for ( var index = 0; index < arrFields.length; index++ ) {
+
+            setupAwesomplete( arrFields[ index ] );
         }
     }
-
-    function startswith( strInput, intStart, intEnd, $strPrefix ) {
-
-        return strInput.substr( intStart, intEnd ) == $strPrefix;
-    }
-
-})();
+});

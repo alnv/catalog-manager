@@ -151,7 +151,7 @@ class FrontendEditing extends CatalogController {
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
-        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strFormId ) {
+        if ( !$this->blnNoSubmit && ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) ) {
 
             $this->saveEntity();
         }
@@ -337,7 +337,7 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
+            if ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -608,6 +608,18 @@ class FrontendEditing extends CatalogController {
         if ( \Input::get( 'pid' ) ) $strAttributes .= '?pid=' .\Input::get( 'pid' );
         if ( $strAttributes ) $strUrl .= $strAttributes;
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback ) {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this );
+                }
+            }
+        }
+
         $this->redirect( $strUrl );
     }
 
@@ -687,7 +699,7 @@ class FrontendEditing extends CatalogController {
 
         $objCaptcha = new $strClass( $arrCaptcha );
 
-        if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
+        if ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) {
 
             $objCaptcha->validate();
 
@@ -984,7 +996,7 @@ class FrontendEditing extends CatalogController {
                     if ( is_array( $arrCallback ) ) {
 
                         $this->import( $arrCallback[0] );
-                        $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strUrl, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this );
+                        $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this );
                     }
                 }
             }

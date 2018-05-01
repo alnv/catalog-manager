@@ -9,10 +9,8 @@ class ContentCatalogFilterForm extends \ContentElement {
     protected $blnReady = false;
     protected $blnIsValid = true;
     protected $arrFormFields = [];
-    protected $strTemplate = 'ce_catalog_filterform';
 
     protected $arrTemplateMap = [
-      
         'text' => 'ctlg_form_field_text',
         'radio' => 'ctlg_form_field_radio',
         'range' => 'ctlg_form_field_range',
@@ -20,11 +18,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         'checkbox' => 'ctlg_form_field_checkbox',
     ];
 
-    protected $arrScripts = [
-
-        'awesomplete.min.js' => false,
-        'pikaday.min.js' => false
-    ];
+    protected $strTemplate = 'ce_catalog_filterform';
 
     public function generate() {
 
@@ -93,7 +87,6 @@ class ContentCatalogFilterForm extends \ContentElement {
                         $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[ $strName ]['title'] );
                     }
 
-                    // only date
                     if ( $this->arrFormFields[ $strName ]['rgxp'] && $this->arrFormFields[ $strName ]['type'] == 'text' && !$this->validate( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['rgxp'] ) ) {
 
                         $this->blnIsValid = false;
@@ -129,8 +122,6 @@ class ContentCatalogFilterForm extends \ContentElement {
         $this->Template->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
         $this->Template->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
         $this->Template->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
-
-        $this->loadScripts();
 
         if ( isset( $arrSubmitAttributes[0] ) && $arrSubmitAttributes[0] ) $this->Template->submitId = sprintf( 'id="%s"', $arrSubmitAttributes[0] );
 
@@ -306,23 +297,17 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( $arrField['type'] == 'text' && $arrField['autoCompletionType'] ) {
 
-            if ( \Input::get('ctlg_autocomplete_query') ) {
+            $arrField['fieldCssClass'] .= ' awesomplete-field' . ( $arrField['multiple'] ? ' multiple' : '' );
+
+            if ( \Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $arrField['name'] ) {
 
                 $this->sendJsonResponse( $arrField, \Input::get('ctlg_autocomplete_query') );
             }
 
-            $this->arrScripts['awesomplete.min.js'] = true;
-            $arrField['fieldCssClass'] .= ' awesomplete-field' . ( $arrField['multiple'] ? ' multiple' : '' );
+            $objScriptLoader = new CatalogScriptLoader();
+            $objScriptLoader->loadScript('awesomplete-frontend' );
+            $objScriptLoader->loadStyle('awesomplete' );
         }
-
-        /*
-        if ( $arrField['type'] == 'text' && $arrField['useDatePicker'] ) {
-
-            $this->arrScripts['pikaday.min.js'] = true;
-            $arrField['fieldCssClass'] .= ' datepicker-field';
-            $arrField['attributes'] .= sprintf( ' data-date-format="%s"', $arrField['dateFormat'] );
-        }
-        */
 
         return $arrField;
     }
@@ -378,37 +363,11 @@ class ContentCatalogFilterForm extends \ContentElement {
     }
 
 
-    protected function loadScripts() {
-
-        foreach ( $this->arrScripts as $strScript => $blnActive ) {
-
-            switch ( $strScript ) {
-
-                case 'awesomplete.min.js':
-
-                    if ( !$blnActive ) return null;
-
-                    $GLOBALS['TL_HEAD']['CatalogManagerCSSAwesomplete'] = '<link href="/system/modules/catalog-manager/assets/awesomplete/awesomplete.css" rel="stylesheet" type="text/css"></link>';
-                    $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteFrameworkd'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/%s"></script>', $strScript );
-                    $GLOBALS['TL_HEAD']['CatalogManagerJSAwesompleteSetup'] = sprintf( '<script src="/system/modules/catalog-manager/assets/awesomplete/awesomplete.setup.frontend.js"></script>' );
-
-                    break;
-
-                case 'pikaday.min.js':
-
-                    if ( !$blnActive ) return null;
-
-                    // $GLOBALS['TL_HEAD']['CatalogManagerCSSDatepicker'] = '<link href="/system/modules/catalog-manager/assets/datepicker/pikaday.css" rel="stylesheet" type="text/css"></link>';
-                    // $GLOBALS['TL_HEAD']['CatalogManagerJSDatepickerFrameworkd'] = sprintf( '<script src="/system/modules/catalog-manager/assets/datepicker/%s"></script>', $strScript );
-                    // $GLOBALS['TL_HEAD']['CatalogManagerJSDatepickerSetup'] = sprintf( '<script src="/system/modules/catalog-manager/assets/datepicker/datepicker.setup.frontend.js"></script>' );
-
-                    break;
-            }
-        }
-    }
-
-
     protected function sendJsonResponse( $arrField, $strKeyword ) {
+
+        $arrField['optionsType'] = 'useActiveDbOptions';
+        $arrField['dbColumn'] = $arrField['dbTableKey'];
+        $arrField['dbTableValue'] = $arrField['dbTableKey'];
 
         $objOptionGetter = new OptionsGetter( $arrField, null, [ $strKeyword ] );
         $arrWords = array_values( $objOptionGetter->getOptions() );

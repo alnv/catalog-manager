@@ -57,8 +57,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
             var objAutoCompletionRequest = new XMLHttpRequest();
             var strQuery = objEvent.target.value;
-
-            var strRequest = location.href + '&ctlg_fieldname=' + this.name;
+            var strRequest = location.href + '&ctlg_fieldname=' + this.name.replace(/[\[\]']+/g, '');
 
             if ( strQuery ) {
 

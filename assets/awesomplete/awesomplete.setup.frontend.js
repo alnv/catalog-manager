@@ -2,8 +2,8 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
     'use strict';
 
-    var strRequest = location.protocol + '//' + location.host + location.pathname;
-    var arrFields = document.querySelectorAll( '.awesomplete-field' );
+
+    var arrFields = document.querySelectorAll( 'input.awesomplete-field' );
 
 
     function isNull( varValue ) {
@@ -56,6 +56,10 @@ document.addEventListener( 'DOMContentLoaded', function() {
 
             var objAutoCompletionRequest = new XMLHttpRequest();
             var strQuery = objEvent.target.value;
+            var strName = this.name;
+
+            var strBind = location.href.indexOf('?') !== -1 ? '&' : '?';
+            var strRequest = location.href + strBind + 'ctlg_fieldname=' + ( strName ? strName : '' ).replace(/[\[\]']+/g, '');
 
             if ( strQuery ) {
 
@@ -65,9 +69,9 @@ document.addEventListener( 'DOMContentLoaded', function() {
                 strQuery = arrQueries[ intQueryLength - 1 ].replace(/ /g,'');
             }
 
-            if ( strQuery.length > 1 ) {
+            if ( strQuery.length > 1 && strName ) {
 
-                objAutoCompletionRequest.open( "GET", strRequest + '?ctlg_autocomplete_query=' + strQuery , true );
+                objAutoCompletionRequest.open( "GET", strRequest + '&ctlg_autocomplete_query=' + strQuery , true );
 
                 objAutoCompletionRequest.onload = function() {
 

@@ -286,6 +286,22 @@ class FrontendEditing extends CatalogController {
                 $GLOBALS['TL_HEAD'][] = $strScript;
             }
 
+            
+            if ( $this->arrCatalogFields[ $strFieldname ]['autoCompletionType'] ) {
+
+                $objWidget->class .= ' awesomplete-field';
+                $objWidget->class .= ( $arrField['multiple'] ? ' multiple' : '' );
+
+                if ( \Input::get( 'ctlg_autocomplete_query' ) && \Input::get('ctlg_fieldname') == $strFieldname  ) {
+
+                    $this->sendJsonResponse( $this->arrCatalogFields[ $strFieldname ], $this->id, \Input::get( 'ctlg_autocomplete_query' ) );
+                }
+
+                $objScriptLoader = new CatalogScriptLoader();
+                $objScriptLoader->loadScript('awesomplete-frontend' );
+                $objScriptLoader->loadStyle('awesomplete' );
+            }
+            
             if ( Toolkit::isEmpty( $objWidget->value ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
 
                 $objWidget->value = $arrField['default'];
@@ -1042,5 +1058,27 @@ class FrontendEditing extends CatalogController {
     public function getValues() {
 
         return $this->arrValues;
+    }
+    
+    
+    protected function sendJsonResponse( $arrField, $strModuleID, $strKeyword ) {
+
+        $arrField['optionsType'] = 'useActiveDbOptions';
+        $arrField['dbColumn'] = $arrField['dbTableKey'];
+        $arrField['dbTableValue'] = $arrField['dbTableKey'];
+
+        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID, [ $strKeyword ] );
+        $arrWords = array_values( $objOptionGetter->getOptions() );
+
+        header('Content-Type: application/json');
+
+        echo json_encode( [
+
+            'word' => $strKeyword,
+            'words' => $arrWords
+
+        ], 12 );
+
+        exit;
     }
 }

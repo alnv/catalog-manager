@@ -965,7 +965,7 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    protected function redirectAfterInsertion( $intPage, $strAttributes = '', $blnReturn=false ) {
+    protected function redirectAfterInsertion( $intPage, $strAttributes = '', $blnReturn = false ) {
 
         if ( ( $intPage = intval($intPage ) ) <= 0 ) return '';
 
@@ -974,7 +974,23 @@ class FrontendEditing extends CatalogController {
 
         if ( strncmp( $strUrl, 'http://', 7 ) !== 0 && strncmp( $strUrl, 'https://', 8 ) !== 0 ) $strUrl = \Environment::get( 'base' ) . $strUrl;
         if ( $strAttributes ) $strUrl .= $strAttributes;
-        if ( !$blnReturn ) $this->redirect( $strUrl );
+
+        if ( !$blnReturn ) {
+
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback ) {
+
+                    if ( is_array( $arrCallback ) ) {
+
+                        $this->import( $arrCallback[0] );
+                        $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}( $strUrl, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this );
+                    }
+                }
+            }
+
+            $this->redirect( $strUrl );
+        }
 
         return $strUrl;
     }

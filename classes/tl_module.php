@@ -41,6 +41,14 @@ class tl_module extends \Backend {
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['chosen'] = false;
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['disabled'] = true;
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert']['eval']['blankOptionLabel'] = 'notification center required';
+
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['relation'] );
+            unset( $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['options_callback'] );
+
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['options'] = [];
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['eval']['chosen'] = false;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['eval']['disabled'] = true;
+            $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate']['eval']['blankOptionLabel'] = 'notification center required';
         }
     }
 

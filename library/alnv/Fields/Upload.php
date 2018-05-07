@@ -370,19 +370,21 @@ class Upload {
     }
 
 
-    public static function getImagePath( $singleSRC ) {
+    public static function getImagePath( $strSingleSrc ) {
 
-        if ( $singleSRC ) {
+        if ( !Toolkit::isEmpty( $strSingleSrc ) ) {
 
-            $objModel = \FilesModel::findByUuid( $singleSRC );
+            $objModel = \FilesModel::findByUuid( $strSingleSrc );
 
-            if ( $objModel && is_file( TL_ROOT . '/' . $objModel->path ) ) {
+            if ( is_object( $objModel ) && is_file( TL_ROOT . '/' . $objModel->path ) ) {
 
                 return $objModel->path;
             }
+
+            return '';
         }
 
-        return $singleSRC;
+        return $strSingleSrc;
     }
 
 

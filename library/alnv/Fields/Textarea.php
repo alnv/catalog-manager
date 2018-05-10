@@ -14,14 +14,14 @@ class Textarea {
             $arrDCAField['eval']['rte'] = $arrField['rte'];
         }
 
-        if ( $arrField['cols'] ) {
+        if ( $arrField['textareaCols'] ) {
 
-            $arrDCAField['eval']['cols'] = $arrField['cols'];
+            $arrDCAField['eval']['cols'] = $arrField['textareaCols'];
         }
 
-        if ( $arrField['rows'] ) {
+        if ( $arrField['textareaRows'] ) {
 
-            $arrDCAField['eval']['rows'] = $arrField['rows'];
+            $arrDCAField['eval']['rows'] = $arrField['textareaRows'];
         }
 
         if ( $arrField['minlength'] ) {

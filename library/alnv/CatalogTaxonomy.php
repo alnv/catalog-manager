@@ -308,6 +308,7 @@ class CatalogTaxonomy extends CatalogController {
             'alias' => $originValue,
             'isActive' => $blnActive,
             'next' => $strNextParameter,
+            'parameter' => $strParameter,
             'isMaster' => $this->isMaster()
         ];
     }

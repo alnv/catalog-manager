@@ -34,6 +34,8 @@ class ModuleMasterView extends \Module {
 
     protected function compile() {
 
+        global $objPage;
+
         $this->import( 'CatalogView' );
 
         $arrQuery = [
@@ -70,7 +72,7 @@ class ModuleMasterView extends \Module {
         
         if ( empty( $strOutput ) ) {
 
-            if ( $this->catalogAutoRedirect && $this->catalogViewPage ) {
+            if ( $this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogViewPage != $objPage->id ) {
 
                 \Controller::redirectToFrontendPage( $this->catalogViewPage );
 

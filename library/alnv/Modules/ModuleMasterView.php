@@ -70,7 +70,7 @@ class ModuleMasterView extends \Module {
         
         if ( empty( $strOutput ) ) {
 
-            if ( $this->catalogAutoRedirect && $this->catalogViewPage && \Input::get('auto_item') ) {
+            if ( $this->catalogAutoRedirect && $this->catalogViewPage ) {
 
                 \Controller::redirectToFrontendPage( $this->catalogViewPage );
 

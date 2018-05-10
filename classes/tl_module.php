@@ -302,7 +302,6 @@ class tl_module extends \Backend {
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
             if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
-            if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
             if ( $arrField['type'] == 'textarea' && $arrField['rte'] ) continue;
             if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;

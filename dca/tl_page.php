@@ -19,7 +19,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
 
     'eval' => [
 
-        'tl_class' => 'clr'
+        'tl_class' => 'clr',
+        'submitOnChange' => true
     ],
 
     'exclude' => true,
@@ -33,8 +34,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogShowInBreadcrumb'] = [
 
     'eval' => [
 
-        'tl_class' => 'clr',
-        'submitOnChange' => true
+        'tl_class' => 'clr'
     ],
 
     'exclude' => true,

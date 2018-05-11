@@ -623,6 +623,7 @@ class CatalogView extends CatalogController {
                 if ( $this->catalogSEODescription ) $objPage->description = $arrCatalog[$this->catalogSEODescription] ? strip_tags( $arrCatalog[$this->catalogSEODescription] ) : $objPage->description;
             }
 
+            $arrCatalog['_moduleId'] = $this->id;
             $arrCatalog['timeFormat'] = $this->strTimeFormat;
             $arrCatalog['dateFormat'] = $this->strDateFormat;
             $arrCatalog['hasOperations'] = $this->blnHasOperations;

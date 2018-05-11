@@ -8,13 +8,27 @@ $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'catalogUseChangeL
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace( 'includeLayout;', 'includeLayout;{catalogSettings_legend},catalogUseMaster,catalogUseChangeLanguage,catalogUseRouting;', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] );
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseMaster'] = 'catalogMasterTable';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseChangeLanguage'] = 'catalogChangeLanguageTable';
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseMaster'] = 'catalogMasterTable,catalogShowInBreadcrumb';
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseRouting'] = 'catalogRoutingTable,catalogRoutingParameter,catalogSetAutoItem,catalogRouting';
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
 
     'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogUseMaster'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr'
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_page']['fields']['catalogShowInBreadcrumb'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogShowInBreadcrumb'],
     'inputType' => 'checkbox',
 
     'eval' => [

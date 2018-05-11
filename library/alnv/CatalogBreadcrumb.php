@@ -7,11 +7,20 @@ class CatalogBreadcrumb extends \Frontend {
 
     public function initialize( $arrItems, $objModule ) {
 
+        $blnShowInBreadcrumb = false;
         $strAlias = \Input::get('auto_item');
         $intLastIndex = count( $arrItems ) -1;
         $arrItem = $arrItems[ $intLastIndex ];
 
         if ( $arrItem['isActive'] && $arrItem['data']['catalogUseMaster'] && !Toolkit::isEmpty( $strAlias ) ) {
+
+            $arrMasterItem = [];
+
+            if ( isset( $arrItem['data']['catalogShowInBreadcrumb'] ) && $arrItem['data']['catalogShowInBreadcrumb'] ) {
+
+                $blnShowInBreadcrumb = true;
+                $arrItems[ $intLastIndex ]['isActive'] = false;
+            }
 
             $strTable = $arrItem['data']['catalogMasterTable'];
 
@@ -33,13 +42,23 @@ class CatalogBreadcrumb extends \Frontend {
                         $strHref = $arrItem['href'];
                     }
 
-                    $arrItem['href'] = $strHref;
-                    $arrItem['link'] = $objEntity->title;
-                    $arrItem['title'] = $objEntity->title;
-                    $arrItem['catalogAttributes'] = $objEntity->row();
+                    $arrMasterItem['isActive'] = true;
+                    $arrMasterItem['href'] = $strHref;
+                    $arrMasterItem['data'] = $arrItem['data'];
+                    $arrMasterItem['link'] = $objEntity->title;
+                    $arrMasterItem['title'] = $objEntity->title;
+                    $arrMasterItem['catalogAttributes'] = $objEntity->row();
                 }
 
-                $arrItems[ $intLastIndex ] = $arrItem;
+                if ( $blnShowInBreadcrumb ) {
+
+                    $arrItems[] = $arrMasterItem;
+                }
+
+                else {
+
+                    $arrItems[ $intLastIndex ] = $arrMasterItem;
+                }
             }
         }
 

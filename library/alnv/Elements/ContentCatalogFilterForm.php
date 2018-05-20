@@ -180,6 +180,7 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$this->blnIsValid ) return ampersand( \Environment::get('indexFreeRequest') );
 
+        $strAlias = '';
         $strPageID = $this->arrForm['jumpTo'];
 
         if ( !$strPageID ) {
@@ -187,12 +188,13 @@ class ContentCatalogFilterForm extends \ContentElement {
             global $objPage;
 
             $strPageID = $objPage->id;
+            $strAlias = \Input::get( 'auto_item' ) ? '/' . \Input::get( 'auto_item' ) : '';
         }
 
         $objPageModel = new \PageModel();
         $arrPage = $objPageModel->findPublishedById( $strPageID );
 
-        if ( $arrPage != null ) return $this->generateFrontendUrl( $arrPage->row() );
+        if ( $arrPage != null ) return $this->generateFrontendUrl( $arrPage->row(), $strAlias );
 
         return ampersand( \Environment::get('indexFreeRequest') );
     }

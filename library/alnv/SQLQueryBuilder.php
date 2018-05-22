@@ -36,6 +36,18 @@ class SQLQueryBuilder extends CatalogController {
 
         $this->getQuery( $arrQuery );
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerOverwriteQuery'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerOverwriteQuery'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerOverwriteQuery'] as $arrCallback )  {
+
+                if ( is_array( $arrCallback ) ) {
+
+                    $this->import( $arrCallback[0] );
+                    $this->strQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrQuery, $this->strQuery, $this->arrValues );
+                }
+            }
+        }
+
         return $this->Database->prepare( $this->strQuery )->execute( $this->arrValues );
     }
 

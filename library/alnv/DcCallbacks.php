@@ -345,24 +345,34 @@ class DcCallbacks extends \Backend {
         if ( !$objCatalogField->numRows ) return '';
 
         $arrField = $objCatalogField->row();
+        $strTable = $arrField['dbTable'];
+
+        if ( !$strTable ) return '';
+
+        \Controller::loadDataContainer( $strTable );
+        \Controller::loadLanguageFile( $strTable, $GLOBALS['TL_LANGUAGE'] );
+
+        $objI18nTranslator = new I18nCatalogTranslator();
+        $objI18nTranslator->initialize();
 
         $strTableAttribute = '';
-        $strTitle = $arrField['description'] ? $arrField['description'] : $arrField['label'];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrField['dbTable'] ];
-
+        $strTitle = $objI18nTranslator->get( 'field', 'title', [ 'titleOnly' => true ] );
         $strModalTitle = sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['modalIFrameTitle'], $dc->value );
         $strModalIFrameOptions = sprintf( "{'width':768,'title':'%s','url':this.href}", $strModalTitle );
-        $strDoAttribute = $this->getDoAttribute( $arrCatalog );
+        $strDoAttribute = $this->getDoAttributeByTable( $strTable );
 
-        if ( $arrCatalog['pTable'] ) {
+        if ( $GLOBALS['TL_DCA'][ $strTable ] && is_array( $GLOBALS['TL_DCA'][ $strTable ]['config'] ) && $GLOBALS['TL_DCA'][ $strTable ]['config']['ptable'] ) {
 
-            $strTableAttribute = sprintf( '&amp;table=%s', $arrCatalog['tablename'] );
+            $strTableAttribute = sprintf( '&amp;table=%s', $strTable );
             $strDoAttribute = sprintf( 'do=%s', $strDoAttribute );
         }
 
-        else $strDoAttribute = sprintf( 'do=%s', $strDoAttribute );
+        else {
 
-        return '<a href="contao?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;popup=1&amp;nb=1&amp;rt=' . REQUEST_TOKEN . '" title="'. $strTitle .'" onclick="Backend.openModalIframe(' . $strModalIFrameOptions . ');return false" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
+            $strDoAttribute = sprintf( 'do=%s', $strDoAttribute );
+        }
+
+        return '<a href="/contao?' . $strDoAttribute . $strTableAttribute . '&amp;act=edit&amp;id=' . $dc->value . '&amp;popup=1&amp;nb=1&amp;rt=' . REQUEST_TOKEN . '" title="'. $strTitle .'" onclick="Backend.openModalIframe(' . $strModalIFrameOptions . ');return false" style="padding-left:3px">' . \Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_content']['editalias'][0], 'style="vertical-align:middle"') . '</a>';
     }
 
 
@@ -440,15 +450,31 @@ class DcCallbacks extends \Backend {
     }
 
 
-    protected function getDoAttribute( $arrCatalog ) {
+    protected function getDoAttributeByTable( $strTablename ) {
 
-        if ( $arrCatalog === null ) return '';
+        if ( is_array( $GLOBALS['BE_MOD'] ) ) {
 
-        if ( $arrCatalog['isBackendModule'] && !Toolkit::isEmpty( $arrCatalog['modulename'] ) ) {
+            foreach ( $GLOBALS['BE_MOD'] as $arrModules ) {
 
-            return $arrCatalog['modulename'];
+                if ( is_array( $arrModules ) ) {
+
+                    foreach ( $arrModules as $strModule => $arrModule ) {
+
+                        if ( isset( $arrModule['tables'] ) && is_array( $arrModule['tables'] ) ) {
+
+                            foreach ( $arrModule['tables'] as $strTable ) {
+
+                                if ( $strTable === $strTablename ) {
+
+                                    return $strModule;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
-        return $arrCatalog['tablename'] ?: '';
+        return '';
     }
 }

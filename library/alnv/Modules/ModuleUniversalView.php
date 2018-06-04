@@ -46,6 +46,21 @@ class ModuleUniversalView extends \Module {
             }
         }
 
+        if ( TL_MODE == 'FE' ) {
+
+            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'] ) ) {
+
+                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'] as $arrCallback )  {
+
+                    if ( is_array( $arrCallback ) ) {
+
+                        $this->import( $arrCallback[0] );
+                        $this->strTemplate = $this->{$arrCallback[0]}->{$arrCallback[1]}( $this->strTemplate, $this );
+                    }
+                }
+            }
+        }
+
         return parent::generate();
     }
 

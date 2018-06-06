@@ -56,18 +56,6 @@ class CatalogView extends CatalogController {
 
         $this->setOptions();
 
-        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView'] ) ) {
-
-            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView'] as $arrCallback )  {
-
-                if ( is_array( $arrCallback ) ) {
-
-                    $this->import( $arrCallback[0] );
-                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $this );
-                }
-            }
-        }
-
         $this->strTimeFormat = $objPage->timeFormat;
         $this->strDateFormat = $objPage->dateFormat;
         $this->strDateTimeFormat = $objPage->datimFormat;
@@ -1345,37 +1333,5 @@ class CatalogView extends CatalogController {
     public function getItemOperations() {
 
         return $this->catalogItemOperations;
-    }
-
-
-    public function setOffset( $numOffset ) {
-
-        $this->catalogOffset = $numOffset;
-    }
-
-
-    public function setPerPage( $numPerPage ) {
-
-        $this->catalogPerPage = $numPerPage;
-    }
-
-
-    public function setPagination( $strPagination ) {
-
-        $this->catalogAddPagination = $strPagination;
-    }
-
-
-    public function setTableView( $strTableView, $strFields ) {
-
-        $this->enableTableView = $strTableView;
-        $this->catalogActiveTableColumns = $strFields;
-    }
-
-
-    public function setFastMode( $strFastMode, $strFields ) {
-
-        $this->catalogFastMode = $strFastMode;
-        $this->catalogPreventFieldFromFastMode = $strFields;
     }
 }

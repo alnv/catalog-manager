@@ -65,6 +65,7 @@ $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnUpdate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnDelete'] = [];
 
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\PseudoInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\ActiveInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\TimestampInsertTag', 'getInsertTagValue' ];

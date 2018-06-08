@@ -1243,7 +1243,7 @@ class CatalogView extends CatalogController {
 
     protected function preparePTableJoinData ( &$arrReturn ) {
 
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], $this->arrCatalogFields, true );
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrCatalog['pTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
 
         $arrReturn[] = [
 
@@ -1260,7 +1260,7 @@ class CatalogView extends CatalogController {
 
         foreach ( $this->catalogJoinCTables as $strTable ) {
 
-            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $strTable, $this->arrCatalogFields, true );
+            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $strTable, $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
 
             $arrReturn[] = [
 

@@ -10,6 +10,7 @@ class SQLQueryHelper extends CatalogController {
         parent::__construct();
 
         $this->import( 'SQLQueryBuilder' );
+        $this->import( 'CatalogFieldBuilder' );
     }
 
 
@@ -120,19 +121,27 @@ class SQLQueryHelper extends CatalogController {
     }
 
 
-    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [], $blnUseTablePrefix = false ) {
+    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [], $blnUseTablePrefix = false, &$staticFields = [] ) {
 
         if ( !$strTablename ) return $arrFields;
 
-        $objFields = $this->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->execute( $strTablename );
+        $this->CatalogFieldBuilder->initialize( $strTablename );
 
-        while ( $objFields->next() ) {
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, null );
 
-            $strAlias = $objFields->fieldname;
+        if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
 
-            if ( $blnUseTablePrefix ) $strAlias = $strTablename . ucfirst( $strAlias );
-            
-            $arrFields[ $strAlias ] = $objFields->row();
+            foreach ( $arrCatalogFields as $strAlias => $arrCatalogField ) {
+
+                if ( $blnUseTablePrefix ) $strAlias = $strTablename . ucfirst( $strAlias );
+
+                if ( in_array( $arrCatalogField['type'], [ 'map', 'message' ] ) ) {
+
+                    $staticFields[] = $strAlias;
+                }
+
+                $arrFields[ $strAlias ] = $arrCatalogField;
+            }
         }
 
         return $arrFields;

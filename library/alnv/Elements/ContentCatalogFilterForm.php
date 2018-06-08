@@ -361,7 +361,11 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$strFieldname ) return $strDefault;
 
-        return $this->CatalogInput->getActiveValue( $strFieldname );
+        $strValue = $this->CatalogInput->getActiveValue( $strFieldname );
+
+        if ( Toolkit::isEmpty( $strValue ) ) return $strDefault;
+
+        return $strValue;
     }
 
 

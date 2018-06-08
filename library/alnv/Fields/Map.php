@@ -24,16 +24,34 @@ class Map {
 
     public static function prepareMapOptions( $arrField, $arrCatalog ) {
 
+        $arrLatField = $arrCatalog[ $arrField['latField'] ];
+        $arrLngField = $arrCatalog[ $arrField['lngField'] ];
+
+        if ( ( !$arrLatField && !$arrLngField ) && $arrField['fieldname'] ) {
+
+            $objDatabase = \Database::getInstance();
+            $objCatalog = $objDatabase->prepare( 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE fieldname = ? LIMIT 1 )' )->limit( 1 )->execute( $arrField['fieldname'] );
+
+            if ( $objCatalog->tablename ) {
+
+                $strLatField = $objCatalog->tablename . ucfirst( $arrField['latField'] );
+                $strLngField = $objCatalog->tablename . ucfirst( $arrField['lngField'] );
+
+                $arrLatField = $arrCatalog[ $strLatField ];
+                $arrLngField = $arrCatalog[ $strLngField ];
+            }
+        }
+
         $arrReturn = [
 
+            'lat' => $arrLatField,
+            'lng' => $arrLngField,
             'catalog' => $arrCatalog,
             'mapInfoBoxContent' => '',
             'title' => $arrField['title'],
             'fieldname' => $arrField['fieldname'],
             'description' => $arrField['description'],
             'mapTemplate' => $arrField['mapTemplate'],
-            'lat' => $arrCatalog[ $arrField['latField'] ],
-            'lng' => $arrCatalog[ $arrField['lngField'] ],
             'id' => static::createUniqueID( $arrField, $arrCatalog ),
             'mapMarker' => $arrField['mapMarker'] ? 'true' : 'false',
             'addMapInfoBox' => $arrField['addMapInfoBox'] ? 'true' : 'false',

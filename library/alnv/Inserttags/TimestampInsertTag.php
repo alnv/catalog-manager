@@ -18,7 +18,7 @@ class TimestampInsertTag extends \Frontend {
 
             $objToday = new \Date();
             $objDate = new \Date( $objToday->date );
-            $intTstamp = $objDate->tstamp;
+            $intTstamp = $objDate->dayBegin;
 
             if ( isset( $arrTags[1] ) && strpos( $arrTags[1], '?' ) !== false ) {
 

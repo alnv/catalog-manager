@@ -18,7 +18,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'keys' => [
 
                 'id' => 'primary',
-                'pid' => 'index'
+                'pid' => 'index',
+                'name' => 'index'
             ]
         ]
     ],

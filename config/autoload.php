@@ -66,6 +66,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogDataContainer' => 'system/modules/catalog-manager/library/alnv/CatalogDataContainer.php',
     'CatalogManager\SocialSharingButtons' => 'system/modules/catalog-manager/library/alnv/SocialSharingButtons.php',
     'CatalogManager\ModuleMasterView' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleMasterView.php',
+    'CatalogManager\PseudoInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/PseudoInsertTag.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',
     'CatalogManager\MasterInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterInsertTag.php',
     'CatalogManager\CatalogMessageForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogMessageForm.php',

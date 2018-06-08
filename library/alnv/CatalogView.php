@@ -595,13 +595,13 @@ class CatalogView extends CatalogController {
 
                             if ( !$this->blnGoogleMapScript ) $this->blnGoogleMapScript = true;
 
-                            $arrCatalog[ $arrField['fieldname'] ] = Map::parseValue( '', $arrField, $arrCatalog );
+                            $arrCatalog[ $strID ] = Map::parseValue( '', $arrField, $arrCatalog );
 
                             break;
 
                         case 'message':
 
-                            $arrCatalog[ $arrField['fieldname'] ] = MessageInput::parseValue( '', $arrField, $arrCatalog );
+                            $arrCatalog[ $strID ] = MessageInput::parseValue( '', $arrField, $arrCatalog );
 
                             break;
                     }
@@ -1148,7 +1148,7 @@ class CatalogView extends CatalogController {
                 $arrRelatedJoinData['multiple'] = true;
             }
 
-            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true );
+            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
 
             $arrReturn[] = $arrRelatedJoinData;
         }

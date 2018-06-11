@@ -348,26 +348,34 @@ class OptionsGetter extends CatalogController {
 
     protected function getParseQueryValue( $strValue = '', $strOperator = '', &$blnValidValue = true ) {
 
-        if ( !Toolkit::isEmpty( $strValue ) && is_string( $strValue ) ) {
+        if ( !empty( $strValue ) && is_string( $strValue ) ) {
+
+            $strInsertTagValue = \Controller::replaceInsertTags( $strValue );
+
+            if ( !Toolkit::isEmpty( $strInsertTagValue ) ) {
+
+                $strValue = $strInsertTagValue;
+            }
+        }
+
+        if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
 
             $strActiveValue = '';
-            $blnInsertTag = false;
+            $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
+            $strTag = implode( '', $arrTags );
 
-            if ( strpos( $strValue, '{{' ) !== false ) $blnInsertTag = true;
+            if ( $strTag ) {
 
-            if ( $blnInsertTag ) {
+                $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
 
-                $arrValueSplit = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
-                $strFieldname = implode( '', $arrValueSplit );
+                if ( TL_MODE == 'FE' ) {
 
-                if ( $strFieldname ) {
+                    $strActiveValue = $this->CatalogInput->getActiveValue( $strTag );
+                }
 
-                    $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
+                if ( TL_MODE == 'FE' && ( Toolkit::isEmpty( \Input::post( 'FORM_SUBMIT' ) ) && \Input::get( 'act' . $this->strModuleID ) ) ) {
 
-                    if ( TL_MODE == 'FE' ) $strActiveValue = $this->CatalogInput->getActiveValue( $strFieldname );
-                    if ( TL_MODE == 'FE' && ( Toolkit::isEmpty( \Input::post( 'FORM_SUBMIT' ) ) && \Input::get( 'act' . $this->strModuleID ) ) ) $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
-
-                    if ( Toolkit::isEmpty( $strActiveValue ) ) $strActiveValue = \Controller::replaceInsertTags( $strValue );
+                    $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
                 }
             }
 
@@ -375,7 +383,10 @@ class OptionsGetter extends CatalogController {
             $strValue = $strActiveValue;
         }
 
-        if ( $strOperator == 'contain' && is_string( $strValue ) ) $strValue = explode( ',', $strValue );
+        if ( $strOperator == 'contain' && is_string( $strValue ) ) {
+
+            $strValue = explode( ',', $strValue );
+        }
 
         return Toolkit::prepareValueForQuery( $strValue );
     }

@@ -79,9 +79,9 @@ class DcPermission extends CatalogController {
                             }
                         }
 
-                        $root[] = $strID;
+                        $arrRoot[] = $strID;
 
-                        $this->User->{$strFieldname} = $root;
+                        $this->User->{$strFieldname} = $arrRoot;
                     }
                 }
 

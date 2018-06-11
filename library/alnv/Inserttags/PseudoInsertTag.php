@@ -17,7 +17,7 @@ class PseudoInsertTag extends \Frontend {
 
             if ( $objCatalogField->numRows ) return '';
 
-            $objFormField = $this->Database->prepare( 'SELECT name FROM tl_catalog_form_fields WHERE `name` = ?' )->limit( 1 )->execute( $arrTags[0] );
+            $objFormField = $this->Database->prepare( 'SELECT `name` FROM tl_catalog_form_fields WHERE `name` = ?' )->limit( 1 )->execute( $arrTags[0] );
 
             if ( $objFormField->numRows ) return '';
         }

@@ -91,9 +91,6 @@ class SQLQueryBuilder extends CatalogController {
             $this->createOrderByStatement(),
             $this->createPaginationStatement()
         );
-
-        // echo($this->strQuery);
-        // exit;
     }
 
 
@@ -308,7 +305,7 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createMultipleValueQueries( &$strQuery, $arrQuery ) {
 
-        if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'between' ] ) ) {
+        if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'between', 'contain' ] ) ) {
 
             $strQuery .= ' ( ';
 

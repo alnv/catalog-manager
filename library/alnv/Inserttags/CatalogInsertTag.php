@@ -14,6 +14,7 @@ class CatalogInsertTag extends \Frontend {
         if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_LIST' ) {
 
             $strModuleId = '';
+            $blnActive = true;
             $strDelimiter = ',';
             $strReturnField = 'id';
 
@@ -47,11 +48,17 @@ class CatalogInsertTag extends \Frontend {
                             $strDelimiter = $strOption;
 
                             break;
+
+                        case 'if':
+
+                            $blnActive = \Input::get( $strOption ) ? true : false;
+
+                            break;
                     }
                 }
             }
 
-            if ( !$strModuleId ) return '';
+            if ( !$strModuleId || !$blnActive ) return '';
 
             $objModule = $this->Database->prepare( 'SELECT * FROM tl_module WHERE id = ? AND `type` = ?' )->limit( 1 )->execute( $strModuleId, 'catalogUniversalView' );
 

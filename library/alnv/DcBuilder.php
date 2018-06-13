@@ -404,11 +404,9 @@ class DcBuilder extends CatalogController {
 
             foreach ( $this->arrFields as $arrField ) {
 
-                if ( $arrField['multiple'] ) continue;
+                if ( $arrField['multiple'] || !$arrField['fieldname']  ) continue;
 
-                if ( !$arrField['fieldname'] || !$arrField['type'] == 'checkbox' ) continue;
-
-                if ( $arrField['enableToggleIcon'] ) {
+                if ( $arrField['enableToggleIcon'] && $arrField['type'] == 'checkbox' ) {
 
                     $arrToggleIcon = [];
                     $strVisibleIcon = $this->IconGetter->setToggleIcon( $arrField['fieldname'], true );

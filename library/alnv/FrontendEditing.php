@@ -151,6 +151,11 @@ class FrontendEditing extends CatalogController {
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
+        if ( !$this->blnNoSubmit && \Input::post('FORM_DELETE_IMAGE' ) ) {
+
+            $this->deleteImage();
+        }
+
         if ( !$this->blnNoSubmit && ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) ) {
 
             $this->saveEntity();
@@ -169,6 +174,34 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
 
         return $this->objTemplate->parse();
+    }
+
+
+    protected function deleteImage() {
+
+        $this->import( 'SQLBuilder' );
+
+        $strFieldname = \Input::post('FORM_DELETE_IMAGE' );
+
+        if ( $strFieldname && isset( $this->arrValues[ $strFieldname ] ) ) $this->arrValues[ $strFieldname ] = '';
+
+        switch ( $this->strAct ) {
+
+            case 'create':
+
+                //
+
+                break;
+
+            case 'copy':
+            case 'edit':
+
+                $this->SQLBuilder->Database->prepare( sprintf( 'UPDATE %s SET %s = "" WHERE id = ?', $this->catalogTablename, $strFieldname ) )->execute( $this->strItemID );
+
+                break;
+        }
+
+        $this->reload();
     }
 
 

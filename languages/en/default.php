@@ -21,6 +21,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Permissions';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogFieldset'] = 'Fieldset';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Fields';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'] = 'An entry was found.';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'] = 'Delete image';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'No items were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] ='Sort sequence';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] = 'Reset all filter settings.';

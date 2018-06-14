@@ -19,6 +19,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogPalette'] = 'Palette';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogFieldset'] = 'Fieldset';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['selectAll'] = 'Alle auswählen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerFields'] = 'Felder';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'] = 'Bild löschen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'] = 'Sicherheitsabfrage';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] = 'Sortierreihenfolge';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'] = 'Es wurde ein Eintrag gefunden.';

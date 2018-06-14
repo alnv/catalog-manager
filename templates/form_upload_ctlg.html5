@@ -23,7 +23,7 @@
    <?php if ( $this->preview ): ?>
       <div class="upload-preview">
 	      <?= $this->preview ?>
-	      <button name="FORM_DELETE_IMAGE" value="<?= $this->name ?>">Bild löschen</button>
+	      <button name="FORM_DELETE_IMAGE" value="<?= $this->name ?>"><?= $this->deleteLabel ?></button>
       </div>
    <?php endif; ?>
 

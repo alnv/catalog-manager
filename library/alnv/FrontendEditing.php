@@ -293,6 +293,8 @@ class FrontendEditing extends CatalogController {
                 $objWidget->extensions = $arrField['eval']['extensions'];
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
                 $objWidget->preview = $this->arrCatalogAttributes[ $strFieldname ];
+                $objWidget->deleteLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'];
+
                 $this->blnHasUpload = true;
             }
 
@@ -631,6 +633,7 @@ class FrontendEditing extends CatalogController {
             $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
             $this->CatalogEvents->addEventListener( 'delete', $arrData, $this );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
+            $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
         }
 
         $strAttributes = '';
@@ -654,6 +657,35 @@ class FrontendEditing extends CatalogController {
         }
 
         $this->redirect( $strUrl );
+    }
+
+
+    protected function deleteChildEntities( $strTable, $strID, $strPtable = '' ) {
+
+        if ( !isset( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) ) return null;
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+        $arrTables = $arrCatalog['cTables'];
+
+        if ( is_array( $arrTables ) && !empty( $arrTables ) ) {
+
+            foreach ( $arrTables as $strTable ) {
+
+                $arrValues = [ $strID ];
+
+                if ( $strTable == 'tl_content' ) $strPtable = $strTable;
+                if ( $strPtable ) $arrValues[] = $strPtable;
+
+                if ( !$strPtable ) {
+
+                    $objEntity = $this->SQLBuilder->Database->prepare( sprintf( 'SELECT id FROM %s WHERE pid = ?', $strTable ) )->limit(1)->execute( $strID );
+
+                    $this->deleteChildEntities( $strTable, $objEntity->id );
+                }
+
+                $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE pid = ?' . ( $strPtable ? ' AND ptable = ?' : '' ), $strTable ) )->execute( $arrValues );
+            }
+        }
     }
 
 

@@ -128,6 +128,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogShowQuantity'] = [ 'Show number of reco
 $GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Exclude fields', 'Here you can exclude fields from "Fast Mode".' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Exclude options', 'Here you can exclude some options.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Use content elements', 'Here you can use content elements for your list view.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogIgnoreVisibility'] = [ 'Ignore visibility', 'Invisible elements are also displayed.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

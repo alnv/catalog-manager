@@ -350,7 +350,7 @@ class CatalogView extends CatalogController {
             $arrQuery['where'] = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
         }
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) && !BE_USER_LOGGED_IN ) {
+        if ( $this->hasVisibility() ) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -742,6 +742,18 @@ class CatalogView extends CatalogController {
 
             $this->blnHasOperations = false;
         }
+    }
+
+
+    public function hasVisibility() {
+
+        if ( $this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing ) return false;
+
+        if ( !BE_USER_LOGGED_IN ) return true;
+
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) return true;
+
+        return false;
     }
 
 

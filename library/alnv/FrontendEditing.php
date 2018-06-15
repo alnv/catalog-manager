@@ -333,8 +333,8 @@ class FrontendEditing extends CatalogController {
                 }
 
                 $objScriptLoader = new CatalogScriptLoader();
-                $objScriptLoader->loadScript('awesomplete-frontend' );
-                $objScriptLoader->loadStyle('awesomplete' );
+                $objScriptLoader->loadScript( 'awesomplete-frontend' );
+                $objScriptLoader->loadStyle( 'awesomplete' );
             }
             
             if ( Toolkit::isEmpty( $objWidget->value ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
@@ -524,7 +524,7 @@ class FrontendEditing extends CatalogController {
             ]
         ];
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations']  ) && !BE_USER_LOGGED_IN ) {
+        if ( $this->hasVisibility() ) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -581,6 +581,18 @@ class FrontendEditing extends CatalogController {
         $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 
         return $objEntities->numRows ? true : false;
+    }
+
+
+    public function hasVisibility() {
+
+        if ( $this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing ) return false;
+
+        if ( !BE_USER_LOGGED_IN ) return true;
+
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) return true;
+
+        return false;
     }
 
 

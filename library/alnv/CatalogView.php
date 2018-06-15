@@ -204,6 +204,11 @@ class CatalogView extends CatalogController {
             ]);
         }
 
+        if ( \Input::get( 'toggleVisibility' . $this->id ) ) {
+
+            $this->toggleVisibility();
+        }
+
         if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] ) ) {
 
             foreach ( $GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] as $arrCallback )  {
@@ -217,6 +222,27 @@ class CatalogView extends CatalogController {
         }
 
         $this->setHasOperationsFlag();
+    }
+
+
+    protected function toggleVisibility() {
+
+        $strId = \Input::get( 'toggleVisibility' . $this->id );
+
+        if ( $this->catalogTablename && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'invisible', $this->catalogTablename ) ) {
+
+            $objEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT invisible FROM '. $this->catalogTablename .' WHERE id = ?' )->limit(1)->execute( $strId );
+
+            $strValue = $objEntity->invisible ? '' : '1';
+            $dteTime = \Date::floorToMinute();
+
+            $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set([
+
+                'tstamp' => $dteTime,
+                'invisible' => $strValue
+
+            ])->execute( $strId );
+        }
     }
 
 

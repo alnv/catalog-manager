@@ -645,7 +645,7 @@ class FrontendEditing extends CatalogController {
             $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
             $this->CatalogEvents->addEventListener( 'delete', $arrData, $this );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
-            $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
+            // $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
         }
 
         $strAttributes = '';

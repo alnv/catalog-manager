@@ -41,6 +41,7 @@ class CatalogView extends CatalogController {
 
         $this->import( 'IconGetter' );
         $this->import( 'CatalogInput' );
+        $this->import( 'CatalogEvents' );
         $this->import( 'TemplateHelper' );
         $this->import( 'SQLQueryHelper' );
         $this->import( 'SQLQueryBuilder' );
@@ -236,12 +237,24 @@ class CatalogView extends CatalogController {
             $strValue = $objEntity->invisible ? '' : '1';
             $dteTime = \Date::floorToMinute();
 
-            $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set([
+            $arrValues = [
 
                 'tstamp' => $dteTime,
                 'invisible' => $strValue
 
-            ])->execute( $strId );
+            ];
+
+            $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $arrValues )->execute( $strId );
+
+
+            $arrData = [
+
+                'id' => $strId,
+                'row' => $arrValues,
+                'table' => $this->catalogTablename,
+            ];
+
+            $this->CatalogEvents->addEventListener( 'update', $arrData, $this );
         }
     }
 

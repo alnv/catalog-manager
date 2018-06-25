@@ -331,4 +331,18 @@ class ModuleUniversalView extends \Module {
         $this->catalogMasterTemplate = $strTemplate;
         $this->catalogTableBodyViewTemplate = $strTemplate;
     }
+
+
+    public function setCss( $strClass ) {
+
+        if ( is_array( $this->cssID ) && isset( $this->cssID[1] ) ) {
+
+            $strId = $this->cssID[0];
+            $strCss = $this->cssID[01];
+
+            $strCss .= ( empty( $this->cssID[1] ) ? '' : ' ' ) . $strClass;
+
+            $this->cssID = [ $strId, $strCss ];
+        }
+    }
 }

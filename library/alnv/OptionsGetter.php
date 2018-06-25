@@ -226,6 +226,9 @@ class OptionsGetter extends CatalogController {
 
             $blnValidValue = true;
             $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
+
+            if ( $blnIgnoreEmptyValues && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) $blnIgnoreEmptyValues = false;
+
             $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'], $blnValidValue );
             $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
 

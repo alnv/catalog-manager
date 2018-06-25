@@ -246,7 +246,6 @@ class CatalogView extends CatalogController {
 
             $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $arrValues )->execute( $strId );
 
-
             $arrData = [
 
                 'id' => $strId,

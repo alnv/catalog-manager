@@ -4,7 +4,7 @@ var CatalogManager = CatalogManager || {};
 
     'use strict';
 
-    if ( typeof window.addEventListener != "undefined" ) {
+    if ( typeof window.addEventListener !== "undefined" ) {
 
         window.addEventListener( 'DOMContentLoaded', initialize, false );
     }
@@ -37,7 +37,7 @@ var CatalogManager = CatalogManager || {};
 
                             next.getFirst('input').value = input.value;
 
-                            if (input.type == 'checkbox') {
+                            if (input.type === 'checkbox') {
 
                                 next.getFirst('input').checked = input.checked ? 'checked' : '';
                             }
@@ -100,12 +100,12 @@ var CatalogManager = CatalogManager || {};
                 objInput.set( 'tabindex', tabindex++ );
                 objInput.name = objInput.name.replace(/\[[0-9]+]/g, '[' + i + ']');
 
-                if ( objInput.type == 'checkbox' ) {
+                if ( objInput.type === 'checkbox' ) {
 
                     objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
                 }
 
-                if ( objInput.type == 'text' ) {
+                if ( objInput.type === 'text' ) {
 
                     objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
                 }
@@ -234,7 +234,7 @@ var CatalogManager = CatalogManager || {};
             objElement.blur();
 
             var objImage = $( objElement ).getFirst('img');
-            var intPublished = ( objImage.get('data-state') == 1 );
+            var intPublished = ( objImage.get('data-state') === 1 );
 
             if ( !intPublished ) {
 

@@ -820,4 +820,24 @@ class Toolkit {
 
         return $strValue;
     }
+
+
+    public static function flatterWithoutKeyValue( $arrValues, &$arrReturn, $strPrefix = '' ) {
+
+        if ( is_array( $arrValues ) && !empty( $arrValues ) ) {
+
+            foreach ( $arrValues as $strField => $varValue ) {
+
+                if ( is_array( $varValue ) ) {
+
+                    static::flatterWithoutKeyValue( $varValue, $arrReturn, $strField );
+                }
+
+                else {
+
+                    $arrReturn[ ( $strPrefix ? $strPrefix . '_' : '' ) . $strField ] = $varValue;
+                }
+            }
+        }
+    }
 }

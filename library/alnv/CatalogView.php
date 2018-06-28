@@ -246,7 +246,6 @@ class CatalogView extends CatalogController {
 
             $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $arrValues )->execute( $strId );
 
-
             $arrData = [
 
                 'id' => $strId,
@@ -786,10 +785,9 @@ class CatalogView extends CatalogController {
 
     public function hasVisibility() {
 
+        if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'invisible', $this->catalogTablename ) ) return false;
         if ( $this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing ) return false;
-
         if ( !BE_USER_LOGGED_IN ) return true;
-
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) return true;
 
         return false;

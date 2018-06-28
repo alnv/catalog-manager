@@ -72,7 +72,10 @@ class Map {
 
     public static function parseInfoBoxContent( $strInfoBox, $arrData ) {
 
-        $strInfoBox = \StringUtil::parseSimpleTokens( $strInfoBox, $arrData );
+        $arrTokens = [];
+        Toolkit::flatterWithoutKeyValue( $arrData, $arrTokens );
+
+        $strInfoBox = \StringUtil::parseSimpleTokens( $strInfoBox, $arrTokens );
         $strInfoBox = Toolkit::removeBreakLines( $strInfoBox );
         $strInfoBox = Toolkit::removeApostrophe( $strInfoBox );
 

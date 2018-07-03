@@ -313,7 +313,7 @@ class Toolkit {
                 return $varValue;
             });
 
-            $varValue = array_unique( $varValue );
+            // $varValue = array_unique( $varValue );
 
             foreach ( $varValue as $strKey => $strValue ) {
 
@@ -482,8 +482,14 @@ class Toolkit {
             if ( $arrQuery['operator'] == 'between' && is_array( $arrQuery['value'] ) ) {
 
                 if ( $arrQuery['value'][0] === '' && $arrQuery['value'][1] === '' ) return null;
+
                 if ( $arrQuery['value'][0] === '' ) $arrQuery['value'][0] = '0';
-                if ( $arrQuery['value'][1] === '' ) $arrQuery['value'][1] = '0';
+
+                if ( $arrQuery['value'][1] === '' ) {
+
+                    $numOff = (float) $arrQuery['value'][0];
+                    $arrQuery['value'][1] = $numOff * $numOff;
+                }
             }
         }
 

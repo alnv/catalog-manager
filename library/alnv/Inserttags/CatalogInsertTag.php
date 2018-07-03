@@ -51,7 +51,25 @@ class CatalogInsertTag extends \Frontend {
 
                         case 'if':
 
-                            $blnActive = \Input::get( $strOption ) ? true : false;
+                            $blnIfActive = false;
+                            $arrOptions = explode( ',', $strOption );
+                            
+                            if ( is_array( $arrOptions ) && !empty( $strOption ) ) {
+
+                                foreach ( $arrOptions as $strField ) {
+
+                                    $strValue = \Input::get( $strField );
+
+                                    if ( !\Toolkit::isEmpty( $strValue ) ) {
+
+                                        $blnIfActive = true;
+
+                                        break;
+                                    }
+                                }
+                            }
+
+                            $blnActive = $blnIfActive;
 
                             break;
                     }

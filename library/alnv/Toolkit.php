@@ -306,7 +306,13 @@ class Toolkit {
 
             $arrReturn = [];
 
-            $varValue = array_filter( $varValue );
+            $varValue = array_filter( $varValue, function ( $varValue ) {
+
+                if ( $varValue === '0' ) return true;
+
+                return $varValue;
+            });
+
             $varValue = array_unique( $varValue );
 
             foreach ( $varValue as $strKey => $strValue ) {
@@ -473,12 +479,11 @@ class Toolkit {
                 }
             }
 
-            if ( $arrQuery['operator'] == 'between' ) {
+            if ( $arrQuery['operator'] == 'between' && is_array( $arrQuery['value'] ) ) {
 
-                if ( $arrQuery['value'][0] === '' || $arrQuery['value'][1] === '' ) {
-
-                    return null;
-                }
+                if ( $arrQuery['value'][0] === '' && $arrQuery['value'][1] === '' ) return null;
+                if ( $arrQuery['value'][0] === '' ) $arrQuery['value'][0] = '0';
+                if ( $arrQuery['value'][1] === '' ) $arrQuery['value'][1] = '0';
             }
         }
 
@@ -505,7 +510,7 @@ class Toolkit {
             $arrQuery['multiple'] = true;
         }
 
-        if ( ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '') && !$blnAllowEmptyValue ) {
+        if ( ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) && !$blnAllowEmptyValue ) {
 
             return null;
         }

@@ -313,8 +313,6 @@ class Toolkit {
                 return $varValue;
             });
 
-            // $varValue = array_unique( $varValue );
-
             foreach ( $varValue as $strKey => $strValue ) {
 
                 $arrReturn[ $strKey ] = Toolkit::prepareValueForQuery( $strValue );
@@ -327,7 +325,7 @@ class Toolkit {
         if ( preg_match('/^[1-9]/', $varValue ) ) return floatval( $varValue );
         if ( is_string( $varValue ) && $varValue === '0' ) return 0;
         if ( is_null( $varValue ) ) return '';
-        
+
         return $varValue;
     }
 

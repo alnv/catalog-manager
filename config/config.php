@@ -46,6 +46,8 @@ array_insert( $GLOBALS['TL_CTE'], 3, [
     'catalog-manager' => [
 
         'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm',
+        'catalogVisibilityPanelStop' => 'CatalogManager\ContentVisibilityPanelStop',
+        'catalogVisibilityPanelStart' => 'CatalogManager\ContentVisibilityPanelStart',
         'catalogSocialSharingButtons' => 'CatalogManager\ContentSocialSharingButtons'
     ]
 ]);
@@ -82,17 +84,21 @@ $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [ 'CatalogManager\SearchIndexBuil
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = [ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
+$GLOBALS['TL_HOOKS']['getContentElement'][] = [ 'CatalogManager\CatalogContentElementParser', 'parseVisibilityPanels' ];
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];
 $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [ 'CatalogManager\CatalogWidgetAttributeParser', 'parseCatalogNavigationAreasWidget' ];
 
 $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];
+$GLOBALS['TL_CATALOG_MANAGER']['VISIBILITY_PANEL'] = FALSE;
 
 $GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] = [ 'tinyMCE', 'tinyFlash' ];
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
+$GLOBALS['TL_WRAPPERS']['stop'][] = 'catalogVisibilityPanelStop';
+$GLOBALS['TL_WRAPPERS']['start'][] = 'catalogVisibilityPanelStart';
 
 $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';

@@ -234,9 +234,9 @@ var CatalogManager = CatalogManager || {};
             objElement.blur();
 
             var objImage = $( objElement ).getFirst('img');
-            var intPublished = ( objImage.get('data-state') === 1 );
+            var blnPublished = ( objImage.get('data-state') === '1' );
 
-            if ( !intPublished ) {
+            if ( !blnPublished ) {
 
                 objImage.src = strInVisibleIcon;
                 objImage.set( 'data-state', 1 );

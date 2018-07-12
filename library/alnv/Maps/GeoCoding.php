@@ -26,9 +26,12 @@ class GeoCoding extends CatalogController {
 
             $arrAddress = [];
 
-            if ( $this->strStreet ) $arrAddress[] = $this->strStreet;
+            if ( $this->strStreet ) {
 
-            if ( $this->strStreetNumber ) $arrAddress[] = $this->strStreetNumber;
+                if ( $this->strStreetNumber ) $this->strStreet .= ' ' . $this->strStreetNumber;
+
+                $arrAddress[] = $this->strStreet;
+            }
 
             if ( $this->strPostal ) $arrAddress[] = $this->strPostal;
 

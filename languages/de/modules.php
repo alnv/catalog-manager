@@ -13,8 +13,8 @@ $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog Listenansicht', 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = 'Catalog Manager';
 $GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social-Sharing-Buttons', 'Social-Sharing-Buttons als Inhaltselement.' ];
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog Filterformular', 'Hier können Sie einen Filterformular als Inhaltselement einbinden.'];
-$GLOBALS['TL_LANG']['CTE']['catalogVisibilityPanelStop'] = [ 'Sichtbarkeits Wrapper Ende', 'Hier können Sie die sichtbarkeit der Elemente auf der Detailseite steuern.'];
-$GLOBALS['TL_LANG']['CTE']['catalogVisibilityPanelStart'] = [ 'Sichtbarkeits Wrapper Start', 'Hier können Sie die sichtbarkeit der Elemente auf der Detailseite steuern.'];
+$GLOBALS['TL_LANG']['CTE']['catalogVisibilityPanelStop'] = [ 'Sichtbarkeit - Umschlag Ende', 'Hier können Sie die sichtbarkeit der Elemente auf der Detailseite steuern.'];
+$GLOBALS['TL_LANG']['CTE']['catalogVisibilityPanelStart'] = [ 'Sichtbarkeit - Umschlag Anfang', 'Hier können Sie die sichtbarkeit der Elemente auf der Detailseite steuern.'];
 
 $GLOBALS['TL_LANG']['FFL']['catalogFineUploader'] = [ 'FineUploader', 'FineUploader vom Catalog Manager' ];
 $GLOBALS['TL_LANG']['FFL']['catalogMessageForm'] = [ 'Mittleilung', 'Mittleilungsfeld vom Catalog Manager' ];

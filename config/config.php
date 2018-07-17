@@ -46,9 +46,10 @@ array_insert( $GLOBALS['TL_CTE'], 3, [
     'catalog-manager' => [
 
         'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm',
-        'catalogVisibilityPanelStop' => 'CatalogManager\ContentVisibilityPanelStop',
+        'catalogSocialSharingButtons' => 'CatalogManager\ContentSocialSharingButtons',
+
         'catalogVisibilityPanelStart' => 'CatalogManager\ContentVisibilityPanelStart',
-        'catalogSocialSharingButtons' => 'CatalogManager\ContentSocialSharingButtons'
+        'catalogVisibilityPanelStop' => 'CatalogManager\ContentVisibilityPanelStop'
     ]
 ]);
 

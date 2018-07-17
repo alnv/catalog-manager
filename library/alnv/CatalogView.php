@@ -91,7 +91,7 @@ class CatalogView extends CatalogController {
                     $this->arrCatalogStaticFields[] = $strID;
                 }
 
-                $this->setPreviewEntityFields( $arrField['fieldname'], $arrField );
+                $this->setPreviewEntityFields( $arrField['fieldname'], $this->arrCatalogFields[ $strID ] );
             }
         }
 

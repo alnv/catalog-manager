@@ -13,6 +13,11 @@ class CatalogContentElementParser extends \Frontend {
 
                 $GLOBALS['TL_CATALOG_MANAGER']['VISIBILITY_PANEL'] = TRUE;
             }
+
+            if ( !\Input::get( 'auto_item' ) && $objElement->catalogNegateVisibility ) {
+
+                $GLOBALS['TL_CATALOG_MANAGER']['VISIBILITY_PANEL'] = TRUE;
+            }
         }
 
         if ( $GLOBALS['TL_CATALOG_MANAGER']['VISIBILITY_PANEL'] ) $strBuffer = '';

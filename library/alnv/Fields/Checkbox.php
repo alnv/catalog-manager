@@ -84,7 +84,7 @@ class Checkbox {
 
             $arrOptions = $objOptionGetter->getOptions();
 
-            if ( !empty( $arrOptions ) ) {
+            if ( $arrField['optionsType'] && is_array( $arrOptions ) ) {
 
                 $arrDCAField['options'] = $arrOptions;
                 $arrDCAField['reference'] = $arrDCAField['options'];

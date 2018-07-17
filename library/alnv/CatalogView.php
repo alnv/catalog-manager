@@ -91,7 +91,7 @@ class CatalogView extends CatalogController {
                     $this->arrCatalogStaticFields[] = $strID;
                 }
 
-                $this->setPreviewEntityFields( $arrField['fieldname'], $arrField );
+                $this->setPreviewEntityFields( $arrField['fieldname'], $this->arrCatalogFields[ $strID ] );
             }
         }
 
@@ -715,7 +715,8 @@ class CatalogView extends CatalogController {
 
             $arrCatalogs[] = $arrCatalog;
         }
-        
+        // var_dump($this->arrCatalogFields);
+        // exit;
         if ( $intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view' ) {
 
             $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, $this->arrViewPage['id'] );

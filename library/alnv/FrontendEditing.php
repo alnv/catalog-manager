@@ -377,6 +377,11 @@ class FrontendEditing extends CatalogController {
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
+                if ( Toolkit::isEmpty( $varValue ) && $arrField['inputType'] == 'catalogFineUploader' ) {
+
+                    $varValue = $this->arrValues[ $strFieldname ];
+                }
+
                 if ( Toolkit::isEmpty( $varValue ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
 
                     $varValue = $arrField['default'];

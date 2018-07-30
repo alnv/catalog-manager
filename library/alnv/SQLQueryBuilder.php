@@ -409,12 +409,15 @@ class SQLQueryBuilder extends CatalogController {
 
         return sprintf(
 
-            ",3956 * 1.6 * 2 * ASIN(SQRT(POWER(SIN((%s-abs(`%s`)) * pi()/180 / 2),2) + COS(%s * pi()/180) * COS(abs(`%s`) *  pi()/180) * POWER( SIN( (%s-`%s`) *  pi()/180 / 2 ), 2 ))) AS _distance",
+            ",3956 * 1.6 * 2 * ASIN(SQRT(POWER(SIN((%s-abs(%s.`%s`)) * pi()/180 / 2),2) + COS(%s * pi()/180) * COS(abs(%s.`%s`) *  pi()/180) * POWER( SIN( (%s-%s.`%s`) *  pi()/180 / 2 ), 2 ))) AS _distance",
             $this->arrQuery['distance']['latCord'],
+            $this->strTable,
             $this->arrQuery['distance']['latField'],
             $this->arrQuery['distance']['latCord'],
+            $this->strTable,
             $this->arrQuery['distance']['latField'],
             $this->arrQuery['distance']['lngCord'],
+            $this->strTable,
             $this->arrQuery['distance']['lngField']
         );
     }

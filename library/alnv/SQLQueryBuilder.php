@@ -305,6 +305,8 @@ class SQLQueryBuilder extends CatalogController {
 
     protected function createMultipleValueQueries( &$strQuery, $arrQuery ) {
 
+        $this->setValue( $arrQuery['value'], $arrQuery['field'] );
+
         if ( is_array( $arrQuery['value'] ) && !empty( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'between', 'contain' ] ) ) {
 
             $strQuery .= ' ( ';
@@ -323,8 +325,6 @@ class SQLQueryBuilder extends CatalogController {
 
             $strQuery .= ' ' . call_user_func_array( [ 'SQLQueryBuilder', $arrQuery['operator'] ], [ $arrQuery['field'] ] );
         }
-
-        $this->setValue( $arrQuery['value'], $arrQuery['field'] );
     }
 
 

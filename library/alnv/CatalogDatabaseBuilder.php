@@ -434,7 +434,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
     protected function clearCache() {
 
-        if ( version_compare( VERSION, '4.6', '<=' ) ) {
+        if ( version_compare( VERSION, '4.6', '<' ) ) {
 
             $this->Automator->purgeInternalCache();
         }

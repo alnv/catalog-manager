@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
         'sorting' => [
 
             'mode' => 1,
-            'flag' => 2,
+            'flag' => 1,
             'fields' => [ 'title' ],
         ],
 

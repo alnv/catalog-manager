@@ -30,6 +30,7 @@ class Toolkit {
         'i5' => "smallint(5) unsigned NOT NULL default '0'",
         'i10' => "int(10) unsigned NOT NULL default '0'",
         'text' => "text NULL",
+        'longtext' => "longtext NULL",
         'blob' => "blob NULL",
         'binary' => "binary(16) NULL"
     ];

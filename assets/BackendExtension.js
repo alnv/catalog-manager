@@ -235,7 +235,7 @@ var CatalogManager = CatalogManager || {};
 
             var objImage = $( objElement ).getFirst('img');
             var blnPublished = ( objImage.get('data-state') === '1' );
-            
+
             if ( !blnPublished ) {
 
                 objImage.src = strInVisibleIcon;

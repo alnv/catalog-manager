@@ -5,9 +5,6 @@ namespace CatalogManager;
 class tl_catalog extends \Backend {
 
 
-    protected $arrDataContainerFields = [];
-
-
     public function checkPermission() {
 
         $objDcPermission = new DcPermission();
@@ -134,6 +131,7 @@ class tl_catalog extends \Backend {
         if ( Toolkit::isCoreTable( $strTablename ) ) {
 
             \Controller::loadDataContainer( $strTablename );
+
             $blnDynamicPtable = $GLOBALS['TL_DCA'][ $strTablename ]['config']['dynamicPtable'] ?: false;
         }
 
@@ -205,6 +203,7 @@ class tl_catalog extends \Backend {
         if ( Toolkit::isCoreTable( $strTablename ) ) {
 
             \Controller::loadDataContainer( $strTablename );
+
             $blnDynamicPtable = $GLOBALS['TL_DCA'][ $strTablename ]['config']['dynamicPtable'] ?: false;
         }
 
@@ -241,26 +240,51 @@ class tl_catalog extends \Backend {
 
     public function getDataContainerFields( \DataContainer $dc ) {
 
+        $arrReturn = [];
         $strTablename = $dc->activeRecord->tablename;
 
-        if ( Toolkit::isEmpty( $strTablename ) ) return [];
-        if ( isset( $this->arrDataContainerFields[ $strTablename ] ) ) return $this->arrDataContainerFields[ $strTablename ];
+        if ( Toolkit::isEmpty( $strTablename ) ) return $arrReturn;
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTablename );
-        $this->arrDataContainerFields[ $strTablename ] = [];
         $arrFields = $objFieldBuilder->getCatalogFields( true, null, false, false );
-        
+
+        if ( $dc->activeRecord->type == 'modifier' && $dc->field == 'labelFields' ) {
+
+            \Controller::loadDataContainer( $strTablename );
+
+            $arrList = $GLOBALS['TL_DCA'][ $strTablename ]['list'] ?: [];
+
+            if ( is_array( $arrList ) && isset( $arrList['label'] ) && is_array( $arrList['label'] ) ) {
+
+                $arrLabelFields = $arrList['label']['fields'] ?: [];
+
+                if ( is_array( $arrLabelFields ) && !empty( $arrLabelFields ) ) {
+
+                    $arrFieldNames = array_keys( $arrFields );
+                    $arrDiffFields = array_diff( $arrLabelFields, $arrFieldNames );
+
+                    if ( is_array( $arrDiffFields ) && !empty( $arrDiffFields ) ) {
+
+                        foreach ( $arrDiffFields as $strName ) {
+
+                            $arrReturn[ $strName ] = $strName . ' - (unknown)';
+                        }
+                    }
+                }
+            }
+        }
+
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
             if ( !Toolkit::isDcConformField( $arrField ) ) continue;
 
             if ( in_array( $arrField['type'], [ 'upload' ] ) ) continue;
 
-            $this->arrDataContainerFields[ $strTablename ][ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
+            $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
-        return $this->arrDataContainerFields[ $strTablename ];
+        return $arrReturn;
     }
 
 

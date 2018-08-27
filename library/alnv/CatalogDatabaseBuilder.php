@@ -137,7 +137,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'create' );
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -151,7 +151,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'rename', $strNewTablename );
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -164,7 +164,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'drop' );
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
     
     
@@ -192,7 +192,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         }
 
         $this->checkPermissionFields( 'create' );
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -209,7 +209,7 @@ class CatalogDatabaseBuilder extends CatalogController {
             $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
         }
 
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -219,7 +219,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $strSQLData = Toolkit::getSqlDataType( $this->arrColumn['statement'] );
         $objSQLBuilder->createSQLRenameFieldnameStatement( $this->strTablename, $this->arrColumn['fieldname'], $strNewFieldname, $strSQLData );
 
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -233,7 +233,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $objSQLBuilder = new SQLBuilder();
         $objSQLBuilder->dropTableField( $this->strTablename, $this->arrColumn['fieldname'] );
 
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -277,7 +277,7 @@ class CatalogDatabaseBuilder extends CatalogController {
             $objSQLBuilder->addIndex( $this->strTablename, $this->arrColumn['fieldname'], $this->arrColumn['useIndex'] );
         }
 
-        $this->Automator->purgeInternalCache();
+        $this->clearCache();
     }
 
 
@@ -428,6 +428,15 @@ class CatalogDatabaseBuilder extends CatalogController {
 
                 $arrCallback( $arrPermissionColumn );
             }
+        }
+    }
+
+
+    protected function clearCache() {
+
+        if ( version_compare( VERSION, '4.6', '<' ) ) {
+
+            $this->Automator->purgeInternalCache();
         }
     }
 }

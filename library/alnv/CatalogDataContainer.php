@@ -30,7 +30,7 @@ class CatalogDataContainer extends \DataContainer {
 
                 break;
 
-            default;
+            default:
 
                 parent::__set( $strKey, $varValue );
 

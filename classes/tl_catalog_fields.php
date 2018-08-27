@@ -171,7 +171,14 @@ class tl_catalog_fields extends \Backend {
     
     public function getTextFieldsByParentID() {
 
-        $arrReturn = [ 'title' ];
+        $objI18nCatalogTranslator = new I18nCatalogTranslator();
+        $objI18nCatalogTranslator->initialize();
+
+        $arrReturn = [
+
+            'title' =>  $objI18nCatalogTranslator->get( 'field', 'title', [ 'titleOnly' => true ] )
+        ];
+
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
 
         while ( $objCatalogFields->next() ) {
@@ -181,7 +188,7 @@ class tl_catalog_fields extends \Backend {
                 continue;
             }
 
-            $arrReturn[] = $objCatalogFields->fieldname;
+            $arrReturn[ $objCatalogFields->fieldname ] = $objI18nCatalogTranslator->get( 'field', $objCatalogFields->fieldname, [ 'title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true ] );
         }
 
         return $arrReturn;
@@ -193,11 +200,14 @@ class tl_catalog_fields extends \Backend {
         $arrReturn = [];
         $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )' )->execute( \Input::get('id') );
 
+        $objI18nCatalogTranslator = new I18nCatalogTranslator();
+        $objI18nCatalogTranslator->initialize();
+
         while ( $objCatalogFields->next() ) {
 
             if ( !$objCatalogFields->fieldname ) continue;
 
-            $arrReturn[] = $objCatalogFields->fieldname;
+            $arrReturn[ $objCatalogFields->fieldname ] = $objI18nCatalogTranslator->get( 'field', $objCatalogFields->fieldname, [ 'title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true ] );
         }
 
         return $arrReturn;
@@ -277,16 +287,24 @@ class tl_catalog_fields extends \Backend {
     
     public function getColumnsByDbTable( \DataContainer $dc ) {
 
-        $strTable = $dc->activeRecord->dbTable;
+        $arrReturn = [];
+        $strTablename = $dc->activeRecord->dbTable;
 
-        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+        if ( $strTablename && $this->Database->tableExists( $strTablename ) ) {
 
-            $arrColumns = $this->Database->listFields( $strTable );
+            $objCatalogFieldBuilder = new CatalogFieldBuilder();
+            $objCatalogFieldBuilder->initialize( $strTablename );
+            $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-            return Toolkit::parseColumns( $arrColumns );
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
+
+                $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
+            }
         }
 
-        return [];
+        return $arrReturn;
     }
 
     
@@ -478,11 +496,14 @@ class tl_catalog_fields extends \Backend {
 
             $objFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ? AND statement = ?' )->execute( $dc->activeRecord->pid, 'blob' );
 
+            $objI18nCatalogTranslator = new I18nCatalogTranslator();
+            $objI18nCatalogTranslator->initialize();
+
             while ( $objFields->next() ) {
 
                 if ( $objFields->fieldname && $objFields->type == 'dbColumn' ) {
 
-                    $arrReturn[ $objFields->fieldname ] = $objFields->fieldname;
+                    $arrReturn[ $objFields->fieldname ] = $objI18nCatalogTranslator->get( 'field', $objFields->fieldname, [ 'title' => $objFields->title, 'description' => $objFields->description, 'titleOnly' => true ] );
                 }
             }
         }

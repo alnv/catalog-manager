@@ -418,7 +418,7 @@ class DcBuilder extends CatalogController {
                         'href' => $strHref,
                         'icon' => $strInVisibleIcon,
                         'button_callback' => [ 'DcCallbacks', 'toggleIcon' ],
-                        'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
+                        'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'title' => $arrField['title'], 'description' => $arrField['description'] ] ),
                         'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,'. sprintf( "'%s'", $strVisibleIcon ) .', '. sprintf( "'%s'", $strInVisibleIcon ) .', '. sprintf( "'%s'", $strHref ) .' )"'
                     ];
 

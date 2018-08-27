@@ -463,7 +463,7 @@ class FrontendEditing extends CatalogController {
                         $varValue = \Encryption::encrypt( $varValue );
                     }
 
-                    $this->arrValues[$strFieldname] = $varValue;
+                    $this->arrValues[ $strFieldname ] = $varValue;
                 }
 
                 $arrFiles = $_SESSION['FILES'];

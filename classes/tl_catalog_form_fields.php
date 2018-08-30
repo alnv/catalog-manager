@@ -68,16 +68,24 @@ class tl_catalog_form_fields extends \Backend {
 
     public function getColumnsByDbTable( \DataContainer $dc ) {
 
-        $strTable = $dc->activeRecord->dbTable;
+        $arrReturn = [];
+        $strTablename = $dc->activeRecord->dbTable;
 
-        if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+        if ( $strTablename && $this->Database->tableExists( $strTablename ) ) {
 
-            $arrColumns = $this->Database->listFields( $strTable );
+            $objCatalogFieldBuilder = new CatalogFieldBuilder();
+            $objCatalogFieldBuilder->initialize( $strTablename );
+            $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
 
-            return Toolkit::parseColumns( $arrColumns );
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
+
+                $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
+            }
         }
 
-        return [];
+        return $arrReturn;
     }
 
 

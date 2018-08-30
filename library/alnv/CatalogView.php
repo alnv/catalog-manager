@@ -22,6 +22,7 @@ class CatalogView extends CatalogController {
 
     protected $arrGroups = [];
     protected $arrCatalog = [];
+    protected $arrParseAsArray = [];
     protected $arrActiveFields = [];
     protected $arrEntityFields = [];
     protected $arrCatalogFields = [];
@@ -599,6 +600,11 @@ class CatalogView extends CatalogController {
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
                     $arrCatalog[ $strFieldname ] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
+
+                    if ( isset( $this->arrParseAsArray[ $strFieldname ] ) ) {
+
+                        $arrCatalog[ $strFieldname . 'Array' ] = $this->getJoinedEntities( $varValue, $this->arrParseAsArray[ $strFieldname ]['onTable'], $this->arrParseAsArray[ $strFieldname ]['onField'] );
+                    }
                 }
             }
 
@@ -781,6 +787,35 @@ class CatalogView extends CatalogController {
 
             $this->blnHasOperations = false;
         }
+    }
+
+
+    protected function getJoinedEntities( $strValue, $strTable, $strField ) {
+
+        $arrReturn = [];
+        $objEntities = $this->SQLQueryBuilder->execute([
+
+            'table' => $strTable,
+            'where' => [
+
+                [
+                    'field' => $strField,
+                    'operator' => 'findInSet',
+                    'value' => explode( ',', $strValue )
+                ]
+            ]
+        ]);
+
+        //@todo check visibility
+
+        if ( !$objEntities->numRows ) return $arrReturn;
+
+        while ( $objEntities->next() ) {
+
+            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $this->arrCatalogFields, false, $strTable );
+        }
+
+        return $arrReturn;
     }
 
 
@@ -1199,6 +1234,13 @@ class CatalogView extends CatalogController {
             }
 
             $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
+
+            if ( $arrRelatedJoinData['multiple'] && $this->catalogJoinAsArray ) {
+
+                $this->arrParseAsArray[ $arrRelatedJoinData['field'] ] = $arrRelatedJoinData;
+
+                continue;
+            }
 
             $arrReturn[] = $arrRelatedJoinData;
         }

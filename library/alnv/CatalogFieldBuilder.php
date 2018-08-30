@@ -385,6 +385,7 @@ class CatalogFieldBuilder extends CatalogController {
             'invisible' => [
 
                 'exclude' => '1',
+                'multiple' => '',
                 'invisible' => '',
                 'statement' => 'c1',
                 'placeholder' => '',

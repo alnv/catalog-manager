@@ -131,6 +131,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogPreventFieldFromFastMode'] = [ 'Felder 
 $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Optionen ausschließen', 'Hier können Sie einige der mitgelieferten Optionen ausschließen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente zu der Listenansicht hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreVisibility'] = [ 'Sichtbarkeit ignorieren', 'Es werden auch unsichtbare Elemente angezeigt.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogJoinAsArray'] = [ 'Mehrfache Verknüpfungen als Array ausgeben', 'Hier können Sie mehrfache Verknüpfungen in ein Array auslagern.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

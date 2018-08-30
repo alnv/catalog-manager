@@ -581,6 +581,7 @@ class CatalogView extends CatalogController {
             }
 
             $arrCatalog['masterUrl'] = $this->getMasterRedirect( $arrCatalog, $arrCatalog['alias'] );
+            $arrCatalog['hasGoBackLink'] = $this->catalogUseViewPage && $this->catalogViewPage !== '0';
 
             if ( !empty( $this->arrViewPage ) ) {
 

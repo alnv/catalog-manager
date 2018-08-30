@@ -1,7 +1,5 @@
-<!-- indexer::stop -->
-<?php $this->extend('block_searchable'); ?>
+<?php $this->extend('block_unsearchable'); ?>
 <?php $this->block('content'); ?>
-
 <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?>>
     <?php if ( $this->method == 'POST' ): ?>
         <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
@@ -14,10 +12,7 @@
        </div>
     <?php endif; ?>
 </form>
-
 <?php if( $this->reset ): ?>
    <?= $this->reset; ?>
 <?php endif; ?>
-
 <?php $this->endblock(); ?>
-<!-- indexer::continue -->

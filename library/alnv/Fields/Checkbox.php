@@ -25,7 +25,7 @@ class Checkbox {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog ) {
 
-        if ( !$varValue ) return [];
+        if ( !$varValue ) return $arrField['multiple'] ? [] : '';
 
         $varValue = Toolkit::parseMultipleOptions( $varValue );
 

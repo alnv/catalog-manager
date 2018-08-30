@@ -625,17 +625,23 @@ class Toolkit {
     }
 
 
-    public static function parseCatalogValues( $arrData, $arrFields = [], $blnJustStrings = false ) {
+    public static function parseCatalogValues( $arrData, $arrFields = [], $blnJustStrings = false, $strJoinedTable = '' ) {
 
         if ( !empty( $arrData ) && is_array( $arrData ) ) {
 
             foreach ( $arrData as $strFieldname => $varDBValue ) {
 
                 $varValue = null;
+                $strField = $strFieldname;
 
                 if ( Toolkit::isEmpty( $varDBValue ) ) continue;
 
-                $arrField = $arrFields[ $strFieldname ];
+                if ( $strJoinedTable ) {
+
+                    $strField = $strJoinedTable . ucfirst( $strFieldname );
+                }
+
+                $arrField = $arrFields[ $strField ];
 
                 if ( is_null( $arrField ) ) continue;
                 if ( !$arrField['type'] ) continue;

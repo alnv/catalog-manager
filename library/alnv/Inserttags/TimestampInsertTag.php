@@ -18,7 +18,8 @@ class TimestampInsertTag extends \Frontend {
 
             $objToday = new \Date();
             $objDate = new \Date( $objToday->date );
-            $intTstamp = $objDate->dayBegin;
+            $strMethod = isset( $arrTags[2] )  ? $arrTags[2] : 'dayBegin';
+            $intTstamp = $objDate->{$strMethod};
 
             if ( isset( $arrTags[1] ) && strpos( $arrTags[1], '?' ) !== false ) {
 
@@ -33,12 +34,39 @@ class TimestampInsertTag extends \Frontend {
 
                     switch ( $strKey ) {
 
+                        case 'active':
+
+                            $objInput = new CatalogInput();
+                            $intTstamp = (int) $objInput->getValue( $strOption );
+
+                            if ( !$intTstamp ) {
+
+                                return '';
+                            }
+
+                            if ( isset( $arrTags[2] ) ) {
+
+                                $objWatchedDate = new \Date( $intTstamp );
+                                $intTstamp = $objWatchedDate->{$strMethod};
+                            }
+
+                            break;
+
                         case 'watch':
 
                             $objInput = new CatalogInput();
                             $intWatchValue = $objInput->getValue( $strOption );
 
-                            if ( $intWatchValue ) $intTstamp = (int) $intWatchValue;
+                            if ( $intWatchValue !== null && $intWatchValue !== '' ) {
+
+                                $intTstamp = (int) $intWatchValue;
+                            }
+
+                            if ( isset( $arrTags[2] ) ) {
+
+                                $objWatchedDate = new \Date( $intTstamp );
+                                $intTstamp = $objWatchedDate->{$strMethod};
+                            }
 
                             break;
 

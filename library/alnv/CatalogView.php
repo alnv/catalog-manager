@@ -599,12 +599,14 @@ class CatalogView extends CatalogController {
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
-                    $arrCatalog[ $strFieldname ] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
-
                     if ( isset( $this->arrParseAsArray[ $strFieldname ] ) ) {
 
-                        $arrCatalog[ $strFieldname . 'Array' ] = $this->getJoinedEntities( $varValue, $this->arrParseAsArray[ $strFieldname ]['onTable'], $this->arrParseAsArray[ $strFieldname ]['onField'] );
+                        $arrCatalog[ $strFieldname ] = $this->getJoinedEntities( $varValue, $strFieldname );
+
+                        continue;
                     }
+
+                    $arrCatalog[ $strFieldname ] = $this->parseCatalogValues( $varValue, $strFieldname, $arrCatalog );
                 }
             }
 
@@ -790,10 +792,14 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function getJoinedEntities( $strValue, $strTable, $strField ) {
+    protected function getJoinedEntities( $strValue, $strFieldname ) {
 
         $arrReturn = [];
-        $objEntities = $this->SQLQueryBuilder->execute([
+        $strTable = $this->arrParseAsArray[ $strFieldname ]['onTable'];
+        $strField = $this->arrParseAsArray[ $strFieldname ]['onField'];
+        $arrOrderBy= Toolkit::parseStringToArray( $this->arrCatalogFields[ $strFieldname ]['dbOrderBy'] );
+
+        $arrQuery = [
 
             'table' => $strTable,
             'where' => [
@@ -803,16 +809,78 @@ class CatalogView extends CatalogController {
                     'operator' => 'findInSet',
                     'value' => explode( ',', $strValue )
                 ]
-            ]
-        ]);
+            ],
+            'orderBy' => []
+        ];
 
-        //@todo check visibility
+        if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+
+            foreach ( $arrOrderBy as $arrOrder ) {
+
+                $arrQuery['orderBy'][] = [
+
+                    'field' => $arrOrder['key'],
+                    'order' => $arrOrder['value']
+                ];
+            }
+        }
+
+        if (  $this->arrParseAsArray[ $strFieldname ]['hasVisibility'] ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => 0
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
+
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 
         if ( !$objEntities->numRows ) return $arrReturn;
 
         while ( $objEntities->next() ) {
 
-            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $this->arrCatalogFields, false, $strTable );
+            $arrReturn[ $objEntities->{$strField} ] = Toolkit::parseCatalogValues( $objEntities->row(), $this->arrCatalogFields, false, $strTable );
         }
 
         return $arrReturn;
@@ -1236,6 +1304,12 @@ class CatalogView extends CatalogController {
             $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
 
             if ( $arrRelatedJoinData['multiple'] && $this->catalogJoinAsArray ) {
+
+                $objCatalogFieldBuilder = new CatalogFieldBuilder();
+                $objCatalogFieldBuilder->initialize( $arrRelatedJoinData['onTable'] );
+
+                $arrCatalog = $objCatalogFieldBuilder->getCatalog();
+                $arrRelatedJoinData['hasVisibility'] = in_array( 'invisible', $arrCatalog['operations'] );
 
                 $this->arrParseAsArray[ $arrRelatedJoinData['field'] ] = $arrRelatedJoinData;
 

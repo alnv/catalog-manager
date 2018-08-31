@@ -1,9 +1,9 @@
 <div class="ctlg_master block">
 	
-	<h1><?= $this->title; ?></h1>
+    <h1><?= $this->title; ?></h1>
 
-   <!-- start 
-		* 
+    <!-- start
+	    *
 		* The code below should not be used. You can replace it with your own code. Just follow the instruction:
 		* 
 		* All catalog values are located in the "$this" Variable. Access individual values ​​with the arrow operator.

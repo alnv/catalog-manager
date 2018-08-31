@@ -1,33 +1,53 @@
 <div class="ctlg_master block">
+	
+	<h1><?= $this->title; ?></h1>
 
-   <h1><?= $this->title; ?></h1>
-
-   <?php if ( is_array( $this->catalogEntityFields ) ):  ?>
-      <div class="ctlg_entities">
-         <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
-            <?php if ( $this->{$strName} ): ?>
-               <?php $varValue = is_array( $this->{$strName} ) ? implode( ', ', $this->{$strName} ) : $this->{$strName}; ?>
-               <?php if ( is_string( $varValue ) ): ?>
-                  <div class="ctlg_entity <?= $strName; ?>">
-                     <span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
-                     <div class="ctlg_entity_value"><?= $varValue; ?></div>
-                  </div>
-               <?php endif; ?>
-            <?php endif; ?>
-         <?php endforeach; ?>
-      </div>
-   <?php endif; ?>
-
-   <?php if( $this->contentElements ): ?>
-      <div class="catalog_master_content"><?= $this->contentElements; ?></div>
-   <?php endif; ?>
-
-   <?php if ( $this->useSocialSharingButtons ): ?>
-      <?= $this->socialSharingButtons; ?>
-   <?php endif; ?>
-
-   <?php if( $this->hasGoBackLink ): ?>
-      <p class="back"><a href="<?= $this->goBackLink ?>"><?= $this->goBackLabel; ?></a></p>
-   <?php endif; ?>
+   <!-- start 
+		* 
+		* The code below should not be used. You can replace it with your own code. Just follow the instruction:
+		* 
+		* All catalog values are located in the "$this" Variable. Access individual values ​​with the arrow operator.
+		* For Example: 
+		* Output simple string: $this->yourFieldname
+		* Format numbers: number_format( $this->yourFieldname, 2, ',', '.' ) €
+		* Output joins: $this->tablenameYourFieldname
+		* Output array: implode ( ', ', $this->yourFieldname )
+		* Output associative array: implode( ', ', array_map( function( $arrValue ) { return $arrValue['title'] }, $this->yourFieldname ) )
+		*
+	-->
+	<?php if ( is_array( $this->catalogEntityFields ) ):  ?>
+    <div class="ctlg_entities">
+    <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
+        <?php if ( $this->{$strName} !== null && $this->{$strName} !== '' ): ?>       
+	        <?php if ( is_array( $this->{$strName} ) ): ?>
+	        	<?php $this->{$strName} = implode( ', ', array_map( function( $varValue ) {
+		        	if ( is_string ( $varValue ) ) return $varValue;
+		        	if ( is_array ( $varValue ) ) return $varValue['title'];
+		        	return $varValue;
+	        	}, $this->{$strName} )) ?>
+	        <?php endif; ?>	        
+	        <?php if ( is_string( $this->{$strName} ) ): ?>
+	        <div class="ctlg_entity <?= $strName; ?>">
+	        	<span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
+				<div class="ctlg_entity_value"><?= $this->{$strName}; ?></div>
+	        </div>
+	        <?php endif; ?> 
+        <?php endif; ?>
+    <?php endforeach; ?>
+    </div>
+	<?php endif; ?>
+	<!-- end -->
+	
+	<?php if( $this->contentElements ): ?>
+		<div class="catalog_master_content"><?= $this->contentElements; ?></div>
+	<?php endif; ?>
+	
+	<?php if ( $this->useSocialSharingButtons ): ?>
+		<?= $this->socialSharingButtons; ?>
+	<?php endif; ?>
+	
+	<?php if( $this->hasGoBackLink ): ?>
+		<p class="back"><a href="<?= $this->goBackLink ?>"><?= $this->goBackLabel; ?></a></p>
+	<?php endif; ?>
 
 </div>

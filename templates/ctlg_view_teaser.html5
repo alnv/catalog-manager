@@ -1,56 +1,72 @@
 <div class="ctlg_teaser block<?= $this->cssClass ?>">
-
-   <?php if( $this->masterUrl ): ?>
-      <h2><a href="<?= $this->masterUrl ?>"><?= $this->title; ?></a></h2>
-   <?php else: ?>
-      <h2><?= $this->title; ?></h2>
+	
+	<?php if( $this->masterUrl ): ?>
+	<h3><a href="<?= $this->masterUrl ?>"><?= $this->title; ?></a></h3>
+	<?php else: ?>
+    <h3><?= $this->title; ?></h3>
+    <?php endif; ?>
+   
+	<!-- start 
+		* 
+		* The code below should not be used. You can replace it with your own code. Just follow the instruction:
+		* 
+		* All catalog values are located in the "$this" Variable. Access individual values ​​with the arrow operator.
+		* For Example: 
+		* Output simple string: $this->yourFieldname
+		* Format numbers: number_format( $this->yourFieldname, 2, ',', '.' ) €
+		* Output joins: $this->tablenameYourFieldname
+		* Output array: implode ( ', ', $this->yourFieldname )
+		* Output associative array: implode( ', ', array_map( function( $arrValue ) { return $arrValue['title'] }, $this->yourFieldname ) )
+		*
+	-->
+	<?php if ( is_array( $this->catalogEntityFields ) ):  ?>
+    <div class="ctlg_entities">
+    <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
+        <?php if ( $this->{$strName} !== null && $this->{$strName} !== '' ): ?>       
+	        <?php if ( is_array( $this->{$strName} ) ): ?>
+	        	<?php $this->{$strName} = implode( ', ', array_map( function( $varValue ) {
+		        	if ( is_string ( $varValue ) ) return $varValue;
+		        	if ( is_array ( $varValue ) ) return $varValue['title'];
+		        	return $varValue;
+	        	}, $this->{$strName} )) ?>
+	        <?php endif; ?>
+	        <?php if ( is_string( $this->{$strName} ) ): ?>
+	        <div class="ctlg_entity <?= $strName; ?>">
+	        	<span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
+				<div class="ctlg_entity_value"><?= $this->{$strName}; ?></div>
+	        </div>
+	        <?php endif; ?> 
+        <?php endif; ?>
+    <?php endforeach; ?>
+    </div>
+	<?php endif; ?>
+	<!-- end -->
+   
+	<?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
+	<ul class="operations">
+		<?php foreach( $this->operations as $arrOperation ): ?>
+    	<li>
+        	<a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>>
+				<span class="ctlg_operation_icon"><?= $arrOperation['image']; ?></span> <?= $arrOperation['title']; ?>
+            </a>
+		</li>
+		<?php endforeach; ?>
+   </ul>
    <?php endif; ?>
-
-   <?php if ( is_array( $this->catalogEntityFields ) ):  ?>
-      <div class="ctlg_entities">
-         <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
-            <?php if ( $this->{$strName} ): ?>
-               <?php $varValue = is_array( $this->{$strName} ) ? implode( ', ', $this->{$strName} ) : $this->{$strName}; ?>
-               <?php if ( is_string( $varValue ) ): ?>
-                  <div class="ctlg_entity <?= $strName; ?>">
-                     <span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
-                     <div class="ctlg_entity_value"><?= $varValue; ?></div>
-                  </div>
-               <?php endif; ?>
-            <?php endif; ?>
-         <?php endforeach; ?>
-      </div>
-   <?php endif; ?>
-
-   <?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
-      <ul>
-         <?php foreach( $this->operations as $arrOperation ): ?>
-            <li>
-               <a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>>
-                  <span class="ctlg_operation_icon"><?= $arrOperation['image']; ?></span> <?= $arrOperation['title']; ?>
-               </a>
-            </li>
-         <?php endforeach; ?>
-      </ul>
-   <?php endif; ?>
-
+   
    <?php if ( !empty( $this->relations ) && is_array( $this->relations ) ): ?>
-      <ul>
-         <?php foreach( $this->relations as $arrRelation ): ?>
-            <li>
-               <a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>">
-                  <span class="catalog_relation_icon"><?= $arrRelation['image']; ?></span> <?= $arrRelation['title']; ?>
-               </a>
-            </li>
-         <?php endforeach; ?>
-      </ul>
-   <?php endif; ?>
+   <ul class="relations">
+	   <?php foreach( $this->relations as $arrRelation ): ?>
+	   <li><a href="<?= $arrRelation['href'] ?>" title="<?= $arrRelation['description'] ?>"><span class="catalog_relation_icon"><?= $arrRelation['image']; ?></span> <?= $arrRelation['title']; ?></a></li>
+	   <?php endforeach; ?>
+	</ul>
+	<?php endif; ?>
+	
+	<?php if( $this->masterUrl ): ?>
+    	<p class="more"><a href="<?= $this->masterUrl ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></p>
+    <?php endif; ?>
 
-   <?php if( $this->masterUrl ): ?>
-      <p class="more"><a href="<?= $this->masterUrl ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></p>
-   <?php endif; ?>
-
-   <?php if ( $this->useSocialSharingButtons ): ?>
-      <?= $this->socialSharingButtons; ?>
-   <?php endif; ?>
+	<?php if ( $this->useSocialSharingButtons ): ?>
+		<?= $this->socialSharingButtons; ?>
+    <?php endif; ?>
 </div>

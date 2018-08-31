@@ -1,9 +1,9 @@
 <div class="ctlg_teaser block<?= $this->cssClass ?>">
 	
 	<?php if( $this->masterUrl ): ?>
-	<h3><a href="<?= $this->masterUrl ?>"><?= $this->title; ?></a></h3>
+	    <h3><a href="<?= $this->masterUrl ?>"><?= $this->title; ?></a></h3>
 	<?php else: ?>
-    <h3><?= $this->title; ?></h3>
+        <h3><?= $this->title; ?></h3>
     <?php endif; ?>
    
 	<!-- start 

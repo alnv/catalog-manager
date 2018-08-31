@@ -23,7 +23,6 @@ class CatalogView extends CatalogController {
     protected $arrGroups = [];
     protected $arrCatalog = [];
     protected $arrParseAsArray = [];
-    protected $arrActiveFields = [];
     protected $arrEntityFields = [];
     protected $arrCatalogFields = [];
     protected $arrRelatedTables = [];
@@ -81,11 +80,6 @@ class CatalogView extends CatalogController {
 
                 $this->arrCatalogFields[ $strID ][ 'title' ] = $arrFieldLabels[0];
                 $this->arrCatalogFields[ $strID ][ 'description' ] = $arrFieldLabels[1];
-
-                if ( !$arrField['invisible'] && is_numeric( $strID ) ) {
-                    
-                    $this->arrActiveFields[] = $arrField['fieldname'];
-                }
 
                 if ( in_array( $arrField['type'], [ 'map', 'message' ] ) ) {
 
@@ -299,12 +293,6 @@ class CatalogView extends CatalogController {
         }
 
         return $this->catalogActiveTableColumns;
-    }
-
-
-    public function getActiveCatalogFields() {
-
-        return $this->arrActiveFields;
     }
 
 
@@ -678,7 +666,6 @@ class CatalogView extends CatalogController {
             $arrCatalog['dateTimeFormat'] = $this->strDateTimeFormat;
             $arrCatalog['catalogEntityFields'] = $this->arrEntityFields;
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
-            $arrCatalog['activeFields'] = $this->getActiveCatalogFields();
 
             if ( $this->strMode == 'view' ) {
 
@@ -735,36 +722,8 @@ class CatalogView extends CatalogController {
             $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
         }
 
-        if ( $this->catalogTemplateDebug ) {
-
-            $objDebugTemplate = new \FrontendTemplate( 'ctlg_debug_default' );
-            $GLOBALS['TL_CSS']['catalogManagerFrontendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
-                ? 'system/modules/catalog-manager/assets/debug.css'
-                : 'system/modules/catalog-manager/assets/debug.css';
-
-            $objDebugTemplate->setData([
-
-                'catalogTemplate' => $this->strTemplate,
-                'catalogFields' => $this->arrCatalogFields,
-                'activeFields' => $this->getActiveCatalogFields(),
-                'activeFieldsHeadline' => $this->getActiveFieldsHeadline( $this->strTemplate ),
-                'activeFieldsOutput' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'],
-
-                'open_html' => htmlentities('<'),
-                'close_tag' => htmlentities('>'),
-                'close_php' => htmlentities('?>'),
-                'echo_php' => htmlentities('<?='),
-                'close_html' => htmlentities('</'),
-                'open_php' => htmlentities('<?php'),
-            ]);
-
-            $this->objMainTemplate->debug = $objDebugTemplate->parse();
-        }
-
         if ( $this->catalogRandomSorting ) shuffle( $arrCatalogs );
-
         if ( $this->catalogUseArray ) return $this->getArrayValue( $arrCatalogs, $intNumRows );
-
         if ( $this->blnShowAsGroup ) return $this->getGroupedValue( $arrCatalogs );
 
         return $this->getTemplateValue( $arrCatalogs, $intNumRows );
@@ -880,7 +839,7 @@ class CatalogView extends CatalogController {
 
         while ( $objEntities->next() ) {
 
-            $arrReturn[ $objEntities->{$strField} ] = Toolkit::parseCatalogValues( $objEntities->row(), $this->arrCatalogFields, false, $strTable );
+            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $this->arrCatalogFields, false, $strTable );
         }
 
         return $arrReturn;

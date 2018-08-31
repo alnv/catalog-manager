@@ -115,7 +115,6 @@ TemplateLoader::addFiles([
     'ctlg_form_message' => 'system/modules/catalog-manager/templates',
     'mod_catalog_filter' => 'system/modules/catalog-manager/templates',
     'mod_catalog_master' => 'system/modules/catalog-manager/templates',
-    'ctlg_debug_default' => 'system/modules/catalog-manager/templates',
     'ctlg_message_default' => 'system/modules/catalog-manager/templates',
     'ctlg_catalog_tinyMCE' => 'system/modules/catalog-manager/templates',
     'mod_catalog_taxonomy' => 'system/modules/catalog-manager/templates',

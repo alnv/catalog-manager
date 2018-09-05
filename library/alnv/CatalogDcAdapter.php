@@ -24,6 +24,16 @@ class CatalogDcAdapter extends CatalogController {
 
     protected function shouldLoadDc( $strTablename ) {
 
-        return in_array( $strTablename, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) && ( \Input::get('do') != 'catalog-manager' || \Input::get('table') == 'tl_catalog_fields' );
+        $blnIsCoreTable = in_array( $strTablename, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] );
+
+        if ( TL_MODE == 'FE' && !$blnIsCoreTable ) {
+
+            $objDatabase = \Database::getInstance();
+            $objCatalog = $objDatabase->prepare( 'SELECT id FROM tl_catalog WHERE tablename = ?' )->limit(1)->execute( $strTablename );
+
+            return $objCatalog->numRows ? true : false;
+        }
+
+        return $blnIsCoreTable && ( \Input::get('do') != 'catalog-manager' || \Input::get('table') == 'tl_catalog_fields' );
     }
 }

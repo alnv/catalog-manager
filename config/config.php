@@ -183,3 +183,11 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
         'email_html' => [ 'admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
     ]
 ];
+
+$GLOBALS['CM_ICON_SET'] = [
+
+    'new' => 'system/modules/catalog-manager/assets/icons/new.svg',
+    'edit' => 'system/modules/catalog-manager/assets/icons/edit.svg',
+    'copy' => 'system/modules/catalog-manager/assets/icons/copy.svg',
+    'delete' => 'system/modules/catalog-manager/assets/icons/delete.svg'
+];

@@ -6,7 +6,9 @@
    <?php endif; ?>
 
    <?php if ( !empty( $this->createOperation ) && is_array( $this->createOperation ) ): ?>
-      <div class="new-operator"><a href="<?= $this->createOperation['href'] ?>"><span class="new-icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a></p>
+      <div class="new-operator">
+        <a href="<?= $this->createOperation['href'] ?>"><span class="new-icon"><?= $this->createOperation['image']; ?></span> <?= $this->createOperation['title'] ?></a>
+      </div>
    <?php endif; ?>
 
    <?php if ( $this->showAsGroup ):?>

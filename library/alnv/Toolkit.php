@@ -856,4 +856,10 @@ class Toolkit {
             }
         }
     }
+
+
+    public static function getIcon( $strType ) {
+
+        return $GLOBALS['CM_ICON_SET'][ $strType ];
+    }
 }

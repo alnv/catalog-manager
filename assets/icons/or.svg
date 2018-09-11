@@ -1,17 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Artboard</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Artboard">
-            <circle id="Oval" fill="#85CD36" cx="31.9603271" cy="31.9603271" r="30.9603271"></circle>
-            <text id="O" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="bold" fill="#FFFFFF">
-                <tspan x="7" y="45">O</tspan>
-            </text>
-            <text id="R" font-family="Roboto-Bold, Roboto" font-size="36" font-weight="bold" fill="#FFFFFF">
-                <tspan x="33.0126953" y="45">R</tspan>
-            </text>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><rect id="or" x="0.58" y="0" width="16" height="16" style="fill:none;"/><g id="Filter_1"><circle id="Oval" cx="8.615" cy="8.019" r="7.859" style="fill:#6ecbfc;"/><g id="Gruppe_6"><g id="O"><text x="2.084px" y="11.139px" style="font-family:'Verdana-Bold', 'Verdana', sans-serif;font-weight:700;font-size:8.214px;fill:#fff;">O</text></g><g id="O-2"><text x="8.244px" y="11.139px" style="font-family:'Verdana-Bold', 'Verdana', sans-serif;font-weight:700;font-size:8.214px;fill:#fff;">R</text></g></g></g></svg>

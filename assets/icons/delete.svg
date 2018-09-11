@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
-    <title>delete 64x64</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="delete-64x64" fill="#E03737">
-            <path d="M36.6837662,27.6837662 L36.6837662,5.18376618 L27.6837662,5.18376618 L27.6837662,27.6837662 L5.18376618,27.6837662 L5.18376618,36.6837662 L27.6837662,36.6837662 L27.6837662,59.1837662 L36.6837662,59.1837662 L36.6837662,36.6837662 L59.1837662,36.6837662 L59.1837662,27.6837662 L36.6837662,27.6837662 Z" id="Combined-Shape-Copy" transform="translate(32.183766, 32.183766) rotate(-315.000000) translate(-32.183766, -32.183766) "></path>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><rect id="delete" x="0.317" y="0" width="16" height="16" style="fill:none;"/><path id="Combined_Shape_Copy" d="M0.53,13.562l5.562,-5.562l-5.562,-5.562l2.225,-2.225l5.562,5.562l5.562,-5.562l2.225,2.225l-5.562,5.562l5.562,5.562l-2.225,2.225l-5.562,-5.562l-5.562,5.562l-2.225,-2.225Z" style="fill:#f47474;fill-rule:nonzero;"/></svg>

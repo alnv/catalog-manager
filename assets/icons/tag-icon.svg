@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
-    <title>tag copy</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="tag-copy" stroke="#25AF80" stroke-width="0.66" fill="#25AF80">
-            <g id="Group" transform="translate(6.778175, 6.500000) rotate(-45.000000) translate(-6.778175, -6.500000) translate(2.278175, 0.000000)">
-                <path d="M0.0444335938,4.94897461 L3.97038253,0.953509784 L8.02298199,5.00610925 L8.02298199,12.8824852 L0.0444335938,12.8824852 L0.0444335938,4.94897461 Z M4.14644661,7.55545635 C5.22038841,7.55545635 6.09099026,6.68485451 6.09099026,5.6109127 C6.09099026,4.5369709 5.22038841,3.66636906 4.14644661,3.66636906 C3.07250481,3.66636906 2.20190296,4.5369709 2.20190296,5.6109127 C2.20190296,6.68485451 3.07250481,7.55545635 4.14644661,7.55545635 Z" id="Combined-Shape"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;"><rect id="tag" x="0.617" y="0" width="16" height="16" style="fill:none;"/><g id="Combined_Shape"><path id="Combined_Shape1" serif:id="Combined_Shape" d="M16.496,7.963l-7.772,7.774l-7.724,-7.724l-0.072,-7.722l7.897,0l7.671,7.672Zm-12.755,-5.198c-1.038,1.039 -1.037,2.747 0.002,3.785c1.038,1.039 2.748,1.039 3.787,0c1.039,-1.039 1.039,-2.748 0,-3.787c-1.041,-1.038 -2.75,-1.037 -3.789,0.002Z" style="fill:#a8e58f;fill-rule:nonzero;"/></g></svg>

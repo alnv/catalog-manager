@@ -2,6 +2,7 @@
 
 namespace CatalogManager;
 
+
 class CatalogManagerVerification extends CatalogController {
 
 
@@ -28,7 +29,7 @@ class CatalogManagerVerification extends CatalogController {
         if ( $strLicence ) $arrContaoInstallData['licence'] = $strLicence;
 
         $strRequestData = http_build_query( $arrContaoInstallData );
-        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify?%s', $strRequestData ) );
+        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify-catalog-manager?%s', $strRequestData ) );
 
         if ( !$objRequest->hasError() ) {
 
@@ -44,5 +45,48 @@ class CatalogManagerVerification extends CatalogController {
         }
 
         return false;
+    }
+
+
+    public function isBlocked() {
+
+        $objRequest = new \Request();
+        $arrContaoInstallData = $this->getContaoInstallData();
+
+        $strRequestData = http_build_query( $arrContaoInstallData );
+        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/is_blocked?%s', $strRequestData ) );
+
+        if ( !$objRequest->hasError() ) {
+
+            $arrResponse = (array) json_decode( $objRequest->response );
+
+            if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
+
+                if ( is_bool( $arrResponse['blocked'] ) && $arrResponse['blocked'] == true ) {
+
+                    return $arrResponse['blocked'];
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    public function toggleIsBlocked( $strValue ) {
+
+        $objConfig = \Config::getInstance();
+
+        if ( $objConfig->has( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']' ) ) {
+
+            $objConfig->update( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue );
+        }
+
+        else {
+
+            $objConfig->add( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue );
+        }
+
+        $objConfig->save();
     }
 }

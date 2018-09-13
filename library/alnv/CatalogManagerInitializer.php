@@ -40,6 +40,11 @@ class CatalogManagerInitializer {
 
             $this->setCatalogs();
         }
+
+        if ( \Config::get('_isBlocked') ) {
+
+            \Message::addError( 'Our system detected an unlicensed catalog manager installation on the domain "'. \Environment::get('base') .'". Please enter your valid license or contact your webmaster.' );
+        }
     }
 
 

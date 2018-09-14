@@ -20,9 +20,9 @@ class tl_settings extends \Backend {
         $objCatalogManagerVerification = new CatalogManagerVerification();
         $objCatalogManagerVerification->toggleIsBlocked( $objCatalogManagerVerification->isBlocked() );
 
-        if ( !$varValue ) return '';
-
         if ( !$objCatalogManagerVerification->verify( $varValue ) ) {
+
+            if ( !$varValue ) return '';
 
             throw new \Exception( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] );
         }

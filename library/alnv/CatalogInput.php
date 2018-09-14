@@ -28,7 +28,10 @@ class CatalogInput extends CatalogController {
 
         if ( !empty( $arrPagination ) || ( Toolkit::isEmpty( $strActiveValue ) && !Toolkit::isEmpty( $objSession->get( $strName ) ) ) ) {
 
-            $strActiveValue = $objSession->get( $strName );
+            if ( TL_MODE == 'FE' ) {
+
+                $strActiveValue = $objSession->get( $strName );
+            }
         }
 
         if ( !empty( $arrEditingMode ) ) {

@@ -60,8 +60,8 @@ if ( TL_MODE == 'BE' ) {
         : 'system/modules/catalog-manager/assets/BackendExtension.js';
 
     $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
-        ? 'system/modules/catalog-manager/assets/widget.css'
-        : 'system/modules/catalog-manager/assets/widget.css';
+        ? 'system/modules/catalog-manager/assets/backend.css'
+        : 'system/modules/catalog-manager/assets/backend.css';
 }
 
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];

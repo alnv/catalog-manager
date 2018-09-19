@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#91979C;stroke-miterlimit:10;}
+</style>
+<path class="st0" d="M11,4.3c0,0-2.1-3.7-6.7-2.1C-0.2,3.9,1,9.7,1,9.7s0.7,4.2,5,4.5c3.8,0.3,5.1-2.7,5.1-2.7"/>
+<polyline class="st0" points="6.5,12.2 6.5,4.6 7.2,4.6 10.8,8.7 14.3,4.6 15,4.6 15,12.2 "/>
+</svg>

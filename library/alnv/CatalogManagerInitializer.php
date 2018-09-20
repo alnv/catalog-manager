@@ -216,6 +216,7 @@ class CatalogManagerInitializer {
 
     protected function createBackendModuleDc( $strTablename, $arrCatalog ) {
 
+        $arrModule = [];
         $arrTables[] = $strTablename;
         $blnAddContentElements = $arrCatalog['addContentElements'] ? true : false;
 
@@ -234,12 +235,20 @@ class CatalogManagerInitializer {
             $arrTables[] = 'tl_content';
         }
 
-        return [
+        $arrModule['icon'] = $this->objIconGetter->setCatalogIcon( $strTablename );
+        $arrModule['name'] = $arrCatalog['name'];
+        $arrModule['tables'] = $arrTables;
 
-            'icon' => $this->objIconGetter->setCatalogIcon( $strTablename ),
-            'name' => $arrCatalog['name'],
-            'tables' => $arrTables
-        ];
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyBackendModule'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyBackendModule'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyBackendModule'] as $arrCallback ) {
+
+                $objHook = new $arrCallback[0]();
+                $objHook->{$arrCallback[1]}( $arrModule, $arrCatalog );
+            }
+        }
+
+        return $arrModule;
     }
 
 

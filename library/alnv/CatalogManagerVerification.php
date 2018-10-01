@@ -77,7 +77,7 @@ class CatalogManagerVerification extends CatalogController {
 
         $objConfig = \Config::getInstance();
 
-        if ( $objConfig->has( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']' ) ) {
+        if ( isset( $GLOBALS['TL_CONFIG']['_isBlocked'] ) ) {
 
             $objConfig->update( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue );
         }

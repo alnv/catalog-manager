@@ -42,7 +42,7 @@ class GalleryCreator extends \Frontend {
     public function render() {
 
         global $objPage;
-
+        
         $objMainTemplate = new \FrontendTemplate( 'ce_gallery' );
         $objMainTemplate->class = 'ce_gallery';
 
@@ -65,7 +65,7 @@ class GalleryCreator extends \Frontend {
 
                 if ( !$objFile->isImage ) continue;
 
-                $arrMeta = $this->getMetaData( $this->objFiles->meta, $objPage->language );
+                $arrMeta = $this->getMetaData( $this->objFiles->meta, ( $objPage->language ? $objPage->language : $GLOBALS['TL_LANGUAGE'] ) );
 
                 if ( empty( $arrMeta ) ) {
 
@@ -116,7 +116,7 @@ class GalleryCreator extends \Frontend {
 
                     if ( !$objFile->isImage )  continue;
 
-                    $arrMeta = $this->getMetaData( $objSubFiles->meta, $objPage->language );
+                    $arrMeta = $this->getMetaData( $objSubFiles->meta, ( $objPage->language ? $objPage->language : $GLOBALS['TL_LANGUAGE'] ) );
 
                     if ( empty( $arrMeta ) ) {
 

@@ -13,6 +13,7 @@ class CatalogInsertTag extends \Frontend {
 
         if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_LIST' ) {
 
+            $strDefault = '';
             $strModuleId = '';
             $blnActive = true;
             $strDelimiter = ',';
@@ -40,6 +41,12 @@ class CatalogInsertTag extends \Frontend {
                         case 'get':
 
                             $strReturnField = $strOption;
+
+                            break;
+
+                        case 'default':
+
+                            $strDefault = $strOption;
 
                             break;
 
@@ -210,7 +217,10 @@ class CatalogInsertTag extends \Frontend {
             $arrReturn = [];
             $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 
-            if ( !$objEntities->numRows ) return '';
+            if ( !$objEntities->numRows ) {
+
+                return $strDefault;
+            }
 
             while ( $objEntities->next() ) {
 

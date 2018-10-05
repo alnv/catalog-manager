@@ -99,6 +99,11 @@ class GalleryCreator extends \Frontend {
                     'caption' => $arrMeta['caption']
                 ];
 
+                if ( version_compare(VERSION, '4.4', '>=' ) ) {
+
+                    $arrImages[ $this->objFiles->path ]['filesModel'] = $this->objFiles->current();
+                }
+
                 $arrAuxDate[] = $objFile->mtime;
             }
 
@@ -146,6 +151,11 @@ class GalleryCreator extends \Frontend {
                         'linkTitle' => $arrMeta['title'],
                         'caption' => $arrMeta['caption']
                     ];
+
+                    if ( version_compare(VERSION, '4.4', '>=' ) ) {
+
+                        $arrImages[ $objSubFiles->path ]['filesModel'] = $objSubFiles->current();
+                    }
 
                     $arrAuxDate[] = $objFile->mtime;
                 }
@@ -329,7 +339,16 @@ class GalleryCreator extends \Frontend {
 
                     $arrImages[($i+$j)]['size'] = $this->size;
                     $arrImages[($i+$j)]['fullsize'] = $this->fullsize;
-                    $this->addImageToTemplate( $objCell, $arrImages[($i+$j)], $intMaxWidth, $strLightBoxID );
+
+                    if ( version_compare(VERSION, '4.4', '>=' ) ) {
+
+                        $this->addImageToTemplate( $objCell, $arrImages[($i+$j)], $intMaxWidth, $strLightBoxID, $arrImages[($i+$j)]['filesModel'] );
+                    }
+
+                    else {
+
+                        $this->addImageToTemplate( $objCell, $arrImages[($i+$j)], $intMaxWidth, $strLightBoxID );
+                    }
 
                     $objCell->colWidth = $intColWidth . '%';
                     $objCell->class = 'col_'. $j . $strRowTDClass;

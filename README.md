@@ -1,6 +1,6 @@
 Catalog Manager - Eine Contao CMS Erweiterung
 ===============
 
-Please visit the official [Catalog Manager][1] Site.
+Hier geht es zu der offiziellen [Catalog Manager][1] Seite.
 
 [1]: https://catalog-manager.alexandernaumov.de

@@ -567,4 +567,15 @@ class tl_catalog_fields extends \Backend {
 
         return $this->getTemplateGroup( $strType );
     }
+
+
+    public function getImagesSizes() {
+
+        if ( $this->Database->tableExists( 'tl_image_size' ) ) {
+
+            return \System::getImageSizes();
+        }
+
+        return [];
+    }
 }

@@ -1019,7 +1019,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['size'],
             'inputType' => 'imageSize',
-            'options' => \System::getImageSizes(),
 
             'eval' => [
 
@@ -1033,6 +1032,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption'=>true
             ],
 
+            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getImagesSizes' ],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"

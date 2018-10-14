@@ -533,7 +533,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'eval' => [
 
-                'tl_class' => 'w50 m12'
+                'tl_class' => 'clr'
             ],
 
             'exclude' => true,
@@ -975,7 +975,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'eval' => [
 
                 'doNotCopy' => true,
-                'tl_class' => 'w50 m12'
+                'tl_class' => 'clr'
             ],
 
             'exclude' => true,

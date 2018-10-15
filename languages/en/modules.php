@@ -1,6 +1,7 @@
 <?php
 
 $GLOBALS['TL_LANG']['MOD']['catalog-manager-extensions'] = 'Catalog Manager';
+$GLOBALS['TL_LANG']['MOD']['support'] = [ 'Support', 'Here you will find the support page.' ];
 $GLOBALS['TL_LANG']['MOD']['catalog-manager'] = [ 'Catalog Manager', 'Here you can manage your catalogs.' ];
 $GLOBALS['TL_LANG']['MOD']['filterform'] = [ 'Filter generator', 'Here you can manager your catalog filters' ];
 

@@ -1,5 +1,7 @@
 <?php
 
+define( "CATALOG_MANAGER_VERSION", " 2.26.0" );
+
 array_insert( $GLOBALS['BE_MOD'], 3, [
 
     'catalog-manager-extensions' => [
@@ -26,7 +28,14 @@ array_insert( $GLOBALS['BE_MOD'], 3, [
                 'tl_catalog_form',
                 'tl_catalog_form_fields'
             ]
-        ]
+        ],
+
+        'support' => [
+
+            'name' => 'support',
+            'callback'   => CatalogManager\SupportPage::class,
+            'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
+        ],
     ]
 ]);
 

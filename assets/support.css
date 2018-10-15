@@ -1,0 +1,97 @@
+.cm_support_page {
+
+    padding: 3em 1em;
+    max-width: 960px;
+    color: #313131;
+}
+
+.cm_support_page .cm_block {
+
+    padding-bottom: 1.25em;
+    margin-bottom: 1.25em;
+}
+
+.cm_support_page .cm_block:last-child {
+
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.cm_support_page * {
+
+    color: inherit;
+}
+
+.cm_support_page h1 {
+
+    font-size: 30px;
+    line-height: 1.4;
+}
+
+.cm_support_page h2 {
+
+    margin: 1em 0;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+.cm_support_page h3 {
+
+    margin: .5em 0;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+.cm_support_page li,
+.cm_support_page p {
+
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.cm_support_page p {
+
+    margin: 1em 0;
+}
+
+.cm_support_page ul {
+
+    margin: 1em 0;
+    padding-left: 2em;
+    list-style: initial;
+    list-style-type: circle;
+}
+
+.cm_support_page ul li {
+
+    list-style: initial;
+}
+
+.cm_support_page .info {
+
+    line-height: 1.6;
+    font-size: 14px;
+    color: #ccc;
+    margin: 0;
+}
+
+.cm_support_page a {
+
+    height: 42px;
+    padding: 0 1em;
+    font-size: 16px;
+    background: #fff;
+    line-height: 42px;
+    margin-right: .5em;
+    display: inline-block;
+    border: 1px solid #85d483;
+}
+
+.cm_support_page a:hover,
+.cm_support_page a:focus {
+
+    color: #fff;
+    background: #85d483;
+}

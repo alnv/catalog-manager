@@ -5,7 +5,7 @@ $GLOBALS['TL_DCA']['tl_settings']['config']['onload_callback'] = [
     [ 'CatalogManager\tl_settings', 'changeGlobals' ]
 ];
 
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogDisableSupportPage,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogGoogleMapsServerKey'] = [
 
@@ -15,6 +15,17 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogGoogleMapsServerKey'] = [
     'eval' => [
 
         'tl_class' => 'w50'
+    ]
+];
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['catalogDisableSupportPage'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_settings']['catalogDisableSupportPage'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
     ]
 ];
 
@@ -36,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogLicence'] = [
 
     'eval' => [
 
-        'tl_class' => 'w50 long'
+        'tl_class' => 'w50'
     ],
 
     'save_callback' => [ [ 'CatalogManager\tl_settings', 'verifyLicence' ] ]

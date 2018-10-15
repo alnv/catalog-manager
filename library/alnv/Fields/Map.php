@@ -103,7 +103,7 @@ class Map {
 
     public static function generateGoogleMapJSInitializer() {
 
-        $strScript = sprintf( "http%s://maps.google.com/maps/api/js?language=%s%s", ( \Environment::get('ssl') ? 's' : '' ), ( $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en' ), ( \Config::get('catalogGoogleMapsClientKey') ? '&key='. \Config::get('catalogGoogleMapsClientKey') .'' : '' ) );
+        $strScript = sprintf( "https://maps.google.com/maps/api/js?language=%s%s", ( $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en' ), ( \Config::get('catalogGoogleMapsClientKey') ? '&key='. \Config::get('catalogGoogleMapsClientKey') .'' : '' ) );
 
         return ''.
 

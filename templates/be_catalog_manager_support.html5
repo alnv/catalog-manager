@@ -1,0 +1,39 @@
+<div class="cm_support_page">
+    <header>
+        <h1>Catalog Manager</h1>
+        <p class="info">v<?= constant('CATALOG_MANAGER_VERSION') ?></p>
+        <p>Diese Support Seite können Sie, sofern ein gültiger Lizenzschlüssel vorhanden ist, unter <em>Einstellungen</em> > <em>Catalog Manager-Einstellungen</em> > <strong>Support Seite ausblenden</strong> deaktivieren.</p>
+    </header>
+    <div class="cm_block">
+        <h2>Lizenzinformationen</h2>
+        <p>Vielen Dank, dass Sie sich für Catalog Manager entschieden haben. Catalog Manager kann kostenfrei und uneingeschränkt getestet werden. Eine Lizenz muss erst beim Launch der Webseite erworben werden. Weitere Lizenzinformationen finden Sie auf der offiziellen Catalog Manager Seite.</p>
+        <a class="cm_btn" href="https://catalog-manager.alexandernaumov.de/lizenzbedingungen.html" target="_blank">Zur Lizenzvereinbarung</a>
+    </div>
+    <div class="cm_block">
+        <h2>Dokumentation</h2>
+        <p>Hier finden Sie die offizielle Dokumentation des Catalog Managers.</p>
+        <a class="cm_btn" href="https://catalog-manager.alexandernaumov.de/dokumentation.html" target="_blank">Zur Dokumentation</a>
+    </div>
+    <div class="cm_block">
+        <h2>Feedback</h2>
+        <p>Wir versuchen Catalog Manager stets weiterzuentwickeln, daher ist uns Ihre Meinung wichtig. Nutzen Sie eines der unten angezeigten Kanäle um uns Ihre Fragen, Verbesserungsvorschläge oder Bugs zu melden.</p>
+        <div>
+            <a class="cm_btn" href="https://catalog-manager.alexandernaumov.de/feedback.html" target="_blank">Feedback</a>
+            <a class="cm_btn" href="https://github.com/alnv/catalog-manager/issues" target="_blank">Github</a>
+        </div>
+    </div>
+    <div class="cm_block">
+        <h2>Support Ticket</h2>
+        <p>Mit dem Support Ticket erhalten Sie eine professionelle Unterstützung für Ihr Projekt. Wir unterstützen Sie gerne bei folgenden Punkten:</p>
+        <ul>
+            <li>Konfiguration des Catalog Managers</li>
+            <li>PHP Programmierung</li>
+            <li>Theme und Templating</li>
+            <li>Datenbank Struktur</li>
+            <li>Konfiguration und Installation von Contao</li>
+            <li>Technische Beratung</li>
+        </ul>
+        <p>Je nach Bedarf unterstützen wir Sie auch bei Drittanbieter Modulen, wenn diese zu Projektzwecken angepasst werden müssen.</p>
+        <a class="cm_btn" href="https://catalog-manager.alexandernaumov.de/support-ticket.html" target="_blank">Support Ticket erstellen</a>
+    </div>
+</div>

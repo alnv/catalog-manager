@@ -44,6 +44,7 @@ ClassLoader::addClasses([
     'CatalogManager\TemplateHelper' => 'system/modules/catalog-manager/library/alnv/TemplateHelper.php',
     'CatalogManager\RoutingBuilder' => 'system/modules/catalog-manager/library/alnv/RoutingBuilder.php',
     'CatalogManager\tl_catalog_fields' => 'system/modules/catalog-manager/classes/tl_catalog_fields.php',
+    'CatalogManager\SupportPage' => 'system/modules/catalog-manager/library/alnv/Backend/SupportPage.php',
     'CatalogManager\CatalogTaxonomy' => 'system/modules/catalog-manager/library/alnv/CatalogTaxonomy.php',
     'CatalogManager\SQLQueryBuilder' => 'system/modules/catalog-manager/library/alnv/SQLQueryBuilder.php',
     'CatalogManager\FrontendEditing' => 'system/modules/catalog-manager/library/alnv/FrontendEditing.php',
@@ -128,6 +129,7 @@ TemplateLoader::addFiles([
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
     'ce_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
+    'be_catalog_manager_support' => 'system/modules/catalog-manager/templates',
 
     'ctlg_social_button_mail' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_xing' => 'system/modules/catalog-manager/templates',

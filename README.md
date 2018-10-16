@@ -27,7 +27,7 @@ Je nach Bedarf unterstützen wir Sie auch bei Drittanbieter Modulen, wenn diese 
 
 Jetzt [Support Ticket][4] erstellen
 
-[1]: https://catalog-manager.alexandernaumov.de/lizenzbedingungen.html
-[2]: https://catalog-manager.alexandernaumov.de/feedback.html
+[1]: https://catalog-manager.org/lizenzbedingungen.html
+[2]: https://catalog-manager.org/feedback.html
 [3]: https://github.com/alnv/catalog-manager/issues
-[4]: https://catalog-manager.alexandernaumov.de/support-ticket.html
+[4]: https://catalog-manager.org/support-ticket.html

@@ -3,7 +3,7 @@
   "description": "Catalog Manager for Contao CMS",
   "keywords": [ "contao", "catalog", "filter", "taxonomy", "tags", "frontend", "editing" ],
   "type": "contao-module",
-  "homepage": "https://catalog-manager.alexandernaumov.de",
+  "homepage": "https://catalog-manager.org",
   "license": "proprietary",
   "authors": [
     {
@@ -15,7 +15,7 @@
   "support": {
     "email": "me@alexandernaumov.de",
     "issues": "https://github.com/alnv/catalog-manager/issues",
-    "wiki": "https://catalog-manager.alexandernaumov.de/dokumentation.html"
+    "wiki": "https://catalog-manager.org/dokumentation.html"
   },
   "require": {
     "php":">=5.6",

@@ -32,7 +32,7 @@ class CatalogManagerInitializer {
             $this->setBackendModules();
             $this->initializeDataContainerArrays();
 
-            if ( \Config::get( 'catalogDisableSupportPage' ) && \Config::get( 'catalogLicence' ) ) {
+            if ( \Config::get( 'catalogLicence' ) ) {
 
                 unset( $GLOBALS['BE_MOD']['catalog-manager-extensions']['support'] );
             }

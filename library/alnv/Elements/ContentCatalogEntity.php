@@ -36,7 +36,7 @@ class ContentCatalogEntity extends \ContentElement {
 
             $this->strTemplate = $this->catalogEntityTemplate;
         }
-        var_dump($this->strTemplate);
+        
         return parent::generate();
     }
 

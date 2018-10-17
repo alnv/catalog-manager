@@ -12,6 +12,7 @@ $GLOBALS['TL_LANG']['FMD']['catalogFilter'] = [ 'Catalog filter form', 'Here you
 $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog list view', 'Here you can create a list view for the catalog entities.' ];
 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = 'Catalog Manager';
+$GLOBALS['TL_LANG']['CTE']['catalogCatalogEntity'] = 'Catalog - Single element';
 $GLOBALS['TL_LANG']['CTE']['catalogFilterForm'] = ['Catalog filter form', 'Here you can include a catalog filter form.'];
 $GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'] = [ 'Social sharing buttons', 'Social sharing huttons as Content Type.' ];
 $GLOBALS['TL_LANG']['CTE']['catalogVisibilityPanelStop'] = [ 'Visibility wrapper end', 'Here you can control the visibility of the elements on the detail page.'];

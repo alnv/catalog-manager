@@ -2,6 +2,7 @@
 
 $GLOBALS['TL_LANG']['tl_content']['social_sharing_legend'] = 'Social-Sharing-Einstellungen';
 $GLOBALS['TL_LANG']['tl_content']['panel_settings'] = 'Sichtbarkeits-Einstellungen';
+$GLOBALS['TL_LANG']['tl_content']['entity_legend'] = 'Einzelelement-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_content']['catalogDisableSocialSharingCSS'] = [ 'Standard-Styles deaktivieren', 'Hier kannst du die Standard-Styles für die Social-Sharing-Buttons deaktivieren.' ];
 $GLOBALS['TL_LANG']['tl_content']['catalogSocialSharingTable'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle, aus der die Daten für die Social-Sharing Buttons geladen werden sollen.' ];
@@ -11,3 +12,7 @@ $GLOBALS['TL_LANG']['tl_content']['catalogSocialSharingTitle'] = [ 'Titel-Spalte
 $GLOBALS['TL_LANG']['tl_content']['catalogSocialSharingButtons'] = [ 'Netzwerke auswählen', 'Bitte wählen Sie ein oder mehrere Netzwerke aus.' ];
 $GLOBALS['TL_LANG']['tl_content']['catalogSocialSharingTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
 $GLOBALS['TL_LANG']['tl_content']['catalogForm'] = [ 'Formular', 'Bitte wählen Sie ein Formular.' ];
+
+$GLOBALS['TL_LANG']['tl_content']['catalogTablename'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle aus.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogEntityId'] = [ 'Datensatz', 'Bitte wählen Sie einen Datensatz aus.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogEntityTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];

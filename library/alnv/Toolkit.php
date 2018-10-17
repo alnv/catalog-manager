@@ -629,12 +629,11 @@ class Toolkit {
 
         if ( !empty( $arrData ) && is_array( $arrData ) ) {
 
-            foreach ( $arrData as $strFieldname => $varDBValue ) {
+            foreach ( $arrData as $strFieldname => $strOriginValue ) {
 
-                $varValue = null;
                 $strField = $strFieldname;
 
-                if ( Toolkit::isEmpty( $varDBValue ) ) continue;
+                if ( Toolkit::isEmpty( $strOriginValue ) ) continue;
 
                 if ( $strJoinedTable ) {
 
@@ -646,82 +645,90 @@ class Toolkit {
                 if ( is_null( $arrField ) ) continue;
                 if ( !$arrField['type'] ) continue;
 
-                switch ( $arrField['type'] ) {
-
-                    case 'upload':
-
-                        if ( TL_MODE == 'FE' ) {
-
-                            $varValue = Upload::parseValue( $varDBValue, $arrField, $arrData );
-
-                            if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
-
-                                if ( $varValue['preview'] ) $arrData[ $strFieldname . 'Preview' ] = $varValue['preview'];
-
-                                $varValue = $varValue['gallery'];
-                            }
-                        }
-
-                        else {
-
-                            $varValue = Upload::parseThumbnails( $varDBValue, $arrField, $arrData );
-                        }
-
-                        break;
-
-                    case 'select':
-
-                        $varValue = Select::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-
-                    case 'checkbox':
-
-                        $varValue = Checkbox::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-
-                    case 'radio':
-
-                        $varValue = Radio::parseValue( $varDBValue, $arrField, $arrData);
-
-                        break;
-
-                    case 'date':
-
-                        $varValue = DateInput::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-
-                    case 'number':
-
-                        $varValue = Number::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-
-                    case 'textarea':
-
-                        $varValue = Textarea::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-
-                    case 'dbColumn':
-
-                        $varValue = DbColumn::parseValue( $varDBValue, $arrField, $arrData );
-
-                        break;
-                }
+                $varValue = static::parseCatalogValue( $strOriginValue, $arrField, $arrData );
 
                 if ( $blnJustStrings && is_array( $varValue ) ) {
 
                     $varValue = implode( ', ', $varValue );
                 }
 
-                $arrData[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $varDBValue : $varValue;
+                $arrData[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $strOriginValue : $varValue;
             }
         }
 
         return $arrData;
+    }
+
+
+    public static function parseCatalogValue( $strValue, $arrField, $arrData = [] ) {
+
+        switch ( $arrField['type'] ) {
+
+            case 'upload':
+
+                if ( TL_MODE == 'FE' ) {
+
+                    $strValue = Upload::parseValue( $strValue, $arrField, $arrData );
+
+                    if ( is_array( $strValue ) && $arrField['fileType'] == 'gallery' ) {
+
+                        if ( $strValue['preview'] ) $arrData[ $strFieldname . 'Preview' ] = $strValue['preview'];
+
+                        $strValue = $strValue['gallery'];
+                    }
+                }
+
+                else {
+
+                    $strValue = Upload::parseThumbnails( $strValue, $arrField, $arrData );
+                }
+
+                break;
+
+            case 'select':
+
+                $strValue = Select::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+
+            case 'checkbox':
+
+                $strValue = Checkbox::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+
+            case 'radio':
+
+                $strValue = Radio::parseValue( $strValue, $arrField, $arrData);
+
+                break;
+
+            case 'date':
+
+                $strValue = DateInput::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+
+            case 'number':
+
+                $strValue = Number::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+
+            case 'textarea':
+
+                $strValue = Textarea::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+
+            case 'dbColumn':
+
+                $strValue = DbColumn::parseValue( $strValue, $arrField, $arrData );
+
+                break;
+        }
+
+        return $strValue;
     }
 
     

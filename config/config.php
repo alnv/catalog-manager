@@ -54,6 +54,7 @@ array_insert( $GLOBALS['TL_CTE'], 3, [
 
     'catalog-manager' => [
 
+        'catalogCatalogEntity' => 'CatalogManager\ContentCatalogEntity',
         'catalogFilterForm' => 'CatalogManager\ContentCatalogFilterForm',
         'catalogSocialSharingButtons' => 'CatalogManager\ContentSocialSharingButtons',
 
@@ -112,7 +113,6 @@ $GLOBALS['TL_WRAPPERS']['start'][] = 'catalogVisibilityPanelStart';
 
 $GLOBALS['TL_PERMISSIONS'][] = 'catalog';
 $GLOBALS['TL_PERMISSIONS'][] = 'catalogp';
-
 $GLOBALS['TL_PERMISSIONS'][] = 'filterform';
 $GLOBALS['TL_PERMISSIONS'][] = 'filterformp';
 

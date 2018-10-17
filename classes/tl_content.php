@@ -2,6 +2,7 @@
 
 namespace CatalogManager;
 
+
 class tl_content extends \Backend {
 
 
@@ -99,5 +100,129 @@ class tl_content extends \Backend {
     public function getFilterFormTemplates() {
 
         return $this->getTemplateGroup( 'ce_catalog_filterform' );
+    }
+
+
+    public function getTablenames() {
+
+        $arrReturn = [];
+        $objCatalogs = $this->Database->prepare('SELECT * FROM tl_catalog WHERE tstamp > 0')->execute();
+
+        if ( !$objCatalogs->numRows ) {
+
+            return $arrReturn;
+        }
+
+        while ( $objCatalogs->next() ) {
+
+            $arrReturn[ $objCatalogs->tablename ] = $objCatalogs->name;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getCatalogEntities( \DataContainer $dc ) {
+
+        $arrReturn = [];
+
+        if ( !$dc->activeRecord->catalogTablename ) {
+
+            return $arrReturn;
+        }
+
+        if ( !$this->Database->tableExists( $dc->activeRecord->catalogTablename ) ) {
+
+            return $arrReturn;
+        }
+
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $dc->activeRecord->catalogTablename );
+
+        $arrQuery = [
+
+            'table' => $dc->activeRecord->catalogTablename,
+            'where' => [],
+            'orderBy' => [
+
+                [
+                    'field' => 'tstamp',
+                    'order' => 'ASC'
+                ]
+            ],
+        ];
+
+        $arrCatalog = $objFieldBuilder->getCatalog();
+
+        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => 0
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
+
+        $this->import( 'SQLQueryBuilder' );
+
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        if ( !$objEntities->numRows ) {
+
+            return $arrReturn;
+        }
+
+        while ( $objEntities->next() ) {
+
+            $arrReturn[ $objEntities->id ] = $objEntities->title;
+        }
+
+        return $arrReturn;
+    }
+
+
+    public function getEntityTemplates() {
+
+        return $this->getTemplateGroup( 'ce_catalog_entity' );
     }
 }

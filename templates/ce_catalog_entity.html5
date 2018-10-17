@@ -1,0 +1,30 @@
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+
+<h2><?= $this->title ?></h2>
+
+<?php if ( is_array( $this->fields ) && !empty( $this->fields ) ): ?>
+<dl>
+    <?php foreach( $this->fields as $strFieldname => $strLabel ): ?>
+        <dt><?= $strLabel ?></dt>
+        <dd>
+            <?php if ( is_array( $this->{$strFieldname} ) ): ?>
+                 <?= implode( ', ', array_map( function( $varValue ) {
+
+                    if ( is_array( $varValue ) ) {
+
+                        return $varValue['title'];
+                    }
+
+                    return $varValue;
+
+                 }, $this->{$strFieldname} ) ) ?>
+            <?php else: ?>
+                <?= $this->{$strFieldname} ?>
+            <?php endif; ?>
+        </dd>
+    <?php endforeach; ?>
+</dl>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>

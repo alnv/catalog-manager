@@ -27,4 +27,10 @@
 </dl>
 <?php endif; ?>
 
+<?php if ( $this->masterUrl ): ?>
+    <p class="more">
+        <a href="<?= $this->masterUrl ?>" <?php if ( $this->masterUrlTitle ): ?>title="<?= $this->masterUrlTitle ?>"<?php endif; ?> <?php if ( $this->masterUrlTarget ): ?>target="_blank"<?php endif; ?>><?= $this->masterUrlText ?></a>
+    </p>
+<?php endif; ?>
+
 <?php $this->endblock(); ?>

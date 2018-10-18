@@ -194,6 +194,8 @@ class ContentCatalogEntity extends \ContentElement {
                     continue;
                 }
 
+                // @todo join children without tl_content
+
                 $this->Template->{$strFieldname} = Toolkit::parseCatalogValue( $strValue, $arrField, $arrEntity );
             }
         }
@@ -342,10 +344,11 @@ class ContentCatalogEntity extends \ContentElement {
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $arrField['dbTable'] );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
         while ( $objEntities->next() ) {
 
-            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $objFieldBuilder->getCatalogFields( true, null ) );
+            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $arrFields );
         }
 
         return $arrReturn;

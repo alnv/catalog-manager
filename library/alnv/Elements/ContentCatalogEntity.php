@@ -197,6 +197,77 @@ class ContentCatalogEntity extends \ContentElement {
                 $this->Template->{$strFieldname} = Toolkit::parseCatalogValue( $strValue, $arrField, $arrEntity );
             }
         }
+
+        $strMasterUrl = '';
+
+        if ( $this->catalogRedirectType ) {
+
+            switch ( $this->catalogRedirectType ) {
+
+                case 'internal':
+
+                    $objPage = $this->getPage();
+
+                    if ( $objPage !== null ) {
+
+                        $strMasterUrl = $this->generateFrontendUrl( $objPage->row() );
+                    }
+
+                    $this->catalogRedirectTarget = '';
+
+                    break;
+
+                case 'master':
+
+                    $objPage = $this->getPage();
+
+                    if ( $objPage !== null ) {
+
+                        $strMasterUrl = $this->generateFrontendUrl( $objPage->row(), ( $arrEntity['alias'] ? '/' . $arrEntity['alias'] : '' ) );
+                    }
+
+                    $this->catalogRedirectTarget = '';
+
+                    break;
+
+                case 'link':
+
+                    $strMasterUrl = \Controller::replaceInsertTags( $this->catalogRedirectUrl );
+
+                    break;
+            }
+        }
+
+        $this->Template->masterUrl = $strMasterUrl;
+        $this->Template->masterUrlText = $this->getLinkText();
+        $this->Template->masterUrlTarget = $this->catalogRedirectTarget;
+        $this->Template->masterUrlTitle = \Controller::replaceInsertTags( $this->catalogRedirectTitle );
+    }
+
+
+    protected function getPage() {
+
+        $objPage = null;
+
+        if ( !$this->catalogRedirectPage ) {
+
+            return null;
+        }
+
+        return \PageModel::findByPK( $this->catalogRedirectPage );
+    }
+
+
+    protected function getLinkText() {
+
+        $strText = \Controller::replaceInsertTags( $this->catalogRedirectText );
+
+        if ( $strText ) {
+
+            return $strText;
+        }
+
+        return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
     }
 
 

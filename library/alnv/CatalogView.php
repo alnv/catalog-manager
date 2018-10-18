@@ -362,11 +362,6 @@ class CatalogView extends CatalogController {
             $this->prepareJoinData( $arrQuery['joins'] );
         }
 
-        if ( !empty( $this->catalogJoinCTables ) || is_array( $this->catalogJoinCTables ) ) {
-
-            $this->prepareCTablesJoinData( $arrQuery['joins'] );
-        }
-
         if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
 
             $this->preparePTableJoinData( $arrQuery['joins'] );
@@ -584,6 +579,14 @@ class CatalogView extends CatalogController {
             }
 
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
+
+                if ( $arrCatalog['id'] && !empty( $this->catalogJoinCTables ) ) {
+
+                    foreach ( $this->catalogJoinCTables as $strTable ) {
+
+                        $arrCatalog[ $strTable ] = $this->getChildrenByIdAndTable( $arrCatalog['id'], $strTable );
+                    }
+                }
 
                 foreach ( $arrCatalog as $strFieldname => $varValue ) {
 
@@ -1280,6 +1283,106 @@ class CatalogView extends CatalogController {
     }
 
 
+    protected function getChildrenByIdAndTable( $strId, $strTable ) {
+
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTable );
+
+        $arrReturn = [];
+        $arrCatalog = $objFieldBuilder->getCatalog();
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+
+        $arrQuery = [
+
+            'table' => $strTable,
+            'where' => [
+                [
+                    'field' => 'pid',
+                    'value' => $strId,
+                    'operator' => 'equal'
+                ]
+            ]
+        ];
+
+        if ( in_array( 'invisible', $arrCatalog['operations'] ) ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => 0
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
+
+        if ( !empty( $arrCatalog['sortingFields'] ) ) {
+
+            $numFlag = (int) $arrCatalog['flag'] ?: 1;
+
+            foreach ( $arrCatalog['sortingFields'] as $strSortingField ) {
+
+                $arrQuery['orderBy'][] = [
+
+                    'field' => $strSortingField,
+                    'order' => ( $numFlag % 2 == 0 ) ? 'DESC' : 'ASC'
+                ];
+            }
+        }
+
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        if ( !$objEntities->numRows ) {
+
+            return $arrReturn;
+        }
+
+        while ( $objEntities->next() ) {
+
+            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $arrFields );
+        }
+
+        return $arrReturn;
+    }
+
+
     protected function generateUrl( $objPage, $strAlias ) {
 
         if ( $objPage == null ) return '';
@@ -1378,24 +1481,6 @@ class CatalogView extends CatalogController {
             'table' => $this->catalogTablename,
             'onTable' => $this->arrCatalog['pTable']
         ];
-    }
-
-
-    protected function prepareCTablesJoinData( &$arrReturn ) {
-
-        foreach ( $this->catalogJoinCTables as $strTable ) {
-
-            $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $strTable, $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
-
-            $arrReturn[] = [
-
-                'field' => 'id',
-                'onField' => 'pid',
-                'multiple' => false,
-                'onTable' => $strTable,
-                'table' => $this->catalogTablename
-            ];
-        }
     }
 
 

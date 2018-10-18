@@ -1,11 +1,17 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogCatalogEntity'] = '{type_legend},type,headline;{entity_legend},catalogTablename,catalogEntityId,catalogEntityTemplate;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['catalogCatalogEntity'] = '{type_legend},type,headline;{entity_legend},catalogTablename,catalogEntityId,catalogEntityTemplate,catalogRedirectType;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogFilterForm'] = '{type_legend},type,headline;{include_legend},catalogForm;{template_legend:hide},customCatalogElementTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogSocialSharingButtons'] = '{type_legend},type,headline;{social_sharing_legend},catalogSocialSharingButtons,catalogSocialSharingTable,catalogSocialSharingTitle,catalogSocialSharingDescription,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogVisibilityPanelStop'] = '{type_legend},type;{protected_legend:hide},protected;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogVisibilityPanelStart'] = '{type_legend},type;{panel_settings},catalogNegateVisibility;{protected_legend:hide},protected;{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'catalogRedirectType';
+
+$GLOBALS['TL_DCA']['tl_content']['subpalettes']['catalogRedirectType_master'] = 'catalogRedirectPage,catalogRedirectText,catalogRedirectTitle';
+$GLOBALS['TL_DCA']['tl_content']['subpalettes']['catalogRedirectType_internal'] = 'catalogRedirectPage,catalogRedirectText,catalogRedirectTitle';
+$GLOBALS['TL_DCA']['tl_content']['subpalettes']['catalogRedirectType_link'] = 'catalogRedirectUrl,catalogRedirectTarget,catalogRedirectText,catalogRedirectTitle';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['catalogNegateVisibility'] = [
 
@@ -211,6 +217,100 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogEntityId'] = [
     'options_callback' => [ 'CatalogManager\tl_content', 'getCatalogEntities'  ],
     'exclude'  => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectType'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectType'],
+    'inputType' => 'radio',
+
+    'eval' => [
+
+        'includeBlankOption' => true,
+        'submitOnChange' => true,
+        'tl_class' => 'clr'
+    ],
+
+    'options' => [ 'master', 'internal', 'link' ],
+    'reference' => $GLOBALS['TL_LANG']['tl_content']['catalogRedirectType']['options'],
+    'exclude'  => true,
+    'sql' => "varchar(10) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectPage'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectPage'],
+    'inputType' => 'pageTree',
+
+    'eval' => [
+
+        'mandatory' => true,
+        'fieldType' => 'radio'
+    ],
+    'foreignKey' => 'tl_page.title',
+    'relation' => [ 'type'=>'belongsTo', 'load'=>'lazy' ],
+    'exclude'  => true,
+    'sql' => "int(10) unsigned NOT NULL default '0'"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectUrl'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectUrl'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'rgxp' => 'url',
+        'tl_class' => 'w50',
+        'maxlength' => 255,
+        'mandatory' => true,
+        'dcaPicker' => true,
+        'decodeEntities' => true,
+        'addWizardClass' => false
+    ],
+    'exclude'  => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectTarget'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectTarget'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'w50 m12'
+    ],
+    'exclude'  => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectTitle'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectTitle'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude'  => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectText'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectText'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'w50'
+    ],
+
+    'exclude'  => true,
+    'sql' => "varchar(255) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['catalogEntityTemplate'] = [

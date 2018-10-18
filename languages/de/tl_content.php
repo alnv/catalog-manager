@@ -16,3 +16,17 @@ $GLOBALS['TL_LANG']['tl_content']['catalogForm'] = [ 'Formular', 'Bitte wählen 
 $GLOBALS['TL_LANG']['tl_content']['catalogTablename'] = [ 'Tabelle', 'Bitte wählen Sie eine Tabelle aus.' ];
 $GLOBALS['TL_LANG']['tl_content']['catalogEntityId'] = [ 'Datensatz', 'Bitte wählen Sie einen Datensatz aus.' ];
 $GLOBALS['TL_LANG']['tl_content']['catalogEntityTemplate'] = [ 'Template', 'Bitte wählen Sie ein Template aus.' ];
+
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectTarget'] = [ 'In neuem Fenster öffnen', 'Hier können Sie die Seite im neuem Fenster öffnen.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectType'] = [ 'Weiterleitungstyp', 'Hier können Sie eine Weiterleitung definieren.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectTitle'] = [ 'Link Titel', 'Bitte geben Sie einen Link Titel ein.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectText'] = [ 'Linktext', 'Bitte geben Sie einen Linktext ein.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectPage'] = [ 'Seite', 'Bitte wählen Sie eine Seite aus.' ];
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectUrl'] = [ 'URL', 'Bitte geben Sie eine URL ein.' ];
+
+$GLOBALS['TL_LANG']['tl_content']['catalogRedirectType']['options'] = [
+
+    'link' => 'Link',
+    'master' => 'Detailseite',
+    'internal' => 'Interne Weiterleitung'
+];

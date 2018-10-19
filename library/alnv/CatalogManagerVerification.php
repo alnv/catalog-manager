@@ -16,7 +16,7 @@ class CatalogManagerVerification extends CatalogController {
             'domain' => \Environment::get('base'),
             'title' => \Config::get('websiteTitle'),
             'licence' => \Config::get('catalogLicence'),
-            'lastUpdate' => date( 'd.m.Y H:i',\Date::floorToMinute() ),
+            'lastUpdate' => date( 'Y.m.d H:i',\Date::floorToMinute() ),
             'catalog_manager_version' => constant('CATALOG_MANAGER_VERSION')
         ];
     }

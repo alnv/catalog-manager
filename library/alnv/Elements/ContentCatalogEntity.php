@@ -7,6 +7,7 @@ class ContentCatalogEntity extends \ContentElement {
 
 
     protected $arrFields = [];
+    protected $arrCatalog = [];
     protected $strTemplate = 'ce_catalog_entity';
 
 
@@ -46,7 +47,7 @@ class ContentCatalogEntity extends \ContentElement {
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $this->catalogTablename );
 
-        $arrCatalog = $objFieldBuilder->getCatalog();
+        $this->arrCatalog = $objFieldBuilder->getCatalog();
         $arrFields = $objFieldBuilder->getCatalogFields();
 
         foreach ( $arrFields as $strFieldname => $strValue ) {
@@ -75,7 +76,7 @@ class ContentCatalogEntity extends \ContentElement {
             ]
         ];
 
-        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -151,7 +152,7 @@ class ContentCatalogEntity extends \ContentElement {
             }
         }
 
-        if ( $arrCatalog['pTable'] ) {
+        if ( $this->arrCatalog['pTable'] ) {
 
             $arrQuery['joins'][] = [
 
@@ -159,13 +160,13 @@ class ContentCatalogEntity extends \ContentElement {
                 'onField' => 'id',
                 'multiple' => false,
                 'table' => $this->catalogTablename,
-                'onTable' => $arrCatalog['pTable']
+                'onTable' => $this->arrCatalog['pTable']
             ];
 
             $objParentFieldBuilder = new CatalogFieldBuilder();
-            $objParentFieldBuilder->initialize( $arrCatalog['pTable'] );
+            $objParentFieldBuilder->initialize( $this->arrCatalog['pTable'] );
 
-            $this->mergeFields( $objFieldBuilder->getCatalogFields( true, null ), $arrCatalog['pTable'] );
+            $this->mergeFields( $objFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable'] );
         }
 
         $this->import( 'SQLQueryBuilder' );
@@ -178,7 +179,6 @@ class ContentCatalogEntity extends \ContentElement {
         }
 
         $arrEntity = $objEntity->row();
-
         $this->Template->fields = $this->getTemplateFields();
 
         foreach ( $arrEntity as $strFieldname => $strValue ) {
@@ -194,9 +194,15 @@ class ContentCatalogEntity extends \ContentElement {
                     continue;
                 }
 
-                // @todo join children without tl_content
-
                 $this->Template->{$strFieldname} = Toolkit::parseCatalogValue( $strValue, $arrField, $arrEntity );
+            }
+        }
+
+        if ( is_array( $this->arrCatalog['cTables'] ) && !empty( $this->arrCatalog['cTables'] ) ) {
+
+            foreach ( $this->arrCatalog['cTables'] as $strChildTable ) {
+
+                $this->Template->{$strChildTable} = $this->getChildrenEntities( $arrEntity['id'], $strChildTable );
             }
         }
 
@@ -303,6 +309,17 @@ class ContentCatalogEntity extends \ContentElement {
             $arrReturn[ $strFieldname ] = $strLabel;
         }
 
+        if ( is_array( $this->arrCatalog['cTables'] ) && !empty( $this->arrCatalog['cTables'] ) ) {
+
+            foreach ( $this->arrCatalog['cTables'] as $strTable ) {
+
+                $objFieldBuilder = new CatalogFieldBuilder();
+                $objFieldBuilder->initialize( $strTable );
+                $arrCatalog = $objFieldBuilder->getCatalog();
+                $arrReturn[ $strTable ] = $arrCatalog['name'];
+            }
+        }
+
         return $arrReturn;
     }
 
@@ -345,6 +362,55 @@ class ContentCatalogEntity extends \ContentElement {
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $arrField['dbTable'] );
         $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+
+        while ( $objEntities->next() ) {
+
+            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $arrFields );
+        }
+
+        return $arrReturn;
+    }
+
+
+    protected function getChildrenEntities( $strValue, $strTable ) {
+
+        $arrReturn = [];
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $strTable );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+        $arrCatalog = $objFieldBuilder->getCatalog();
+
+        $arrQuery = [
+
+            'table' => $strTable,
+            'where' => [
+
+                [
+                    'field' => 'pid',
+                    'operator' => 'equal',
+                    'value' => $strValue
+                ]
+            ],
+            'orderBy' => []
+        ];
+
+        if ( !empty( $arrCatalog['sortingFields'] ) ) {
+
+            $numFlag = (int) $arrCatalog['flag'] ?: 1;
+
+            foreach ( $arrCatalog['sortingFields'] as $strSortingField ) {
+
+                $arrQuery['orderBy'][] = [
+
+                    'field' => $strSortingField,
+                    'order' => ( $numFlag % 2 == 0 ) ? 'DESC' : 'ASC'
+                ];
+            }
+        }
+
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        if ( !$objEntities->numRows ) return $arrReturn;
 
         while ( $objEntities->next() ) {
 

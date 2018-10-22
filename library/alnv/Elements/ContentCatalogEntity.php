@@ -327,7 +327,11 @@ class ContentCatalogEntity extends \ContentElement {
     protected function getJoinedEntities( $strValue, $arrField ) {
 
         $arrReturn = [];
-        $arrOrderBy= Toolkit::parseStringToArray( $arrField['dbOrderBy'] );
+        $objFieldBuilder = new CatalogFieldBuilder();
+        $objFieldBuilder->initialize( $arrField['dbTable'] );
+        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+        $arrOrderBy = Toolkit::parseStringToArray( $arrField['dbOrderBy'] );
+        $arrCatalog = $objFieldBuilder->getCatalog();
 
         $arrQuery = [
 
@@ -342,6 +346,55 @@ class ContentCatalogEntity extends \ContentElement {
             ],
             'orderBy' => []
         ];
+
+        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => 0
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
 
         if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
 
@@ -358,10 +411,6 @@ class ContentCatalogEntity extends \ContentElement {
         $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 
         if ( !$objEntities->numRows ) return $arrReturn;
-
-        $objFieldBuilder = new CatalogFieldBuilder();
-        $objFieldBuilder->initialize( $arrField['dbTable'] );
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
 
         while ( $objEntities->next() ) {
 
@@ -393,6 +442,55 @@ class ContentCatalogEntity extends \ContentElement {
             ],
             'orderBy' => []
         ];
+
+        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+
+            $dteTime = \Date::floorToMinute();
+
+            $arrQuery['where'][] = [
+
+                'field' => 'tstamp',
+                'operator' => 'gt',
+                'value' => 0
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'start',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'start',
+                    'operator' => 'lte',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                [
+                    'value' => '',
+                    'field' => 'stop',
+                    'operator' => 'equal'
+                ],
+
+                [
+                    'field' => 'stop',
+                    'operator' => 'gt',
+                    'value' => $dteTime
+                ]
+            ];
+
+            $arrQuery['where'][] = [
+
+                'field' => 'invisible',
+                'operator' => 'not',
+                'value' => '1'
+            ];
+        }
 
         if ( !empty( $arrCatalog['sortingFields'] ) ) {
 

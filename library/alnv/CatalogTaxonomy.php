@@ -245,7 +245,7 @@ class CatalogTaxonomy extends CatalogController {
 
                 if ( !$objEntities->numRows ) continue;
 
-                if ( !isset( $this->{$strParameter} ) ) $this->{$strParameter} = [];
+                if ( !isset( $this->{$strParameter} ) || !is_array( $this->{$strParameter} ) ) $this->{$strParameter} = [];
 
                 $strTaxonomyUrl .= $strTaxonomyUrl ? '/' . \Input::get( $strTempParameter ) : '/' . \Input::get( $strTempParameter );
 

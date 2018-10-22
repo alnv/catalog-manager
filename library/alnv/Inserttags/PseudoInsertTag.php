@@ -11,7 +11,7 @@ class PseudoInsertTag extends \Frontend {
 
         if ( empty( $arrTags ) || !is_array( $arrTags ) ) return false;
 
-        if ( isset( $arrTags[0] ) && !isset( $arrTags[1] ) ) {
+        if ( isset( $arrTags[0] ) ) {
 
             $objCatalogField = $this->Database->prepare( 'SELECT fieldname FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit( 1 )->execute( $arrTags[0] );
 

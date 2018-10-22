@@ -365,20 +365,44 @@ class OptionsGetter extends CatalogController {
 
             $strActiveValue = '';
             $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
-            $strTag = implode( '', $arrTags );
 
-            if ( $strTag ) {
+            $strInsertTag = implode( '', $arrTags );
+            $strParameter = explode( '::', $strInsertTag );
+            $strFieldname = $strParameter[0];
 
-                $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
+            if ( $strFieldname !== '' && $strFieldname !== null ) {
+
+                $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
 
                 if ( TL_MODE == 'FE' ) {
 
-                    $strActiveValue = $this->CatalogInput->getActiveValue( $strTag );
+                    $strActiveValue = $this->CatalogInput->getActiveValue( $strFieldname );
                 }
 
                 if ( TL_MODE == 'FE' && ( Toolkit::isEmpty( \Input::post( 'FORM_SUBMIT' ) ) && \Input::get( 'act' . $this->strModuleID ) ) ) {
 
-                    $strActiveValue = $this->arrActiveEntity[ $strTag ] ?: '';
+                    $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
+                }
+
+                if ( isset( $strParameter[1] ) && $strParameter[1] == 'tree' ) {
+
+                    $objDatabase = \Database::getInstance();
+                    $objField = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit(1)->execute( $strFieldname );
+
+                    if ( $objField->numRows ) {
+
+                        if ( $objField->optionsType ) {
+
+                            $objEntity = $objDatabase->prepare( 'SELECT * FROM ' . $objField->dbTable . ' WHERE `'. $objField->dbTableKey .'` = ?' )
+                                ->limit(1)
+                                ->execute( $strActiveValue );
+
+                            if ( $objEntity->numRows ) {
+
+                                $strActiveValue = $objEntity->id ?: $strActiveValue;
+                            }
+                        }
+                    }
                 }
             }
 

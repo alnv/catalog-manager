@@ -1,6 +1,6 @@
 <?php
 
-define( "CATALOG_MANAGER_VERSION", " 2.26.0" );
+define( "CATALOG_MANAGER_VERSION", " 2.27.beta" );
 
 array_insert( $GLOBALS['BE_MOD'], 3, [
 

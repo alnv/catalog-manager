@@ -347,6 +347,7 @@ class CatalogView extends CatalogController {
 
         $this->catalogOffset = (int) $this->catalogOffset;
 
+        $blnActive = true;
         $intOffset = $this->catalogOffset;
         $strPageID = 'page_e' . $this->id;
         $intPerPage = intval( $this->catalogPerPage );
@@ -517,6 +518,36 @@ class CatalogView extends CatalogController {
                     $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrQuery, $this );
                 }
             }
+        }
+
+        if ( $this->catalogActiveParameters ) {
+
+            $arrActiveParameterFields = explode( ',', $this->catalogActiveParameters );
+
+            foreach ( $arrActiveParameterFields as $strFieldname ) {
+
+                if ( \Input::get( $strFieldname ) === '' || \Input::get( $strFieldname ) === null ) {
+
+                    $blnActive = false;
+
+                    break;
+                }
+            }
+        }
+
+        if ( !$blnActive ) {
+
+            if ( $this->blnGoogleMapScript ) {
+
+                $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
+            }
+
+            if ( $this->catalogUseArray || $this->blnShowAsGroup ) {
+
+                return [];
+            }
+
+            return '';
         }
 
         $intTotal = $this->SQLQueryBuilder->execute( $arrQuery )->count();

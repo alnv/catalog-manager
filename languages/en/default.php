@@ -13,6 +13,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['create'] = 'Create';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['asc'] = 'Ascending';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['desc'] = 'Descending';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] = 'Operator';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['_distance'] = 'Distance';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogField'] = 'Field';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['selectAll'] = 'Select all';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'] = 'Captcha';

@@ -15,6 +15,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'] = 'Speichern';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permission'] = 'Rechte';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operator'] = 'Operator';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogField'] = 'Feld';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['_distance'] = 'Distanz';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogPalette'] = 'Palette';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogFieldset'] = 'Fieldset';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['selectAll'] = 'Alle auswählen';

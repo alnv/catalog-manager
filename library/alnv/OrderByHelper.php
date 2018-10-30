@@ -49,6 +49,16 @@ class OrderByHelper extends CatalogController {
             $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }
 
+        if ( $objWidget->strTable == 'tl_module' ) {
+
+            $objModule = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $objWidget->strTable ) )->limit(1)->execute( $objWidget->currentRecord );
+
+            if ( $objModule->catalogUseRadiusSearch ) {
+
+                $arrReturn['_distance'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['_distance'];
+            }
+        }
+
         return $arrReturn;
     }
 

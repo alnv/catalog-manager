@@ -54,6 +54,7 @@ ClassLoader::addClasses([
     'CatalogManager\DownloadsCreator' => 'system/modules/catalog-manager/library/alnv/DownloadsCreator.php',
     'CatalogManager\CatalogController' => 'system/modules/catalog-manager/library/alnv/CatalogController.php',
     'CatalogManager\CatalogBreadcrumb' => 'system/modules/catalog-manager/library/alnv/CatalogBreadcrumb.php',
+    'CatalogManager\CatalogFormFilter' => 'system/modules/catalog-manager/library/alnv/CatalogFormFilter.php',
     'CatalogManager\SearchIndexBuilder' => 'system/modules/catalog-manager/library/alnv/SearchIndexBuilder.php',
     'CatalogManager\CatalogDcExtractor' => 'system/modules/catalog-manager/library/alnv/CatalogDcExtractor.php',
     'CatalogManager\SQLCompileCommands' => 'system/modules/catalog-manager/library/alnv/SQLCompileCommands.php',

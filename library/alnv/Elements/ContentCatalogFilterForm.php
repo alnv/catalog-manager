@@ -46,6 +46,7 @@ class ContentCatalogFilterForm extends \ContentElement {
         return parent::generate();
     }
 
+
     protected function compile() {
 
         $this->objForm->render( $this->Template );

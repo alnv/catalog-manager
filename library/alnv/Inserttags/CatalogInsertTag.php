@@ -232,6 +232,30 @@ class CatalogInsertTag extends \Frontend {
             return implode( $strDelimiter, $arrReturn );
         }
 
+        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_FORM' ) {
+
+            $strFormId = $arrTags[1];
+
+            if ( !$strFormId ) {
+
+                return '';
+            }
+
+            $objForm = new CatalogFormFilter( $strFormId );
+
+            if ( !$objForm->getState() ) {
+
+                return '';
+            }
+
+            if ( $objForm->disableAutoItem() ) {
+
+                return '';
+            }
+
+            return $objForm->render();
+        }
+
         return false;
     }
 }

@@ -33,18 +33,16 @@ class CatalogFormFilter extends CatalogController {
     }
 
 
-    public function render( $objFormTemplate = null ) {
+    public function render( $objFormTemplate = null, $strCustomTemplate = 'ctlg_inserttag_filterform' ) {
 
         if ( !$this->blnReady ) {
 
             return '';
         }
 
-        if ( TL_MODE == 'FE' && !Toolkit::isEmpty( $this->arrForm['template'] ) ) $this->strTemplate = $this->arrForm['template'];
-
         if ( !$objFormTemplate ) {
 
-            $objFormTemplate = new \FrontendTemplate( $this->strTemplate );
+            $objFormTemplate = new \FrontendTemplate( $strCustomTemplate );
         }
 
         $arrFields = [];

@@ -131,6 +131,7 @@ TemplateLoader::addFiles([
     'ctlg_form_fine_uploader' => 'system/modules/catalog-manager/templates',
     'mod_catalog_map_default' => 'system/modules/catalog-manager/templates',
     'ctlg_form_field_checkbox' => 'system/modules/catalog-manager/templates',
+    'ctlg_inserttag_filterform' => 'system/modules/catalog-manager/templates',
     'ce_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
     'be_catalog_manager_support' => 'system/modules/catalog-manager/templates',
 

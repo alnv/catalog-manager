@@ -526,7 +526,7 @@ class CatalogView extends CatalogController {
 
             foreach ( $arrActiveParameterFields as $strFieldname ) {
 
-                if ( \Input::get( $strFieldname ) === '' || \Input::get( $strFieldname ) === null ) {
+                if ( $this->CatalogInput->getActiveValue( $strFieldname ) === '' || $this->CatalogInput->getActiveValue( $strFieldname ) === null ) {
 
                     $blnActive = false;
 

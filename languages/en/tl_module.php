@@ -130,7 +130,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Exclude opti
 $GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Use content elements', 'Here you can use content elements for your list view.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreVisibility'] = [ 'Ignore visibility', 'Invisible elements are also displayed.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogJoinAsArray'] = [ 'Output multiple links as an array', 'Here you can swap multiple links into an array.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Active parameters', 'Here you can enter your parameters. The list only returns results when all parameters are set.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Display with active parameters', 'Here you can enter your parameters. The list only returns results when all parameters are set.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

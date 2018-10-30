@@ -132,7 +132,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalogExcludeArrayOptions'] = [ 'Optionen aus
 $GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Inhaltselemente verwenden', 'Hier können Sie die Inhaltselemente zu der Listenansicht hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreVisibility'] = [ 'Sichtbarkeit ignorieren', 'Es werden auch unsichtbare Elemente angezeigt.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogJoinAsArray'] = [ 'Mehrfache Verknüpfungen als Array ausgeben', 'Hier können Sie mehrfache Verknüpfungen in ein Array auslagern.' ];
-$GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Aktive Parameter', 'Hier können Sie Ihre Parameter eintragen. Die Liste liefert erst Ergebnisse, wenn alle Parameter gesetzt sind. Mehrere Parameter können Sie komma getrennt eintragen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Anzeigen bei aktiven Parameter', 'Hier können Sie Ihre Parameter eintragen. Die Liste liefert erst Ergebnisse, wenn alle Parameter gesetzt sind. Mehrere Parameter können Sie komma getrennt eintragen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

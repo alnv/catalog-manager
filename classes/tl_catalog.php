@@ -158,7 +158,7 @@ class tl_catalog extends \Backend {
     public function checkTablename( $varValue, \DataContainer $dc ) {
 
         $strTablename = Toolkit::parseConformSQLValue( $varValue );
-        $strValidname = \StringUtil::generateAlias( $strTablename );
+        $strValidname = Toolkit::slug( $strTablename );
 
         if ( $strValidname != $strTablename && Toolkit::strictMode() ) {
 
@@ -188,7 +188,7 @@ class tl_catalog extends \Backend {
 
         if ( Toolkit::isEmpty( $varValue ) && $dc->activeRecord->isBackendModule ) {
 
-            $varValue = \StringUtil::generateAlias( $dc->activeRecord->name );
+            $varValue = Toolkit::slug( $dc->activeRecord->name );
         }
 
         return $varValue;

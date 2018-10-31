@@ -47,7 +47,7 @@ class tl_catalog_fields extends \Backend {
 
         if ( Toolkit::isEmpty( $varValue ) && !Toolkit::isEmpty( $dc->activeRecord->title ) ) {
 
-            $varValue = \StringUtil::generateAlias( $dc->activeRecord->title );
+            $varValue = Toolkit::slug( $dc->activeRecord->title );
             $objField = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE fieldname = ? AND id != ?' )->limit(1)->execute( $varValue, $dc->activeRecord->id );
 
             if ( $objField->numRows ) $varValue .= '_' . $objField->id;
@@ -248,7 +248,7 @@ class tl_catalog_fields extends \Backend {
     public function checkFieldname( $varValue ) {
 
         $varValue = Toolkit::parseConformSQLValue( $varValue );
-        $strValidname = \StringUtil::generateAlias( $varValue );
+        $strValidname = Toolkit::slug( $varValue );
         if ( $strValidname != $varValue && Toolkit::strictMode() ) throw new \Exception( sprintf( 'invalid fieldname. Please try with "%s"', $strValidname ) );
 
         return $varValue;
@@ -457,7 +457,7 @@ class tl_catalog_fields extends \Backend {
 
         if ( !Toolkit::isEmpty( $varValue ) && in_array( $dc->activeRecord->type, [ 'fieldsetStart', 'fieldsetStop' ] ) ) {
 
-            $varValue = \StringUtil::generateAlias( $varValue );
+            $varValue = Toolkit::slug( $varValue );
         }
 
         return $varValue;

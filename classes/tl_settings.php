@@ -42,7 +42,7 @@ class tl_settings extends \Backend {
 
                 $arrReturn[] = [
 
-                    'key' => \StringUtil::generateAlias( $arrValue['key'] ),
+                    'key' => Toolkit::slug( $arrValue['key'] ),
                     'value' => $arrValue['value']
                 ];
             }

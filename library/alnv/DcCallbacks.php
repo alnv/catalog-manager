@@ -216,7 +216,7 @@ class DcCallbacks extends \Backend {
 
             $blnAutoAlias = true;
             $varValue = str_replace(',', '-', $dc->activeRecord->{$strField} );
-            $varValue = \StringUtil::generateAlias( $varValue );
+            $varValue = Toolkit::slug( $varValue );
         }
 
         $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTable ) )->execute( $varValue );
@@ -240,7 +240,7 @@ class DcCallbacks extends \Backend {
         if ( !$varValue && $strTitle ) {
 
             $strTitle = str_replace(',', '-', $strTitle );
-            $varValue = \StringUtil::generateAlias( $strTitle );
+            $varValue = Toolkit::slug( $strTitle );
         }
 
         $arrValues = [ $varValue ];

@@ -334,12 +334,46 @@ if ( !isset( $GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'] ) ) $G
 
 $GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'][] = [ 'CatalogManager\DcCallbacks', 'removeDcFormOperations' ];
 
-if ( \Input::get('do') && \Input::get('ctlg_table') ) {
-    
-    $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ \Input::get('ctlg_table') ];
+if ( \Input::get('do') && is_array( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] ) ) {
 
-    if ( is_array( $arrCatalog ) && !empty( $arrCatalog ) ) {
+    $arrTablesWithContent = [];
 
-        if ( $arrCatalog['addContentElements'] ) $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrCatalog['tablename'];
+    foreach ( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] as $arrExtension ) {
+
+        if ( $arrExtension['modulename'] == \Input::get('do') ) {
+
+            if ( $arrExtension['addContentElements'] ) {
+
+                $arrTablesWithContent[] = $arrExtension['tablename'];
+            }
+
+            if ( !empty( $arrExtension['cTables'] ) ) {
+
+                foreach ( $arrExtension['cTables'] as $strTable ) {
+
+                    if ( isset( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) && $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['addContentElements'] ) {
+
+                        $arrTablesWithContent[] = $strTable;
+                    }
+                }
+            }
+
+            break;
+        }
+    }
+
+    if ( count( $arrTablesWithContent ) == 1 ) {
+
+        $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrTablesWithContent[0];
+    }
+
+    if ( count( $arrTablesWithContent ) > 1 ) {
+
+        $intIndex = array_search( \Input::get( 'ctlg_table' ), $arrTablesWithContent );
+
+        if ( $intIndex !== false ) {
+
+            $GLOBALS['TL_DCA']['tl_content']['config']['ptable'] = $arrTablesWithContent[ $intIndex ];
+        }
     }
 }

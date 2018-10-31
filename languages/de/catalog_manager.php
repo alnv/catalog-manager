@@ -7,6 +7,8 @@ $GLOBALS['TL_LANG']['catalog_manager']['new'] = [ 'Datensatz anlegen', 'Hier kö
 $GLOBALS['TL_LANG']['catalog_manager']['legends']['invisible_legend'] = 'Datensatz verstecken';
 $GLOBALS['TL_LANG']['catalog_manager']['legends']['general_legend'] = 'Allgemeine Einstellungen';
 
+$GLOBALS['TL_LANG']['catalog_manager']['tl_content'] = [ 'Inhaltselemente', 'Hier können Sie Ihre Inhaltselemente eintragen.' ];
+
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'] = [ 'Datensatz löschen', 'Datensatz mit der ID %s löschen.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'] = [ 'Datensatz verschieben', 'Datensatz mit der ID %s verschieben.' ];
 $GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'] = [ 'Datensatz duplizieren', 'Datensatz mit der ID %s duplizieren.' ];

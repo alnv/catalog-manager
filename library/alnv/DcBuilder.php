@@ -313,14 +313,14 @@ class DcBuilder extends CatalogController {
             'copy' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
-                'href' => 'act=copy',
+                'href' => sprintf( 'act=copy&ctlg_table=%s', $this->strTable ),
                 'icon' => 'copy.gif'
             ],
 
             'cut' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
-                'href' => 'act=paste&amp;mode=cut',
+                'href' => sprintf( 'act=paste&amp;mode=cut&ctlg_table=%s', $this->strTable ),
                 'icon' => 'cut.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
             ],
@@ -328,7 +328,7 @@ class DcBuilder extends CatalogController {
             'delete' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
-                'href' => 'act=delete',
+                'href' => sprintf( 'act=delete&ctlg_table=%s', $this->strTable ),
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $this->I18nCatalogTranslator->getDeleteConfirmLabel() . '\'))return false;Backend.getScrollOffset()"'
             ],
@@ -352,7 +352,7 @@ class DcBuilder extends CatalogController {
 
         if ( in_array( $this->arrCatalog['mode'], [ '4', '5', '6' ] ) ) {
 
-            $arrReturn['copy']['href'] = 'act=paste&amp;mode=copy';
+            $arrReturn['copy']['href'] = sprintf( 'act=paste&amp;mode=copy&ctlg_table=%s', $this->strTable );
         }
 
         else {
@@ -388,6 +388,12 @@ class DcBuilder extends CatalogController {
 
                 $strTitle = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['name'] ?: $strTable;
                 $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['description'] ?: sprintf( $GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTitle );
+            }
+
+            if ( $strTable == 'tl_content' ) {
+
+                $strTitle = $GLOBALS['TL_LANG']['catalog_manager']['tl_content'][0];
+                $strDescription = $GLOBALS['TL_LANG']['catalog_manager']['tl_content'][1];
             }
 
             $arrOperator[ $strOperationName ] = [

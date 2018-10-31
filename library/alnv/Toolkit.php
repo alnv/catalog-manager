@@ -784,6 +784,14 @@ class Toolkit {
     }
 
 
+    public static function ignoreRomanization() {
+
+        if ( !isset( $GLOBALS['TL_CONFIG']['ctlg_ignore_romanization'] ) || !is_bool( $GLOBALS['TL_CONFIG']['ctlg_ignore_romanization'] )  ) return false;
+
+        return $GLOBALS['TL_CONFIG']['ctlg_ignore_romanization'] ? true : false;
+    }
+
+
     public static function dump( $varDump ) {
 
         echo '<pre>' . var_export( $varDump, true ) . '</pre>';
@@ -871,13 +879,20 @@ class Toolkit {
     }
 
 
-    public static function slug( $strValue ) {
+    public static function slug( $strValue, $arrOptions = [] ) {
 
         $strValue = \StringUtil::generateAlias( $strValue );
 
-        if ( version_compare( VERSION, '4.0', '>' ) ) {
+        if ( version_compare( VERSION, '4.0', '>' ) && !Toolkit::ignoreRomanization() ) {
 
-            $arrSlugOptions = [ 'locale' => 'de' ];
+            $strDelimiter = '-';
+
+            if ( isset( $arrOptions['delimiter'] ) && $arrOptions['delimiter'] ) {
+
+                $strDelimiter = $arrOptions['delimiter'];
+            }
+
+            $arrSlugOptions = [ 'locale' => 'de', 'delimiter' => $strDelimiter ];
             $strValue = \System::getContainer()->get( 'contao.slug.generator' )->generate( $strValue, $arrSlugOptions );
         }
 

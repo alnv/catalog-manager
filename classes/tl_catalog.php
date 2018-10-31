@@ -158,7 +158,7 @@ class tl_catalog extends \Backend {
     public function checkTablename( $varValue, \DataContainer $dc ) {
 
         $strTablename = Toolkit::parseConformSQLValue( $varValue );
-        $strValidname = Toolkit::slug( $strTablename );
+        $strValidname = Toolkit::slug( $strTablename, [ 'delimiter' => '_' ] );
 
         if ( $strValidname != $strTablename && Toolkit::strictMode() ) {
 
@@ -188,10 +188,15 @@ class tl_catalog extends \Backend {
 
         if ( Toolkit::isEmpty( $varValue ) && $dc->activeRecord->isBackendModule ) {
 
-            $varValue = Toolkit::slug( $dc->activeRecord->name );
+            $varValue = $dc->activeRecord->name;
         }
 
-        return $varValue;
+        if ( Toolkit::isEmpty( $varValue ) ) {
+
+            return '';
+        }
+
+        return Toolkit::slug( $varValue, [ 'delimiter' => '_' ] );
     }
 
 

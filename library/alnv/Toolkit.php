@@ -869,4 +869,18 @@ class Toolkit {
 
         return $GLOBALS['CM_ICON_SET'][ $strType ];
     }
+
+
+    public static function slug( $strValue ) {
+
+        $strValue = \StringUtil::generateAlias( $strValue );
+
+        if ( version_compare( VERSION, '4.0', '>' ) ) {
+
+            $arrSlugOptions = [ 'locale' => 'de' ];
+            $strValue = \System::getContainer()->get( 'contao.slug.generator' )->generate( $strValue, $arrSlugOptions );
+        }
+
+        return $strValue;
+    }
 }

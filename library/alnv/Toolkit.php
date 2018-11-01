@@ -898,4 +898,83 @@ class Toolkit {
 
         return $strValue;
     }
+
+
+    public static function getEntityUrl( $strModuleId, $strEntityId ) {
+
+        $objDatabase = \Database::getInstance();
+        $objModule = $objDatabase->prepare( 'SELECT * FROM tl_module WHERE id = ?' )->limit(1)->execute( $strModuleId );
+
+        if ( !$objModule->catalogTablename || !$objModule->catalogUseMasterPage || !$objModule->catalogMasterPage ) {
+
+            return '';
+        }
+
+        $objEntity = $objDatabase->prepare( 'SELECT * FROM ' . $objModule->catalogTablename . ' WHERE id = ?' )->limit(1)->execute( $strEntityId );
+
+        if ( !$objEntity->alias ) {
+
+            return '';
+        }
+
+        $objPage = \PageModel::findByPk( $objModule->catalogMasterPage );
+
+        if ( $objPage == null ) {
+
+            return '';
+        }
+
+        if ( $objPage->catalogUseRouting && $objPage->catalogRouting ) {
+
+            $objEntity->alias = static::generateAliasWithRouting( $objEntity->alias, static::getRoutingParameter( $objPage->catalogRouting ), $objEntity->row() );
+        }
+
+        return \Controller::generateFrontendUrl( $objPage->row(), ( $objEntity->alias ? '/' . $objEntity->alias : '' ) );
+    }
+
+
+    public static function generateAliasWithRouting( $strAlias, $arrRoutingParameter, $arrCatalog = [] ) {
+
+        $strAliasWithFragments = '';
+
+        if ( !in_array( 'auto_item', $arrRoutingParameter ) ) {
+
+            return $strAlias;
+        }
+
+        $intIndex = 0;
+        $intTotal = count( $arrRoutingParameter ) - 1;
+        $blnAutoItem = in_array( 'auto_item', $arrRoutingParameter );
+
+        foreach ( $arrRoutingParameter as $strParameter ) {
+
+            ++$intIndex;
+
+            if ( $strParameter === 'auto_item' ) {
+
+                if ( Toolkit::isEmpty( $strAlias ) ) continue;
+
+                $strAliasWithFragments .= '/'. $strAlias;
+
+                continue;
+            }
+
+            if ( !Toolkit::isEmpty( $arrCatalog[ $strParameter ] ) ) {
+
+                $strAliasWithFragments .= $arrCatalog[ $strParameter ] . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
+            }
+
+            else {
+
+                $strAliasWithFragments .= ' ' . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
+            }
+        }
+
+        if ( $strAliasWithFragments ) {
+
+            $strAlias = $strAliasWithFragments;
+        }
+
+        return $strAlias;
+    }
 }

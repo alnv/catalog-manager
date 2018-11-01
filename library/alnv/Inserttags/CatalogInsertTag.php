@@ -256,6 +256,19 @@ class CatalogInsertTag extends \Frontend {
             return $objForm->render();
         }
 
+        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_ENTITY_URL' ) {
+
+            $strModuleId = $arrTags[1];
+            $strEntityId = $arrTags[2];
+
+            if ( !$strModuleId || !$strEntityId ) {
+
+                return '';
+            }
+
+            return Toolkit::getEntityUrl( $strModuleId, $strEntityId );
+        }
+
         return false;
     }
 }

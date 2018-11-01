@@ -1061,42 +1061,7 @@ class CatalogView extends CatalogController {
 
         if ( !empty( $this->arrRoutingParameter ) && is_array( $this->arrRoutingParameter ) ) {
 
-            $strAliasWithFragments = '';
-
-            if ( !in_array( 'auto_item', $this->arrRoutingParameter ) ) {
-
-                return $strAlias;
-            }
-
-            $intIndex = 0;
-            $intTotal = count( $this->arrRoutingParameter ) - 1;
-            $blnAutoItem = in_array( 'auto_item', $this->arrRoutingParameter );
-
-            foreach ( $this->arrRoutingParameter as $strParameter ) {
-
-                ++$intIndex;
-
-                if ( $strParameter === 'auto_item' ) {
-
-                    if ( Toolkit::isEmpty( $strAlias ) ) continue;
-
-                    $strAliasWithFragments .= '/'. $strAlias;
-
-                    continue;
-                }
-
-                if ( !Toolkit::isEmpty( $arrCatalog[ $strParameter ] ) ) {
-
-                    $strAliasWithFragments .= $arrCatalog[ $strParameter ] . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
-                }
-
-                else {
-
-                    $strAliasWithFragments .= ' ' . ( $intIndex != $intTotal && $blnAutoItem ? '/' : '' );
-                }
-            }
-
-            if ( $strAliasWithFragments ) $strAlias = $strAliasWithFragments;
+            return Toolkit::generateAliasWithRouting( $strAlias, $this->arrRoutingParameter, $arrCatalog );
         }
 
         return $strAlias;

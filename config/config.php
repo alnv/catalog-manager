@@ -33,8 +33,9 @@ array_insert( $GLOBALS['BE_MOD'], 3, [
         'support' => [
 
             'name' => 'support',
-            'callback'   => CatalogManager\SupportPage::class,
+            'callback' => CatalogManager\SupportPage::class,
             'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
+            'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
         ],
     ]
 ]);

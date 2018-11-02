@@ -5,5 +5,5 @@ $GLOBALS['TL_LANG']['tl_settings']['catalog_manager_settings'] = 'Catalog Manage
 $GLOBALS['TL_LANG']['tl_settings']['catalogDisableSupportPage'] = [ 'Disable support page', 'Here you can disable support page.' ];
 $GLOBALS['TL_LANG']['tl_settings']['catalogLicence'] = [ 'Catalog Manager licence', 'Please enter your Catalog Manager licence.' ];
 $GLOBALS['TL_LANG']['tl_settings']['catalogNavigationAreas'] = [ 'Navigation areas', 'Here you can edit contao navigation areas.' ];
-$GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsServerKey'] = [ 'Google-Maps Server Key', 'Please enter a google maps server key.' ];
-$GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsClientKey'] = [ 'Google-Maps Client Key', 'Please enter a google maps client key.' ];
+$GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsServerKey'] = [ 'Google Key | GeoCoding', 'Please enter a google key for geo coding.' ];
+$GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsClientKey'] = [ 'Google Key | Map', 'Please enter a google key for Map.' ];

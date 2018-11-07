@@ -883,7 +883,7 @@ class Toolkit {
 
         $strValue = \StringUtil::generateAlias( $strValue );
 
-        if ( version_compare( VERSION, '4.0', '>' ) && !Toolkit::ignoreRomanization() ) {
+        if ( version_compare( VERSION, '4.5', '>' ) && !Toolkit::ignoreRomanization() ) {
 
             $strDelimiter = '-';
 

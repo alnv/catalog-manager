@@ -387,7 +387,7 @@ class OptionsGetter extends CatalogController {
                 if ( isset( $strParameter[1] ) && $strParameter[1] == 'tree' ) {
 
                     $objDatabase = \Database::getInstance();
-                    $objField = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit(1)->execute( $strFieldname );
+                    $objField = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit(1)->execute( $strFieldname ); //@todo don`t work with multiple fieldnames
 
                     if ( $objField->numRows ) {
 

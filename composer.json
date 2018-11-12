@@ -1,14 +1,14 @@
 {
   "name": "alnv/catalog-manager",
   "description": "Catalog Manager for Contao CMS",
-  "keywords": [ "contao", "catalog", "filter", "taxonomy", "tags", "frontend", "editing" ],
+  "keywords": [ "contao", "catalog", "filter", "taxonomy", "frontend editing", "radius search" ],
   "type": "contao-module",
   "homepage": "https://catalog-manager.org",
   "license": "proprietary",
   "authors": [
     {
       "name": "Alexander Naumov",
-      "homepage": "https://www.alexandernaumov.de",
+      "homepage": "https://alexandernaumov.de",
       "role": "Developer"
     }
   ],

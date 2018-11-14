@@ -7,14 +7,19 @@ class CatalogBreadcrumb extends \Frontend {
 
     public function initialize( $arrItems, $objModule ) {
 
-        $blnShowInBreadcrumb = false;
-        $strAlias = \Input::get('auto_item');
         $intLastIndex = count( $arrItems ) -1;
         $arrItem = $arrItems[ $intLastIndex ];
 
-        if ( $arrItem['isActive'] && $arrItem['data']['catalogUseMaster'] && !Toolkit::isEmpty( $strAlias ) ) {
+        if ( $arrItem['isActive'] && $arrItem['data']['catalogUseMaster'] ) {
 
             $arrMasterItem = [];
+            $blnShowInBreadcrumb = false;
+            $strAlias = \Input::get('auto_item');
+
+            if ( Toolkit::isEmpty( $strAlias )  ) {
+
+                return $arrItems;
+            }
 
             if ( isset( $arrItem['data']['catalogShowInBreadcrumb'] ) && $arrItem['data']['catalogShowInBreadcrumb'] ) {
 

@@ -21,6 +21,16 @@ class IconGetter extends CatalogController {
     }
 
 
+    public function setLanguageIcon( $strLanguage ) {
+
+        $strCustomIcon = $this->getIcon( $strLanguage );
+
+        if ( $strCustomIcon != '' ) return $strCustomIcon;
+
+        return 'system/modules/catalog-manager/assets/icons/catalog-icon.svg';
+    }
+
+
     public function setTreeViewIcon( $strTablename, $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
 
         $strIconname = $strTablename . '-' . 'tag';

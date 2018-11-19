@@ -200,6 +200,17 @@ class DcBuilder extends CatalogController {
             };
         }
 
+        if ( $this->arrCatalog['enableLanguageBar'] ) {
+
+            if ( \Input::get('ctlg_language') && \Input::get('act') !== 'create' ) {
+
+                $arrReturn['closed'] = true;
+            }
+
+            $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'setFallbackAndLanguage' ];
+            $arrReturn['onload_callback'][] = [ 'CatalogManager\DcCallbacks', 'setGlobalTranslateButton' ];
+        }
+
         $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'onCutCallback' ];
         $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'onSubmitCallback' ];
         $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'onDeleteCallback' ];
@@ -293,6 +304,18 @@ class DcBuilder extends CatalogController {
 
                 return $objDcCallbacks->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
             };
+        }
+
+        if ( $this->arrCatalog['enableLanguageBar'] && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn'] ) {
+
+            $strLanguage = \Input::get('ctlg_language') ?: $this->arrCatalog['fallbackLanguage'];
+
+            $arrReturn['filter'][] = [ $this->arrCatalog['languageEntityColumn'] . '=?', $strLanguage ];
+
+            if ( \Input::get('ctlg_language') ) {
+
+                $arrReturn['filter'][] = [ $this->arrCatalog['linkEntityColumn'] . '=?', \Input::get('id') ];
+            }
         }
 
         return $arrReturn;
@@ -433,13 +456,37 @@ class DcBuilder extends CatalogController {
             }
         }
 
+        if ( $this->arrCatalog['enableLanguageBar'] && is_array( $this->arrCatalog['languages'] ) ) {
+
+            if ( \Input::get('ctlg_language') ) {
+
+                unset( $arrReturn['cut'] );
+                unset( $arrReturn['copy'] );
+            }
+
+            else {
+
+                $arrLanguages = \System::getLanguages();
+
+                foreach ( $this->arrCatalog['languages'] as $strLanguage ) {
+
+                    $arrReturn[ $strLanguage ] = [
+
+                        'href' => 'ctlg_language=' . $strLanguage,
+                        'label' => [ '', $arrLanguages[ $strLanguage ] ],
+                        'icon' => $this->IconGetter->setLanguageIcon( $strLanguage )
+                    ];
+                }
+            }
+        }
+
         return $arrReturn;
     }
 
 
     protected function getGlobalOperationsDc() {
 
-        return [
+        $arrReturn = [
 
             'all' => [
 
@@ -449,6 +496,29 @@ class DcBuilder extends CatalogController {
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
             ]
         ];
+
+        if ( $this->arrCatalog['enableLanguageBar'] && \Input::get('ctlg_language') ) {
+
+            $arrReturn['new'] = [
+
+                'label' => &$GLOBALS['TL_LANG']['MSC']['translate'],
+                'class' => 'header_new',
+                'href' => 'act=create&ctlg_fallback=' . \Input::get('id'),
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="n"'
+            ];
+
+            $arrReturn['back'] = [
+
+                'label' => &$GLOBALS['TL_LANG']['MSC']['goBack'],
+                'class' => 'header_back',
+                'href' => 'ctlg_return=1',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="b"'
+            ];
+
+            unset( $arrReturn['all'] );
+        }
+
+        return $arrReturn;
     }
 
 

@@ -41,6 +41,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Permission Types', 'Her
 $GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog']['languages'] = [ 'Languages', 'Please select a language.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['fallbackLanguage'] = [ 'Fallback language', 'Please select a fallback language.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['enableLanguageBar'] = [ 'Enable language menu', 'Here you can enable the language menu panel.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog']['groupFormat'] = [ 'Group header Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'] = [ 'Overwrite Group header', 'Here you can overwrite the default routine to create the group header.' ];
 

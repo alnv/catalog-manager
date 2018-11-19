@@ -62,6 +62,10 @@ $GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Sprachwechsler Modul
 $GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Latitude & Longitude erzeugen', 'Hier können Sie automatisch Latitude und Longitude Werte ermitteln.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Adresse Eingabetyp', 'Bitte wählen Sie für Latitude und Longitude ein Eingabefeld. In diesem Eingabefeld wird der tatsächliche Wert gespeichert.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog']['languages'] = [ 'Sprachen', 'Bitte wählen Sie eine Sprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['fallbackLanguage'] = [ 'Sprachen-Fallback', 'Bitte wählen Sie die Hauptsprache aus.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['enableLanguageBar'] = [ 'Sprachmenü aktivieren', 'Hier können Sie bei Bedarf das Sprachmenü aktivieren.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Feld für interne Weiterleitung', 'Hier können Sie ein Eingabefeld für interne Weiterleitung verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'Feld für externe Weiterleitung', 'Hier können Sie ein Eingabefeld für externe Weiterleitung verwenden.' ];
 $GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Weiterleitungsseite überschreiben', 'Hier können Sie eine externe oder interne Weiterleitungsseite definieren.' ];

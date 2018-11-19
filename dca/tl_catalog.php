@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat' ],
+        '__selector__' => [ 'type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat', 'enableLanguageBar' ],
         'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements,useVC;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend:hide},useOwnLabelFormat;{group_format_legend:hide},useOwnGroupFormat;{permission_legend:hide},permissionType;{redirect_legend:hide},useRedirect;{field_settings_legend:hide},titleIsMandatory,titleDynValue;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
         'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements,useVC;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
@@ -112,12 +112,13 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'useOwnLabelFormat' => 'labelFormat',
         'useOwnGroupFormat' => 'groupFormat',
         'addressInputType_useSingleField' => 'geoAddress',
+        'enableLanguageBar' => 'fallbackLanguage,languages',
         'isBackendModule' => 'modulename,navArea,navPosition',
         'useRedirect' => 'internalUrlColumn,externalUrlColumn',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
         'languageEntitySource_parentTable' => 'languageEntityColumn',
         'languageEntitySource_currentTable' => 'languageEntityColumn',
-        'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
+        'useChangeLanguage' => 'linkEntityColumn,languageEntitySource,enableLanguageBar',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
 
         'mode_0' => '',
@@ -800,6 +801,63 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
+        ],
+
+        'enableLanguageBar' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['enableLanguageBar'],
+            'inputType' => 'checkbox',
+
+            'eval' => [
+
+                'doNotCopy' => true,
+                'tl_class' => 'clr',
+                'submitOnChange' => true
+            ],
+
+            'exclude' => true,
+            'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'fallbackLanguage' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['fallbackLanguage'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'submitOnChange' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getFallbackLanguages' ],
+
+            'exclude' => true,
+            'sql' => "varchar(4) NOT NULL default ''"
+        ],
+
+        'languages' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['languages'],
+            'inputType' => 'select',
+
+            'eval' => [
+
+                'chosen' => true,
+                'multiple' => true,
+                'tl_class' => 'w50',
+                'blankOptionLabel' => '-',
+                'includeBlankOption' => true
+            ],
+
+            'options_callback' => [ 'CatalogManager\tl_catalog', 'getSystemLanguages' ],
+
+            'exclude' => true,
+            'sql' => "blob NULL"
         ],
 
         'linkEntityColumn' => [

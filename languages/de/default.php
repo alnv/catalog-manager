@@ -35,6 +35,8 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Catalog Eins
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.' ];
 
+$GLOBALS['TL_LANG']['MSC']['translate'] = 'Übersetzung erstellen';
+
 $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['yes'] = 'Ja';
 $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['no'] = 'Nein';
 $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['ok'] = 'Okay';

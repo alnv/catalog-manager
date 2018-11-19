@@ -449,4 +449,24 @@ class tl_catalog extends \Backend {
 
         return [ 'default', 'extended' ];
     }
+
+
+    public function getSystemLanguages( \DataContainer $dc ) {
+
+        $strFallback = $dc->activeRecord->fallbackLanguage;
+        $arrLanguages = \System::getLanguages();
+
+        if ( $strFallback ) {
+
+            unset( $arrLanguages[ $strFallback ] );
+        }
+
+        return $arrLanguages;
+    }
+
+
+    public function getFallbackLanguages() {
+
+        return \System::getLanguages();
+    }
 }

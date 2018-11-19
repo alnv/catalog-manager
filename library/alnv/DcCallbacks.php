@@ -477,4 +477,98 @@ class DcCallbacks extends \Backend {
 
         return '';
     }
+
+
+    public function setFallbackAndLanguage( \DataContainer $dc ) {
+
+        if ( !$dc->activeRecord ) {
+
+            return null;
+        }
+
+        $arrCatalog = $this->getCatalog();
+
+        if ( empty( $arrCatalog ) ) {
+
+            return null;
+        }
+
+        $strFallbackLanguage = $arrCatalog['fallbackLanguage'];
+
+        if ( !$strFallbackLanguage ) {
+
+            return null;
+        }
+
+        $arrSet = [];
+        $arrSet[ $arrCatalog['languageEntityColumn'] ] = \Input::get('ctlg_language') ?: $strFallbackLanguage;
+        $arrSet[ $arrCatalog['linkEntityColumn'] ] = \Input::get('ctlg_fallback') ?: \Input::get('id');
+
+        $this->Database->prepare( 'UPDATE '. $dc->table . ' %s WHERE id=?' )->set( $arrSet )->execute( $dc->activeRecord->id );
+    }
+
+
+    public function setGlobalTranslateButton( \DataContainer $dc ) {
+
+        if ( \Input::get('ctlg_return') ) {
+
+            $strUrl = str_replace( '&ctlg_language=' . \Input::get('ctlg_language') , '', \Environment::get('uri') );
+            $strUrl = str_replace( '&ctlg_return=1', '', $strUrl );
+
+            \Controller::redirect( $strUrl );
+        }
+
+        if ( !\Input::get('ctlg_language') || !\Input::get('id') ) {
+
+            return null;
+        }
+
+        if ( !$dc->table ) {
+
+            return null;
+        }
+
+        $arrCatalog = $this->getCatalog();
+
+        if ( empty( $arrCatalog ) ) {
+
+            return null;
+        }
+
+        $strLangColumn = $arrCatalog['languageEntityColumn'];
+        $strFallbackColumn = $arrCatalog['linkEntityColumn'];
+
+        $objEntity = $this->Database->prepare( 'SELECT * FROM '. $dc->table . ' WHERE `'. $strLangColumn .'`=? AND `'. $strFallbackColumn .'`=?' )->execute( \Input::get('ctlg_language'), \Input::get('id') );
+
+        if ( $objEntity->numRows ) {
+
+            $GLOBALS['TL_DCA'][ $dc->table ]['config']['closed'] = true;
+            unset( $GLOBALS['TL_DCA'][ $dc->table ]['list']['global_operations']['new'] );
+        }
+    }
+
+
+    protected function getCatalog() {
+
+        $arrCatalog = [];
+        $strTable = \Input::get('table');
+
+        if ( !Toolkit::isEmpty( $strTable ) ) {
+
+            $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
+        }
+
+        else {
+
+            $strDo = \Input::get( 'do' );
+            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute( $strDo );
+
+            if ( is_array( $arrTables ) && isset( $arrTables[0] ) ) {
+
+                $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrTables[0] ];
+            }
+        }
+
+        return $arrCatalog;
+    }
 }

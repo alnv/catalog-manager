@@ -650,6 +650,7 @@ class FrontendEditing extends CatalogController {
             $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
             $this->CatalogEvents->addEventListener( 'delete', $arrData, $this );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
+            \System::log( 'DELETE FROM '. $this->catalogTablename .' WHERE id='. $this->strItemID, __METHOD__, TL_GENERAL );
             // $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
         }
 
@@ -961,6 +962,7 @@ class FrontendEditing extends CatalogController {
                 }
 
                 $objInsert = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+                \System::log( 'A new entry "'. $this->catalogTablename .'='. $objInsert->insertId .'" has been created', __METHOD__, TL_GENERAL );
 
                 $this->arrValues['id'] = $objInsert->insertId;
 
@@ -1017,6 +1019,8 @@ class FrontendEditing extends CatalogController {
                     $this->CatalogMessage->set( 'updateMessage', $arrData, $this->id );
                     $this->CatalogEvents->addEventListener( 'update', $arrData, $this );
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
+
+                    \System::log( 'An entry "'. $this->catalogTablename .'='. $this->strItemID .'" has been updated', __METHOD__, TL_GENERAL );
                 }
 
                 if ( !$this->isVisible() ) $blnReload =  false;
@@ -1037,7 +1041,9 @@ class FrontendEditing extends CatalogController {
 
                 unset( $this->arrValues['id'] );
 
-                $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+                $objInsert = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+
+                \System::log( 'An entry "'. $this->catalogTablename .'='. $objInsert->insertId .'" has been duplicated', __METHOD__, TL_GENERAL );
 
                 if ( $this->catalogNotifyDuplicate ) {
 

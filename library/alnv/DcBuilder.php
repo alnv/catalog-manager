@@ -200,7 +200,7 @@ class DcBuilder extends CatalogController {
             };
         }
 
-        if ( $this->arrCatalog['enableLanguageBar'] ) {
+        if ( $this->hasLanguageNavigationBar() ) {
 
             if ( \Input::get('ctlg_language') && \Input::get('act') !== 'create' ) {
 
@@ -306,7 +306,7 @@ class DcBuilder extends CatalogController {
             };
         }
 
-        if ( $this->arrCatalog['enableLanguageBar'] && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn'] ) {
+        if ( $this->hasLanguageNavigationBar() && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn'] ) {
 
             $strLanguage = \Input::get('ctlg_language') ?: $this->arrCatalog['fallbackLanguage'];
 
@@ -456,7 +456,7 @@ class DcBuilder extends CatalogController {
             }
         }
 
-        if ( $this->arrCatalog['enableLanguageBar'] && is_array( $this->arrCatalog['languages'] ) ) {
+        if ( $this->hasLanguageNavigationBar() && is_array( $this->arrCatalog['languages'] ) ) {
 
             if ( \Input::get('ctlg_language') ) {
 
@@ -497,7 +497,7 @@ class DcBuilder extends CatalogController {
             ]
         ];
 
-        if ( $this->arrCatalog['enableLanguageBar'] && \Input::get('ctlg_language') ) {
+        if ( $this->hasLanguageNavigationBar() && \Input::get('ctlg_language') ) {
 
             $arrReturn['new'] = [
 
@@ -576,5 +576,11 @@ class DcBuilder extends CatalogController {
     public function getCatalog() {
 
         return is_array( $this->arrCatalog ) && !empty( $this->arrCatalog ) ? $this->arrCatalog : [];
+    }
+
+
+    protected function hasLanguageNavigationBar() {
+
+        return $this->arrCatalog['enableLanguageBar'] && !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) && $this->arrCatalog['languageEntitySource'] == 'currentTable';
     }
 }

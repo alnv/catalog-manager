@@ -117,8 +117,8 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'useRedirect' => 'internalUrlColumn,externalUrlColumn',
         'useGeoCoordinates' => 'latField,lngField,addressInputType',
         'languageEntitySource_parentTable' => 'languageEntityColumn',
-        'languageEntitySource_currentTable' => 'languageEntityColumn',
-        'useChangeLanguage' => 'linkEntityColumn,languageEntitySource,enableLanguageBar',
+        'useChangeLanguage' => 'linkEntityColumn,languageEntitySource',
+        'languageEntitySource_currentTable' => 'languageEntityColumn,enableLanguageBar',
         'addressInputType_useMultipleFields' => 'geoStreet,geoStreetNumber,geoPostal,geoCity,geoCountry',
 
         'mode_0' => '',

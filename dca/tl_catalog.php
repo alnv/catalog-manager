@@ -774,7 +774,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ],
 
             'options' => [ 'parentTable', 'currentTable' ],
-
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog']['reference']['languageEntitySource'],
 
             'exclude' => true,

@@ -210,6 +210,8 @@ class DcBuilder extends CatalogController {
             $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'setFallbackAndLanguage' ];
             $arrReturn['onload_callback'][] = [ 'CatalogManager\DcCallbacks', 'setGlobalTranslateButton' ];
             $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'deleteTranslations' ];
+            $arrReturn['oncopy_callback'][] = [ 'CatalogManager\DcCallbacks', 'copyTranslations' ];
+            $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'cutTranslations' ];
         }
 
         $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'onCutCallback' ];

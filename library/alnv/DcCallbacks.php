@@ -648,4 +648,41 @@ class DcCallbacks extends \Backend {
         $strFallbackColumn = $arrCatalog['linkEntityColumn'];
         $this->Database->prepare( 'DELETE FROM ' . $dc->table .' WHERE `'. $strFallbackColumn .'`=?' )->execute( $dc->id );
     }
+
+
+    public function copyTranslations( $strNewId, \DataContainer $dc ) {
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->table ];
+        $strFallbackColumn = $arrCatalog['linkEntityColumn'];
+        $strLanguageColumn = $arrCatalog['languageEntityColumn'];
+
+        $arrMainSet = [];
+        $arrMainSet[ $strFallbackColumn ] = $strNewId;
+        $this->Database->prepare( 'UPDATE ' . $dc->table . ' %s WHERE id=?' )->set( $arrMainSet )->execute( $strNewId );
+
+        $objEntities = $this->Database->prepare( 'SELECT * FROM '. $dc->table .' WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->execute( $dc->id, $arrCatalog['fallbackLanguage'] );
+
+        if ( $objEntities->numRows ) {
+
+            while ( $objEntities->next() ) {
+
+                $arrEntity = $objEntities->row();
+                unset( $arrEntity['id'] );
+                // @todo generate new alias
+                // timestamp
+                $arrEntity[ $strFallbackColumn ] = $strNewId;
+
+                $this->Database->prepare( 'INSERT INTO '. $dc->table .' %s' )->set( $arrEntity )->execute();
+            }
+        }
+    }
+
+
+    public function cutTranslations( \DataContainer $dc ) {
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->table ];
+        $strFallbackColumn = $arrCatalog['linkEntityColumn'];
+        $strLanguageColumn = $arrCatalog['languageEntityColumn'];
+        $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set([ 'pid' => \Input::get('pid'), 'tstamp' => time() ])->execute( $dc->id, $arrCatalog['fallbackLanguage'] );
+    }
 }

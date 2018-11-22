@@ -209,6 +209,7 @@ class DcBuilder extends CatalogController {
 
             $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'setFallbackAndLanguage' ];
             $arrReturn['onload_callback'][] = [ 'CatalogManager\DcCallbacks', 'setGlobalTranslateButton' ];
+            $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'deleteTranslations' ];
         }
 
         $arrReturn['oncut_callback'][] = [ 'CatalogManager\DcCallbacks', 'onCutCallback' ];
@@ -314,7 +315,7 @@ class DcBuilder extends CatalogController {
 
             if ( \Input::get('ctlg_language') ) {
 
-                $arrReturn['filter'][] = [ $this->arrCatalog['linkEntityColumn'] . '=?', \Input::get('id') ];
+                $arrReturn['filter'][] = [ $this->arrCatalog['linkEntityColumn'] . '=?', \Input::get('ctlg_fallback') ];
             }
         }
 
@@ -474,7 +475,8 @@ class DcBuilder extends CatalogController {
 
                         'href' => 'ctlg_language=' . $strLanguage,
                         'label' => [ '', $arrLanguages[ $strLanguage ] ],
-                        'icon' => $this->IconGetter->setLanguageIcon( $strLanguage )
+                        'icon' => $this->IconGetter->setLanguageIcon( $strLanguage ),
+                        'button_callback' => [ 'DcCallbacks', 'generateLanguageButton' ]
                     ];
                 }
             }
@@ -503,16 +505,8 @@ class DcBuilder extends CatalogController {
 
                 'label' => &$GLOBALS['TL_LANG']['MSC']['translate'],
                 'class' => 'header_new',
-                'href' => 'act=create&ctlg_fallback=' . \Input::get('id'),
+                'button_callback' => [ 'DcCallbacks', 'generateNewTranslationButton' ],
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="n"'
-            ];
-
-            $arrReturn['back'] = [
-
-                'label' => &$GLOBALS['TL_LANG']['MSC']['goBack'],
-                'class' => 'header_back',
-                'href' => 'ctlg_return=1',
-                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="b"'
             ];
 
             unset( $arrReturn['all'] );
@@ -540,7 +534,6 @@ class DcBuilder extends CatalogController {
             }
 
             if ( Toolkit::isEmpty( $arrField['fieldname'] ) ) continue;
-
             if ( in_array( $arrField['fieldname'], Toolkit::invisiblePaletteFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
@@ -581,6 +574,6 @@ class DcBuilder extends CatalogController {
 
     protected function hasLanguageNavigationBar() {
 
-        return $this->arrCatalog['enableLanguageBar'] && !in_array( $this->arrCatalog['mode'], [ '3', '4', '5', '6' ] ) && $this->arrCatalog['languageEntitySource'] == 'currentTable';
+        return $this->arrCatalog['enableLanguageBar'] && !in_array( $this->arrCatalog['mode'], [ '5', '6' ] ) && $this->arrCatalog['languageEntitySource'] == 'currentTable';
     }
 }

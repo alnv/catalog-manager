@@ -538,7 +538,7 @@ class DcCallbacks extends \Backend {
         $strLangColumn = $arrCatalog['languageEntityColumn'];
         $strFallbackColumn = $arrCatalog['linkEntityColumn'];
 
-        $objEntity = $this->Database->prepare( 'SELECT * FROM '. $dc->table . ' WHERE `'. $strLangColumn .'`=? AND `'. $strFallbackColumn .'`=?' )->execute( \Input::get('ctlg_language'), \Input::get('id') );
+        $objEntity = $this->Database->prepare( 'SELECT * FROM '. $dc->table . ' WHERE `'. $strLangColumn .'`=? AND `'. $strFallbackColumn .'`=?' )->execute( \Input::get('ctlg_language'), \Input::get('ctlg_fallback') );
 
         if ( $objEntity->numRows ) {
 
@@ -570,5 +570,82 @@ class DcCallbacks extends \Backend {
         }
 
         return $arrCatalog;
+    }
+
+
+    public function generateLanguageButton( $arrRow, $strHref, $strLabel, $strTitle, $strIcon ) {
+
+        $strId = $arrRow['id'];
+
+        if ( \Input::get('table') ) {
+
+            $strId = \Input::get( 'id' );
+        }
+
+        $arrParameters = [
+
+            'do' => \Input::get('do'),
+            'table' => \Input::get('table'),
+            'ctlg_table' => \Input::get('ctlg_table'),
+            'ctlg_fallback' => $arrRow['id'],
+            'id' => $strId,
+            'popup' => '1',
+            'rt' => REQUEST_TOKEN
+        ];
+
+        foreach ( $arrParameters as $strField => $strValue ) {
+
+            if ( !$strValue ) {
+
+                unset( $arrParameters[ $strField ] );
+            }
+        }
+
+        $strUri = '?'. http_build_query( $arrParameters ) . '&' . $strHref;
+
+        return '<a href="contao'.$strUri.'" title="'.\StringUtil::specialchars( $strTitle ).'" onclick="Backend.openModalIframe({\'title\':\''.$arrRow['title'].'\',\'url\':this.href});return false">'.\Image::getHtml( $strIcon, $strLabel ).'</a> ';
+    }
+
+
+    public function generateNewTranslationButton( $arrRow, $strLabel, $strTitle, $strIcon ) {
+
+        $arrParameters = [
+
+            'do' => \Input::get('do'),
+            'act' => 'create',
+            'popup' => '1',
+            'rt' => \Input::get('rt'),
+            'ctlg_table' => \Input::get('ctlg_table'),
+            'ctlg_fallback' => \Input::get('ctlg_fallback'),
+            'ctlg_language' => \Input::get('ctlg_language')
+        ];
+
+        if ( \Input::get('table') ) {
+
+            $arrParameters['table'] = \Input::get('table');
+            $arrParameters['mode'] = '2';
+            $arrParameters['pid'] =  \Input::get('id');
+            $arrParameters['id'] =  \Input::get('id');
+        }
+
+        foreach ( $arrParameters as $strField => $strValue ) {
+
+            if ( !$strValue ) {
+
+                unset( $arrParameters[ $strField ] );
+            }
+        }
+
+        $strUri = '?'. http_build_query( $arrParameters );
+
+        return '<a href="contao'.$strUri.'" class="'.$strIcon.'" title="'.\StringUtil::specialchars( $strTitle ).'">'. $strLabel .'</a> ';
+    }
+
+
+    public function deleteTranslations( \DataContainer $dc ) {
+
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->table ];
+        $strFallbackColumn = $arrCatalog['linkEntityColumn'];
+        $this->Database->prepare( 'DELETE FROM ' . $dc->table .' WHERE `'. $strFallbackColumn .'`=?' )->execute( $dc->id );
     }
 }

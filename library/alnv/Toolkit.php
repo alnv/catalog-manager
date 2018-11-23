@@ -978,4 +978,10 @@ class Toolkit {
 
         return $strAlias;
     }
+
+
+    public static function generateDynValue( $strSimpleTokens, $arrValues ) {
+
+        return \StringUtil::parseSimpleTokens( $strSimpleTokens, $arrValues );
+    }
 }

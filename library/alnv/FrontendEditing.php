@@ -915,8 +915,7 @@ class FrontendEditing extends CatalogController {
 
             if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
 
-                $this->arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], Toolkit::prepareValues4Db( $this->arrValues ) );
-
+                $this->arrValues[ $strFieldname ] = Toolkit::generateDynValue( $arrField['dynValue'], Toolkit::prepareValues4Db( $this->arrValues ) );
                 if ( $strFieldname == 'title' && Toolkit::hasDynAlias() ) $this->arrValues['alias'] = '';
             }
         }

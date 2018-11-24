@@ -2,6 +2,7 @@
 
 namespace CatalogManager;
 
+
 class CatalogView extends CatalogController {
 
 
@@ -425,7 +426,13 @@ class CatalogView extends CatalogController {
         if ( $this->catalogUseRadiusSearch && $this->strMode == 'view' ) {
 
             $arrRSValues = [];
+            $strDistance = $this->CatalogInput->getActiveValue( 'rs_dstnc' );
             $arrRSAttributes = [ 'rs_cty', 'rs_strt', 'rs_pstl', 'rs_cntry', 'rs_strtn' ];
+
+            if ( Toolkit::isEmpty( $strDistance ) || is_array( $strDistance ) ) {
+
+                $strDistance = '50';
+            }
 
             foreach ( $arrRSAttributes as $strSRAttribute ) {
 
@@ -450,13 +457,7 @@ class CatalogView extends CatalogController {
                 $objGeoCoding->setPostal( $arrRSValues['rs_pstl'] );
                 $objGeoCoding->setCountry( $arrRSValues['rs_cntry'] );
                 $objGeoCoding->setStreetNumber( $arrRSValues['rs_strtn'] );
-                $strDistance = $this->CatalogInput->getActiveValue( 'rs_dstnc' );
                 $arrCords = $objGeoCoding->getCords( '', 'en', true );
-
-                if ( Toolkit::isEmpty( $strDistance ) || is_array( $strDistance ) ) {
-
-                    $strDistance = '50';
-                }
 
                 if ( $arrCords['lat'] && $arrCords['lng'] ) {
 
@@ -472,6 +473,18 @@ class CatalogView extends CatalogController {
                     $this->arrCatalogMapViewOptions['lat'] = $arrCords['lat'];
                     $this->arrCatalogMapViewOptions['lng'] = $arrCords['lng'];
                 }
+            }
+
+            if ( !isset( $arrQuery['distance'] ) && $this->CatalogInput->getActiveValue( '_latitude' ) && $this->CatalogInput->getActiveValue( '_longitude' ) ) {
+
+                $arrQuery['distance'] = [
+
+                    'value' => $strDistance,
+                    'latCord' => $this->CatalogInput->getActiveValue( '_latitude' ),
+                    'lngCord' => $this->CatalogInput->getActiveValue( '_longitude' ),
+                    'latField' => $this->catalogFieldLat,
+                    'lngField' => $this->catalogFieldLng
+                ];
             }
         }
 

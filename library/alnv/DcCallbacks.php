@@ -51,13 +51,12 @@ class DcCallbacks extends \Backend {
             if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
 
                 $arrActiveRecords = Toolkit::prepareValues4Db( $objDc->activeRecord->row() );
-                $arrValues[ $strFieldname ] = \StringUtil::parseSimpleTokens( $arrField['dynValue'], $arrActiveRecords );
-
+                $arrValues[ $strFieldname ] = Toolkit::generateDynValue( $arrField['dynValue'], $arrActiveRecords );
                 if ( $strFieldname == 'title' && Toolkit::hasDynAlias() ) $arrValues['alias'] = $this->generateFEAlias( '', $arrValues[ $strFieldname ], $objDc->table, $strId );
             }
         }
 
-        if ( is_array( $arrValues ) && count( $arrValues ) > 0 ) $this->Database->prepare( 'UPDATE '. $objDc->table .' %s WHERE id = ?' )->set( $arrValues )->execute( \Input::get('id') );
+        if ( is_array( $arrValues ) && count( $arrValues ) > 0 ) $this->Database->prepare( 'UPDATE '. $objDc->table .' %s WHERE id = ?' )->set( $arrValues )->execute( $strId );
     }
 
 
@@ -493,6 +492,7 @@ class DcCallbacks extends \Backend {
             return null;
         }
 
+        $strId = \Input::get('ctlg_fallback') ?: \Input::get('id');
         $strFallbackLanguage = $arrCatalog['fallbackLanguage'];
 
         if ( !$strFallbackLanguage ) {
@@ -500,9 +500,14 @@ class DcCallbacks extends \Backend {
             return null;
         }
 
+        if ( \Input::get( 'act' ) == 'editAll' ) {
+
+            $strId = $dc->id;
+        }
+
         $arrSet = [];
         $arrSet[ $arrCatalog['languageEntityColumn'] ] = \Input::get('ctlg_language') ?: $strFallbackLanguage;
-        $arrSet[ $arrCatalog['linkEntityColumn'] ] = \Input::get('ctlg_fallback') ?: \Input::get('id');
+        $arrSet[ $arrCatalog['linkEntityColumn'] ] = $strId;
 
         $this->Database->prepare( 'UPDATE '. $dc->table . ' %s WHERE id=?' )->set( $arrSet )->execute( $dc->activeRecord->id );
     }

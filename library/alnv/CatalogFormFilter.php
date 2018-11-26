@@ -323,7 +323,7 @@ class CatalogFormFilter extends CatalogController {
 
         if ( empty( $varValue ) && is_array( $varValue ) ) return false;
 
-        if ( count( $varValue ) >= 1 && Toolkit::isEmpty( $varValue[0] ) ) return false;
+        if ( is_array( $varValue ) && count( $varValue ) >= 1 && Toolkit::isEmpty( $varValue[0] ) ) return false;
 
         if ( $strType == 'range' && Toolkit::isEmpty( $varValue[1] ) ) return false;
 

@@ -214,6 +214,29 @@ class CatalogInsertTag extends \Frontend {
                 }
             }
 
+            $arrOrderBy = \StringUtil::deserialize( $objModule->catalogOrderBy, true );
+
+            if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+
+                foreach ( $arrOrderBy as $arrOrder ) {
+
+                    $arrQuery['orderBy'][] = [
+
+                        'field' => $arrOrder['key'],
+                        'order' => $arrOrder['value']
+                    ];
+                }
+            }
+
+            if ( $objModule->catalogPerPage || $objModule->catalogOffset ) {
+
+                $arrQuery['pagination'] = [
+
+                    'limit' => (int) $objModule->catalogPerPage,
+                    'offset' => (int) $objModule->catalogOffset
+                ];
+            }
+
             $arrReturn = [];
             $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
 

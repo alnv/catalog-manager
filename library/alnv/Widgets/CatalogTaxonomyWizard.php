@@ -276,6 +276,7 @@ class CatalogTaxonomyWizard extends \Widget {
             'lt',
             'lte',
             'contain',
+            'notContain',
             'containExact',
             'between',
             'isEmpty',

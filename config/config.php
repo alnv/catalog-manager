@@ -197,6 +197,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
 $GLOBALS['CM_ICON_SET'] = [
 
     'new' => 'system/modules/catalog-manager/assets/icons/new.svg',
+    'pdf' => 'system/modules/catalog-manager/assets/icons/pdf.svg',
     'edit' => 'system/modules/catalog-manager/assets/icons/edit.svg',
     'copy' => 'system/modules/catalog-manager/assets/icons/copy.svg',
     'delete' => 'system/modules/catalog-manager/assets/icons/delete.svg'

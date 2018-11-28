@@ -1,0 +1,15 @@
+<h1><?= $this->name ?></h1>
+<?php if ( !empty( $this->data ) ): ?>
+    <table>
+        <tr>
+            <th><?= $this->fieldLabel ?></th>
+            <th><?= $this->valueLabel ?></th>
+        </tr>
+    <?php foreach( $this->data as $strFieldname => $varKey ): ?>
+        <tr>
+            <td><?= ( $this->fields[ $strFieldname ] ? $this->fields[ $strFieldname ] : $strFieldname ) ?></td>
+            <td><?php if ( is_array( $varKey ) ): ?><?= implode( ', ', array_map( function( $varValue ) {if ( is_array( $varValue ) ) {return $varValue['title'];}return $varValue;}, $varKey ) ) ?><?php else: ?><?= $varKey ?><?php endif; ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </table>
+<?php endif; ?>

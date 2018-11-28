@@ -22,6 +22,7 @@ ClassLoader::addClasses([
     'CatalogManager\CSVBuilder' => 'system/modules/catalog-manager/library/alnv/CSVBuilder.php',
     'CatalogManager\SQLBuilder' => 'system/modules/catalog-manager/library/alnv/SQLBuilder.php',
     'CatalogManager\DcModifier' => 'system/modules/catalog-manager/library/alnv/DcModifier.php',
+    'CatalogManager\Entity' => 'system/modules/catalog-manager/library/alnv/Elements/Entity.php',
     'CatalogManager\tl_form_field' => 'system/modules/catalog-manager/classes/tl_form_field.php',
     'CatalogManager\DcCallbacks' => 'system/modules/catalog-manager/library/alnv/DcCallbacks.php',
     'CatalogManager\CatalogView' => 'system/modules/catalog-manager/library/alnv/CatalogView.php',

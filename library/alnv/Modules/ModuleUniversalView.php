@@ -365,12 +365,6 @@ class ModuleUniversalView extends \Module {
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
 
-        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
-
-            $objCatalogException = new CatalogException();
-            $objCatalogException->set403();
-        }
-
         if ( !$blnIsVisible ) {
 
             $objCatalogException = new CatalogException();

@@ -240,6 +240,12 @@ class Entity extends CatalogController {
     protected function getJoinedEntities( $strValue, $arrField ) {
 
         $arrReturn = [];
+
+        if ( Toolkit::isCoreTable( $arrField['dbTable'] ) && !in_array( $arrField['dbTable'], $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) ) {
+
+            return $arrReturn;
+        }
+
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $arrField['dbTable'] );
         $arrFields = $objFieldBuilder->getCatalogFields( true, null );
@@ -337,6 +343,12 @@ class Entity extends CatalogController {
     protected function getChildrenEntities( $strValue, $strTable ) {
 
         $arrReturn = [];
+
+        if ( Toolkit::isCoreTable( $strTable ) && !in_array( $strTable, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) ) {
+
+            return $arrReturn;
+        }
+
         $objFieldBuilder = new CatalogFieldBuilder();
         $objFieldBuilder->initialize( $strTable );
         $arrFields = $objFieldBuilder->getCatalogFields( true, null );

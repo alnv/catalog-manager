@@ -96,6 +96,12 @@ class ModuleUniversalView extends \Module {
 
                 break;
 
+            case 'pdf':
+
+                $this->downloadPdf();
+
+                break;
+
             default:
 
                 if ( $this->strMasterAlias && !$this->catalogPreventMasterView ) {
@@ -344,5 +350,33 @@ class ModuleUniversalView extends \Module {
 
             $this->cssID = [ $strId, $strCss ];
         }
+    }
+
+
+    protected function downloadPdf() {
+
+        $this->import( 'FrontendEditing' );
+
+        $this->FrontendEditing->strAct = $this->strAct;
+        $this->FrontendEditing->arrOptions = $this->arrData;
+        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
+        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        $this->FrontendEditing->initialize();
+
+        $blnIsVisible = $this->FrontendEditing->isVisible();
+
+        if ( !$this->FrontendEditing->checkPermission( $this->strAct ) || !$this->catalogEnableFrontendEditing ) {
+
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set403();
+        }
+
+        if ( !$blnIsVisible ) {
+
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
+        }
+
+        $this->FrontendEditing->createPDF();
     }
 }

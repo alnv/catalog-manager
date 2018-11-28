@@ -164,7 +164,8 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
     'create' => 'Erstellen',
     'copy' => 'Duplizieren',
     'edit' => 'Bearbeiten',
-    'delete' => 'Löschen'
+    'delete' => 'Löschen',
+    'pdf' => 'PDF'
 ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [

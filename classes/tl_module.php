@@ -168,7 +168,7 @@ class tl_module extends \Backend {
 
     public function getCatalogOperationItems() {
 
-        return [ 'create', 'copy', 'edit', 'delete' ];
+        return [ 'create', 'copy', 'edit', 'delete', 'pdf' ];
     }
 
 

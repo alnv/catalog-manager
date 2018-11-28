@@ -156,9 +156,28 @@ class FrontendEditing extends CatalogController {
             $this->deleteImage();
         }
 
-        if ( !$this->blnNoSubmit && ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) ) {
+        if ( !$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
             $this->saveEntity();
+        }
+
+        if ( \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) {
+
+            global $objPage;
+
+            if ( !$this->catalogFrontendEditingViewPage ) {
+
+                $this->catalogFrontendEditingViewPage = $objPage->id;
+            }
+
+            $strQuery = '';
+
+            if ( \Input::get( 'pid' ) ) {
+
+                $strQuery .= '?pid=' . \Input::get( 'pid' );
+            }
+
+            $this->redirectAfterInsertion( $this->catalogFrontendEditingViewPage, $strQuery );
         }
 
         $this->objTemplate->method = 'POST';
@@ -169,6 +188,7 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
         $this->objTemplate->message = $this->CatalogMessage->get( $this->id );
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
+        $this->objTemplate->back = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
         $this->objTemplate->captchaLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['captchaLabel'];
         $this->objTemplate->enctype = $this->blnHasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
@@ -372,7 +392,7 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            if ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) {
+            if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -782,7 +802,7 @@ class FrontendEditing extends CatalogController {
 
         $objCaptcha = new $strClass( $arrCaptcha );
 
-        if ( \Input::post('FORM_SUBMIT') == $this->strFormId || \Input::post('FORM_SUBMIT_BACK') == $this->strFormId ) {
+        if ( \Input::post('FORM_SUBMIT') == $this->strFormId ) {
 
             $objCaptcha->validate();
 
@@ -845,17 +865,7 @@ class FrontendEditing extends CatalogController {
 
     protected function decodeValue( $varValue ) {
 
-        if ( class_exists('StringUtil') ) {
-
-            $varValue = \StringUtil::decodeEntities( $varValue );
-        }
-
-        else {
-
-            $varValue = \Input::decodeEntities( $varValue );
-        }
-
-        return $varValue;
+        return \StringUtil::decodeEntities( $varValue );
     }
 
 
@@ -1075,6 +1085,12 @@ class FrontendEditing extends CatalogController {
 
         if ( strncmp( $strUrl, 'http://', 7 ) !== 0 && strncmp( $strUrl, 'https://', 8 ) !== 0 ) $strUrl = \Environment::get( 'base' ) . $strUrl;
         if ( $strAttributes ) $strUrl .= $strAttributes;
+
+        if ( $this->catalogFormRedirectParameter ) {
+
+            $strParameters = \StringUtil::parseSimpleTokens( $this->catalogFormRedirectParameter, $this->arrValues );
+            $strUrl .= $strAttributes ? '&' . $strParameters : '?' . $strParameters;
+        }
 
         if ( !$blnReturn ) {
 

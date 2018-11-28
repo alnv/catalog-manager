@@ -22,6 +22,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Permission sett
 $GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing settings';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Catalog', 'Please select a catalog.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogFormRedirectParameter'] = [ 'Attach query parameter', 'Here you can attach your query parameters to the redirect URL. You can use simple tokens to access the values ​​of the stored record. For example pid=##id##&category=##category##' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Create back link', 'Here you can create an back link to list view page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogViewPage'] = [ 'Page', 'Please select a page.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseTaxonomies'] = [ 'Enable taxonomies', 'Here you can enable taxonomies.' ];

@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActi
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons'] = 'catalogSocialSharingButtons,catalogSocialSharingHeadline,catalogSocialSharingCssID,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogIgnoreVisibility,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogDefaultValues,catalogNotifyInsert,catalogNotifyDuplicate,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogIgnoreVisibility,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogDefaultValues,catalogNotifyInsert,catalogNotifyDuplicate,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect,catalogFormRedirectParameter';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -283,6 +283,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExternalFormRedirect'] = [
 
         'maxlength' => 255,
         'mandatory' => true,
+        'decodeEntities' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "varchar(255) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormRedirectParameter'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFormRedirectParameter'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'maxlength' => 255,
+        'tl_class' => 'clr w50',
         'decodeEntities' => true
     ],
 

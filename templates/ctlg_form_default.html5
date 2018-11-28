@@ -16,7 +16,10 @@
       <?php if( $this->captchaWidget ): ?>
          <?= $this->captchaWidget; ?>
       <?php endif; ?>
-      <div class="submit_container"><button type="submit" name="FORM_SUBMIT" value="<?= $this->formId ?>"><?= $this->submit; ?></button></div>
+      <div class="submit_container">
+        <button type="submit" name="FORM_SUBMIT" value="<?= $this->formId ?>"><?= $this->submit; ?></button>
+        <button type="submit" name="FORM_SUBMIT_BACK" value="<?= $this->formId ?>"><?= $this->back; ?></button>
+      </div>
    </form>
 </div>
 <!-- indexer::continue -->

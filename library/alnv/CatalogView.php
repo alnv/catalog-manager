@@ -133,6 +133,7 @@ class CatalogView extends CatalogController {
         }
 
         $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
+        $this->catalogDownloads = Toolkit::deserialize( $this->catalogDownloads );
         $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->catalogJoinFields = Toolkit::parseStringToArray( $this->catalogJoinFields );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
@@ -168,8 +169,10 @@ class CatalogView extends CatalogController {
 
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
             $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
+            $this->objMainTemplate->hasDownloads = $this->catalogUseDownloads ? true : false;
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
             $this->objMainTemplate->sharingButtonsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharing'];
+            $this->objMainTemplate->downloadsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['downloadLinks'];
             $this->objMainTemplate->relationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'];
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
         }
@@ -620,6 +623,11 @@ class CatalogView extends CatalogController {
             if ( $this->catalogEnableFrontendEditing ) {
 
                 $arrCatalog['operations'] = $this->generateOperations( $arrCatalog['id'], $arrCatalog['alias'], $arrCatalog );
+            }
+
+            if ( $this->catalogUseDownloads ) {
+
+                $arrCatalog['downloads'] = $this->generateDownloads( $arrCatalog['id'], $arrCatalog['alias'] );
             }
 
             if ( !empty( $arrCatalog ) && is_array( $arrCatalog ) ) {
@@ -1397,6 +1405,35 @@ class CatalogView extends CatalogController {
         if ( $objPage == null ) return '';
 
         return $this->generateFrontendUrl( $objPage, ( $strAlias ? '/' . $strAlias : '' ) );
+    }
+
+
+    protected function generateDownloads( $strID, $strAlias = '' ) {
+
+        $arrReturn = [];
+        $strConnector = '?';
+        $strUrl = ampersand( \Environment::get('indexFreeRequest') );
+
+        if ( strpos( $strUrl, $strConnector ) !== false ) {
+
+            $strConnector = '&';
+        }
+
+        if ( !empty( $this->catalogDownloads ) && is_array( $this->catalogDownloads ) ) {
+
+            foreach ( $this->catalogDownloads as $strDownload ) {
+
+                $arrReturn[ $strDownload ] = [
+
+                    'href' =>  $strUrl . $strConnector . $strDownload . $this->id . '=' . $strID,
+                    'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'][ $strDownload ],
+                    'image' => \Image::getHtml( Toolkit::getIcon( $strDownload ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'][ $strDownload ] ),
+                    'attributes' => '',
+                ];
+            }
+        }
+
+        return $arrReturn;
     }
 
 

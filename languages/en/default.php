@@ -50,6 +50,7 @@ $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['processing'] = 'Processing dropped 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Edit';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detail view';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['downloadLinks'] = 'Downloads';
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lt'] = 'Lower';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['contain'] = 'IN';

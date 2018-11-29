@@ -21,6 +21,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalog_taxonomy_legend'] = 'Taxonomie-Einstel
 $GLOBALS['TL_LANG']['tl_module']['catalog_json_legend'] = 'JSON-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Berechtigungseinstellungen';
 $GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['download_legend'] = 'Download-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormRedirectParameter'] = [ 'Query-Parameter anhängen', 'Hier können Sie Ihre Query-Parameter an die Weiterleitungs-URL anhängen. Sie können Simple Tokens verwenden, um auf die Werte des gespeicherten Datensatzes zuzugreifen. Zum Beispiel pid=##id##&category=##category##' ];
@@ -134,6 +135,9 @@ $GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'] = [ 'Inhaltselemen
 $GLOBALS['TL_LANG']['tl_module']['catalogIgnoreVisibility'] = [ 'Sichtbarkeit ignorieren', 'Es werden auch unsichtbare Elemente angezeigt.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogJoinAsArray'] = [ 'Mehrfache Verknüpfungen als Array ausgeben', 'Hier können Sie mehrfache Verknüpfungen in ein Array auslagern.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Anzeigen bei aktiven URL-Parameter', 'Hier können Sie Ihre URL-Parameter eintragen. Die Liste liefert erst Ergebnisse, wenn alle URL-Parameter gesetzt sind. Mehrere URL-Parameter können Sie komma getrennt eintragen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogUseDownloads'] = [ 'Downloads aktivieren', 'Diese Funktion ermöglicht es aus einem Datensatz verschiedene Download Formate zu erstellen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogDownloads'] = [ 'Downloads auswählen', 'Hier können Sie Ihre Download Formate auswählen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPdfTemplate'] = [ 'PDF Template', 'Hier können Sie ein Template für das PDF auswählen.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 
@@ -164,8 +168,17 @@ $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'] = [
     'create' => 'Erstellen',
     'copy' => 'Duplizieren',
     'edit' => 'Bearbeiten',
-    'delete' => 'Löschen',
+    'delete' => 'Löschen'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloads'] = [
+
     'pdf' => 'PDF'
+];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'] = [
+
+    'pdf' => 'Als PDF runterladen'
 ];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'] = [

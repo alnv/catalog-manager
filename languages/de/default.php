@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['MSC']['FINE_UPLOADER']['processing'] = 'Dateien werden vera
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['relationsLinks'] = 'Links';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'] = 'Detailansicht';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['downloadLinks'] = 'Runterladen';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'] = 'Bearbeiten';
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gt'] = 'Größer';

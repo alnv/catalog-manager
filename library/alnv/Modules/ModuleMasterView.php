@@ -5,7 +5,8 @@ namespace CatalogManager;
 class ModuleMasterView extends \Module {
 
 
-    protected $strMasterAlias;
+    protected $strAct = null;
+    protected $strMasterAlias = null;
     protected $strTemplate = 'mod_catalog_master';
 
 
@@ -26,7 +27,14 @@ class ModuleMasterView extends \Module {
 
         if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) $this->strTemplate = $this->catalogCustomTemplate;
 
+        \System::loadLanguageFile('tl_module');
+
         $this->strMasterAlias = \Input::get( 'auto_item' );
+
+        if ( \Input::get( 'pdf' . $this->id ) ) {
+
+            $this->strAct = 'pdf';
+        }
 
         return parent::generate();
     }
@@ -35,6 +43,12 @@ class ModuleMasterView extends \Module {
     protected function compile() {
 
         global $objPage;
+
+        if ( $this->strAct && $this->strAct == 'pdf' ) {
+
+            $objEntity = new Entity( \Input::get( 'pdf' . $this->id ), $this->catalogTablename );
+            $objEntity->getPdf( $this->id );
+        }
 
         $this->import( 'CatalogView' );
 

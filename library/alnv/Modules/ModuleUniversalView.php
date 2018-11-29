@@ -40,6 +40,11 @@ class ModuleUniversalView extends \Module {
         $this->strAct = \Input::get( 'act' . $this->id );
         $this->strMasterAlias = \Input::get( 'auto_item' );
 
+        if ( !$this->strAct && \Input::get( 'pdf' . $this->id ) ) {
+
+            $this->strAct = 'pdf';
+        }
+
         if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) {
 
             $this->strTemplate = $this->catalogCustomTemplate;
@@ -355,22 +360,7 @@ class ModuleUniversalView extends \Module {
 
     protected function downloadPdf() {
 
-        $this->import( 'FrontendEditing' );
-
-        $this->FrontendEditing->strAct = $this->strAct;
-        $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
-        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
-        $this->FrontendEditing->initialize();
-
-        $blnIsVisible = $this->FrontendEditing->isVisible();
-
-        if ( !$blnIsVisible ) {
-
-            $objCatalogException = new CatalogException();
-            $objCatalogException->set404();
-        }
-
-        $this->FrontendEditing->createPDF();
+        $objEntity = new Entity( \Input::get( 'pdf' . $this->id ), $this->catalogTablename );
+        $objEntity->getPdf( $this->id );
     }
 }

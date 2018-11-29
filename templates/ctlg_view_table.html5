@@ -44,7 +44,17 @@
 		</div>
 	</td>
 	<?php endif; ?>
-	
+
+	<?php if ( !empty( $this->downloads ) && is_array( $this->downloads ) ): ?>
+	<td class="col_<?= $intIndex++; ?> downloads">
+        <div class="ctlg_downloads">
+            <?php foreach( $this->downloads as $strType => $arrDownload ): ?>
+        	    <a href="<?= $arrDownload['href'] ?>" rel="nofollow" title="<?= $arrDownload['title'] ?>"><span class="catalog_<?= $strType ?>_icon"><?= $arrDownload['image']; ?></span> <?= $arrDownload['title']; ?></a>
+        	<?php endforeach; ?>
+        </div>
+    </td>
+    <?php endif; ?>
+
 	<?php if ( $this->useSocialSharingButtons ): ?>
 		<td class="col_<?= $intIndex++; ?> social_sharing_buttons"><?= $this->socialSharingButtons; ?></td>
 	<?php endif; ?>

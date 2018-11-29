@@ -61,7 +61,15 @@
 	   <?php endforeach; ?>
 	</ul>
 	<?php endif; ?>
-	
+
+	<?php if ( !empty( $this->downloads ) && is_array( $this->downloads ) ): ?>
+    <ul class="downloads">
+        <?php foreach( $this->downloads as $strType => $arrDownload ): ?>
+    	<li><a href="<?= $arrDownload['href'] ?>" rel="nofollow" title="<?= $arrDownload['title'] ?>"><span class="catalog_<?= $strType ?>_icon"><?= $arrDownload['image']; ?></span> <?= $arrDownload['title']; ?></a></li>
+    	<?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+
 	<?php if( $this->masterUrl ): ?>
     	<p class="more"><a href="<?= $this->masterUrl ?>" title="<?= $this->title; ?>"><?= $this->readMore; ?></a></p>
     <?php endif; ?>

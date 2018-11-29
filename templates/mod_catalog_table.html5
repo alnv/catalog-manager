@@ -30,6 +30,9 @@
                <?php if ( $this->hasRelations ): ?>
                   <th class="head_<?= $intIndex++ ?> related"><?= $this->relationsColumnTitle; ?></th>
                <?php endif; ?>
+               <?php if ( $this->hasDownloads ): ?>
+                <th class="head_<?= $intIndex++ ?> downloads"><?= $this->downloadsColumnTitle; ?></th>
+               <?php endif; ?>
                <?php if ( $this->catalogUseSocialSharingButtons ): ?>
                   <th class="head_<?= $intIndex++ ?> social_sharing_buttons"><?= $this->sharingButtonsColumnTitle ?></th>
                <?php endif; ?>

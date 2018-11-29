@@ -168,7 +168,19 @@ class tl_module extends \Backend {
 
     public function getCatalogOperationItems() {
 
-        return [ 'create', 'copy', 'edit', 'delete', 'pdf' ];
+        return [ 'create', 'copy', 'edit', 'delete' ];
+    }
+
+
+    public function getPdfTemplates() {
+
+        return $this->getTemplateGroup('ctlg_pdf_');
+    }
+
+
+    public function getCatalogDownloads() {
+
+        return [ 'pdf' ];
     }
 
 

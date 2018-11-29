@@ -22,6 +22,8 @@ class Entity extends CatalogController {
         $this->import( 'Database' );
         $this->import( 'SQLQueryBuilder' );
 
+        \System::loadLanguageFile('catalog_manager');
+
         parent::__construct();
     }
 
@@ -187,8 +189,69 @@ class Entity extends CatalogController {
             }
         }
 
+        if ( $this->arrCatalog['addContentElements'] ) {
+
+            $arrEntity['contentElements'] = '';
+
+            $objContent = \ContentModel::findPublishedByPidAndTable( $arrEntity['id'], $this->catalogTablename );
+
+            if ( $objContent !== null ) {
+
+                while ( $objContent->next() ) {
+
+                    $arrEntity['contentElements'] .= $this->getContentElement( $objContent->current() );
+                }
+            }
+        }
 
         return $arrEntity;
+    }
+
+
+    public function getPdf( $strModuleId = '', $strTemplate = 'ctlg_pdf_default' ) {
+
+        $arrEntity = $this->getEntity();
+        $arrFields = $this->getTemplateFields();
+
+        if ( empty( $arrEntity ) ) {
+
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
+        }
+
+        $strName = $arrEntity['alias'] .'.pdf';
+        $objTemplate = new \FrontendTemplate( $strTemplate );
+
+        $objTemplate->setData([
+            'data' => $arrEntity,
+            'fields' => $arrFields,
+            'table' => $this->catalogTablename,
+            'name' => $this->arrCatalog['name'],
+            'fieldLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'],
+            'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value']
+        ]);
+
+        $strDocument = $objTemplate->parse();
+
+        $objPDF = new \TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
+        $objPDF->SetPrintHeader(false);
+        $objPDF->SetPrintFooter(false);
+        $objPDF->SetFont( 'helvetica', '', 12 );
+
+        $objPDF->AddPage();
+        $objPDF->lastPage();
+
+        $strDom = <<<EOD
+<!DOCTYPE html><html><head></head><body>$strDocument</body></html>
+EOD;
+        $objPDF->writeHTML( $strDom, true, 0, true, 0 );
+        $objPDF->Output( $strName, 'D' );
+
+        $strQuery = 'pdf' . $strModuleId . '=' . $arrEntity['id'];
+        $strRedirect = ampersand( \Environment::get('indexFreeRequest') );
+        $strRedirect = preg_replace( '/[?&]'.$strQuery.'/gm', '', $strRedirect );
+
+        \Controller::redirect( $strRedirect );
     }
 
 

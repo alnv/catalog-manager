@@ -696,60 +696,7 @@ class FrontendEditing extends CatalogController {
 
         $this->redirect( $strUrl );
     }
-
-
-    public function createPDF() {
-
-        global $objPage;
-
-        if ( !$this->catalogFrontendEditingViewPage ) {
-
-            $this->catalogFrontendEditingViewPage = $objPage->id;
-        }
-
-        $strQuery = '';
-        $this->catalogFormRedirectParameter = '';
-
-        if ( \Input::get('pid') ) {
-
-            $strQuery .= '?pid=' . \Input::get('pid');
-        }
-
-        $objEntity = new Entity( $this->strItemID, $this->catalogTablename );
-        $arrEntity = $objEntity->getEntity();
-        $arrFields = $objEntity->getTemplateFields();
-
-        $strName = $arrEntity['alias'] .'.pdf';
-        $objTemplate = new \FrontendTemplate( 'ctlg_pdf_form' );
-
-        $objTemplate->setData([
-            'data' => $arrEntity,
-            'fields' => $arrFields,
-            'table' => $this->catalogTablename,
-            'name' => $this->arrCatalog['name'],
-            'fieldLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'],
-            'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value']
-        ]);
-
-        $strDocument = $objTemplate->parse();
-
-        $objPDF = new \TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
-        $objPDF->SetPrintHeader(false);
-        $objPDF->SetPrintFooter(false);
-        $objPDF->SetFont( 'helvetica', '', 12 );
-
-        $objPDF->AddPage();
-        $objPDF->lastPage();
-
-        $strDom = <<<EOD
-<!DOCTYPE html><html><head></head><body>$strDocument</body></html>
-EOD;
-        $objPDF->writeHTML( $strDom, true, 0, true, 0 );
-        $objPDF->Output( $strName, 'D' );
-
-        $this->redirectAfterInsertion( $this->catalogFrontendEditingViewPage, $strQuery );
-    }
-
+    
 
     protected function deleteChildEntities( $strTable, $strID, $strPtable = '' ) {
 

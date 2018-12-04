@@ -398,9 +398,17 @@ class tl_catalog extends \Backend {
 
         if ( $this->Database->tableExists( $strTable ) ) {
 
-            $arrColumns = $this->Database->listFields( $strTable );
+            $objFieldBuilder = new CatalogFieldBuilder();
+            $objFieldBuilder->initialize( $strTable );
+            $arrFields = $objFieldBuilder->getCatalogFields( false, null );
 
-            $arrReturn = Toolkit::parseColumns( $arrColumns );
+            foreach ( $arrFields as $strFieldname => $arrField ) {
+
+                if ( !is_numeric( $strFieldname ) ) {
+
+                    $arrReturn[ $strFieldname ] = $arrField['title'] ?: $strFieldname;
+                }
+            }
         }
 
         return $arrReturn;

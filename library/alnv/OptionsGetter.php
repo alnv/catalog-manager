@@ -492,6 +492,8 @@ class OptionsGetter extends CatalogController {
                     'joins' => []
                 ];
 
+                $strLanguageColumn = '';
+                $strDefaultLanguage = '';
                 $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1' )->execute( $this->strActiveTable  );
 
                 if ( $objCatalog->numRows ) {
@@ -507,9 +509,20 @@ class OptionsGetter extends CatalogController {
                             'onTable' => $objCatalog->pTable
                         ];
                     }
+
+                    if ( $this->hasLanguageNavigationBar( $objCatalog ) ) {
+
+                        $strDefaultLanguage = \Input::get('ctlg_language') ?: $objCatalog->fallbackLanguage;
+                        $strLanguageColumn = $objCatalog->languageEntityColumn;
+                    }
                 }
 
                 $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
+
+                if ( $strLanguageColumn && $strDefaultLanguage ) {
+
+                    $this->arrActiveEntity[ $strLanguageColumn ] = $strDefaultLanguage;
+                }
 
                 return null;
 
@@ -530,6 +543,12 @@ class OptionsGetter extends CatalogController {
                 }
 
                 $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
+                $strAct = $this->strModuleID ? \Input::get( 'act'. $this->strModuleID ) : \Input::get('act');
+
+                if ( !$strID && !$strAct ) {
+
+                    return null;
+                }
 
                 $arrQuery = [
 
@@ -565,6 +584,11 @@ class OptionsGetter extends CatalogController {
                 }
 
                 $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
+
+                if ( $this->hasLanguageNavigationBar( $objCatalog ) ) {
+
+                    $this->arrActiveEntity[ $objCatalog->languageEntityColumn ] = $GLOBALS['TL_LANGUAGE'] ?: $objCatalog->fallbackLanguage;
+                }
 
                 break;
 
@@ -624,5 +648,11 @@ class OptionsGetter extends CatalogController {
         }
 
         return true;
+    }
+
+
+    protected function hasLanguageNavigationBar( $objCatalog ) {
+
+        return $objCatalog->enableLanguageBar && !in_array( $objCatalog->mode, [ '5', '6' ] ) && $objCatalog->languageEntitySource == 'currentTable';
     }
 }

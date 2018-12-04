@@ -282,14 +282,14 @@ class tl_module extends \Backend {
 
         $strTable = $dc->activeRecord->catalogTablename ? $dc->activeRecord->catalogTablename : '';
 
-        if ( !$this->Database->tableExists( $strTable ) ) return '';
-
         if ( $dc->activeRecord->type == 'catalogTaxonomyTree' && $dc->activeRecord->catalogRoutingSource == 'page' && $dc->activeRecord->catalogPageRouting ) {
 
             $objPage = $this->Database->prepare( 'SELECT * FROM tl_page WHERE id = ?' )->limit(1)->execute( $dc->activeRecord->catalogPageRouting );
 
             if ( $objPage->numRows ) $strTable = $objPage->catalogUseRouting ? $objPage->catalogRoutingTable : $strTable;
         }
+
+        if ( !$this->Database->tableExists( $strTable ) ) return '';
 
         return $strTable;
     }

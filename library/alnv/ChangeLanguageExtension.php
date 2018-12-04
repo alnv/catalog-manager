@@ -18,8 +18,8 @@ class ChangeLanguageExtension extends \Frontend {
 
         $this->strMasterAlias = \Input::get('auto_item');
         $this->strTable = $objPage->catalogChangeLanguageTable;
-        $strTargetRoot = $event->getNavigationItem()->getRootPage();
-        $strLanguage = $strTargetRoot->rootLanguage ? $strTargetRoot->rootLanguage : $strTargetRoot->language;
+        $objTargetRoot = $event->getNavigationItem()->getRootPage();
+        $strLanguage = $objTargetRoot->rootLanguage ? $objTargetRoot->rootLanguage : $objTargetRoot->language;
         
         if ( !\Config::get('useAutoItem') || !$this->strMasterAlias ) return null;
 
@@ -49,7 +49,22 @@ class ChangeLanguageExtension extends \Frontend {
 
         if ( !empty( $this->arrEntity ) && is_array( $this->arrEntity ) ) {
 
-            $event->getUrlParameterBag()->setUrlAttribute( 'items', $this->arrEntity['alias'] );
+            $arrData = [];
+            $arrParameters = [];
+            $objTargetPage = $event->getNavigationItem()->getTargetPage();
+
+            if ( $objTargetPage->catalogUseRouting ) {
+
+                $arrData = $this->arrEntity;
+                $arrParameters = Toolkit::getRoutingParameter( $objTargetPage->catalogRouting );
+
+                foreach ( $arrParameters as $strParameter ) {
+
+                    $event->getUrlParameterBag()->removeUrlAttribute( $strParameter );
+                }
+            }
+
+            $event->getUrlParameterBag()->setUrlAttribute( 'items', Toolkit::generateAliasWithRouting( $this->arrEntity['alias'], $arrParameters, $arrData ) );
         }
     }
 
@@ -108,5 +123,33 @@ class ChangeLanguageExtension extends \Frontend {
 
             )->limit(1)->execute( $strLinkValue, $strLanguage )->row();
         }
+    }
+
+
+    protected function generateUrl( $strAlias, $objEvent ) {
+
+        $arrCatalog = [];
+        $arrParameters = [];
+        $objPage = $objEvent->getNavigationItem()->getTargetPage();
+
+        if ( $objPage->catalogRoutingTable ) {
+
+            $strTable = $objPage->catalogRoutingTable;
+            $arrParameters = Toolkit::getRoutingParameter( $objPage->catalogRouting );
+            // @todo get catalog and language
+            $objCatalog = $this->Database->prepare( 'SELECT * FROM ' . $strTable . ' WHERE alias = ?' )->limit(1)->execute( $strAlias );
+
+            if ( $objCatalog->numRows ) {
+
+                $arrCatalog = $objCatalog->row();
+            }
+
+            foreach ( $arrParameters as $strParameter ) {
+
+                $objEvent->getUrlParameterBag()->removeUrlAttribute( $strParameter );
+            }
+        }
+
+        return Toolkit::generateAliasWithRouting( $strAlias, $arrParameters, $arrCatalog );
     }
 }

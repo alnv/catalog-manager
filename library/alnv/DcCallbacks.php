@@ -515,15 +515,17 @@ class DcCallbacks extends \Backend {
 
     public function setGlobalTranslateButton( \DataContainer $dc ) {
 
+        $strLanguage = \Input::get('ctlg_language');
+
         if ( \Input::get('ctlg_return') ) {
 
-            $strUrl = str_replace( '&ctlg_language=' . \Input::get('ctlg_language') , '', \Environment::get('uri') );
+            $strUrl = str_replace( '&ctlg_language=' . $strLanguage , '', \Environment::get('uri') );
             $strUrl = str_replace( '&ctlg_return=1', '', $strUrl );
 
             \Controller::redirect( $strUrl );
         }
 
-        if ( !\Input::get('ctlg_language') || !\Input::get('id') ) {
+        if ( !$strLanguage || !\Input::get('id') ) {
 
             return null;
         }

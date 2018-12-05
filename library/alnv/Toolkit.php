@@ -884,18 +884,15 @@ class Toolkit {
 
         $strValue = \StringUtil::generateAlias( $strValue );
 
-        if ( version_compare( VERSION, '4.5', '>' ) && !Toolkit::ignoreRomanization() ) {
+        $strDelimiter = '-';
 
-            $strDelimiter = '-';
+        if ( isset( $arrOptions['delimiter'] ) && $arrOptions['delimiter'] ) {
 
-            if ( isset( $arrOptions['delimiter'] ) && $arrOptions['delimiter'] ) {
-
-                $strDelimiter = $arrOptions['delimiter'];
-            }
-
-            $arrSlugOptions = [ 'locale' => 'de', 'delimiter' => $strDelimiter ];
-            $strValue = \System::getContainer()->get( 'contao.slug.generator' )->generate( $strValue, $arrSlugOptions );
+            $strDelimiter = $arrOptions['delimiter'];
         }
+
+        $arrSlugOptions = [ 'locale' => 'de', 'delimiter' => $strDelimiter ];
+        $strValue = \System::getContainer()->get( 'contao.slug.generator' )->generate( $strValue, $arrSlugOptions );
 
         return $strValue;
     }

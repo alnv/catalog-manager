@@ -884,15 +884,23 @@ class Toolkit {
 
         $strValue = \StringUtil::generateAlias( $strValue );
 
-        $strDelimiter = '-';
+        if ( version_compare( VERSION, '3.5', '>' ) && class_exists( 'Ausi\SlugGenerator\SlugGenerator' ) && !Toolkit::ignoreRomanization() ) {
 
-        if ( isset( $arrOptions['delimiter'] ) && $arrOptions['delimiter'] ) {
+            $strDelimiter = '-';
 
-            $strDelimiter = $arrOptions['delimiter'];
+            if ( isset( $arrOptions['delimiter'] ) && $arrOptions['delimiter'] ) {
+
+                $strDelimiter = $arrOptions['delimiter'];
+            }
+
+            $objSlugGenerator = new \Ausi\SlugGenerator\SlugGenerator( ( new \Ausi\SlugGenerator\SlugOptions )
+                ->setValidChars('a-zA-Z0-9')
+                ->setLocale('de')
+                ->setDelimiter( $strDelimiter )
+            );
+
+            $strValue = $objSlugGenerator->generate( $strValue );
         }
-
-        $arrSlugOptions = [ 'locale' => 'de', 'delimiter' => $strDelimiter ];
-        $strValue = \System::getContainer()->get( 'contao.slug.generator' )->generate( $strValue, $arrSlugOptions );
 
         return $strValue;
     }

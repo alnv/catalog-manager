@@ -345,6 +345,13 @@ class OptionsGetter extends CatalogController {
             }
         }
 
+        $arrOrderBy = \StringUtil::deserialize( $this->arrField['dbOrderBy'], true );
+
+        if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
+
+            asort( $arrOptions );
+        }
+
         return $arrOptions;
     }
 

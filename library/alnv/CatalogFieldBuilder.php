@@ -133,7 +133,7 @@ class CatalogFieldBuilder extends CatalogController {
             if ( $blnDcFormat && Toolkit::isDcConformField( $arrField ) && !$arrField[ '_dcFormat' ] ) $arrField[ '_dcFormat' ] = $this->setDcFormatAttributes( $arrField, $objModule );
             if ( $arrField == null ) continue;
 
-            $arrReturn[ $strFieldname ] = $this->prepareDefaultFields( $arrField, $strFieldname );
+            $arrReturn[ $strFieldname ] = $this->prepareDefaultFields( $arrField, $strFieldname, $blnCoreTable );
         }
         
         return $arrReturn;
@@ -468,7 +468,12 @@ class CatalogFieldBuilder extends CatalogController {
     }
 
 
-    protected function prepareDefaultFields( $arrField, $strFieldname ) {
+    protected function prepareDefaultFields( $arrField, $strFieldname, $blnCoreTable = false ) {
+
+        if ( $blnCoreTable ) {
+
+            return $arrField;
+        }
 
         switch ( $strFieldname ) {
 
@@ -533,6 +538,7 @@ class CatalogFieldBuilder extends CatalogController {
                 $arrField['_dcFormat']['save_callback'] = [ function( $varValue, \DataContainer $dc ) {
 
                     $objDcCallbacks = new DcCallbacks();
+
                     return $objDcCallbacks->generateAlias( $varValue, $dc, 'title', $this->strTable );
                 }];
 

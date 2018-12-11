@@ -423,14 +423,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDownloads'] = [
     'eval' => [
 
         'multiple' => true,
-        'maxlength' => 512,
+        'maxlength' => 128,
         'tl_class' => 'clr',
     ],
 
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogDownloads' ],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloads'],
     'exclude' => true,
-    'sql' => "varchar(512) NOT NULL default ''"
+    'sql' => "varchar(128) NOT NULL default ''"
 
 ];
 

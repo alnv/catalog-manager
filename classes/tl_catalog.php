@@ -143,6 +143,11 @@ class tl_catalog extends \Backend {
                 return [ '3', '4' ];
             }
 
+            if ( $dc->activeRecord->mode == '3' ) { // backwards compatibility
+
+                return [ '3', '4' ];
+            }
+
             return [ '4' ];
         }
 

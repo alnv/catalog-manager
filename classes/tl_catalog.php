@@ -127,8 +127,9 @@ class tl_catalog extends \Backend {
 
         $blnDynamicPtable = false;
         $strTablename = $dc->activeRecord->tablename;
+        $blnCoreTable = Toolkit::isCoreTable( $strTablename );
 
-        if ( Toolkit::isCoreTable( $strTablename ) ) {
+        if ( $blnCoreTable ) {
 
             \Controller::loadDataContainer( $strTablename );
 
@@ -137,7 +138,12 @@ class tl_catalog extends \Backend {
 
         if ( $dc->activeRecord->pTable || $blnDynamicPtable ) {
 
-            return [ '3', '4' ];
+            if ( $blnCoreTable ) {
+
+                return [ '3', '4' ];
+            }
+
+            return [ '4' ];
         }
 
         $arrModes = Toolkit::$arrModeTypes;

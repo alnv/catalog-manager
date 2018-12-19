@@ -304,7 +304,7 @@ class OptionsGetter extends CatalogController {
            $this->setValueToOption( $arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
         }
 
-        $arrOrderBy = \StringUtil::deserialize( $this->arrField['dbOrderBy'], true );
+        $arrOrderBy = deserialize( $this->arrField['dbOrderBy'], true );
 
         if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
 
@@ -352,7 +352,7 @@ class OptionsGetter extends CatalogController {
             }
         }
 
-        $arrOrderBy = \StringUtil::deserialize( $this->arrField['dbOrderBy'], true );
+        $arrOrderBy = deserialize($this->arrField['dbOrderBy'], true);
 
         if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
 

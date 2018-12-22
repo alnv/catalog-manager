@@ -673,7 +673,7 @@ class Toolkit {
 
                     if ( is_array( $strValue ) && $arrField['fileType'] == 'gallery' ) {
 
-                        if ( $strValue['preview'] ) $arrData[ $strFieldname . 'Preview' ] = $strValue['preview'];
+                        if ( $strValue['preview'] ) $arrData[ $arrField['fieldname'] . 'Preview' ] = $strValue['preview'];
 
                         $strValue = $strValue['gallery'];
                     }

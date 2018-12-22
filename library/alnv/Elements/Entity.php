@@ -152,7 +152,7 @@ class Entity extends CatalogController {
             $objParentFieldBuilder = new CatalogFieldBuilder();
             $objParentFieldBuilder->initialize( $this->arrCatalog['pTable'] );
 
-            $this->mergeFields( $objFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable'] );
+            $this->mergeFields( $objParentFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable'] );
         }
 
         $objEntity = $this->SQLQueryBuilder->execute( $arrQuery );

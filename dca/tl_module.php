@@ -10,6 +10,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogFastMode
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogStoreFile';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseViewPage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRelation';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogMapProtected';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogRedirectType';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseDownloads';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogAddMapInfoBox';
@@ -29,6 +30,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legen
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogUniversalView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_master_legend:hide},catalogSEOTitle,catalogSEODescription,catalogMasterTemplate,catalogPreventMasterView,catalogUseMasterPage,catalogUseViewPage;{catalog_view_legend},catalogDisableMasterLink,catalogShowQuantity,catalogAddContentElements,enableTableView,catalogFastMode;{catalog_taxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter,catalogActiveParameters;{catalog_orderBy_legend:hide},catalogOrderBy,catalogGroupBy,catalogGroupHeadlineTag,catalogRandomSorting;{catalog_pagination_legend:hide},catalogAddPagination,catalogPerPage,catalogOffset;{catalog_join_legend:hide},catalogJoinFields,catalogJoinCTables,catalogJoinParentTable,catalogJoinAsArray;{catalog_relation_legend:hide},catalogUseRelation;{catalog_frontendEditing_legend:hide},catalogEnableFrontendEditing,catalogStoreFile,catalogUseFrontendEditingViewPage;{catalog_map_legend:hide},catalogUseMap;{catalog_radiusSearch_legend:hide},catalogUseRadiusSearch;{download_legend:hide},catalogUseDownloads;{social_sharing_legend:hide},catalogUseSocialSharingButtons;{catalog_comments_legend:hide},catalogAllowComments;{template_legend:hide},catalogTemplate,catalogCustomTemplate;{catalog_json_legend:hide},catalogUseArray,catalogExcludeArrayOptions,catalogSendJsonHeader;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseTaxonomies'] = 'catalogTaxonomies';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogMapProtected'] = 'catalogMapPrivacyText';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRoutingSource_page'] = 'catalogPageRouting';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRelation'] = 'catalogRelatedChildTables';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalogMapInfoBoxContent';
@@ -46,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'cata
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons'] = 'catalogSocialSharingButtons,catalogSocialSharingHeadline,catalogSocialSharingCssID,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle,catalogMapProtected';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogIgnoreVisibility,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogDefaultValues,catalogNotifyInsert,catalogNotifyDuplicate,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect,catalogFormRedirectParameter';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
@@ -1996,4 +1998,35 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogIgnoreVisibility'] = [
 
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapProtected'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapProtected'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'submitOnChange' => true,
+    ],
+
+    'exclude' => true,
+    'sql' => "char(1) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapPrivacyText'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapPrivacyText'],
+    'inputType' => 'textarea',
+
+    'eval' => [
+
+        'rte' => 'tinyMCE',
+        'tl_class' => 'clr',
+        'allowHtml' => true
+    ],
+
+    'exclude' => true,
+    'sql' => "text NULL"
 ];

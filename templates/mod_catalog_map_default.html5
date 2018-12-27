@@ -5,23 +5,24 @@
       <p class="ctlg_view_message"><?= $this->message; ?></p>
    <?php endif; ?>
 
-   <div id="id_<?= $this->map['id'] ?>" class="catalog_map_default" style="width: 100%; height: 768px;"></div>
-   
-   <script async defer>
-
+   <div id="id_<?= $this->map['id'] ?>" class="catalog_map_default" style="width: 100%; height: 480px;">
+    <?php if ( $this->catalogMapProtected && !\Input::cookie( 'catalog_google_maps_privacy_confirmation' ) ): ?>
+        <?php if ( $this->catalogMapPrivacyText ): ?>
+            <?= $this->catalogMapPrivacyText ?>
+        <?php endif; ?>
+        <button id="confirm_<?= $this->map['id'] ?>" class="submit"><?= $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'] ?></button>
+    <?php endif; ?>
+   </div>
+   <script defer>
       'use strict';
-	  
       var CatalogManagerMaps = CatalogManagerMaps || [];
       var objCatalogMapView_<?= $this->map['id'] ?> = null;
       var objCatalogMapBounds_<?= $this->map['id'] ?> = null;
 
       CatalogManagerMaps[ CatalogManagerMaps.length ] = function () {
-
          var objLatLng = new google.maps.LatLng("<?= $this->map['lat']; ?>", "<?= $this->map['lng']; ?>");
-
          objCatalogMapBounds_<?= $this->map['id'] ?> = new google.maps.LatLngBounds();
          objCatalogMapView_<?= $this->map['id'] ?> = new google.maps.Map( document.getElementById( "id_<?= $this->map['id'] ?>" ), {
-
 		 	maxZoom: 19,
             center: objLatLng,
             zoom: <?= $this->map['mapZoom']; ?>,
@@ -30,8 +31,28 @@
             <?php if( $this->map['mapStyle'] ): ?> <?= 'styles: ' . $this->map['mapStyle'] ?> <?php endif; ?>
          });
       };
-
    </script>
+   <?php if ( $this->catalogMapProtected && !\Input::cookie( 'catalog_google_maps_privacy_confirmation' ) ): ?>
+   <script defer>
+        var enableGoogleMaps = function () {
+            var objAgreeButton = document.getElementById('confirm_<?= $this->map['id'] ?>');
+            if ( typeof objAgreeButton !== 'undefined' ) {
+                objAgreeButton.addEventListener( 'click', function() {
+                    var objDate = new Date();
+                        objDate.setTime( objDate.getTime() + 86400 );
+                    var strExpires = "expires="+ objDate.toUTCString();
+                    document.cookie = "catalog_google_maps_privacy_confirmation=1;" + strExpires + ";path=/";
+                    initializeGoogleMaps();
+                });
+            }
+        }
+        if ( document.addEventListener ) {
+            document.addEventListener( 'DOMContentLoaded', enableGoogleMaps, false );
+        } else if ( document.attachEvent ) {
+            document.attachEvent( 'onload', enableGoogleMaps );
+        }
+   </script>
+   <?php endif; ?>
    <?= $this->output; ?>
    <?php if ($this->catalogAddPagination): ?>
       <?= $this->pagination; ?>

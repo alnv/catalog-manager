@@ -87,6 +87,8 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['tweet'] = 'Tweet';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['share'] = 'Share';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharing'] = 'Share';
 
+$GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'] = 'I agree that using Google Maps will transfer my data to Google.';
+
 $GLOBALS['TL_LANG']['MSC']['sharingButtons'] = [
 
     'xing' => 'Xing',

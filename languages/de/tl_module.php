@@ -24,6 +24,8 @@ $GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing-Eins
 $GLOBALS['TL_LANG']['tl_module']['download_legend'] = 'Download-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapProtected'] = [ 'Datenschutz-Bestätigung', 'Hier können Sie eine Datenschutz-Bestätigung hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogMapPrivacyText'] = [ 'Datenschutzhinweis', 'Hier können Sie Ihre Datenschutzerklärung hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormRedirectParameter'] = [ 'Query-Parameter anhängen', 'Hier können Sie Ihre Query-Parameter an die Weiterleitungs-URL anhängen. Sie können Simple Tokens verwenden, um auf die Werte des gespeicherten Datensatzes zuzugreifen. Zum Beispiel pid=##id##&category=##category##' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogUseViewPage'] = [ 'Zurück-Link erstellen', 'Hier können Sie ein zurück-Link zu der Listenansicht erstellen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogViewPage'] = [ 'Seite auswählen', 'Bitte wählen Sie eine Seite aus.' ];

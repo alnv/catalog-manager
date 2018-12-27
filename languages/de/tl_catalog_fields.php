@@ -129,6 +129,9 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['filesTemplate'] = [ 'Template', 'Bitte
 $GLOBALS['TL_LANG']['tl_catalog_fields']['previewImagePosition'] = [ 'Bildposition', 'Bitte wählen Sie eine Bildposition aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['usePreviewImage'] = [ 'Vorschaubild verwenden', 'Hier können Sie ein Vorschaubild aus der Galerie verwenden.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapPrivacyText'] = [ 'Datenschutzhinweis', 'Hier können Sie Ihre Datenschutzerklärung hinzufügen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['mapProtected'] = [ 'Datenschutz-Bestätigung', 'Hier können Sie eine Datenschutz-Bestätigung hinzufügen.' ];
+
 $GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'] = [
 
     'first' => 'Erstes',

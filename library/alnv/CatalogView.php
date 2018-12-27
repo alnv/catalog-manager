@@ -555,7 +555,7 @@ class CatalogView extends CatalogController {
 
             if ( $this->blnGoogleMapScript ) {
 
-                $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
+                $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer( ( $this->catalogMapProtected ? true : false ) );
             }
 
             if ( $this->catalogUseArray || $this->blnShowAsGroup ) {
@@ -684,6 +684,7 @@ class CatalogView extends CatalogController {
                         case 'map':
 
                             if ( !$this->blnGoogleMapScript ) $this->blnGoogleMapScript = true;
+                            if ( !$this->catalogMapProtected ) $this->catalogMapProtected = $arrField['mapProtected'] ?: '';
 
                             $arrCatalog[ $strID ] = Map::parseValue( '', $arrField, $arrCatalog );
 
@@ -774,7 +775,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->blnGoogleMapScript ) {
 
-            $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
+            $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer( ( $this->catalogMapProtected ? true : false ) );
         }
 
         if ( $this->catalogRandomSorting ) shuffle( $arrCatalogs );

@@ -52,6 +52,8 @@ class Map {
             'fieldname' => $arrField['fieldname'],
             'description' => $arrField['description'],
             'mapTemplate' => $arrField['mapTemplate'],
+            'mapProtected' => $arrField['mapProtected'],
+            'mapPrivacyText' => $arrField['mapPrivacyText'],
             'id' => static::createUniqueID( $arrField, $arrCatalog ),
             'mapMarker' => $arrField['mapMarker'] ? 'true' : 'false',
             'addMapInfoBox' => $arrField['addMapInfoBox'] ? 'true' : 'false',
@@ -101,43 +103,41 @@ class Map {
     }
 
 
-    public static function generateGoogleMapJSInitializer() {
+    public static function generateGoogleMapJSInitializer( $blnMapProtected = false ) {
 
         $strScript = sprintf( "https://maps.google.com/maps/api/js?language=%s%s", ( $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en' ), ( \Config::get('catalogGoogleMapsClientKey') ? '&key='. \Config::get('catalogGoogleMapsClientKey') .'' : '' ) );
 
         return ''.
 
-        '<script async defer>'.
-            '(function(){'.
-
+        '<script defer>'.
+            'var initializeGoogleMaps = function(){'.
                 '"use strict";'.
-
                 'function loadGoogleMaps() {'.
                     ' var objJSScript=document.createElement("script");'.
                     ' objJSScript.src="' . $strScript . '";'.
                     ' objJSScript.id="id_ctlg_gm_api";'.
+                    ' objJSScript.defer="true";'.
                     ' objJSScript.onload=loadGoogleMapsInfoBoxLibrary;'.
                     ' document.body.appendChild( objJSScript );'.
-                '};'.
-
+                '}'.
                 'function loadGoogleMapsInfoBoxLibrary() {'.
                     ' var objJSScript=document.createElement("script");'.
                     ' objJSScript.src="system/modules/catalog-manager/assets/InfoBox.js";'.
                     ' objJSScript.id="id_ctlg_ib";'.
+                    ' objJSScript.defer="true";'.
                     ' objJSScript.onload=loadCatalogManagerMaps;'.
                     ' document.body.appendChild( objJSScript );'.
-                '};'.
-
+                '}'.
                 'function loadCatalogManagerMaps() {'.
-                    'if ( typeof CatalogManagerMaps != "undefined" ) {'.
-                       'if ( typeof CatalogManagerMaps == "object" && CatalogManagerMaps.length ) {'.
+                    'if ( typeof CatalogManagerMaps !== "undefined" ) {'.
+                       'if ( typeof CatalogManagerMaps === "object" && CatalogManagerMaps.length ) {'.
                             'for( var i = 0; i < CatalogManagerMaps.length; i++ ){ CatalogManagerMaps[i](); }'.
                         '}'.
                     '}'.
-                '};'.
-
-                'if ( document.addEventListener ){ document.addEventListener( "DOMContentLoaded", loadGoogleMaps, false ); } else if ( document.attachEvent ){ document.attachEvent( "onload", loadGoogleMaps ); }'.
-            '})()'.
+                '}'.
+                'loadGoogleMaps()'.
+            '};'.
+            ( !$blnMapProtected || \Input::cookie( 'catalog_google_maps_privacy_confirmation' ) ? 'if ( document.addEventListener ){ document.addEventListener( "DOMContentLoaded", initializeGoogleMaps, false ); } else if ( document.attachEvent ){ document.attachEvent( "onload", initializeGoogleMaps ); }' : '' ) .
         '</script>';
     }
 }

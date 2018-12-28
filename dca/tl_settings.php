@@ -5,7 +5,9 @@ $GLOBALS['TL_DCA']['tl_settings']['config']['onload_callback'] = [
     [ 'CatalogManager\tl_settings', 'changeGlobals' ]
 ];
 
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'catalogMapProtected';
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;{catalog_manager_dsgvo_legend},catalogMapProtected;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
+$GLOBALS['TL_DCA']['tl_settings']['subpalettes']['catalogMapProtected'] = 'catalogMapPrivacyText';
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogGoogleMapsServerKey'] = [
 
@@ -53,4 +55,32 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogNavigationAreas'] = [
     ],
 
     'save_callback' => [ [ 'CatalogManager\tl_settings', 'parseNavigationName' ] ]
+];
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['catalogMapProtected'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_settings']['catalogMapProtected'],
+    'inputType' => 'checkbox',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'submitOnChange' => true,
+    ],
+
+    'exclude' => true
+];
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['catalogMapPrivacyText'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_settings']['catalogMapPrivacyText'],
+    'inputType' => 'textarea',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'allowHtml' => true
+    ],
+
+    'exclude' => true
 ];

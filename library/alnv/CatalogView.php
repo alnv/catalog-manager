@@ -185,6 +185,9 @@ class CatalogView extends CatalogController {
         $this->objMainTemplate->dateTimeFormat = $this->strDateTimeFormat;
         $this->objMainTemplate->catalogEntityFields = $this->arrEntityFields;
 
+        $this->objMainTemplate->mapProtected = \Config::get('catalogMapProtected');
+        $this->objMainTemplate->mapPrivacyText = \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyText') );
+
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
 
         if ( !$this->FrontendEditingPermission->blnDisablePermissions ) {
@@ -555,7 +558,7 @@ class CatalogView extends CatalogController {
 
             if ( $this->blnGoogleMapScript ) {
 
-                $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer( ( $this->catalogMapProtected ? true : false ) );
+                $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
             }
 
             if ( $this->catalogUseArray || $this->blnShowAsGroup ) {
@@ -684,7 +687,6 @@ class CatalogView extends CatalogController {
                         case 'map':
 
                             if ( !$this->blnGoogleMapScript ) $this->blnGoogleMapScript = true;
-                            if ( !$this->catalogMapProtected ) $this->catalogMapProtected = $arrField['mapProtected'] ?: '';
 
                             $arrCatalog[ $strID ] = Map::parseValue( '', $arrField, $arrCatalog );
 
@@ -775,7 +777,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->blnGoogleMapScript ) {
 
-            $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer( ( $this->catalogMapProtected ? true : false ) );
+            $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
         }
 
         if ( $this->catalogRandomSorting ) shuffle( $arrCatalogs );

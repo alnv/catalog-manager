@@ -52,15 +52,15 @@ class Map {
             'fieldname' => $arrField['fieldname'],
             'description' => $arrField['description'],
             'mapTemplate' => $arrField['mapTemplate'],
-            'mapProtected' => $arrField['mapProtected'],
-            'mapPrivacyText' => $arrField['mapPrivacyText'],
+            'mapProtected' => \Config::get('catalogMapProtected'),
             'id' => static::createUniqueID( $arrField, $arrCatalog ),
             'mapMarker' => $arrField['mapMarker'] ? 'true' : 'false',
             'addMapInfoBox' => $arrField['addMapInfoBox'] ? 'true' : 'false',
             'mapStyle' => $arrField['mapStyle'] ? $arrField['mapStyle'] : '',
             'mapScrollWheel' => $arrField['mapScrollWheel'] ? 'true' : 'false',
             'mapType' => $arrField['mapType'] ? $arrField['mapType'] : 'HYBRID',
-            'mapZoom' => $arrField['mapZoom'] ? intval( $arrField['mapZoom'] ) : 10
+            'mapZoom' => $arrField['mapZoom'] ? intval( $arrField['mapZoom'] ) : 10,
+            'mapPrivacyText' =>  \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyText') )
         ];
 
         if ( $arrField['mapInfoBoxContent'] ) {
@@ -103,7 +103,7 @@ class Map {
     }
 
 
-    public static function generateGoogleMapJSInitializer( $blnMapProtected = false ) {
+    public static function generateGoogleMapJSInitializer() {
 
         $strScript = sprintf( "https://maps.google.com/maps/api/js?language=%s%s", ( $GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en' ), ( \Config::get('catalogGoogleMapsClientKey') ? '&key='. \Config::get('catalogGoogleMapsClientKey') .'' : '' ) );
 
@@ -137,7 +137,7 @@ class Map {
                 '}'.
                 'loadGoogleMaps()'.
             '};'.
-            ( !$blnMapProtected || \Input::cookie( 'catalog_google_maps_privacy_confirmation' ) ? 'if ( document.addEventListener ){ document.addEventListener( "DOMContentLoaded", initializeGoogleMaps, false ); } else if ( document.attachEvent ){ document.attachEvent( "onload", initializeGoogleMaps ); }' : '' ) .
+            ( !\Config::get('catalogMapProtected') || \Input::cookie( 'catalog_google_maps_privacy_confirmation' ) ? 'if ( document.addEventListener ){ document.addEventListener( "DOMContentLoaded", initializeGoogleMaps, false ); } else if ( document.attachEvent ){ document.attachEvent( "onload", initializeGoogleMaps ); }' : '' ) .
         '</script>';
     }
 }

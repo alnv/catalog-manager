@@ -46,6 +46,7 @@ class CatalogFormFilter extends CatalogController {
         }
 
         $arrFields = [];
+        $arrParameters = [];
         $strAction = $this->getActionAttr();
         $strFormId = md5( $this->strFormId );
 
@@ -81,14 +82,11 @@ class CatalogFormFilter extends CatalogController {
 
                 if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
 
-                    $strCurrentUrl = \Environment::get( 'requestUri' );
-                    $strCurrentUrl = preg_replace('~(\?|&)'. $strName .'=[^&]*~','$1', $strCurrentUrl );
-
                     if ( empty( $this->arrFormFields[ $strName ]['options'] ) ) {
 
                         if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
-                            \Controller::redirect( $strCurrentUrl );
+                            $arrParameters[] = $strName;
                         }
 
                         continue;
@@ -102,7 +100,7 @@ class CatalogFormFilter extends CatalogController {
 
                             if ( !in_array( $this->getInput( $strName ), $arrOptions ) ) {
 
-                                \Controller::redirect( $strCurrentUrl );
+                                $arrParameters[] = $strName;
                             }
                         }
                     }
@@ -137,6 +135,18 @@ class CatalogFormFilter extends CatalogController {
 
                 $arrFields[ $strName ] = $objTemplate->parse();
             }
+        }
+
+        if ( !empty( $arrParameters ) ) {
+
+            $strCurrentUrl = \Environment::get( 'requestUri' );
+
+            foreach ( $arrParameters as $strParam ) {
+
+                $strCurrentUrl = preg_replace('~(\?|&)'. $strParam .'=[^&]*~','$1', $strCurrentUrl );
+            }
+
+            \Controller::redirect( $strCurrentUrl );
         }
 
         $arrAttributes = Toolkit::deserialize( $this->arrForm['attributes'] );

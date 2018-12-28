@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage', 'mapProtected' ],
+        '__selector__' => [ 'type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,dynValue;{database_legend},fieldname,statement,useIndex;{autocompletion_legend:hide},autoCompletionType;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{frontend_legend:hide},placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'checkbox' => '{general_legend},type,title,label,description,value;{database_legend},fieldname,statement,useIndex;{options_legend},optionsType;{evaluation_legend:hide},mandatory,doNotCopy,multiple,enableToggleIcon,disabled,submitOnChange,tl_class;{frontend_legend:hide},tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
         'upload' => '{general_legend},type,title,label,description,value;{database_legend},fieldname,statement;{file_type_legend},fileType;{evaluation_legend:hide},mandatory,doNotCopy,disabled,filesOnly,extensions,path,maxsize,tl_class;{frontend_legend:hide},tabindex,template,cssID,useFineUploader;{panelLayout_legend:hide},exclude;{invisible_legend:hide},invisible',
         'message' => '{general_legend},type,fieldname,title,message;{invisible_legend:hide},invisible',
-        'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle,mapProtected;{invisible_legend:hide},invisible',
+        'map' => '{general_legend},type,fieldname,title,label,description;{mapField_legend},latField,lngField,mapTemplate,mapZoom,mapType,mapScrollWheel,mapMarker,addMapInfoBox,mapStyle;{invisible_legend:hide},invisible',
         'fieldsetStart' => '{general_legend},type,title,label,isHidden;{invisible_legend:hide},invisible',
         'fieldsetStop' => '{general_legend},type,title;{invisible_legend:hide},invisible',
         'dbColumn' => '{general_legend},type,title,label,description;{database_legend},fieldname,statement,useIndex;{evaluation_legend:hide},doNotCopy;{invisible_legend:hide},invisible',
@@ -128,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
     'subpalettes' => [
 
         'useSize' => 'size',
-        'mapProtected' => 'mapPrivacyText',
         'addMapInfoBox' => 'mapInfoBoxContent',
         'usePreviewImage' => 'imageTemplate,previewImagePosition',
 
@@ -1882,37 +1881,6 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
-        ],
-
-        'mapProtected' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapProtected'],
-            'inputType' => 'checkbox',
-
-            'eval' => [
-
-                'tl_class' => 'clr',
-                'submitOnChange' => true,
-            ],
-
-            'exclude' => true,
-            'sql' => "char(1) NOT NULL default ''"
-        ],
-
-        'mapPrivacyText' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapPrivacyText'],
-            'inputType' => 'textarea',
-
-            'eval' => [
-
-                'rte' => 'tinyMCE',
-                'tl_class' => 'clr',
-                'allowHtml' => true
-            ],
-
-            'exclude' => true,
-            'sql' => "text NULL"
         ]
     ]
 ];

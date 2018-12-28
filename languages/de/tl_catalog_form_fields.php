@@ -49,6 +49,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbTaxonomy'] = [ 'Taxonomies/Filt
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbIgnoreEmptyValues'] = [ 'Leere Werte ignorieren', 'Die Filterung ignoriert leere Werte.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['autoCompletionType'] = [ 'Autovervollständigung einbinden', 'Hier können Sie eine Autovervollständigung erstellen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbParseDate'] = [ 'Datum formatieren', 'Hier können Sie das Datum anstelle des Timestamps in der Auswahlliste anzeigen.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['requiredOptions'] = [ 'Auswahlliste erforderlich', 'Das Eingabefeld wird nur angezeigt, wenn eine Auswahlliste vorhanden ist.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbDayBeginFormat'] = [ 'Tag, Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: l, F Y' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbMonthBeginFormat'] = [ 'Monat und Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: F Y' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbYearBeginFormat'] = [ 'Jahr Datumsformat', 'Der Datumsformat-String wird mit der PHP-Funktion date() geparst. Standardmäßig: Y' ];

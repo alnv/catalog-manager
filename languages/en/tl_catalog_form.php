@@ -14,6 +14,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['show'] = [ 'Show details', 'Show the det
 $GLOBALS['TL_LANG']['tl_catalog_form']['editFields'] = [ 'Edit filter form fields', 'Edit the fields of filter form ID "%s".' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form']['title'] = [ 'Title', 'Please enter a filter form title.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form']['anchor'] = [ 'Anchor', 'Here you can specify a jump label.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['template'] = [ 'Template', 'Please select a custom template.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['formID'] = [ 'Form ID', 'The form ID is required to trigger a Contao module.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['method'] = [ 'Submission method', 'The default form submission method is GET.' ];

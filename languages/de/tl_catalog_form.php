@@ -13,6 +13,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form']['copy'] = [ 'Filterformular duplizieren',
 $GLOBALS['TL_LANG']['tl_catalog_form']['show'] = [ 'Details des Filterformulars anzeigen', 'Die Details des Filterformulars mit der ID %s anzeigen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['editFields'] = [ 'Filterformular Felder bearbeiten', 'Die Felder des Filterformulars mit der ID %s bearbeiten.' ];
 
+$GLOBALS['TL_LANG']['tl_catalog_form']['anchor'] = [ 'Anker', 'Hier können Sie eine Sprungmarke festlegen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['template'] = [ 'Template', 'Bitte wählen Sie ein individuelles Template aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['method'] = [ 'Übertragungsmethode', 'Die Standard-Übertragungsmethode ist GET.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form']['title'] = [ 'Bezeichnung', 'Bitte geben Sie eine Bezeichnung für diesen Filterformular ein.' ];

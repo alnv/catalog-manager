@@ -31,6 +31,7 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab index', 'The 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'] = [ 'Replace blank option', 'Here you can replace blank option.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeLowType'] = [ 'Range (to)', 'Here you can adjust the accuracy of the circumference.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['rangeGreatType'] = [ 'Range (from)', 'Here you can adjust the accuracy of the circumference.' ];
+$GLOBALS['TL_LANG']['tl_catalog_form_fields']['requiredOptions'] = [ 'Selection list required', 'The input field is only displayed if a selection list is available.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Fieldname', 'Fieldname is a unique name for identifying the field, for example for the CTLG_ACTIVE insert tag. {{CTLG_ACTIVE :: *Fieldname}}' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['options'] = [ 'List', 'Please insert your select list.' ];

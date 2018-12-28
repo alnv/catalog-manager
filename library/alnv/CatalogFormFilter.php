@@ -46,6 +46,7 @@ class CatalogFormFilter extends CatalogController {
         }
 
         $arrFields = [];
+        $strAction = $this->getActionAttr();
         $strFormId = md5( $this->strFormId );
 
         if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
@@ -67,7 +68,20 @@ class CatalogFormFilter extends CatalogController {
 
                 if ( $this->arrFormFields[ $strName ]['dependOnField'] ) {
 
-                    if ( !$this->validValue( $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] ) ) ) continue;
+                    if ( !$this->validValue( $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] ) ) ) {
+
+                        if ( $this->getInput( '_submit' ) == $strFormId && $this->validValue( $this->getInput( $strName ) ) ) {
+
+                            \Controller::redirect( $strAction );
+                        }
+
+                        continue;
+                    }
+                }
+
+                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+
+                    continue;
                 }
 
                 $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
@@ -110,8 +124,8 @@ class CatalogFormFilter extends CatalogController {
         $objFormTemplate->attributes = '';
         $objFormTemplate->fields = $arrFields;
         $objFormTemplate->formId = $strFormId;
+        $objFormTemplate->action = $strAction;
         $objFormTemplate->reset = $this->getResetLink();
-        $objFormTemplate->action = $this->getActionAttr();
         $objFormTemplate->method = $this->getMethodAttr();
         $objFormTemplate->formSubmit = md5( 'tl_filter' );
         $objFormTemplate->disableSubmit = $this->arrForm['disableSubmit'];
@@ -361,9 +375,9 @@ class CatalogFormFilter extends CatalogController {
         $objPageModel = new \PageModel();
         $arrPage = $objPageModel->findPublishedById( $strPageID );
 
-        if ( $arrPage != null ) return \Controller::generateFrontendUrl( $arrPage->row(), $strAlias );
+        if ( $arrPage != null ) return \Controller::generateFrontendUrl( $arrPage->row(), $strAlias ) . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' );
 
-        return ampersand( \Environment::get('indexFreeRequest') );
+        return ampersand( \Environment::get('indexFreeRequest') ) . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' );
     }
 
 
@@ -377,9 +391,17 @@ class CatalogFormFilter extends CatalogController {
 
         if ( !$this->arrForm['resetForm'] || $this->arrForm['method'] == 'POST' ) return '';
 
+        $strCurrentUrl = \Environment::get( 'requestUri' );
+        $strClearUrl = strtok( $strCurrentUrl, '?' );
+
+        if ( $strClearUrl === false ) {
+
+            $strClearUrl = $strCurrentUrl;
+        }
+
         return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>',
 
-            str_replace( '?' . \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ),
+            $strClearUrl . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' ),
             $this->strFormId
         );
     }

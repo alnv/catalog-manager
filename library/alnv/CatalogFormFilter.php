@@ -79,17 +79,33 @@ class CatalogFormFilter extends CatalogController {
                     }
                 }
 
-                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
 
-                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
+                    $strCurrentUrl = \Environment::get( 'requestUri' );
+                    $strCurrentUrl = preg_replace('~(\?|&)'. $strName .'=[^&]*~','$1', $strCurrentUrl );
 
-                        $strCurrentUrl = \Environment::get( 'requestUri' );
-                        $strCurrentUrl = preg_replace('~(\?|&)'. $strName .'=[^&]*~','$1', $strCurrentUrl );
+                    if ( empty( $this->arrFormFields[ $strName ]['options'] ) ) {
 
-                        \Controller::redirect( $strCurrentUrl );
+                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
+
+                            \Controller::redirect( $strCurrentUrl );
+                        }
+
+                        continue;
                     }
 
-                    continue;
+                    else {
+
+                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
+
+                            $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
+
+                            if ( !in_array( $this->getInput( $strName ), $arrOptions ) ) {
+
+                                \Controller::redirect( $strCurrentUrl );
+                            }
+                        }
+                    }
                 }
 
                 $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];

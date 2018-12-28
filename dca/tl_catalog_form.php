@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
     'palettes' => [
 
-        'default' => '{general_legend},title,jumpTo,method,resetForm,disableHtml5Validation,disableOnAutoItem;{submit_legend},disableSubmit,submitAttributes;{expert_legend:hide},template,attributes;{catalog_json_legend:hide},sendJsonHeader;'
+        'default' => '{general_legend},title,jumpTo,method,anchor,resetForm,disableHtml5Validation,disableOnAutoItem;{submit_legend},disableSubmit,submitAttributes;{expert_legend:hide},template,attributes;{catalog_json_legend:hide},sendJsonHeader;'
     ],
 
     'fields' => [
@@ -288,6 +288,21 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
 
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
+        ],
+
+        'anchor' => [
+
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form']['anchor'],
+            'inputType' => 'text',
+
+            'eval' => [
+
+                'maxlength' => 16,
+                'tl_class' => 'w50'
+            ],
+
+            'exclude' => true,
+            'sql' => "varchar(16) NOT NULL default ''"
         ]
     ]
 ];

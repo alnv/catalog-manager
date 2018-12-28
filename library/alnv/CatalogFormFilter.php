@@ -70,7 +70,7 @@ class CatalogFormFilter extends CatalogController {
 
                     if ( !$this->validValue( $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] ) ) ) {
 
-                        if ( $this->getInput( '_submit' ) == $strFormId && $this->validValue( $this->getInput( $strName ) ) ) {
+                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
                             \Controller::redirect( $strAction );
                         }
@@ -80,6 +80,14 @@ class CatalogFormFilter extends CatalogController {
                 }
 
                 if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+
+                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
+
+                        $strCurrentUrl = \Environment::get( 'requestUri' );
+                        $strCurrentUrl = preg_replace('~(\?|&)'. $strName .'=[^&]*~','$1', $strCurrentUrl );
+
+                        \Controller::redirect( $strCurrentUrl );
+                    }
 
                     continue;
                 }

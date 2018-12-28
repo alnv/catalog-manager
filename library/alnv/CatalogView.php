@@ -351,7 +351,7 @@ class CatalogView extends CatalogController {
 
         $this->catalogOffset = (int) $this->catalogOffset;
 
-        $blnActive = true;
+        $blnActive = $this->catalogActiveParameters ? false : true;
         $intOffset = $this->catalogOffset;
         $strPageID = 'page_e' . $this->id;
         $intPerPage = intval( $this->catalogPerPage );
@@ -542,9 +542,9 @@ class CatalogView extends CatalogController {
 
             foreach ( $arrActiveParameterFields as $strFieldname ) {
 
-                if ( $this->CatalogInput->getActiveValue( $strFieldname ) === '' || $this->CatalogInput->getActiveValue( $strFieldname ) === null ) {
+                if ( $this->CatalogInput->getActiveValue( $strFieldname ) !== '' && $this->CatalogInput->getActiveValue( $strFieldname ) !== null ) {
 
-                    $blnActive = false;
+                    $blnActive = true;
 
                     break;
                 }

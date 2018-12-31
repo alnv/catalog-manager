@@ -80,28 +80,25 @@ class CatalogFormFilter extends CatalogController {
                     }
                 }
 
-                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
+                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && empty( $this->arrFormFields[ $strName ]['options'] ) ) {
 
-                    if ( empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
-                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
-
-                            $arrParameters[] = $strName;
-                        }
-
-                        continue;
+                        $arrParameters[] = $strName;
                     }
 
-                    else {
+                    continue;
+                }
 
-                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
+                if ( in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && !empty( $this->arrFormFields[ $strName ]['options'] ) ) {
 
-                            $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
+                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
-                            if ( !in_array( $this->getInput( $strName ), $arrOptions ) ) {
+                        $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
 
-                                $arrParameters[] = $strName;
-                            }
+                        if ( !in_array( $this->getInput( $strName ), $arrOptions ) ) {
+
+                            $arrParameters[] = $strName;
                         }
                     }
                 }
@@ -143,7 +140,7 @@ class CatalogFormFilter extends CatalogController {
 
             foreach ( $arrParameters as $strParam ) {
 
-                $strCurrentUrl = preg_replace('~(\?|&)'. $strParam .'=[^&]*~','$1', $strCurrentUrl );
+                $strCurrentUrl = preg_replace('~(\?|&)'. $strParam .'=[^&]*~','', $strCurrentUrl );
             }
 
             \Controller::redirect( $strCurrentUrl );

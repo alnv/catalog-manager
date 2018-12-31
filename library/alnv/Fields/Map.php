@@ -60,7 +60,8 @@ class Map {
             'mapScrollWheel' => $arrField['mapScrollWheel'] ? 'true' : 'false',
             'mapType' => $arrField['mapType'] ? $arrField['mapType'] : 'HYBRID',
             'mapZoom' => $arrField['mapZoom'] ? intval( $arrField['mapZoom'] ) : 10,
-            'mapPrivacyText' =>  \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyText') )
+            'mapPrivacyText' => \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyText') ),
+            'mapPrivacyButtonText' => \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'] )
         ];
 
         if ( $arrField['mapInfoBoxContent'] ) {

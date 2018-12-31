@@ -10,4 +10,5 @@ $GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsServerKey'] = [ 'Google Key
 $GLOBALS['TL_LANG']['tl_settings']['catalogGoogleMapsClientKey'] = [ 'Google Key | Map', 'Please enter a google key for Map.' ];
 
 $GLOBALS['TL_LANG']['tl_settings']['catalogMapProtected'] = [ 'Google Maps - Confirmation privacy', 'Here you can add a privacy confirmation.' ];
-$GLOBALS['TL_LANG']['tl_settings']['catalogMapPrivacyText'] = [ 'Privacy Policy', 'Here you can add your privacy policy.' ];
+$GLOBALS['TL_LANG']['tl_settings']['catalogMapPrivacyText'] = [ 'Privacy Policy', 'Here you can add your privacy policy. You can translate the text using an insert tag e.g {{iflng::en}}My text{{iflng}}{{iflng::de}}Mein Text{{iflng}}.' ];
+$GLOBALS['TL_LANG']['tl_settings']['catalogMapPrivacyButtonText'] = [ 'Button Label', 'Please enter the label of the button. You can translate the label using an insert tag e.g {{iflng::en}}Agree{{iflng}}{{iflng::de}}Einverstanden{{iflng}}.' ];

@@ -7,7 +7,7 @@ $GLOBALS['TL_DCA']['tl_settings']['config']['onload_callback'] = [
 
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'catalogMapProtected';
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;{catalog_manager_dsgvo_legend},catalogMapProtected;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
-$GLOBALS['TL_DCA']['tl_settings']['subpalettes']['catalogMapProtected'] = 'catalogMapPrivacyText';
+$GLOBALS['TL_DCA']['tl_settings']['subpalettes']['catalogMapProtected'] = 'catalogMapPrivacyText,catalogMapPrivacyButtonText';
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogGoogleMapsServerKey'] = [
 
@@ -79,6 +79,20 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogMapPrivacyText'] = [
     'eval' => [
 
         'tl_class' => 'clr',
+        'allowHtml' => true
+    ],
+
+    'exclude' => true
+];
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['catalogMapPrivacyButtonText'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_settings']['catalogMapPrivacyButtonText'],
+    'inputType' => 'text',
+
+    'eval' => [
+
+        'tl_class' => 'w50',
         'allowHtml' => true
     ],
 

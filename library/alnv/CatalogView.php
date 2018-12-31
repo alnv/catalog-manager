@@ -187,6 +187,7 @@ class CatalogView extends CatalogController {
 
         $this->objMainTemplate->mapProtected = \Config::get('catalogMapProtected');
         $this->objMainTemplate->mapPrivacyText = \Controller::replaceInsertTags( \Config::get('catalogMapPrivacyText') );
+        $this->objMainTemplate->mapPrivacyButtonText = \Controller::replaceInsertTags( ( \Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'] ) );
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
 

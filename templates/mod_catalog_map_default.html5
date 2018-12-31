@@ -10,7 +10,7 @@
         <?php if ( $this->mapPrivacyText ): ?>
             <?= $this->mapPrivacyText ?>
         <?php endif; ?>
-        <button id="confirm_<?= $this->map['id'] ?>" class="submit"><?= $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'] ?></button>
+        <button id="confirm_<?= $this->map['id'] ?>" class="submit"><?= $this->mapPrivacyButtonText ?></button>
     <?php endif; ?>
    </div>
    <script defer>

@@ -95,8 +95,14 @@ class CatalogFormFilter extends CatalogController {
                     if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
                         $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
+                        $arrActiveValues = $this->getInput( $strName );
 
-                        if ( !in_array( $this->getInput( $strName ), $arrOptions ) ) {
+                        if ( !is_array( $arrActiveValues ) ) {
+
+                            $arrActiveValues = [ $arrActiveValues ];
+                        }
+
+                        if ( !array_intersect( $arrActiveValues, $arrOptions ) ) {
 
                             $arrParameters[] = $strName;
                         }
@@ -134,19 +140,10 @@ class CatalogFormFilter extends CatalogController {
             }
         }
 
-        if ( !empty( $arrParameters ) ) {
-
-            $strCurrentUrl = \Environment::get( 'requestUri' );
-
-            foreach ( $arrParameters as $strParam ) {
-
-                $strCurrentUrl = preg_replace('~(\?|&)'. $strParam .'=[^&]*~','', $strCurrentUrl );
-            }
-
-            \Controller::redirect( $strCurrentUrl );
-        }
-
         $arrAttributes = Toolkit::deserialize( $this->arrForm['attributes'] );
+
+        $strCssClass = ( !empty( $arrParameters ) ? 'filter_reloading ' : '' );
+        $strCssClass .= $arrAttributes[1] ? $arrAttributes[1] : '';
         $arrSubmitAttributes = Toolkit::deserialize( $this->arrForm['submitAttributes'] );
 
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->strFormId;
@@ -156,11 +153,13 @@ class CatalogFormFilter extends CatalogController {
         $objFormTemplate->fields = $arrFields;
         $objFormTemplate->formId = $strFormId;
         $objFormTemplate->action = $strAction;
+        $objFormTemplate->cssClass = $strCssClass;
+        $objFormTemplate->triggerId = $this->strFormId;
         $objFormTemplate->reset = $this->getResetLink();
         $objFormTemplate->method = $this->getMethodAttr();
+        $objFormTemplate->trigger = !empty( $arrParameters );
         $objFormTemplate->formSubmit = md5( 'tl_filter' );
         $objFormTemplate->disableSubmit = $this->arrForm['disableSubmit'];
-        $objFormTemplate->cssClass = $arrAttributes[1] ? $arrAttributes[1] : '';
         $objFormTemplate->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
         $objFormTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
         $objFormTemplate->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';

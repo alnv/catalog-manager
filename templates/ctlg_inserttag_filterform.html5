@@ -15,4 +15,7 @@
       </div>
    <?php endif; ?>
 </form>
+<?php if ( $this->trigger ): ?>
+<script>document.addEventListener('DOMContentLoaded',function(){var objForm = document.getElementById('id_form_<?= $this->triggerId ?>');objForm.submit();})</script>
+<?php endif; ?>
 <!-- indexer::continue -->

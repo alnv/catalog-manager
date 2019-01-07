@@ -39,7 +39,7 @@
             if ( typeof objAgreeButton !== 'undefined' ) {
                 objAgreeButton.addEventListener( 'click', function() {
                     var objDate = new Date();
-                        objDate.setTime( objDate.getTime() + 86400 );
+                        objDate.setTime( objDate.getTime() + 30758400 );
                     var strExpires = "expires="+ objDate.toUTCString();
                     document.cookie = "catalog_google_maps_privacy_confirmation=1;" + strExpires + ";path=/";
                     initializeGoogleMaps();

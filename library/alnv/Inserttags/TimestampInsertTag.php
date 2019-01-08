@@ -44,7 +44,7 @@ class TimestampInsertTag extends \Frontend {
                             if ( \Validator::isDate( $strValue ) ) {
 
                                 $objDate = new \Date( $strValue );
-                                $strValue = $objDate->tstamp;
+                                $strValue = $objDate->{$strMethod};
                             }
 
                             $intTstamp = (int) $strValue;
@@ -70,7 +70,7 @@ class TimestampInsertTag extends \Frontend {
                             if ( \Validator::isDate( $intWatchValue ) ) {
 
                                 $objDate = new \Date( $intWatchValue );
-                                $intWatchValue = $objDate->tstamp;
+                                $intWatchValue = $objDate->{$strMethod};
                             }
 
                             if ( $intWatchValue !== null && $intWatchValue !== '' ) {

@@ -39,7 +39,7 @@ class ActiveInsertTag extends \Frontend {
 
                         case 'default':
 
-                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = $strOption;
+                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = \Controller::replaceInsertTags( $strOption );
 
                             break;
 

@@ -2,6 +2,8 @@
 
 namespace CatalogManager;
 
+use function GuzzleHttp\Promise\queue;
+
 class TimestampInsertTag extends \Frontend {
 
 
@@ -37,7 +39,15 @@ class TimestampInsertTag extends \Frontend {
                         case 'active':
 
                             $objInput = new CatalogInput();
-                            $intTstamp = (int) $objInput->getValue( $strOption );
+                            $strValue = $objInput->getValue( $strOption );
+
+                            if ( \Validator::isDate( $strValue ) ) {
+
+                                $objDate = new \Date( $strValue );
+                                $strValue = $objDate->tstamp;
+                            }
+
+                            $intTstamp = (int) $strValue;
 
                             if ( !$intTstamp ) {
 
@@ -56,6 +66,12 @@ class TimestampInsertTag extends \Frontend {
 
                             $objInput = new CatalogInput();
                             $intWatchValue = $objInput->getValue( $strOption );
+
+                            if ( \Validator::isDate( $intWatchValue ) ) {
+
+                                $objDate = new \Date( $intWatchValue );
+                                $intWatchValue = $objDate->tstamp;
+                            }
 
                             if ( $intWatchValue !== null && $intWatchValue !== '' ) {
 

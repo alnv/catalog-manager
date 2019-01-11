@@ -304,23 +304,31 @@ class Toolkit {
 
     public static function prepareValueForQuery( $varValue ) {
 
-        if ( !empty( $varValue ) && is_array( $varValue ) ) {
+        if ( is_array( $varValue ) ) {
 
-            $arrReturn = [];
+            if ( !empty( $varValue ) ) {
 
-            $varValue = array_filter( $varValue, function ( $varValue ) {
+                $arrReturn = [];
 
-                if ( $varValue === '0' ) return true;
+                $varValue = array_filter( $varValue, function ( $varValue ) {
 
-                return $varValue;
-            });
+                    if ( $varValue === '0' ) return true;
 
-            foreach ( $varValue as $strKey => $strValue ) {
+                    return $varValue;
+                });
 
-                $arrReturn[ $strKey ] = Toolkit::prepareValueForQuery( $strValue );
+                foreach ( $varValue as $strKey => $strValue ) {
+
+                    $arrReturn[ $strKey ] = Toolkit::prepareValueForQuery( $strValue );
+                }
+
+                return $arrReturn;
             }
 
-            return $arrReturn;
+            else {
+
+                return '';
+            }
         }
 
         if ( is_float( $varValue ) ) return floatval( $varValue );

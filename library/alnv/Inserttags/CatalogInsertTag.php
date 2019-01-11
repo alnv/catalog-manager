@@ -247,7 +247,24 @@ class CatalogInsertTag extends \Frontend {
 
             while ( $objEntities->next() ) {
 
-                $arrReturn[] = $objEntities->{$strReturnField};
+                $strValue = $objEntities->{$strReturnField};
+
+                if ( Toolkit::isEmpty( $strValue ) ) {
+
+                    continue;
+                }
+
+                $arrValues = explode( ',', $strValue );
+
+                if ( !is_array( $arrValues ) || empty( $arrValues ) ) {
+
+                    continue;
+                }
+
+                foreach ( $arrValues as $strValue ) {
+
+                    $arrReturn[] = $strValue;
+                }
             }
 
             $arrReturn = array_unique( $arrReturn );

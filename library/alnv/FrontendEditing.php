@@ -609,15 +609,29 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    public function hasVisibility() {
+    protected function hasVisibility() {
 
-        if ( $this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing ) return false;
+        if ( $this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing ) {
 
-        if ( !BE_USER_LOGGED_IN ) return true;
+            return false;
+        }
 
-        if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) return true;
+        if ( !is_array( $this->arrCatalog['operations'] ) ) {
 
-        return false;
+            return false;
+        }
+
+        if ( !in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
+
+            return false;
+        }
+
+        if ( BE_USER_LOGGED_IN ) {
+
+            return false;
+        }
+
+        return true;
     }
 
 

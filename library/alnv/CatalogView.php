@@ -739,7 +739,7 @@ class CatalogView extends CatalogController {
                 $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
             }
 
-            if ( $this->blnShowAsGroup ) {
+            if ( $this->blnShowAsGroup && !$this->enableTableView ) {
 
                 $this->createGroups( $arrCatalog[ $this->catalogGroupBy ] );
             }
@@ -783,7 +783,7 @@ class CatalogView extends CatalogController {
 
         if ( $this->catalogRandomSorting ) shuffle( $arrCatalogs );
         if ( $this->catalogUseArray ) return $this->getArrayValue( $arrCatalogs, $intNumRows );
-        if ( $this->blnShowAsGroup ) return $this->getGroupedValue( $arrCatalogs );
+        if ( $this->blnShowAsGroup && !$this->enableTableView ) return $this->getGroupedValue( $arrCatalogs );
 
         return $this->getTemplateValue( $arrCatalogs, $intNumRows );
     }

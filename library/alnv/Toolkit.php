@@ -529,6 +529,11 @@ class Toolkit {
             return null;
         }
 
+        if ( ( is_array( $arrQuery['value'] ) && empty( $arrQuery['value'] ) ) && !$blnAllowEmptyValue ) {
+
+            return null;
+        }
+
         $arrQuery['value'] = self::prepareValueForQuery( $arrQuery['value'] );
 
         return $arrQuery;

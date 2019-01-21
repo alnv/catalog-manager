@@ -47,7 +47,7 @@ class CatalogInput extends CatalogController {
 
         $strPostCookie = $this->getPostCookie( $strName );
 
-        if ( !is_null( $strPostCookie ) && $strPostCookie != '' ) return $strPostCookie;
+        if ( !is_null( $strPostCookie ) && $strPostCookie != '' ) return $this->parseValue( $strPostCookie );
 
         return '';
     }
@@ -57,7 +57,7 @@ class CatalogInput extends CatalogController {
 
         $strGet = $this->Input->get( $strName );
 
-        if ( !is_null( $strGet ) && $strGet != '' ) return $strGet;
+        if ( !is_null( $strGet ) && $strGet != '' ) return $this->parseValue( $strGet );
 
         return '';
     }
@@ -84,5 +84,26 @@ class CatalogInput extends CatalogController {
         if ( !Toolkit::isEmpty( $strPost ) ) return $strPost;
 
         return '';
+    }
+
+
+    protected function parseValue( $varValues ) {
+
+        if ( is_array( $varValues ) && !empty( $varValues ) ) {
+
+            foreach ( $varValues as $intIndex => $strValue ) {
+
+                $varValues[ $intIndex ] = \StringUtil::decodeEntities( $strValue );
+            }
+
+            return $varValues;
+        }
+
+        if ( is_string( $varValues ) && $varValues != '' ) {
+
+            return \StringUtil::decodeEntities( $varValues );
+        }
+
+        return $varValues;
     }
 }

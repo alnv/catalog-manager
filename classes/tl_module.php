@@ -358,7 +358,7 @@ class tl_module extends \Backend {
 
             if ( !$objCatalogFields->fieldname ) continue;
 
-            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox' ] ) ) {
+            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox', 'text', 'dbColumn', 'number' ] ) ) {
 
                 continue;
             }

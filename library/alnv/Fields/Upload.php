@@ -300,13 +300,17 @@ class Upload {
 
     public static function createImageArray( $varValue, $arrField, $arrCatalog ) {
 
+        $objModel = static::getImagePath( $varValue, true );
+
         return [
 
+            'model' => $objModel,
+            'overwriteMeta' => false,
             'size' => $arrField['size'],
             'fullsize' => $arrField['fullsize'],
             'alt' => $arrCatalog[ $arrField['imageAlt'] ],
             'href' => $arrCatalog[ $arrField['imageURL'] ],
-            'singleSRC' => static::getImagePath( $varValue ),
+            'singleSRC' => $objModel ? $objModel->path : '',
             'title' => $arrCatalog[ $arrField['imageTitle'] ],
             'caption' => $arrCatalog[ $arrField['imageCaption'] ]
         ];
@@ -370,18 +374,28 @@ class Upload {
     }
 
 
-    public static function getImagePath( $strSingleSrc ) {
+    public static function getImagePath( $strSingleSrc, $blnModel = false ) {
 
         if ( !Toolkit::isEmpty( $strSingleSrc ) ) {
 
             $objModel = \FilesModel::findByUuid( $strSingleSrc );
 
-            if ( is_object( $objModel ) && is_file( TL_ROOT . '/' . $objModel->path ) ) {
+            if ( $blnModel ) {
+
+                return $objModel;
+            }
+
+            if ( $objModel !== null ) {
 
                 return $objModel->path;
             }
 
             return '';
+        }
+
+        if ( $blnModel ) {
+
+            return null;
         }
 
         return $strSingleSrc;
@@ -395,7 +409,12 @@ class Upload {
 
         if ( Toolkit::isEmpty( $arrImage['singleSRC'] ) ) return $blnArray ? [] : '';
 
-        \Controller::addImageToTemplate( $objPicture, $arrImage );
+        if ( $arrImage['alt'] ) {
+
+            $arrImage['overwriteMeta'] = true;
+        }
+
+        \Controller::addImageToTemplate( $objPicture, $arrImage, null, null, $arrImage['model'] );
 
         return $blnArray ? $objPicture->getData() : $objPicture->parse();
     }

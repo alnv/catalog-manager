@@ -32,7 +32,7 @@ class tl_page extends \Backend {
 
             if ( !$objCatalogFields->fieldname ) continue;
 
-            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox', 'text', 'dbColumn' ] ) ) continue;
+            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox', 'text', 'dbColumn', 'number' ] ) ) continue;
 
             $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>': $objCatalogFields->fieldname;
         }

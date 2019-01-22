@@ -20,6 +20,7 @@ class RandomEntitiesIDInsertTag extends \Frontend {
             $strLimit = '';
             $arrValues = [];
             $_arrValues = [];
+            $strQueryName = '';
             $strTablename = isset( $arrTags[1] ) ? $arrTags[1] : '';
 
             if ( !$this->Database->tableExists( $strTablename ) ) {
@@ -46,6 +47,12 @@ class RandomEntitiesIDInsertTag extends \Frontend {
 
                             break;
 
+                        case 'query':
+
+                            $strQueryName = $strOption;
+
+                            break;
+
                         case 'limit':
 
                             if ( is_numeric( $strOption ) ) {
@@ -64,9 +71,9 @@ class RandomEntitiesIDInsertTag extends \Frontend {
                 $arrValues[] = '1';
             }
 
-            if ( \Config::get( 'CTLG_RANDOM_QUERY' ) ) {
+            if ( \Config::get( 'CTLG_RANDOM_QUERY' ) && $strQueryName ) {
 
-                $strQuery = \Config::get( 'CTLG_RANDOM_QUERY' )[ $strTablename ] ?: '';
+                $strQuery = \Config::get( 'CTLG_RANDOM_QUERY' )[ $strQueryName ] ?: '';
 
                 if ( $strQuery ) {
 

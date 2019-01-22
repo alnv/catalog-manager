@@ -942,6 +942,12 @@ class CatalogView extends CatalogController {
 
             foreach ( $varGroupName as $strGroup ) {
 
+                if ( is_array( $strGroup ) ) {
+
+                    $strKeyname = $this->arrCatalogFields[ $this->catalogGroupBy ]['dbTableValue'] ?: 'title';
+                    $strGroup = $strGroup[ $strKeyname ];
+                }
+
                 $this->createGroups( $strGroup );
             }
         }
@@ -972,6 +978,12 @@ class CatalogView extends CatalogController {
         if ( is_array( $varGroupName ) ) {
 
             foreach ( $varGroupName as $strGroupName ) {
+
+                if ( is_array( $strGroupName ) ) {
+
+                    $strKeyname = $this->arrCatalogFields[ $this->catalogGroupBy ]['dbTableValue'] ?: 'title';
+                    $strGroupName = $strGroupName[ $strKeyname ];
+                }
 
                 $this->groupByValue( $strGroupName, $arrCatalog, $arrIndexes );
             }

@@ -18,6 +18,8 @@ class RandomEntitiesIDInsertTag extends \Frontend {
 
             $strWhere = '';
             $strLimit = '';
+            $arrValues = [];
+            $_arrValues = [];
             $strTablename = isset( $arrTags[1] ) ? $arrTags[1] : '';
 
             if ( !$this->Database->tableExists( $strTablename ) ) {
@@ -38,9 +40,9 @@ class RandomEntitiesIDInsertTag extends \Frontend {
 
                     switch ( $strKey ) {
 
-                        case 'query':
+                        case 'values':
 
-                            $strWhere = $strOption;
+                            $_arrValues = explode( ',', $strOption );
 
                             break;
 
@@ -56,13 +58,29 @@ class RandomEntitiesIDInsertTag extends \Frontend {
                 }
             }
 
-            if ( Toolkit::isEmpty( $strWhere ) && $this->Database->fieldExists( 'invisible', $strTablename ) ) {
+            if ( $this->Database->fieldExists( 'invisible', $strTablename ) ) {
 
-                $strWhere = 'WHERE invisible != "1"';
+                $strWhere = 'WHERE invisible != ?';
+                $arrValues[] = '1';
+            }
+
+            if ( \Config::get( 'CTLG_RANDOM_QUERY' ) ) {
+
+                $strQuery = \Config::get( 'CTLG_RANDOM_QUERY' )[ $strTablename ] ?: '';
+
+                if ( $strQuery ) {
+
+                    $strWhere .= $strWhere ? ' AND ' . $strQuery : 'WHERE ' . $strQuery;
+
+                    foreach ( $_arrValues as $strValue ) {
+
+                        $arrValues[] = \Controller::replaceInsertTags( $strValue );
+                    }
+                }
             }
 
             $strIds = [];
-            $objIds = $this->Database->prepare( sprintf( 'SELECT id FROM %s %s ORDER BY RAND() %s', $strTablename, $strWhere, $strLimit ) )->execute();
+            $objIds = $this->Database->prepare( sprintf( 'SELECT id FROM %s %s ORDER BY RAND() %s', $strTablename, $strWhere, $strLimit ) )->execute( $arrValues );
 
             if ( $objIds->numRows ) {
 

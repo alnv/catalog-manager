@@ -1488,6 +1488,7 @@ class CatalogView extends CatalogController {
 
                 $arrReturn[ $strOperation ] = [
 
+                    'class' => 'act_' . $strOperation,
                     'href' => $this->generateUrl( $this->arrFrontendEditingPage, $strAlias ) . $strActFragment,
                     'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ],
                     'image' => \Image::getHtml( Toolkit::getIcon( $strOperation ), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][ $strOperation ] ),

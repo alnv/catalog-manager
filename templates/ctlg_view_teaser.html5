@@ -45,7 +45,7 @@
 	<?php if ( !empty( $this->operations ) && is_array( $this->operations ) ): ?>
 	<ul class="operations">
 		<?php foreach( $this->operations as $arrOperation ): ?>
-    	<li>
+    	<li class="<?= $arrOperation['class'] ?>">
         	<a href="<?= $arrOperation['href'] ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes'] ?>>
 				<span class="ctlg_operation_icon"><?= $arrOperation['image']; ?></span> <?= $arrOperation['title']; ?>
             </a>

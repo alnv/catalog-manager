@@ -29,7 +29,7 @@
 	<td class="col_<?= $intIndex++; ?> operations">
 		<div class="ctlg_operations">
 		<?php foreach( $this->operations as $arrOperation ): ?>
-			<a href="<?= $arrOperation['href']; ?>" title="<?= $arrOperation['title']; ?>" <?= $arrOperation['attributes']; ?>><?= $arrOperation['image']; ?></a>
+			<a href="<?= $arrOperation['href']; ?>" title="<?= $arrOperation['title']; ?>" class="<?= $arrOperation['class'] ?>" <?= $arrOperation['attributes']; ?>><?= $arrOperation['image']; ?></a>
 		<?php endforeach; ?>
 		</div>
 	</td>

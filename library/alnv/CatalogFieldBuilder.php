@@ -182,7 +182,12 @@ class CatalogFieldBuilder extends CatalogController {
 
         if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
 
-            $arrDcField['default'] = $arrField['value'];
+            $strDefaultValue = \Controller::replaceInsertTags( $arrField['value'] );
+
+            if ( Toolkit::isDefined( $strDefaultValue ) ) {
+
+                $arrDcField['default'] = $strDefaultValue;
+            }
         }
 
         if ( Toolkit::isDefined( $arrField['useIndex'] ) ) {

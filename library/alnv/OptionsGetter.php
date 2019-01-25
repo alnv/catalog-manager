@@ -81,6 +81,11 @@ class OptionsGetter extends CatalogController {
                 break;
         }
 
+        if ( !$this->arrField['optionsType'] && in_array( $this->arrField['fieldname'], [ 'country', 'countries' ] ) && in_array( $this->arrField['type'], [ 'radio', 'select', 'checkbox' ] ) ) {
+
+            return \System::getCountries();
+        }
+
         return [];
     }
 
@@ -424,7 +429,7 @@ class OptionsGetter extends CatalogController {
             $strValue = $strActiveValue;
         }
 
-        if ( $strOperator == 'contain' && is_string( $strValue ) ) {
+        if ( in_array( $strOperator, [ 'contain', 'notContain' ] ) && is_string( $strValue ) ) {
 
             $strValue = explode( ',', $strValue );
         }

@@ -519,7 +519,7 @@ class Toolkit {
             }
         }
 
-        if ( is_array( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'contain', 'between' ] ) ) {
+        if ( is_array( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'contain', 'notContain', 'between' ] ) ) {
 
             $arrQuery['multiple'] = true;
         }

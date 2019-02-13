@@ -161,7 +161,7 @@ class CatalogFilter extends CatalogController {
 
         if ( !$this->catalogResetFilterForm || $this->catalogFormMethod == 'POST' ) return '';
 
-        return sprintf( '<p class="reset"><a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a></p>',
+        return sprintf( '<p class="reset"><a href="%s" id="id_reset_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a></p>',
 
             str_replace( \Environment::get( 'queryString' ), '', \Environment::get( 'requestUri' ) ),
             $this->id

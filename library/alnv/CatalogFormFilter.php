@@ -429,7 +429,7 @@ class CatalogFormFilter extends CatalogController {
             $strClearUrl = $strCurrentUrl;
         }
 
-        return sprintf( '<a href="%s" id="id_form_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>',
+        return sprintf( '<a href="%s" id="id_reset_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>',
 
             $strClearUrl . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' ),
             $this->strFormId

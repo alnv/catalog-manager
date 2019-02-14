@@ -1,0 +1,16 @@
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+<nav>
+    <ul>
+        <?php foreach ( $this->items as $strType => $arrItem ): ?>
+            <li class="<?= $strType ?>">
+                <?php if ( $strType == 'current' ): ?>
+                    <strong><?= $arrItem['title'] ?></strong>
+                <?php else: ?>
+                    <a href="<?= $arrItem['masterUrl'] ?>"><?= $arrItem['title'] ?></a>
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</nav>
+<?php $this->endblock(); ?>

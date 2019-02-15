@@ -20,7 +20,8 @@ class ModuleCatalogBookNavigation extends \Module {
 
             $objTemplate = new \BackendTemplate('be_wildcard');
 
-            //
+            // @todo
+            // @todo routing parameter
 
             return $objTemplate->parse();
 
@@ -41,31 +42,20 @@ class ModuleCatalogBookNavigation extends \Module {
 
         $this->import('SQLQueryBuilder');
 
-        $this->catalogBookNavigationItem = 'num';
-
-        if ( $this->catalogMasterPage ) {
-
-            $this->objMasterPage = \PageModel::findByPk( $this->catalogMasterPage );
-        }
+        $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
+        $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
 
         $arrQuery = [];
         $arrTaxonomies = [];
         $arrNavigationItems = [];
-        $objCatalogFieldBuilder = new CatalogFieldBuilder();
-        $objCatalogFieldBuilder->initialize( $this->catalogTablename );
-
-        $this->arrCatalog = $objCatalogFieldBuilder->getCatalog();
-        $this->arrFields = $objCatalogFieldBuilder->getCatalogFields();
-        $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
-
         $arrQuery['table'] = $this->catalogTablename;
-        $arrQuery['where'] = [];
 
         if ( !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
 
             $arrTaxonomies = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
         }
 
+        $arrQuery['where'] = $arrTaxonomies;
         $blnVisibility = $this->hasVisibility();
 
         if ( $blnVisibility ) {
@@ -73,30 +63,45 @@ class ModuleCatalogBookNavigation extends \Module {
             $this->addVisibilityQuery( $arrQuery );
         }
 
-        $arrQuery['where'][] = [
-            [
-                'field' => 'alias',
-                'operator' => 'equal',
-                'value' => $this->strAlias,
-            ],
-            [
-                'field' => 'id',
-                'operator' => 'equal',
-                'value' => (int) $this->strAlias,
-            ]
-        ];
+        if ( $this->catalogMasterPage ) {
 
-        $arrQuery['pagination'] = [
+            $this->objMasterPage = \PageModel::findByPk( $this->catalogMasterPage );
+        }
 
-            'limit' => 1,
-            'offset' => 0
-        ];
+        if ( is_array( $this->catalogOrderBy ) ) {
 
-        $objEntity = $this->SQLQueryBuilder->execute( $arrQuery );
+            if ( !empty( $this->catalogOrderBy ) ) {
 
-        $arrNavigationItems['prev'] = $this->getNavigationItem( (int) $objEntity->{$this->catalogBookNavigationItem}, false, $blnVisibility, $arrTaxonomies );
-        $arrNavigationItems['current'] = $objEntity->row();
-        $arrNavigationItems['next'] = $this->getNavigationItem( (int) $objEntity->{$this->catalogBookNavigationItem}, true, $blnVisibility, $arrTaxonomies );
+                foreach ( $this->catalogOrderBy as $arrOrderBy ) {
+
+                    if ( $arrOrderBy['key'] && $arrOrderBy['value'] ) {
+
+                        $arrQuery['orderBy'][] = [
+
+                            'field' => $arrOrderBy['key'],
+                            'order' => $arrOrderBy['value']
+                        ];
+                    }
+                }
+            }
+        }
+
+        switch ( $this->catalogBookNavigationSortingType ) {
+
+            case 'manuel':
+
+                $this->catalogBookNavigationItem = 'sorting';
+
+                $arrNavigationItems = $this->getManuelNavigation( $arrQuery, $blnVisibility, $arrTaxonomies );
+
+                break;
+
+            case 'custom':
+
+                $arrNavigationItems = $this->getCustomNavigation( $arrQuery );
+
+                break;
+        }
 
         foreach ( $arrNavigationItems as $strType => $arrNavigation ) {
 
@@ -119,6 +124,67 @@ class ModuleCatalogBookNavigation extends \Module {
         }
 
         $this->Template->items = $arrNavigationItems;
+    }
+
+
+    protected function getManuelNavigation( $arrQuery, $blnVisibility, $arrTaxonomies ) {
+
+        $arrReturn = [];
+
+        $arrQuery['where'][] = [
+            [
+                'field' => 'alias',
+                'operator' => 'equal',
+                'value' => $this->strAlias,
+            ],
+            [
+                'field' => 'id',
+                'operator' => 'equal',
+                'value' => (int) $this->strAlias,
+            ]
+        ];
+
+        $arrQuery['pagination'] = [
+
+            'limit' => 1,
+            'offset' => 0
+        ];
+
+        $objEntity = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        $arrReturn['prev'] = $this->getNavigationItem( (int) $objEntity->{$this->catalogBookNavigationItem}, false, $blnVisibility, $arrTaxonomies );
+        $arrReturn['current'] = $objEntity->row();
+        $arrReturn['next'] = $this->getNavigationItem( (int) $objEntity->{$this->catalogBookNavigationItem}, true, $blnVisibility, $arrTaxonomies );
+
+        return $arrReturn;
+    }
+
+
+    protected function getCustomNavigation( $arrQuery ) {
+
+        $arrReturn = [];
+        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+
+        if ( !$objEntities->numRows ) {
+
+            return $arrReturn;
+        }
+
+        $arrRows = $objEntities->fetchAllAssoc();
+
+        foreach ( $arrRows as $intIndex => $arrRow ) {
+
+            if ( $arrRow['alias'] == $this->strAlias || $arrRow['id'] == (int) $this->strAlias ) {
+
+                $arrReturn['prev'] = $intIndex > 0 ? $arrRows[ $intIndex - 1 ] : [];
+                $arrReturn['current'] = $arrRow;
+                $arrReturn['next'] = isset( $arrRows[ $intIndex + 1 ] ) ? $arrRows[ $intIndex + 1 ] : [];
+
+                break;
+            }
+        }
+
+        return $arrReturn;
     }
 
 

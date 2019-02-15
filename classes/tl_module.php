@@ -583,4 +583,20 @@ class tl_module extends \Backend {
 
         return Toolkit::$arrArrayOptions;
     }
+
+
+    public function checkSortingField( $strValue, \DataContainer $dc ) {
+
+        if ( $strValue == 'manuel' ) {
+
+            if ( !$this->Database->fieldExists( 'sorting', $dc->activeRecord->catalogTablename ) ) {
+
+                throw new \Exception( 'This option requires sorting field.' );
+            }
+
+            return $strValue;
+        }
+
+        return $strValue;
+    }
 }

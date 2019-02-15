@@ -21,9 +21,10 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseRadiu
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseTaxonomyRedirect';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogEnableFrontendEditing';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseSocialSharingButtons';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogBookNavigationSortingType';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseFrontendEditingViewPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogBookNavigation'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_master_legend},catalogMasterPage;{catalog_taxonomy_legend:hide},catalogUseTaxonomies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogBookNavigation'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_book_navigation_settings},catalogBookNavigationSortingType;{catalog_master_legend},catalogMasterPage;{catalog_taxonomy_legend:hide},catalogUseTaxonomies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalog_taxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect;{catalog_taxonomy_legend},catalogUseTaxonomies;{catalog_orderBy_legend:hide},catalogOrderByTaxonomies;{template_legend:hide},catalogCustomTemplate,catalogTaxonomyNavTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_filterFields_legend},catalogActiveFilterFields;{catalog_filterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogFormMethod,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalog_filterRedirect_legend:hide},catalogRedirectType;{catalog_filterTemplates_legend:hide},catalogFilterFieldTemplates;{catalog_fieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_master_legend},catalogSEOTitle,catalogSEODescription,catalogUseViewPage;{download_legend:hide},catalogUseDownloads;{social_sharing_legend:hide},catalogUseSocialSharingButtons;{template_legend:hide},catalogMasterTemplate,catalogCustomTemplate;{catalog_join_legend:hide},catalogJoinFields,catalogJoinCTables,catalogJoinParentTable,catalogJoinAsArray;{catalog_relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{catalog_json_legend:hide},catalogUseArray,catalogExcludeArrayOptions,catalogSendJsonHeader;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -49,6 +50,9 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons']
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAllowComments'] = 'com_template,catalogCommentSortOrder,catalogCommentPerPage,catalogCommentModerate,catalogCommentBBCode,catalogCommentRequireLogin,catalogCommentDisableCaptcha';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMap'] = 'catalogMapAddress,catalogMapLat,catalogMapLng,catalogFieldLat,catalogFieldLng,catalogMapViewTemplate,catalogMapTemplate,catalogMapZoom,catalogMapType,catalogMapScrollWheel,catalogMapMarker,catalogAddMapInfoBox,catalogMapStyle';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogEnableFrontendEditing'] = 'catalogEnableFrontendPermission,disableCaptcha,catalogNoValidate,catalogIgnoreVisibility,catalogFormTemplate,catalogItemOperations,catalogExcludedFields,catalogDefaultValues,catalogNotifyInsert,catalogNotifyDuplicate,catalogNotifyUpdate,catalogNotifyDelete,catalogFormRedirect,catalogFormRedirectParameter';
+
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogBookNavigationSortingType_manuel'] = '';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogBookNavigationSortingType_custom'] = 'catalogBookNavigationItem,catalogOrderBy';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
 
@@ -259,6 +263,50 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRedirectType'] = [
     'exclude' => true,
     'sql' => "varchar(12) NOT NULL default ''"
 ];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogBookNavigationSortingType'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationSortingType'],
+    'inputType' => 'radio',
+
+    'eval' => [
+
+        'tl_class' => 'clr',
+        'mandatory' => true,
+        'submitOnChange' => true,
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=> true
+    ],
+
+    'options' => [ 'manuel', 'custom' ],
+    'save_callback' => [ [ 'CatalogManager\tl_module', 'checkSortingField' ] ],
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogBookNavigationSortingType'],
+
+    'exclude' => true,
+    'sql' => "varchar(12) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogBookNavigationItem'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationItem'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'chosen' => true,
+        'maxlength' => 128,
+        'mandatory' => true,
+        'tl_class' => 'w50 clr',
+        'blankOptionLabel' => '-',
+        'includeBlankOption'=> true
+    ],
+
+    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+
+    'exclude' => true,
+    'sql' => "varchar(128) NOT NULL default ''"
+];
+
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogInternalFormRedirect'] = [
 
@@ -579,6 +627,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
     'eval' => [
 
         'chosen' => true,
+        'tl_class' => 'clr',
         'blankOptionLabel' => '-',
         'includeBlankOption' => true,
         'mainLabel' => 'catalogManagerFields',

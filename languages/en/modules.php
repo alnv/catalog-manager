@@ -10,6 +10,7 @@ $GLOBALS['TL_LANG']['FMD']['catalogMasterView'] = [ 'Catalog master view', 'Here
 $GLOBALS['TL_LANG']['FMD']['catalogTaxonomyTree'] = [ 'Catalog Taxonomy', 'Here you can create a taxonomy navigation.' ];
 $GLOBALS['TL_LANG']['FMD']['catalogFilter'] = [ 'Catalog filter form', 'Here you can create a filter form for the catalog list view.' ];
 $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog list view', 'Here you can create a list view for the catalog entities.' ];
+$GLOBALS['TL_LANG']['FMD']['catalogBookNavigation'] = [ 'Catalog book navigation', 'Here you can create a book navigation for your detail page.' ];
 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = 'Catalog Manager';
 $GLOBALS['TL_LANG']['CTE']['catalogCatalogEntity'] = 'Catalog - Single element';

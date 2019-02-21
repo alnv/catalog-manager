@@ -9,6 +9,7 @@ $GLOBALS['TL_LANG']['FMD']['catalog-manager'] = ['Catalog Manager', 'Alle Fronte
 $GLOBALS['TL_LANG']['FMD']['catalogMasterView'] = [ 'Catalog Detailansicht', 'Hier können Sie eine Detailansicht erstellen.' ];
 $GLOBALS['TL_LANG']['FMD']['catalogTaxonomyTree'] = [ 'Catalog Taxonomie', 'Hier können Sie eine Taxonomie Navigation erstellen.' ];
 $GLOBALS['TL_LANG']['FMD']['catalogFilter'] = [ 'Catalog Filterformular', 'Hier können Sie ein Filterformular für die Listenansicht erstellen.' ];
+$GLOBALS['TL_LANG']['FMD']['catalogBookNavigation'] = [ 'Catalog Buchnavigation', 'Hier können Sie eine Buchnavigation für Ihr Catalog erstellen.' ];
 $GLOBALS['TL_LANG']['FMD']['catalogUniversalView'] = [ 'Catalog Listenansicht', 'Hier können Sie eine Listenansicht für Ihre Catalog Datensätze erstellen.' ];
 
 $GLOBALS['TL_LANG']['CTE']['catalog-manager'] = 'Catalog Manager';

@@ -6,7 +6,7 @@ $GLOBALS['TL_DCA']['tl_settings']['config']['onload_callback'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'catalogMapProtected';
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace( 'sslProxyDomain;', 'sslProxyDomain;{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;{catalog_manager_dsgvo_legend},catalogMapProtected;', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] );
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] .= ';{catalog_manager_settings},catalogLicence,catalogGoogleMapsServerKey,catalogGoogleMapsClientKey,catalogNavigationAreas;{catalog_manager_dsgvo_legend},catalogMapProtected';
 $GLOBALS['TL_DCA']['tl_settings']['subpalettes']['catalogMapProtected'] = 'catalogMapPrivacyText,catalogMapPrivacyButtonText';
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogGoogleMapsServerKey'] = [

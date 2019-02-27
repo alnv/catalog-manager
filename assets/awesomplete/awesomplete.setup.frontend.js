@@ -59,7 +59,7 @@ document.addEventListener( 'DOMContentLoaded', function() {
             var strName = this.name;
 
             var strBind = location.href.indexOf('?') !== -1 ? '&' : '?';
-            var strRequest = location.href + strBind + 'ctlg_fieldname=' + ( strName ? strName : '' ).replace(/[\[\]']+/g, '');
+            var strRequest = location.href.replace( location.hash, '' ) + strBind + 'ctlg_fieldname=' + ( strName ? strName : '' ).replace(/[\[\]']+/g, '');
 
             if ( strQuery ) {
 

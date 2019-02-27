@@ -573,9 +573,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'eval' => [
 
                 'chosen' => true,
-                'tl_class' => 'w50',
                 'maxlength' => 255,
-                'mandatory' => true
+                'tl_class' => 'w50',
+                'mandatory' => true,
+                'blankOptionLabel' => '-',
+                'includeBlankOption'=> true,
             ],
 
             'options_callback' => [
@@ -599,7 +601,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 255,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption'=> true,
             ],
 
             'options_callback' => [

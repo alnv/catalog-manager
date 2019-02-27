@@ -171,7 +171,20 @@ class CatalogFieldBuilder extends CatalogController {
             'sql' => Toolkit::getSqlDataType( $arrField['statement'] ),
         ];
 
-        if ( !Toolkit::isEmpty( $arrField['flag'] ) ) $arrDcField['flag'] = $arrField['flag'];
+        if ( $arrField['statement'] == 'iNotNull10' ) {
+
+           $arrDcField['eval']['nullIfEmpty'] = true;
+        }
+
+        if ( $arrField['type'] == 'date' && Toolkit::isEmpty( $arrField['flag'] ) ) {
+
+            $arrField['flag'] = 6;
+        }
+
+        if ( !Toolkit::isEmpty( $arrField['flag'] ) ) {
+
+            $arrDcField['flag'] = $arrField['flag'];
+        }
 
         $arrDcField['_cssID'] = Toolkit::deserialize( $arrField['cssID'] );
         $arrDcField['_placeholder'] = $arrField['placeholder'];

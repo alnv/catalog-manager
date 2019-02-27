@@ -29,6 +29,7 @@ class Toolkit {
         'c2048' => "varchar(2048) NOT NULL default ''",
         'i5' => "smallint(5) unsigned NOT NULL default '0'",
         'i10' => "int(10) unsigned NOT NULL default '0'",
+        'iNotNull10' => "int(10) unsigned NULL",
         'text' => "text NULL",
         'longtext' => "longtext NULL",
         'blob' => "blob NULL",

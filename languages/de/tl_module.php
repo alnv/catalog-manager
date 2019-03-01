@@ -22,6 +22,7 @@ $GLOBALS['TL_LANG']['tl_module']['catalog_json_legend'] = 'JSON-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['catalog_permission_legend'] = 'Berechtigungseinstellungen';
 $GLOBALS['TL_LANG']['tl_module']['social_sharing_legend'] = 'Social-Sharing-Einstellungen';
 $GLOBALS['TL_LANG']['tl_module']['download_legend'] = 'Download-Einstellungen';
+$GLOBALS['TL_LANG']['tl_module']['catalog_book_navigation_settings'] = 'Buchnavigation-Einstellungen';
 
 $GLOBALS['TL_LANG']['tl_module']['catalogTablename'] = [ 'Backend Modul', 'Bitte wählen Sie ein Backend Modul aus.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogFormRedirectParameter'] = [ 'Query-Parameter anhängen', 'Hier können Sie Ihre Query-Parameter an die Weiterleitungs-URL anhängen. Sie können Simple Tokens verwenden, um auf die Werte des gespeicherten Datensatzes zuzugreifen. Zum Beispiel pid=##id##&category=##category##' ];
@@ -138,6 +139,15 @@ $GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Anzeigen bei ak
 $GLOBALS['TL_LANG']['tl_module']['catalogUseDownloads'] = [ 'Downloads aktivieren', 'Diese Funktion ermöglicht es aus einem Datensatz verschiedene Download Formate zu erstellen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDownloads'] = [ 'Downloads auswählen', 'Hier können Sie Ihre Download Formate auswählen.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPdfTemplate'] = [ 'PDF Template', 'Hier können Sie ein Template für das PDF auswählen.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationSortingType'] = [ 'Sortierungseinstellungen', 'Hier können Sie die Sortierung der Buchnavigation einstellen.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationItem'] = [ 'Sortierungsfeld', 'Bitte wählen Sie einen Sortierungsfeld aus.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogBookNavigationSortingType'] = [
+
+    'manuel' => 'Manuell',
+    'custom' => 'Individuell'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'] = [
 

@@ -99,6 +99,7 @@ ClassLoader::addClasses([
     'CatalogManager\CatalogDuplexSelectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogDuplexSelectWizard.php',
     'CatalogManager\ContentVisibilityPanelStop' => 'system/modules/catalog-manager/library/alnv/Elements/ContentVisibilityPanelStop.php',
     'CatalogManager\RandomEntitiesIDInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/RandomEntitiesIDInsertTag.php',
+    'CatalogManager\ModuleCatalogBookNavigation' => 'system/modules/catalog-manager/library/alnv/Modules/ModuleCatalogBookNavigation.php',
     'CatalogManager\ContentVisibilityPanelStart' => 'system/modules/catalog-manager/library/alnv/Elements/ContentVisibilityPanelStart.php',
     'CatalogManager\ContentSocialSharingButtons' => 'system/modules/catalog-manager/library/alnv/Elements/ContentSocialSharingButtons.php',
     'CatalogManager\CatalogRelationRedirectWizard' => 'system/modules/catalog-manager/library/alnv/Widgets/CatalogRelationRedirectWizard.php',
@@ -136,6 +137,7 @@ TemplateLoader::addFiles([
     'ctlg_inserttag_filterform' => 'system/modules/catalog-manager/templates',
     'ce_social_sharing_buttons' => 'system/modules/catalog-manager/templates',
     'be_catalog_manager_support' => 'system/modules/catalog-manager/templates',
+    'mod_catalog_book_navigation' => 'system/modules/catalog-manager/templates',
 
     'ctlg_social_button_mail' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_xing' => 'system/modules/catalog-manager/templates',

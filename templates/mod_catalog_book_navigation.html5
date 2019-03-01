@@ -1,0 +1,13 @@
+<?php $this->extend('block_searchable'); ?>
+<?php $this->block('content'); ?>
+<nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+    <ul>
+        <?php if ( !empty( $this->items['prev'] ) ): ?>
+        <li class="pre"><a href="<?= $this->items['prev']['masterUrl'] ?>" title="<?= $this->items['prev']['title'] ?>" itemprop="url"><span itemprop="name"><?= $this->prev ?></span></a></li>
+        <?php endif; ?>
+        <?php if ( !empty( $this->items['next'] ) ): ?>
+            <li class="pre"><a href="<?= $this->items['next']['masterUrl'] ?>" title="<?= $this->items['next']['title'] ?>" itemprop="url"><span itemprop="name"><?= $this->next ?></span></a></li>
+        <?php endif; ?>
+    </ul>
+</nav>
+<?php $this->endblock(); ?>

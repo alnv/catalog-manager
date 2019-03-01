@@ -44,6 +44,7 @@ array_insert( $GLOBALS['FE_MOD'], 3, [
 
     'catalog-manager' => [
 
+        'catalogBookNavigation' => 'CatalogManager\ModuleCatalogBookNavigation',
         'catalogTaxonomyTree' => 'CatalogManager\ModuleCatalogTaxonomyTree',
         'catalogUniversalView' => 'CatalogManager\ModuleUniversalView',
         'catalogMasterView' => 'CatalogManager\ModuleMasterView',

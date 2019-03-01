@@ -398,13 +398,26 @@ class tl_catalog_fields extends \Backend {
 
         if ( $dc->activeRecord->type == 'textarea' || $dc->activeRecord->multiple ) {
 
+            $arrText = $arrSQLStatements['text'];
+
             unset( $arrSQLStatements['i5'] );
             unset( $arrSQLStatements['c1'] );
+            unset( $arrSQLStatements['i10'] );
             unset( $arrSQLStatements['c16'] );
             unset( $arrSQLStatements['c32'] );
             unset( $arrSQLStatements['c64'] );
             unset( $arrSQLStatements['c128'] );
             unset( $arrSQLStatements['c256'] );
+            unset( $arrSQLStatements['text'] );
+
+            array_insert( $arrSQLStatements, 0, [ 'text' => $arrText ] );
+        }
+
+        if ( $dc->activeRecord->type == 'date' || $dc->activeRecord->type == 'number' ) {
+
+            $arrI10 = $arrSQLStatements['i10'];
+            unset( $arrSQLStatements['i10'] );
+            array_insert( $arrSQLStatements, 0, [ 'i10' => $arrI10 ] );
         }
 
         return $arrSQLStatements;

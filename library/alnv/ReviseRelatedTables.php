@@ -23,7 +23,7 @@ class ReviseRelatedTables extends \Controller {
             return false;
         }
 
-        if ( $strPTable ) {
+        if ( $strPTable && $this->Database->TableExists( $strPTable ) ) {
 
             if ( $GLOBALS['TL_DCA'][ $strTable ]['config']['dynamicPtable'] ) {
 
@@ -47,7 +47,7 @@ class ReviseRelatedTables extends \Controller {
 
             foreach ( $arrCTables as $v ) {
 
-                if ( $v ) {
+                if ( $v && $this->Database->TableExists( $v ) ) {
 
                     if ( !isset( $GLOBALS['loadDataContainer'][$v] ) ) {
 

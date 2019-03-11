@@ -46,10 +46,7 @@ class Upload {
             }
         }
 
-        if ( $arrField['extensions'] ) {
-
-            $arrDCAField['eval']['extensions'] = $arrField['extensions'];
-        }
+        $arrDCAField['eval']['extensions'] = $arrField['extensions'] ? $arrField['extensions'] : \Config::get('uploadTypes');
 
         if ( $arrField['path'] ) {
 

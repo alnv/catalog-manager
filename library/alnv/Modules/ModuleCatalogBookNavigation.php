@@ -43,9 +43,32 @@ class ModuleCatalogBookNavigation extends \Module {
 
     protected function compile() {
 
+        global $objPage;
+
         $this->import('SQLQueryBuilder');
 
-        // @todo arrRoutingParameter
+        if ( $this->catalogMasterPage ) {
+
+            $this->objMasterPage = \PageModel::findByPk( $this->catalogMasterPage );
+        }
+
+        if ( $objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename ) {
+
+            $objPage->catalogUseRouting = '';
+        }
+
+        if ( $objPage->catalogUseRouting && $objPage->catalogRouting ) {
+
+            $this->arrRoutingParameter = Toolkit::getRoutingParameter( $objPage->catalogRouting );
+        }
+
+        if ( empty( $this->arrRoutingParameter ) && $this->objMasterPage ) {
+
+            if ( $this->objMasterPage->catalogUseRouting ) {
+
+                $this->arrRoutingParameter = Toolkit::getRoutingParameter( $this->objMasterPage->catalogRouting );
+            }
+        }
 
         $this->catalogTaxonomies = Toolkit::deserialize( $this->catalogTaxonomies );
         $this->catalogOrderBy = Toolkit::deserialize( $this->catalogOrderBy );
@@ -66,11 +89,6 @@ class ModuleCatalogBookNavigation extends \Module {
         if ( $blnVisibility ) {
 
             $this->addVisibilityQuery( $arrQuery );
-        }
-
-        if ( $this->catalogMasterPage ) {
-
-            $this->objMasterPage = \PageModel::findByPk( $this->catalogMasterPage );
         }
 
         if ( is_array( $this->catalogOrderBy ) ) {

@@ -201,9 +201,14 @@ class FrontendEditing extends CatalogController {
 
         $this->import( 'SQLBuilder' );
 
+        $strTempUuid = '';
         $strFieldname = \Input::post('FORM_DELETE_IMAGE' );
 
-        if ( $strFieldname && isset( $this->arrValues[ $strFieldname ] ) ) $this->arrValues[ $strFieldname ] = '';
+        if ( $strFieldname && isset( $this->arrValues[ $strFieldname ] ) ) {
+
+            $strTempUuid = $this->arrValues[ $strFieldname ];
+            $this->arrValues[ $strFieldname ] = '';
+        }
 
         switch ( $this->strAct ) {
 
@@ -217,6 +222,15 @@ class FrontendEditing extends CatalogController {
             case 'edit':
 
                 $this->SQLBuilder->Database->prepare( sprintf( 'UPDATE %s SET %s = "" WHERE id = ?', $this->catalogTablename, $strFieldname ) )->execute( $this->strItemID );
+                $objFile = \FilesModel::findByUuid( $strTempUuid );
+
+                if ( $objFile !== null ) {
+
+                    if ( file_exists( TL_ROOT . '/' . $objFile->path ) ) {
+
+                        unlink( TL_ROOT . '/' . $objFile->path );
+                    }
+                }
 
                 break;
         }

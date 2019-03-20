@@ -137,9 +137,16 @@ $GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'] = [ 'Display with ac
 $GLOBALS['TL_LANG']['tl_module']['catalogUseDownloads'] = [ 'Enable downloads', 'This function makes it possible to create diverse download formats from a data record.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogDownloads'] = [ 'Chose downloads', 'Here you can chose your download formats.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogPdfTemplate'] = [ 'PDF Template', 'Here you can select a template for the PDF.' ];
+$GLOBALS['TL_LANG']['tl_module']['catalogPdfOrientation'] = [ 'Page orientation', 'Please select your page orientation.' ];
 
 $GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationSortingType'] = [ 'Sorting settings', 'Here you can configure your book navigation sorting.' ];
 $GLOBALS['TL_LANG']['tl_module']['catalogBookNavigationItem'] = [ 'Sorting field', 'Please select a sorting field.' ];
+
+$GLOBALS['TL_LANG']['tl_module']['reference']['catalogPdfOrientation'] = [
+
+    'P' => 'Portrait',
+    'L' => 'Landscape'
+];
 
 $GLOBALS['TL_LANG']['tl_module']['reference']['catalogBookNavigationSortingType'] = [
 

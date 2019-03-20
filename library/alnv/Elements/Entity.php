@@ -231,12 +231,15 @@ class Entity extends CatalogController {
             'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value']
         ]);
 
+        $objModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute( $strModuleId );
+        $strOrientation = $objModule->catalogPdfOrientation ?: 'P';
         $strDocument = $objTemplate->parse();
 
-        $objPDF = new \TCPDF( PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false );
+        $objPDF = new \TCPDF( $strOrientation, 'pt', 'A4', true, 'UTF-8', false );
+        $objPDF->SetTitle( $arrEntity['title'] ? $arrEntity['title'] : $arrEntity['alias'] );
         $objPDF->SetPrintHeader(false);
         $objPDF->SetPrintFooter(false);
-        $objPDF->SetFont( 'helvetica', '', 12 );
+        $objPDF->SetFont( 'helvetica', '', 10 );
 
         $objPDF->AddPage();
         $objPDF->lastPage();
@@ -245,12 +248,11 @@ class Entity extends CatalogController {
 <!DOCTYPE html><html><head></head><body>$strDocument</body></html>
 EOD;
         $objPDF->writeHTML( $strDom, true, 0, true, 0 );
-        $objPDF->Output( $strName, 'D' );
+        $objPDF->Output( $strName, 'D' ); // I
 
         $strQuery = 'pdf' . $strModuleId . '=' . $arrEntity['id'];
         $strRedirect = ampersand( \Environment::get('indexFreeRequest') );
         $strRedirect = preg_replace( '/[?&]'.$strQuery.'/gm', '', $strRedirect );
-
         \Controller::redirect( $strRedirect );
     }
 

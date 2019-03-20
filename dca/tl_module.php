@@ -37,13 +37,13 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogAddMapInfoBox'] = 'catalo
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogFastMode'] = 'catalogPreventFieldFromFastMode';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseTaxonomyRedirect'] = 'catalogTaxonomyRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseViewPage'] = 'catalogViewPage,catalogAutoRedirect';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseDownloads'] = 'catalogDownloads,catalogPdfTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_internal'] = 'catalogInternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRedirectType_external'] = 'catalogExternalFormRedirect';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseFrontendEditingViewPage'] = 'catalogFrontendEditingViewPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogRoutingSource_module'] = 'catalogTablename,catalogRoutingParameter';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseMasterPage'] = 'catalogMasterPage,catalogNoSearch,catalogSitemap';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogStoreFile'] = 'catalogUploadFolder,catalogUseHomeDir,catalogDoNotOverwrite';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseDownloads'] = 'catalogDownloads,catalogPdfOrientation,catalogPdfTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseRadiusSearch'] = 'catalogFieldLat,catalogFieldLng,catalogRadioSearchCountry';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['enableTableView'] = 'catalogActiveTableColumns,catalogTableViewTemplate,catalogTableBodyViewTemplate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogUseSocialSharingButtons'] = 'catalogSocialSharingButtons,catalogSocialSharingHeadline,catalogSocialSharingCssID,catalogSocialSharingTemplate,catalogDisableSocialSharingCSS';
@@ -499,6 +499,24 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPdfTemplate'] = [
 
     'exclude' => true,
     'sql' => "varchar(64) NOT NULL default ''"
+];
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['catalogPdfOrientation'] = [
+
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogPdfOrientation'],
+    'inputType' => 'select',
+
+    'eval' => [
+
+        'maxlength' => 2,
+        'tl_class' => 'w50',
+    ],
+
+    'options' => [ 'P', 'L' ],
+
+    'exclude' => true,
+    'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogPdfOrientation'],
+    'sql' => "varchar(2) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogShowQuantity'] = [

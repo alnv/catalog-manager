@@ -361,6 +361,6 @@ class ModuleUniversalView extends \Module {
     protected function downloadPdf() {
 
         $objEntity = new Entity( \Input::get( 'pdf' . $this->id ), $this->catalogTablename );
-        $objEntity->getPdf( $this->id );
+        $objEntity->getPdf( $this->id, $this->catalogPdfTemplate );
     }
 }

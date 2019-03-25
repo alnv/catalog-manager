@@ -272,13 +272,22 @@ class DcCallbacks extends \Backend {
     }
 
 
-    public function generateGeoCords( \DataContainer $dc ) {
-
-        if ( !$dc->activeRecord ) return null;
+    public function generateGeoCords( $dc ) {
 
         $arrCatalog = [];
         $strTable = \Input::get('table');
-        
+
+        if ( TL_MODE == 'FE') {
+
+            $strTable = $dc->getTable();
+            $dc->activeRecord = $dc;
+        }
+
+        if ( !$dc->activeRecord ) {
+
+            return null;
+        }
+
         if ( !Toolkit::isEmpty( $strTable ) ) {
 
             $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];
@@ -328,7 +337,7 @@ class DcCallbacks extends \Backend {
             $arrSet[ $arrCatalog['lngField'] ] = $arrCords['lng'];
             $arrSet[ $arrCatalog['latField'] ] = $arrCords['lat'];
 
-            $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE id = ?' )->set($arrSet)->execute( $dc->id );
+            $this->Database->prepare( 'UPDATE '. $arrCatalog['tablename'] .' %s WHERE id = ?' )->set($arrSet)->execute( $dc->id );
         }
     }
 

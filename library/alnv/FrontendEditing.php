@@ -998,10 +998,10 @@ class FrontendEditing extends CatalogController {
                     $this->arrValues['tstamp'] = \Date::floorToMinute();
                 }
 
-                $objInsert = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
-                \System::log( 'A new entry "'. $this->catalogTablename .'='. $objInsert->insertId .'" has been created', __METHOD__, TL_GENERAL );
+                $strInsertId = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute()->insertId;
+                \System::log( 'A new entry "'. $this->catalogTablename .'='. $strInsertId .'" has been created', __METHOD__, TL_GENERAL );
 
-                $this->arrValues['id'] = $objInsert->insertId;
+                $this->arrValues['id'] = $strInsertId;
 
                 if ( $this->catalogNotifyInsert ) {
 
@@ -1011,8 +1011,8 @@ class FrontendEditing extends CatalogController {
 
                 $arrData = [
 
+                    'id' => $strInsertId,
                     'row' => $this->arrValues,
-                    'id' => $objInsert->insertId,
                     'table' => $this->catalogTablename,
                 ];
 

@@ -149,7 +149,7 @@ class CatalogView extends CatalogController {
             $objPage->catalogUseRouting = '';
         }
 
-        if ( $objPage->catalogUseRouting && $objPage->catalogRouting ) {
+        if ( $objPage->catalogUseRouting && $objPage->catalogRouting && !\Config::get('CTLG_IGNORE_LIST_ROUTING') ) {
 
             $this->arrRoutingParameter = Toolkit::getRoutingParameter( $objPage->catalogRouting );
         }

@@ -74,6 +74,7 @@ class RandomEntitiesIDInsertTag extends \Frontend {
             if ( \Config::get( 'CTLG_RANDOM_QUERY' ) && $strQueryName ) {
 
                 $strQuery = \Config::get( 'CTLG_RANDOM_QUERY' )[ $strQueryName ] ?: '';
+                $strQuery = \Input::cleanKey( $strQuery );
 
                 if ( $strQuery ) {
 

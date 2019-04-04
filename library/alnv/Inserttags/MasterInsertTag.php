@@ -110,7 +110,7 @@ class MasterInsertTag extends \Frontend {
             }
 
             $varValue = Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) ? '' : $arrMaster[ $strFieldname ];
-            $varValue = $this->setValue( $varValue );
+            $varValue = $this->setValue( $varValue, $arrTags[3] );
 
             if ( $blnAddText && $varValue ) $varValue .= $strText;
 
@@ -121,13 +121,13 @@ class MasterInsertTag extends \Frontend {
     }
 
 
-    protected function setValue( $varValue ) {
+    protected function setValue( $varValue, $strKey = '' ) {
 
         if ( !is_array( $varValue ) ) return $varValue;
 
         if ( Toolkit::isAssoc( $varValue ) ) {
 
-            $strKeyname = $arrTags[3] ?: '';
+            $strKeyname = $strKey ?: '';
 
             if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) $varValue = $varValue[ $strKeyname ];
         }

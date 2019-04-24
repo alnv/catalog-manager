@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'copy' => [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'],
-                'href' => 'act=copy',
+                'href' => 'act=paste&amp;mode=copy',
                 'icon' => 'copy.gif'
             ],
 
@@ -181,7 +181,6 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 64,
                 'tl_class' => 'w50',
                 'mandatory' => true,
-                'doNotCopy' => true,
                 'spaceToUnderscore' => true,
             ],
 

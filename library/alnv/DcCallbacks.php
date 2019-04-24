@@ -288,6 +288,11 @@ class DcCallbacks extends \Backend {
             return null;
         }
 
+        if ( $dc->activeRecord->suspend_geocoding ) {
+
+            return null;
+        }
+
         if ( !Toolkit::isEmpty( $strTable ) ) {
 
             $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ];

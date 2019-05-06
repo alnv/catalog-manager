@@ -466,7 +466,7 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !in_array( 'cut', $this->arrCatalog['operations'] ) ) {
 
             unset( $arrFields['sorting'] );
         }

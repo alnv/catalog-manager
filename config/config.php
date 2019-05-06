@@ -97,6 +97,7 @@ $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [ 'CatalogManager\SearchIndexBuil
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
 $GLOBALS['TL_HOOKS']['initializeSystem'][] = [ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
+$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = [ 'CatalogManager\BackendTemplateParser', 'outputBackendTemplate' ];
 $GLOBALS['TL_HOOKS']['getContentElement'][] = [ 'CatalogManager\CatalogContentElementParser', 'parseVisibilityPanels' ];
 $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];
 $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [ 'CatalogManager\CatalogWidgetAttributeParser', 'parseCatalogNavigationAreasWidget' ];

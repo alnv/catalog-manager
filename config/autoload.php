@@ -72,6 +72,7 @@ ClassLoader::addClasses([
     'CatalogManager\PseudoInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/PseudoInsertTag.php',
     'CatalogManager\ActiveInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/ActiveInsertTag.php',
     'CatalogManager\MasterInsertTag' => 'system/modules/catalog-manager/library/alnv/Inserttags/MasterInsertTag.php',
+    'CatalogManager\BackendTemplateParser' => 'system/modules/catalog-manager/library/alnv/BackendTemplateParser.php',
     'CatalogManager\CatalogMessageForm' => 'system/modules/catalog-manager/library/alnv/Forms/CatalogMessageForm.php',
     'CatalogManager\I18nCatalogTranslator' => 'system/modules/catalog-manager/library/alnv/I18nCatalogTranslator.php',
     'CatalogManager\CatalogAjaxController' => 'system/modules/catalog-manager/library/alnv/CatalogAjaxController.php',

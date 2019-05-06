@@ -230,27 +230,9 @@ class DcBuilder extends CatalogController {
             'fields' => [ 'title' ]
         ]);
 
-        if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
-
-            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) {
-
-                $objDcCallbacks = new DcCallbacks();
-                return $objDcCallbacks->labelCallback( $this->arrCatalog['labelFormat'], $this->arrFields, $arrRow, $strLabel );
-            };
-        }
-
-        if ( $this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $this->arrCatalog['groupFormat'] ) ) {
-
-            $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
-
-                $objDcCallbacks = new DcCallbacks();
-                return $objDcCallbacks->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
-            };
-        }
-
         if ( $this->arrCatalog['mode'] == '5' ) {
 
-            $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) {
+            $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) use ( $arrReturn ) {
 
                 $objDcCallbacks = new DcCallbacks();
                 $strTemplate = $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );
@@ -263,10 +245,41 @@ class DcBuilder extends CatalogController {
                 else {
 
                     if ( !$arrRow['pid'] ) $strTemplate .= ' <strong>' . $strLabel . '</strong>';
+
                     else $strTemplate .= ' <span>' . $strLabel . '</span>';
                 }
 
-                return $objDcCallbacks->labelCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
+                $this->arrCatalog['labelFormat'] = $strTemplate;
+
+                return $objDcCallbacks->labelCallback( $this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn );
+            };
+        }
+
+        if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
+
+            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ( $arrReturn ) {
+
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->labelCallback( $this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn );
+            };
+        }
+
+        if ( in_array( $this->arrCatalog['mode'], [ '1', '2' ] ) && in_array( 'cut', $this->arrCatalog['operations'] ) && in_array( 'sorting', $this->arrCatalog['sortingFields'] ) ) {
+
+            $arrReturn['format'] = '%s';
+            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ( $arrReturn ) {
+
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->labelCallback( $this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn );
+            };
+        }
+
+        if ( $this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $this->arrCatalog['groupFormat'] ) ) {
+
+            $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
+
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
             };
         }
 
@@ -307,6 +320,12 @@ class DcBuilder extends CatalogController {
 
                 return $objDcCallbacks->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
             };
+        }
+
+        if ( in_array( $this->arrCatalog['mode'], [ '1', '2' ] ) && in_array( 'cut', $this->arrCatalog['operations'] ) && in_array( 'sorting', $this->arrCatalog['sortingFields'] ) ) {
+
+            $arrReturn['mode'] = 5;
+            $arrReturn['paste_button_callback'] = [ 'CatalogManager\DcCallbacks', 'pasteItem' ];
         }
 
         if ( $this->hasLanguageNavigationBar() && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn'] ) {
@@ -381,8 +400,8 @@ class DcBuilder extends CatalogController {
             $arrReturn['copy']['href'] = sprintf( 'act=paste&amp;mode=copy&ctlg_table=%s', $this->strTable );
         }
 
-        else {
-            
+        if ( !$this->arrCatalog['mode'] || !in_array( 'cut', $this->arrCatalog['operations'] ) ) {
+
             unset( $arrReturn['cut'] );
         }
 

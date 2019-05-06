@@ -117,9 +117,21 @@ class tl_catalog extends \Backend {
     }
 
 
-    public function getOperations() {
+    public function getOperations( \DataContainer $dc ) {
 
-        return Toolkit::$arrOperators;
+        $arrOperations = Toolkit::$arrOperators;
+
+        if ( !$dc->activeRecord->mode ) {
+
+            $intIndex = array_search( 'cut', $arrOperations );
+
+            if ( $intIndex !== false ) {
+
+                unset( $arrOperations[ $intIndex ] );
+            }
+        }
+
+        return $arrOperations;
     }
 
 

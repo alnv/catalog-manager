@@ -240,6 +240,7 @@ class CatalogManagerInitializer {
             $arrTables[] = 'tl_content';
         }
 
+        $arrModule['stylesheet'] = 'system/modules/catalog-manager/assets/catalog.css';
         $arrModule['icon'] = $this->objIconGetter->setCatalogIcon( $strTablename );
         $arrModule['name'] = $arrCatalog['name'];
         $arrModule['tables'] = $arrTables;

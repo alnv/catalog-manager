@@ -72,12 +72,41 @@ class DcCallbacks extends \Backend {
     }
 
 
-    function labelCallback ( $strTemplate, $arrCatalogField = [], $arrRow, $strLabel ) {
+    function labelCallback ( $arrCatalog, $arrCatalogField = [], $arrRow, $strLabel, $arrLabel ) {
 
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
-        $arrRow['_label'] = $strLabel;
-        
-        return \StringUtil::parseSimpleTokens( $strTemplate, $arrRow );
+
+        if ( $arrCatalog['labelFormat'] ) {
+
+            $arrRow['_label'] = $strLabel;
+            return \StringUtil::parseSimpleTokens( $arrCatalog['labelFormat'], $arrRow );
+        }
+
+        if ( $arrCatalog['showColumns'] ) {
+
+            $strTemplate = '<div class="cm_table"><div class="cm_table_tr">';
+            $intColumns = count( $arrLabel['fields'] );
+            $strClass = 'cols_' . $intColumns;
+            $strClass .= ' cm_table_td';
+            $intWidth = 100 / $intColumns;
+
+            foreach ( $arrLabel['fields'] as $intIndex => $strField ) {
+                if ( !$intIndex ) {
+                    $intStyleWidth = $intWidth + 10;
+                }
+                else {
+                    $intStyleWidth = $intWidth - ( 10 / $intColumns + ( 10 / $intColumns )  );
+                }
+                $strTemplate .= '<div class="'.$strClass.'" style="width: '.$intStyleWidth.'%">' . ( $arrRow[ $strField ] ?: '-' ) . '</div>';
+            }
+            $strTemplate .= '</div></div>';
+            return $strTemplate;
+
+        }
+
+        $strField = isset( $arrLabel['fields'][0] ) ? $arrLabel['fields'][0] : 'title';
+
+        return $arrRow[ $strField ];
     }
 
 
@@ -705,5 +734,19 @@ class DcCallbacks extends \Backend {
         $strFallbackColumn = $arrCatalog['linkEntityColumn'];
         $strLanguageColumn = $arrCatalog['languageEntityColumn'];
         $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set([ 'pid' => \Input::get('pid'), 'tstamp' => time() ])->execute( $dc->id, $arrCatalog['fallbackLanguage'] );
+    }
+
+
+    public function pasteItem( \DataContainer $dc, $row, $table, $cr, $arrClipboard=null ) {
+
+        $imagePasteAfter = \Image::getHtml( 'pasteafter.gif', sprintf($GLOBALS['TL_LANG'][ $dc->table ]['pasteafter'][1], $row['id']) );
+        $imagePasteInto = \Image::getHtml( 'pasteinto.gif', sprintf($GLOBALS['TL_LANG'][ $dc->table ]['pasteinto'][1], $row['id']) );
+
+        if ($row['id'] == 0) {
+
+            return $cr ? \Image::getHtml('pasteinto_.gif').' ' : '<a href="'.\Backend::addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
+        }
+
+        return ($arrClipboard['mode'] == 'cut' && ($arrClipboard['id'] == $row['id'] || $cr)) ? \Image::getHtml('pasteafter_.gif').' ' : '<a href="'.\Backend::addToUrl('act='.$arrClipboard['mode'].'&mode=1&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteAfter.'</a> ';
     }
 }

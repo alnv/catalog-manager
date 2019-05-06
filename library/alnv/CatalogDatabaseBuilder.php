@@ -114,7 +114,7 @@ class CatalogDatabaseBuilder extends CatalogController {
         $arrColumns = $this->arrTableColumns;
         $objSQLBuilder = new SQLBuilder();
 
-        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
+        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !$this->hasOperator( 'cut' ) ) {
 
             unset( $arrColumns['sorting'] );
         }
@@ -126,7 +126,7 @@ class CatalogDatabaseBuilder extends CatalogController {
             unset( $arrColumns['stop'] );
         }
 
-        if ( !$this->hasParent() ) {
+        if ( !$this->hasParent() && !$this->hasOperator( 'cut' ) ) {
 
             unset( $arrColumns['pid'] );
         }
@@ -174,7 +174,7 @@ class CatalogDatabaseBuilder extends CatalogController {
 
         if ( !$this->Database->tableExists( $this->strTablename ) ) return null;
 
-        if ( in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !$this->blnCoreTable ) {
+        if ( ( in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) || $this->hasOperator( 'cut' ) ) && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'sorting' , $this->arrTableColumns['sorting'] );
         }
@@ -186,7 +186,7 @@ class CatalogDatabaseBuilder extends CatalogController {
             $objSQLBuilder->alterTableField( $this->strTablename, 'invisible', $this->arrTableColumns['invisible'] );
         }
 
-        if ( $this->hasParent() && !$this->blnCoreTable ) {
+        if ( ( $this->hasParent() || $this->hasOperator( 'cut' ) ) && !$this->blnCoreTable ) {
 
             $objSQLBuilder->alterTableField( $this->strTablename, 'pid' , $this->arrTableColumns['pid'] );
         }

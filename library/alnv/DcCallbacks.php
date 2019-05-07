@@ -86,18 +86,10 @@ class DcCallbacks extends \Backend {
 
             $strTemplate = '<div class="cm_table"><div class="cm_table_tr">';
             $intColumns = count( $arrLabel['fields'] );
-            $strClass = 'cols_' . $intColumns;
-            $strClass .= ' cm_table_td';
+            $strClass = 'cols_' . $intColumns .' cm_table_td';
             $intWidth = 100 / $intColumns;
-
             foreach ( $arrLabel['fields'] as $intIndex => $strField ) {
-                if ( !$intIndex ) {
-                    $intStyleWidth = $intWidth + 10;
-                }
-                else {
-                    $intStyleWidth = $intWidth - ( 10 / $intColumns + ( 10 / $intColumns )  );
-                }
-                $strTemplate .= '<div class="'.$strClass.'" style="width: '.$intStyleWidth.'%">' . ( $arrRow[ $strField ] ?: '-' ) . '</div>';
+                $strTemplate .= '<div class="'.$strClass.' '. $strField .'" style="width: '.$intWidth.'%">' . ( $arrRow[ $strField ] ?: '-' ) . '</div>';
             }
             $strTemplate .= '</div></div>';
             return $strTemplate;

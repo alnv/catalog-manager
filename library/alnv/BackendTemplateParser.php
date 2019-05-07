@@ -75,6 +75,7 @@ class BackendTemplateParser {
 
             $intIndex = 0;
             $intColumns = count( $arrCatalog['labelFields'] );
+            $strClass = 'cols_' . $intColumns .' cm_table_th';
             $intWidth = 100 / $intColumns;
 
             foreach ( $arrCatalog['labelFields'] as $strField ) {
@@ -82,13 +83,7 @@ class BackendTemplateParser {
                 if ( !$arrField ) {
                     continue;
                 }
-                if ( !$intIndex ) {
-                    $intStyleWidth = $intWidth + 10;
-                }
-                else {
-                    $intStyleWidth = $intWidth - ( 10 / $intColumns + ( 10 / $intColumns )  );
-                }
-                $strTemplate .= '<div class="cm_table_th" style="width: '.$intStyleWidth.'%">'. ( $arrField['_dcFormat']['label'][0] ?: $arrField['label'] ) .'</div>';
+                $strTemplate .= '<div class="'. $strClass .' '. $strField .'" style="width: '.$intWidth.'%">'. ( $arrField['_dcFormat']['label'][0] ?: $arrField['label'] ) .'</div>';
                 $intIndex++;
             }
         }

@@ -389,6 +389,14 @@ class tl_catalog_fields extends \Backend {
 
         if ( $dc->activeRecord->type == 'upload' ) {
 
+            if ( $dc->activeRecord->useFineUploader ) {
+
+                return [
+
+                    'blob' => $arrSQLStatements['blob']
+                ];
+            }
+
             return [
 
                 'blob' => $arrSQLStatements['blob'],

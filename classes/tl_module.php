@@ -72,7 +72,6 @@ class tl_module extends \Backend {
     public function disableNotRequiredFields( \DataContainer $dc ) {
 
         $arrModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute( $dc->id )->row();
-
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrModule['catalogTablename'] ];
 
         if ( !$arrCatalog ) return null;
@@ -87,6 +86,11 @@ class tl_module extends \Backend {
         if ( empty( $arrCatalog['cTables'] ) ) {
 
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables']['eval']['disabled'] = true;
+        }
+
+        if ( $arrModule['type'] == 'catalogFilter' ) {
+
+            \Message::addError( 'This module is deprecated. Please use filter generator.' );
         }
     }
 

@@ -260,7 +260,11 @@ class DcPermission extends CatalogController {
     private function checkAccessAndGetRoot( $strTable, $strFieldname, $strFieldPermissions, $strType ) {
 
         $arrRoot = $this->getRoot( $strTable, $strFieldname, $strType );
-        $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root'] = $arrRoot;
+
+        if ( $strType != 'default' ) {
+
+            $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root'] = $arrRoot;
+        }
 
         if ( !$this->User->hasAccess( 'create', $strFieldPermissions ) ) {
 

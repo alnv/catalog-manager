@@ -27,16 +27,22 @@ class Text {
         if ( $arrField['pagePicker'] ) {
 
             $arrDCAField['eval']['rgxp'] = 'url';
+            $arrDCAField['eval']['dcaPicker'] = true;
+            $arrDCAField['eval']['addWizardClass'] = true;
             $arrDCAField['eval']['decodeEntities'] = true;
-            $arrDCAField['eval']['tl_class'] .= ' wizard';
-            $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
+
+            if ( version_compare(VERSION, '4.4', '<' ) ) {
+
+                $arrDCAField['eval']['tl_class'] .= ' wizard';
+                $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
+            }
         }
 
         if ( $arrField['autoCompletionType'] ) {
 
             $arrDCAField['eval']['tl_class'] .= ' ctlg_awesomplete';
             $arrDCAField['eval']['tl_class'] .= ( $arrField['multiple'] ? ' multiple' : '' );
-            $arrDCAField['eval']['tl_class'] .= ( version_compare(VERSION, '4.0', '>=') ? ' _contao4' : ' _contao3' );
+            $arrDCAField['eval']['tl_class'] .= ( version_compare(VERSION, '4.0', '>=' ) ? ' _contao4' : ' _contao3' );
 
             if ( \Input::get( 'ctlg_autocomplete_query' ) && \Input::get('ctlg_fieldname') == $arrField['fieldname'] && $blnActive ) {
 
@@ -46,8 +52,8 @@ class Text {
             }
 
             $objScriptLoader = new CatalogScriptLoader();
-            $objScriptLoader->loadScript('awesomplete-backend', 'TL_JAVASCRIPT' );
-            $objScriptLoader->loadStyle('awesomplete', 'TL_CSS' );
+            $objScriptLoader->loadScript( 'awesomplete-backend', 'TL_JAVASCRIPT' );
+            $objScriptLoader->loadStyle( 'awesomplete', 'TL_CSS' );
         }
 
         return $arrDCAField;

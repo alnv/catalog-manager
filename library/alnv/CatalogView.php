@@ -363,6 +363,7 @@ class CatalogView extends CatalogController {
 
         $arrQuery['table'] = $this->catalogTablename;
         $arrQuery['joins'] = [];
+        $arrTaxonomies  = [];
 
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) return '';
 
@@ -376,10 +377,12 @@ class CatalogView extends CatalogController {
             $this->preparePTableJoinData( $arrQuery['joins'] );
         }
 
-        if ( $this->strMode == 'view' && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
+        if ( in_array( $this->strMode, [ 'view', 'master' ] ) && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
 
-            $arrQuery['where'] = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
+            $arrTaxonomies = Toolkit::parseQueries( $this->catalogTaxonomies['query'] );
         }
+
+        array_insert( $arrQuery['where'], 0, $arrTaxonomies );
 
         if ( $this->hasVisibility() ) {
 

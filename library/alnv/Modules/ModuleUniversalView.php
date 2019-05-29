@@ -241,7 +241,7 @@ class ModuleUniversalView extends \Module {
 
         if ( empty( $strOutput ) ) {
 
-            if ( $this->catalogAutoRedirect && $this->catalogViewPage ) {
+            if ( $this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogUseViewPage ) {
 
                 \Controller::redirectToFrontendPage( $this->catalogViewPage );
 

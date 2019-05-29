@@ -27,6 +27,11 @@ class ModuleMasterView extends \Module {
 
         if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) $this->strTemplate = $this->catalogCustomTemplate;
 
+        if ( !\Input::get( 'auto_item' ) ) {
+
+            return '';
+        }
+
         \System::loadLanguageFile('tl_module');
 
         $this->strMasterAlias = \Input::get( 'auto_item' );

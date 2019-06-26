@@ -521,9 +521,8 @@ class FrontendEditing extends CatalogController {
                         $strUUIDValue = $this->getFileUUID( $arrFiles[$strFieldname] );
                     }
 
-                    $this->arrValues[$strFieldname] = $strUUIDValue;
-
-                    unset( $_SESSION['FILES'][$strFieldname] );
+                    $this->arrValues[ $strFieldname ] = $strUUIDValue;
+                    unset( $_SESSION['FILES'][ $strFieldname ] );
                 }
             }
 
@@ -878,7 +877,16 @@ class FrontendEditing extends CatalogController {
 
         if ( $this->strItemID && $this->catalogTablename ) {
 
-            $this->arrValues = $this->SQLQueryHelper->getCatalogTableItemByID( $this->catalogTablename, $this->strItemID );
+            $arrEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->catalogTablename ) )->limit( 1 )->execute( $this->strItemID )->row();
+
+            if ( $this->strAct == 'copy' ) {
+
+                unset( $arrEntity['id'] );
+                unset( $arrEntity['alias'] );
+                unset( $arrEntity['tstamp'] );
+            }
+
+            $this->arrValues = $arrEntity;
         }
 
         if ( !empty( $this->arrValues ) && is_array( $this->arrValues ) ) {

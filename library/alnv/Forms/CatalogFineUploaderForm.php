@@ -41,6 +41,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
                 break;
 
+
             case 'mandatory':
 
                 if ( $varValue ) {
@@ -70,6 +71,40 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
                 parent::__set( $strKey, $varValue );
 
                 break;
+        }
+    }
+
+
+    public function validate() {
+
+        $arrFiles = null;
+
+        if ( $this->multiple && isset( $_SESSION['FILES'] ) ) {
+
+            $arrFiles = isset( $_SESSION['FILES'][ $this->strName ] ) && is_array( $_SESSION['FILES'][ $this->strName ] ) ? $_SESSION['FILES'][ $this->strName ][0] : null;
+        }
+
+        if ( !$this->multiple && isset( $_SESSION['FILES'] ) ) {
+
+            $arrFiles = isset( $_SESSION['FILES'][ $this->strName ] ) && is_array( $_SESSION['FILES'][ $this->strName ] ) ? $_SESSION['FILES'][ $this->strName ] : null;
+        }
+
+        if ( !$arrFiles ) {
+
+            if ( $this->mandatory ) {
+
+                if ( $this->strLabel == '' ) {
+
+                    $this->addError( $GLOBALS['TL_LANG']['ERR']['mdtryNoLabel'] );
+                }
+
+                else {
+
+                    $this->addError( sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel ) );
+                }
+            }
+
+            return;
         }
     }
 

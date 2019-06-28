@@ -504,13 +504,18 @@ class FrontendEditing extends CatalogController {
 
                 if ( isset( $arrFiles[$strFieldname] ) && is_array( $arrFiles[$strFieldname] ) && $this->catalogStoreFile ) {
 
-                    if ( !Toolkit::isAssoc( $arrFiles[$strFieldname] ) ) {
+                    if ( !Toolkit::isAssoc( $arrFiles[ $strFieldname ] ) ) {
 
                         $arrUUIDValues = [];
 
                         foreach ( $arrFiles[$strFieldname] as $arrFile ) {
 
                             $arrUUIDValues[] = $this->getFileUUID( $arrFile );
+                        }
+
+                        if ( \Config::get( 'catalogMergeMultipleUploads' ) && $objWidget->multiple ) {
+
+                            $arrUUIDValues = array_merge( \StringUtil::deserialize( $this->arrValues[ $strFieldname ], true ) , $arrUUIDValues );
                         }
 
                         $strUUIDValue = serialize( $arrUUIDValues );

@@ -95,7 +95,6 @@ class CatalogFormFilter extends CatalogController {
                     if ( $this->validValue( $this->getInput( $strName ) ) ) {
 
                         $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
-
                         $arrActiveValues = $this->getInput( $strName );
 
                         if ( !is_array( $arrActiveValues ) ) {
@@ -357,6 +356,8 @@ class CatalogFormFilter extends CatalogController {
             'words' => $arrWords
 
         ], 12 );
+
+        exit;
     }
 
 

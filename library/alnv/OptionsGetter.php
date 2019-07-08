@@ -153,6 +153,7 @@ class OptionsGetter extends CatalogController {
 
         if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
 
+            $strValue = \StringUtil::decodeEntities( $strValue );
             $strTitle = $strValue;
 
             if ( $this->arrField['dbParseDate'] ) {
@@ -185,7 +186,7 @@ class OptionsGetter extends CatalogController {
         switch ( $arrField['type'] ) {
 
             case 'select':
-                
+
                 return Select::parseValue( $varValue, $arrField, $arrCatalog );
 
                 break;

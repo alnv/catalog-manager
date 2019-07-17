@@ -513,7 +513,7 @@ class FrontendEditing extends CatalogController {
                             $arrUUIDValues[] = $this->getFileUUID( $arrFile );
                         }
 
-                        if ( \Config::get( 'catalogMergeMultipleUploads' ) && $objWidget->multiple ) {
+                        if ( \Config::get( 'catalogMergeMultipleUploads' ) && $arrField['eval']['multiple'] ) {
 
                             $arrUUIDValues = array_merge( \StringUtil::deserialize( $this->arrValues[ $strFieldname ], true ) , $arrUUIDValues );
                             $arrUUIDValues = array_unique( $arrUUIDValues );

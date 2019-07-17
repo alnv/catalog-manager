@@ -502,13 +502,13 @@ class FrontendEditing extends CatalogController {
 
                 $arrFiles = $_SESSION['FILES'];
 
-                if ( isset( $arrFiles[$strFieldname] ) && is_array( $arrFiles[$strFieldname] ) && $this->catalogStoreFile ) {
+                if ( isset( $arrFiles[ $strFieldname ] ) && is_array( $arrFiles[ $strFieldname ] ) && $this->catalogStoreFile ) {
 
                     if ( !Toolkit::isAssoc( $arrFiles[ $strFieldname ] ) ) {
 
                         $arrUUIDValues = [];
 
-                        foreach ( $arrFiles[$strFieldname] as $arrFile ) {
+                        foreach ( $arrFiles[ $strFieldname ] as $arrFile ) {
 
                             $arrUUIDValues[] = $this->getFileUUID( $arrFile );
                         }
@@ -525,7 +525,7 @@ class FrontendEditing extends CatalogController {
 
                     else {
 
-                        $strUUIDValue = $this->getFileUUID( $arrFiles[$strFieldname] );
+                        $strUUIDValue = $this->getFileUUID( $arrFiles[ $strFieldname ] );
                     }
 
                     $this->arrValues[ $strFieldname ] = $strUUIDValue;
@@ -1197,6 +1197,12 @@ class FrontendEditing extends CatalogController {
             foreach ( $this->arrValues as $strFieldname => $varValue ) {
 
                 $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
+
+                if ( $arrField['eval']['files'] && $arrField['eval']['multiple'] && is_array( $varValue ) ) {
+
+                    $varValue = serialize( $varValue );
+                }
+
                 $varValue = Toolkit::prepareValue4Db( $varValue );
 
                 if ( is_null( $arrField ) ) continue;

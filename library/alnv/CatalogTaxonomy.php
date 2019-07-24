@@ -118,7 +118,7 @@ class CatalogTaxonomy extends CatalogController {
 
         if ( ( $arrTree['isActive'] && $arrTree['next'] ) && ( isset( $this->{$arrTree['next']} ) && is_array( $this->{$arrTree['next']} ) ) ) {
 
-           $arrTree['subItems'] = $this->getTaxonomyTree( $arrTree['next'] );
+            $arrTree['subItems'] = $this->getTaxonomyTree( $arrTree['next'] );
         }
 
         return $arrTree;
@@ -168,6 +168,7 @@ class CatalogTaxonomy extends CatalogController {
             $strQuery = $this->SQLQueryHelper->SQLQueryBuilder->getWhereQuery( $arrQueries );
             $arrValues = $this->SQLQueryHelper->SQLQueryBuilder->getValues();
         }
+
 
         foreach ( $this->arrParameter as $intIndex => $strParameter ) {
 
@@ -236,8 +237,8 @@ class CatalogTaxonomy extends CatalogController {
                     $this->strOrderBy
                 );
 
-                $arrValues[] = \Input::get( $strTempParameter );
-                $arrValues[] = \Input::get( $this->strName );
+                $arrValues['param'] = \Input::get( $strTempParameter );
+                $arrValues['name'] = \Input::get( $this->strName );
 
                 $objEntities = $this->SQLQueryHelper->SQLQueryBuilder->Database
                     ->prepare( $strSQLQuery )

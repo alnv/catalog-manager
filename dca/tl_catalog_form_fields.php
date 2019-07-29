@@ -374,7 +374,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['optionsType'],
             'inputType' => 'radio',
-            'default' => 'useColumn',
+            'default' => 'useOptions',
 
             'eval' => [
 

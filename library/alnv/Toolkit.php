@@ -662,7 +662,7 @@ class Toolkit {
 
                 $varValue = static::parseCatalogValue( $strOriginValue, $arrField, $arrData );
 
-                if ( $blnJustStrings && is_array( $varValue ) ) {
+                if ( ( $blnJustStrings && is_array( $varValue ) ) && $arrField['type'] != 'upload' ) {
 
                     $varValue = implode( ', ', $varValue );
                 }

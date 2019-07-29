@@ -26,7 +26,6 @@ $GLOBALS['TL_LANG']['tl_catalog_form_fields']['blankOptionLabel'] = [ 'Leeres Ze
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['defaultValue'] = [ 'Standard-Wert', 'Hier können Sie einen Standard-Wert für das Feld eingeben.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['tabindex'] = [ 'Tab-Index', 'Die Position des Formularfeldes innerhalb der Tabulator-Reihenfolge.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
-$GLOBALS['TL_LANG']['tl_catalog_form_fields']['includeBlankOption'] = [ 'Leere Auswahl hinzufügen', 'Hier können Sie eine leere Auswahl hinzufügen.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['submitOnChange'] = [ 'Submit on change', 'Legt fest, ob das Formular bei der Änderung des Feldwertes automatisch abgeschickt wird.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['label'] = [ 'Feldbezeichnung', 'Die Feldbezeichnung wird auf der Webseite angezeigt, normalerweise links neben oder oberhalb des Feldes.' ];
 $GLOBALS['TL_LANG']['tl_catalog_form_fields']['name'] = [ 'Feldname', 'Der Feldname ist ein eindeutiger Name zur Identifizierung des Feldes z.B für den CTLG_ACTIVE Inserttag. {{CTLG_ACTIVE::*Feldname}}' ];

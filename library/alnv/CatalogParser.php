@@ -37,19 +37,22 @@ class CatalogParser extends CatalogController {
     }
 
 
-    public function getAllEvents( $arrEvents, $arrCalendars, $intStart, $intEnd, $objEvents ) {
+    public function getAllEvents( $arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents ) {
 
         $this->initialize('tl_calendar_events');
 
-        if ( !is_array( $arrEvents ) || !$this->blnActive ) return $arrEvents;
+        if ( !is_array( $arrCalendarEvents ) || !$this->blnActive ) return $arrCalendarEvents;
 
         $arrReturn = [];
 
-        foreach ( $arrEvents as $intArchive => $arrArchive ) {
+        foreach ( $arrCalendarEvents as $intArchive => $arrArchive ) {
 
-            foreach ( $arrArchive as $arrEventIndex => $arrEvent ) {
+            foreach ( $arrArchive as $arrEventIndex => $arrEvents ) {
 
-                $arrReturn[ $intArchive ][ $arrEventIndex ][] = $this->parseCatalogValues( $arrEvent[0] );
+                foreach ( $arrEvents as $arrEvent ) {
+
+                    $arrReturn[ $intArchive ][ $arrEventIndex ][] = $this->parseCatalogValues( $arrEvent );
+                }
             }
         }
 

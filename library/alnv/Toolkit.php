@@ -225,7 +225,7 @@ class Toolkit {
 
         if ( $strValue && is_string( $strValue ) ) {
 
-            return deserialize( $strValue );
+            return deserialize( $strValue, true );
         }
 
         if ( is_array( $strValue ) ) {

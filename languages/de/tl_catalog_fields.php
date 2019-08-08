@@ -72,7 +72,7 @@ $GLOBALS['TL_LANG']['tl_catalog_fields']['exclude'] = [ 'Feld ausschließen', 'B
 $GLOBALS['TL_LANG']['tl_catalog_fields']['addRelationWizard'] = [ 'Link einblenden', 'Hier können Sie Link zu dem jeweiligen Datensatz einblenden (Stift-Symbol neben der Select-Box).' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['dcPaletteLegend'] = [ 'Fieldset Picker', 'Hier können Sie ein Fieldset auswählen. Der neue Fieldset wird nach dem ausgewähltem Fieldset hinzugefügt.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['useFineUploader'] = [ 'Fine Uploader verwenden', 'Hier können Sie den <a href="https://fineuploader.com" target="_blank">Fine Uploader</a> für das Frontend Editing verwenden.' ];
-$GLOBALS['TL_LANG']['tl_catalog_fields']['dynValue'] = [ 'Dynamischer-Wert', 'Hier können Sie den Wert dynamisch vor belegen. Dieser wird beim abspeichern des Datensatzes erzeugt (save_callback). Sie können auf die Feldwerte per simple Tokens zugreifen z.B ##my_field## ##my_other_field##.' ];
+$GLOBALS['TL_LANG']['tl_catalog_fields']['dynValue'] = [ 'Dynamischer-Wert', 'Hier können Sie den Wert dynamisch vorbelegen. Dieser wird beim abspeichern des Datensatzes erzeugt (save_callback). Sie können auf die Feldwerte per simple Tokens zugreifen z.B ##my_field## ##my_other_field##.' ];
 
 $GLOBALS['TL_LANG']['tl_catalog_fields']['fileType'] = [ 'Dateityp', 'Bitte wählen Sie einen Dateityp aus.' ];
 $GLOBALS['TL_LANG']['tl_catalog_fields']['imageTitle'] = [ 'Titel', 'Bitte wählen Sie für den Titel ein Eingabefeld.' ];

@@ -514,6 +514,8 @@ class CatalogDcExtractor extends CatalogController {
 
             $arrConfigDc['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'generateGeoCords' ];
         }
+
+        $arrConfigDc['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'checkForDynValues' ];
         
         foreach ( $arrConfigDc as $strKey => $strValue ) {
 

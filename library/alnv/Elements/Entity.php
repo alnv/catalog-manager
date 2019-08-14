@@ -163,6 +163,7 @@ class Entity extends CatalogController {
         }
 
         $arrEntity = $objEntity->row();
+        $arrEntity['origin'] = $arrEntity;
 
         foreach ( $arrEntity as $strFieldname => $strValue ) {
 

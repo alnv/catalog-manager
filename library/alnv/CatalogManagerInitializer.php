@@ -112,7 +112,6 @@ class CatalogManagerInitializer {
                 $strArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
                 $strModulename = $arrCatalog['modulename'] ? $arrCatalog['modulename'] : $strTablename;
                 $arrBackendModule[ $strModulename ] = $this->createBackendModuleDc( $strTablename, $arrCatalog );
-
                 $this->arrActiveBackendModules[] = $strModulename;
                 array_insert( $GLOBALS['BE_MOD'][ $strArea ], $intIndex, $arrBackendModule );
                 $this->arrBackendModules[ $strModulename ] = $arrBackendModule[ $strModulename ];
@@ -126,15 +125,16 @@ class CatalogManagerInitializer {
 
         $strActiveModule = \Input::get('do');
         $arrCoreTables = array_keys( $this->arrCoreTables );
-        
+
         if ( Toolkit::isEmpty( $strActiveModule ) || empty( $arrCoreTables ) ) return null;
-        
+
         foreach ( $GLOBALS['BE_MOD'] as $strArea => $arrModules ) {
 
             if ( isset( $arrModules[ $strActiveModule ] ) && is_array( $arrModules[ $strActiveModule ] ) ) {
 
                 $arrBackendModule = [];
                 $arrModule = $arrModules[ $strActiveModule ];
+                $this->arrActiveBackendModules[] = $strActiveModule;
                 $arrModule['tables'] = is_array( $arrModule['tables'] ) ? $arrModule['tables'] : [];
 
                 foreach ( $arrCoreTables as $strTablename ) {

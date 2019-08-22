@@ -15,8 +15,8 @@ class CatalogManagerInitializer {
 
     public function initialize() {
         
-        // Check if Contao has been set up yet
-        if ( !\Config::get('licenseAccepted') ) {
+        // Check if Contao has been set up yet (#210)
+        if ( !\Config::getInstance()->isComplete() ) {
             return;
         }
 

@@ -15,12 +15,8 @@ class CatalogManagerInitializer {
 
     public function initialize() {
         
-        // Check if Contao has been set up yet (#210)
-        if ( !\Config::getInstance()->isComplete() ) {
-            return;
-        }
-
-        if ( TL_MODE == 'BE' ) {
+        // Do not execute in install tool (#210)
+        if ( TL_MODE == 'BE' && false === stripos( \Environment::get('requestUri'), '/contao/install' ) ) {
 
             \BackendUser::getInstance();
             \Database::getInstance();

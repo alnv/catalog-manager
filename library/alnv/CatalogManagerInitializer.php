@@ -14,6 +14,11 @@ class CatalogManagerInitializer {
 
 
     public function initialize() {
+        
+        // Check if Contao has been set up yet
+        if ( !\Config::get('licenseAccepted') ) {
+            return;
+        }
 
         if ( TL_MODE == 'BE' ) {
 

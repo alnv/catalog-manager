@@ -16,7 +16,7 @@ class CatalogManagerInitializer {
     public function initialize() {
         
         // Do not execute in install tool (#210)
-        if ( TL_MODE == 'BE' && false === stripos( \Environment::get('requestUri'), '/contao/install' ) ) {
+        if ( TL_MODE == 'BE' && \Config::get('dbDatabase') ) {
 
             \BackendUser::getInstance();
             \Database::getInstance();

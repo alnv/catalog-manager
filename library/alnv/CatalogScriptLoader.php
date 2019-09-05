@@ -85,7 +85,7 @@ class CatalogScriptLoader {
 
                     foreach ( $this->arrStyles[ $strStyleName ] as $intIndex => $arrStyle ) {
 
-                        $GLOBALS['TL_HEAD']['catalog.css.' . $strStyleName . '.' . $intIndex  ] = $GLOBALS['TL_CONFIG']['debugMode'] ? '<link href="'. $arrStyle['debug'] .'" rel="stylesheet" type="text/css"></link>' : '<link href="'. $arrStyle['compressed'] .'" rel="stylesheet" type="text/css"></link>';
+                        $GLOBALS['TL_HEAD']['catalog.css.' . $strStyleName . '.' . $intIndex  ] = $GLOBALS['TL_CONFIG']['debugMode'] ? '<link href="'. $arrStyle['debug'] .'" rel="stylesheet" type="text/css">' : '<link href="'. $arrStyle['compressed'] .'" rel="stylesheet" type="text/css">';
                     }
 
                     break;

@@ -464,11 +464,11 @@ class CatalogFieldBuilder extends CatalogController {
                 unset( $arrFields['start'] );
                 unset( $arrFields['invisible'] );;
             }
-        }
 
-        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !in_array( 'cut', $this->arrCatalog['operations'] ) ) {
+            if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !in_array( 'cut', $this->arrCatalog['operations'] ) ) {
 
-            unset( $arrFields['sorting'] );
+                unset( $arrFields['sorting'] );
+            }
         }
 
         if (  $this->arrCatalog['type'] == 'modifier' ) {

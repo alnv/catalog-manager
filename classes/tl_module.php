@@ -432,7 +432,7 @@ class tl_module extends \Backend {
 
             if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::columnOnlyFields() ) ) continue;
-            if ( in_array( $arrField['type'], Toolkit::readOnlyFields() ) ) continue;
+            // if ( in_array( $arrField['type'], Toolkit::readOnlyFields() ) ) continue;
             if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
 
             $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );

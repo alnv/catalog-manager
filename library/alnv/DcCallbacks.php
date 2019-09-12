@@ -239,7 +239,16 @@ class DcCallbacks extends \Backend {
             $varValue = Toolkit::slug( $varValue );
         }
 
-        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? ', $strTable ) )->execute( $varValue );
+        $arrValues = [ $varValue ];
+        $strQuery = ' WHERE `alias` = ?';
+
+        if ( $dc->activeRecord->pid ) {
+
+            $strQuery .= ' AND pid = ?';
+            $arrValues[] = $dc->activeRecord->pid;
+        }
+
+        $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s ' . $strQuery, $strTable ) )->execute( $arrValues );
 
         if ( $objCatalogs->numRows > 1 && !$blnAutoAlias ) {
 
@@ -270,6 +279,17 @@ class DcCallbacks extends \Backend {
 
             $strSQLStatement = $strSQLStatement . ' ' . 'AND id != ?';
             $arrValues[] = $strID;
+
+            $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $strTablename ) )->limit(1)->execute( $strID );
+
+            if ( $objEntity->numRows ) {
+
+                if ( $objEntity->pid ) {
+
+                    $strSQLStatement = $strSQLStatement . ' AND pid = ?';
+                    $arrValues[] = $objEntity->pid;
+                }
+            }
         }
 
         $objCatalogs = $this->Database->prepare( $strSQLStatement )->execute( $arrValues );

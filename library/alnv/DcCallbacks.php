@@ -239,8 +239,8 @@ class DcCallbacks extends \Backend {
             $varValue = Toolkit::slug( $varValue );
         }
 
-        $arrValues = [ $varValue ];
-        $strQuery = ' WHERE `alias` = ?';
+        $arrValues = [ $varValue, $dc->activeRecord->id ];
+        $strQuery = ' WHERE `alias` = ? AND `id` != ?';
 
         if ( $dc->activeRecord->pid ) {
 
@@ -249,8 +249,8 @@ class DcCallbacks extends \Backend {
         }
 
         $objCatalogs = $this->Database->prepare( sprintf( 'SELECT * FROM %s ' . $strQuery, $strTable ) )->execute( $arrValues );
-
-        if ( $objCatalogs->numRows > 1 && !$blnAutoAlias ) {
+        
+        if ( $objCatalogs->numRows && !$blnAutoAlias ) {
 
             throw new \Exception( sprintf( $GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue ) );
         }

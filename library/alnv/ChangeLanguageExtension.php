@@ -79,13 +79,29 @@ class ChangeLanguageExtension extends \Frontend {
 
         if ( !$this->arrCatalog['languageEntityColumn'] || !$this->arrCatalog['pTable'] || !$this->strLinkColumn ) return null;
 
-        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $this->strTable ) )->limit(1)->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $this->strTable ) )->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
 
-        if ( $objCurrentEntity->numRows ) {
+        if ( !$objCurrentEntity->numRows ) {
+
+           return null;
+        }
+
+        while ( $objCurrentEntity->next() ) {
+
+            $objParent = $this->Database->prepare('SELECT * FROM ' . $this->arrCatalog['pTable'] . ' WHERE id = ?')->limit(1)->execute( $objCurrentEntity->pid );
+
+            if ( !$objParent->numRows ) {
+
+                continue;
+            }
+
+            if ( $objParent->{ $this->arrCatalog['languageEntityColumn'] } != $strLanguage ) {
+
+                continue;
+            }
 
             $strLinkValue = $objCurrentEntity->{$this->strLinkColumn};
             $this->arrEntity = $this->Database->prepare(
-
                 sprintf(
                     'SELECT * FROM %s LEFT OUTER JOIN %s ON %s.`pid` = %s.`id` WHERE %s.`%s`=? AND %s.`%s`=?',
                     $this->arrCatalog['pTable'],
@@ -97,7 +113,6 @@ class ChangeLanguageExtension extends \Frontend {
                     $this->strTable,
                     $this->strLinkColumn
                 )
-
             )->limit(1)->execute( $strLanguage, $strLinkValue )->row();
         }
     }

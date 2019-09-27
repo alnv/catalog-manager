@@ -31,7 +31,12 @@ class DcCallbacks extends \Backend {
     }
 
     
-    public function checkForDynValues( \DataContainer $objDc ) {
+    public function checkForDynValues( $objDc ) {
+
+        if ( !( $objDc instanceof \DataContainer ) ) {
+
+            return null;
+        }
 
         $strId = \Input::get('id') ? \Input::get('id') : $objDc->id;
 

@@ -47,6 +47,16 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
+        if ( Toolkit::isCoreTable( $strTablename ) ) {
+
+            $objDcExtractor = new \CatalogManager\CatalogDcExtractor();
+            $objDcExtractor->initialize( $strTablename );
+
+            $this->arrCatalog = Toolkit::parseCatalog( $objDcExtractor->convertDataContainerToCatalog() );
+
+            return true;
+        }
+
         return false;
     }
 

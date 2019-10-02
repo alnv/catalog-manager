@@ -1,44 +1,35 @@
 <?php
 
-define( "CATALOG_MANAGER_VERSION", "1.31.14" );
+define( "CATALOG_MANAGER_VERSION", "1.31.15" );
 
-array_insert( $GLOBALS['BE_MOD'], 3, [
-
-    'catalog-manager-extensions' => [
-
-        'catalog-manager' => [
-
-            'name' => 'catalog-manager',
-            'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
-
-            'tables' => [
-
-                'tl_catalog',
-                'tl_catalog_fields'
-            ]
-        ],
-
-        'filterform' => [
-
-            'name' => 'filterform',
-            'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
-
-            'tables' => [
-
-                'tl_catalog_form',
-                'tl_catalog_form_fields'
-            ]
-        ],
-
-        'support' => [
-
-            'name' => 'support',
-            'callback' => CatalogManager\SupportPage::class,
-            'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
-            'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
-        ],
-    ]
-]);
+if ( !\Config::get('hideCatalogManager') ) {
+    array_insert( $GLOBALS['BE_MOD'], 3, [
+        'catalog-manager-extensions' => [
+            'catalog-manager' => [
+                'name' => 'catalog-manager',
+                'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
+                'tables' => [
+                    'tl_catalog',
+                    'tl_catalog_fields'
+                ]
+            ],
+            'filterform' => [
+                'name' => 'filterform',
+                'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
+                'tables' => [
+                    'tl_catalog_form',
+                    'tl_catalog_form_fields'
+                ]
+            ],
+            'support' => [
+                'name' => 'support',
+                'callback' => CatalogManager\SupportPage::class,
+                'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
+                'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
+            ],
+        ]
+    ]);
+}
 
 array_insert( $GLOBALS['FE_MOD'], 3, [
 

@@ -47,6 +47,7 @@ class CatalogDcExtractor extends CatalogController {
             $arrReturn['navArea'] = '';
             $arrReturn['navPosition'] = '';
             $arrReturn['isBackendModule'] = '';
+            $arrReturn['tablename'] = $this->strTable;
         }
 
         return $arrReturn;

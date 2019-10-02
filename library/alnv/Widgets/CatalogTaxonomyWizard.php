@@ -219,6 +219,35 @@ class CatalogTaxonomyWizard extends \Widget {
 
                 break;
 
+            case 'multiSelectFindInSet':
+            case 'multiSelectRegexp':
+
+                $strFieldTemplate =
+                    '<tr '. $strBackgroundStyle .'>'.
+                        '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.
+                        '<td '. $strPaddingStyle .' class="ctlg_select_operator"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select></td>'.
+                        '<td '. $strPaddingStyle .' class="ctlg_text_value">' .
+                            '<select name="%s" id="%s" multiple class="tl_mselect tl_chosen">%s</select>' .
+                        '</td>'.
+                        '<td  class="ctlg_button" style="white-space:nowrap;padding-left:3px">'. $this->getOrButton( $intIndex, $intSubIndex ) . ' ' . $this->getDeleteButton( $intIndex, $intSubIndex ) . '</td>'.
+                    '</tr>';
+
+                return sprintf(
+
+                    $strFieldTemplate,
+                    $strName . '[field]',
+                    $strID,
+                    $this->getFieldOptions( $arrQuery['field'], false ),
+                    $strName . '[operator]',
+                    $strID,
+                    $this->getOperatorOptions( $arrQuery ),
+                    $strName . '[value][]',
+                    $strID,
+                    $this->getSelectOptions( $arrQuery['field'], $arrQuery['value'] )
+                );
+
+                break;
+
             default:
 
                 $blnReadOnly = false;
@@ -260,6 +289,27 @@ class CatalogTaxonomyWizard extends \Widget {
     }
 
 
+    protected function getSelectOptions( $strField, $arrValues ) {
+
+        $strList = '';
+        \Controller::loadDataContainer( $this->strTable );
+        $arrField = \Widget::getAttributesFromDca( $GLOBALS['TL_DCA'][ $this->strTable ]['fields'][ $strField ], $strField, '', $strField, $this->strTable );
+
+        if ( !is_array( $arrField['options'] ) || empty( $arrField['options'] ) ) {
+
+            return $strList;
+        }
+
+
+        foreach ( $arrField['options'] as $arrOption ) {
+
+            $strList .= sprintf( '<option value="%s" %s>%s</option>', $arrOption['value'], ( is_array( $arrValues ) && in_array( $arrOption['value'], $arrValues ) ? 'selected' : '' ), $arrOption['label'] );
+        }
+
+        return $strList;
+    }
+
+
     protected function getOperatorOptions( $arrQuery ) {
 
         $strOperatorsOptions = '';
@@ -280,7 +330,9 @@ class CatalogTaxonomyWizard extends \Widget {
             'containExact',
             'between',
             'isEmpty',
-            'isNotEmpty'
+            'isNotEmpty',
+            'multiSelectRegexp',
+            'multiSelectFindInSet',
         ];
 
         foreach ( $arrOperators as $strOperator ) {

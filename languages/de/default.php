@@ -70,6 +70,8 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['containExact'] = 'IN (und)';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['regexpExact'] = 'REGEXP (und)';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSetExact'] = 'FIND_IN_SET (und)';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['multiSelectRegexp'] = 'REGEXP (Multiselect)';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['multiSelectFindInSet'] = 'FIND_IN_SET (Multiselect)';
 
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['addQuery'] = 'Neue Abfrage hinzufügen.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] = 'Hier können Sie eine ODER-Abfrage hinzufügen.';

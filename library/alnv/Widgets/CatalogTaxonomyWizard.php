@@ -222,6 +222,11 @@ class CatalogTaxonomyWizard extends \Widget {
             case 'multiSelectFindInSet':
             case 'multiSelectRegexp':
 
+                if ( $arrQuery['value'] && is_string( $arrQuery['value'] ) ) {
+
+                    $arrQuery['value'] = [ $arrQuery['value'] ];
+                }
+
                 $strFieldTemplate =
                     '<tr '. $strBackgroundStyle .'>'.
                         '<td '. $strPaddingStyle .' class="ctlg_select_field"><select name="%s" id="%s" class="ctlg_select tl_select tl_chosen">%s</select></td>'.

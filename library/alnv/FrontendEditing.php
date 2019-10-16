@@ -890,7 +890,6 @@ class FrontendEditing extends CatalogController {
 
                 unset( $arrEntity['id'] );
                 unset( $arrEntity['alias'] );
-                unset( $arrEntity['tstamp'] );
             }
 
             $this->arrValues = $arrEntity;
@@ -943,9 +942,10 @@ class FrontendEditing extends CatalogController {
             $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
         }
 
+
         if ( isset( $this->arrValues['tstamp'] ) ) {
 
-            $this->arrValues['tstamp'] = (string)time();
+            $this->arrValues['tstamp'] = (string) time();
         }
 
         if ( is_array( $this->catalogDefaultValues ) && $this->catalogDefaultValues[0] ) {

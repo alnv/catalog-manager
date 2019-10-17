@@ -23,23 +23,7 @@ class tl_catalog_fields extends \Backend {
         $objCatalog = $this->Database->prepare( $strQuery )->limit(1)->execute( $strId );
         $this->strTable = $objCatalog->tablename;
 
-        $this->arrTypes = [
-
-            'text' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'date' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'radio' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'hidden' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'number' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'select' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'message' => [ 'dcPicker' => 'message;', 'dcType' => 'dcPaletteField' ],
-            'map' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
-            'upload' => [ 'dcPicker' => 'statement;', 'dcType' => 'dcPaletteField' ],
-            'checkbox' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'textarea' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'dbColumn' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-            'fieldsetStart' => [  'dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend' ],
-            'fieldsetStop' => [],
-        ];
+        $this->arrTypes = $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPES'];
     }
 
 

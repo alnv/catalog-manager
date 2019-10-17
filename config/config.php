@@ -120,6 +120,37 @@ $GLOBALS['BE_FFL']['catalogFilterFieldSelectWizard'] = 'CatalogManager\CatalogFi
 $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';
 $GLOBALS['TL_FFL']['catalogFineUploader'] = 'CatalogManager\CatalogFineUploaderForm';
 
+$GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPES'] = [
+
+    'text' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'date' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'radio' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'hidden' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'number' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'select' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'message' => [ 'dcPicker' => 'message;', 'dcType' => 'dcPaletteField' ],
+    'map' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
+    'upload' => [ 'dcPicker' => 'statement;', 'dcType' => 'dcPaletteField' ],
+    'checkbox' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'textarea' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'dbColumn' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
+    'fieldsetStart' => [  'dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend' ],
+    'fieldsetStop' => []
+];
+
+$GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'] = [
+    'text' => 'text',
+    'date' => 'text',
+    'number' => 'text',
+    'hidden' => 'text',
+    'radio' => 'radio',
+    'select' => 'select',
+    'upload' => 'fileTree',
+    'textarea' => 'textarea',
+    'checkbox' => 'checkbox',
+    'message' => 'catalogMessageWidget'
+];
+
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
 
     'ctlg_entity_status_insert'   => [

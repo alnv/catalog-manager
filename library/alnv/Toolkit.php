@@ -101,21 +101,7 @@ class Toolkit {
 
     public static function setDcConformInputType( $strType ) {
 
-        $arrInputTypes = [
-
-            'text' => 'text',
-            'date' => 'text',
-            'number' => 'text',
-            'hidden' => 'text',
-            'radio' => 'radio',
-            'select' => 'select',
-            'upload' => 'fileTree',
-            'textarea' => 'textarea',
-            'checkbox' => 'checkbox',
-            'message' => 'catalogMessageWidget'
-        ];
-
-        return $arrInputTypes[ $strType ] ?: '';
+        return $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'][ $strType ] ?: '';
     }
 
 

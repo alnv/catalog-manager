@@ -18,7 +18,6 @@
       var CatalogManagerMaps = CatalogManagerMaps || [];
       var objCatalogMapView_<?= $this->map['id'] ?> = null;
       var objCatalogMapBounds_<?= $this->map['id'] ?> = null;
-
       CatalogManagerMaps[ CatalogManagerMaps.length ] = function () {
          var objLatLng = new google.maps.LatLng("<?= $this->map['lat']; ?>", "<?= $this->map['lng']; ?>");
          objCatalogMapBounds_<?= $this->map['id'] ?> = new google.maps.LatLngBounds();
@@ -45,7 +44,7 @@
                     initializeGoogleMaps();
                 });
             }
-        }
+        };
         if ( document.addEventListener ) {
             document.addEventListener( 'DOMContentLoaded', enableGoogleMaps, false );
         } else if ( document.attachEvent ) {

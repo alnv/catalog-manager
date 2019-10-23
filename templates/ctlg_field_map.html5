@@ -32,7 +32,7 @@
     var objMarker = new google.maps.Marker({
         map: objGoogleMap,
         position: objLatLng,
-        title: objCatalog.title,
+        title: objCatalog.title
     });
     <?php endif;?>
 
@@ -59,7 +59,7 @@
                 initializeGoogleMaps();
             });
         }
-    }
+    };
     if ( document.addEventListener ) {
         document.addEventListener( 'DOMContentLoaded', enableGoogleMaps, false );
     } else if ( document.attachEvent ) {

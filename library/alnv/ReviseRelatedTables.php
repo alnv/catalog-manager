@@ -16,6 +16,7 @@ class ReviseRelatedTables extends \Controller {
 
     public function reviseCatalogTables( $strTable, $strPTable, $arrCTables ) {
 
+
         $objCatalogDb = $this->Database->prepare( 'SELECT id FROM tl_catalog WHERE tablename = ?' )->execute( $strTable );
 
         if ( !$objCatalogDb->count() ) {
@@ -49,9 +50,15 @@ class ReviseRelatedTables extends \Controller {
 
                 if ( $v && $this->Database->TableExists( $v ) ) {
 
-                    if ( !isset( $GLOBALS['loadDataContainer'][$v] ) ) {
+                    if ( !isset( $GLOBALS['TL_DCA'][$v] ) ) {
 
-                        $this->loadDataContainer($v);
+                        $objLoader = new \DcaLoader( $strTable );
+                        $objLoader->load(false);
+                    }
+
+                    if ( !$GLOBALS['TL_DCA'][$v] ) {
+
+                        continue;
                     }
 
                     if ( $GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'] ) {

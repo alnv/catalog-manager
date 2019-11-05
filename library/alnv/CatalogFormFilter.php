@@ -251,6 +251,15 @@ class CatalogFormFilter extends CatalogController {
             $objScriptLoader->loadStyle('awesomplete' );
         }
 
+        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] ) ) {
+
+            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] as $callback ) {
+
+                $this->import( $callback[0] );
+                $arrField = $this->{$callback[0]}->{$callback[1]}( $arrField, $this );
+            }
+        }
+
         return $arrField;
     }
 

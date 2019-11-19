@@ -29,6 +29,7 @@ class ActiveInsertTag extends \Frontend {
                 $arrParams = explode( '&', $strSource );
 
                 $blnIsDate = false;
+                $strDateMethod = 'tstamp';
                 $strDateFormat = $objPage->dateFormat;
 
                 foreach ( $arrParams as $strParam ) {
@@ -49,6 +50,12 @@ class ActiveInsertTag extends \Frontend {
 
                             break;
 
+                        case 'dateMethod':
+
+                            $strDateMethod = $strOption;
+
+                            break;
+
                         case 'dateFormat':
 
                             $strDateFormat = $strOption;
@@ -61,36 +68,47 @@ class ActiveInsertTag extends \Frontend {
 
                     foreach ( $varValue as $strK => $strV ) {
 
-                        if ( !$strV ) continue;
+                        if ( !$strV ) {
 
-                        try {
+                            unset( $varValue[$strK] );
+
+                            continue;
+                        };
+
+                        if ( \Validator::isDate( $strV ) || \Validator::isDate( $strV ) || \Validator::isTime( $strV ) ) {
 
                             $objDate = new \Date( $strV, $strDateFormat );
-                            $intTimestamp = $objDate->tstamp;
+                            $intTimestamp = $objDate->{$strDateMethod};
 
-                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->tstamp;
+                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->{$strDateMethod};
                         }
 
-                        catch ( \Exception $objException ) {
+                        else if ( is_numeric( $strV ) ) {
 
-                            $varValue = '';
+                            $objDate = new \Date( $strV );
+                            $intTimestamp = $objDate->{$strDateMethod};
+
+                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->{$strDateMethod};
                         }
                     }
                 }
 
                 if ( $blnIsDate && is_string( $varValue ) && !Toolkit::isEmpty( $varValue ) ) {
 
-                    try {
+                    if ( \Validator::isDate( $varValue ) || \Validator::isDate( $varValue ) || \Validator::isTime( $varValue ) ) {
 
                         $objDate = new \Date( $varValue, $strDateFormat );
-                        $intTimestamp = $objDate->tstamp;
+                        $intTimestamp = $objDate->{$strDateMethod};
 
-                        if ( $intTimestamp > 0 ) $varValue = $objDate->tstamp;
+                        if ( $intTimestamp > 0 ) $varValue = $objDate->{$strDateMethod};
                     }
 
-                    catch ( \Exception $objException ) {
+                    else if ( is_numeric( $varValue ) ){
 
-                        $varValue = '';
+                        $objDate = new \Date( $varValue );
+                        $intTimestamp = $objDate->{$strDateMethod};
+
+                        if ( $intTimestamp > 0 ) $varValue = $objDate->{$strDateMethod};
                     }
                 }
             }

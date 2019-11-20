@@ -145,4 +145,7 @@ TemplateLoader::addFiles([
     'ctlg_social_button_twitter' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_linkedin' => 'system/modules/catalog-manager/templates',
     'ctlg_social_button_facebook' => 'system/modules/catalog-manager/templates',
+
+    'ce_visibility_panel_start' => 'system/modules/catalog-manager/templates',
+    'ce_visibility_panel_stop' => 'system/modules/catalog-manager/templates'
 ]);

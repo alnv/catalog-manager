@@ -5,6 +5,9 @@ namespace CatalogManager;
 class ContentVisibilityPanelStart extends \ContentElement {
 
 
+    protected $strTemplate = 'ce_visibility_panel_start';
+
+
     public function generate() {
 
         if ( TL_MODE == 'BE' ) {

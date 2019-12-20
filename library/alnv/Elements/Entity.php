@@ -111,13 +111,14 @@ class Entity extends CatalogController {
             ];
         }
 
+        $arrJoinedTables = [];
         foreach ( $this->arrFields as $strFieldname => $arrField ) {
 
             if ( in_array( $arrField['type'], [ 'select', 'checkbox', 'radio' ] ) ) {
 
                 if ( isset( $arrField['optionsType'] ) && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] )  ) {
 
-                    if ( !$arrField['multiple'] ) {
+                    if ( !$arrField['multiple'] && !in_array( $arrField['dbTable'], $arrJoinedTables ) ) {
 
                         $arrQuery['joins'][] = [
 
@@ -129,6 +130,7 @@ class Entity extends CatalogController {
                             'onField' => $arrField['dbTableKey']
                         ];
 
+                        $arrJoinedTables[] = $arrField['dbTable'];
                         $objChildFieldBuilder = new CatalogFieldBuilder();
                         $objChildFieldBuilder->initialize( $arrField['dbTable'] );
 

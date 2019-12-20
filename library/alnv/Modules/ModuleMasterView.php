@@ -58,16 +58,8 @@ class ModuleMasterView extends \Module {
         $this->import( 'CatalogView' );
 
         $arrQuery = [
-
             'where' => [
-
                 [
-                    [
-                        'field' => 'id',
-                        'operator' => 'equal',
-                        'value' => $this->strMasterAlias
-                    ],
-
                     [
                         'field' => 'alias',
                         'operator' => 'equal',
@@ -76,6 +68,15 @@ class ModuleMasterView extends \Module {
                 ]
             ]
         ];
+
+        if ( is_numeric( $this->strMasterAlias ) ) {
+
+            $arrQuery['where'][0][] = [
+                'field' => 'id',
+                'operator' => 'equal',
+                'value' => $this->strMasterAlias
+            ];
+        }
 
         $this->CatalogView->strMode = 'master';
         $this->CatalogView->arrOptions = $this->arrData;

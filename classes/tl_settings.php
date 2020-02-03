@@ -17,6 +17,11 @@ class tl_settings extends \Backend {
 
     public function verifyLicence( $varValue ) {
 
+        if ( \Config::get('catalogLicence') == $varValue ) {
+
+            return $varValue;
+        }
+
         $objCatalogManagerVerification = new CatalogManagerVerification();
         $objCatalogManagerVerification->toggleIsBlocked( $objCatalogManagerVerification->isBlocked() );
 

@@ -38,14 +38,11 @@ class CatalogManagerVerification extends CatalogController {
 
             if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
 
-                if ( is_bool( $arrResponse['valid'] ) && $arrResponse['valid'] == true ) {
-
-                    return $arrResponse['valid'];
-                }
+                return $arrResponse['valid'];
             }
         }
 
-        return false;
+        return true;
     }
 
 
@@ -53,7 +50,6 @@ class CatalogManagerVerification extends CatalogController {
 
         $objRequest = new \Request();
         $arrContaoInstallData = $this->getContaoInstallData();
-
         $strRequestData = http_build_query( $arrContaoInstallData );
         $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/is_blocked?%s', $strRequestData ) );
 

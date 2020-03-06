@@ -33,6 +33,7 @@ class Toolkit {
         'text' => "text NULL",
         'longtext' => "longtext NULL",
         'blob' => "blob NULL",
+        'longblob' => "longblob NULL",
         'binary' => "binary(16) NULL"
     ];
 

@@ -651,18 +651,14 @@ class CatalogDcExtractor extends CatalogController {
             foreach ( $objReviseRelatedTables->getErrorTables() as $strTable ) {
 
                 \Message::addError( sprintf( "Table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable ) );
-
                 $arrErrorTables[] = $strTable;
 
                 if ( $strTable == $arrReturn['config']['ptable'] ) {
-
                     $arrReturn['config']['ptable'] = '';
                 }
 
                 if ( in_array( $strTable , $arrReturn['config']['ctable'] ) ) {
-
                     $intIndex = array_search( $strTable, $arrReturn['config']['ctable'] );
-
                     unset( $arrReturn['config']['ctable'][ $intIndex ] );
                 }
             }

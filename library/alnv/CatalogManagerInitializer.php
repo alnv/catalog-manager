@@ -14,19 +14,22 @@ class CatalogManagerInitializer {
 
 
     public function initialize() {
-        
-        // Do not execute in install tool (#210)
-        if ( TL_MODE == 'BE' && \Config::get('dbDatabase') ) {
 
+        $blnInitializeInBackend = TL_MODE == 'BE';
+        if (version_compare('4.4', VERSION, '<=')) {
+            $objRequest = \System::getContainer()->get( 'request_stack' )->getCurrentRequest();
+            if ( $objRequest && $objRequest->get('_route') == 'contao_install' ) {
+                $blnInitializeInBackend = false;
+            }
+        }
+
+        if ($blnInitializeInBackend) {
             \BackendUser::getInstance();
             \Database::getInstance();
-
             $this->objIconGetter = new IconGetter();
             $this->objIconGetter->createCatalogManagerDirectories();
-
             $this->objI18nCatalogTranslator = new I18nCatalogTranslator();
             $this->objI18nCatalogTranslator->initialize();
-
             $this->setCatalogs();
             $this->setNavigation();
             $this->modifyCoreModules();
@@ -34,23 +37,18 @@ class CatalogManagerInitializer {
             $this->initializeDataContainerArrays();
 
             if ( \Config::get( 'catalogLicence' ) ) {
-
                 unset( $GLOBALS['BE_MOD']['catalog-manager-extensions']['support'] );
             }
         }
 
         if ( TL_MODE == 'FE' ) {
-
             \FrontendUser::getInstance();
             \Database::getInstance();
-
             $this->setCatalogs();
         }
 
         if ( \Config::get('_isBlocked') ) {
-
             $strMessage = 'Our system detected an unlicensed catalog manager installation on the domain "'. \Environment::get('base') .'". Please enter your valid license or contact your webmaster.';
-
             \Message::addError( $strMessage );
             \System::log( $strMessage, 'CATALOG MANAGER VERIFICATION', TL_ERROR );
         }

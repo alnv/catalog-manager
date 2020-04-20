@@ -516,7 +516,7 @@ class Toolkit {
         }
 
         if (is_numeric($arrQuery['value']) && in_array($arrQuery['operator'], ['lte','lt','gt', 'gte'])) {
-            $arrQuery['value'] = (int) $arrQuery['value'];
+            $arrQuery['value'] = floatval($arrQuery['value']);
         }
 
         $arrQuery['value'] = self::prepareValueForQuery( $arrQuery['value'] );

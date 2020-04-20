@@ -319,8 +319,8 @@ class Toolkit {
             }
         }
 
-        if ( is_string( $varValue ) && $varValue === '0' ) return 0;
-        if ( is_null( $varValue ) ) return '';
+        if (is_string( $varValue) && $varValue === '0' ) return 0;
+        if (is_null( $varValue )) return '';
 
         return $varValue;
     }
@@ -466,9 +466,7 @@ class Toolkit {
         if ( is_array( $arrQuery['value'] ) ) {
 
             if ( !empty( $arrQuery['value'] ) ) {
-
                 foreach ( $arrQuery['value'] as $strK => $strV ) {
-
                     $arrQuery['value'][ $strK ] = \Controller::replaceInsertTags( $strV );
                 }
             }
@@ -476,11 +474,8 @@ class Toolkit {
             if ( $arrQuery['operator'] == 'between' && is_array( $arrQuery['value'] ) ) {
 
                 if ( $arrQuery['value'][0] === '' && $arrQuery['value'][1] === '' ) return null;
-
                 if ( $arrQuery['value'][0] === '' ) $arrQuery['value'][0] = '0';
-
                 if ( $arrQuery['value'][1] === '' ) {
-
                     $numOff = (float) $arrQuery['value'][0];
                     $arrQuery['value'][1] = $numOff * $numOff;
                 }
@@ -518,6 +513,10 @@ class Toolkit {
         if ( ( is_array( $arrQuery['value'] ) && empty( $arrQuery['value'] ) ) && !$blnAllowEmptyValue ) {
 
             return null;
+        }
+
+        if (is_numeric($arrQuery['value']) && in_array($arrQuery['operator'], ['lte','lt','gt', 'gte'])) {
+            $arrQuery['value'] = (int) $arrQuery['value'];
         }
 
         $arrQuery['value'] = self::prepareValueForQuery( $arrQuery['value'] );
@@ -748,9 +747,9 @@ class Toolkit {
 
     public static function getLabelValue( $varValue, $strFallback ) {
 
-        if ( Toolkit::isEmpty( $varValue ) ) return $strFallback;
-        if ( is_array( $varValue ) ) return $varValue[0] ?: '';
-        if ( is_string( $varValue ) ) return $varValue ?: '';
+        if ( Toolkit::isEmpty($varValue)) return $strFallback;
+        if ( is_array($varValue)) return $varValue[0] ?: '';
+        if ( is_string($varValue)) return $varValue ?: '';
 
         return $strFallback;
     }

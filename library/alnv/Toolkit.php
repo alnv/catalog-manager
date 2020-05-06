@@ -665,20 +665,15 @@ class Toolkit {
 
             case 'upload':
 
-                if ( TL_MODE == 'FE' ) {
-
+                $blnFrontend = TL_MODE == 'FE' || $arrField['useArrayFormat'];
+                if ($blnFrontend) {
                     $strValue = Upload::parseValue( $strValue, $arrField, $arrData );
-
                     if ( is_array( $strValue ) && $arrField['fileType'] == 'gallery' ) {
-
                         if ( $strValue['preview'] ) $arrData[ $arrField['fieldname'] . 'Preview' ] = $strValue['preview'];
-
                         $strValue = $strValue['gallery'];
                     }
                 }
-
                 else {
-
                     $strValue = Upload::parseThumbnails( $strValue, $arrField, $arrData );
                 }
 

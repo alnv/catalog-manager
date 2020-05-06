@@ -27,11 +27,17 @@ class DbColumn {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog = [] ) {
 
-        $varValue = deserialize( $varValue );
+        $varValue = \StringUtil::deserialize($varValue);
+        if ($arrField['multiple'] && is_string($varValue)) {
+            $varValue = explode(',', $varValue);
+        }
 
-        if ( $arrField['multiple'] && is_string( $varValue ) ) {
-
-            $varValue = explode( ',', $varValue );
+        if (is_array($varValue) && !empty($varValue)) {
+            foreach ($varValue as $strIndex => $strValue) {
+                if ($strValue && is_string($strValue) && \Validator::isBinaryUuid($strValue)) {
+                    $varValue[$strIndex] = \StringUtil::binToUuid($strValue);
+                }
+            }
         }
 
         return $varValue;

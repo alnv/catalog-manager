@@ -23,18 +23,20 @@ class tl_page extends \Backend {
 
     public function getRoutingFields( \DataContainer $dc ) {
 
-        if ( !$dc->activeRecord->catalogRoutingTable ) return [];
+        if (!$dc->activeRecord->catalogRoutingTable) return [];
 
         $arrReturn = [];
-        $objCatalogFields = $this->Database->prepare( 'SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )' )->execute( $dc->activeRecord->catalogRoutingTable );
+        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT id FROM tl_catalog WHERE tablename = ? )')->execute($dc->activeRecord->catalogRoutingTable);
 
-        while ( $objCatalogFields->next() ) {
+        while ($objCatalogFields->next()) {
+            if (!$objCatalogFields->fieldname) continue;
+            if (!in_array($objCatalogFields->type, ['select', 'radio', 'checkbox', 'text', 'dbColumn', 'number'])) continue;
+            $arrReturn[$objCatalogFields->fieldname] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[' . $objCatalogFields->fieldname . ']</span>': $objCatalogFields->fieldname;
+        }
 
-            if ( !$objCatalogFields->fieldname ) continue;
-
-            if ( !in_array( $objCatalogFields->type, [ 'select', 'radio', 'checkbox', 'text', 'dbColumn', 'number' ] ) ) continue;
-
-            $arrReturn[ $objCatalogFields->fieldname ] = $objCatalogFields->title ? $objCatalogFields->title . ' <span style="color:#333; font-size:12px; display:inline">[ ' . $objCatalogFields->fieldname . ' ]</span>': $objCatalogFields->fieldname;
+        \System::loadLanguageFile('catalog_manager');
+        if (!in_array('alias', $arrReturn)) {
+            $arrReturn['alias'] = $GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0];
         }
 
         return $arrReturn;

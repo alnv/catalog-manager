@@ -4,7 +4,6 @@ namespace CatalogManager;
 
 class DbColumn {
 
-
     public static function generate( $arrDCAField, $arrField ) {
 
         unset( $arrDCAField['inputType'] );
@@ -23,7 +22,6 @@ class DbColumn {
 
         return $arrDCAField;
     }
-
 
     public static function parseValue( $varValue, $arrField, $arrCatalog = [] ) {
 

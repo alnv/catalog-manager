@@ -3,8 +3,7 @@
 namespace CatalogManager;
 
 class GalleryCreator extends \Frontend {
-
-
+    
     public $id;
     public $size;
     public $perRow;
@@ -65,17 +64,15 @@ class GalleryCreator extends \Frontend {
 
                 if ( !$objFile->isImage ) continue;
 
-                $arrMeta = $this->getMetaData( $this->objFiles->meta, $objPage->language );
+                $arrMeta = $this->getMetaData( $this->objFiles->meta, ($objPage->language ?: 'de') );
 
                 if ( empty( $arrMeta ) ) {
 
                     if ($this->metaIgnore) {
-
                         continue;
                     }
 
                     elseif ($objPage->rootFallbackLanguage !== null) {
-
                         $arrMeta = $this->getMetaData( $this->objFiles->meta, $objPage->rootFallbackLanguage );
                     }
                 }
@@ -91,7 +88,6 @@ class GalleryCreator extends \Frontend {
                     'uuid' => $this->objFiles->uuid,
                     'name' => $this->objFiles->basename,
                     'singleSRC' => $this->objFiles->path,
-
                     'alt' => $arrMeta['alt'],
                     'title'  => $arrMeta['title'],
                     'imageUrl' => $arrMeta['link'],
@@ -121,7 +117,7 @@ class GalleryCreator extends \Frontend {
 
                     if ( !$objFile->isImage )  continue;
 
-                    $arrMeta = $this->getMetaData( $objSubFiles->meta, $objPage->language );
+                    $arrMeta = $this->getMetaData( $objSubFiles->meta, ($objPage->language ?: 'de') );
 
                     if ( empty( $arrMeta ) ) {
 
@@ -144,12 +140,11 @@ class GalleryCreator extends \Frontend {
                         'uuid' => $objSubFiles->uuid,
                         'name' => $objFile->basename,
                         'singleSRC' => $objSubFiles->path,
-
                         'alt' => $arrMeta['alt'],
                         'title'  => $arrMeta['title'],
                         'imageUrl' => $arrMeta['link'],
                         'linkTitle' => $arrMeta['title'],
-                        'caption' => $arrMeta['caption']
+                        'caption' => $arrMeta['caption'],
                     ];
 
                     if ( version_compare(VERSION, '4.4', '>=' ) ) {
@@ -251,7 +246,7 @@ class GalleryCreator extends \Frontend {
                 case 'last':
 
                     $inrPosition = count( $arrImages ) - 1;
-                    
+
                     break;
             }
 
@@ -301,12 +296,10 @@ class GalleryCreator extends \Frontend {
             $strRowClass = '';
 
             if ( $intRowCount == 0 ) {
-
                 $strRowClass .= ' row_first';
             }
 
             if (($i + $this->perRow) >= $intLimit ) {
-
                 $strRowClass .= ' row_last';
             }
 
@@ -330,7 +323,6 @@ class GalleryCreator extends \Frontend {
                 $strKey = 'row_' . $intRowCount . $strRowClass . $strRowOEClass;
 
                 if ( !is_array( $arrImages[ ( $i + $j ) ] ) || ( $j + $i ) >= $intLimit ) {
-
                     $objCell->colWidth = $intColWidth . '%';
                     $objCell->class = 'col_'. $j . $strRowTDClass;
                 }
@@ -341,17 +333,20 @@ class GalleryCreator extends \Frontend {
                     $arrImages[($i+$j)]['fullsize'] = $this->fullsize;
 
                     if ( version_compare(VERSION, '4.4', '>=' ) ) {
-
                         $this->addImageToTemplate( $objCell, $arrImages[($i+$j)], $intMaxWidth, $strLightBoxID, $arrImages[($i+$j)]['filesModel'] );
                     }
-
                     else {
-
                         $this->addImageToTemplate( $objCell, $arrImages[($i+$j)], $intMaxWidth, $strLightBoxID );
                     }
 
                     $objCell->colWidth = $intColWidth . '%';
                     $objCell->class = 'col_'. $j . $strRowTDClass;
+                    $objCell->meta = [
+                        'title' => $arrImages[($i+$j)]['title'] ?: '',
+                        'caption' => $arrImages[($i+$j)]['caption'] ?: '',
+                        'alt' => $arrImages[($i+$j)]['alt'] ?: '',
+                        'link' => $arrImages[($i+$j)]['link'] ?: ''
+                    ];
                 }
 
                 $arrBody[$strKey][$j] = $objCell;
@@ -361,7 +356,7 @@ class GalleryCreator extends \Frontend {
         }
 
         if ( $this->useArrayFormat ) {
-            
+
             return is_array( $arrBody ) ? array_values( $arrBody ) : [];
         }
 
@@ -378,7 +373,7 @@ class GalleryCreator extends \Frontend {
 
 
     public function getPreviewImage() {
-        
+
         return Upload::generateImage( $this->arrPreviewImage, [
 
             'imageTemplate' => $this->imageTemplate

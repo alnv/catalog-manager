@@ -3,7 +3,7 @@
 namespace CatalogManager;
 
 class GalleryCreator extends \Frontend {
-    
+
     public $id;
     public $size;
     public $perRow;

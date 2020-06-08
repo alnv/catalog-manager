@@ -678,6 +678,18 @@ class FrontendEditing extends CatalogController {
 
         if ( $strMode == 'copy' ) $strMode = 'create';
 
+        if ( isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission'] as $arrCallback) {
+                if ( is_array( $arrCallback ) ) {
+                    $this->import($arrCallback[0]);
+                    $varReturn = $this->{$arrCallback[0]}->{$arrCallback[1]}($strMode, $this->strItemID, $this->catalogTablename, $this);
+                    if (is_bool($varReturn)) {
+                        return $varReturn;
+                    }
+                }
+            }
+        }
+
         return $this->FrontendEditingPermission->hasPermission( $strMode, $this->catalogTablename );
     }
 

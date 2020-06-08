@@ -317,6 +317,15 @@ class OptionsGetter extends CatalogController {
             asort( $arrOptions );
         }
 
+        if ( isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback)  {
+                if ( is_array( $arrCallback ) ) {
+                    $this->import( $arrCallback[0] );
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
+                }
+            }
+        }
+
         return $arrOptions;
     }
 
@@ -363,6 +372,15 @@ class OptionsGetter extends CatalogController {
         if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
 
             asort( $arrOptions );
+        }
+
+        if ( isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback)  {
+                if ( is_array( $arrCallback ) ) {
+                    $this->import( $arrCallback[0] );
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
+                }
+            }
         }
 
         return $arrOptions;

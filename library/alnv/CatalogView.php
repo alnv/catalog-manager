@@ -752,15 +752,15 @@ class CatalogView extends CatalogController {
                 $arrCatalog['socialSharingButtons'] = $this->SocialSharingButtons->render( $arrCatalog, $this->catalogSEOTitle, $this->catalogSEODescription );
             }
 
-            if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] ) ) {
-
-                foreach ( $GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] as $arrCallback )  {
-
+            if ( isset($GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'])) {
+                foreach ($GLOBALS['TL_HOOKS']['catalogManagerRenderCatalog'] as $arrCallback)  {
                     if ( is_array( $arrCallback ) ) {
-
                         $this->import( $arrCallback[0] );
-                        $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrCatalog, $this->catalogTablename, $this );
+                        $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrCatalog, $this->catalogTablename, $this);
                     }
+                }
+                if (empty($arrCatalog)) {
+                    continue;
                 }
             }
 

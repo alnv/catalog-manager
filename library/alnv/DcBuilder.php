@@ -283,6 +283,16 @@ class DcBuilder extends CatalogController {
             };
         }
 
+        if ($this->arrCatalog['showColumns']) {
+            $arrReturn['label_callback'] = function ($arrRow) use ($arrReturn) {
+                foreach ($arrReturn['fields'] as $strField) {
+                    $arrView[$strField] = $arrRow[$strField];
+                }
+                $arrView = Toolkit::parseCatalogValues($arrView, $this->arrFields, true);
+                return $arrView;
+            };
+        }
+
         return $arrReturn;
     }
 

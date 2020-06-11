@@ -1,6 +1,6 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.31.31");
+define("CATALOG_MANAGER_VERSION", "1.31.32");
 
 if ( !\Config::get('hideCatalogManager') ) {
     array_insert( $GLOBALS['BE_MOD'], 3, [

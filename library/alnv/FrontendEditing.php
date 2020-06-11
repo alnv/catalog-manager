@@ -1211,7 +1211,6 @@ class FrontendEditing extends CatalogController {
                 $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
 
                 if ( $arrField['eval']['files'] && $arrField['eval']['multiple'] && is_array( $varValue ) ) {
-
                     $varValue = serialize( $varValue );
                 }
 
@@ -1219,16 +1218,13 @@ class FrontendEditing extends CatalogController {
 
                 if ( is_null( $arrField ) ) continue;
 
-                if ( $arrField['_type'] == 'date' || in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
-
-                    $objDate = new \Date( $varValue );
-                    $intTime = $objDate->timestamp;
-                    $varValue = $intTime < 1 ? '' : $intTime;
+                if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], [ 'date', 'time', 'datim'])) {
+                    $objDate = new \Date($varValue);
+                    $varValue = $objDate->timestamp;
                 }
 
                 if ( strpos( $arrField['sql'], 'int' ) !== false && is_string( $varValue ) ) {
-
-                    $varValue = intval( $varValue );
+                    $varValue = intval($varValue);
                 }
 
                 $this->arrValues[ $strFieldname ] = $varValue;

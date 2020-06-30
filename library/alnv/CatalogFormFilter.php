@@ -109,9 +109,10 @@ class CatalogFormFilter extends CatalogController {
                     }
                 }
 
-                $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[ $arrField['type'] ];
-
-                if ( !$strTemplate ) continue;
+                $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[$arrField['type']];
+                if (!$strTemplate) {
+                    $strTemplate = 'ctlg_form_field_' . $arrField['type'];
+                }
 
                 if ( $this->getInput( '_submit' ) == $strFormId ) {
 
@@ -133,10 +134,19 @@ class CatalogFormFilter extends CatalogController {
                     }
                 }
 
-                $objTemplate = new \FrontendTemplate( $strTemplate );
-                $objTemplate->setData( $this->arrFormFields[ $strName ] );
+                if (isset($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter']) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'])) {
+                    foreach ($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'] as $arrCallback) {
+                        if (is_array($arrCallback)) {
+                            $this->import( $arrCallback[0] );
+                            $this->{$arrCallback[0]}->{$arrCallback[1]}($strName, $this->arrFormFields[$strName], $this->arrFormFields, $this);
+                        }
+                    }
+                }
 
-                $arrFields[ $strName ] = $objTemplate->parse();
+                $objTemplate = new \FrontendTemplate($strTemplate);
+                $objTemplate->setData($this->arrFormFields[$strName]);
+
+                $arrFields[$strName] = $objTemplate->parse();
             }
         }
 

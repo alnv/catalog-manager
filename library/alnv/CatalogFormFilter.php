@@ -138,7 +138,7 @@ class CatalogFormFilter extends CatalogController {
                     foreach ($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'] as $arrCallback) {
                         if (is_array($arrCallback)) {
                             $this->import( $arrCallback[0] );
-                            $this->{$arrCallback[0]}->{$arrCallback[1]}($strName, $this->arrFormFields[$strName], $this->arrFormFields, $this);
+                            $this->{$arrCallback[0]}->{$arrCallback[1]}($strName, $this->arrFormFields[$strName], $this->arrFormFields, $this->arrForm, $this);
                         }
                     }
                 }
@@ -203,7 +203,7 @@ class CatalogFormFilter extends CatalogController {
     }
 
 
-    protected function parseField( $arrField ) {
+    public function parseField( $arrField ) {
 
         if ( $arrField['type'] == 'range' ) {
 

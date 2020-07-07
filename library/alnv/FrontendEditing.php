@@ -53,7 +53,7 @@ class FrontendEditing extends CatalogController {
         $this->arrValidFormTemplates = array_keys( Toolkit::$arrFormTemplates );
         $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
         $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
-        $this->catalogExcludedFields = Toolkit::deserialize( $this->catalogExcludedFields );
+        $this->catalogExcludedFields = Toolkit::deserialize($this->catalogExcludedFields);
 
         $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
 
@@ -904,6 +904,10 @@ class FrontendEditing extends CatalogController {
                 unset( $arrEntity['alias'] );
             }
 
+            foreach ($this->catalogExcludedFields as $strField) {
+                unset($arrEntity[$strField]);
+            }
+
             $this->arrValues = $arrEntity;
         }
 
@@ -1214,16 +1218,17 @@ class FrontendEditing extends CatalogController {
                     $varValue = serialize( $varValue );
                 }
 
-                $varValue = Toolkit::prepareValue4Db( $varValue );
+                $varValue = Toolkit::prepareValue4Db($varValue);
 
-                if ( is_null( $arrField ) ) continue;
+                if (is_null($arrField)) continue;
 
-                if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], [ 'date', 'time', 'datim'])) {
+                if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
+
                     $objDate = new \Date($varValue);
                     $varValue = $objDate->timestamp;
                 }
 
-                if ( strpos( $arrField['sql'], 'int' ) !== false && is_string( $varValue ) ) {
+                if (strpos($arrField['sql'], 'int') !== false && is_string($varValue)) {
                     $varValue = intval($varValue);
                 }
 

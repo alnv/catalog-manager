@@ -114,6 +114,10 @@ class Entity extends CatalogController {
         $arrJoinedTables = [];
         foreach ( $this->arrFields as $strFieldname => $arrField ) {
 
+            if ($this->arrSettings['noJoins']) {
+                continue;
+            }
+
             if ( in_array( $arrField['type'], [ 'select', 'checkbox', 'radio' ] ) ) {
 
                 if ( isset( $arrField['optionsType'] ) && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] )  ) {
@@ -140,7 +144,7 @@ class Entity extends CatalogController {
             }
         }
 
-        if ( $this->arrCatalog['pTable'] ) {
+        if ( $this->arrCatalog['pTable'] && !$this->arrSettings['noParentJoin'] ) {
 
             $arrQuery['joins'][] = [
 

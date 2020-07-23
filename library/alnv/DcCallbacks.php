@@ -271,47 +271,39 @@ class DcCallbacks extends \Backend {
 
     public function generateFEAlias( $varValue, $strTitle, $strTablename, $strID, $strModuleID = '' ) {
 
-        if ( !$varValue && $strTitle ) {
-
+        if (!$varValue && $strTitle) {
             $strTitle = str_replace(',', '-', $strTitle );
             $varValue = Toolkit::slug( $strTitle );
         }
 
-        $arrValues = [ $varValue ];
-        $strSQLStatement = sprintf( 'SELECT * FROM %s WHERE `alias` = ?', $strTablename );
+        $arrValues = [$varValue];
+        $strSQLStatement = sprintf('SELECT * FROM %s WHERE `alias` = ?', $strTablename);
+        $strID = $strID ? $strID : \Input::get('id' .$strModuleID);
 
-        if ( !is_null( $strID ) ) {
-
-            $strSQLStatement = $strSQLStatement . ' ' . 'AND id != ?';
+        if (!is_null($strID)) {
+            $strSQLStatement = $strSQLStatement . ' ' . 'AND id!=?';
             $arrValues[] = $strID;
-
-            $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `id` = ?', $strTablename ) )->limit(1)->execute( $strID );
-
-            if ( $objEntity->numRows ) {
-
-                if ( $objEntity->pid ) {
-
-                    $strSQLStatement = $strSQLStatement . ' AND pid = ?';
+            $objEntity = $this->Database->prepare(sprintf('SELECT * FROM %s WHERE `id` = ?',$strTablename))->limit(1)->execute($strID);
+            if ($objEntity->numRows) {
+                if ($objEntity->pid) {
+                    $strSQLStatement = $strSQLStatement . ' AND pid=?';
                     $arrValues[] = $objEntity->pid;
                 }
             }
         }
 
-        $objCatalogs = $this->Database->prepare( $strSQLStatement )->execute( $arrValues );
+        $objCatalogs = $this->Database->prepare($strSQLStatement)->execute($arrValues);
         
-        if ( $objCatalogs->numRows && \Input::get( 'id' . $strModuleID ) ) {
-
-            $varValue .= '_' . \Input::get( 'id' . $strModuleID );
+        if ($objCatalogs->numRows && \Input::get('id' . $strModuleID)) {
+            $varValue .= '_' . \Input::get('id' . $strModuleID);
         }
 
-        if ( $objCatalogs->numRows && !\Input::get( 'id' . $strModuleID ) ) {
-
-            $varValue .= '_' . md5( time() . uniqid() );
+        if ($objCatalogs->numRows && !\Input::get( 'id' . $strModuleID)) {
+            $varValue .= '_' . md5(time() . uniqid());
         }
 
-        if ( !$varValue ) {
-
-            $varValue .= md5( $objCatalogs->numRows . time() . uniqid() );
+        if (!$varValue) {
+            $varValue .= md5($objCatalogs->numRows . time() . uniqid());
         }
 
         return $varValue;

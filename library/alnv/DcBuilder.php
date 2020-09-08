@@ -285,7 +285,11 @@ class DcBuilder extends CatalogController {
 
         if ($this->arrCatalog['showColumns']) {
             $arrReturn['label_callback'] = function ($arrRow) use ($arrReturn) {
+                $arrView = [];
                 foreach ($arrReturn['fields'] as $strField) {
+                    if ($strField === 'tstamp') {
+                        $arrRow['tstamp'] = (new \Date($arrRow['tstamp']))->datim;
+                    }
                     $arrView[$strField] = $arrRow[$strField];
                 }
                 $arrView = Toolkit::parseCatalogValues($arrView, $this->arrFields, true);

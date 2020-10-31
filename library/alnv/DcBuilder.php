@@ -226,7 +226,6 @@ class DcBuilder extends CatalogController {
     protected function getLabelDc() {
 
         $arrReturn = $this->CatalogDcExtractor->setDcLabelByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
-
             'fields' => [ 'title' ]
         ]);
 
@@ -255,29 +254,24 @@ class DcBuilder extends CatalogController {
             };
         }
 
-        if ( $this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ) {
-
+        if ($this->arrCatalog['useOwnLabelFormat'] && !Toolkit::isEmpty( $this->arrCatalog['labelFormat'])) {
             $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ( $arrReturn ) {
-
                 $objDcCallbacks = new DcCallbacks();
                 return $objDcCallbacks->labelCallback( $this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn );
             };
         }
 
-        if ( in_array( $this->arrCatalog['mode'], [ '1', '2' ] ) && in_array( 'cut', $this->arrCatalog['operations'] ) && in_array( 'sorting', $this->arrCatalog['sortingFields'] ) ) {
-
+        if (in_array($this->arrCatalog['mode'], [ '1', '2' ]) && in_array('cut', $this->arrCatalog['operations']) && in_array( 'sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['format'] = '%s';
             $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ( $arrReturn ) {
-
                 $objDcCallbacks = new DcCallbacks();
-                return $objDcCallbacks->labelCallback( $this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn );
+                return $objDcCallbacks->labelCallback($this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn);
             };
+            return $arrReturn;
         }
 
         if ( $this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty( $this->arrCatalog['groupFormat'] ) ) {
-
             $arrReturn['group_callback'] = function ( $strGroup, $strMode, $strField, $arrRow, $dc ) {
-
                 $objDcCallbacks = new DcCallbacks();
                 return $objDcCallbacks->groupCallback( $this->arrCatalog['groupFormat'], $this->arrFields, $strGroup, $strMode, $strField, $arrRow, $dc );
             };
@@ -337,7 +331,6 @@ class DcBuilder extends CatalogController {
         }
 
         if ( in_array( $this->arrCatalog['mode'], [ '1', '2' ] ) && in_array( 'cut', $this->arrCatalog['operations'] ) && in_array( 'sorting', $this->arrCatalog['sortingFields'] ) ) {
-
             $arrReturn['mode'] = 5;
             $arrReturn['paste_button_callback'] = [ 'CatalogManager\DcCallbacks', 'pasteItem' ];
         }

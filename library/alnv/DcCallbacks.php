@@ -77,37 +77,31 @@ class DcCallbacks extends \Backend {
     }
 
 
-    function labelCallback ( $arrCatalog, $arrCatalogField = [], $arrRow, $strLabel, $arrLabel ) {
+    function labelCallback ( $arrCatalog, $arrCatalogField, $arrRow, $strLabel, $arrLabel ) {
 
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
-
-        if ( $arrCatalog['labelFormat'] ) {
-
+        if ($arrCatalog['labelFormat']) {
             $arrRow['_label'] = $strLabel;
-            return \StringUtil::parseSimpleTokens( $arrCatalog['labelFormat'], $arrRow );
+            return \StringUtil::parseSimpleTokens($arrCatalog['labelFormat'], $arrRow);
         }
-
-        if ( $arrCatalog['showColumns'] ) {
-
-            $strTemplate = '<div class="cm_table"><div class="cm_table_tr">';
-            $intColumns = count( $arrLabel['fields'] );
+        if ($arrCatalog['showColumns']) {
+            $strTemplate = '<div class="cm_table" style="margin-left:-20px"><div class="cm_table_tr">';
+            $intColumns = count($arrLabel['fields']);
             $strClass = 'cols_' . $intColumns .' cm_table_td';
             $intWidth = 100 / $intColumns;
-            foreach ( $arrLabel['fields'] as $intIndex => $strField ) {
-                $strTemplate .= '<div class="'.$strClass.' '. $strField .'" style="width: '.$intWidth.'%">' . ( $arrRow[ $strField ] ?: '-' ) . '</div>';
+            foreach ($arrLabel['fields'] as $intIndex => $strField) {
+                $strTemplate .= '<div class="'.$strClass.' '. $strField .'" style="width: '.$intWidth.'%">' . ($arrRow[ $strField ] ?: '-') . '</div>';
             }
             $strTemplate .= '</div></div>';
             return $strTemplate;
 
         }
-
-        $strField = isset( $arrLabel['fields'][0] ) ? $arrLabel['fields'][0] : 'title';
-
+        $strField = isset($arrLabel['fields'][0]) ? $arrLabel['fields'][0] : 'title';
         return $arrRow[ $strField ];
     }
 
 
-    public function childRecordCallback( $strTemplate, $arrCatalogField = [], $arrRow, $strField ) {
+    public function childRecordCallback( $strTemplate, $arrCatalogField, $arrRow, $strField ) {
 
         $arrRow = Toolkit::parseCatalogValues( $arrRow, $arrCatalogField, true );
 
@@ -752,7 +746,6 @@ class DcCallbacks extends \Backend {
         $imagePasteInto = \Image::getHtml( 'pasteinto.gif', sprintf($GLOBALS['TL_LANG'][ $dc->table ]['pasteinto'][1], $row['id']) );
 
         if ($row['id'] == 0) {
-
             return $cr ? \Image::getHtml('pasteinto_.gif').' ' : '<a href="'.\Backend::addToUrl('act='.$arrClipboard['mode'].'&mode=2&pid='.$row['id'].'&id='.$arrClipboard['id']).'" title="'.specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])).'" onclick="Backend.getScrollOffset();">'.$imagePasteInto.'</a> ';
         }
 

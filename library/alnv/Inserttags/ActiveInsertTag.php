@@ -33,33 +33,35 @@ class ActiveInsertTag extends \Frontend {
                 $strDateFormat = $objPage->dateFormat;
 
                 foreach ( $arrParams as $strParam ) {
-
                     list( $strKey, $strOption ) = explode( '=', $strParam );
-
-                    switch ( $strKey ) {
-
+                    switch ($strKey) {
                         case 'default':
-
-                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = \Controller::replaceInsertTags( $strOption );
-
+                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = \Controller::replaceInsertTags($strOption);
                             break;
-
+                        case 'suffix':
+                        case 'prefix':
+                            if (is_string($varValue)) {
+                                $strFix = \Controller::replaceInsertTags($strOption);
+                                $blnNoFix = false;
+                                if ($strKey == 'suffix') {
+                                    $blnNoFix = strpos($strFix, substr($varValue, -strlen($strFix))) === false;
+                                }
+                                if ($strKey == 'prefix') {
+                                    $blnNoFix = strpos($strFix, substr($varValue, 0, strlen($strFix))) === false;
+                                }
+                                if ($blnNoFix) {
+                                    $varValue = ($strKey == 'suffix' ? $varValue . $strFix : $strFix . $varValue);
+                                }
+                            }
+                            break;
                         case 'isDate':
-
                             $blnIsDate = true;
-
                             break;
-
                         case 'dateMethod':
-
                             $strDateMethod = $strOption;
-
                             break;
-
                         case 'dateFormat':
-
                             $strDateFormat = $strOption;
-
                             break;
                     }
                 }

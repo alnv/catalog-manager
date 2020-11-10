@@ -4,48 +4,30 @@ namespace CatalogManager;
 
 class CatalogWidgetAttributeParser extends CatalogController {
 
-
     public function parseCatalogNavigationAreasWidget( $arrAttributes ) {
 
         if ( TL_MODE != 'BE' || \Input::get('do') != 'settings' || !is_array( $GLOBALS['BE_MOD'] ) ) {
-
             return $arrAttributes;
         }
 
         if ( $arrAttributes['name'] == 'catalogNavigationAreas' ) {
-
             $arrValue = [];
             $arrCoreAreas = array_keys( $GLOBALS['BE_MOD'] );
-
             foreach ( $arrCoreAreas as $strArea ) {
-
-                if ( empty( $GLOBALS['BE_MOD'][ $strArea ] ) ) {
-
-                    continue;
-                }
-
                 $strNavigationTitle = $GLOBALS['TL_LANG']['MOD'][ $strArea ];
-
                 if ( is_array( $strNavigationTitle ) ) {
-
                     if ( isset ( $strNavigationTitle[0] ) ) {
-
-                        $strNavigationTitle = $strNavigationTitle[0] ? $strNavigationTitle[0] : '';
+                        $strNavigationTitle = $strNavigationTitle[0] ?: '-';
                     }
-
                     else {
-
-                        $strNavigationTitle = '';
+                        $strNavigationTitle = '-';
                     }
                 }
-
                 $arrValue[] = [
-
                     'key' => $strArea,
                     'value' => $strNavigationTitle
                 ];
             }
-
             $arrAttributes['value'] = $arrValue;
         }
 

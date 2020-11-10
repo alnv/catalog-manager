@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogNavigationAreas'] = [
     'eval' => [
         'tl_class' => 'clr'
     ],
-    'save_callback' => [ [ 'CatalogManager\tl_settings', 'parseNavigationName' ] ]
+    'save_callback' => [['CatalogManager\tl_settings', 'parseNavigationName']]
 ];
 $GLOBALS['TL_DCA']['tl_settings']['fields']['catalogMapProtected'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_settings']['catalogMapProtected'],

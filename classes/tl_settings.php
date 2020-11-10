@@ -39,22 +39,16 @@ class tl_settings extends \Backend {
     public function parseNavigationName( $varValue ) {
 
         $arrReturn = [];
-        $arrValues = deserialize( $varValue );
-
-        if ( !empty( $arrValues ) && is_array( $arrValues ) ) {
-
-            foreach ( $arrValues as $arrValue ) {
-
+        $arrValues = \StringUtil::deserialize($varValue, true);
+        if (!empty($arrValues) && is_array($arrValues)) {
+            foreach ($arrValues as $arrValue) {
                 $arrReturn[] = [
-
-                    'key' => Toolkit::slug( $arrValue['key'] ),
+                    'key' => \StringUtil::generateAlias($arrValue['key']),
                     'value' => $arrValue['value']
                 ];
             }
         }
-
-        $arrReturn = serialize( $arrReturn );
-
+        $arrReturn = serialize($arrReturn);
         return $arrReturn;
     }
 }

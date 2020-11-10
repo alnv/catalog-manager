@@ -81,8 +81,8 @@ class CatalogManagerInitializer {
 
     protected function setNavigation() {
 
-        $arrNavigationAreas = \Config::get( 'catalogNavigationAreas' );
-        $arrNavigationAreas = deserialize( $arrNavigationAreas );
+        $arrNavigationAreas = \Config::get('catalogNavigationAreas');
+        $arrNavigationAreas = \StringUtil::deserialize($arrNavigationAreas, true);
 
         if ( !empty( $arrNavigationAreas ) && is_array( $arrNavigationAreas ) ) {
 

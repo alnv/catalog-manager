@@ -35,12 +35,12 @@ class ContentCatalogFilterForm extends \ContentElement {
 
         if ( !$this->objForm->getState() ) {
 
-            return null;
+            return '';
         }
 
         if ( $this->objForm->disableAutoItem() ) {
 
-            return null;
+            return '';
         }
 
         return parent::generate();

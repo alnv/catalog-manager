@@ -157,23 +157,18 @@ class CatalogFieldBuilder extends CatalogController {
         if ( Toolkit::isEmpty( $strCSSBackendClasses ) ) $strCSSBackendClasses = 'clr';
 
         $arrDcField = [
-
             'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->strTable, 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
             'inputType' => Toolkit::setDcConformInputType( $arrField['type'] ),
-
             'eval' => [
-
                 'tl_class' => $strCSSBackendClasses,
                 'unique' => Toolkit::getBooleanByValue( $arrField['isUnique'] ),
                 'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
                 'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
                 'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),
                 'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
-                'trailingSlash' => Toolkit::getBooleanByValue( $arrField['trailingSlash'] ),
                 'doNotSaveEmpty' => Toolkit::getBooleanByValue( $arrField['doNotSaveEmpty'] ),
                 'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),
             ],
-
             'sorting' => Toolkit::getBooleanByValue( $arrField['sort'] ),
             'search' => Toolkit::getBooleanByValue( $arrField['search'] ),
             'filter' => Toolkit::getBooleanByValue( $arrField['filter'] ),
@@ -181,8 +176,11 @@ class CatalogFieldBuilder extends CatalogController {
             'sql' => Toolkit::getSqlDataType( $arrField['statement'] ),
         ];
 
-        if ( $arrField['statement'] == 'iNotNull10' ) {
+        if ($arrField['trailingSlash']) {
+            $arrDcField['eval']['trailingSlash'] = true;
+        }
 
+        if ( $arrField['statement'] == 'iNotNull10' ) {
            $arrDcField['eval']['nullIfEmpty'] = true;
         }
 

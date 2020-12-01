@@ -35,9 +35,9 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
         switch ( $strKey ) {
 
-            case 'maxlength':
+            case 'maxsize':
 
-                $this->arrConfiguration['maxlength'] = $varValue;
+                $this->arrConfiguration['maxsize'] = $varValue;
 
                 break;
 
@@ -139,7 +139,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
         }
 
         $arrFile = $_FILES[ $this->strName ];
-        $intMaxSizeKb = $this->getReadableSize( $this->maxlength );
+        $intMaxSizeKb = $this->getReadableSize( $this->maxsize );
 
         try {
 
@@ -194,7 +194,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
             return $arrReturn;
         }
 
-        if ( $this->maxlength > 0 && $arrFile['size'] > $this->maxlength ) {
+        if ( $this->maxsize > 0 && $arrFile['size'] > $this->maxsize ) {
 
             $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filesize'], $intMaxSizeKb );
             unset( $_FILES[ $this->strName ] );
@@ -343,7 +343,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
 
         $this->multiple = json_encode( $this->arrConfiguration['multiple'] );
         $this->extensions = json_encode( explode( ',', $this->arrConfiguration['extensions'] ) );
-        $this->maxlength = $this->arrConfiguration['maxlength'] ? $this->arrConfiguration['maxlength'] : '0';
+        $this->maxsize = $this->arrConfiguration['maxsize'] ? $this->arrConfiguration['maxsize'] : '0';
 
         return parent::parse( $arrAttributes );
     }

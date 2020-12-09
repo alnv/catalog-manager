@@ -69,35 +69,31 @@ class CatalogMasterEntity extends CatalogController {
         if ( Toolkit::isEmpty( $strAlias ) ) return $arrMaster;
 
         $arrQuery = [
-
             'table' => $this->strTable,
-
             'pagination' => [
-
                 'limit' => 1,
                 'offset' => 0
             ],
-
             'joins' => [],
-
             'where' => [
-
                 [
                     [
                         'field' => 'alias',
                         'value' => $strAlias,
                         'operator' => 'equal'
-                    ],
-
-                    [
-                        'field' => 'id',
-                        'operator' => 'equal',
-                        'value' => (int)$strAlias,
                     ]
                 ]
             ]
 
         ];
+
+        if (is_numeric($strAlias)) {
+            $arrQuery['where'][0][] = [
+                'field' => 'id',
+                'operator' => 'equal',
+                'value' => $strAlias
+            ];
+        }
 
         if ( !empty( $this->arrJoinFields ) && is_array( $this->arrJoinFields ) && $this->blnJoinFields ) {
 

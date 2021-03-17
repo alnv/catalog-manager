@@ -279,10 +279,12 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
+        $arrQueries = $this->catalogUseTaxonomies ? \StringUtil::deserialize($this->catalogTaxonomies, true) : [];
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strAct = $this->strAct;
+        $this->FrontendEditing->arrQueries = empty($arrQueries) ? [] : $arrQueries['query'];
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();

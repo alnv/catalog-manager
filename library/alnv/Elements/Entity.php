@@ -62,6 +62,10 @@ class Entity extends CatalogController {
             ]
         ];
 
+        if (is_array($this->arrSettings['queries']) && !empty($this->arrSettings['queries'])) {
+            array_insert($arrQuery['where'], 0, $this->arrSettings['queries']);
+        }
+
         if ( is_array( $this->arrCatalog['operations'] ) && in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
 
             $dteTime = \Date::floorToMinute();

@@ -9,6 +9,7 @@ class FrontendEditing extends CatalogController {
     public $strItemID = '';
     public $arrOptions = [];
     public $strTemplate = '';
+    public $arrQueries = [];
 
     protected $arrValues = [];
     protected $strFormId = '';
@@ -896,7 +897,8 @@ class FrontendEditing extends CatalogController {
 
         if ( $this->strItemID && $this->catalogTablename ) {
 
-            $arrEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->catalogTablename ) )->limit( 1 )->execute( $this->strItemID )->row();
+            // $arrEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->catalogTablename ) )->limit( 1 )->execute( $this->strItemID )->row();
+            $arrEntity = (new \CatalogManager\Entity($this->strItemID, $this->catalogTablename, ['operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
 
             if ( $this->strAct == 'copy' ) {
 

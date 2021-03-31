@@ -313,26 +313,26 @@ EOD;
     }
 
 
-    protected function getJoinedEntities( $strValue, $arrField ) {
+    protected function getJoinedEntities($strValue, $arrField) {
 
         $arrReturn = [];
+        if (Toolkit::isCoreTable($arrField['dbTable']) && !in_array($arrField['dbTable'], $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'])) {
+            return $arrReturn;
+        }
 
-        if ( Toolkit::isCoreTable( $arrField['dbTable'] ) && !in_array( $arrField['dbTable'], $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) ) {
-
+        if (!$arrField['dbTableKey']) {
             return $arrReturn;
         }
 
         $objFieldBuilder = new CatalogFieldBuilder();
-        $objFieldBuilder->initialize( $arrField['dbTable'] );
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
-        $arrOrderBy = Toolkit::parseStringToArray( $arrField['dbOrderBy'] );
+        $objFieldBuilder->initialize($arrField['dbTable']);
+        $arrFields = $objFieldBuilder->getCatalogFields(true, null);
+        $arrOrderBy = Toolkit::parseStringToArray($arrField['dbOrderBy']);
         $arrCatalog = $objFieldBuilder->getCatalog();
 
         $arrQuery = [
-
             'table' => $arrField['dbTable'],
             'where' => [
-
                 [
                     'operator' => 'findInSet',
                     'field' => $arrField['dbTableKey'],

@@ -488,8 +488,7 @@ class Toolkit {
 
             $arrQuery['value'] = \Controller::replaceInsertTags( $arrQuery['value'] );
 
-            if ( strpos( $arrQuery['value'], ',' ) ) {
-
+            if ( strpos( $arrQuery['value'], ',' ) && $arrQuery['operator'] != 'equal' ) {
                 $arrQuery['value'] = explode( ',' , $arrQuery['value'] );
             }
 

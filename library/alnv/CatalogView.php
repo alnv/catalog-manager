@@ -367,14 +367,13 @@ class CatalogView extends CatalogController {
 
         if ( !$this->catalogTablename || !$this->SQLQueryBuilder->tableExist( $this->catalogTablename ) ) return '';
 
-        if ( !empty( $this->catalogJoinFields ) || is_array( $this->catalogJoinFields ) ) {
-
-            $this->prepareJoinData( $arrQuery['joins'] );
+        if (!empty($this->catalogJoinFields) || is_array($this->catalogJoinFields)) {
+            $this->prepareJoinData($arrQuery['joins']);
         }
 
-        if ( $this->catalogJoinParentTable && $this->arrCatalog['pTable'] ) {
+        if ($this->catalogJoinParentTable && $this->arrCatalog['pTable']) {
 
-            $this->preparePTableJoinData( $arrQuery['joins'] );
+            $this->preparePTableJoinData($arrQuery['joins']);
         }
 
         if ( in_array( $this->strMode, [ 'view', 'master' ] ) && !empty( $this->catalogTaxonomies['query'] ) && is_array( $this->catalogTaxonomies['query'] ) && $this->catalogUseTaxonomies ) {
@@ -1297,14 +1296,13 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function prepareJoinData ( &$arrReturn ) {
+    protected function prepareJoinData(&$arrReturn) {
 
-        foreach ( $this->catalogJoinFields as $strFieldJoinID ) {
+        foreach ($this->catalogJoinFields as $strFieldJoinID) {
 
             $arrRelatedJoinData = [];
 
-            if ( !$this->arrCatalogFields[ $strFieldJoinID ] ) {
-
+            if (!$this->arrCatalogFields[$strFieldJoinID]) {
                 continue;
             }
 
@@ -1314,22 +1312,21 @@ class CatalogView extends CatalogController {
             $arrRelatedJoinData['onTable'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTable'];
             $arrRelatedJoinData['onField'] = $this->arrCatalogFields[ $strFieldJoinID ]['dbTableKey'];
 
-            if ( $this->arrCatalogFields[ $strFieldJoinID ]['multiple'] || $this->arrCatalogFields[ $strFieldJoinID ]['type'] == 'checkbox' ) {
-
+            if ($this->arrCatalogFields[ $strFieldJoinID ]['multiple'] || $this->arrCatalogFields[ $strFieldJoinID ]['type'] == 'checkbox') {
                 $arrRelatedJoinData['multiple'] = true;
             }
 
             $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $arrRelatedJoinData['onTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields );
 
-            if ( $arrRelatedJoinData['multiple'] && $this->catalogJoinAsArray ) {
+            if ($arrRelatedJoinData['multiple'] && $this->catalogJoinAsArray) {
 
                 $objCatalogFieldBuilder = new CatalogFieldBuilder();
-                $objCatalogFieldBuilder->initialize( $arrRelatedJoinData['onTable'] );
+                $objCatalogFieldBuilder->initialize($arrRelatedJoinData['onTable']);
 
                 $arrCatalog = $objCatalogFieldBuilder->getCatalog();
-                $arrRelatedJoinData['hasVisibility'] = in_array( 'invisible', $arrCatalog['operations'] );
+                $arrRelatedJoinData['hasVisibility'] = in_array('invisible', $arrCatalog['operations']);
 
-                $this->arrParseAsArray[ $arrRelatedJoinData['field'] ] = $arrRelatedJoinData;
+                $this->arrParseAsArray[$arrRelatedJoinData['field']] = $arrRelatedJoinData;
 
                 continue;
             }

@@ -70,6 +70,18 @@ class CatalogNotification extends CatalogController {
         $arrTokens[ 'domain' ] = $this->getDomain();
         $arrTokens[ 'admin_email' ] = $this->getAdminEmail();
 
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnUpdate']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnUpdate'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnUpdate'] as $arrCallback) {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $blnNoSend = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrData, $arrTokens, $this);
+                    if ($blnNoSend) {
+                        return;
+                    }
+                }
+            }
+        }
+
         $objNotification->send( $arrTokens, $GLOBALS['TL_LANGUAGE'] );
     }
 
@@ -89,6 +101,18 @@ class CatalogNotification extends CatalogController {
         $arrTokens = $this->setDataTokens( $arrData );
         $arrTokens[ 'domain' ] = $this->getDomain();
         $arrTokens[ 'admin_email' ] = $this->getAdminEmail();
+
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnInsert']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnInsert'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerNotifyOnInsert'] as $arrCallback) {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $blnNoSend = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrData, $arrTokens, $this);
+                    if ($blnNoSend) {
+                        return;
+                    }
+                }
+            }
+        }
         
         $objNotification->send( $arrTokens, $GLOBALS['TL_LANGUAGE'] );
     }

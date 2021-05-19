@@ -95,9 +95,9 @@ class tl_catalog_form_fields extends \Backend {
     }
 
 
-    public function getTaxonomyFields( \DataContainer $dc, $strTablename ) {
+    public function getTaxonomyFields(\DataContainer $dc, $strTablename) {
 
-        return $this->getTableColumnsByTablename( $strTablename, [ 'upload', 'textarea' ], true );
+        return $this->getTableColumnsByTablename($strTablename, ['upload'], true);
     }
 
 

@@ -319,10 +319,10 @@ class CatalogTaxonomyWizard extends \Widget {
 
         $strOperatorsOptions = '';
         $arrOperators = [
-
             'equal',
             'not',
             'regexp',
+            'regexpNoSpace',
             'regexpExact',
             'findInSet',
             'findInSetExact',

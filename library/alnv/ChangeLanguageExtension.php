@@ -12,11 +12,14 @@ class ChangeLanguageExtension extends \Frontend {
     protected $strMasterAlias = '';
 
 
-    public function translateUrlParameters( \Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent $event ) {
+    public function translateUrlParameters(\Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent $event) {
 
         global $objPage;
 
-        $this->strMasterAlias = \Input::get('auto_item');
+        if ($_GET['auto_item']) {
+            $this->strMasterAlias = \Input::cleanKey($_GET['auto_item']);
+        }
+
         $this->strTable = $objPage->catalogChangeLanguageTable;
         $objTargetRoot = $event->getNavigationItem()->getRootPage();
         $strLanguage = $objTargetRoot->rootLanguage ? $objTargetRoot->rootLanguage : $objTargetRoot->language;

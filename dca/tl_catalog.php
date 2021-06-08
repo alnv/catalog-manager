@@ -1,33 +1,23 @@
 <?php
 
 $GLOBALS['TL_DCA']['tl_catalog'] = [
-
     'config' => [
-
         'dataContainer' => 'Table',
         'ctable' => [ 'tl_catalog_fields' ],
-
         'onload_callback' => [
-
             [ 'CatalogManager\tl_catalog', 'checkPermission' ],
             [ 'CatalogManager\tl_catalog', 'checkEditMask' ]
         ],
 
         'onsubmit_callback' => [
-
             [ 'CatalogManager\tl_catalog', 'createTableOnSubmit' ],
             [ 'CatalogManager\tl_catalog', 'setCoreTableData' ]
         ],
-
         'ondelete_callback' => [
-
             [ 'CatalogManager\tl_catalog', 'dropTableOnDelete' ]
         ],
-
         'sql' => [
-
             'keys' => [
-
                 'id' => 'primary'
             ]
         ]

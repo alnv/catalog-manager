@@ -201,12 +201,9 @@ class DcBuilder extends CatalogController {
         }
 
         if ( $this->hasLanguageNavigationBar() ) {
-
             if ( \Input::get('ctlg_language') && \Input::get('act') !== 'create' ) {
-
                 $arrReturn['closed'] = true;
             }
-
             $arrReturn['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'setFallbackAndLanguage' ];
             $arrReturn['onload_callback'][] = [ 'CatalogManager\DcCallbacks', 'setGlobalTranslateButton' ];
             $arrReturn['ondelete_callback'][] = [ 'CatalogManager\DcCallbacks', 'deleteTranslations' ];

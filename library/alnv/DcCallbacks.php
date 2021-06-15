@@ -731,12 +731,13 @@ class DcCallbacks extends \Backend {
     }
 
 
-    public function cutTranslations( \DataContainer $dc ) {
+    public function cutTranslations(\DataContainer $dc) {
 
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->table ];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$dc->table];
         $strFallbackColumn = $arrCatalog['linkEntityColumn'];
         $strLanguageColumn = $arrCatalog['languageEntityColumn'];
-        $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set([ 'pid' => \Input::get('pid'), 'tstamp' => time() ])->execute( $dc->id, $arrCatalog['fallbackLanguage'] );
+        $objCurrentEntity = \Database::getInstance()->prepare('SELECT * FROM ' . $dc->table . ' WHERE id=?')->limit(1)->execute($dc->id);
+        $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set(['pid' => \Input::get('pid'), 'tstamp' => time(), 'sorting' => $objCurrentEntity->sorting])->execute($dc->id, $arrCatalog['fallbackLanguage']);
     }
 
 

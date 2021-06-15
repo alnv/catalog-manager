@@ -4,7 +4,6 @@ namespace CatalogManager;
 
 class CatalogManagerInitializer {
 
-    
     protected $objIconGetter;
     protected $arrCatalogs = [];
     protected $arrCoreTables = [];
@@ -12,13 +11,12 @@ class CatalogManagerInitializer {
     protected $objI18nCatalogTranslator;
     protected $arrActiveBackendModules = [];
 
-
     public function initialize() {
 
         $blnInitializeInBackend = TL_MODE == 'BE';
         if (version_compare('4.4', VERSION, '<=')) {
-            $objRequest = \System::getContainer()->get( 'request_stack' )->getCurrentRequest();
-            if ( $objRequest && $objRequest->get('_route') == 'contao_install' ) {
+            $objRequest = \System::getContainer()->get('request_stack')->getCurrentRequest();
+            if ($objRequest && $objRequest->get('_route') == 'contao_install') {
                 $blnInitializeInBackend = false;
             }
         }
@@ -35,22 +33,21 @@ class CatalogManagerInitializer {
             $this->modifyCoreModules();
             $this->setBackendModules();
             $this->initializeDataContainerArrays();
-
-            if ( \Config::get( 'catalogLicence' ) ) {
-                unset( $GLOBALS['BE_MOD']['catalog-manager-extensions']['support'] );
+            if (\Config::get('catalogLicence')) {
+                unset($GLOBALS['BE_MOD']['catalog-manager-extensions']['support']);
             }
         }
 
-        if ( TL_MODE == 'FE' ) {
+        if (TL_MODE == 'FE') {
             \FrontendUser::getInstance();
             \Database::getInstance();
             $this->setCatalogs();
         }
 
-        if ( \Config::get('_isBlocked') ) {
+        if (\Config::get('_isBlocked')) {
             $strMessage = 'Our system detected an unlicensed catalog manager installation on the domain "'. \Environment::get('base') .'". Please enter your valid license or contact your webmaster.';
-            \Message::addError( $strMessage );
-            \System::log( $strMessage, 'CATALOG MANAGER VERIFICATION', TL_ERROR );
+            \Message::addError($strMessage);
+            \System::log($strMessage, 'CATALOG MANAGER VERIFICATION', TL_ERROR);
         }
     }
 

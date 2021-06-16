@@ -737,7 +737,14 @@ class DcCallbacks extends \Backend {
         $strFallbackColumn = $arrCatalog['linkEntityColumn'];
         $strLanguageColumn = $arrCatalog['languageEntityColumn'];
         $objCurrentEntity = \Database::getInstance()->prepare('SELECT * FROM ' . $dc->table . ' WHERE id=?')->limit(1)->execute($dc->id);
-        $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set(['pid' => \Input::get('pid'), 'tstamp' => time(), 'sorting' => $objCurrentEntity->sorting])->execute($dc->id, $arrCatalog['fallbackLanguage']);
+        $arrSet = [
+            'tstamp' => time(),
+            'pid' => \Input::get('pid')
+        ];
+        if ($objCurrentEntity->sorting) {
+            $arrSet['sorting'] = $objCurrentEntity->sorting;
+        }
+        $this->Database->prepare( 'UPDATE '. $dc->table .' %s WHERE `'. $strFallbackColumn .'`=? AND `'. $strLanguageColumn .'`!=?' )->set($arrSet)->execute($dc->id, $arrCatalog['fallbackLanguage']);
     }
 
 

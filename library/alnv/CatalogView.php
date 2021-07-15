@@ -998,7 +998,8 @@ class CatalogView extends CatalogController {
             if ( !$this->arrGroups[ $varGroupName ] ) $arrIndexes[ $varGroupName ] = 0;
 
             $arrCatalog['cssClass'] = $arrIndexes[ $varGroupName ] % 2 ? ' even' : ' odd';
-            $objTemplate->setData( $arrCatalog );
+            $arrCatalog['_mainGroup'] = $varGroupName;
+            $objTemplate->setData($arrCatalog);
 
             $this->arrGroups[ $varGroupName ][] = $objTemplate->parse();
             $arrIndexes[ $varGroupName ]++;

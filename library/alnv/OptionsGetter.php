@@ -149,14 +149,14 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function setValueToOption( &$arrOptions, $strValue, $strLabel = '' ) {
+    protected function setValueToOption(&$arrOptions, $strValue, $strLabel='', $strTable='') {
 
-        if ( $strValue && !in_array( $strValue, $arrOptions ) ) {
+        if ($strValue && !in_array($strValue, $arrOptions)) {
 
-            $strValue = \StringUtil::decodeEntities( $strValue );
+            $strValue = \StringUtil::decodeEntities($strValue);
             $strTitle = $strValue;
 
-            if ( $this->arrField['dbParseDate'] ) {
+            if ($this->arrField['dbParseDate']) {
 
                 $strFormat = $this->arrField['dbMonthBeginFormat'] ? $this->arrField['dbMonthBeginFormat'] : 'F Y';
 
@@ -164,12 +164,10 @@ class OptionsGetter extends CatalogController {
                 if ( $this->arrField['dbDateFormat'] == 'dayBegin' ) $strFormat =  $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
 
                 $strValue = DateInput::parseValue( $strValue, [ 'rgxp' => $this->arrField['dbDateFormat'] ], [] );
-                $strTitle = \Controller::parseDate( $strFormat, $strValue );
-            }
+                $strTitle = \Controller::parseDate($strFormat, $strValue);
+            } else {
 
-            else {
-
-                $strTitle = $this->I18nCatalogTranslator->get( 'option', $strTitle, [ 'title' => $strLabel ] );
+                $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title'=>$strLabel,'table'=>$strTable]);
             }
 
             $arrOptions[ $strValue ] = $strTitle;
@@ -305,9 +303,8 @@ class OptionsGetter extends CatalogController {
         if ( $objDbOptions === null ) return $arrOptions;
         if ( !$objDbOptions->numRows ) return $arrOptions;
 
-        while ( $objDbOptions->next() ) {
-
-           $this->setValueToOption( $arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']} );
+        while ($objDbOptions->next()) {
+           $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
         }
 
         $arrOrderBy = deserialize( $this->arrField['dbOrderBy'], true );
@@ -353,17 +350,12 @@ class OptionsGetter extends CatalogController {
                 $arrOriginValues = array_keys( $varValue );
 
                 if ( !empty( $arrLabels ) && is_array( $arrLabels ) ) {
-
                     foreach ( $arrLabels as $intPosition => $strLabel ) {
-
-                        $this->setValueToOption( $arrOptions, $arrOriginValues[ $intPosition ], $strLabel );
+                        $this->setValueToOption($arrOptions, $arrOriginValues[ $intPosition ], $strLabel, $this->arrField['dbTable']);
                     }
                 }
-            }
-
-            else {
-
-                $this->setValueToOption( $arrOptions, $strOriginValue, $varValue );
+            } else {
+                $this->setValueToOption($arrOptions, $strOriginValue, $varValue, $this->arrField['dbTable']);
             }
         }
 

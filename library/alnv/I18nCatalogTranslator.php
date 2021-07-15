@@ -40,8 +40,6 @@ class I18nCatalogTranslator {
 
                 return $arrLabels;
 
-                break;
-
             case 'field':
 
                 $blnTitle = $arrOptions['titleOnly'] ? true : false;
@@ -68,27 +66,23 @@ class I18nCatalogTranslator {
 
                 return $arrLabels;
 
-                break;
-
-
             case 'option':
 
-                $strOption = $GLOBALS['TL_LANG']['catalog_manager']['options'][ $strName ];
+                $strOption = $GLOBALS['TL_LANG']['catalog_manager']['options'][$strName];
 
-                if ( Toolkit::isEmpty( $strOption ) ) {
+                if (Toolkit::isEmpty($strOption) && $arrOptions['table']) {
+                    $strOption = $GLOBALS['TL_LANG']['catalog_manager']['options'][$arrOptions['table']][$strName];
+                }
 
+                if (Toolkit::isEmpty($strOption)) {
                     $strOption = $arrOptions['title'] ?: '';
                 }
 
-                if ( Toolkit::isEmpty( $strOption ) ) {
-
+                if (Toolkit::isEmpty($strOption)) {
                     $strOption = $strName;
                 }
 
                 return $strOption;
-
-                break;
-
 
             case 'legend':
 
@@ -105,9 +99,6 @@ class I18nCatalogTranslator {
                 }
 
                 return $strLegend;
-                
-                break;
-
 
             case 'nav':
 
@@ -124,8 +115,6 @@ class I18nCatalogTranslator {
                 }
 
                 return $strLabel;
-
-                break;
         }
 
         return '';

@@ -78,45 +78,33 @@ class ChangeLanguageExtension extends \Frontend {
     }
 
 
-    protected function getEntityByPTable( $strLanguage ) {
+    protected function getEntityByPTable($strLanguage) {
 
-        if ( !$this->arrCatalog['languageEntityColumn'] || !$this->arrCatalog['pTable'] || !$this->strLinkColumn ) return null;
+        if (!$this->arrCatalog['languageEntityColumn'] || !$this->arrCatalog['pTable'] || !$this->strLinkColumn) return null;
 
-        $objCurrentEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $this->strTable ) )->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
+        $objCurrentEntity = $this->Database->prepare(sprintf( 'SELECT * FROM %s WHERE `alias`=? OR `id`=?', $this->strTable))->execute( $this->strMasterAlias, (int)$this->strMasterAlias );
 
-        if ( !$objCurrentEntity->numRows ) {
-
-           return null;
+        if (!$objCurrentEntity->numRows) {
+            return null;
         }
 
-        while ( $objCurrentEntity->next() ) {
-
-            $objParent = $this->Database->prepare('SELECT * FROM ' . $this->arrCatalog['pTable'] . ' WHERE id = ?')->limit(1)->execute( $objCurrentEntity->pid );
-
-            if ( !$objParent->numRows ) {
-
-                continue;
+        if ($objCurrentEntity->numRows) {
+            $objParent = $this->Database->prepare('SELECT * FROM ' . $this->arrCatalog['pTable'] . ' WHERE '.$this->arrCatalog['languageEntityColumn'].'=?')->limit(1)->execute($strLanguage);
+            if (!$objParent->numRows) {
+                return null;
             }
-
-            if ( $objParent->{ $this->arrCatalog['languageEntityColumn'] } != $strLanguage ) {
-
-                continue;
+            if ($objParent->{$this->arrCatalog['languageEntityColumn']} != $strLanguage) {
+                return;
             }
-
             $strLinkValue = $objCurrentEntity->{$this->strLinkColumn};
             $this->arrEntity = $this->Database->prepare(
                 sprintf(
-                    'SELECT * FROM %s LEFT OUTER JOIN %s ON %s.`pid` = %s.`id` WHERE %s.`%s`=? AND %s.`%s`=?',
-                    $this->arrCatalog['pTable'],
+                    'SELECT * FROM %s WHERE `%s`=? AND `%s`=?',
                     $this->strTable,
-                    $this->strTable,
-                    $this->arrCatalog['pTable'],
-                    $this->arrCatalog['pTable'],
-                    $this->arrCatalog['languageEntityColumn'],
-                    $this->strTable,
-                    $this->strLinkColumn
+                    $this->strLinkColumn,
+                    'pid'
                 )
-            )->limit(1)->execute( $strLanguage, $strLinkValue )->row();
+            )->limit(1)->execute($strLinkValue, $objParent->id)->row();
         }
     }
 

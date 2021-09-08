@@ -5,20 +5,24 @@ namespace CatalogManager;
 class MasterInsertTag extends \Frontend {
 
 
-    public function getInsertTagValue( $strTag ) {
+    public function getInsertTagValue($strTag) {
 
         global $objPage;
 
-        $arrTags = explode( '::', $strTag );
+        $arrTags = explode('::', $strTag);
 
         if ( empty( $arrTags ) || !is_array( $arrTags ) ) {
 
             return false;
         }
 
-        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_MASTER' && $objPage->catalogUseMaster ) {
+        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_MASTER') {
 
-            $this->import( 'CatalogMasterEntity' );
+            if (!$objPage->catalogUseMaster) {
+                return '';
+            }
+
+            $this->import('CatalogMasterEntity');
 
             $strText = '';
             $arrJoinOnly = [];
@@ -30,9 +34,9 @@ class MasterInsertTag extends \Frontend {
             $strFieldname = $arrTags[1] ?: '';
             $strTable = $objPage->catalogMasterTable;
 
-            if ( !$strFieldname || !$strTable ) return false;
+            if (!$strFieldname || !$strTable) return false;
 
-            if ( isset( $arrTags[2] ) && strpos( $arrTags[2], '?' ) !== false ) {
+            if ( isset($arrTags[2]) && strpos($arrTags[2], '?') !== false) {
 
                 $arrChunks = explode('?', urldecode( $arrTags[2] ), 2 );
                 $strSource = \StringUtil::decodeEntities( $arrChunks[1] );

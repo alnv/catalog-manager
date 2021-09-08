@@ -1,8 +1,8 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.31.56");
+define("CATALOG_MANAGER_VERSION", "1.31.57");
 
-if ( !\Config::get('hideCatalogManager') ) {
+if (!\Config::get('hideCatalogManager')) {
     array_insert( $GLOBALS['BE_MOD'], 3, [
         'catalog-manager-extensions' => [
             'catalog-manager' => [
@@ -32,7 +32,6 @@ if ( !\Config::get('hideCatalogManager') ) {
 }
 
 array_insert( $GLOBALS['FE_MOD'], 3, [
-
     'catalog-manager' => [
         'catalogBookNavigation' => 'CatalogManager\ModuleCatalogBookNavigation',
         'catalogTaxonomyTree' => 'CatalogManager\ModuleCatalogTaxonomyTree',

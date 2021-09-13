@@ -22,7 +22,6 @@ class CatalogManagerInitializer {
         }
 
         if ($blnInitializeInBackend) {
-            \BackendUser::getInstance();
             \Database::getInstance();
             $this->objIconGetter = new IconGetter();
             $this->objIconGetter->createCatalogManagerDirectories();
@@ -33,6 +32,7 @@ class CatalogManagerInitializer {
             $this->modifyCoreModules();
             $this->setBackendModules();
             $this->initializeDataContainerArrays();
+            \BackendUser::getInstance();
             if (\Config::get('catalogLicence')) {
                 unset($GLOBALS['BE_MOD']['catalog-manager-extensions']['support']);
             }

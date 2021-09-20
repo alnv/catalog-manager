@@ -2,6 +2,7 @@
 
 namespace CatalogManager;
 
+
 class CatalogView extends CatalogController {
 
 

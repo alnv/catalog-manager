@@ -1150,7 +1150,7 @@ class CatalogView extends CatalogController {
         if ( Toolkit::isEmpty( $strType ) ) return $varValue;
         if ( $this->isFastMode( $strType, $strFieldname ) ) return '';
 
-        // Override image size by module
+        // Overwrite image size (see #324)
         if ( !empty( $this->arrOptions['imgSize'] ) ) $arrField['size'] = $this->arrOptions['imgSize'];
 
         switch ( $strType ) {

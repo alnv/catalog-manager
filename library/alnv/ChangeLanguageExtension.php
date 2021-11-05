@@ -4,13 +4,11 @@ namespace CatalogManager;
 
 class ChangeLanguageExtension extends \Frontend {
 
-
     protected $strTable = '';
     protected $arrEntity = [];
     protected $arrCatalog = [];
     protected $strLinkColumn = '';
     protected $strMasterAlias = '';
-
 
     public function translateUrlParameters(\Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent $event) {
 

@@ -645,14 +645,13 @@ class Toolkit {
                 if ( is_null( $arrField ) ) continue;
                 if ( !$arrField['type'] ) continue;
 
-                $varValue = static::parseCatalogValue( $strOriginValue, $arrField, $arrData );
+                $varValue = static::parseCatalogValue($strOriginValue, $arrField, $arrData);
 
-                if ( ( $blnJustStrings && is_array( $varValue ) ) && $arrField['type'] != 'upload' ) {
-
-                    $varValue = implode( ', ', $varValue );
+                if (($blnJustStrings && is_array($varValue)) && $arrField['type']!='upload') {
+                    $varValue = implode(', ', $varValue);
                 }
 
-                $arrData[ $strFieldname ] = Toolkit::isEmpty( $varValue ) ? $strOriginValue : $varValue;
+                $arrData[$strFieldname] = Toolkit::isEmpty($varValue) ? $strOriginValue : $varValue;
             }
         }
 

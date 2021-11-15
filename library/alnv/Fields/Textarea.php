@@ -7,11 +7,13 @@ class Textarea {
     
     public static function generate( $arrDCAField, $arrField ) {
 
+        $arrDCAField['eval']['decodeEntities'] = true;
         $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
 
         if ( $arrField['rte'] ) {
 
             $arrDCAField['eval']['rte'] = $arrField['rte'];
+            $arrDCAField['eval']['allowHtml'] = true;
         }
 
         if ( $arrField['textareaCols'] ) {

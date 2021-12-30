@@ -948,46 +948,36 @@ class FrontendEditing extends CatalogController {
     protected function saveEntity() {
 
         $strQuery = '';
-        $this->import( 'SQLBuilder' );
+        $this->import('SQLBuilder');
 
-        if ( $this->arrCatalog['useGeoCoordinates'] ) {
-
+        if ($this->arrCatalog['useGeoCoordinates']) {
             $this->getGeoCordValues();
         }
 
-        if ( \Input::get('pid') ) {
-
-            $strQuery = sprintf( '?pid=%s', \Input::get('pid') );
+        if (\Input::get('pid')) {
+            $strQuery = sprintf('?pid=%s', \Input::get('pid'));
         }
 
 
-        if ( isset( $this->arrValues['tstamp'] ) ) {
-
+        //if (isset($this->arrValues['tstamp'])) {
             $this->arrValues['tstamp'] = (string) time();
-        }
+        //}
 
-        if ( is_array( $this->catalogDefaultValues ) && $this->catalogDefaultValues[0] ) {
-
-            foreach ( $this->catalogDefaultValues as $arrDefaultValue ) {
-
+        if (is_array($this->catalogDefaultValues) && $this->catalogDefaultValues[0]) {
+            foreach ($this->catalogDefaultValues as $arrDefaultValue) {
                 $strKeyname = $arrDefaultValue['key'];
-                $strValue = $this->replaceInsertTags( $arrDefaultValue['value'] );
-
-                if ( Toolkit::isEmpty( $strKeyname ) || Toolkit::isEmpty( $strValue ) ) continue;
-
-                if ( Toolkit::isEmpty( $this->arrValues[ $strKeyname ] ) ) {
-
-                    $this->arrValues[ $strKeyname ] = $strValue;
+                $strValue = $this->replaceInsertTags($arrDefaultValue['value']);
+                if (Toolkit::isEmpty($strKeyname) || Toolkit::isEmpty($strValue)) continue;
+                if (Toolkit::isEmpty($this->arrValues[$strKeyname])) {
+                    $this->arrValues[$strKeyname] = $strValue;
                 }
             }
         }
 
-        foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
-
-            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
-
-                $this->arrValues[ $strFieldname ] = Toolkit::generateDynValue( $arrField['dynValue'], Toolkit::prepareValues4Db( $this->arrValues ) );
-                if ( $strFieldname == 'title' && Toolkit::hasDynAlias() ) $this->arrValues['alias'] = '';
+        foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
+            if (!Toolkit::isEmpty($arrField['dynValue'])) {
+                $this->arrValues[$strFieldname] = Toolkit::generateDynValue($arrField['dynValue'], Toolkit::prepareValues4Db($this->arrValues));
+                if ($strFieldname == 'title' && Toolkit::hasDynAlias()) $this->arrValues['alias'] = '';
             }
         }
 

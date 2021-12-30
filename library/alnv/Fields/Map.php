@@ -4,12 +4,10 @@ namespace CatalogManager;
 
 class Map {
 
-
     public static function generate( $arrDCAField, $arrField ) {
 
         return $arrDCAField;
     }
-
 
     public static function parseValue( $varValue, $arrField, $arrCatalog = [] ) {
 
@@ -20,7 +18,6 @@ class Map {
 
         return $objTemplate->parse();
     }
-
 
     public static function prepareMapOptions( $arrField, $arrCatalog ) {
 
@@ -72,19 +69,16 @@ class Map {
         return $arrReturn;
     }
 
-
-    public static function parseInfoBoxContent( $strInfoBox, $arrData ) {
+    public static function parseInfoBoxContent($strInfoBox, $arrData) {
 
         $arrTokens = [];
-        Toolkit::flatterWithoutKeyValue( $arrData, $arrTokens );
+        Toolkit::flatterWithoutKeyValue($arrData, $arrTokens);
+        $strInfoBox = \StringUtil::parseSimpleTokens(($strInfoBox?:''), $arrTokens);
+        $strInfoBox = Toolkit::removeBreakLines($strInfoBox);
+        $strInfoBox = Toolkit::removeApostrophe($strInfoBox);
 
-        $strInfoBox = \StringUtil::parseSimpleTokens( $strInfoBox, $arrTokens );
-        $strInfoBox = Toolkit::removeBreakLines( $strInfoBox );
-        $strInfoBox = Toolkit::removeApostrophe( $strInfoBox );
-
-        return \StringUtil::toHtml5( $strInfoBox );
+        return \StringUtil::toHtml5($strInfoBox);
     }
-
     
     public static function getMapViewOptions( $arrOptions ) {
 
@@ -97,12 +91,10 @@ class Map {
         return $arrOptions;
     }
 
-
     private static function createUniqueID( $arrField, $arrCatalog ) {
 
         return 'map_' . $arrField['fieldname'] . '_' . $arrCatalog['id'];
     }
-
 
     public static function generateGoogleMapJSInitializer() {
 

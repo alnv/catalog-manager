@@ -13,11 +13,14 @@ class PseudoInsertTag extends \Frontend {
         }
 
         if (isset($arrTags[0])) {
-            $objCatalogField = $this->Database->prepare( 'SELECT fieldname FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit( 1 )->execute( $arrTags[0] );
+            if (in_array($arrTags[0], ['pid', 'id'])) {
+                return '';
+            }
+            $objCatalogField = $this->Database->prepare( 'SELECT fieldname FROM tl_catalog_fields WHERE `fieldname`=?' )->limit( 1 )->execute($arrTags[0]);
             if ($objCatalogField->numRows) {
                 return '';
             }
-            $objFormField = $this->Database->prepare( 'SELECT `name` FROM tl_catalog_form_fields WHERE `name` = ?' )->limit( 1 )->execute( $arrTags[0] );
+            $objFormField = $this->Database->prepare( 'SELECT `name` FROM tl_catalog_form_fields WHERE `name`=?' )->limit( 1 )->execute($arrTags[0]);
             if ($objFormField->numRows) {
                 return '';
             }

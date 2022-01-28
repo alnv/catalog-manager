@@ -23,8 +23,8 @@ class I18nCatalogTranslator {
             
             case 'module':
 
-                $blnTitle = $arrOptions['titleOnly'] ? true : false;
-                $arrLabels = $GLOBALS['TL_LANG']['catalog_manager']['module'][ $strName ];
+                $blnTitle = (bool) ($arrOptions['titleOnly'] ?? false);
+                $arrLabels = $GLOBALS['TL_LANG']['catalog_manager']['module'][ $strName ] ?? [];
 
                 if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
 
@@ -141,8 +141,8 @@ class I18nCatalogTranslator {
 
     protected function setCatalogLabels( $strName ) {
 
-        $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['name'] ?: '';
-        $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['description'] ?: '';
+        $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['name'] ?? '';
+        $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strName ]['description'] ?? '';
 
         return [ $strName, $strDescription ];
     }

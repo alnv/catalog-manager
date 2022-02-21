@@ -11,8 +11,8 @@ class FrontendEditing extends CatalogController {
     public $strTemplate = '';
     public $arrQueries = [];
 
+    public $strFormId = '';
     protected $arrValues = [];
-    protected $strFormId = '';
     protected $arrCatalog = [];
     protected $arrPalettes = [];
     protected $strOnChangeId = '';
@@ -898,7 +898,7 @@ class FrontendEditing extends CatalogController {
         if ( $this->strItemID && $this->catalogTablename ) {
 
             // $arrEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->catalogTablename ) )->limit( 1 )->execute( $this->strItemID )->row();
-            $arrEntity = (new \CatalogManager\Entity($this->strItemID, $this->catalogTablename, ['operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
+            $arrEntity = (new \CatalogManager\Entity($this->strItemID, $this->catalogTablename, ['ignoreVisibility' => (bool) $this->catalogIgnoreVisibility, 'operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
 
             if ( $this->strAct == 'copy' ) {
 

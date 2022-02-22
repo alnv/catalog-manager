@@ -86,22 +86,17 @@ class CatalogInput extends CatalogController {
         return '';
     }
 
+    protected function parseValue($varValues) {
 
-    protected function parseValue( $varValues ) {
-
-        if ( is_array( $varValues ) && !empty( $varValues ) ) {
-
-            foreach ( $varValues as $intIndex => $strValue ) {
-
-                $varValues[ $intIndex ] = \StringUtil::decodeEntities( $strValue );
+        if (is_array($varValues) && !empty($varValue)) {
+            foreach ($varValues as $intIndex => $strValue) {
+                $varValues[$intIndex] = $strValue;
             }
-
             return $varValues;
         }
 
-        if ( is_string( $varValues ) && $varValues != '' ) {
-
-            return \StringUtil::decodeEntities( $varValues );
+        if (is_string($varValues) && $varValues != '') {
+            return $varValues;
         }
 
         return $varValues;

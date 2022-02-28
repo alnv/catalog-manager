@@ -416,17 +416,13 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         ],
 
         'extensions' => [
-
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['extensions'],
             'inputType' => 'text',
-
             'eval' => [
-
-                'tl_class' => 'w50 clr',
+                'tl_class' => 'long clr',
             ],
-
             'exclude' => true,
-            'sql' => "varchar(255) NOT NULL default ''"
+            'sql' => "text NULL"
         ],
 
         'path' => [

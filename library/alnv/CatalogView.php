@@ -1631,4 +1631,9 @@ class CatalogView extends CatalogController {
 
         return $this->catalogItemOperations;
     }
+
+    public function getCatalogFields() {
+
+        return $this->arrCatalogFields;
+    }
 }

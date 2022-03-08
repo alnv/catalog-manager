@@ -124,13 +124,12 @@ class CatalogFormFilter extends CatalogController {
                         $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[ $strName ]['title'] );
                     }
 
-                    if ( $this->arrFormFields[ $strName ]['rgxp'] && $this->arrFormFields[ $strName ]['type'] == 'text' && !$this->validate( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['rgxp'] ) ) {
-
+                    if ($this->arrFormFields[$strName]['value'] && $this->arrFormFields[$strName]['rgxp'] && $this->arrFormFields[$strName]['type'] == 'text' && !$this->validate($this->arrFormFields[$strName]['value'], $this->arrFormFields[$strName]['rgxp'])) {
                         $this->blnIsValid = false;
-                        $this->arrFormFields[ $strName ]['value'] = '';
-                        $this->arrFormFields[ $strName ]['invalid'] = true;
-                        $this->arrFormFields[ $strName ]['cssClass'] .= 'error ';
-                        $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR'][ $this->arrFormFields[ $strName ]['rgxp'] ], $this->arrFormFields[ $strName ]['dateFormat'] );
+                        $this->arrFormFields[$strName]['value'] = '';
+                        $this->arrFormFields[$strName]['invalid'] = true;
+                        $this->arrFormFields[$strName]['cssClass'] .= 'error ';
+                        $this->arrFormFields[$strName]['description'] = sprintf($GLOBALS['TL_LANG']['ERR'][$this->arrFormFields[$strName]['rgxp']], $this->arrFormFields[$strName]['dateFormat']);
                     }
                 }
 

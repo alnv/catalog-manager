@@ -105,7 +105,7 @@ class CatalogFieldBuilder extends CatalogController {
                         unset( $arrFields[ $objCatalogFields->fieldname ] );
                     }
 
-                    $strFieldname = $objCatalogFields->fieldname ? $objCatalogFields->fieldname : $objCatalogFields->id;
+                    $strFieldname = $objCatalogFields->fieldname ?: $objCatalogFields->id;
                     $arrFields[ $strFieldname ] = $arrField;
                 }
             }
@@ -292,6 +292,15 @@ class CatalogFieldBuilder extends CatalogController {
                 $arrDcField = DbColumn::generate( $arrDcField, $arrField );
                 
                 break;
+        }
+
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerSetDcFormatAttributes']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerSetDcFormatAttributes'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerSetDcFormatAttributes'] as $arrCallback)  {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $arrDcField = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrDcField, $arrField, $this->strTable, $this->arrCatalog, $this);
+                }
+            }
         }
 
         return $arrDcField;

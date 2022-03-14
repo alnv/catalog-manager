@@ -75,10 +75,9 @@ class Text {
             $varValue = Toolkit::parseMultipleOptions($varValue);
             if (!empty($varValue) && is_array($varValue)) {
                 foreach ($varValue as $strValue) {
-                    if (is_array($strValue)) {
-                        $strValue = implode(',', $strValue);
+                    if (is_scalar($strValue)) {
+                        $arrReturn[$strValue] = $strValue;
                     }
-                    $arrReturn[$strValue] = $strValue;
                 }
             }
             return $arrReturn;

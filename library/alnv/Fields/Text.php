@@ -62,24 +62,25 @@ class Text {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog ) {
 
-        $varValue = deserialize( $varValue );
+        $varValue = \StringUtil::deserialize($varValue);
         
-        if ( Toolkit::isEmpty( $varValue ) && is_string( $varValue ) ) return '';
-        if ( is_array( $varValue ) && empty( $varValue ) ) return [];
-
-        if ( is_array( $varValue ) || $arrField['multiple'] ) {
-
+        if (Toolkit::isEmpty($varValue) && is_string($varValue)) {
+            return '';
+        };
+        if ( is_array($varValue) && empty($varValue)) {
+            return [];
+        }
+        if (is_array($varValue) || $arrField['multiple']) {
             $arrReturn = [];
-            $varValue = Toolkit::parseMultipleOptions( $varValue );
-
-            if ( !empty( $varValue ) && is_array( $varValue ) ) {
-
-                foreach ( $varValue as $strValue ) {
-
-                    $arrReturn[ $strValue ] = $strValue;
+            $varValue = Toolkit::parseMultipleOptions($varValue);
+            if (!empty($varValue) && is_array($varValue)) {
+                foreach ($varValue as $strValue) {
+                    if (is_array($strValue)) {
+                        $strValue = implode(',', $strValue);
+                    }
+                    $arrReturn[$strValue] = $strValue;
                 }
             }
-
             return $arrReturn;
         }
 

@@ -191,13 +191,19 @@ class Upload {
     }
 
 
-    public static function parseAttachment ( $varValue, $arrField, $arrCatalog = [] ) {
+    public static function parseAttachment($varValue, $arrField, $arrCatalog = []) {
 
-        $objFile = \FilesModel::findByUuid( $varValue );
+        $arrReturn = [];
+        $arrValues = \StringUtil::deserialize($varValue, true);
+        foreach ($arrValues as $strUuid) {
+            $objFile = \FilesModel::findByUuid($strUuid);
+            if (!$objFile) {
+                continue;
+            }
+            $arrReturn[] = $objFile->path;
+        }
 
-        if ( $objFile === null ) return '';
-
-        return $objFile->path ?  $objFile->path : '';
+        return implode(',', $arrReturn);
     }
 
 

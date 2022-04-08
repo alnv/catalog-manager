@@ -225,8 +225,6 @@ class CatalogDcExtractor extends CatalogController {
 
                 return $arrReturn;
 
-                break;
-
             case '6':
 
                 if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
@@ -480,9 +478,9 @@ class CatalogDcExtractor extends CatalogController {
         $arrConfigDc = [
 
             '_tables' => [],
-            'ptable' => $arrReturn[ $strDcConfigType ]['ptable'],
-            'enableVersioning' => $arrCatalog['useVC'] ? true : false,
-            'ctable' => is_array( $arrReturn[ $strDcConfigType ]['ctable'] ) ? $arrReturn[ $strDcConfigType ]['ctable'] : [],
+            'ptable' => $arrReturn[$strDcConfigType]['ptable']??'',
+            'enableVersioning' => (bool) $arrCatalog['useVC'],
+            'ctable' => $arrReturn[$strDcConfigType]['ctable']??[],
             'onsubmit_callback' => is_array( $arrReturn[ $strDcConfigType ]['onsubmit_callback'] ) ? $arrReturn[ $strDcConfigType ]['onsubmit_callback'] : []
         ];
 
@@ -527,16 +525,15 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcSorting( $arrReturn, $arrCatalog, $strDcConfigType ) {
+    protected function convertCatalogToDcSorting($arrReturn, $arrCatalog, $strDcConfigType) {
 
-        if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
+        if (!is_array($arrReturn[$strDcConfigType])) $arrReturn[$strDcConfigType] = [];
 
         $arrDefaults = [
-
-            'flag' => $arrReturn[ $strDcConfigType ]['sorting']['flag'],
-            'fields' => $arrReturn[ $strDcConfigType ]['sorting']['fields'],
-            'panelLayout' => $arrReturn[ $strDcConfigType ]['sorting']['panelLayout'],
-            'headerFields' => $arrReturn[ $strDcConfigType ]['sorting']['headerFields']
+            'flag' => $arrReturn[$strDcConfigType]['sorting']['flag']??'',
+            'fields' => $arrReturn[$strDcConfigType]['sorting']['fields']??'',
+            'panelLayout' => $arrReturn[$strDcConfigType]['sorting']['panelLayout']??'',
+            'headerFields' => $arrReturn[$strDcConfigType]['sorting']['headerFields']??''
         ];
 
         $arrSortingDc = $this->setDcSortingByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
@@ -555,8 +552,7 @@ class CatalogDcExtractor extends CatalogController {
         if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
 
         $arrDefaults = [
-
-            'fields' => $arrReturn[ $strDcConfigType ]['sorting']['fields']
+            'fields' => $arrReturn[$strDcConfigType]['sorting']['fields'] ?? ''
         ];
 
         $arrLabelDc = $this->setDcLabelByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
@@ -609,27 +605,24 @@ class CatalogDcExtractor extends CatalogController {
 
                 if ( $blnFieldsetStart && is_array( $arrPickedPalettes ) ) $arrPaletteFields[] = $strFieldname;
 
-                if ( $arrField['dcPaletteField'] && !$blnFieldsetStart ) {
+                if ( isset($arrField['dcPaletteField']) && $arrField['dcPaletteField'] && !$blnFieldsetStart ) {
 
-                    $arrPickedPalettes = deserialize( $arrField['dcPaletteField'] );
+                    $arrPickedPalettes = \StringUtil::deserialize( $arrField['dcPaletteField'] );
 
                     if ( is_array( $arrPickedPalettes ) )  $this->DcModifier->addFieldToPalette( $arrField, $arrPickedPalettes, $arrReturn['palettes'] );
 
                     $arrPickedPalettes = null;
                 }
 
-                if ( isset( $arrField['_dcFormat'] ) ) {
-
-                    if ( $arrField['_core'] ) {
-
+                if (isset($arrField['_dcFormat'])) {
+                    if ($arrField['_core']??'') {
                         $arrField['_dcFormat']['_disableFEE'] = '';
                         $arrField['_dcFormat']['_placeholder'] = '';
                         $arrField['_dcFormat']['_fieldname'] = $strFieldname;
                         $arrField['_dcFormat']['_palette'] = 'general_legend';
                         $arrField['_dcFormat']['_cssID'] = [ '', $strFieldname ];
-                        $arrField['_dcFormat']['_type'] = $arrField['_dcFormat']['inputType'] ?: '';
+                        $arrField['_dcFormat']['_type'] = $arrField['_dcFormat']['inputType'] ?? '';
                     }
-
                     $arrDcFields[ $strFieldname ] = $arrField['_dcFormat'];
                 }
             }

@@ -4,12 +4,10 @@ namespace CatalogManager;
 
 class CatalogFieldBuilder extends CatalogController {
 
-
     protected $strTable = '';
     protected $arrCatalog = [];
     protected $blnActive = true;
     protected $arrCatalogFields = [];
-
 
     public function __construct() {
 
@@ -19,16 +17,13 @@ class CatalogFieldBuilder extends CatalogController {
         $this->import( 'I18nCatalogTranslator' );
     }
 
-
     public function initialize( $strTablename, $blnActive = true ) {
 
         $this->blnActive = $blnActive;
         $this->strTable = $strTablename;
 
-        if ( TL_MODE == 'BE' && !Toolkit::isEmpty( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ] ) ) {
-
-            $this->arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTablename ];
-
+        if (TL_MODE == 'BE' && !Toolkit::isEmpty(($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename]??''))) {
+            $this->arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename];
             return true;
         }
 
@@ -60,12 +55,10 @@ class CatalogFieldBuilder extends CatalogController {
         return false;
     }
 
-
     public function getCatalog() {
 
         return $this->arrCatalog;
     }
-
 
     public function getCatalogFields( $blnDcFormat = true, $objModule = null, $blnExcludeDefaults = false, $blnVisible = true ) {
 
@@ -116,7 +109,6 @@ class CatalogFieldBuilder extends CatalogController {
         return $this->arrCatalogFields;
     }
 
-
     public function getDcFormatOnly() {
 
         $arrReturn = [];
@@ -131,7 +123,6 @@ class CatalogFieldBuilder extends CatalogController {
 
         return $arrReturn;
     }
-
 
     public function parseFieldsForDcFormat( $arrFields, $blnDcFormat, $objModule = null, $blnCoreTable = false ) {
 
@@ -149,83 +140,75 @@ class CatalogFieldBuilder extends CatalogController {
         return $arrReturn;
     }
 
+    public function setDcFormatAttributes($arrField, $objModule = null) {
 
-    public function setDcFormatAttributes( $arrField, $objModule = null ) {
+        $strTlClass = $arrField['tl_class'] ?? '';
+        $strCSSBackendClasses = Toolkit::deserializeAndImplode($strTlClass, ' ');
 
-        $strCSSBackendClasses = Toolkit::deserializeAndImplode( $arrField['tl_class'], ' ' );
-
-        if ( Toolkit::isEmpty( $strCSSBackendClasses ) ) $strCSSBackendClasses = 'clr';
+        if (Toolkit::isEmpty($strCSSBackendClasses)) $strCSSBackendClasses = 'clr';
 
         $arrDcField = [
-            'label' => $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->strTable, 'title' => $arrField['label'], 'description' => $arrField['description'] ] ),
+            'label' => $this->I18nCatalogTranslator->get('field', $arrField['fieldname'], ['table' => $this->strTable, 'title' => ($arrField['label']??''), 'description' => ($arrField['description']??'')]),
             'inputType' => Toolkit::setDcConformInputType( $arrField['type'] ),
             'eval' => [
                 'tl_class' => $strCSSBackendClasses,
-                'unique' => Toolkit::getBooleanByValue( $arrField['isUnique'] ),
-                'nospace' => Toolkit::getBooleanByValue( $arrField['nospace'] ),
-                'mandatory' => Toolkit::getBooleanByValue( $arrField['mandatory'] ),
-                'doNotCopy' => Toolkit::getBooleanByValue( $arrField['doNotCopy'] ),
-                'allowHtml' => Toolkit::getBooleanByValue( $arrField['allowHtml'] ),
-                'doNotSaveEmpty' => Toolkit::getBooleanByValue( $arrField['doNotSaveEmpty'] ),
-                'spaceToUnderscore' => Toolkit::getBooleanByValue( $arrField['spaceToUnderscore'] ),
+                'unique' => Toolkit::getBooleanByValue($arrField['isUnique']??''),
+                'nospace' => Toolkit::getBooleanByValue($arrField['nospace']??''),
+                'mandatory' => Toolkit::getBooleanByValue($arrField['mandatory']??''),
+                'doNotCopy' => Toolkit::getBooleanByValue($arrField['doNotCopy']??''),
+                'allowHtml' => Toolkit::getBooleanByValue($arrField['allowHtml']??''),
+                'doNotSaveEmpty' => Toolkit::getBooleanByValue($arrField['doNotSaveEmpty']??''),
+                'spaceToUnderscore' => Toolkit::getBooleanByValue($arrField['spaceToUnderscore']??''),
             ],
-            'sorting' => Toolkit::getBooleanByValue( $arrField['sort'] ),
-            'search' => Toolkit::getBooleanByValue( $arrField['search'] ),
-            'filter' => Toolkit::getBooleanByValue( $arrField['filter'] ),
-            'exclude' => Toolkit::getBooleanByValue( $arrField['exclude'] ),
-            'sql' => Toolkit::getSqlDataType( $arrField['statement'] ),
+            'sorting' => Toolkit::getBooleanByValue($arrField['sort']??''),
+            'search' => Toolkit::getBooleanByValue($arrField['search']??''),
+            'filter' => Toolkit::getBooleanByValue($arrField['filter']??''),
+            'exclude' => Toolkit::getBooleanByValue($arrField['exclude']??''),
+            'sql' => Toolkit::getSqlDataType($arrField['statement']??''),
         ];
 
-        if ($arrField['trailingSlash']) {
+        if ($arrField['trailingSlash']??'') {
             $arrDcField['eval']['trailingSlash'] = true;
         }
 
-        if ( $arrField['statement'] == 'iNotNull10' ) {
+        if ($arrField['statement'] == 'iNotNull10') {
            $arrDcField['eval']['nullIfEmpty'] = true;
         }
 
-        if ( $arrField['type'] == 'date' && Toolkit::isEmpty( $arrField['flag'] ) ) {
-
+        if ($arrField['type'] == 'date' && Toolkit::isEmpty($arrField['flag'])) {
             $arrField['flag'] = 6;
         }
 
-        if ( !Toolkit::isEmpty( $arrField['flag'] ) ) {
-
+        if (!Toolkit::isEmpty($arrField['flag']??'')) {
             $arrDcField['flag'] = $arrField['flag'];
         }
 
-        $arrDcField['_cssID'] = Toolkit::deserialize( $arrField['cssID'] );
-        $arrDcField['_placeholder'] = $arrField['placeholder'];
-        $arrDcField['_disableFEE'] = $arrField['disableFEE'];
-        $arrDcField['_fieldname'] = $arrField['fieldname'];
-        $arrDcField['_palette'] = $arrField['_palette'];
-        $arrDcField['_type'] = $arrField['type'];
+        $arrDcField['_cssID'] = Toolkit::deserialize($arrField['cssID']??'');
+        $arrDcField['_placeholder'] = $arrField['placeholder'] ?? '';
+        $arrDcField['_disableFEE'] = $arrField['disableFEE'] ?? '';
+        $arrDcField['_fieldname'] = $arrField['fieldname'] ?? '';
+        $arrDcField['_palette'] = $arrField['_palette'] ?? '';
+        $arrDcField['_type'] = $arrField['type'] ?? '';
 
-        if ( Toolkit::isDefined( $arrField['value'] ) && is_string( $arrField['value'] ) ) {
-
-            $strDefaultValue = \Controller::replaceInsertTags( $arrField['value'] );
-
-            if ( Toolkit::isDefined( $strDefaultValue ) ) {
-
+        if (isset($arrField['value']) && Toolkit::isDefined($arrField['value']) && is_string($arrField['value'])) {
+            $strDefaultValue = \Controller::replaceInsertTags($arrField['value']);
+            if (Toolkit::isDefined($strDefaultValue)) {
                 $arrDcField['default'] = $strDefaultValue;
             }
         }
 
-        if ( Toolkit::isDefined( $arrField['useIndex'] ) ) {
-
+        if (isset($arrField['useIndex']) && Toolkit::isDefined($arrField['useIndex'])) {
             $arrDcField['eval']['doNotCopy'] = true;
-
-            if ( $arrField['useIndex'] == 'unique' ) $arrDcField['eval']['unique'] = true;
+            if ($arrField['useIndex'] == 'unique') $arrDcField['eval']['unique'] = true;
         }
 
-        if ( $this->arrCatalog['tablename'] == 'tl_member' ) {
-
+        if (isset($this->arrCatalog['tablename']) && $this->arrCatalog['tablename'] == 'tl_member') {
             $arrDcField['eval']['feEditable'] = true;
             $arrDcField['eval']['feViewable'] = true;
             $arrDcField['eval']['feGroup'] = 'personal';
         }
 
-        switch ( $arrField['type'] ) {
+        switch ($arrField['type']) {
 
             case 'text':
 
@@ -309,18 +292,15 @@ class CatalogFieldBuilder extends CatalogController {
 
     public function shouldBeUsedParentTable() {
 
-        if ( !$this->arrCatalog['pTable'] ) {
-
+        if (!isset($this->arrCatalog['pTable']) || !$this->arrCatalog['pTable']) {
             return false;
         }
 
-        if ( $this->arrCatalog['isBackendModule'] ) {
-
+        if (isset($this->arrCatalog['isBackendModule']) && $this->arrCatalog['isBackendModule']) {
             return false;
         }
 
-        if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
-
+        if (!in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes)) {
             return false;
         }
 
@@ -392,8 +372,8 @@ class CatalogFieldBuilder extends CatalogController {
                 '_palette' => 'general_legend',
                 'tl_class' => serialize( [ 'w50' ] ),
                 'cssID' => serialize( [ '', 'title' ] ),
-                'dynValue' => $this->arrCatalog['titleDynValue'] ?: '',
-                'mandatory' => $this->arrCatalog['titleIsMandatory'] ? '1' : '',
+                'dynValue' => $this->arrCatalog['titleDynValue'] ?? '',
+                'mandatory' => isset($this->arrCatalog['titleIsMandatory']) && $this->arrCatalog['titleIsMandatory'] ? '1' : '',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
             ],
@@ -468,18 +448,17 @@ class CatalogFieldBuilder extends CatalogController {
             ]
         ];
 
-        if ( !$this->arrCatalog['pTable'] && !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) ) {
+        $this->arrCatalog['mode'] = $this->arrCatalog['mode'] ?? '';
 
-            unset( $arrFields['pid'] );
+        if ((!isset($this->arrCatalog['pTable']) || !$this->arrCatalog['pTable']) && !in_array($this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes)) {
+            unset($arrFields['pid']);
         }
 
-        if ( is_array( $this->arrCatalog['operations'] ) ) {
-
-            if ( !in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
-
-                unset( $arrFields['stop'] );
-                unset( $arrFields['start'] );
-                unset( $arrFields['invisible'] );;
+        if (isset($this->arrCatalog['operations']) && is_array($this->arrCatalog['operations'])) {
+            if (!in_array('invisible', $this->arrCatalog['operations'])) {
+                unset($arrFields['stop']);
+                unset($arrFields['start']);
+                unset($arrFields['invisible']);
             }
 
             if ( !in_array( $this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes ) && !in_array( 'cut', $this->arrCatalog['operations'] ) ) {
@@ -488,7 +467,7 @@ class CatalogFieldBuilder extends CatalogController {
             }
         }
 
-        if (  $this->arrCatalog['type'] == 'modifier' ) {
+        if (isset($this->arrCatalog['type']) && $this->arrCatalog['type'] == 'modifier') {
 
             unset( $arrFields['id'] );
             unset( $arrFields['pid'] );
@@ -510,23 +489,19 @@ class CatalogFieldBuilder extends CatalogController {
             return $arrField;
         }
 
-        switch ( $strFieldname ) {
+        switch ($strFieldname) {
 
             case 'tstamp' :
             case 'id' :
-
                 $arrField['_dcFormat'] = [
-
-                    'sorting' => $arrField['_dcFormat']['sorting'],
-                    'search' => $arrField['_dcFormat']['search'],
-                    'label' => $arrField['_dcFormat']['label'],
-                    'flag' => $arrField['_dcFormat']['flag'],
-                    'sql' => $arrField['_dcFormat']['sql']
+                    'sorting' => $arrField['_dcFormat']['sorting'] ?? false,
+                    'search' => $arrField['_dcFormat']['search'] ?? false,
+                    'label' => $arrField['_dcFormat']['label'] ?? '',
+                    'flag' => $arrField['_dcFormat']['flag'] ?? null,
+                    'sql' => $arrField['_dcFormat']['sql'] ?? ''
                 ];
 
                 return $arrField;
-
-                break;
 
             case 'pid' :
 
@@ -600,7 +575,7 @@ class CatalogFieldBuilder extends CatalogController {
 
                 if ( !isset( $arrField['eval'] ) ) $arrField['eval'] = [];
 
-                $arrOptions = $arrField['options'];
+                $arrOptions = $arrField['options'] ?? [];
                 $strType = Toolkit::setCatalogConformInputType( $arrField );
 
                 $arrReturn[ $strFieldname ] = [
@@ -609,19 +584,18 @@ class CatalogFieldBuilder extends CatalogController {
                     'type' => $strType,
                     'fieldname' => $strFieldname,
                     '_palette' => 'general_legend',
-                    'title' => $arrField['label'][0] ?: '',
-                    'rgxp' => $arrField['eval']['rgxp'] ?: '',
-                    'description' => $arrField['label'][1] ?: '',
-                    'exclude' => $arrField['exclude'] ? '1' : '',
-                    'cssID' => serialize( [ '', $strFieldname ] ),
+                    'title' => $arrField['label'][0] ?? '',
+                    'rgxp' => $arrField['eval']['rgxp'] ??'',
+                    'description' => $arrField['label'][1] ?? '',
+                    'exclude' => (isset($arrField['exclude']) && $arrField['exclude'] ? '1' : ''),
+                    'cssID' => serialize([ '', $strFieldname]),
                     '_dcFormat' => $blnDcFormat ? $arrField : null,
-                    'tl_class' =>  $arrField['eval']['tl_class'] ?: '',
-                    'multiple' => $arrField['eval']['multiple'] ? '1': '',
-                    'datepicker' => $arrField['eval']['datepicker'] ? '1': ''
+                    'tl_class' =>  $arrField['eval']['tl_class'] ?? '',
+                    'multiple' => (isset($arrField['eval']['multiple']) && $arrField['eval']['multiple'] ? '1': ''),
+                    'datepicker' => (isset($arrField['eval']['datepicker']) && $arrField['eval']['datepicker'] ? '1': '')
                 ];
 
-                if ( !Toolkit::isEmpty( $arrField['foreignKey'] ) ) {
-
+                if (!Toolkit::isEmpty($arrField['foreignKey']??'')) {
                     $arrForeignKeys = explode( '.', $arrField['foreignKey'] );
                     $arrReturn[ $strFieldname ]['optionsType'] = 'useForeignKey';
                     $arrReturn[ $strFieldname ]['dbTable'] = $arrForeignKeys[0] ?: '';
@@ -637,21 +611,18 @@ class CatalogFieldBuilder extends CatalogController {
 
                 if ( $strType == 'upload' ) {
 
-                    $strFileType = $arrField['_fileType'];
-                    $strExtensions = $arrField['eval']['extensions'] ?: '';
+                    $strFileType = $arrField['_fileType']??'';
+                    $strExtensions = $arrField['eval']['extensions']??'';
 
                     if ( $strExtensions && !$strFileType ) {
 
                         $arrExtensions = explode( ',', $strExtensions );
 
                         if ( empty( array_intersect( $arrExtensions, Toolkit::$arrFileExtensions ) ) ) {
-
-                            $strFileType = $arrField['eval']['multiple'] ? 'gallery' : 'image';
+                            $strFileType = (isset($arrField['eval']['multiple']) && $arrField['eval']['multiple'] ? 'gallery' : 'image');
                         }
-
                         else {
-
-                            $strFileType = $arrField['eval']['multiple'] ? 'files' : 'file';
+                            $strFileType = (isset($arrField['eval']['multiple']) && $arrField['eval']['multiple'] ? 'files' : 'file');
                         }
                     }
 

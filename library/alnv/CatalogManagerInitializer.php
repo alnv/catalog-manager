@@ -131,7 +131,7 @@ class CatalogManagerInitializer {
                 $arrBackendModule = [];
                 $arrModule = $arrModules[ $strActiveModule ];
                 $this->arrActiveBackendModules[] = $strActiveModule;
-                $arrModule['tables'] = is_array( $arrModule['tables'] ) ? $arrModule['tables'] : [];
+                $arrModule['tables'] = isset($arrModule['tables']) && is_array( $arrModule['tables'] ) ? $arrModule['tables'] : [];
 
                 foreach ( $arrCoreTables as $strTablename ) {
 
@@ -167,9 +167,9 @@ class CatalogManagerInitializer {
 
         if ( in_array( $strActiveModule, $this->arrActiveBackendModules ) ) {
 
-            $arrModule = $this->arrBackendModules[ $strActiveModule ];
+            $arrModule = $this->arrBackendModules[ $strActiveModule ] ?? [];
 
-            if ( is_array( $arrModule['tables'] ) ) {
+            if (isset($arrModule['tables']) && is_array($arrModule['tables'])) {
 
                 foreach ( $arrModule['tables'] as $strTablename ) {
 

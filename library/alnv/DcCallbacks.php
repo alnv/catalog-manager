@@ -42,7 +42,7 @@ class DcCallbacks extends \Backend {
 
         if ( !$strId ) return null;
         if ( is_null( $objDc ) ) return null;
-        if ( $_POST['SUBMIT_TYPE'] == 'auto' ) return null;
+        if (isset($_POST['SUBMIT_TYPE']) && $_POST['SUBMIT_TYPE'] == 'auto') return null;
         if ( is_null( $objDc->activeRecord ) ) return null;
         if ( !$objDc->table || !$this->Database->tableExists( $objDc->table ) ) return null;
 
@@ -51,9 +51,9 @@ class DcCallbacks extends \Backend {
         $objFields->initialize(  $objDc->table );
         $arrFields = $objFields->getCatalogFields( false );
 
-        foreach ( $arrFields as $strFieldname => $arrField ) {
+        foreach ($arrFields as $strFieldname => $arrField) {
 
-            if ( !Toolkit::isEmpty( $arrField['dynValue'] ) ) {
+            if (isset($arrField['dynValue']) && !Toolkit::isEmpty($arrField['dynValue'])) {
 
                 $arrActiveRecords = Toolkit::prepareValues4Db( $objDc->activeRecord->row() );
                 $arrValues[ $strFieldname ] = Toolkit::generateDynValue( $arrField['dynValue'], $arrActiveRecords );
@@ -157,8 +157,8 @@ class DcCallbacks extends \Backend {
         ];
 
         $strTable = \Input::get('catalogTable') ? \Input::get('catalogTable') : $arrHrefAttributes['catalogTable'];
-        $strCustomFieldname = \Input::get('fieldname') ? \Input::get('fieldname') : $arrHrefAttributes['fieldname'];
-        $strIconInVisible = \Input::get('iconVisible') ? \Input::get('iconVisible') : $arrHrefAttributes['iconVisible'];
+        $strCustomFieldname = \Input::get('fieldname') ? \Input::get('fieldname') : $arrHrefAttributes['fieldname']??'';
+        $strIconInVisible = \Input::get('iconVisible') ? \Input::get('iconVisible') : $arrHrefAttributes['iconVisible']??'';
 
         if ( $strIconInVisible ) $arrOptions['icon'] = $strIconInVisible;
         if ( $strCustomFieldname ) $arrOptions['fieldname'] = $strCustomFieldname;
@@ -224,7 +224,7 @@ class DcCallbacks extends \Backend {
 
     public function generateAlias( $varValue, \DataContainer $dc, $strField = 'title', $strTable = '' ) {
 
-        if ( $_POST['SUBMIT_TYPE'] == 'auto' ) return $varValue;
+        if (isset($_POST['SUBMIT_TYPE']) && $_POST['SUBMIT_TYPE'] == 'auto') return $varValue;
 
         $blnAutoAlias = false;
         $strTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : $strTable;

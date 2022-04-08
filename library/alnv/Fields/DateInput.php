@@ -9,16 +9,14 @@ class DateInput {
 
         $arrDCAField['eval']['datepicker'] = true;
         $arrDCAField['eval']['tl_class'] .= ' wizard';
-        $arrDCAField['eval']['rgxp'] = static::setRGXP( $arrField['rgxp'] );
-        $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
+        $arrDCAField['eval']['rgxp'] = static::setRGXP( $arrField['rgxp']??'' );
+        $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly']??'' );
 
-        if ( $arrField['readonly'] ) {
-
-            $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue( $arrField['readonly'] );
+        if (isset($arrField['readonly']) && $arrField['readonly']) {
+            $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue($arrField['readonly']);
         }
 
-        if ( $arrField['tstampAsDefault'] ) {
-
+        if (isset($arrField['tstampAsDefault']) && $arrField['tstampAsDefault']) {
             $arrDCAField['default'] = time();
         }
         
@@ -38,7 +36,7 @@ class DateInput {
 
         if ( Toolkit::isEmpty( $varValue ) ) return '';
 
-        $strRgxp = $arrField['rgxp'] ?: 'datim';
+        $strRgxp = $arrField['rgxp'] ?? 'datim';
         $strDateFormat = \Date::getFormatFromRgxp( $strRgxp );
 
         try {

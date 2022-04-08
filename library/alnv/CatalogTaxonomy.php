@@ -173,7 +173,7 @@ class CatalogTaxonomy extends CatalogController {
         foreach ( $this->arrParameter as $intIndex => $strParameter ) {
 
             $arrAliasCache = [];
-            $strNextParameter = $this->arrParameter[ $intIndex + 1 ] ? $this->arrParameter[ $intIndex + 1 ] : '';
+            $strNextParameter = isset( $this->arrParameter[ $intIndex + 1 ]) &&  $this->arrParameter[ $intIndex + 1 ] ? $this->arrParameter[ $intIndex + 1 ]: '';
 
             if ( !$intIndex ) {
 

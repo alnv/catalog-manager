@@ -232,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogRedirectType'] = [
     ],
 
     'options' => [ 'master', 'internal', 'link' ],
-    'reference' => $GLOBALS['TL_LANG']['tl_content']['catalogRedirectType']['options'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['catalogRedirectType']['options'],
     'exclude'  => true,
     'sql' => "varchar(10) NOT NULL default ''"
 ];

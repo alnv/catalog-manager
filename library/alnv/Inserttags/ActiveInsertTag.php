@@ -117,7 +117,7 @@ class ActiveInsertTag extends \Frontend {
 
             elseif( Toolkit::isEmpty( $varValue ) ) {
 
-                $varValue = $arrTags[2] ? $arrTags[2] : '';
+                $varValue = $arrTags[2] ?? '';
             }
 
             if ( is_array( $varValue ) ) $varValue = implode( ',', $varValue );

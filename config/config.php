@@ -1,6 +1,6 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.31.67");
+define("CATALOG_MANAGER_VERSION", "1.32.0");
 
 if (!\Config::get('hideCatalogManager')) {
     array_insert( $GLOBALS['BE_MOD'], 3, [
@@ -77,19 +77,19 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\TimestampInsertT
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValuesInsertTag', 'getInsertTagValue' ];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue' ];
 
-$GLOBALS['TL_HOOKS']['getAllEvents'][] = [ 'CatalogManager\CatalogParser', 'getAllEvents' ];
-$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [ 'CatalogManager\RoutingBuilder', 'initialize' ];
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\CatalogDcAdapter', 'initialize' ];
-$GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [ 'CatalogManager\CatalogBreadcrumb', 'initialize' ];
-$GLOBALS['TL_HOOKS']['sqlCompileCommands'][] = [ 'CatalogManager\SQLCompileCommands', 'initialize' ];
-$GLOBALS['TL_HOOKS']['getSearchablePages'][] = [ 'CatalogManager\SearchIndexBuilder', 'initialize' ];
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\UserPermissionExtension', 'initialize' ];
-$GLOBALS['TL_HOOKS']['initializeSystem'][] = [ 'CatalogManager\CatalogManagerInitializer', 'initialize' ];
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [ 'CatalogManager\MemberPermissionExtension', 'initialize' ];
-$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = [ 'CatalogManager\BackendTemplateParser', 'outputBackendTemplate' ];
-$GLOBALS['TL_HOOKS']['getContentElement'][] = [ 'CatalogManager\CatalogContentElementParser', 'parseVisibilityPanels' ];
-$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ 'CatalogManager\ChangeLanguageExtension', 'translateUrlParameters' ];
-$GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [ 'CatalogManager\CatalogWidgetAttributeParser', 'parseCatalogNavigationAreasWidget' ];
+$GLOBALS['TL_HOOKS']['getAllEvents'][] = ['CatalogManager\CatalogParser', 'getAllEvents'];
+$GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = ['CatalogManager\RoutingBuilder', 'initialize'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = ['CatalogManager\CatalogDcAdapter', 'initialize'];
+$GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = ['CatalogManager\CatalogBreadcrumb', 'initialize'];
+$GLOBALS['TL_HOOKS']['sqlCompileCommands'][] = ['CatalogManager\SQLCompileCommands', 'initialize'];
+$GLOBALS['TL_HOOKS']['getSearchablePages'][] = ['CatalogManager\SearchIndexBuilder', 'initialize'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = ['CatalogManager\UserPermissionExtension', 'initialize'];
+$GLOBALS['TL_HOOKS']['initializeSystem'][] = ['CatalogManager\CatalogManagerInitializer', 'initialize'];
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = ['CatalogManager\MemberPermissionExtension', 'initialize'];
+$GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = ['CatalogManager\BackendTemplateParser', 'outputBackendTemplate'];
+$GLOBALS['TL_HOOKS']['getContentElement'][] = ['CatalogManager\CatalogContentElementParser', 'parseVisibilityPanels'];
+$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = ['CatalogManager\ChangeLanguageExtension', 'translateUrlParameters'];
+$GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = ['CatalogManager\CatalogWidgetAttributeParser', 'parseCatalogNavigationAreasWidget'];
 
 $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];

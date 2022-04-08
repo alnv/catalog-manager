@@ -182,7 +182,6 @@ class CatalogFormFilter extends CatalogController {
             $this->import( 'CatalogAjaxController' );
 
             $this->CatalogAjaxController->setData([
-
                 'form' => $this->arrForm,
                 'data' => $this->arrFormFields,
                 'reset' => $objFormTemplate->reset,

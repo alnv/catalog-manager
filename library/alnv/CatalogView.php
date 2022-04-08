@@ -77,7 +77,7 @@ class CatalogView extends CatalogController {
 
                 if ( !$arrField['fieldname'] || !$arrField['type'] ) continue;
 
-                $arrFieldLabels = $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->catalogTablename, 'title' => $arrField['title'], 'description' =>  $arrField['description'] ] );
+                $arrFieldLabels = $this->I18nCatalogTranslator->get( 'field', $arrField['fieldname'], [ 'table' => $this->catalogTablename, 'title' => $arrField['title'], 'description' =>  $arrField['description']??'' ] );
 
                 $this->arrCatalogFields[ $strID ][ 'title' ] = $arrFieldLabels[0];
                 $this->arrCatalogFields[ $strID ][ 'description' ] = $arrFieldLabels[1];
@@ -775,7 +775,7 @@ class CatalogView extends CatalogController {
         
         if ( $intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view' ) {
 
-            $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, $this->arrViewPage['id'] );
+            $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination( $intTotal, $intPerPage, $strPageID, ($this->arrViewPage['id']??'') );
         }
 
         if ( $this->blnGoogleMapScript ) {
@@ -1141,14 +1141,19 @@ class CatalogView extends CatalogController {
     }
 
 
-    protected function parseCatalogValues( $varValue, $strFieldname, &$arrCatalog ) {
+    protected function parseCatalogValues($varValue, $strFieldname, &$arrCatalog) {
 
-        $arrField = $this->arrCatalogFields[ $strFieldname ];
+        $arrField = $this->arrCatalogFields[$strFieldname] ?? [];
+        if (empty($arrField)) {
+            return $varValue;
+        }
         $strType = $arrField['type'];
 
-        if ( $arrField['_isDate'] != null && $arrField['_isDate'] === true ) $strType = 'date';
-        if ( Toolkit::isEmpty( $strType ) ) return $varValue;
-        if ( $this->isFastMode( $strType, $strFieldname ) ) return '';
+        if (isset($arrField['_isDate']) && $arrField['_isDate'] != null && $arrField['_isDate'] === true) {
+            $strType = 'date';
+        }
+        if (Toolkit::isEmpty($strType)) return $varValue;
+        if ($this->isFastMode($strType, $strFieldname)) return '';
 
         // Overwrite image size (see #324)
         if ( !empty( $this->arrOptions['imgSize'] ) ) $arrField['size'] = $this->arrOptions['imgSize'];

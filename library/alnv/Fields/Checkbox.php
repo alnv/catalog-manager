@@ -11,9 +11,9 @@ class Checkbox {
     public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
 
         $arrDCAField['eval']['csv'] = ',';
-        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
-        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
-        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled']??'' );
+        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple']??'' );
+        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange']??'' );
 
         $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
 
@@ -84,8 +84,7 @@ class Checkbox {
 
             $arrOptions = $objOptionGetter->getOptions();
 
-            if ( $arrField['optionsType'] && is_array( $arrOptions ) ) {
-
+            if (isset($arrField['optionsType']) && $arrField['optionsType'] && is_array($arrOptions)) {
                 $arrDCAField['options'] = $arrOptions;
                 $arrDCAField['reference'] = $arrDCAField['options'];
             }

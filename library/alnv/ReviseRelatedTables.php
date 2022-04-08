@@ -49,8 +49,7 @@ class ReviseRelatedTables extends \Controller {
                         $objLoader->load(false);
                     }
 
-                    if ( !$GLOBALS['TL_DCA'][$v] ) {
-
+                    if (!($GLOBALS['TL_DCA'][$v]??'')) {
                         continue;
                     }
 

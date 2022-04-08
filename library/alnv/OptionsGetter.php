@@ -35,7 +35,7 @@ class OptionsGetter extends CatalogController {
 
     public function isForeignKey() {
 
-        if ( $this->arrField['optionsType'] && $this->arrField['optionsType'] == 'useForeignKey' ) {
+        if (isset($this->arrField['optionsType']) && $this->arrField['optionsType'] && $this->arrField['optionsType'] == 'useForeignKey') {
 
             return true;
         }
@@ -52,13 +52,11 @@ class OptionsGetter extends CatalogController {
 
     public function getOptions() {
 
-        switch ( $this->arrField['optionsType'] ) {
+        switch ($this->arrField['optionsType']??'') {
 
             case 'useOptions':
 
                 return $this->getKeyValueOptions();
-
-                break;
 
             case 'useForeignKey':
 
@@ -66,22 +64,16 @@ class OptionsGetter extends CatalogController {
 
                 return $this->getDbOptions();
 
-                break;
-
             case 'useDbOptions':
 
                 return $this->getDbOptions();
 
-                break;
-
             case 'useActiveDbOptions':
 
                 return $this->getActiveDbOptions();
-
-                break;
         }
 
-        if ( !$this->arrField['optionsType'] && in_array( $this->arrField['fieldname'], [ 'country', 'countries' ] ) && in_array( $this->arrField['type'], [ 'radio', 'select', 'checkbox' ] ) ) {
+        if (!isset($this->arrField['optionsType']) && in_array( $this->arrField['fieldname'], [ 'country', 'countries' ] ) && in_array( $this->arrField['type'], [ 'radio', 'select', 'checkbox' ] ) ) {
 
             return \System::getCountries();
         }
@@ -92,7 +84,7 @@ class OptionsGetter extends CatalogController {
 
     public function getTableEntities() {
 
-        switch ( $this->arrField['optionsType'] ) {
+        switch ($this->arrField['optionsType']??'') {
 
             case 'useDbOptions':
             case 'useForeignKey':
@@ -119,8 +111,6 @@ class OptionsGetter extends CatalogController {
 
                 return $this->getResults( true );
 
-                break;
-
             case 'useActiveDbOptions':
 
                 $strDbColumn = $this->arrField['dbColumn'];
@@ -141,8 +131,6 @@ class OptionsGetter extends CatalogController {
                 }
 
                 return $this->getResults( false );
-
-                break;
         }
 
         return null;
@@ -156,9 +144,9 @@ class OptionsGetter extends CatalogController {
             $strValue = \StringUtil::decodeEntities($strValue);
             $strTitle = $strValue;
 
-            if ($this->arrField['dbParseDate']) {
+            if (isset($this->arrField['dbParseDate']) && $this->arrField['dbParseDate']) {
 
-                $strFormat = $this->arrField['dbMonthBeginFormat'] ? $this->arrField['dbMonthBeginFormat'] : 'F Y';
+                $strFormat = $this->arrField['dbMonthBeginFormat'] ?: 'F Y';
 
                 if ( $this->arrField['dbDateFormat'] == 'yearBegin' ) $strFormat =  $this->arrField['dbYearBeginFormat'] ? $this->arrField['dbYearBeginFormat'] : 'Y';
                 if ( $this->arrField['dbDateFormat'] == 'dayBegin' ) $strFormat =  $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
@@ -229,7 +217,7 @@ class OptionsGetter extends CatalogController {
         $arrSQLQuery['where'] = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) use ( $blnUseValidValue ) {
 
             $blnValidValue = true;
-            $blnIgnoreEmptyValues = $this->arrField['dbIgnoreEmptyValues'] ? true : false;
+            $blnIgnoreEmptyValues = isset($this->arrField['dbIgnoreEmptyValues']) && $this->arrField['dbIgnoreEmptyValues'];
 
             if ( $blnIgnoreEmptyValues && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) $blnIgnoreEmptyValues = false;
 
@@ -402,7 +390,7 @@ class OptionsGetter extends CatalogController {
 
             if ( $strFieldname !== '' && $strFieldname !== null ) {
 
-                $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
+                $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?? '';
 
                 if ( TL_MODE == 'FE' ) {
 
@@ -633,9 +621,9 @@ class OptionsGetter extends CatalogController {
 
     protected function getOrderBy() {
 
-        if ( $this->arrField['dbOrderBy'] ) {
+        if ( isset($this->arrField['dbOrderBy']) ) {
 
-            $arrOrderBy = deserialize( $this->arrField['dbOrderBy'] );
+            $arrOrderBy = \StringUtil::deserialize( $this->arrField['dbOrderBy'] );
 
             if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
 
@@ -643,7 +631,7 @@ class OptionsGetter extends CatalogController {
             }
         }
 
-        if ( !Toolkit::isEmpty( $this->arrField['_orderBy'] ) ) {
+        if ( isset($this->arrField['_orderBy']) && !Toolkit::isEmpty( $this->arrField['_orderBy'] ) ) {
 
             return ' ' . $this->arrField['_orderBy'];
         }

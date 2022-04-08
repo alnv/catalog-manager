@@ -102,9 +102,9 @@ class Toolkit {
     }
 
 
-    public static function setDcConformInputType( $strType ) {
+    public static function setDcConformInputType($strType) {
 
-        return $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'][ $strType ] ?: '';
+        return $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'][$strType]??'';
     }
 
 
@@ -131,13 +131,12 @@ class Toolkit {
 
     public static function setCatalogConformInputType( $strField ) {
 
-        $strType = $strField['inputType'];
+        $strType = $strField['inputType'] ??'';
 
-        if ( Toolkit::isEmpty( $strType ) ) return '';
+        if (Toolkit::isEmpty($strType)) return '';
 
-        if ( !Toolkit::isEmpty( $strField['eval']['rgxp'] ) ) {
-
-            if ( in_array( $strField['eval']['rgxp'], self::$arrDateRgxp ) ) return 'date';
+        if (!Toolkit::isEmpty($strField['eval']['rgxp']??'')) {
+            if (in_array( $strField['eval']['rgxp'], self::$arrDateRgxp)) return 'date';
         }
 
         $arrInputTypes = [
@@ -151,7 +150,7 @@ class Toolkit {
             'checkbox' => 'checkbox',
         ];
         
-        return $arrInputTypes[ $strType ] ?: 'text';
+        return $arrInputTypes[$strType] ?? 'text';
     }
     
     
@@ -463,9 +462,9 @@ class Toolkit {
 
     public static function parseQuery( $arrQuery ) {
 
-        $blnAllowEmptyValue = $arrQuery['allowEmptyValues'] ? true : false;
+        $blnAllowEmptyValue = isset($arrQuery['allowEmptyValues']) && $arrQuery['allowEmptyValues'];
 
-        if ( is_array( $arrQuery['value'] ) ) {
+        if (isset($arrQuery['value']) && is_array($arrQuery['value'])) {
 
             if ( !empty( $arrQuery['value'] ) ) {
                 foreach ( $arrQuery['value'] as $strK => $strV ) {
@@ -484,7 +483,7 @@ class Toolkit {
             }
         }
 
-        if ( is_string( $arrQuery['value'] ) ) {
+        if (isset($arrQuery['value']) && is_string($arrQuery['value']) ) {
 
             $arrQuery['value'] = \Controller::replaceInsertTags( $arrQuery['value'] );
 
@@ -501,12 +500,12 @@ class Toolkit {
             }
         }
 
-        if ( is_array( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'contain', 'notContain', 'between' ] ) ) {
+        if (isset($arrQuery['value']) && is_array( $arrQuery['value'] ) && !in_array( $arrQuery['operator'], [ 'contain', 'notContain', 'between' ] ) ) {
 
             $arrQuery['multiple'] = true;
         }
 
-        if ( ( is_null( $arrQuery['value'] ) || $arrQuery['value'] === '' ) && !$blnAllowEmptyValue ) {
+        if ((!isset($arrQuery['value']) || $arrQuery['value'] === '' ) && !$blnAllowEmptyValue ) {
 
             return null;
         }

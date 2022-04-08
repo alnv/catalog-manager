@@ -203,7 +203,7 @@ class tl_module extends \Backend {
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
             if ( !in_array( $arrField['type'], [ 'select', 'checkbox', 'radio' ] ) ) continue;
-            if ( !$arrField['optionsType'] || $arrField['optionsType'] == 'useOptions' ) continue;
+            if ( !isset($arrField['optionsType']) || !$arrField['optionsType'] || $arrField['optionsType'] == 'useOptions' ) continue;
 
             $arrReturn[ $strFieldname ] = Toolkit::getLabelValue( $arrField['_dcFormat']['label'], $strFieldname );
         }

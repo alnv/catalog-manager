@@ -76,7 +76,7 @@ class MasterInsertTag extends \Frontend {
                         case 'addText':
 
                             $blnAddText = true;
-                            $strText = $strOption ? $strOption : '';
+                            $strText = $strOption ?? '';
 
                             break;
 
@@ -96,7 +96,7 @@ class MasterInsertTag extends \Frontend {
 
             else {
 
-                $strDefaultValue = Toolkit::isEmpty( $arrTags[2] ) ? '' : $arrTags[2];
+                $strDefaultValue = Toolkit::isEmpty($arrTags[2]??'') ? '' : $arrTags[2];
             }
 
             $this->CatalogMasterEntity->initialize( $strTable, [
@@ -108,13 +108,12 @@ class MasterInsertTag extends \Frontend {
 
             $arrMaster = $this->CatalogMasterEntity->getMasterEntity( $blnParseValues );
 
-            if ( Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) && !Toolkit::isEmpty( $strDefaultValue ) ) {
-
+            if (Toolkit::isEmpty($arrMaster[$strFieldname]??'') && !Toolkit::isEmpty($strDefaultValue)) {
                 return $strDefaultValue;
             }
 
-            $varValue = Toolkit::isEmpty( $arrMaster[ $strFieldname ] ) ? '' : $arrMaster[ $strFieldname ];
-            $varValue = $this->setValue( $varValue, $arrTags[3] );
+            $varValue = Toolkit::isEmpty($arrMaster[$strFieldname]??'') ? '' : $arrMaster[$strFieldname];
+            $varValue = $this->setValue($varValue, $arrTags[3]??'');
 
             if ( $blnAddText && $varValue ) $varValue .= $strText;
 

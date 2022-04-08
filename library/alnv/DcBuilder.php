@@ -166,7 +166,7 @@ class DcBuilder extends CatalogController {
 
         foreach ( $this->arrFields as $arrField ) {
 
-            if ( !$arrField['useIndex'] ) continue;
+            if (!isset($arrField['useIndex'])) continue;
 
             $arrReturn['sql']['keys'][ $arrField['fieldname'] ] = $arrField['useIndex'];
         }
@@ -301,6 +301,8 @@ class DcBuilder extends CatalogController {
             'headerFields' => [ 'id', 'alias', 'title' ],
         ]);
 
+        $this->arrCatalog['labelFields'] = $this->arrCatalog['labelFields'] ?? ['title'];
+        $arrReturn['fields'] = $arrReturn['fields'] ?? $this->arrCatalog['labelFields'];
         $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $this->arrCatalog['panelLayout'] );
 
         if ( $this->arrCatalog['mode'] == '4' ) {
@@ -459,9 +461,9 @@ class DcBuilder extends CatalogController {
 
             foreach ( $this->arrFields as $arrField ) {
 
-                if ( $arrField['multiple'] || !$arrField['fieldname']  ) continue;
+                if ($arrField['multiple']??'' || !$arrField['fieldname']??'') continue;
 
-                if ( $arrField['enableToggleIcon'] && $arrField['type'] == 'checkbox' ) {
+                if ($arrField['enableToggleIcon']??'' && $arrField['type'] == 'checkbox') {
 
                     $arrToggleIcon = [];
                     $strVisibleIcon = $this->IconGetter->setToggleIcon( $arrField['fieldname'], true );
@@ -579,11 +581,11 @@ class DcBuilder extends CatalogController {
 
             if ( is_array( $arrLegend ) ) {
 
-                $strLegendName = $arrLegend[0];
-                $strHide = Toolkit::isEmpty( $arrLegend[1] ) ? '' : ':hide';
+                $strLegendName = $arrLegend[0] ?? '';
+                $strHide = Toolkit::isEmpty($arrLegend[1]??'') ? '' : ':hide';
             }
 
-            $GLOBALS['TL_LANG'][ $this->strTable ][ $strLegendName ] = $this->I18nCatalogTranslator->get( 'legend', $strLegendName, [ 'title' => $arrTranslations[ $strLegend ] ] );
+            $GLOBALS['TL_LANG'][$this->strTable][$strLegendName] = $this->I18nCatalogTranslator->get( 'legend', $strLegendName, ['title' => $arrTranslations[$strLegend]??''] );
             $strReturn .= sprintf( '{%s%s},%s;', $strLegendName, $strHide, implode( ',', $arrFields ) );
         }
 

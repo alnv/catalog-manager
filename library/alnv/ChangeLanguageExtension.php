@@ -14,7 +14,7 @@ class ChangeLanguageExtension extends \Frontend {
 
         global $objPage;
 
-        if ($_GET['auto_item']) {
+        if (isset($_GET['auto_item']) && $_GET['auto_item']) {
             $this->strMasterAlias = \Input::cleanKey($_GET['auto_item']);
         }
 

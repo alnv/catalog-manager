@@ -1,6 +1,7 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = [ 'CatalogManager\tl_page', 'setRoutingParameter' ];
+$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = ['CatalogManager\tl_page', 'removeRouting'];
+$GLOBALS['TL_DCA']['tl_page']['config']['onsubmit_callback'][] = ['CatalogManager\tl_page', 'setRoutingParameter'];
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'catalogUseMaster';
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'catalogUseRouting';
@@ -13,16 +14,12 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseMaster'] = 'catalogMaste
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseRouting'] = 'catalogRoutingTable,catalogRoutingParameter,catalogSetAutoItem,catalogRouting';
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['catalogUseMaster'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_page']['catalogUseMaster'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'clr',
         'submitOnChange' => true
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];

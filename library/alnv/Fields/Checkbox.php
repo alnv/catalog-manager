@@ -8,16 +8,15 @@ class Checkbox {
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
+    public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true) {
 
         $arrDCAField['eval']['csv'] = ',';
-        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled']??'' );
-        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple']??'' );
-        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange']??'' );
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue($arrField['disabled']??'');
+        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue($arrField['multiple']??'');
+        $arrDCAField['eval']['submitOnChange'] = Toolkit::getBooleanByValue($arrField['submitOnChange']??'');
+        $strModuleID = !is_null($objModule) && is_object($objModule) ? $objModule->id : '';
 
-        $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
-
-        if ( $blnActive ) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
+        if ($blnActive) $arrDCAField = static::getOptions($arrDCAField, $arrField, $strModuleID, $blnActive);
 
         return $arrDCAField;
     }
@@ -25,24 +24,18 @@ class Checkbox {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog ) {
 
-        if ( !$varValue ) return $arrField['multiple'] ? [] : '';
+        if (!$varValue) return $arrField['multiple'] ? [] : '';
 
-        $varValue = Toolkit::parseMultipleOptions( $varValue );
+        $varValue = Toolkit::parseMultipleOptions($varValue);
 
-        if ( !empty( $varValue ) && is_array( $varValue ) ) {
-
+        if (!empty( $varValue ) && is_array($varValue)) {
             $arrReturn = [];
-
-            static::getOptionsFromCache( $arrField['fieldname'], $arrField );
-
-            if ( !empty( $varValue ) && is_array( $varValue ) ) {
-
-                foreach ( $varValue as $strValue ) {
-
-                    $arrReturn[ $strValue ] = static::$arrCache[ $arrField['fieldname'] ][ $strValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $strValue ] : $strValue;
+            static::getOptionsFromCache($arrField['fieldname'], $arrField);
+            if (!empty($varValue) && is_array($varValue)) {
+                foreach ($varValue as $strValue) {
+                    $arrReturn[$strValue] = isset(static::$arrCache[$arrField['fieldname']][$strValue]) && static::$arrCache[$arrField['fieldname']][$strValue] ? static::$arrCache[$arrField['fieldname']][$strValue] : $strValue;
                 }
             }
-
             return $arrReturn;
         }
 

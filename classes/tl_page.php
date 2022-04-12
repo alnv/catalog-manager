@@ -4,6 +4,14 @@ namespace CatalogManager;
 
 class tl_page extends \Backend {
 
+    public function removeRouting() {
+        if (version_compare('4.12', VERSION, '<=')) {
+            if (!\System::getContainer()->getParameter('contao.legacy_routing')) {
+                unset($GLOBALS['TL_DCA']['tl_page']['subpalettes']['catalogUseRouting']);
+                \Contao\CoreBundle\DataContainer\PaletteManipulator::create()->removeField('catalogUseRouting')->applyToPalette('regular', 'tl_page');
+            }
+        }
+    }
 
     public function getCatalogTables() {
 

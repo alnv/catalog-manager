@@ -62,11 +62,11 @@ class Entity extends CatalogController {
             ]
         ];
 
-        if (is_array($this->arrSettings['queries']) && !empty($this->arrSettings['queries'])) {
+        if (isset($this->arrSettings['queries']) && is_array($this->arrSettings['queries']) && !empty($this->arrSettings['queries'])) {
             array_insert($arrQuery['where'], 0, $this->arrSettings['queries']);
         }
 
-        if (is_array($this->arrCatalog['operations']) && in_array('invisible', $this->arrCatalog['operations']) && !$this->arrSettings['ignoreVisibility']) {
+        if (isset($this->arrCatalog['operations']) && is_array($this->arrCatalog['operations']) && in_array('invisible', $this->arrCatalog['operations']) && (!isset($this->arrSettings['ignoreVisibility']) || !$this->arrSettings['ignoreVisibility'])) {
 
             $dteTime = \Date::floorToMinute();
 
@@ -175,42 +175,29 @@ class Entity extends CatalogController {
         $arrEntity = $objEntity->row();
         $arrEntity['origin'] = $arrEntity;
 
-        foreach ( $arrEntity as $strFieldname => $strValue ) {
-
-            if ( isset( $this->arrFields[ $strFieldname ] ) ) {
-
-                $arrField = $this->arrFields[ $strFieldname ];
-
-                if ( $arrField['multiple'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) ) {
-
-                    $arrEntity[ $strFieldname ] = $this->getJoinedEntities( $strValue, $arrField );
-
+        foreach ($arrEntity as $strFieldname => $strValue) {
+            if (isset($this->arrFields[$strFieldname])) {
+                $arrField = $this->arrFields[$strFieldname];
+                if (isset($arrField['multiple']) && $arrField['multiple'] && in_array($arrField['optionsType'], ['useDbOptions', 'useForeignKey'])) {
+                    $arrEntity[$strFieldname] = $this->getJoinedEntities($strValue, $arrField);
                     continue;
                 }
-
-                $arrEntity[ $strFieldname ] = Toolkit::parseCatalogValue( $strValue, $arrField, $arrEntity );
+                $arrEntity[$strFieldname] = Toolkit::parseCatalogValue($strValue, $arrField, $arrEntity);
             }
         }
 
-        if ( is_array( $this->arrCatalog['cTables'] ) && !empty( $this->arrCatalog['cTables'] ) ) {
-
-            foreach ( $this->arrCatalog['cTables'] as $strChildTable ) {
-
-                $arrEntity[ $strChildTable ] = $this->getChildrenEntities( $arrEntity['id'], $strChildTable );
+        if (isset($this->arrCatalog['cTables']) && is_array($this->arrCatalog['cTables']) && !empty($this->arrCatalog['cTables'])) {
+            foreach ($this->arrCatalog['cTables'] as $strChildTable) {
+                $arrEntity[$strChildTable] = $this->getChildrenEntities($arrEntity['id'], $strChildTable);
             }
         }
 
-        if ( $this->arrCatalog['addContentElements'] ) {
-
+        if (isset($this->arrCatalog['addContentElements']) && $this->arrCatalog['addContentElements']) {
             $arrEntity['contentElements'] = '';
-
-            $objContent = \ContentModel::findPublishedByPidAndTable( $arrEntity['id'], $this->catalogTablename );
-
-            if ( $objContent !== null ) {
-
-                while ( $objContent->next() ) {
-
-                    $arrEntity['contentElements'] .= $this->getContentElement( $objContent->current() );
+            $objContent = \ContentModel::findPublishedByPidAndTable($arrEntity['id'], $this->catalogTablename);
+            if ($objContent !== null) {
+                while ($objContent->next()) {
+                    $arrEntity['contentElements'] .= $this->getContentElement($objContent->current());
                 }
             }
         }

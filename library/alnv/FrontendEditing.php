@@ -30,13 +30,13 @@ class FrontendEditing extends CatalogController {
 
         parent::__construct();
 
-        $this->import( 'CatalogEvents' );
-        $this->import( 'CatalogMessage' );
-        $this->import( 'SQLQueryHelper' );
-        $this->import( 'SQLQueryBuilder' );
-        $this->import( 'CatalogFineUploader' );
-        $this->import( 'CatalogFieldBuilder' );
-        $this->import( 'I18nCatalogTranslator' );
+        $this->import('CatalogEvents');
+        $this->import('CatalogMessage');
+        $this->import('SQLQueryHelper');
+        $this->import('SQLQueryBuilder');
+        $this->import('CatalogFineUploader');
+        $this->import('CatalogFieldBuilder');
+        $this->import('I18nCatalogTranslator');
     }
 
 
@@ -49,35 +49,34 @@ class FrontendEditing extends CatalogController {
         \System::loadLanguageFile('catalog_manager');
 
         $strPalette = 'general_legend';
-        $this->strFormId = md5( 'id_' . $this->catalogTablename );
-        $this->strOnChangeId = md5( 'change_' . $this->catalogTablename );
-        $this->arrValidFormTemplates = array_keys( Toolkit::$arrFormTemplates );
-        $this->catalogDefaultValues = Toolkit::deserialize( $this->catalogDefaultValues );
-        $this->catalogItemOperations = Toolkit::deserialize( $this->catalogItemOperations );
+        $this->strFormId = md5('id_' . $this->catalogTablename);
+        $this->strOnChangeId = md5('change_' . $this->catalogTablename);
+        $this->arrValidFormTemplates = array_keys(Toolkit::$arrFormTemplates);
+        $this->catalogDefaultValues = Toolkit::deserialize($this->catalogDefaultValues);
+        $this->catalogItemOperations = Toolkit::deserialize($this->catalogItemOperations);
         $this->catalogExcludedFields = Toolkit::deserialize($this->catalogExcludedFields);
 
-        $this->CatalogFieldBuilder->initialize(  $this->catalogTablename );
+        $this->CatalogFieldBuilder->initialize( $this->catalogTablename);
 
         $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
-        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( true, $this );
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields(true, $this);
 
 
-        if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
+        if ( !empty($arrCatalogFields) && is_array($arrCatalogFields)) {
 
-            foreach ( $arrCatalogFields as $arrField ) {
+            foreach ($arrCatalogFields as $arrField) {
 
-                $strPalette = $arrField['_palette'] && !in_array( $arrField['fieldname'], $this->catalogExcludedFields ) ? $arrField['_palette'] : $strPalette;
+                $strPalette = isset($arrField['_palette']) && $arrField['_palette'] && !in_array( $arrField['fieldname'], $this->catalogExcludedFields ) ? $arrField['_palette'] : $strPalette;
 
-                if ( $arrField['type'] == 'fieldsetStart' ) {
-
+                if (isset($arrField['type']) && $arrField['type'] == 'fieldsetStart') {
                     $strPalette = $arrField['title'];
                     $this->arrPaletteLabels[ $strPalette ] = $this->I18nCatalogTranslator->get( 'legend', $arrField['title'], [ 'title' => $arrField['label'] ] );
                 }
 
                 $arrField['_palette'] = $strPalette;
 
-                if ( Toolkit::isEmpty( $arrField['type'] ) ) continue;
-                if ( Toolkit::isEmpty( $arrField['fieldname'] ) || !Toolkit::isDcConformField( $arrField ) ) continue;
+                if (Toolkit::isEmpty($arrField['type'])) continue;
+                if (Toolkit::isEmpty($arrField['fieldname']) || !Toolkit::isDcConformField($arrField)) continue;
 
                 if ( $arrField['type'] == 'hidden' ) $arrField['_dcFormat']['inputType'] = 'hidden';
 
@@ -264,7 +263,7 @@ class FrontendEditing extends CatalogController {
 
             if ( $strClass === false ) continue;
 
-            $arrData = $strClass::getAttributesFromDca( $arrField, $strFieldname, $arrField['default'], '', '' );
+            $arrData = $strClass::getAttributesFromDca($arrField, $strFieldname, $arrField['default']??'', '', '' );
 
             if ( is_bool( $arrField['_disableFEE'] ) && $arrField['_disableFEE'] == true ) continue;
 
@@ -308,18 +307,15 @@ class FrontendEditing extends CatalogController {
                 $objWidget->value = '';
             }
 
-            if ( $arrField['eval']['multiple'] && $arrField['eval']['csv'] && is_string( $objWidget->value ) ) {
-
-                $objWidget->value = explode( $arrField['eval']['csv'], $objWidget->value );
+            if (isset($arrField['eval']['multiple']) && $arrField['eval']['multiple'] && $arrField['eval']['csv'] && is_string($objWidget->value)) {
+                $objWidget->value = explode($arrField['eval']['csv'], $objWidget->value);
             }
 
-            if ( $arrField['eval']['submitOnChange'] ) {
-
-                $objWidget->addAttributes([ 'onchange' => 'this.form.submit()' ]);
+            if (isset($arrField['eval']['submitOnChange']) && $arrField['eval']['submitOnChange']) {
+                $objWidget->addAttributes(['onchange' => 'this.form.submit()']);
             }
 
-            if ( $arrField['inputType'] == 'upload' || $arrField['inputType'] == 'catalogFineUploader' ) {
-
+            if ($arrField['inputType'] == 'upload' || $arrField['inputType'] == 'catalogFineUploader') {
                 $objWidget->storeFile = $this->catalogStoreFile;
                 $objWidget->useHomeDir = $this->catalogUseHomeDir;
                 $objWidget->maxlength = $arrField['eval']['maxsize'];
@@ -333,38 +329,32 @@ class FrontendEditing extends CatalogController {
                 $this->blnHasUpload = true;
             }
 
-            if ( $arrField['inputType'] == 'textarea' && isset( $arrField['eval']['rte'] ) ) {
+            if ($arrField['inputType'] == 'textarea' && isset($arrField['eval']['rte'])) {
 
                 $objWidget->mandatory = false;
-                $arrTextareaData = [ 'selector' => 'ctrl_' . $objWidget->id ];
+                $arrTextareaData = ['selector' => 'ctrl_' . $objWidget->id];
 
-                if ( version_compare( VERSION, '4.0', '>=' ) ) {
-
+                if (version_compare(VERSION, '4.0', '>=')) {
                     $strTemplate = 'be_' . $arrField['eval']['rte'];
-                }
-
-                else {
-
+                } else {
                     $strTemplate = 'ctlg_catalog_tinyMCE';
                     $arrTextareaData['tinyMCE'] = TL_ROOT . '/' . 'system/config/' . $arrField['eval']['rte'] . '.php';
                 }
 
-                $objScript = new \FrontendTemplate( $strTemplate );
-                $objScript->setData( $arrTextareaData );
+                $objScript = new \FrontendTemplate($strTemplate);
+                $objScript->setData($arrTextareaData);
                 $strScript = $objScript->parse();
 
                 $GLOBALS['TL_HEAD'][] = $strScript;
             }
 
-            
-            if ( $this->arrCatalogFields[ $strFieldname ]['autoCompletionType'] ) {
+            if ($this->arrCatalogFields[ $strFieldname ]['autoCompletionType']) {
 
                 $objWidget->class .= ' awesomplete-field';
-                $objWidget->class .= ( $arrField['multiple'] ? ' multiple' : '' );
+                $objWidget->class .= ($arrField['multiple']?' multiple':'');
 
-                if ( \Input::get( 'ctlg_autocomplete_query' ) && \Input::get('ctlg_fieldname') == $strFieldname  ) {
-
-                    $this->sendJsonResponse( $this->arrCatalogFields[ $strFieldname ], $this->id, \Input::get( 'ctlg_autocomplete_query' ) );
+                if (\Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $strFieldname) {
+                    $this->sendJsonResponse( $this->arrCatalogFields[$strFieldname], $this->id, \Input::get('ctlg_autocomplete_query'));
                 }
 
                 $objScriptLoader = new CatalogScriptLoader();
@@ -777,42 +767,28 @@ class FrontendEditing extends CatalogController {
     protected function setPalettes() {
 
         $this->arrPalettes = [
-
             'general_legend' => []
         ];
 
-        if ( !empty( $this->arrCatalogFields ) && is_array( $this->arrCatalogFields ) ) {
-
-            foreach ( $this->arrCatalogFields as $strFieldname => $arrField ) {
-
+        if ( !empty($this->arrCatalogFields) && is_array($this->arrCatalogFields)) {
+            foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
                 $strPalette = $arrField['_palette'];
-
-                if ( Toolkit::isEmpty( $strPalette ) ) continue;
-
-                if ( !is_array( $this->arrPalettes[ $strPalette ] ) ) {
-
-                    $this->arrPalettes[ $strPalette ] = [];
+                if (Toolkit::isEmpty($strPalette)) continue;
+                if (!isset($this->arrPalettes[$strPalette]) || !is_array($this->arrPalettes[$strPalette])) {
+                    $this->arrPalettes[$strPalette] = [];
                 }
 
-                $this->arrPalettes[ $strPalette ][] = $strFieldname;
+                $this->arrPalettes[$strPalette][] = $strFieldname;
             }
         }
 
-        if ( !in_array( 'invisible', $this->arrCatalog['operations'] ) ) {
-
-            unset( $this->arrPalettes['invisible_legend'] );
-        }
-
-        else {
-
-            $arrPalettes = array_keys( $this->arrPalettes );
-
-            if ( in_array( 'invisible_legend', $arrPalettes ) ) {
-
+        if (!in_array('invisible', $this->arrCatalog['operations'])) {
+            unset($this->arrPalettes['invisible_legend']);
+        } else {
+            $arrPalettes = array_keys($this->arrPalettes);
+            if (in_array('invisible_legend', $arrPalettes)) {
                 $arrInvisiblePalette = $this->arrPalettes['invisible_legend'];
-
-                unset( $this->arrPalettes['invisible_legend'] );
-
+                unset($this->arrPalettes['invisible_legend']);
                 $this->arrPalettes['invisible_legend'] = $arrInvisiblePalette;
             }
         }

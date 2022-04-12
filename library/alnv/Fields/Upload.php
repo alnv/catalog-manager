@@ -59,116 +59,65 @@ class Upload {
     }
 
 
-    public static function parseValue ( $varValue, $arrField, $arrCatalog = [] ) {
+    public static function parseValue ($varValue, $arrField, $arrCatalog=[]) {
 
-        $varValues = Toolkit::deserialize( $varValue );
-
-        switch ( $arrField['fileType'] ) {
-
+        $varValues = Toolkit::deserialize($varValue);
+        switch ($arrField['fileType']) {
             case 'image':
-
-                $varValue = $varValues[0];
-
-                return static::renderImage( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                $varValue = $varValues[0] ?? '';
+                return static::renderImage($varValue, $arrField, $arrCatalog);
             case 'gallery':
-
-                return static::renderGallery( $varValues, $arrField, $arrCatalog );
-
-                break;
-
+                return static::renderGallery($varValues, $arrField, $arrCatalog);
             case 'file':
-
-                $varValue = $varValues[0];
-
-                return static::renderFile( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                $varValue = $varValues[0] ?? '';
+                return static::renderFile($varValue, $arrField, $arrCatalog);
             case 'files':
-
-                return static::renderFiles( $varValues, $arrField, $arrCatalog );
-
-                break;
+                return static::renderFiles($varValues, $arrField, $arrCatalog);
         }
 
         return '';
     }
 
 
-    public static function parseThumbnails( $varValue, $arrField, $arrCatalog = [] ) {
+    public static function parseThumbnails($varValue, $arrField, $arrCatalog=[]) {
 
-        $varValues = Toolkit::deserialize( $varValue );
+        $varValues = Toolkit::deserialize($varValue);
 
-        switch ( $arrField['fileType'] ) {
-
+        switch ($arrField['fileType']) {
             case 'image':
-
-                $varValue = $varValues[0];
-
+                $varValue = $varValues[0] ?? '';
                 return static::renderThumbnail( $varValue, $arrField );
-
-                break;
-
             case 'gallery':
-
                 $strThumbnails = '';
-
-                if ( !empty( $varValues ) && is_array( $varValues ) ) {
-
+                if (!empty($varValues) && is_array($varValues)) {
                     $strThumbnails .= '<ul class="ctlg_thumbnails_preview">';
-
-                    foreach ( $varValues as $varValue ) {
-
-                        $strThumbnails .= '<li>' . static::renderThumbnail( $varValue, $arrField ) . '</li>';
+                    foreach ($varValues as $varValue) {
+                        $strThumbnails .= '<li>' . static::renderThumbnail($varValue, $arrField) . '</li>';
                     }
-
                     $strThumbnails .= '</ul>';
                 }
-
                 return $strThumbnails;
-
-                break;
-
             case 'file':
-
                 $varValue = $varValues[0];
-                $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
-
-                if ( is_array( $arrFile ) && !Toolkit::isEmpty( $arrFile['name'] ) ) {
-
+                $arrFile = static::createEnclosureArray($varValue, $arrField, $arrCatalog);
+                if (is_array( $arrFile) && isset($arrFile['name']) && !Toolkit::isEmpty($arrFile['name'])) {
                     return $arrFile['name'];
                 }
-
-                break;
-
+                return '';
             case 'files':
-
                 $strFiles = '';
-
-                if ( !empty( $varValues ) && is_array( $varValues ) ) {
-
+                if (!empty($varValues) && is_array($varValues)) {
                     $arrNames = [];
                     $strFiles .= '<ul class="ctlg_files_preview">';
-
-                    foreach ( $varValues as $varValue ) {
-
-                        $arrFile = static::createEnclosureArray( $varValue, $arrField, $arrCatalog );
-
-                        if ( is_array( $arrFile ) && !Toolkit::isEmpty( $arrFile['name'] ) ) {
-
+                    foreach ($varValues as $varValue) {
+                        $arrFile = static::createEnclosureArray($varValue, $arrField, $arrCatalog);
+                        if (is_array($arrFile) && !Toolkit::isEmpty($arrFile['name'])) {
                             $arrNames[] = '<li>' . $arrFile['name'] . '</li>';
                         }
                     }
-
-                    $strFiles .= implode( ', ' , $arrNames ) . '</ul>';
+                    $strFiles .= implode(', ' , $arrNames) . '</ul>';
                 }
-
                 return $strFiles;
-
-                break;
         }
 
         return '';
@@ -215,53 +164,47 @@ class Upload {
             $strOrderField = $arrCatalog[ $arrField['orderField'] ] ? $arrCatalog[ $arrField['orderField'] ] : '';
 
             $objGallery = new GalleryCreator( $varValue, [
-
                 'id' => $arrCatalog['id'],
-                'size' => $arrField['size'],
+                'size' => $arrField['size'] ?? '',
                 'galleryTpl' => $strTemplate,
                 'orderSRC' => $strOrderField,
-                'perRow' => $arrField['perRow'],
-                'sortBy' => $arrField['sortBy'],
-                'perPage' => $arrField['perPage'],
-                'fullsize' => $arrField['fullsize'],
-                'metaIgnore' => $arrField['metaIgnore'],
-                'numberOfItems' => $arrField['numberOfItems'],
-
-                'imageTemplate' => $arrField['imageTemplate'],
-                'useArrayFormat' => $arrField['useArrayFormat'],
-                'usePreviewImage' => $arrField['usePreviewImage'],
-                'previewImagePosition' => $arrField['previewImagePosition'],
+                'perRow' => $arrField['perRow'] ?? '',
+                'sortBy' => $arrField['sortBy'] ?? '',
+                'perPage' => $arrField['perPage'] ?? '',
+                'fullsize' => $arrField['fullsize'] ?? '',
+                'metaIgnore' => $arrField['metaIgnore'] ?? '',
+                'numberOfItems' => $arrField['numberOfItems'] ?? '',
+                'imageTemplate' => $arrField['imageTemplate'] ?? '',
+                'useArrayFormat' => $arrField['useArrayFormat'] ?? '',
+                'usePreviewImage' => $arrField['usePreviewImage'] ?? '',
+                'previewImagePosition' => $arrField['previewImagePosition'] ?? '',
             ]);
 
             return [
-
                 'gallery' => $objGallery->render(),
                 'preview' => $arrField['usePreviewImage'] ? $objGallery->getPreviewImage() : '',
             ];
         }
 
         return [
-
             'preview' => '',
             'gallery' => $arrField['useArrayFormat'] ? [] : ''
         ];
     }
     
 
-    public static function renderFiles( $varValue, $arrField, $arrCatalog ) {
+    public static function renderFiles($varValue, $arrField, $arrCatalog) {
 
-        if ( !empty( $varValue ) && is_array( $varValue ) ) {
+        if (!empty($varValue) && is_array($varValue)) {
 
-            $strTemplate = $arrField['filesTemplate'] ? $arrField['filesTemplate'] : 'ce_downloads';
-            $strOrderField = $arrCatalog[ $arrField['orderField'] ] ? $arrCatalog[ $arrField['orderField'] ] : '';
-
-            $objDownloads = new DownloadsCreator( $varValue, [
-
+            $strTemplate = $arrField['filesTemplate'] ?: 'ce_downloads';
+            $strOrderField = $arrCatalog[$arrField['orderField']] ? : '';
+            $objDownloads = new DownloadsCreator($varValue, [
                 'orderSRC' => $strOrderField,
                 'downloadsTpl' => $strTemplate,
-                'sortBy' => $arrField['sortBy'],
-                'metaIgnore' => $arrField['metaIgnore'],
-                'useArrayFormat' => $arrField['useArrayFormat'],
+                'sortBy' => $arrField['sortBy'] ?? '',
+                'metaIgnore' => $arrField['metaIgnore'] ?? '',
+                'useArrayFormat' => $arrField['useArrayFormat'] ?? '',
             ]);
 
             return $objDownloads->render();
@@ -306,16 +249,15 @@ class Upload {
         $objModel = static::getImagePath( $varValue, true );
 
         return [
-
             'model' => $objModel,
             'overwriteMeta' => false,
             'size' => $arrField['size'],
             'fullsize' => $arrField['fullsize'],
-            'alt' => $arrCatalog[ $arrField['imageAlt'] ],
-            'href' => $arrCatalog[ $arrField['imageURL'] ],
+            'alt' => $arrCatalog[$arrField['imageAlt']] ?? '',
+            'href' => $arrCatalog[$arrField['imageURL']] ?? '',
             'singleSRC' => $objModel ? $objModel->path : '',
-            'title' => $arrCatalog[ $arrField['imageTitle'] ],
-            'caption' => $arrCatalog[ $arrField['imageCaption'] ]
+            'title' => $arrCatalog[$arrField['imageTitle']] ?? '',
+            'caption' => $arrCatalog[$arrField['imageCaption']] ?? ''
         ];
     }
 

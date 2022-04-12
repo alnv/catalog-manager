@@ -50,17 +50,15 @@ class Checkbox {
     }
 
 
-    protected static function getOptionsFromCache( $strFieldname, $arrField ) {
+    protected static function getOptionsFromCache($strFieldname, $arrField) {
 
-        if ( !static::$arrCache[ $strFieldname ]  ) {
-
-            static::$arrCache[ $strFieldname ] = [];
+        if (!isset(static::$arrCache[$strFieldname]) || !static::$arrCache[$strFieldname]) {
+            static::$arrCache[$strFieldname] = [];
         }
 
-        if ( empty( static::$arrCache[ $strFieldname ] ) && is_array( static::$arrCache[ $strFieldname ] ) ) {
-
-            $objOptionGetter = new OptionsGetter( $arrField );
-            static::$arrCache[ $strFieldname ] = $objOptionGetter->getOptions();
+        if (empty(static::$arrCache[$strFieldname]) || !is_array(static::$arrCache[$strFieldname])) {
+            $objOptionGetter = new OptionsGetter($arrField);
+            static::$arrCache[$strFieldname] = $objOptionGetter->getOptions();
         }
     }
 

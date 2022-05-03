@@ -1155,78 +1155,36 @@ class CatalogView extends CatalogController {
         if (Toolkit::isEmpty($strType)) return $varValue;
         if ($this->isFastMode($strType, $strFieldname)) return '';
 
-        // Overwrite image size (see #324)
-        if ( !empty( $this->arrOptions['imgSize'] ) ) $arrField['size'] = $this->arrOptions['imgSize'];
+        $arrImgSize = \StringUtil::deserialize($this->arrOptions['imgSize']);
+        if (!empty(array_filter($arrImgSize))) $arrField['size'] = $this->arrOptions['imgSize'];
 
-        switch ( $strType ) {
-
+        switch ($strType) {
             case 'upload':
-
-                if ( is_null( $varValue ) ) return $arrField['useArrayFormat'] ? [] : '';
-
-                $varValue = Upload::parseValue( $varValue, $arrField, $arrCatalog );
-
-                if ( is_array( $varValue ) && $arrField['fileType'] == 'gallery' ) {
-
-                    if ( $varValue['preview'] ) {
-
-                        $arrCatalog[ $strFieldname . 'Preview' ] = $varValue['preview'];
+                if (is_null($varValue)) return $arrField['useArrayFormat'] ? [] : '';
+                $varValue = Upload::parseValue($varValue, $arrField, $arrCatalog);
+                if (is_array($varValue) && $arrField['fileType'] == 'gallery') {
+                    if ($varValue['preview']) {
+                        $arrCatalog[$strFieldname . 'Preview'] = $varValue['preview'];
                     }
-
                     return $varValue['gallery'];
                 }
-
                 return $varValue;
-
-                break;
-
             case 'select':
-
-                return Select::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Select::parseValue($varValue, $arrField, $arrCatalog);
             case 'checkbox':
-
-                return Checkbox::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Checkbox::parseValue($varValue, $arrField, $arrCatalog);
             case 'radio':
-
-                return Radio::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Radio::parseValue($varValue, $arrField, $arrCatalog);
             case 'text':
-
-                return Text::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Text::parseValue($varValue, $arrField, $arrCatalog);
             case 'date':
-
-                return DateInput::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return DateInput::parseValue($varValue, $arrField, $arrCatalog);
             case 'number':
-
-                return Number::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Number::parseValue($varValue, $arrField, $arrCatalog);
             case 'textarea':
-
-                return Textarea::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
-
+                return Textarea::parseValue($varValue, $arrField, $arrCatalog);
             case 'dbColumn':
-
-                return DbColumn::parseValue( $varValue, $arrField, $arrCatalog );
-
-                break;
+                return DbColumn::parseValue($varValue, $arrField, $arrCatalog);
         }
 
         return $varValue;

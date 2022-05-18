@@ -140,8 +140,6 @@ class CatalogDcExtractor extends CatalogController {
 
                 return $arrReturn;
 
-                break;
-
             case '1':
 
                 if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
@@ -161,8 +159,6 @@ class CatalogDcExtractor extends CatalogController {
 
                 return $arrReturn;
 
-                break;
-
             case '2':
 
                 $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $arrCatalog['panelLayout'] );
@@ -179,13 +175,9 @@ class CatalogDcExtractor extends CatalogController {
 
                 return $arrReturn;
 
-                break;
-
             case '3':
 
                 return $arrReturn;
-
-                break;
 
             case '4':
 
@@ -293,32 +285,28 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function extractDCASorting( $arrSorting ) {
+    protected function extractDCASorting($arrSorting) {
 
         $arrTemps = [];
         $arrOrderBy = [];
-        $intFlag = Toolkit::isEmpty( $arrSorting['flag'] ) ? 1 : (int) $arrSorting['flag'];
-        $arrFields = !empty( $arrSorting['fields'] ) && is_array( $arrSorting['fields'] ) ? $arrSorting['fields'] : [];
+        $intFlag = (isset($arrSorting['flag']) && $arrSorting['flag']) ?  (int) $arrSorting['flag'] : 1;
+        $arrFields = !empty($arrSorting['fields']) && is_array($arrSorting['fields']) ? $arrSorting['fields'] : [];
         $strOrder = $intFlag % 2 ? 'ASC' : 'DESC';
 
-        foreach ( $arrFields as $strField ) {
+        foreach ($arrFields as $strField) {
 
-            if ( in_array( $strField, $arrTemps ) ) {
-
+            if (in_array( $strField, $arrTemps)) {
                 continue;
             }
 
             else {
-
                 $arrTemps[] = $strField;
             }
 
-            $strUpperCaseField = strtoupper( $strField );
+            $strUpperCaseField = strtoupper($strField);
 
-            if ( stripos( $strUpperCaseField, 'ASC' ) || stripos( $strUpperCaseField, 'DESC' ) ) {
-
+            if (stripos($strUpperCaseField, 'ASC') || stripos( $strUpperCaseField, 'DESC')) {
                 $arrOrderBy[] = $strField;
-
                 continue;
             }
 
@@ -471,17 +459,22 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    protected function convertCatalogToDcConfig( $arrReturn, $arrCatalog, $strDcConfigType ) {
+    protected function convertCatalogToDcConfig($arrReturn, $arrCatalog, $strDcConfigType) {
 
-        if ( !is_array( $arrReturn[ $strDcConfigType ] ) ) $arrReturn[ $strDcConfigType ] = [];
+        if (!isset($arrReturn[$strDcConfigType])) {
+            $arrReturn[$strDcConfigType] = [];
+        }
+
+        if (!is_array($arrReturn[$strDcConfigType])) {
+            $arrReturn[$strDcConfigType] = [];
+        }
 
         $arrConfigDc = [
-
             '_tables' => [],
-            'ptable' => $arrReturn[$strDcConfigType]['ptable']??'',
             'enableVersioning' => (bool) $arrCatalog['useVC'],
-            'ctable' => $arrReturn[$strDcConfigType]['ctable']??[],
-            'onsubmit_callback' => is_array( $arrReturn[ $strDcConfigType ]['onsubmit_callback'] ) ? $arrReturn[ $strDcConfigType ]['onsubmit_callback'] : []
+            'ptable' => $arrReturn[$strDcConfigType]['ptable'],
+            'ctable' => $arrReturn[$strDcConfigType]['ctable'],
+            'onsubmit_callback' => is_array($arrReturn[$strDcConfigType]['onsubmit_callback']) ? $arrReturn[$strDcConfigType]['onsubmit_callback'] : []
         ];
 
         if ( !Toolkit::isEmpty( $arrCatalog['pTable'] ) ) {

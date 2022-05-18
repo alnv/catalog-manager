@@ -56,23 +56,22 @@ class CatalogManagerInitializer {
 
         $objDatabase = \Database::getInstance();
 
-        if ( !$objDatabase->tableExists( 'tl_catalog' ) ) return null;
+        if (!$objDatabase->tableExists('tl_catalog')) return null;
 
-        $objCatalog = $objDatabase->prepare( 'SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC' )->execute();
-
-        if ( $objCatalog->numRows ) {
-
-            while ( $objCatalog->next() ) {
-
-                $arrCatalog = Toolkit::parseCatalog( $objCatalog->row() );
-                $strType = Toolkit::isCoreTable( $objCatalog->tablename ) ? 'arrCoreTables' : 'arrCatalogs';
-
-                $this->{$strType}[ $objCatalog->tablename ] = $arrCatalog;
-                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $objCatalog->tablename ] = $arrCatalog;
+        $objCatalog = $objDatabase->prepare('SELECT * FROM tl_catalog ORDER BY `pTable` DESC, `tablename` ASC')->execute();
+        if ($objCatalog->numRows) {
+            while ($objCatalog->next()) {
+                if (!$objCatalog->tablename) {
+                    continue;
+                }
+                $arrCatalog = Toolkit::parseCatalog($objCatalog->row());
+                $strType = Toolkit::isCoreTable($objCatalog->tablename) ? 'arrCoreTables' : 'arrCatalogs';
+                $this->{$strType}[$objCatalog->tablename] = $arrCatalog;
+                $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$objCatalog->tablename] = $arrCatalog;
             }
         }
 
-        $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = array_keys( $this->arrCoreTables );
+        $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = array_keys($this->arrCoreTables);
     }
 
 

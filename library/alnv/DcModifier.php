@@ -8,35 +8,34 @@ class DcModifier extends CatalogController {
     protected $arrPalettes = [];
     protected $strTablename = '';
 
-
     public function __construct() {
 
         parent::__construct();
 
-        $this->import( 'I18nCatalogTranslator' );
+        $this->import('I18nCatalogTranslator');
     }
 
+    public function initialize($strTablename) {
 
-    public function initialize( $strTablename ) {
+        if (!$strTablename) {
+            return null;
+        }
 
         $this->strTablename = $strTablename;
         $this->I18nCatalogTranslator->initialize();
-        \Controller::loadLanguageFile( $this->strTablename );
-        \Controller::loadDataContainer( $this->strTablename );
+        \Controller::loadLanguageFile($this->strTablename);
+        \Controller::loadDataContainer($this->strTablename);
 
         $this->I18nCatalogTranslator->initialize();
 
-        if ( !empty( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) && is_array( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ){
-
-            $this->arrFields = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['fields'] ) ?: [];
+        if (!empty($GLOBALS['TL_DCA'][$this->strTablename]['fields']) && is_array($GLOBALS['TL_DCA'][$this->strTablename]['fields'])){
+            $this->arrFields = array_keys($GLOBALS['TL_DCA'][$this->strTablename]['fields']) ?: [];
         }
 
-        if ( !empty( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) && is_array( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ) {
-
-            $this->arrPalettes = array_keys( $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'] ) ?: [];
+        if (!empty($GLOBALS['TL_DCA'][$this->strTablename]['palettes']) && is_array($GLOBALS['TL_DCA'][$this->strTablename]['palettes'])) {
+            $this->arrPalettes = array_keys($GLOBALS['TL_DCA'][$this->strTablename]['palettes']) ?: [];
         }
     }
-
 
     public function getPalettes() {
 
@@ -55,26 +54,20 @@ class DcModifier extends CatalogController {
         return $arrReturn;
     }
 
-
-    public function getFields( $strName ) {
+    public function getFields($strName) {
 
         $arrReturn = [];
 
-        if ( !$strName ) return $arrReturn;
+        if (!$strName) return $arrReturn;
 
-        $strPalette = $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'][ $strName ];
-        $arrFields = preg_split( '/(,|;)/', $strPalette );
+        $strPalette = $GLOBALS['TL_DCA'][$this->strTablename]['palettes'][$strName];
+        $arrFields = preg_split('/(,|;)/', $strPalette);
 
         if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
-
             foreach ( $arrFields as $strField ) {
-
                 if ( in_array( $strField, $this->arrFields ) ) {
-
                     $strLabel = $this->I18nCatalogTranslator->get( 'field', $strField, [ 'table' => $this->strTablename, 'title' => $strField, 'titleOnly' => true ] );
-
                     if ( is_array( $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ] ) ) $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ][0] ?: $strLabel;
-                    
                     $arrReturn[ $strField ] = $strLabel;
                 }
             }
@@ -82,7 +75,6 @@ class DcModifier extends CatalogController {
 
         return $arrReturn;
     }
-
 
     public function getLegends( $strName ) {
 
@@ -113,7 +105,7 @@ class DcModifier extends CatalogController {
                        $arrLegendName = explode( ':' , $strLegendName );
                        $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrLegendName[0] ];
                        
-                       $arrReturn[ $strLegendName ] = $strLabel ? $strLabel : $arrLegendName[0];
+                       $arrReturn[ $strLegendName ] = $strLabel ?: $arrLegendName[0];
                    }
                 }
             }
@@ -121,7 +113,6 @@ class DcModifier extends CatalogController {
 
         return $arrReturn;
     }
-
 
     public function addFieldToPalette( $arrField, $arrPickedPalettes, &$arrPalettes = [] ) {
 
@@ -156,7 +147,6 @@ class DcModifier extends CatalogController {
 
         return $arrPalettes;
     }
-
 
     public function addLegendToPalette( $arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart ) {
 
@@ -199,7 +189,6 @@ class DcModifier extends CatalogController {
         }
 
     }
-
 
     protected function isLegend( $strValue, $blnReturnMatch = false ) {
 

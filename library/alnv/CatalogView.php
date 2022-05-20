@@ -1151,7 +1151,7 @@ class CatalogView extends CatalogController {
         if ($this->isFastMode($strType, $strFieldname)) return '';
 
         $arrImgSize = \StringUtil::deserialize($this->arrOptions['imgSize']);
-        if (!empty(array_filter($arrImgSize))) $arrField['size'] = $this->arrOptions['imgSize'];
+        if (is_array($arrImgSize) && !empty(array_filter($arrImgSize))) $arrField['size'] = $this->arrOptions['imgSize'];
 
         switch ($strType) {
             case 'upload':

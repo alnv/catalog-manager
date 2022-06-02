@@ -1191,9 +1191,11 @@ class FrontendEditing extends CatalogController {
                 if (is_null($arrField)) continue;
 
                 if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
-
-                    $objDate = new \Date($varValue);
-                    $varValue = $objDate->timestamp;
+                    $varValue = $varValue ? (new \Date($varValue))->tstamp : 0;
+                    if ($varValue === 0) {
+                        unset($this->arrValues[$strFieldname]);
+                        continue;
+                    }
                 }
 
                 if (strpos($arrField['sql'], 'int') !== false && is_string($varValue)) {

@@ -49,11 +49,10 @@ class I18nCatalogTranslator {
                 }
 
                 else {
-
                     $arrLabels = $GLOBALS['TL_LANG']['catalog_manager']['fields'][ $strName ]??'';
                 }
 
-                if ( !is_array( $arrLabels ) || empty( $arrLabels ) ) {
+                if (!is_array($arrLabels) || empty($arrLabels)) {
 
                     $strTitle = $arrOptions['title'] ?: '';
                     $strDescription = $arrOptions['description'] ?: '';
@@ -87,13 +86,11 @@ class I18nCatalogTranslator {
 
                 $strLegend = $GLOBALS['TL_LANG']['catalog_manager']['legends'][$strName]??'';
 
-                if ( Toolkit::isEmpty( $strLegend ) ) {
-
+                if (Toolkit::isEmpty( $strLegend)) {
                     $strLegend = $arrOptions['title'] ?: '';
                 }
 
-                if ( Toolkit::isEmpty( $strLegend ) ) {
-
+                if (Toolkit::isEmpty($strLegend)) {
                     $strLegend = $strName;
                 }
 
@@ -101,15 +98,17 @@ class I18nCatalogTranslator {
 
             case 'nav':
 
-                $strLabel = $GLOBALS['TL_LANG']['MOD'][ $strName ];
+                if (!isset($GLOBALS['TL_LANG']['MOD'])) {
+                    return $strName;
+                }
 
-                if ( Toolkit::isEmpty( $strLabel ) ) {
+                $strLabel = $GLOBALS['TL_LANG']['MOD'][$strName];
 
+                if (Toolkit::isEmpty($strLabel)) {
                     $strLabel = $arrOptions['title'] ?: '';
                 }
 
-                if ( Toolkit::isEmpty( $strLabel ) ) {
-
+                if (Toolkit::isEmpty($strLabel)) {
                     $strLabel = $strName;
                 }
 

@@ -78,21 +78,19 @@ class GalleryCreator extends \Frontend {
                 }
 
                 if ( $arrMeta['title'] == '' ) {
-
-                    $arrMeta['title'] = specialchars( $objFile->basename );
+                    $arrMeta['title'] = \StringUtil::specialchars($objFile->basename);
                 }
 
                 $arrImages[ $this->objFiles->path ] = [
-
                     'id' => $this->objFiles->id,
                     'uuid' => $this->objFiles->uuid,
                     'name' => $this->objFiles->basename,
                     'singleSRC' => $this->objFiles->path,
-                    'alt' => $arrMeta['alt'],
-                    'title'  => $arrMeta['title'],
-                    'imageUrl' => $arrMeta['link'],
-                    'linkTitle' => $arrMeta['title'],
-                    'caption' => $arrMeta['caption']
+                    'alt' => $arrMeta['alt'] ?? '',
+                    'title'  => $arrMeta['title'] ?? '',
+                    'imageUrl' => $arrMeta['link'] ?? '',
+                    'linkTitle' => $arrMeta['title'] ?? '',
+                    'caption' => $arrMeta['caption'] ?? ''
                 ];
 
                 if ( version_compare(VERSION, '4.4', '>=' ) ) {

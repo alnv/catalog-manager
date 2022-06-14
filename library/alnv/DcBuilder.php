@@ -223,10 +223,12 @@ class DcBuilder extends CatalogController {
     protected function getLabelDc() {
 
         $arrReturn = $this->CatalogDcExtractor->setDcLabelByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
-            'fields' => [ 'title' ]
+            'fields' => ['title'],
         ]);
 
-        if ( $this->arrCatalog['mode'] == '5' ) {
+        $arrReturn['format'] = '';
+
+        if ($this->arrCatalog['mode'] == '5') {
 
             $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) use ( $arrReturn ) {
 
@@ -236,9 +238,7 @@ class DcBuilder extends CatalogController {
                 if ( $this->arrCatalog['useOwnLabelFormat'] ) {
 
                     $strTemplate .= !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
-                }
-
-                else {
+                } else {
 
                     if ( !$arrRow['pid'] ) $strTemplate .= ' <strong>' . $strLabel . '</strong>';
 
@@ -260,7 +260,7 @@ class DcBuilder extends CatalogController {
 
         if (in_array($this->arrCatalog['mode'], [ '1', '2' ]) && in_array('cut', $this->arrCatalog['operations']) && in_array( 'sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['format'] = '%s';
-            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ( $arrReturn ) {
+            $arrReturn['label_callback'] = function ( $arrRow, $strLabel ) use ($arrReturn) {
                 $objDcCallbacks = new DcCallbacks();
                 return $objDcCallbacks->labelCallback($this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn);
             };
@@ -283,8 +283,7 @@ class DcBuilder extends CatalogController {
                     }
                     $arrView[$strField] = $arrRow[$strField];
                 }
-                $arrView = Toolkit::parseCatalogValues($arrView, $this->arrFields, true);
-                return $arrView;
+                return Toolkit::parseCatalogValues($arrView, $this->arrFields, true);
             };
         }
 

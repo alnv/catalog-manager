@@ -84,7 +84,7 @@ class I18nCatalogTranslator {
 
             case 'legend':
 
-                $strLegend = $GLOBALS['TL_LANG']['catalog_manager']['legends'][$strName]??'';
+                $strLegend = $GLOBALS['TL_LANG']['catalog_manager']['legends'][$strName] ?? '';
 
                 if (Toolkit::isEmpty( $strLegend)) {
                     $strLegend = $arrOptions['title'] ?: '';
@@ -98,11 +98,15 @@ class I18nCatalogTranslator {
 
             case 'nav':
 
+                if (!isset($GLOBALS['TL_LANG'])) {
+                    return $strName;
+                }
+
                 if (!isset($GLOBALS['TL_LANG']['MOD'])) {
                     return $strName;
                 }
 
-                $strLabel = $GLOBALS['TL_LANG']['MOD'][$strName];
+                $strLabel = $GLOBALS['TL_LANG']['MOD'][$strName] ?? '';
 
                 if (Toolkit::isEmpty($strLabel)) {
                     $strLabel = $arrOptions['title'] ?: '';

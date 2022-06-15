@@ -226,7 +226,9 @@ class DcBuilder extends CatalogController {
             'fields' => ['title'],
         ]);
 
-        $arrReturn['format'] = '';
+        if (!isset($arrReturn['format']) || !$arrReturn['format']) {
+            $arrReturn['format'] = '';
+        }
 
         if ($this->arrCatalog['mode'] == '5') {
 

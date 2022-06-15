@@ -46,25 +46,25 @@ class Select {
 
         if ( !$varValue ) return $arrField['multiple'] ? [] : '';
 
-        static::getOptionsFromCache( $arrField['fieldname'], $arrField );
+        static::getOptionsFromCache($arrField['fieldname'], $arrField);
 
-        if ( $arrField['multiple'] ) {
+        if ($arrField['multiple']) {
 
             $arrReturn = [];
-            $varValue = Toolkit::parseMultipleOptions( $varValue );
+            $varValue = Toolkit::parseMultipleOptions($varValue);
 
-            if ( !empty( $varValue ) && is_array( $varValue ) ) {
+            if ( !empty($varValue) && is_array($varValue)) {
 
-                foreach ( $varValue as $strValue ) {
+                foreach ($varValue as $strValue) {
 
-                    $arrReturn[ $strValue ] = static::$arrCache[ $arrField['fieldname'] ][ $strValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $strValue ] : $strValue;
+                    $arrReturn[$strValue] = static::$arrCache[$arrField['fieldname']][$strValue] ?: $strValue; // todo
                 }
             }
 
             return $arrReturn;
         }
         
-        return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $varValue ] : $varValue;
+        return static::$arrCache[$arrField['fieldname']][$varValue] ?: $varValue;
     }
 
     

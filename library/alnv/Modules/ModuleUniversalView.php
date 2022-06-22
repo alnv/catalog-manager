@@ -84,7 +84,7 @@ class ModuleUniversalView extends \Module {
 
     protected function compile() {
 
-        switch ( $this->strAct  ) {
+        switch ($this->strAct) {
 
             case 'create':
             case 'copy':
@@ -279,12 +279,12 @@ class ModuleUniversalView extends \Module {
 
         $this->import( 'FrontendEditing' );
 
-        // $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(\StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : [];
-        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
+        $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(\StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : []; // out
+        $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ?: 'form_catalog_default';
         $this->FrontendEditing->strItemID = \Input::get( 'id' . $this->id );
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strAct = $this->strAct;
-        $this->FrontendEditing->arrQueries = []; //empty($arrQueries) ? [] : $arrQueries; todo
+        $this->FrontendEditing->arrQueries = empty($arrQueries) ? [] : $arrQueries; // []
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();

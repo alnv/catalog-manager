@@ -896,6 +896,11 @@ class FrontendEditing extends CatalogController {
                 $this->arrValues[ $strFieldname ] = \Input::post( $strFieldname ) !== null ? \Input::post( $strFieldname ) : $varValue;
             }
         }
+
+        if (($this->strAct == 'edit' || $this->strAct == 'copy') && empty($this->arrValues)) { // new
+            $objCatalogException = new CatalogException();
+            $objCatalogException->set404();
+        }
     }
 
 

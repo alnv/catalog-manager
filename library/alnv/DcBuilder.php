@@ -226,13 +226,14 @@ class DcBuilder extends CatalogController {
             'fields' => ['title'],
         ]);
 
-        if (!isset($arrReturn['format']) || !$arrReturn['format']) {
+        // contao 4.13 bugfix
+        if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll') {
             $arrReturn['format'] = '';
         }
 
         if ($this->arrCatalog['mode'] == '5') {
 
-            $arrReturn['label_callback'] = function( $arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) use ( $arrReturn ) {
+            $arrReturn['label_callback'] = function($arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false ) use ( $arrReturn ) {
 
                 $objDcCallbacks = new DcCallbacks();
                 $strTemplate = $this->IconGetter->setTreeViewIcon( $this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected );

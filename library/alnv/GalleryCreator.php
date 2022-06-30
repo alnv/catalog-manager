@@ -77,7 +77,7 @@ class GalleryCreator extends \Frontend {
                     }
                 }
 
-                if ( $arrMeta['title'] == '' ) {
+                if (!isset($arrMeta['title']) || $arrMeta['title'] == '') {
                     $arrMeta['title'] = \StringUtil::specialchars($objFile->basename);
                 }
 
@@ -93,8 +93,7 @@ class GalleryCreator extends \Frontend {
                     'caption' => $arrMeta['caption'] ?? ''
                 ];
 
-                if ( version_compare(VERSION, '4.4', '>=' ) ) {
-
+                if (version_compare(VERSION, '4.4', '>=')) {
                     $arrImages[ $this->objFiles->path ]['filesModel'] = $this->objFiles->current();
                 }
 

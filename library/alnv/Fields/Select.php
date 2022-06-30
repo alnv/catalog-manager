@@ -10,11 +10,11 @@ class Select {
 
     public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
 
-        $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue( $arrField['chosen'] );
-        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
-        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue( $arrField['multiple'] );
-        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
-        $arrDCAField['eval']['includeBlankOption'] =  Toolkit::getBooleanByValue( $arrField['includeBlankOption'] );
+        $arrDCAField['eval']['chosen'] =  Toolkit::getBooleanByValue($arrField['chosen'] ?? '');
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue($arrField['disabled'] ?? '');
+        $arrDCAField['eval']['multiple'] =  Toolkit::getBooleanByValue($arrField['multiple'] ?? '');
+        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue($arrField['submitOnChange'] ?? '');
+        $arrDCAField['eval']['includeBlankOption'] =  Toolkit::getBooleanByValue($arrField['includeBlankOption'] ?? '');
 
         if ( $arrField['blankOptionLabel'] && is_string( $arrField['blankOptionLabel'] ) ) {
 
@@ -23,11 +23,11 @@ class Select {
 
         $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
 
-        if ( $blnActive ) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
+        if ($blnActive) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
 
-        if ( $arrDCAField['eval']['multiple'] )  $arrDCAField['eval']['csv'] = ',';
+        if ($arrDCAField['eval']['multiple'] )  $arrDCAField['eval']['csv'] = ',';
 
-        if ( $arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple'] ) {
+        if ($arrField['addRelationWizard'] && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] ) && !$arrDCAField['eval']['multiple']) {
 
             if ( $arrField['dbTable'] && $arrField['dbTableKey'] == 'id' ) {
                 
@@ -44,7 +44,8 @@ class Select {
 
     public static function parseValue( $varValue, $arrField, $arrCatalog ) {
 
-        if ( !$varValue ) return $arrField['multiple'] ? [] : '';
+        if (!$varValue) return $arrField['multiple'] ? [] : '';
+
 
         static::getOptionsFromCache($arrField['fieldname'], $arrField);
 
@@ -57,14 +58,18 @@ class Select {
 
                 foreach ($varValue as $strValue) {
 
-                    $arrReturn[$strValue] = static::$arrCache[$arrField['fieldname']][$strValue] ?: $strValue; // todo
+                    $arrSet = static::$arrCache[$arrField['fieldname']] ?? [];
+
+                    $arrReturn[$strValue] = $arrSet[$strValue] ?? $strValue;
                 }
             }
 
             return $arrReturn;
         }
-        
-        return static::$arrCache[$arrField['fieldname']][$varValue] ?: $varValue;
+
+        $arrSet = static::$arrCache[$arrField['fieldname']] ?? [];
+
+        return $arrSet[$varValue] ?? $varValue;
     }
 
     

@@ -312,17 +312,17 @@ class tl_module extends \Backend {
         }
 
         $objCatalogFieldBuilder = new CatalogFieldBuilder();
-        $objCatalogFieldBuilder->initialize( $strTablename );
-        $arrFields = $objCatalogFieldBuilder->getCatalogFields( true, null );
+        $objCatalogFieldBuilder->initialize($strTablename);
+        $arrFields = $objCatalogFieldBuilder->getCatalogFields(true, null);
 
-        foreach ( $arrFields as $strFieldname => $arrField ) {
+        foreach ($arrFields as $strFieldname => $arrField) {
 
-            if ( !$this->Database->fieldExists( $strFieldname, $strTablename ) ) continue;
-            if ( in_array( $arrField['type'], Toolkit::excludeFromDc() ) ) continue;
-            if ( $arrField['type'] == 'textarea' && $arrField['rte'] ) continue;
-            if ( in_array( $arrField['type'], $arrForbiddenTypes ) ) continue;
+            if (!$this->Database->fieldExists($strFieldname, $strTablename)) continue;
+            if (in_array($arrField['type'], Toolkit::excludeFromDc())) continue;
+            // if ( $arrField['type'] == 'textarea' && $arrField['rte'] ) continue;
+            if (in_array($arrField['type'], $arrForbiddenTypes)) continue;
 
-            $arrReturn[ $strFieldname ] = $arrField['_dcFormat'];
+            $arrReturn[$strFieldname] = $arrField['_dcFormat'];
         }
 
         return $arrReturn;

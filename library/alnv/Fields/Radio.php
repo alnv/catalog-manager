@@ -35,7 +35,7 @@ class Radio {
 
         if ( !empty( static::$arrCache[ $arrField['fieldname'] ] ) && is_array( static::$arrCache[ $arrField['fieldname'] ] ) ) {
 
-            return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ? static::$arrCache[ $arrField['fieldname'] ][ $varValue ] : $varValue;
+            return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ?: $varValue;
         }
 
         return $varValue;

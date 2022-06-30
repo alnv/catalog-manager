@@ -917,15 +917,15 @@ class CatalogView extends CatalogController {
             return false;
         }
 
-        if (!is_array($this->arrCatalog['operations'])) {
-            return false;
-        }
-
-        if (!in_array('invisible', $this->arrCatalog['operations'])) {
+        if (is_array($this->arrCatalog['operations']) && !in_array('invisible', $this->arrCatalog['operations'])) {
             return false;
         }
 
         if (\BackendUser::getInstance()->id && \Input::get('preview') == '1') {
+            return false;
+        }
+
+        if (BE_USER_LOGGED_IN) {
             return false;
         }
 

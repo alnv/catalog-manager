@@ -473,7 +473,7 @@ class CatalogDcExtractor extends CatalogController {
             '_tables' => [],
             'enableVersioning' => (bool) $arrCatalog['useVC'] ?? '',
             'ptable' => $arrReturn[$strDcConfigType]['ptable'] ?? '',
-            'ctable' => $arrReturn[$strDcConfigType]['ctable'] ?? '',
+            'ctable' => $arrReturn[$strDcConfigType]['ctable'] ?? [],
             'onsubmit_callback' => is_array($arrReturn[$strDcConfigType]['onsubmit_callback']) ? $arrReturn[$strDcConfigType]['onsubmit_callback'] : []
         ];
 

@@ -158,7 +158,7 @@ class OptionsGetter extends CatalogController {
                 $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title'=>$strLabel,'table'=>$strTable]);
             }
 
-            $arrOptions[ $strValue ] = $strTitle;
+            $arrOptions[$strValue] = \StringUtil::decodeEntities($strTitle);
         }
 
         return $arrOptions;
@@ -443,7 +443,7 @@ class OptionsGetter extends CatalogController {
 
         if ( $this->arrField['options'] ) {
 
-            $arrFieldOptions = deserialize( $this->arrField['options'] );
+            $arrFieldOptions = \StringUtil::deserialize( $this->arrField['options'] );
 
             if ( !empty( $arrFieldOptions ) && is_array( $arrFieldOptions ) ) {
 
@@ -460,7 +460,7 @@ class OptionsGetter extends CatalogController {
 
     protected function setForeignKey() {
 
-        $strLabelColumn = $this->arrField['dbTableValue'] ? $this->arrField['dbTableValue'] : $this->arrField['dbTableKey'];
+        $strLabelColumn = $this->arrField['dbTableValue'] ?: $this->arrField['dbTableKey'];
 
         if ( !$this->arrField['dbTable'] || !$strLabelColumn ) {
 

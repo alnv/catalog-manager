@@ -484,12 +484,9 @@ class CatalogDcExtractor extends CatalogController {
             if ( $arrCatalog['pTable'] !== $arrConfigDc['ptable'] ) $arrConfigDc['_tables'][] = $arrCatalog['pTable'];
         }
 
-        if ( is_array( $arrCatalog['cTables'] ) && !empty( $arrCatalog['cTables'] ) ) {
-
-            foreach ( $arrCatalog['cTables'] as $strTable ) {
-
-                if ( !in_array( $strTable, $arrConfigDc['ctable'] ) ) {
-
+        if (is_array($arrCatalog['cTables']) && !empty($arrCatalog['cTables'])) {
+            foreach ($arrCatalog['cTables'] as $strTable) {
+                if (is_array($arrConfigDc['ctable']) && !in_array($strTable, $arrConfigDc['ctable'])) {
                     $arrConfigDc['ctable'][] = $strTable;
                     $arrConfigDc['_tables'][] = $strTable;
                 }

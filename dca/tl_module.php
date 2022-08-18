@@ -1341,17 +1341,14 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapMarker'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapStyle'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogMapStyle'],
     'inputType' => 'textarea',
-
     'eval' => [
-
         'tl_class' => 'clr',
         'rte' => 'ace|html',
-        'allowHtml' => true
+        'allowHtml' => true,
+        'decodeEntities' => true
     ],
-
     'exclude' => true,
     'sql' => "text NULL"
 ];

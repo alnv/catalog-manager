@@ -121,7 +121,7 @@ class CatalogView extends CatalogController {
                 'lng' => $this->catalogMapLng,
                 'mapZoom' => $this->catalogMapZoom,
                 'mapType' => $this->catalogMapType,
-                'mapStyle' => $this->catalogMapStyle,
+                'mapStyle' => \StringUtil::decodeEntities($this->catalogMapStyle),
                 'mapMarker' => $this->catalogMapMarker,
                 'addMapInfoBox' => $this->catalogAddMapInfoBox,
                 'mapScrollWheel' => $this->catalogMapScrollWheel

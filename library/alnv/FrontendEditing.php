@@ -1044,14 +1044,13 @@ class FrontendEditing extends CatalogController {
                         }
                     }
 
-                    if ( $this->catalogNotifyUpdate ) {
-
-                        $objCatalogNotification = new CatalogNotification( $this, $this->strItemID );
-                        $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyUpdate, $this->arrValues );
+                    if ($this->catalogNotifyUpdate) {
+                        $this->arrValues['id'] = $this->strItemID;
+                        $objCatalogNotification = new CatalogNotification($this, $this->strItemID);
+                        $objCatalogNotification->notifyOnUpdate($this->catalogNotifyUpdate, $this->arrValues);
                     }
 
                     $arrData = [
-
                         'id' => $this->strItemID,
                         'row' => $this->arrValues,
                         'table' => $this->catalogTablename,
@@ -1080,28 +1079,27 @@ class FrontendEditing extends CatalogController {
 
             case 'copy':
 
-                unset( $this->arrValues['id'] );
+                $arrSet = $this->arrValues;
+                unset($arrSet['id']);
 
-                $objInsert = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set( $this->arrValues )->execute();
+                $objInsert = $this->SQLBuilder->Database->prepare( 'INSERT INTO '. $this->catalogTablename .' %s' )->set($arrSet)->execute();
 
                 \System::log( 'An entry "'. $this->catalogTablename .'='. $objInsert->insertId .'" has been duplicated', __METHOD__, TL_GENERAL );
 
-                if ( $this->catalogNotifyDuplicate ) {
-
-                    $objCatalogNotification = new CatalogNotification( $this, $this->strItemID );
-                    $objCatalogNotification->notifyOnUpdate( $this->catalogNotifyDuplicate, $this->arrValues );
+                if ($this->catalogNotifyDuplicate) {
+                    $objCatalogNotification = new CatalogNotification($this, $this->strItemID);
+                    $objCatalogNotification->notifyOnUpdate($this->catalogNotifyDuplicate, $this->arrValues);
                 }
 
                 $arrData = [
-
                     'id' => '',
                     'row' => $this->arrValues,
                     'table' => $this->catalogTablename
                 ];
 
-                $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
-                $this->CatalogEvents->addEventListener( 'create', $arrData, $this );
-                $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
+                $this->CatalogMessage->set('insertMessage', $arrData, $this->id);
+                $this->CatalogEvents->addEventListener('create', $arrData, $this);
+                $this->redirectAfterInsertion($this->strRedirectID, $strQuery);
 
                 break;
         }

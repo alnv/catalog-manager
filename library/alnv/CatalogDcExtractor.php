@@ -405,21 +405,16 @@ class CatalogDcExtractor extends CatalogController {
 
     protected function convertDcLabelToCatalog( $arrReturn, $arrDataContainer, $strDcConfigType ) {
 
-        if ( is_array( $arrDataContainer[ $strDcConfigType ]['label'] ) ) {
+        if (isset($arrDataContainer[$strDcConfigType]['label']) && is_array($arrDataContainer[$strDcConfigType]['label'])) {
 
-            if ( isset( $arrDataContainer[ $strDcConfigType ]['label']['format'] ) ) {
-
+            if (isset($arrDataContainer[$strDcConfigType]['label']['format'])) {
                 $arrReturn['format'] = $arrDataContainer[ $strDcConfigType ]['label']['format'];
             }
-
-            if ( $arrDataContainer[ $strDcConfigType ]['label']['showColumns'] ) {
-
+            if ($arrDataContainer[$strDcConfigType]['label']['showColumns']) {
                 $arrReturn['showColumns'] = '1';
             }
-
-            if ( is_array( $arrDataContainer[ $strDcConfigType ]['label']['fields'] ) && !empty( $arrDataContainer[ $strDcConfigType ]['label']['fields'] ) ) {
-
-                $arrReturn['labelFields'] = serialize( $arrDataContainer[ $strDcConfigType ]['label']['fields'] );
+            if (isset($arrDataContainer[$strDcConfigType]['label']['fields']) && is_array($arrDataContainer[$strDcConfigType]['label']['fields']) && !empty($arrDataContainer[ $strDcConfigType ]['label']['fields'])) {
+                $arrReturn['labelFields'] = serialize($arrDataContainer[$strDcConfigType ]['label']['fields']);
             }
         }
 
@@ -429,14 +424,14 @@ class CatalogDcExtractor extends CatalogController {
 
     protected function convertDcOperationsToCatalog( $arrReturn, $arrDataContainer, $strDcConfigType ) {
 
-        if ( $this->blnCore ) {
+        if ($this->blnCore) {
 
             $arrReturn['operations'] = '';
 
             return $arrReturn;
         }
 
-        if ( is_array( $arrDataContainer[ $strDcConfigType ]['operations'] ) ) {
+        if ( isset($arrDataContainer[ $strDcConfigType ]['operations']) && is_array( $arrDataContainer[ $strDcConfigType ]['operations'] ) ) {
 
             $arrOperators = [];
             $arrOperatorParameter = array_keys( $arrDataContainer[ $strDcConfigType ]['operations'] );
@@ -574,7 +569,7 @@ class CatalogDcExtractor extends CatalogController {
 
                 if ( $arrField['type'] == 'fieldsetStart' ) {
 
-                    $arrPickedPalettes = deserialize( $arrField['dcPaletteLegend'] );
+                    $arrPickedPalettes = \StringUtil::deserialize( $arrField['dcPaletteLegend'] );
                     $arrFieldsetStart = $arrField;
                     $blnFieldsetStart = true;
 

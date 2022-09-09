@@ -32,7 +32,7 @@ class CatalogParser extends CatalogController {
 
         foreach ( $arrFields as $strFieldname => $arrField ) {
 
-            if ( !$arrField['_core'] ) $this->arrFields[ $strFieldname ] = $arrField;
+            if ( !isset( $arrField['_core'] ) ) $this->arrFields[ $strFieldname ] = $arrField;
         }
     }
 

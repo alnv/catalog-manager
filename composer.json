@@ -20,6 +20,7 @@
   "require": {
     "php":">=7.2",
     "tecnickcom/tcpdf": "^6.2",
+    "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
     "contao/core-bundle":"^4.4"
   },
   "replace": {

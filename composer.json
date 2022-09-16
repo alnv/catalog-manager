@@ -1,7 +1,7 @@
 {
   "name": "alnv/catalog-manager",
   "description": "Catalog Manager for Contao CMS",
-  "keywords": [ "contao", "catalog", "filter", "taxonomy", "frontend editing", "radius search" ],
+  "keywords": ["contao", "catalog", "filter", "taxonomy", "frontend editing", "radius search"],
   "type": "contao-module",
   "homepage": "https://catalog-manager.org",
   "license": "proprietary",
@@ -18,9 +18,10 @@
     "wiki": "https://catalog-manager.org/dokumentation.html"
   },
   "require": {
-    "php":">=7.2",
+    "php":"^7.0 || ^8.0",
     "tecnickcom/tcpdf": "^6.2",
-    "contao/core-bundle":"^4.4"
+    "contao/core-bundle":"^4.4",
+    "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
   },
   "replace": {
     "contao-legacy/catalog-manager": "self.version"
@@ -30,6 +31,13 @@
       "sources": {
         "": "system/modules/catalog-manager"
       }
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "contao-components/installer": true,
+      "composer/package-versions-deprecated": true,
+      "contao-community-alliance/composer-plugin": true
     }
   }
 }

@@ -4,11 +4,9 @@ namespace CatalogManager;
 
 class CatalogParser extends CatalogController {
 
-
     protected $arrFields = [];
     protected $arrCatalog = [];
     protected $blnActive = false;
-
 
     public function __construct() {
 
@@ -17,27 +15,25 @@ class CatalogParser extends CatalogController {
         $this->import( 'Database' );
     }
 
-
-    protected function initialize( $strTable ) {
+    protected function initialize($strTable) {
 
         $objFieldBuilder = new CatalogFieldBuilder();
-        $this->blnActive = $objFieldBuilder->initialize( $strTable );
+        $this->blnActive = $objFieldBuilder->initialize($strTable);
 
-        if ( !$this->blnActive ) return null;
+        if (!$this->blnActive) return null;
 
         $this->arrCatalog = $objFieldBuilder->getCatalog();
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+        $arrFields = $objFieldBuilder->getCatalogFields(true, null);
 
-        if ( !is_array( $arrFields ) ) return null;
+        if (!is_array($arrFields)) return null;
 
-        foreach ( $arrFields as $strFieldname => $arrField ) {
+        foreach ($arrFields as $strFieldname => $arrField) {
 
-            if ( !$arrField['_core'] ) $this->arrFields[ $strFieldname ] = $arrField;
+            if (!isset($arrField['_core']) || !$arrField['_core']) $this->arrFields[$strFieldname] = $arrField;
         }
     }
 
-
-    public function getAllEvents( $arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents ) {
+    public function getAllEvents($arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents) {
 
         $this->initialize('tl_calendar_events');
 
@@ -59,9 +55,8 @@ class CatalogParser extends CatalogController {
         return $arrReturn;
     }
 
+    protected function parseCatalogValues($arrData) {
 
-    protected function parseCatalogValues( $arrData ) {
-
-        return Toolkit::parseCatalogValues( $arrData, $this->arrFields );
+        return Toolkit::parseCatalogValues($arrData, $this->arrFields);
     }
 }

@@ -126,26 +126,23 @@ class GalleryCreator extends \Frontend {
                         }
                     }
 
-                    if ( $arrMeta['title'] == '' ) {
-
-                        $arrMeta['title'] = specialchars($objFile->basename);
+                    if (isset($arrMeta['title']) && $arrMeta['title'] === '') {
+                        $arrMeta['title'] = \StringUtil::specialchars($objFile->basename);
                     }
 
                     $arrImages[ $objSubFiles->path ] = [
-
                         'id' => $objSubFiles->id,
                         'uuid' => $objSubFiles->uuid,
                         'name' => $objFile->basename,
                         'singleSRC' => $objSubFiles->path,
-                        'alt' => $arrMeta['alt'],
-                        'title'  => $arrMeta['title'],
-                        'imageUrl' => $arrMeta['link'],
-                        'linkTitle' => $arrMeta['title'],
-                        'caption' => $arrMeta['caption'],
+                        'alt' => $arrMeta['alt'] ?? '',
+                        'title'  => $arrMeta['title'] ?? '',
+                        'imageUrl' => $arrMeta['link'] ?? '',
+                        'linkTitle' => $arrMeta['title'] ?? '',
+                        'caption' => $arrMeta['caption'] ?? '',
                     ];
 
                     if ( version_compare(VERSION, '4.4', '>=' ) ) {
-
                         $arrImages[ $objSubFiles->path ]['filesModel'] = $objSubFiles->current();
                     }
 
@@ -190,7 +187,7 @@ class GalleryCreator extends \Frontend {
 
                 if ($this->orderSRC != '') {
 
-                    $arrTmp = deserialize( $this->orderSRC );
+                    $arrTmp = \StringUtil::deserialize($this->orderSRC, true);
 
                     if ( !empty( $arrTmp ) && is_array( $arrTmp ) ) {
 
@@ -339,10 +336,10 @@ class GalleryCreator extends \Frontend {
                     $objCell->colWidth = $intColWidth . '%';
                     $objCell->class = 'col_'. $j . $strRowTDClass;
                     $objCell->meta = [
-                        'title' => $arrImages[($i+$j)]['title'] ?: '',
-                        'caption' => $arrImages[($i+$j)]['caption'] ?: '',
-                        'alt' => $arrImages[($i+$j)]['alt'] ?: '',
-                        'link' => $arrImages[($i+$j)]['link'] ?: ''
+                        'title' => $arrImages[($i+$j)]['title'] ?? '',
+                        'caption' => $arrImages[($i+$j)]['caption'] ?? '',
+                        'alt' => $arrImages[($i+$j)]['alt'] ?? '',
+                        'link' => $arrImages[($i+$j)]['link'] ?? ''
                     ];
                 }
 

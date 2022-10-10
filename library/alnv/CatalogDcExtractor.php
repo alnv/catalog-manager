@@ -466,17 +466,17 @@ class CatalogDcExtractor extends CatalogController {
 
         $arrConfigDc = [
             '_tables' => [],
-            'enableVersioning' => (bool) $arrCatalog['useVC'] ?? '',
+            'enableVersioning' => (bool) $arrCatalog['useVC'] ?? false,
             'ptable' => $arrReturn[$strDcConfigType]['ptable'] ?? '',
-            'ctable' => $arrReturn[$strDcConfigType]['ctable'] ?? '',
+            'ctable' => $arrReturn[$strDcConfigType]['ctable'] ?? [],
             'onsubmit_callback' => is_array($arrReturn[$strDcConfigType]['onsubmit_callback']) ? $arrReturn[$strDcConfigType]['onsubmit_callback'] : []
         ];
 
-        if ( !Toolkit::isEmpty( $arrCatalog['pTable'] ) ) {
+        if (!Toolkit::isEmpty( $arrCatalog['pTable'])) {
 
             $arrConfigDc['ptable'] = $arrCatalog['pTable'];
 
-            if ( $arrCatalog['pTable'] !== $arrConfigDc['ptable'] ) $arrConfigDc['_tables'][] = $arrCatalog['pTable'];
+            if ($arrCatalog['pTable'] !== $arrConfigDc['ptable']) $arrConfigDc['_tables'][] = $arrCatalog['pTable'];
         }
 
         if (is_array($arrCatalog['cTables']) && !empty($arrCatalog['cTables'])) {
@@ -488,22 +488,20 @@ class CatalogDcExtractor extends CatalogController {
             }
         }
 
-        if ( $arrCatalog['addContentElements'] && !in_array( 'tl_content', $arrConfigDc['ctable'] ) ) {
-
+        if ($arrCatalog['addContentElements'] && is_array($arrConfigDc['ctable']) && !in_array('tl_content', $arrConfigDc['ctable'])) {
             $arrConfigDc['ctable'][] = 'tl_content';
             $arrConfigDc['_tables'][] = 'tl_content';
         }
 
-        if ( $arrCatalog['useGeoCoordinates'] ) {
-
-            $arrConfigDc['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'generateGeoCords' ];
+        if ($arrCatalog['useGeoCoordinates']) {
+            $arrConfigDc['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'generateGeoCords'];
         }
 
-        $arrConfigDc['onsubmit_callback'][] = [ 'CatalogManager\DcCallbacks', 'checkForDynValues' ];
+        $arrConfigDc['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'checkForDynValues'];
         
-        foreach ( $arrConfigDc as $strKey => $strValue ) {
+        foreach ($arrConfigDc as $strKey => $strValue) {
 
-            $arrReturn[ $strDcConfigType ][ $strKey ] = $strValue;
+            $arrReturn[$strDcConfigType][$strKey] = $strValue;
         }
 
         return $arrReturn;

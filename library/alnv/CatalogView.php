@@ -925,7 +925,7 @@ class CatalogView extends CatalogController {
             return false;
         }
 
-        if (BE_USER_LOGGED_IN) {
+        if (defined('BE_USER_LOGGED_IN') && BE_USER_LOGGED_IN) {
             return false;
         }
 

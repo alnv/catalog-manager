@@ -256,7 +256,7 @@ class FrontendEditing extends CatalogController {
 
             if ( in_array( $strFieldname, $this->catalogExcludedFields ) ) continue;
 
-            $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
+            $arrField = $this->arrCatalogFields[$strFieldname]['_dcFormat'] ?? [];
             $arrField = $this->convertWidgetToField( $arrField );
 
             $strClass = $this->fieldClassExist( $arrField['inputType'] );
@@ -294,7 +294,7 @@ class FrontendEditing extends CatalogController {
             $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
             $objWidget->description = is_array( $arrField['label'] ) && isset( $arrField['label'][1] ) ? $arrField['label'][1] : '';
 
-            if ( $this->arrCatalogFields[ $strFieldname ]['template'] && in_array( $this->arrCatalogFields[ $strFieldname ]['type'], $this->arrValidFormTemplates ) ) $objWidget->template = $this->arrCatalogFields[ $strFieldname ]['template'];
+            if (isset($this->arrCatalogFields[ $strFieldname ]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
 
             if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
 
@@ -348,7 +348,7 @@ class FrontendEditing extends CatalogController {
                 $GLOBALS['TL_HEAD'][] = $strScript;
             }
 
-            if ($this->arrCatalogFields[ $strFieldname ]['autoCompletionType']) {
+            if (isset($this->arrCatalogFields[ $strFieldname ]['autoCompletionType']) && $this->arrCatalogFields[ $strFieldname ]['autoCompletionType']) {
 
                 $objWidget->class .= ' awesomplete-field';
                 $objWidget->class .= ($arrField['multiple']?' multiple':'');
@@ -361,22 +361,24 @@ class FrontendEditing extends CatalogController {
                 $objScriptLoader->loadScript( 'awesomplete-frontend' );
                 $objScriptLoader->loadStyle( 'awesomplete' );
             }
+
+            $arrField['default'] = $arrField['default'] ?? '';
             
-            if ( Toolkit::isEmpty( $objWidget->value ) && !Toolkit::isEmpty( $arrField['default'] ) ) {
+            if ( Toolkit::isEmpty( $objWidget->value ) && !Toolkit::isEmpty($arrField['default'])) {
 
                 $objWidget->value = $arrField['default'];
             }
 
-            if ( $arrField['eval']['rgxp'] && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+            if (isset($arrField['eval']['rgxp']) && $arrField['eval']['rgxp'] && in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
 
                 $strDateFormat = \Date::getFormatFromRgxp( $arrField['eval']['rgxp'] );
                 $objWidget->value = $objWidget->value ? \Date::parse( $strDateFormat, $objWidget->value ) : '';
             }
 
-            if ( in_array( $arrField['_type'], [ 'hidden', 'date' ] ) && $this->arrCatalogFields[ $strFieldname ]['tstampAsDefault'] ) {
+            $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] = $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] ?? '';
 
-                if ( Toolkit::isEmpty( $objWidget->value ) ) {
-
+            if (in_array($arrField['_type'], [ 'hidden', 'date' ]) && $this->arrCatalogFields[$strFieldname]['tstampAsDefault']) {
+                if (Toolkit::isEmpty( $objWidget->value)) {
                     $objWidget->value = time();
                 }
             }
@@ -418,7 +420,9 @@ class FrontendEditing extends CatalogController {
                     $varValue = $this->replaceInsertTags( $varValue );
                 }
 
-                if ( $varValue != '' && in_array( $arrField['eval']['rgxp'], [ 'date', 'time', 'datim' ] ) ) {
+                $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
+
+                if ($varValue != '' && in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
 
                     try {
 
@@ -436,9 +440,9 @@ class FrontendEditing extends CatalogController {
                     $objWidget->addError( sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $strFieldname ) );
                 }
 
-                if ( $objWidget->submitInput() && !$objWidget->hasErrors() && is_array( $arrField['save_callback'] ) ) {
+                if ($objWidget->submitInput() && !$objWidget->hasErrors() && isset($arrField['save_callback']) && is_array($arrField['save_callback'])) {
 
-                    foreach ( $arrField['save_callback'] as $arrCallback ) {
+                    foreach ($arrField['save_callback'] as $arrCallback) {
 
                         $objDataContainer = new CatalogDataContainer( $this->catalogTablename );
 
@@ -471,40 +475,40 @@ class FrontendEditing extends CatalogController {
                     }
                 }
 
-                if ( $objWidget->hasErrors() ) {
-
+                if ($objWidget->hasErrors()) {
                     $this->blnNoSubmit = true;
                 }
 
-                elseif( $objWidget->submitInput() ) {
+                elseif($objWidget->submitInput()) {
 
-                    if ( $varValue === '' ) {
-
+                    if ($varValue === '') {
                         $varValue = $objWidget->getEmptyValue();
                     }
 
-                    if ( $arrField['eval']['encrypt'] ) {
+                    $arrField['eval']['encrypt'] = $arrField['eval']['encrypt'] ?? '';
 
+                    if ($arrField['eval']['encrypt']) {
                         $varValue = \Encryption::encrypt( $varValue );
                     }
 
                     $this->arrValues[ $strFieldname ] = $varValue;
                 }
 
+                if (!isset($_SESSION['FILES'])) {
+                    $_SESSION['FILES'] = [];
+                }
+
                 $arrFiles = $_SESSION['FILES'];
 
-                if ( isset( $arrFiles[ $strFieldname ] ) && is_array( $arrFiles[ $strFieldname ] ) && $this->catalogStoreFile ) {
+                if (isset($arrFiles[$strFieldname]) && is_array($arrFiles[$strFieldname]) && $this->catalogStoreFile) {
 
-                    if ( !Toolkit::isAssoc( $arrFiles[ $strFieldname ] ) ) {
-
+                    if (!Toolkit::isAssoc($arrFiles[$strFieldname])) {
                         $arrUUIDValues = [];
-
-                        foreach ( $arrFiles[ $strFieldname ] as $arrFile ) {
-
-                            $arrUUIDValues[] = $this->getFileUUID( $arrFile );
+                        foreach ($arrFiles[ $strFieldname ] as $arrFile) {
+                            $arrUUIDValues[] = $this->getFileUUID($arrFile);
                         }
 
-                        if ( \Config::get( 'catalogMergeMultipleUploads' ) && $arrField['eval']['multiple'] ) {
+                        if (\Config::get( 'catalogMergeMultipleUploads' ) && $arrField['eval']['multiple']) {
 
                             $arrUUIDValues = array_merge( \StringUtil::deserialize( $this->arrValues[ $strFieldname ], true ) , $arrUUIDValues );
                             $arrUUIDValues = array_unique( $arrUUIDValues );
@@ -956,6 +960,9 @@ class FrontendEditing extends CatalogController {
         }
 
         foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
+
+            $arrField['dynValue'] = $arrField['dynValue'] ?? '';
+
             if (!Toolkit::isEmpty($arrField['dynValue'])) {
                 $this->arrValues[$strFieldname] = Toolkit::generateDynValue($arrField['dynValue'], Toolkit::prepareValues4Db($this->arrValues));
                 if ($strFieldname == 'title' && Toolkit::hasDynAlias()) $this->arrValues['alias'] = '';
@@ -1183,15 +1190,22 @@ class FrontendEditing extends CatalogController {
 
             foreach ( $this->arrValues as $strFieldname => $varValue ) {
 
-                $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'];
+                $arrField = $this->arrCatalogFields[ $strFieldname ]['_dcFormat'] ?? [];
 
-                if ( $arrField['eval']['files'] && $arrField['eval']['multiple'] && is_array( $varValue ) ) {
-                    $varValue = serialize( $varValue );
+                $arrField['eval']['files'] = $arrField['eval']['files'] ?? '';
+                $arrField['eval']['multiple'] = $arrField['eval']['multiple'] ?? false;
+
+                if ($arrField['eval']['files'] && $arrField['eval']['multiple'] && is_array($varValue)) {
+                    $varValue = serialize($varValue);
                 }
 
                 $varValue = Toolkit::prepareValue4Db($varValue);
 
                 if (is_null($arrField)) continue;
+
+                $arrField['_type'] = $arrField['_type'] ?? '';
+
+                $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
 
                 if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
                     $varValue = $varValue ? (new \Date($varValue))->tstamp : 0;
@@ -1201,7 +1215,7 @@ class FrontendEditing extends CatalogController {
                     }
                 }
 
-                if (strpos($arrField['sql'], 'int') !== false && is_string($varValue)) {
+                if (isset($arrField['sql']) && strpos($arrField['sql'], 'int') !== false && is_string($varValue)) {
                     $varValue = intval($varValue);
                 }
 

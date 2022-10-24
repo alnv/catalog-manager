@@ -234,6 +234,14 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
             }
         }
 
+        if (!isset($_SESSION['FILES'])) {
+            $_SESSION['FILES'] = [];
+        }
+
+        if (!isset($_SESSION['FILES'][$this->strName])) {
+            $_SESSION['FILES'][$this->strName] = [];
+        }
+
         if (!$this->hasErrors()) {
 
             if ( is_null( $_SESSION['FILES'][ $this->strName ] ) ) {
@@ -316,8 +324,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
                         \Dbafs::updateFolderHashes( $strUploadFolder );
                     }
 
-                    $_SESSION['FILES'][ $this->strName ][] = [
-
+                    $_SESSION['FILES'][$this->strName][] = [
                         'name' => $arrFile['name'],
                         'type' => $arrFile['type'],
                         'tmp_name' => TL_ROOT . '/' . $strFile,
@@ -327,7 +334,7 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
                         'uuid' => $strUuid
                     ];
 
-                    $this->log( 'File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', __METHOD__, TL_FILES );
+                    $this->log('File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', __METHOD__, TL_FILES);
                 }
             }
         }

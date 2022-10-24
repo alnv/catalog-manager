@@ -606,13 +606,12 @@ class Toolkit {
 
                 $varContext = $arrField;
 
-                if ( !$blnFullContext ) {
+                if (!$blnFullContext) {
 
                     $strTitle = $strFieldname;
 
-                    if ( is_array( $arrField['label'] ) ) {
-
-                        $varContext = $arrField['label'][0] ? $arrField['label'][0] : $strTitle;
+                    if (is_array($arrField['label'])) {
+                        $varContext = $arrField['label'][0] ?: $strTitle;
                     }
                 }
 
@@ -640,7 +639,7 @@ class Toolkit {
                 }
 
                 $arrField = $arrFields[$strField] ?? null;
-                
+
                 if (is_null( $arrField)) continue;
                 if (!$arrField['type']) continue;
 

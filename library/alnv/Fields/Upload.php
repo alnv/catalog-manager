@@ -5,12 +5,14 @@ namespace CatalogManager;
 class Upload {
 
 
-    public static function generate( $arrDCAField, $arrField ) {
+    public static function generate($arrDCAField, $arrField) {
 
         $arrDCAField['eval']['files'] = true;
-        $arrDCAField['eval']['filesOnly'] = Toolkit::getBooleanByValue( $arrField['filesOnly'] );
+        $arrDCAField['eval']['filesOnly'] = Toolkit::getBooleanByValue($arrField['filesOnly']);
 
-        if ( $arrField['fileType'] == 'gallery' ) {
+        $arrField['fileType'] = $arrField['fileType'] ?? '';
+
+        if ($arrField['fileType'] == 'gallery') {
 
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
@@ -47,6 +49,8 @@ class Upload {
         }
 
         $arrDCAField['eval']['extensions'] = $arrField['extensions'] ?: \Config::get('uploadTypes');
+
+        $arrField['path'] = $arrField['path'] ?? '';
 
         if ( $arrField['path'] ) {
 

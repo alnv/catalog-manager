@@ -316,12 +316,14 @@ class GalleryCreator extends \Frontend {
                 $objCell = new \stdClass();
                 $strKey = 'row_' . $intRowCount . $strRowClass . $strRowOEClass;
 
-                if ( !is_array( $arrImages[ ( $i + $j ) ] ) || ( $j + $i ) >= $intLimit ) {
-                    $objCell->colWidth = $intColWidth . '%';
-                    $objCell->class = 'col_'. $j . $strRowTDClass;
+                if (!isset($arrImages[($i+$j)])) {
+                    continue;
                 }
 
-                else {
+                if (!is_array($arrImages[($i+$j)]) || ($j+$i) >= $intLimit) {
+                    $objCell->colWidth = $intColWidth . '%';
+                    $objCell->class = 'col_'. $j . $strRowTDClass;
+                } else {
 
                     $arrImages[($i+$j)]['size'] = $this->size;
                     $arrImages[($i+$j)]['fullsize'] = $this->fullsize;

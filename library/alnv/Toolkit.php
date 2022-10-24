@@ -639,10 +639,10 @@ class Toolkit {
                     $strField = $strJoinedTable . ucfirst( $strFieldname );
                 }
 
-                $arrField = $arrFields[ $strField ];
-
-                if ( is_null( $arrField ) ) continue;
-                if ( !$arrField['type'] ) continue;
+                $arrField = $arrFields[$strField] ?? null;
+                
+                if (is_null( $arrField)) continue;
+                if (!$arrField['type']) continue;
 
                 $varValue = static::parseCatalogValue($strOriginValue, $arrField, $arrData);
 

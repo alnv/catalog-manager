@@ -215,28 +215,26 @@ class CatalogFineUploaderForm extends \Widget implements \uploadable {
             return $arrReturn;
         }
 
-        if ( ( $arrImageSize = @getimagesize( $arrReturn['tmp_name'] ) ) != false ) {
+        if (isset($arrReturn['tmp_name']) && $arrReturn['tmp_name']) {
+            if (($arrImageSize = @getimagesize($arrReturn['tmp_name'])) != false) {
 
-            if ( $arrImageSize[0] > \Config::get('imageWidth') ) {
+                if ($arrImageSize[0] > \Config::get('imageWidth')) {
+                    $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filewidth'], $arrFile['name'], \Config::get('imageWidth'));
+                    unset($_FILES[$this->strName]);
+                    $arrReturn['success'] = false;
+                    return $arrReturn;
+                }
 
-                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['filewidth'], $arrFile['name'], \Config::get('imageWidth') );
-                unset( $_FILES[ $this->strName ] );
-                $arrReturn['success'] = false;
-
-                return $arrReturn;
-            }
-
-            if ( $arrImageSize[1] > \Config::get('imageHeight') ) {
-
-                $arrReturn['error'] = sprintf( $GLOBALS['TL_LANG']['ERR']['fileheight'], $arrFile['name'], \Config::get('imageHeight') );
-                unset( $_FILES[ $this->strName ] );
-                $arrReturn['success'] = false;
-
-                return $arrReturn;
+                if ($arrImageSize[1] > \Config::get('imageHeight')) {
+                    $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['fileheight'], $arrFile['name'], \Config::get('imageHeight'));
+                    unset($_FILES[$this->strName]);
+                    $arrReturn['success'] = false;
+                    return $arrReturn;
+                }
             }
         }
 
-        if ( !$this->hasErrors() ) {
+        if (!$this->hasErrors()) {
 
             if ( is_null( $_SESSION['FILES'][ $this->strName ] ) ) {
 

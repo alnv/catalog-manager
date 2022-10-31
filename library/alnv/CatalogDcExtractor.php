@@ -127,108 +127,65 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    public function setDcSortingByMode( $strMode, $arrCatalog = [], $arrDefaults = [] ) {
+    public function setDcSortingByMode($strMode, $arrCatalog=[], $arrDefaults=[]) {
 
         $arrReturn = [
-
             'mode' => $strMode ?: '0'
         ];
 
-        switch ( $strMode ) {
+        $arrCatalog['panelLayout'] = $arrCatalog['panelLayout'] ?? '';
+        $arrCatalog['flag'] = $arrCatalog['flag'] ?? '';
+        $arrCatalog['sortingFields'] = $arrCatalog['sortingFields'] ?? [];
+        $arrCatalog['headerFields'] = $arrCatalog['headerFields'] ?? '';
+        $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? '';
 
-            case '0':
-
-                return $arrReturn;
-
+        switch ($strMode) {
             case '1':
-
-                if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
-
+                if (!Toolkit::isEmpty($arrCatalog['flag'])) {
                     $arrReturn['flag'] = !Toolkit::isEmpty( $arrCatalog['flag'] ) ? $arrCatalog['flag'] : $arrDefaults['flag'];
                 }
-
-                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
-
+                if (is_array($arrCatalog['sortingFields']) && !empty( $arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
-                }
-
-                else {
-
+                } else {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
-
                 return $arrReturn;
-
             case '2':
-
-                $arrReturn['panelLayout'] = Toolkit::createPanelLayout( $arrCatalog['panelLayout'] );
-
-                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
-
+                $arrReturn['panelLayout'] = Toolkit::createPanelLayout($arrCatalog['panelLayout']);
+                if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
-                }
-
-                else {
-
+                } else {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
-
                 return $arrReturn;
-
+            case '0':
+            case '5':
             case '3':
-
                 return $arrReturn;
-
             case '4':
-
-                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
-
+                if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
-                }
-
-                else {
-
+                } else {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
-
-                if ( !Toolkit::isEmpty( $arrCatalog['flag'] ) ) {
-
+                if (!Toolkit::isEmpty( $arrCatalog['flag'])) {
                     $arrReturn['flag'] = $arrCatalog['flag'];
                 }
-
-                if ( !is_array( $arrCatalog['labelFields'] ) || empty( $arrCatalog['labelFields'] ) ) {
-
+                if (!is_array($arrCatalog['labelFields']) || empty($arrCatalog['labelFields'])) {
                     $arrCatalog['labelFields'] = $arrDefaults['labelFields'];
                 }
-
-                if ( is_array( $arrCatalog['headerFields'] ) && !empty( $arrCatalog['headerFields'] ) ) {
-
+                if (is_array($arrCatalog['headerFields']) && !empty($arrCatalog['headerFields'])) {
                     $arrReturn['headerFields'] = $arrCatalog['headerFields'];
-                }
-
-                else {
-
+                } else {
                     $arrReturn['headerFields'] = $arrDefaults['headerFields'];
                 }
-
                 break;
-
-            case '5':
-
-                return $arrReturn;
-
             case '6':
-
-                if ( is_array( $arrCatalog['sortingFields'] ) && !empty( $arrCatalog['sortingFields'] ) ) {
-
+                if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
-                }
-
-                else {
-
+                } else {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
-
                 break;
         }
 

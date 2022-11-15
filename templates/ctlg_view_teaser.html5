@@ -24,15 +24,15 @@
     <?php foreach( $this->catalogEntityFields as $strName => $arrField ): ?>
         <?php if ( $this->{$strName} !== null && $this->{$strName} !== '' ): ?>       
 	        <?php if ( is_array( $this->{$strName} ) ): ?>
-	        	<?php $this->{$strName} = implode( ', ', array_map( function( $varValue ) {
-		        	if ( is_string ( $varValue ) ) return $varValue;
-		        	if ( is_array ( $varValue ) ) return $varValue['title'];
+	        	<?php $this->{$strName} = implode(', ', array_map(function($varValue) {
+		        	if (is_string ($varValue)) return $varValue;
+		        	if (is_array ($varValue)) return $varValue['title'] ?? '';
 		        	return $varValue;
 	        	}, $this->{$strName} )) ?>
 	        <?php endif; ?>
 	        <?php if ( is_string( $this->{$strName} ) ): ?>
 	        <div class="ctlg_entity <?= $strName; ?>">
-	        	<span class="ctlg_entity_name"><?= $arrField['title']; ?>:</span>
+	        	<span class="ctlg_entity_name"><?= $arrField['title'] ?? ''; ?>:</span>
 				<div class="ctlg_entity_value"><?= $this->{$strName}; ?></div>
 	        </div>
 	        <?php endif; ?> 

@@ -248,29 +248,27 @@ class FrontendEditing extends CatalogController {
     }
 
 
-    protected function renderFieldsByPalette( $arrFieldNames, $strPalette = '' ) {
+    protected function renderFieldsByPalette($arrFieldNames, $strPalette='') {
 
         $arrReturn = [];
 
-        foreach ( $arrFieldNames as $strFieldname ) {
+        foreach ($arrFieldNames as $strFieldname) {
 
-            if ( in_array( $strFieldname, $this->catalogExcludedFields ) ) continue;
+            if (in_array($strFieldname, $this->catalogExcludedFields)) continue;
 
             $arrField = $this->arrCatalogFields[$strFieldname]['_dcFormat'] ?? [];
-            $arrField = $this->convertWidgetToField( $arrField );
+            $arrField = $this->convertWidgetToField($arrField);
 
-            $strClass = $this->fieldClassExist( $arrField['inputType'] );
+            $strClass = $this->fieldClassExist($arrField['inputType']);
 
-            if ( $strClass === false ) continue;
+            if ($strClass === false) continue;
 
             $arrData = $strClass::getAttributesFromDca($arrField, $strFieldname, $arrField['default']??'', '', '' );
 
-            if ( is_bool( $arrField['_disableFEE'] ) && $arrField['_disableFEE'] == true ) continue;
+            if (is_bool($arrField['_disableFEE']) && $arrField['_disableFEE'] == true) continue;
 
-            if ( $arrField['inputType'] == 'catalogFineUploader' ) {
-
+            if ($arrField['inputType'] == 'catalogFineUploader') {
                 $arrData['configAttributes'] = [
-
                     'storeFile' => $this->catalogStoreFile,
                     'useHomeDir' => $this->catalogUseHomeDir,
                     'uploadFolder' => $this->catalogUploadFolder,
@@ -287,25 +285,25 @@ class FrontendEditing extends CatalogController {
                 }
             }
 
-            $objWidget = new $strClass( $arrData );
+            $objWidget = new $strClass($arrData);
             $objWidget->storeValues = true;
             $objWidget->id = 'id_' . $strFieldname;
-            $objWidget->value = $this->arrValues[ $strFieldname ];
-            $objWidget->placeholder = $arrField['_placeholder'] ? $arrField['_placeholder'] : '';
+            $objWidget->value = $this->arrValues[$strFieldname];
+            $objWidget->placeholder = $arrField['_placeholder'] ?: '';
             $objWidget->description = is_array( $arrField['label'] ) && isset( $arrField['label'][1] ) ? $arrField['label'][1] : '';
 
-            if (isset($this->arrCatalogFields[ $strFieldname ]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
+            if (isset($this->arrCatalogFields[$strFieldname]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
 
-            if ( is_array( $arrField['_cssID'] ) && ( $arrField['_cssID'][0] || $arrField['_cssID'][1] ) ) {
-
-                if ( $arrField['_cssID'][0] ) $objWidget->id = 'id_' . $arrField['_cssID'][0];
-                if ( $arrField['_cssID'][1] ) $objWidget->class = ' ' . $arrField['_cssID'][1];
+            if (is_array($arrField['_cssID']) && ($arrField['_cssID'][0] || $arrField['_cssID'][1])) {
+                if ($arrField['_cssID'][0]) $objWidget->id = 'id_' . $arrField['_cssID'][0];
+                if ($arrField['_cssID'][1]) $objWidget->class = ' ' . $arrField['_cssID'][1];
             }
 
-            if ( $this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true ) {
-
+            if ($this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true) {
                 $objWidget->value = '';
             }
+
+            $arrField['eval']['csv'] = $arrField['eval']['csv'] ?? '';
 
             if (isset($arrField['eval']['multiple']) && $arrField['eval']['multiple'] && $arrField['eval']['csv'] && is_string($objWidget->value)) {
                 $objWidget->value = explode($arrField['eval']['csv'], $objWidget->value);

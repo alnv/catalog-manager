@@ -4,34 +4,25 @@ namespace CatalogManager;
 
 class CatalogTaxonomyWizard extends \Widget {
 
-
     private $strTable = '';
     private $arrFields = [];
     private $arrTaxonomies = [];
 
-
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
-
 
     public function __set($strKey, $varValue) {
 
         switch ($strKey) {
-
             default:
-
                 parent::__set( $strKey, $varValue );
-
                 break;
         }
     }
 
-
     public function validate() {
-
         parent::validate();
     }
-
 
     public function generate() {
 
@@ -169,7 +160,6 @@ class CatalogTaxonomyWizard extends \Widget {
         return $strHeadTemplate.$strTemplate;
     }
 
-
     protected function generateQueryInputFields( $arrQuery, $strType, $intIndex, $intSubIndex ) {
 
         $strID = $this->strId . '_query_'. $intIndex;
@@ -293,7 +283,6 @@ class CatalogTaxonomyWizard extends \Widget {
         }
     }
 
-
     protected function getSelectOptions( $strField, $arrValues ) {
 
         $strList = '';
@@ -313,7 +302,6 @@ class CatalogTaxonomyWizard extends \Widget {
 
         return $strList;
     }
-
 
     protected function getOperatorOptions( $arrQuery ) {
 
@@ -349,8 +337,9 @@ class CatalogTaxonomyWizard extends \Widget {
         return $strOperatorsOptions;
     }
 
-
     protected function getFieldSelector() {
+
+        $this->varValue['field'] = $this->varValue['field'] ?? '';
 
         return sprintf(
             '<select name="%s" id="%s" class="tl_select tl_chosen" onchange="Backend.autoSubmit(\''. $this->dcTable .'\');">%s</select>',
@@ -359,7 +348,6 @@ class CatalogTaxonomyWizard extends \Widget {
             $this->getFieldOptions( $this->varValue['field'], true )
         );
     }
-
 
     protected function getFieldOptions( $strValue, $blnEmptyOption = true ) {
 
@@ -379,18 +367,15 @@ class CatalogTaxonomyWizard extends \Widget {
         return $strOptions;
     }
 
-
     protected function getDeleteButton( $intIndex, $intSubIndex ) {
 
         return '<a href="'. \Environment::get('indexFreeRequest') .'&amp;cid='. $intIndex .'&amp;subId='. $intSubIndex .'&amp;cmd_'. $this->strId .'=deleteQuery" title="'. sprintf( $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteQuery'], $intIndex ) .'">' . \Image::getHtml('delete.gif', 'delete query') .'</a>';
     }
 
-
     protected function getAddButton() {
 
         return '<a href="'. \Environment::get('indexFreeRequest') .'&amp;cid=0&amp;cmd_'. $this->strId .'=addQuery" title="'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['addQuery'] .'">' . \Image::getHtml('copy.gif', 'add query') .'</a>';
     }
-
 
     protected function getOrButton( $intIndex, $intSubIndex ) {
 

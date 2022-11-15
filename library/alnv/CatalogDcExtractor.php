@@ -137,7 +137,7 @@ class CatalogDcExtractor extends CatalogController {
         $arrCatalog['flag'] = $arrCatalog['flag'] ?? '';
         $arrCatalog['sortingFields'] = $arrCatalog['sortingFields'] ?? [];
         $arrCatalog['headerFields'] = $arrCatalog['headerFields'] ?? '';
-        $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? '';
+        $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? [];
 
         switch ($strMode) {
             case '1':

@@ -4,34 +4,24 @@ namespace CatalogManager;
 
 class CatalogDuplexSelectWizard extends \Widget {
 
-
     protected $strTablename;
     protected $arrMainOptions = [];
     protected $blnSubmitInput = true;
     protected $strTemplate = 'be_widget';
 
-
     public function __set( $strKey, $varValue ) {
 
         switch ($strKey) {
-
             case 'maxlength':
-
                 if ($varValue > 0) {
-
                     $this->arrAttributes['maxlength'] = $varValue;
                 }
-
                 break;
-
             default:
-
                 parent::__set($strKey, $varValue);
-
                 break;
         }
     }
-
 
     public function validate() {
 
@@ -69,7 +59,6 @@ class CatalogDuplexSelectWizard extends \Widget {
             $this->mandatory = true;
         }
     }
-
 
     public function generate() {
 
@@ -110,8 +99,7 @@ class CatalogDuplexSelectWizard extends \Widget {
             $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
 
-        if ( !is_array( $this->varValue ) || !$this->varValue[0] ) {
-
+        if (!is_array($this->varValue) || !isset($this->varValue[0]) || !$this->varValue[0]) {
             $this->varValue = [['']];
         }
 
@@ -158,7 +146,6 @@ class CatalogDuplexSelectWizard extends \Widget {
               </table>';
     }
 
-
     protected function generateMainOptions( $intIndex ) {
 
         $strOptions = $this->includeBlankOption ? '<option value>'. ( $this->blankOptionLabel ? $this->blankOptionLabel : '' ) .'</option>' : '';
@@ -171,26 +158,22 @@ class CatalogDuplexSelectWizard extends \Widget {
         return $strOptions;
     }
 
-
     protected function generateDependedOptions( $intIndex ) {
 
         $arrOptions = [];
-        $strMainOption = $this->varValue[ $intIndex ]['key'];
-        $strOptions = $this->includeBlankOption ? '<option value>'. ( $this->blankOptionLabel ? $this->blankOptionLabel : '' ) .'</option>' : '';
+        $strMainOption = $this->varValue[$intIndex]['key'] ?? '';
+        $strOptions = $this->includeBlankOption ? '<option value>'. ( $this->blankOptionLabel ?: '' ) .'</option>' : '';
 
-        if ( !Toolkit::isEmpty( $strMainOption ) ) {
+        if (!Toolkit::isEmpty($strMainOption)) {
 
-            if ( !empty( $this->dependedOptions ) && is_array( $this->dependedOptions ) ) {
-
+            if (!empty($this->dependedOptions) && is_array($this->dependedOptions)) {
                 $this->import( $this->dependedOptions[0] );
-                $arrOptions = $this->{$this->dependedOptions[0]}->{$this->dependedOptions[1]}( $strMainOption, $this );
+                $arrOptions = $this->{$this->dependedOptions[0]}->{$this->dependedOptions[1]}($strMainOption, $this);
             }
         }
 
-        if ( is_array( $arrOptions ) && !empty( $arrOptions ) ) {
-
-            foreach ( $arrOptions as $strKey => $strLabel ) {
-
+        if (is_array($arrOptions) && !empty($arrOptions)) {
+            foreach ($arrOptions as $strKey => $strLabel) {
                 $strOptions .= sprintf( '<option value="%s" %s>%s</option>', $strKey, $this->isCustomSelected( $strKey, 'value', $intIndex ), $strLabel );
             }
         }
@@ -198,10 +181,17 @@ class CatalogDuplexSelectWizard extends \Widget {
         return $strOptions;
     }
 
+    protected function isCustomSelected($strValue, $strPrefix, $intIndex) {
 
-    protected function isCustomSelected( $strValue, $strPrefix, $intIndex ) {
+        if (!isset($this->varValue[$intIndex])) {
+            return '';
+        }
 
-        if ( $this->varValue[ $intIndex ][ $strPrefix ] == $strValue ) return 'selected';
+        if (!isset($this->varValue[$intIndex][$strPrefix])) {
+            return '';
+        }
+
+        if ($this->varValue[$intIndex][$strPrefix] == $strValue) return 'selected';
 
         return '';
     }

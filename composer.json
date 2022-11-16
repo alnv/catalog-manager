@@ -23,6 +23,9 @@
     "contao/core-bundle":"^4.4",
     "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
   },
+  "conflict": {
+    "alnv/catalog-manager-bundle": "*"
+  },
   "replace": {
     "contao-legacy/catalog-manager": "self.version"
   },

@@ -172,7 +172,7 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['flag'] = $arrCatalog['flag'];
                 }
                 if (!is_array($arrCatalog['labelFields']) || empty($arrCatalog['labelFields'])) {
-                    $arrCatalog['labelFields'] = $arrDefaults['labelFields'];
+                    $arrReturn['labelFields'] = $arrDefaults['labelFields'] ?? ['id'];
                 }
                 if (is_array($arrCatalog['headerFields']) && !empty($arrCatalog['headerFields'])) {
                     $arrReturn['headerFields'] = $arrCatalog['headerFields'];
@@ -188,7 +188,6 @@ class CatalogDcExtractor extends CatalogController {
                 }
                 break;
         }
-
         return $arrReturn;
     }
 

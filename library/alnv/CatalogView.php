@@ -58,9 +58,9 @@ class CatalogView extends CatalogController {
 
         $this->setOptions();
 
-        $this->strTimeFormat = $objPage->timeFormat;
-        $this->strDateFormat = $objPage->dateFormat;
-        $this->strDateTimeFormat = $objPage->datimFormat;
+        $this->strTimeFormat = $objPage->timeFormat ?? \Config::get('timeFormat');
+        $this->strDateFormat = $objPage->dateFormat ?? \Config::get('dateFormat');
+        $this->strDateTimeFormat = $objPage->datimFormat ?? \Config::get('datimFormat');
 
         $this->I18nCatalogTranslator->initialize();
 

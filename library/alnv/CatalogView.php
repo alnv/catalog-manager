@@ -54,6 +54,8 @@ class CatalogView extends CatalogController {
 
     public function initialize() {
 
+        $this->objMainTemplate = $this->objMainTemplate ?? new \stdClass();
+
         global $objPage;
 
         $this->setOptions();
@@ -167,9 +169,9 @@ class CatalogView extends CatalogController {
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
 
-            $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns;
-            $this->objMainTemplate->hasRelations = $this->catalogUseRelation ? true : false;
-            $this->objMainTemplate->hasDownloads = $this->catalogUseDownloads ? true : false;
+            $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns ?: [];
+            $this->objMainTemplate->hasRelations = (bool) $this->catalogUseRelation;
+            $this->objMainTemplate->hasDownloads = (bool) $this->catalogUseDownloads;
             $this->objMainTemplate->readMoreColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
             $this->objMainTemplate->sharingButtonsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['sharing'];
             $this->objMainTemplate->downloadsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['downloadLinks'];
@@ -177,7 +179,7 @@ class CatalogView extends CatalogController {
             $this->objMainTemplate->operationsColumnTitle = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['operationsLinks'];
         }
 
-        $this->blnShowAsGroup = $this->catalogGroupBy && $this->strMode == 'view' ? true : false;
+        $this->blnShowAsGroup = $this->catalogGroupBy && $this->strMode == 'view';
 
         $this->objMainTemplate->timeFormat = $this->strTimeFormat;
         $this->objMainTemplate->dateFormat = $this->strDateFormat;
@@ -275,27 +277,17 @@ class CatalogView extends CatalogController {
 
     public function setActiveTableColumns() {
 
-        $this->catalogActiveTableColumns = Toolkit::deserialize( $this->catalogActiveTableColumns );
+        $this->catalogActiveTableColumns = Toolkit::deserialize($this->catalogActiveTableColumns, true);
 
-        if ( !is_array( $this->catalogActiveTableColumns ) ) {
-
-            $this->catalogActiveTableColumns = [];
+        if (empty($this->catalogActiveTableColumns)) {
+            $this->catalogActiveTableColumns = array_keys($this->arrCatalogFields);
         }
 
-        if ( empty( $this->catalogActiveTableColumns ) ) {
-
-            $this->catalogActiveTableColumns = array_keys( $this->arrCatalogFields );
-        }
-
-        foreach ( $this->catalogActiveTableColumns as $strIndex => $strActiveTableColumn ) {
-
-            $arrField = $this->arrCatalogFields[ $strActiveTableColumn ];
-
-            if ( is_array( $arrField ) ) {
-
-                if ( $arrField['type'] == 'upload' && $arrField['useArrayFormat'] ) {
-
-                    unset( $this->catalogActiveTableColumns[ $strIndex ] );
+        foreach ($this->catalogActiveTableColumns as $strIndex => $strActiveTableColumn) {
+            $arrField = $this->arrCatalogFields[$strActiveTableColumn];
+            if (is_array($arrField)) {
+                if ($arrField['type'] == 'upload' && $arrField['useArrayFormat']) {
+                    unset($this->catalogActiveTableColumns[$strIndex]);
                 }
             }
         }

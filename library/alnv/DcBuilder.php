@@ -297,7 +297,6 @@ class DcBuilder extends CatalogController {
     protected function getSortingDc() {
 
         $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
-            
             'fields' => [ 'title' ],
             'labelFields' => [ 'title' ],
             'headerFields' => [ 'id', 'alias', 'title' ],
@@ -313,25 +312,24 @@ class DcBuilder extends CatalogController {
 
             if ( is_array( $this->arrCatalog['labelFields'] ) && !empty( $this->arrCatalog['labelFields'] ) ) {
 
-                $arrLabelFields = $this->arrCatalog['labelFields'];
+                $arrLabelFields = $this->arrCatalog['labelFields'] ?? [];
             }
 
-            $arrReturn['child_record_callback'] = function ( $arrRow ) use ( $arrLabelFields ) {
+            $arrReturn['child_record_callback'] = function ($arrRow) use ($arrLabelFields) {
 
-                $strLabel = $arrLabelFields[0];
+                $strLabel = $arrLabelFields[0] ?? '';
                 $strTemplate = '##' . $strLabel . '##';
                 $objDcCallbacks = new DcCallbacks();
 
-                if ( $this->arrCatalog['useOwnLabelFormat'] ) {
-
+                if ($this->arrCatalog['useOwnLabelFormat']) {
                     $strTemplate = !Toolkit::isEmpty( $this->arrCatalog['labelFormat'] ) ? $this->arrCatalog['labelFormat'] : $strTemplate;
                 }
 
-                return $objDcCallbacks->childRecordCallback( $strTemplate, $this->arrFields, $arrRow, $strLabel );
+                return $objDcCallbacks->childRecordCallback($strTemplate, $this->arrFields, $arrRow, $strLabel);
             };
         }
 
-        if ( in_array( $this->arrCatalog['mode'], [ '1', '2' ] ) && in_array( 'cut', $this->arrCatalog['operations'] ) && in_array( 'sorting', $this->arrCatalog['sortingFields'] ) ) {
+        if (in_array($this->arrCatalog['mode'], [ '1', '2' ]) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['mode'] = 5;
             $arrReturn['paste_button_callback'] = [ 'CatalogManager\DcCallbacks', 'pasteItem' ];
         }
@@ -346,6 +344,10 @@ class DcBuilder extends CatalogController {
 
                 $arrReturn['filter'][] = [ $this->arrCatalog['linkEntityColumn'] . '=?', \Input::get('ctlg_fallback') ];
             }
+        }
+
+        if (empty($arrReturn['fields'])) {
+            unset($arrReturn['fields']);
         }
 
         return $arrReturn;

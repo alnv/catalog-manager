@@ -266,48 +266,43 @@ class Upload {
     }
 
 
-    public static function createEnclosureArray( $varValue, $arrField, $arrCatalog ) {
+    public static function createEnclosureArray($varValue, $arrField, $arrCatalog) {
 
         global $objPage;
 
-        $strDownload = \Input::get( 'file', true );
-        $objFileEntity = \FilesModel::findByUuid( $varValue );
+        $strDownload = \Input::get('file', true);
+        $objFileEntity = \FilesModel::findByUuid($varValue);
 
-        if ( !$objFileEntity->path || $objFileEntity->type != 'file' ) return [];
+        if (!$objFileEntity->path || $objFileEntity->type != 'file') return [];
 
-        $objFile = new \File( $objFileEntity->path, true );
-        $strTitle = $arrCatalog[ $arrField['fileTitle'] ];
-        $strDescription = $arrCatalog[ $arrField['fileText'] ];
+        $objFile = new \File($objFileEntity->path, true);
+        $strTitle = $arrCatalog[$arrField['fileTitle']] ?? '';
+        $strDescription = $arrCatalog[$arrField['fileText']] ?? '';
 
-        if ( !$strTitle ) {
-
-            $strTitle = specialchars( $objFile->name );
+        if (!$strTitle) {
+            $strTitle = \StringUtil::specialchars($objFile->name);
         }
 
         $strHref = \Environment::get('request');
 
         if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
-
             $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
         }
 
-        $strHref .= ( ( \Config::get( 'disableAlias' ) || strpos( $strHref, '?' ) !== false) ? '&amp;' : '?' ) . 'file=' . \System::urlEncode( $objFile->value );
-        $arrMeta = \Frontend::getMetaData( $objFileEntity->meta, $objPage->language );
+        $strHref .= ((\Config::get('disableAlias') || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . \System::urlEncode($objFile->value);
+        $arrMeta = \Frontend::getMetaData($objFileEntity->meta, $objPage->language);
 
-        if ( empty( $arrMeta ) && $objPage->rootFallbackLanguage !== null ) {
-
-            $arrMeta = \Frontend::getMetaData( $objFileEntity->meta, $objPage->rootFallbackLanguage );
+        if (empty($arrMeta) && $objPage->rootFallbackLanguage !== null) {
+            $arrMeta = \Frontend::getMetaData($objFileEntity->meta, $objPage->rootFallbackLanguage);
         }
 
         if ($arrMeta['title'] == '') {
-
-            $arrMeta['title'] = specialchars( $objFile->basename );
+            $arrMeta['title'] = \StringUtil::specialchars($objFile->basename);
         }
 
-        if ( $strDownload != '' && $objFileEntity->path ) \Controller::sendFileToBrowser( $strDownload );
+        if ($strDownload != '' && $objFileEntity->path) \Controller::sendFileToBrowser($strDownload);
 
         return [
-
             'href' => $strHref,
             'meta' => $arrMeta,
             'link' => $strTitle,

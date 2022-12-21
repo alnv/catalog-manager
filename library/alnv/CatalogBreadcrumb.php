@@ -4,46 +4,40 @@ namespace CatalogManager;
 
 class CatalogBreadcrumb extends \Frontend {
 
-
-    public function initialize( $arrItems, $objModule ) {
+    public function initialize($arrItems, $objModule) {
 
         $intLastIndex = count( $arrItems ) -1;
         $arrItem = $arrItems[ $intLastIndex ];
 
-        if ( $arrItem['isActive'] && $arrItem['data']['catalogUseMaster'] ) {
+        if ($arrItem['isActive'] && $arrItem['data']['catalogUseMaster']) {
 
             $arrMasterItem = [];
             $blnShowInBreadcrumb = false;
             $strAlias = \Input::get('auto_item');
 
-            if ( Toolkit::isEmpty( $strAlias )  ) {
-
+            if (Toolkit::isEmpty($strAlias)) {
                 return $arrItems;
             }
 
-            if ( isset( $arrItem['data']['catalogShowInBreadcrumb'] ) && $arrItem['data']['catalogShowInBreadcrumb'] ) {
-
+            if (isset($arrItem['data']['catalogShowInBreadcrumb']) && $arrItem['data']['catalogShowInBreadcrumb']) {
                 $blnShowInBreadcrumb = true;
-                $arrItems[ $intLastIndex ]['isActive'] = false;
+                $arrItems[$intLastIndex]['isActive'] = false;
             }
 
             $strTable = $arrItem['data']['catalogMasterTable'];
 
-            if ( $strTable && $this->Database->tableExists( $strTable ) ) {
+            if ($strTable && $this->Database->tableExists($strTable)) {
 
-                $objEntity = $this->Database->prepare( sprintf( 'SELECT * FROM %s WHERE `alias` = ? OR `id` = ?', $strTable ) )->limit(1)->execute( $strAlias, (int)$strAlias );
+                $objEntity = $this->Database->prepare(sprintf('SELECT * FROM %s WHERE `alias` = ? OR `id` = ?', $strTable))->limit(1)->execute($strAlias, (int) $strAlias);
 
-                if ( $objEntity->numRows ) {
+                if ($objEntity->numRows) {
 
                     $strHref = $arrItem['href'];
 
-                    if ( !$arrItem['data']['catalogUseRouting'] ) {
-
-                        $strHref = $this->generateHref( $arrItem['data']['id'], $objEntity->alias );
+                    if (!$arrItem['data']['catalogUseRouting']) {
+                        $strHref = $this->generateHref($arrItem['data']['id'], $objEntity->alias);
                     }
-                    
-                    if ( Toolkit::isEmpty( $strHref ) ) {
-
+                    if (Toolkit::isEmpty($strHref)) {
                         $strHref = $arrItem['href'];
                     }
 
@@ -55,14 +49,14 @@ class CatalogBreadcrumb extends \Frontend {
                     $arrMasterItem['catalogAttributes'] = $objEntity->row();
                 }
 
-                if ( $blnShowInBreadcrumb ) {
-
-                    $arrItems[] = $arrMasterItem;
+                if (empty($arrMasterItem)) {
+                    return $arrItems;
                 }
 
-                else {
-
-                    $arrItems[ $intLastIndex ] = $arrMasterItem;
+                if ($blnShowInBreadcrumb) {
+                    $arrItems[] = $arrMasterItem;
+                } else {
+                    $arrItems[$intLastIndex] = $arrMasterItem;
                 }
             }
         }
@@ -70,24 +64,14 @@ class CatalogBreadcrumb extends \Frontend {
         return $arrItems;
     }
 
+    protected function generateHref($strPageID, $strAlias = '') {
 
-    protected function generateHref( $strPageID, $strAlias = '' ) {
+        $objPage = \PageModel::findWithDetails($strPageID);
 
-        $objPage = \PageModel::findWithDetails( $strPageID );
-
-        if ( $objPage !== null ) {
-
-            return $this->generateUrl( $objPage->row(), $strAlias );
+        if ($objPage !== null) {
+            return $objPage->getFrontendUrl(($strAlias?'/'.$strAlias:''));
         }
 
         return '';
-    }
-
-
-    protected function generateUrl( $arrPage, $strAlias ) {
-
-        if ( !is_array( $arrPage ) ) return '';
-
-        return $this->generateFrontendUrl( $arrPage, ( $strAlias ? '/' . $strAlias : '' ) );
     }
 }

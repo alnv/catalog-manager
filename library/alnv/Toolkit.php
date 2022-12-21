@@ -152,18 +152,27 @@ class Toolkit {
         
         return $arrInputTypes[$strType] ?? 'text';
     }
-    
-    
-    public static function getSqlDataType( $strType ) {
 
-        return self::$arrSqlTypes[ $strType ] ? self::$arrSqlTypes[ $strType ] : "varchar(256) NOT NULL default ''";
+    public static function getSqlDataType($strType) {
+
+        $strSql = self::$arrSqlTypes[$strType] ?? '';
+
+        return $strSql ?: "varchar(256) NOT NULL default ''";
     }
-    
 
-    public static function isDcConformField( $arrField ) {
+    public static function isDcConformField($arrField) {
 
-        if ( empty( $arrField ) && !is_array( $arrField ) ) return false;
-        if ( in_array( $arrField['type'], self::excludeFromDc() ) ) return false;
+        if (empty($arrField) && !is_array($arrField)) {
+            return false;
+        }
+
+        if (!isset($arrField['type'])) {
+            return false;
+        }
+
+        if ( in_array($arrField['type'], self::excludeFromDc())) {
+            return false;
+        }
 
         return true;
     }
@@ -197,6 +206,7 @@ class Toolkit {
 
     public static function parseCatalog( $arrCatalog ) {
 
+
         $arrCatalog['cTables'] = self::parseStringToArray( $arrCatalog['cTables'] );
         $arrCatalog['languages'] = self::parseStringToArray( $arrCatalog['languages'] );
         $arrCatalog['operations'] = self::parseStringToArray( $arrCatalog['operations'] );
@@ -209,14 +219,14 @@ class Toolkit {
     }
 
     
-    public static function parseStringToArray( $strValue ) {
+    public static function parseStringToArray($strValue) {
 
-        if ( $strValue && is_string( $strValue ) ) {
+        if (isset($strValue) && $strValue && is_string($strValue)) {
 
-            return deserialize( $strValue, true );
+            return \StringUtil::deserialize($strValue, true);
         }
 
-        if ( is_array( $strValue ) ) {
+        if (is_array($strValue)) {
 
             return $strValue;
         }

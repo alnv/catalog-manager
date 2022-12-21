@@ -69,27 +69,24 @@ class tl_module extends \Backend {
     }
 
 
-    public function disableNotRequiredFields( \DataContainer $dc ) {
+    public function disableNotRequiredFields(\DataContainer $dc) {
 
-        $arrModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute( $dc->id )->row();
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $arrModule['catalogTablename'] ];
+        $arrModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute($dc->id)->row();
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$arrModule['catalogTablename']] ?? '';
 
-        if ( !$arrCatalog ) return null;
+        if (!$arrCatalog) return null;
 
-        if ( !$arrCatalog['pTable'] ) {
-
+        if (!$arrCatalog['pTable']) {
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinParentTable']['eval']['disabled'] = true;
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable']['eval']['chosen'] = false;
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedParentTable']['eval']['disabled'] = true;
         }
 
-        if ( empty( $arrCatalog['cTables'] ) ) {
-
+        if (empty($arrCatalog['cTables'])) {
             $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables']['eval']['disabled'] = true;
         }
 
-        if ( $arrModule['type'] == 'catalogFilter' ) {
-
+        if ($arrModule['type'] == 'catalogFilter') {
             \Message::addError( 'This module is deprecated. Please use filter generator.' );
         }
     }
@@ -215,19 +212,14 @@ class tl_module extends \Backend {
     public function getChildTablesByTablename( \DataContainer $dc ) {
 
         $arrReturn = [];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $dc->activeRecord->catalogTablename ];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$dc->activeRecord->catalogTablename] ?? '';
 
-        if ( is_array( $arrCatalog ) && isset( $arrCatalog['cTables'] ) ) {
-
-            $arrTables = Toolkit::deserialize( $arrCatalog['cTables'] );
-
-            foreach ( $arrTables as $strTable ) {
-
-                if ( is_array( $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ] ) ) {
-
-                    $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $strTable ]['name'];
-
-                    $arrReturn[ $strTable ] = $strName ? $strName : $strTable;
+        if (is_array($arrCatalog) && isset($arrCatalog['cTables'])) {
+            $arrTables = Toolkit::deserialize($arrCatalog['cTables']);
+            foreach ($arrTables as $strTable) {
+                if ( is_array($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable])) {
+                    $strName = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable]['name'];
+                    $arrReturn[$strTable] = $strName ?: $strTable;
                 }
             }
         }

@@ -27,15 +27,14 @@ class Radio {
     }
 
 
-    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+    public static function parseValue($varValue, $arrField, $arrCatalog) {
 
-        if ( !$varValue ) return '';
+        if (!$varValue) return '';
 
-        static::getOptionsFromCache( $arrField['fieldname'], $arrField );
+        static::getOptionsFromCache($arrField['fieldname'], $arrField);
 
-        if ( !empty( static::$arrCache[ $arrField['fieldname'] ] ) && is_array( static::$arrCache[ $arrField['fieldname'] ] ) ) {
-
-            return static::$arrCache[ $arrField['fieldname'] ][ $varValue ] ?: $varValue;
+        if (!empty( static::$arrCache[$arrField['fieldname']]) && is_array(static::$arrCache[$arrField['fieldname']])) {
+            return static::$arrCache[$arrField['fieldname']][$varValue] ?? $varValue;
         }
 
         return $varValue;

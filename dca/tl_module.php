@@ -866,34 +866,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogEnableParentFilter'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogEnableParentFilter'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'clr'
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormTemplate'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogFormTemplate'],
     'inputType' => 'select',
-    'default' => 'form_catalog_default',
-
+    // 'default' => 'form_catalog_default',
     'eval' => [
-
         'chosen' => true,
         'maxlength' => 32,
         'tl_class' => 'w50',
     ],
-
     'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFormTemplates' ],
-
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
 ];

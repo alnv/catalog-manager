@@ -53,25 +53,23 @@ class CatalogDcExtractor extends CatalogController {
         return $arrReturn;
     }
 
-
     public function convertCatalogToDataContainer() {
 
-        $this->DcModifier->initialize( $this->strTable );
-        $arrReturn = $GLOBALS['TL_DCA'][ $this->strTable ];
-        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][ $this->strTable ];
+        $this->DcModifier->initialize($this->strTable);
+        $arrReturn = $GLOBALS['TL_DCA'][$this->strTable];
+        $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$this->strTable];
 
-        if ( !is_array( $arrCatalog ) ) return [];
-        if ( !is_array( $arrReturn ) ) $arrReturn = [];
+        if (!is_array($arrCatalog)) return [];
+        if (!is_array($arrReturn)) $arrReturn = [];
 
-        $arrReturn = $this->convertCatalogToDcConfig( $arrReturn, $arrCatalog, 'config' );
-        $arrReturn = $this->convertCatalogToDcSorting( $arrReturn, $arrCatalog, 'list' );
-        $arrReturn = $this->convertCatalogToDcLabel( $arrReturn, $arrCatalog, 'list' );
-        $arrReturn = $this->convertCatalogToDcOperations( $arrReturn, $arrCatalog, 'list' );
-        $arrReturn = $this->convertCatalogToDcFieldsAndPalettes( $arrReturn, $arrCatalog, 'fields' );
+        $arrReturn = $this->convertCatalogToDcConfig($arrReturn, $arrCatalog, 'config');
+        $arrReturn = $this->convertCatalogToDcSorting($arrReturn, $arrCatalog, 'list');
+        $arrReturn = $this->convertCatalogToDcLabel($arrReturn, $arrCatalog, 'list');
+        $arrReturn = $this->convertCatalogToDcOperations($arrReturn, $arrCatalog, 'list');
+        $arrReturn = $this->convertCatalogToDcFieldsAndPalettes($arrReturn, $arrCatalog, 'fields');
 
         return $arrReturn;
     }
-
 
     public function extract() {
 
@@ -137,7 +135,7 @@ class CatalogDcExtractor extends CatalogController {
         $arrCatalog['flag'] = $arrCatalog['flag'] ?? '';
         $arrCatalog['sortingFields'] = $arrCatalog['sortingFields'] ?? [];
         $arrCatalog['headerFields'] = $arrCatalog['headerFields'] ?? '';
-        $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? [];
+        // $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? [];
 
         switch ($strMode) {
             case '1':
@@ -171,9 +169,13 @@ class CatalogDcExtractor extends CatalogController {
                 if (!Toolkit::isEmpty( $arrCatalog['flag'])) {
                     $arrReturn['flag'] = $arrCatalog['flag'];
                 }
-                if (!is_array($arrCatalog['labelFields']) || empty($arrCatalog['labelFields'])) {
-                    $arrReturn['labelFields'] = $arrDefaults['labelFields'] ?? ['id'];
+                /*
+                if (isset($arrCatalog['labelFields']) && is_array($arrCatalog['labelFields']) && !empty($arrCatalog['labelFields'])) {
+                    $arrReturn['label'] = $arrCatalog['labelFields'];
+                } else {
+                    $arrReturn['label'] = $arrDefaults['labelFields'] ?? ['id'];
                 }
+                */
                 if (is_array($arrCatalog['headerFields']) && !empty($arrCatalog['headerFields'])) {
                     $arrReturn['headerFields'] = $arrCatalog['headerFields'];
                 } else {
@@ -188,6 +190,7 @@ class CatalogDcExtractor extends CatalogController {
                 }
                 break;
         }
+
         return $arrReturn;
     }
 
@@ -463,7 +466,6 @@ class CatalogDcExtractor extends CatalogController {
         return $arrReturn;
     }
 
-
     protected function convertCatalogToDcSorting($arrReturn, $arrCatalog, $strDcConfigType) {
 
         if (!is_array($arrReturn[$strDcConfigType])) $arrReturn[$strDcConfigType] = [];
@@ -475,16 +477,14 @@ class CatalogDcExtractor extends CatalogController {
             'headerFields' => $arrReturn[$strDcConfigType]['sorting']['headerFields']??''
         ];
 
-        $arrSortingDc = $this->setDcSortingByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
+        $arrSortingDc = $this->setDcSortingByMode((int) $arrCatalog['mode'], $arrCatalog, $arrDefaults);
 
-        foreach ( $arrSortingDc as $strKey => $strValue ) {
-
-            $arrReturn[ $strDcConfigType ]['sorting'][ $strKey ] = $strValue;
+        foreach ($arrSortingDc as $strKey => $strValue) {
+            $arrReturn[$strDcConfigType]['sorting'][$strKey] = $strValue;
         }
 
         return $arrReturn;
     }
-
 
     protected function convertCatalogToDcLabel( $arrReturn, $arrCatalog, $strDcConfigType ) {
 

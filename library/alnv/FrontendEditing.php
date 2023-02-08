@@ -185,8 +185,8 @@ class FrontendEditing extends CatalogController {
         $this->objTemplate->categories = $arrCategories;
         $this->objTemplate->onChangeId = $this->strOnChangeId;
         $this->objTemplate->catalogAttributes = $this->arrCatalogAttributes;
-        $this->objTemplate->action = \Environment::get( 'indexFreeRequest' );
-        $this->objTemplate->message = $this->CatalogMessage->get( $this->id );
+        $this->objTemplate->action = \Environment::get('indexFreeRequest');
+        $this->objTemplate->message = $this->CatalogMessage->get($this->id);
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->back = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
         $this->objTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['submit'];
@@ -706,7 +706,8 @@ class FrontendEditing extends CatalogController {
                 'table' => $this->catalogTablename
             ];
 
-            $this->CatalogMessage->set( 'deleteMessage', $arrData, $this->id );
+            $this->CatalogMessage->set('deleteMessage', $arrData, $this->id);
+
             $this->CatalogEvents->addEventListener( 'delete', $arrData, $this );
             $this->SQLBuilder->Database->prepare( sprintf( 'DELETE FROM %s WHERE id = ? ', $this->catalogTablename ) )->execute( $this->strItemID );
             \System::log( 'DELETE FROM '. $this->catalogTablename .' WHERE id='. $this->strItemID, __METHOD__, TL_GENERAL );
@@ -1025,8 +1026,8 @@ class FrontendEditing extends CatalogController {
                     'table' => $this->catalogTablename,
                 ];
 
-                $this->CatalogMessage->set( 'insertMessage', $arrData, $this->id );
-                $this->CatalogEvents->addEventListener( 'create', $arrData, $this );
+                $this->CatalogMessage->set('insertMessage', $arrData, $this->id);
+                $this->CatalogEvents->addEventListener('create', $arrData, $this);
 
                 $this->redirectAfterInsertion( $this->strRedirectID, $strQuery );
 
@@ -1061,7 +1062,7 @@ class FrontendEditing extends CatalogController {
                         'table' => $this->catalogTablename,
                     ];
 
-                    $this->CatalogMessage->set( 'updateMessage', $arrData, $this->id );
+                    $this->CatalogMessage->set('updateMessage', $arrData, $this->id);
                     $this->CatalogEvents->addEventListener( 'update', $arrData, $this );
                     $this->SQLBuilder->Database->prepare( 'UPDATE '. $this->catalogTablename .' %s WHERE id = ?' )->set( $this->arrValues )->execute( $this->strItemID );
 

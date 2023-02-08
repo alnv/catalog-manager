@@ -140,20 +140,15 @@ class DcBuilder extends CatalogController {
     protected function getConfigDc() {
 
         $arrReturn = [
-
             'dataContainer' => 'Table',
             'label' => $this->I18nCatalogTranslator->get( 'module', $this->strTable, [ 'titleOnly' => true ] ),
             'enableVersioning' => $this->arrCatalog['useVC'] ? true : false,
-
             'oncut_callback' => [],
             'onload_callback' => [],
             'onsubmit_callback' => [],
             'ondelete_callback' => [],
-
             'sql' => [
-
                 'keys' => [
-
                     'id' => 'primary'
                 ]
             ]
@@ -296,7 +291,7 @@ class DcBuilder extends CatalogController {
 
     protected function getSortingDc() {
 
-        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode( $this->arrCatalog['mode'], $this->arrCatalog, [
+        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode((int) $this->arrCatalog['mode'], $this->arrCatalog, [
             'fields' => [ 'title' ],
             'labelFields' => [ 'title' ],
             'headerFields' => [ 'id', 'alias', 'title' ],

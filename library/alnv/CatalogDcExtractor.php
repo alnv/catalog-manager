@@ -79,7 +79,7 @@ class CatalogDcExtractor extends CatalogController {
 
             $arrSorting = [
 
-                'mode' => $objModule->mode,
+                'mode' => (int) $objModule->mode,
                 'flag' => $objModule->flag,
                 'fields' => Toolkit::deserialize( $objModule->sortingFields )
             ];
@@ -127,8 +127,10 @@ class CatalogDcExtractor extends CatalogController {
 
     public function setDcSortingByMode($strMode, $arrCatalog=[], $arrDefaults=[]) {
 
+        $strMode = (int) $strMode;
+
         $arrReturn = [
-            'mode' => $strMode ?: '0'
+            'mode' => $strMode ?: 0
         ];
 
         $arrCatalog['panelLayout'] = $arrCatalog['panelLayout'] ?? '';
@@ -138,7 +140,7 @@ class CatalogDcExtractor extends CatalogController {
         // $arrCatalog['labelFields'] = $arrCatalog['labelFields'] ?? [];
 
         switch ($strMode) {
-            case '1':
+            case 1:
                 if (!Toolkit::isEmpty($arrCatalog['flag'])) {
                     $arrReturn['flag'] = !Toolkit::isEmpty( $arrCatalog['flag'] ) ? $arrCatalog['flag'] : $arrDefaults['flag'];
                 }
@@ -148,7 +150,7 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
                 return $arrReturn;
-            case '2':
+            case 2:
                 $arrReturn['panelLayout'] = Toolkit::createPanelLayout($arrCatalog['panelLayout']);
                 if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
@@ -156,11 +158,11 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['fields'] = $arrDefaults['fields'];
                 }
                 return $arrReturn;
-            case '0':
-            case '5':
-            case '3':
+            case 0:
+            case 5:
+            case 3:
                 return $arrReturn;
-            case '4':
+            case 4:
                 if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
                 } else {
@@ -182,7 +184,7 @@ class CatalogDcExtractor extends CatalogController {
                     $arrReturn['headerFields'] = $arrDefaults['headerFields'];
                 }
                 break;
-            case '6':
+            case 6:
                 if (is_array($arrCatalog['sortingFields']) && !empty($arrCatalog['sortingFields'])) {
                     $arrReturn['fields'] = $arrCatalog['sortingFields'];
                 } else {
@@ -195,11 +197,12 @@ class CatalogDcExtractor extends CatalogController {
     }
 
 
-    public function setDcLabelByMode( $strMode, $arrCatalog = [], $arrDefaults = [] ) {
+    public function setDcLabelByMode($strMode, $arrCatalog = [], $arrDefaults = []) {
 
+        $strMode = (int) $strMode;
         $arrReturn = [];
 
-        if ( in_array( $strMode, [ '0', '1', '2', '3' ] ) ) {
+        if ( in_array($strMode, [0, 1, 2, 3])) {
 
             if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
 
@@ -218,12 +221,12 @@ class CatalogDcExtractor extends CatalogController {
             return $arrReturn;
         }
 
-        if ( $strMode === '4' ) {
+        if ( $strMode === 4 ) {
 
             return $arrReturn;
         }
 
-        if ( $strMode === '5' || $strMode === '6' ) {
+        if ( $strMode === 5 || $strMode === 6 ) {
 
             if ( is_array( $arrCatalog['labelFields'] ) && !empty( $arrCatalog['labelFields'] ) ) {
 
@@ -494,7 +497,7 @@ class CatalogDcExtractor extends CatalogController {
             'fields' => $arrReturn[$strDcConfigType]['sorting']['fields'] ?? ''
         ];
 
-        $arrLabelDc = $this->setDcLabelByMode( $arrCatalog['mode'], $arrCatalog, $arrDefaults );
+        $arrLabelDc = $this->setDcLabelByMode((int) $arrCatalog['mode'], $arrCatalog, $arrDefaults );
 
         foreach ( $arrLabelDc as $strKey => $strValue ) {
 

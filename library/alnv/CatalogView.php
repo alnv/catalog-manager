@@ -705,10 +705,15 @@ class CatalogView extends CatalogController {
                 $arrCatalog['map'] = $this->arrCatalogMapViewOptions;
             }
 
-            if ( $this->strMode == 'master' ) {
-
-                if ( $this->catalogSEOTitle ) $objPage->pageTitle = $arrCatalog[$this->catalogSEOTitle] ? strip_tags( $arrCatalog[$this->catalogSEOTitle] ) : $objPage->pageTitle;
-                if ( $this->catalogSEODescription ) $objPage->description = $arrCatalog[$this->catalogSEODescription] ? strip_tags( $arrCatalog[$this->catalogSEODescription] ) : $objPage->description;
+            if ($this->strMode == 'master') {
+                if ($this->catalogSEOTitle) {
+                    $arrCatalog[$this->catalogSEOTitle] ?? '';
+                    $objPage->pageTitle = $arrCatalog[$this->catalogSEOTitle] ? strip_tags($arrCatalog[$this->catalogSEOTitle]) : $objPage->pageTitle;
+                }
+                if ($this->catalogSEODescription) {
+                    $arrCatalog[$this->catalogSEODescription] ?? '';
+                    $objPage->description = $arrCatalog[$this->catalogSEODescription] ? strip_tags($arrCatalog[$this->catalogSEODescription]) : $objPage->description;
+                }
             }
 
             $arrCatalog['_moduleId'] = $this->id;

@@ -504,22 +504,16 @@ class CatalogFieldBuilder extends CatalogController {
                 return $arrField;
 
             case 'pid' :
-
                 if ( $this->arrCatalog['pTable'] ) {
-
                     $arrField['_dcFormat'] = [
-
                         'label' => $arrField['_dcFormat']['label'],
                         'sql' => "int(10) unsigned NOT NULL default '0'",
                         'foreignKey' => sprintf( '%s.id', $this->arrCatalog['pTable'] ),
-
                         'relation' => [
-
                             'type' => 'belongsTo',
                             'load' => 'eager'
                         ]
                     ];
-
                     return $arrField;
                 }
 

@@ -26,13 +26,13 @@ class CatalogMessage extends CatalogController {
         $objTemplate->setData($arrTemplate);
         $strMessageTemplate = $objTemplate->parse();
 
-        $_SESSION['ctlg_FEE_Message'.( $strID ?: '' )] = $strMessageTemplate;
+        $_SESSION['ctlg_FEE_Message'.($strID ?: '')] = $strMessageTemplate;
     }
 
-    public function get($strID = '') {
+    public function get($strID='') {
 
         $strCookieName = 'ctlg_FEE_Message' . ($strID ?: '');
-        $strMessage = $_SESSION[$strCookieName];
+        $strMessage = $_SESSION[$strCookieName] ?? '';
 
         if (!$strMessage) $strMessage = '';
         unset($_SESSION[$strCookieName]);

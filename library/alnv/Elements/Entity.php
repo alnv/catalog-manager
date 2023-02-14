@@ -118,18 +118,19 @@ class Entity extends CatalogController {
         $arrJoinedTables = [];
         foreach ( $this->arrFields as $strFieldname => $arrField ) {
 
-            if ($this->arrSettings['noJoins']) {
+            if (($this->arrSettings['noJoins']??'')) {
                 continue;
             }
 
-            if ( in_array( $arrField['type'], [ 'select', 'checkbox', 'radio' ] ) ) {
+            if (in_array($arrField['type'], ['select', 'checkbox', 'radio'])) {
 
-                if ( isset( $arrField['optionsType'] ) && in_array( $arrField['optionsType'], [ 'useDbOptions', 'useForeignKey' ] )  ) {
+                if (isset($arrField['optionsType']) && in_array($arrField['optionsType'], ['useDbOptions', 'useForeignKey'])) {
 
-                    if ( !$arrField['multiple'] && !in_array( $arrField['dbTable'], $arrJoinedTables ) ) {
+                    $arrField['multiple'] = $arrField['multiple'] ?? '';
+
+                    if (!$arrField['multiple'] && !in_array($arrField['dbTable'], $arrJoinedTables)) {
 
                         $arrQuery['joins'][] = [
-
                             'multiple' => false,
                             'type' => 'LEFT JOIN',
                             'field' => $strFieldname,
@@ -140,18 +141,17 @@ class Entity extends CatalogController {
 
                         $arrJoinedTables[] = $arrField['dbTable'];
                         $objChildFieldBuilder = new CatalogFieldBuilder();
-                        $objChildFieldBuilder->initialize( $arrField['dbTable'] );
+                        $objChildFieldBuilder->initialize($arrField['dbTable']);
 
-                        $this->mergeFields( $objChildFieldBuilder->getCatalogFields( true, null ), $arrField['dbTable'] );
+                        $this->mergeFields($objChildFieldBuilder->getCatalogFields(true, null), $arrField['dbTable']);
                     }
                 }
             }
         }
 
-        if ( $this->arrCatalog['pTable'] && !$this->arrSettings['noParentJoin'] ) {
+        if (($this->arrCatalog['pTable']??'') && !($this->arrSettings['noParentJoin']??'')) {
 
             $arrQuery['joins'][] = [
-
                 'field' => 'pid',
                 'onField' => 'id',
                 'multiple' => false,
@@ -160,15 +160,14 @@ class Entity extends CatalogController {
             ];
 
             $objParentFieldBuilder = new CatalogFieldBuilder();
-            $objParentFieldBuilder->initialize( $this->arrCatalog['pTable'] );
+            $objParentFieldBuilder->initialize($this->arrCatalog['pTable']);
 
-            $this->mergeFields( $objParentFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable'] );
+            $this->mergeFields($objParentFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable']);
         }
 
-        $objEntity = $this->SQLQueryBuilder->execute( $arrQuery );
+        $objEntity = $this->SQLQueryBuilder->execute($arrQuery);
 
-        if ( !$objEntity->numRows ) {
-
+        if (!$objEntity->numRows) {
             return [];
         }
 

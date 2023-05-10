@@ -1,9 +1,9 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.32.34");
+define("CATALOG_MANAGER_VERSION", "1.32.35");
 
 if (!\Config::get('hideCatalogManager')) {
-    array_insert( $GLOBALS['BE_MOD'], 3, [
+    array_insert($GLOBALS['BE_MOD'], 3, [
         'catalog-manager-extensions' => [
             'catalog-manager' => [
                 'name' => 'catalog-manager',
@@ -64,13 +64,13 @@ $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnUpdate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnDelete'] = [];
 
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\PseudoInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\ActiveInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\MasterInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\CatalogInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\TimestampInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\FilterValuesInsertTag', 'getInsertTagValue' ];
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ 'CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue' ];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\PseudoInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\ActiveInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\MasterInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\CatalogInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\TimestampInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\FilterValuesInsertTag', 'getInsertTagValue'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['getAllEvents'][] = ['CatalogManager\CatalogParser', 'getAllEvents'];
 if (version_compare('4.12', VERSION, '<=')) {
     if (\System::getContainer()->getParameter('contao.legacy_routing')) {
@@ -96,7 +96,7 @@ $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['VISIBILITY_PANEL'] = FALSE;
 
-$GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] = [ 'tinyMCE', 'tinyFlash' ];
+$GLOBALS['TL_CATALOG_MANAGER']['tinyMCE'] = ['tinyMCE', 'tinyFlash'];
 
 $GLOBALS['TL_WRAPPERS']['stop'][] = 'fieldsetStop';
 $GLOBALS['TL_WRAPPERS']['start'][] = 'fieldsetStart';
@@ -119,19 +119,19 @@ $GLOBALS['TL_FFL']['catalogMessageForm'] = 'CatalogManager\CatalogMessageForm';
 $GLOBALS['TL_FFL']['catalogFineUploader'] = 'CatalogManager\CatalogFineUploaderForm';
 
 $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPES'] = [
-    'text' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'date' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'radio' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'hidden' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'number' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'select' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'message' => [ 'dcPicker' => 'message;', 'dcType' => 'dcPaletteField' ],
-    'map' => [ 'dcPicker' => 'description;', 'dcType' => 'dcPaletteField' ],
-    'upload' => [ 'dcPicker' => 'statement;', 'dcType' => 'dcPaletteField' ],
-    'checkbox' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'textarea' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'dbColumn' => [ 'dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField' ],
-    'fieldsetStart' => [  'dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend' ],
+    'text' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'date' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'radio' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'hidden' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'number' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'select' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'message' => ['dcPicker' => 'message;', 'dcType' => 'dcPaletteField'],
+    'map' => ['dcPicker' => 'description;', 'dcType' => 'dcPaletteField'],
+    'upload' => ['dcPicker' => 'statement;', 'dcType' => 'dcPaletteField'],
+    'checkbox' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'textarea' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'dbColumn' => ['dcPicker' => 'useIndex;', 'dcType' => 'dcPaletteField'],
+    'fieldsetStart' => ['dcPicker' => 'isHidden;', 'dcType' => 'dcPaletteLegend'],
     'fieldsetStop' => []
 ];
 
@@ -149,61 +149,61 @@ $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'] = [
 ];
 
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['catalog_manager'] = [
-    'ctlg_entity_status_insert'   => [
-        'recipients' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*' ],
-        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*' ],
-        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*' ],
-        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
-        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
-        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*' ],
-        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*' ]
+    'ctlg_entity_status_insert' => [
+        'recipients' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_replyTo' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_sender_name' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_recipient_cc' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_recipient_bcc' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_sender_address' => ['admin_email', 'raw_*', 'clean_*'],
+        'email_subject' => ['admin_email', 'domain', 'raw_*', 'clean_*'],
+        'attachment_tokens' => ['raw_*', 'clean_*', 'field_*', 'table_*'],
+        'file_name' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*'],
+        'file_content' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*'],
+        'email_text' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*'],
+        'email_html' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*']
     ],
-    'ctlg_entity_status_duplicate'   => [
-        'recipients' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ]
+    'ctlg_entity_status_duplicate' => [
+        'recipients' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_replyTo' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_name' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_cc' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_bcc' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_address' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_subject' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'attachment_tokens' => ['raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_name' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_content' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_text' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_html' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*']
     ],
     'ctlg_entity_status_update' => [
-        'recipients' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_replyTo' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_name' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_address' => [ 'admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_subject' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*' ],
-        'attachment_tokens' => [ 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_name' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_content' => [ 'admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_text' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_html' => [ 'admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ]
+        'recipients' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_replyTo' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_name' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_cc' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_bcc' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_address' => ['admin_email', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'email_subject' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'rawOld_*', 'cleanOld_*'],
+        'attachment_tokens' => ['raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_name' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_content' => ['admin_email', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_text' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_html' => ['admin_email', 'domain', 'raw_*', 'clean_*', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*']
     ],
     'ctlg_entity_status_delete' => [
-        'recipients' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_replyTo' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_name' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_cc' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_recipient_bcc' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_sender_address' => [ 'admin_email', 'rawOld_*', 'cleanOld_*' ],
-        'email_subject' => [ 'admin_email', 'domain', 'rawOld_*', 'cleanOld_*' ],
-        'attachment_tokens' => [ 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_name' => [ 'admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'file_content' => [ 'admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_text' => [ 'admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
-        'email_html' => [ 'admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*' ],
+        'recipients' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_replyTo' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_name' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_cc' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_recipient_bcc' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_sender_address' => ['admin_email', 'rawOld_*', 'cleanOld_*'],
+        'email_subject' => ['admin_email', 'domain', 'rawOld_*', 'cleanOld_*'],
+        'attachment_tokens' => ['field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_name' => ['admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'file_content' => ['admin_email', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_text' => ['admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
+        'email_html' => ['admin_email', 'domain', 'field_*', 'table_*', 'rawOld_*', 'cleanOld_*'],
     ]
 ];
 

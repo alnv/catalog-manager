@@ -2,20 +2,23 @@
 
 namespace CatalogManager;
 
-class DcModifier extends CatalogController {
+class DcModifier extends CatalogController
+{
 
     protected $arrFields = [];
     protected $arrPalettes = [];
     protected $strTablename = '';
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
 
         $this->import('I18nCatalogTranslator');
     }
 
-    public function initialize($strTablename) {
+    public function initialize($strTablename)
+    {
 
         if (!$strTablename) {
             return null;
@@ -28,7 +31,7 @@ class DcModifier extends CatalogController {
 
         $this->I18nCatalogTranslator->initialize();
 
-        if (!empty($GLOBALS['TL_DCA'][$this->strTablename]['fields']) && is_array($GLOBALS['TL_DCA'][$this->strTablename]['fields'])){
+        if (!empty($GLOBALS['TL_DCA'][$this->strTablename]['fields']) && is_array($GLOBALS['TL_DCA'][$this->strTablename]['fields'])) {
             $this->arrFields = array_keys($GLOBALS['TL_DCA'][$this->strTablename]['fields']) ?: [];
         }
 
@@ -37,24 +40,26 @@ class DcModifier extends CatalogController {
         }
     }
 
-    public function getPalettes() {
+    public function getPalettes()
+    {
 
         $arrReturn = [];
 
-        if ( is_array( $this->arrPalettes ) ) {
+        if (is_array($this->arrPalettes)) {
 
-            foreach ( $this->arrPalettes as $strPalette ) {
+            foreach ($this->arrPalettes as $strPalette) {
 
-                if ( $strPalette == '__selector__' ) continue;
+                if ($strPalette == '__selector__') continue;
 
-                $arrReturn[ $strPalette ] = $strPalette;
+                $arrReturn[$strPalette] = $strPalette;
             }
         }
 
         return $arrReturn;
     }
 
-    public function getFields($strName) {
+    public function getFields($strName)
+    {
 
         $arrReturn = [];
 
@@ -63,12 +68,12 @@ class DcModifier extends CatalogController {
         $strPalette = $GLOBALS['TL_DCA'][$this->strTablename]['palettes'][$strName];
         $arrFields = preg_split('/(,|;)/', $strPalette);
 
-        if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
-            foreach ( $arrFields as $strField ) {
-                if ( in_array( $strField, $this->arrFields ) ) {
-                    $strLabel = $this->I18nCatalogTranslator->get( 'field', $strField, [ 'table' => $this->strTablename, 'title' => $strField, 'titleOnly' => true ] );
-                    if ( is_array( $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ] ) ) $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $strField ][0] ?: $strLabel;
-                    $arrReturn[ $strField ] = $strLabel;
+        if (!empty($arrFields) && is_array($arrFields)) {
+            foreach ($arrFields as $strField) {
+                if (in_array($strField, $this->arrFields)) {
+                    $strLabel = $this->I18nCatalogTranslator->get('field', $strField, ['table' => $this->strTablename, 'title' => $strField, 'titleOnly' => true]);
+                    if (is_array($GLOBALS['TL_LANG'][$this->strTablename][$strField])) $strLabel = $GLOBALS['TL_LANG'][$this->strTablename][$strField][0] ?: $strLabel;
+                    $arrReturn[$strField] = $strLabel;
                 }
             }
         }
@@ -76,37 +81,38 @@ class DcModifier extends CatalogController {
         return $arrReturn;
     }
 
-    public function getLegends( $strName ) {
+    public function getLegends($strName)
+    {
 
         $arrReturn = [];
 
-        if ( !$strName ) return $arrReturn;
+        if (!$strName) return $arrReturn;
 
-        $strPalette = $GLOBALS['TL_DCA'][ $this->strTablename ]['palettes'][ $strName ];
+        $strPalette = $GLOBALS['TL_DCA'][$this->strTablename]['palettes'][$strName];
 
-        if ( $strPalette ) {
+        if ($strPalette) {
 
-            $arrLegends = explode( ';', $strPalette );
+            $arrLegends = explode(';', $strPalette);
 
-            if ( is_array( $arrLegends ) && !empty( $arrLegends ) ) {
+            if (is_array($arrLegends) && !empty($arrLegends)) {
 
-                foreach ( $arrLegends as $strLegend ) {
+                foreach ($arrLegends as $strLegend) {
 
                     $strLegendName = '';
-                    preg_match( '/{(([^{}]*|(?R))*)}/', $strLegend, $arrMatch, PREG_OFFSET_CAPTURE, 0 );
+                    preg_match('/{(([^{}]*|(?R))*)}/', $strLegend, $arrMatch, PREG_OFFSET_CAPTURE, 0);
 
-                    if ( isset( $arrMatch[1] ) && is_array( $arrMatch[1] ) ) {
-                        
+                    if (isset($arrMatch[1]) && is_array($arrMatch[1])) {
+
                         $strLegendName = $arrMatch[1][0] ?: '';
                     }
 
-                   if ( $strLegendName ) {
+                    if ($strLegendName) {
 
-                       $arrLegendName = explode( ':' , $strLegendName );
-                       $strLabel = $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrLegendName[0] ];
-                       
-                       $arrReturn[ $strLegendName ] = $strLabel ?: $arrLegendName[0];
-                   }
+                        $arrLegendName = explode(':', $strLegendName);
+                        $strLabel = $GLOBALS['TL_LANG'][$this->strTablename][$arrLegendName[0]];
+
+                        $arrReturn[$strLegendName] = $strLabel ?: $arrLegendName[0];
+                    }
                 }
             }
         }
@@ -114,88 +120,91 @@ class DcModifier extends CatalogController {
         return $arrReturn;
     }
 
-    public function addFieldToPalette( $arrField, $arrPickedPalettes, &$arrPalettes = [] ) {
+    public function addFieldToPalette($arrField, $arrPickedPalettes, &$arrPalettes = [])
+    {
 
-        foreach ( $arrPickedPalettes as $arrPickedPalette ) {
+        foreach ($arrPickedPalettes as $arrPickedPalette) {
 
             $strField = $arrPickedPalette['value'];
             $strPalette = $arrPickedPalette['key'];
             $strFieldname = $arrField['fieldname'];
 
-            if ( !$strField || !$strPalette ) continue;
+            if (!$strField || !$strPalette) continue;
 
             $strModifiedPalette = '';
-            $arrFieldsPlucked = preg_split( '/(,|;)/', $arrPalettes[ $strPalette ] );
+            $arrFieldsPlucked = preg_split('/(,|;)/', $arrPalettes[$strPalette]);
 
-            foreach ( $arrFieldsPlucked as $intIndex => $strFieldPlucked ) {
+            foreach ($arrFieldsPlucked as $intIndex => $strFieldPlucked) {
 
                 $blnEnding = false;
 
-                if ( Toolkit::isEmpty( $strFieldPlucked ) ) continue;
+                if (Toolkit::isEmpty($strFieldPlucked)) continue;
 
-                if ( isset( $arrFieldsPlucked[ $intIndex +1 ] ) && $this->isLegend( $arrFieldsPlucked[ $intIndex +1 ] ) ) $blnEnding = true;
+                if (isset($arrFieldsPlucked[$intIndex + 1]) && $this->isLegend($arrFieldsPlucked[$intIndex + 1])) $blnEnding = true;
 
-                if ( $strFieldPlucked != $strFieldname ) $strModifiedPalette .= $strFieldPlucked;
+                if ($strFieldPlucked != $strFieldname) $strModifiedPalette .= $strFieldPlucked;
 
-                if ( $strField == $strFieldPlucked ) $strModifiedPalette .= ',' . $strFieldname;
+                if ($strField == $strFieldPlucked) $strModifiedPalette .= ',' . $strFieldname;
 
-                $strModifiedPalette .= ( $blnEnding ? ';' : ',' );
+                $strModifiedPalette .= ($blnEnding ? ';' : ',');
             }
 
-            $arrPalettes[ $strPalette ] = $strModifiedPalette;
+            $arrPalettes[$strPalette] = $strModifiedPalette;
         }
 
         return $arrPalettes;
     }
 
-    public function addLegendToPalette( $arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart ) {
+    public function addLegendToPalette($arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart=[])
+    {
 
-        foreach ( $arrPickedPalettes as $arrPickedPalette ) {
+        foreach ($arrPickedPalettes as $arrPickedPalette) {
 
             $arrModifiedPalettes = [];
             $strPalette = $arrPickedPalette['key'];
             $strLegend = $arrPickedPalette['value'];
 
-            if ( Toolkit::isEmpty( $strPalette ) ) continue;
+            if (Toolkit::isEmpty($strPalette)) continue;
 
-            if ( Toolkit::isEmpty( $strLegend ) ) {
+            if (Toolkit::isEmpty($strLegend)) {
 
-                $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ( $arrFieldsetStart['isHidden'] ? ':hide' : '' ) . '},' . implode( ',' , $arrFields );
-                $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrFieldsetStart['title'] ] = $this->I18nCatalogTranslator->get( 'legend', $arrFieldsetStart['title'], [ 'title' => $arrFieldsetStart[ 'label' ] ] );
+                $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ($arrFieldsetStart['isHidden'] ? ':hide' : '') . '},' . implode(',', $arrFields);
+                $GLOBALS['TL_LANG'][$this->strTablename][$arrFieldsetStart['title']] = $this->I18nCatalogTranslator->get('legend', $arrFieldsetStart['title'], ['title' => $arrFieldsetStart['label']]);
             }
 
-            $arrPalettesPlucked = explode( ';', $arrPalettes[ $strPalette ] );
+            $arrPalettesPlucked = explode(';', $arrPalettes[$strPalette]);
 
-            foreach ( $arrPalettesPlucked as $strFieldset ) {
+            foreach ($arrPalettesPlucked as $strFieldset) {
 
-                if ( Toolkit::isEmpty( $strFieldset ) ) continue;
+                if (Toolkit::isEmpty($strFieldset)) continue;
 
                 $arrModifiedPalettes[] = $strFieldset;
 
-                if ( $arrMatch = $this->isLegend( $strFieldset, true ) ) {
+                if ($arrMatch = $this->isLegend($strFieldset, true)) {
 
-                    $arrLegendName = isset( $arrMatch[1] ) ? $arrMatch[1][0] : '';
-                    $arrLegendName = explode( ':', $arrLegendName );
+                    $arrLegendName = isset($arrMatch[1]) ? $arrMatch[1][0] : '';
+                    $arrLegendName = explode(':', $arrLegendName);
 
-                    if ( $arrLegendName[0] ==  $strLegend ) {
+                    if ($arrLegendName[0] == $strLegend) {
 
-                        $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ( $arrFieldsetStart['isHidden'] ? ':hide' : '' ) . '},' . implode( ',' , $arrFields );
-                        $GLOBALS['TL_LANG'][ $this->strTablename ][ $arrFieldsetStart['title'] ] = $this->I18nCatalogTranslator->get( 'legend', $arrFieldsetStart['title'], [ 'title' => $arrFieldsetStart[ 'label' ] ] );
+                        $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ($arrFieldsetStart['isHidden'] ? ':hide' : '') . '},' . implode(',', $arrFields);
+                        $GLOBALS['TL_LANG'][$this->strTablename][$arrFieldsetStart['title']] = $this->I18nCatalogTranslator->get('legend', $arrFieldsetStart['title'], ['title' => $arrFieldsetStart['label']]);
                     }
                 }
             }
 
-            $arrPalettes[ $strPalette ] = implode( ';', $arrModifiedPalettes );
+            $arrPalettes[$strPalette] = implode(';', $arrModifiedPalettes);
         }
 
     }
 
-    protected function isLegend( $strValue, $blnReturnMatch = false ) {
+    protected function isLegend($strValue, $blnReturnMatch = false)
+    {
 
-        preg_match( '/{(([^{}]*|(?R))*)}/', $strValue, $arrMatch, PREG_OFFSET_CAPTURE, 0 );
+        preg_match('/{(([^{}]*|(?R))*)}/', $strValue, $arrMatch, PREG_OFFSET_CAPTURE, 0);
 
-        if ( $blnReturnMatch ) return $arrMatch;
+        if ($blnReturnMatch) return $arrMatch;
 
-        return !empty( $arrMatch );
+        return !empty($arrMatch);
     }
 }

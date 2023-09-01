@@ -101,11 +101,11 @@ class CatalogFieldBuilder extends CatalogController
                         unset($arrFields[$objCatalogFields->fieldname]);
                     }
 
-                    // $strFieldname = $objCatalogFields->fieldname ?: $objCatalogFields->id;
-                    if (!$objCatalogFields->fieldname) {
+                    $strFieldname = $objCatalogFields->fieldname ?: $objCatalogFields->id;
+                    if (!$strFieldname) {
                         continue;
                     }
-                    $arrFields[$objCatalogFields->fieldname] = $arrField;
+                    $arrFields[$strFieldname] = $arrField;
                 }
             }
         }

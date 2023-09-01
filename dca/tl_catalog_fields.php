@@ -9,20 +9,20 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'onload_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'checkPermission' ],
-            [ 'CatalogManager\tl_catalog_fields', 'setOrderField' ],
-            [ 'CatalogManager\tl_catalog_fields', 'changeGlobals' ],
-            [ 'CatalogManager\tl_catalog_fields', 'addPalettePicker' ],
+            ['CatalogManager\tl_catalog_fields', 'checkPermission'],
+            ['CatalogManager\tl_catalog_fields', 'setOrderField'],
+            ['CatalogManager\tl_catalog_fields', 'changeGlobals'],
+            ['CatalogManager\tl_catalog_fields', 'addPalettePicker'],
         ],
 
         'onsubmit_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'createFieldOnSubmit' ]
+            ['CatalogManager\tl_catalog_fields', 'createFieldOnSubmit']
         ],
 
         'ondelete_callback' => [
 
-            [ 'CatalogManager\tl_catalog_fields', 'dropFieldOnDelete' ]
+            ['CatalogManager\tl_catalog_fields', 'dropFieldOnDelete']
         ],
 
         'sql' => [
@@ -41,8 +41,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
         'sorting' => [
 
             'mode' => 4,
-            'fields' => [ 'sorting' ],
-            'headerFields' => [ 'id', 'name', 'tablename' ],
+            'fields' => ['sorting'],
+            'headerFields' => ['id', 'name', 'tablename'],
 
             'child_record_callback' => [
 
@@ -79,9 +79,9 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['toggle'],
                 'icon' => 'visible.gif',
-                'href' => sprintf( 'catalogTable=%s', 'tl_catalog_fields' ),
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", 'tl_catalog_fields' ) .' )"',
-                'button_callback' => [ 'CatalogManager\DcCallbacks', 'toggleIcon' ]
+                'href' => sprintf('catalogTable=%s', 'tl_catalog_fields'),
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, ' . sprintf("'%s'", 'tl_catalog_fields') . ' )"',
+                'button_callback' => ['CatalogManager\DcCallbacks', 'toggleIcon']
             ],
 
             'show' => [
@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
     'palettes' => [
 
-        '__selector__' => [ 'type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage' ],
+        '__selector__' => ['type', 'autoCompletionType', 'optionsType', 'fileType', 'addMapInfoBox', 'useSize', 'usePreviewImage'],
 
         'default' => '{general_legend},type',
         'text' => '{general_legend},type,title,label,description,value,dynValue;{database_legend},fieldname,statement,useIndex;{autocompletion_legend:hide},autoCompletionType;{evaluation_legend:hide},mandatory,doNotCopy,isUnique,spaceToUnderscore,allowHtml,nospace,readonly,pagePicker,trailingSlash,doNotSaveEmpty,minlength,maxlength,rgxp,tl_class;{frontend_legend:hide},placeholder,tabindex,template,cssID;{panelLayout_legend:hide},exclude,filter,search,sort,flag,charLength;{invisible_legend:hide},invisible',
@@ -175,7 +175,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
         'type' => [
 
-            'label' =>  &$GLOBALS['TL_LANG']['tl_catalog_fields']['type'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['type'],
             'inputType' => 'select',
             'default' => 'text',
 
@@ -211,7 +211,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'save_callback' => [
 
-                [ 'CatalogManager\tl_catalog_fields', 'parseTitle' ],
+                ['CatalogManager\tl_catalog_fields', 'parseTitle'],
             ],
 
             'exclude' => true,
@@ -280,11 +280,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'save_callback' => [
 
-                [ 'CatalogManager\tl_catalog_fields', 'generateFieldname' ],
-                [ 'CatalogManager\tl_catalog_fields', 'checkBlacklist' ],
-                [ 'CatalogManager\tl_catalog_fields', 'checkFieldname' ],
-                [ 'CatalogManager\tl_catalog_fields', 'checkUniqueValue' ],
-                [ 'CatalogManager\tl_catalog_fields', 'renameFieldname' ]
+                ['CatalogManager\tl_catalog_fields', 'generateFieldname'],
+                ['CatalogManager\tl_catalog_fields', 'checkBlacklist'],
+                ['CatalogManager\tl_catalog_fields', 'checkFieldname'],
+                ['CatalogManager\tl_catalog_fields', 'checkUniqueValue'],
+                ['CatalogManager\tl_catalog_fields', 'renameFieldname']
             ],
 
             'exclude' => true,
@@ -402,7 +402,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'tl_class' => 'w50 m12',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption' => true,
             ],
 
             'options_callback' => [
@@ -437,7 +437,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'save_callback' => [
 
-                [ 'CatalogManager\tl_catalog_fields', 'validatePath' ]
+                ['CatalogManager\tl_catalog_fields', 'validatePath']
             ],
 
 
@@ -546,7 +546,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 255,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true
+                'includeBlankOption' => true
             ],
 
             'options_callback' => [
@@ -573,7 +573,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50',
                 'mandatory' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
             'options_callback' => [
@@ -597,7 +597,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 255,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
             'options_callback' => [
@@ -829,7 +829,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'inputType' => 'checkbox',
 
             'eval' => [
-                
+
                 'multiple' => true,
                 'tl_class' => 'clr',
             ],
@@ -912,7 +912,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'chosen' => true,
                 'tl_class' => 'w50 clr',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
             'options_callback' => [
@@ -988,16 +988,16 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFilesTypes' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getFilesTypes'],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['fileType'],
-            
+
             'sql' => "varchar(256) NOT NULL default ''"
         ],
-        
+
         'useSize' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['useSize'],
@@ -1020,17 +1020,17 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
             'eval' => [
 
-                'nospace'=>true,
-                'rgxp'=>'natural',
+                'nospace' => true,
+                'rgxp' => 'natural',
                 'maxlength' => 64,
-                'helpwizard'=>true,
+                'helpwizard' => true,
                 'tl_class' => 'w50 m12',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getImagesSizes' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getImagesSizes'],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
@@ -1061,10 +1061,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1081,10 +1081,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1101,10 +1101,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1121,10 +1121,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1141,10 +1141,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1161,10 +1161,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTextFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1181,7 +1181,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption' => true,
             ],
 
             'options' => [
@@ -1208,7 +1208,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption' => true,
             ],
 
             'options' => [
@@ -1249,10 +1249,10 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'mandatory' => true,
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getTables' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getTables'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1271,8 +1271,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'mandatory' => true,
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByDbTable' ],
-            
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getColumnsByDbTable'],
+
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -1288,11 +1288,11 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getColumnsByDbTable' ],
-            
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getColumnsByDbTable'],
+
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
@@ -1306,8 +1306,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
 
                 'tl_class' => 'clr',
                 'dcTable' => 'tl_catalog_fields',
-                'taxonomyTable' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyTable' ],
-                'taxonomyEntities' => [ 'CatalogManager\tl_catalog_fields', 'getTaxonomyFields' ]
+                'taxonomyTable' => ['CatalogManager\tl_catalog_fields', 'getTaxonomyTable'],
+                'taxonomyEntities' => ['CatalogManager\tl_catalog_fields', 'getTaxonomyFields']
             ],
 
             'exclude' => true,
@@ -1326,8 +1326,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true,
                 'mainLabel' => 'catalogManagerFields',
                 'dependedLabel' => 'catalogManagerOrder',
-                'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
-                'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
+                'mainOptions' => ['CatalogManager\OrderByHelper', 'getSortableFields'],
+                'dependedOptions' => ['CatalogManager\OrderByHelper', 'getOrderByItems']
             ],
 
             'exclude' => true,
@@ -1348,7 +1348,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "char(128) NOT NULL default ''"
@@ -1368,7 +1368,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getCatalogFieldsByParentID'],
 
             'exclude' => true,
             'sql' => "char(128) NOT NULL default ''"
@@ -1388,13 +1388,13 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'mandatory' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getMapTemplates' ],
-            
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getMapTemplates'],
+
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],
 
-        'mapZoom'=> [
+        'mapZoom' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['mapZoom'],
             'inputType' => 'select',
@@ -1406,7 +1406,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+            'options' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 
             'exclude' => true,
             'sql' => "smallint(5) unsigned NOT NULL default '0'"
@@ -1424,7 +1424,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options' => [ 'ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN' ],
+            'options' => ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN'],
 
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['mapType'],
 
@@ -1564,7 +1564,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getImageTemplates' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getImageTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -1583,7 +1583,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getGalleryTemplates' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getGalleryTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -1635,7 +1635,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getOrderFields' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getOrderFields'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -1661,7 +1661,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
             'inputType' => 'select',
             'default' => 4,
 
-            'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+            'options' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 
             'eval' => [
 
@@ -1716,7 +1716,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFileTemplates' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getFileTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -1735,7 +1735,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFilesTemplates' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getFilesTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
@@ -1769,7 +1769,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'mandatory' => true,
             ],
 
-            'options' => [ 'first', 'middle', 'last' ],
+            'options' => ['first', 'middle', 'last'],
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['reference']['previewImagePosition'],
 
             'exclude' => true,
@@ -1817,8 +1817,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true,
                 'mainLabel' => 'catalogPalette',
                 'dependedLabel' => 'catalogFieldset',
-                'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
-                'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcLegends' ],
+                'mainOptions' => ['CatalogManager\tl_catalog_fields', 'getDcPalettes'],
+                'dependedOptions' => ['CatalogManager\tl_catalog_fields', 'getDcLegends'],
             ],
 
             'exclude' => true,
@@ -1837,8 +1837,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true,
                 'mainLabel' => 'catalogPalette',
                 'dependedLabel' => 'catalogField',
-                'mainOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcPalettes' ],
-                'dependedOptions' => [ 'CatalogManager\tl_catalog_fields', 'getDcFields' ],
+                'mainOptions' => ['CatalogManager\tl_catalog_fields', 'getDcPalettes'],
+                'dependedOptions' => ['CatalogManager\tl_catalog_fields', 'getDcFields'],
             ],
 
             'exclude' => true,
@@ -1875,7 +1875,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true
             ],
 
-            'options_callback' => [ 'CatalogManager\tl_catalog_fields', 'getFieldTemplates' ],
+            'options_callback' => ['CatalogManager\tl_catalog_fields', 'getFieldTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"

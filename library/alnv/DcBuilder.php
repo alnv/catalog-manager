@@ -88,7 +88,7 @@ class DcBuilder extends CatalogController
 
         if ($this->arrCatalog['operations']) {
 
-            $arrOperations = deserialize($this->arrCatalog['operations']);
+            $arrOperations = \StringUtil::deserialize($this->arrCatalog['operations'], true);
         }
 
         if (!empty($arrOperations) && is_array($arrOperations)) {
@@ -167,9 +167,9 @@ class DcBuilder extends CatalogController
 
         foreach ($this->arrFields as $arrField) {
 
-            if (!isset($arrField['useIndex'])) continue;
+            if ((!isset($arrField['useIndex']) || !$arrField['useIndex']) || !$arrField['fieldname']) continue;
 
-            $arrReturn['sql']['keys'][$arrField['fieldname']] = $arrField['useIndex'];
+            $arrReturn['sql']['keys'][$arrField['fieldname']] = 'index';
         }
 
         if ($this->CatalogFieldBuilder->shouldBeUsedParentTable()) {
@@ -299,7 +299,7 @@ class DcBuilder extends CatalogController
     protected function getSortingDc()
     {
 
-        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode((int)$this->arrCatalog['mode'], $this->arrCatalog, [
+        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode((int) $this->arrCatalog['mode'], $this->arrCatalog, [
             'fields' => ['title'],
             'labelFields' => ['title'],
             'headerFields' => ['id', 'alias', 'title'],

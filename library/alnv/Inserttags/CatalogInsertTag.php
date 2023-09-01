@@ -2,16 +2,18 @@
 
 namespace CatalogManager;
 
-class CatalogInsertTag extends \Frontend {
+class CatalogInsertTag extends \Frontend
+{
 
 
-    public function getInsertTagValue( $strTag ) {
+    public function getInsertTagValue($strTag)
+    {
 
-        $arrTags = explode( '::', $strTag );
+        $arrTags = explode('::', $strTag);
 
-        if ( empty( $arrTags ) || !is_array( $arrTags ) ) return false;
+        if (empty($arrTags) || !is_array($arrTags)) return false;
 
-        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_LIST' ) {
+        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_LIST') {
 
             $strDefault = '';
             $strModuleId = '';
@@ -19,18 +21,18 @@ class CatalogInsertTag extends \Frontend {
             $strDelimiter = ',';
             $strReturnField = 'id';
 
-            if ( isset( $arrTags[1] ) && strpos( $arrTags[1], '?' ) !== false ) {
+            if (isset($arrTags[1]) && strpos($arrTags[1], '?') !== false) {
 
-                $arrChunks = explode('?', urldecode( $arrTags[1] ), 2 );
-                $strSource = \StringUtil::decodeEntities( $arrChunks[1] );
-                $strSource = str_replace( '[&]', '&', $strSource );
-                $arrParams = explode( '&', $strSource );
+                $arrChunks = explode('?', urldecode($arrTags[1]), 2);
+                $strSource = \StringUtil::decodeEntities($arrChunks[1]);
+                $strSource = str_replace('[&]', '&', $strSource);
+                $arrParams = explode('&', $strSource);
 
-                foreach ( $arrParams as $strParam ) {
+                foreach ($arrParams as $strParam) {
 
-                    list( $strKey, $strOption ) = explode('=', $strParam);
+                    list($strKey, $strOption) = explode('=', $strParam);
 
-                    switch ( $strKey ) {
+                    switch ($strKey) {
 
                         case 'module':
 
@@ -59,15 +61,15 @@ class CatalogInsertTag extends \Frontend {
                         case 'if':
 
                             $blnIfActive = false;
-                            $arrOptions = explode( ',', $strOption );
-                            
-                            if ( is_array( $arrOptions ) && !empty( $strOption ) ) {
+                            $arrOptions = explode(',', $strOption);
 
-                                foreach ( $arrOptions as $strField ) {
+                            if (is_array($arrOptions) && !empty($strOption)) {
 
-                                    $strValue = \Input::get( $strField );
+                                foreach ($arrOptions as $strField) {
 
-                                    if ( !\Toolkit::isEmpty( $strValue ) ) {
+                                    $strValue = \Input::get($strField);
+
+                                    if (!\Toolkit::isEmpty($strValue)) {
 
                                         $blnIfActive = true;
 
@@ -83,15 +85,15 @@ class CatalogInsertTag extends \Frontend {
                 }
             }
 
-            if ( !$strModuleId || !$blnActive ) return '';
+            if (!$strModuleId || !$blnActive) return '';
 
-            $objModule = $this->Database->prepare( 'SELECT * FROM tl_module WHERE id = ? AND `type` = ?' )->limit( 1 )->execute( $strModuleId, 'catalogUniversalView' );
+            $objModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ? AND `type` = ?')->limit(1)->execute($strModuleId, 'catalogUniversalView');
 
-            if ( !$objModule->numRows ) return '';
+            if (!$objModule->numRows) return '';
 
-            $this->import( 'CatalogInput' );
-            $this->import( 'SQLQueryBuilder' );
-            $this->import( 'CatalogFieldBuilder' );
+            $this->import('CatalogInput');
+            $this->import('SQLQueryBuilder');
+            $this->import('CatalogFieldBuilder');
 
             $arrQuery = [
 
@@ -99,16 +101,16 @@ class CatalogInsertTag extends \Frontend {
                 'where' => []
             ];
 
-            $arrTaxonomies = Toolkit::deserialize( $objModule->catalogTaxonomies );
-            $this->CatalogFieldBuilder->initialize( $objModule->catalogTablename );
+            $arrTaxonomies = Toolkit::deserialize($objModule->catalogTaxonomies);
+            $this->CatalogFieldBuilder->initialize($objModule->catalogTablename);
             $arrCatalog = $this->CatalogFieldBuilder->getCatalog();
 
-            if ( is_array( $arrTaxonomies['query'] ) && !empty( $arrTaxonomies['query'] ) && $objModule->catalogUseTaxonomies ) {
+            if (is_array($arrTaxonomies['query']) && !empty($arrTaxonomies['query']) && $objModule->catalogUseTaxonomies) {
 
-                $arrQuery['where'] = Toolkit::parseQueries( $arrTaxonomies['query'] );
+                $arrQuery['where'] = Toolkit::parseQueries($arrTaxonomies['query']);
             }
 
-            if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) && !BE_USER_LOGGED_IN ) {
+            if (is_array($arrCatalog['operations']) && in_array('invisible', $arrCatalog['operations']) && !BE_USER_LOGGED_IN) {
 
                 $dteTime = \Date::floorToMinute();
 
@@ -157,37 +159,37 @@ class CatalogInsertTag extends \Frontend {
                 ];
             }
 
-            if ( $objModule->catalogUseRadiusSearch ) {
+            if ($objModule->catalogUseRadiusSearch) {
 
                 $arrRSValues = [];
-                $arrRSAttributes = [ 'rs_cty', 'rs_strt', 'rs_pstl', 'rs_cntry', 'rs_strtn' ];
+                $arrRSAttributes = ['rs_cty', 'rs_strt', 'rs_pstl', 'rs_cntry', 'rs_strtn'];
 
-                foreach ( $arrRSAttributes as $strSRAttribute ) {
+                foreach ($arrRSAttributes as $strSRAttribute) {
 
-                    $strValue = $this->CatalogInput->getActiveValue( $strSRAttribute );
+                    $strValue = $this->CatalogInput->getActiveValue($strSRAttribute);
 
-                    if ( !Toolkit::isEmpty( $strValue ) && is_string( $strValue ) ) {
+                    if (!Toolkit::isEmpty($strValue) && is_string($strValue)) {
 
-                        $arrRSValues[ $strSRAttribute ] = $strValue;
+                        $arrRSValues[$strSRAttribute] = $strValue;
                     }
                 }
 
-                if ( !empty( $arrRSValues ) && is_array( $arrRSValues ) ) {
+                if (!empty($arrRSValues) && is_array($arrRSValues)) {
 
-                    if ( !$arrRSValues['rs_cntry'] && $objModule->catalogRadioSearchCountry ) $arrRSValues['rs_cntry'] = $objModule->catalogRadioSearchCountry;
+                    if (!$arrRSValues['rs_cntry'] && $objModule->catalogRadioSearchCountry) $arrRSValues['rs_cntry'] = $objModule->catalogRadioSearchCountry;
 
                     $objGeoCoding = new GeoCoding();
-                    $objGeoCoding->setCity( $arrRSValues['rs_cty'] );
-                    $objGeoCoding->setStreet( $arrRSValues['rs_strt'] );
-                    $objGeoCoding->setPostal( $arrRSValues['rs_pstl'] );
-                    $objGeoCoding->setCountry( $arrRSValues['rs_cntry'] );
-                    $objGeoCoding->setStreetNumber( $arrRSValues['rs_strtn'] );
-                    $strDistance = $this->CatalogInput->getActiveValue( 'rs_dstnc' );
-                    $arrCords = $objGeoCoding->getCords( '', 'en', true );
+                    $objGeoCoding->setCity($arrRSValues['rs_cty']);
+                    $objGeoCoding->setStreet($arrRSValues['rs_strt']);
+                    $objGeoCoding->setPostal($arrRSValues['rs_pstl']);
+                    $objGeoCoding->setCountry($arrRSValues['rs_cntry']);
+                    $objGeoCoding->setStreetNumber($arrRSValues['rs_strtn']);
+                    $strDistance = $this->CatalogInput->getActiveValue('rs_dstnc');
+                    $arrCords = $objGeoCoding->getCords('', 'en', true);
 
-                    if ( Toolkit::isEmpty( $strDistance ) || is_array( $strDistance ) ) $strDistance = '50';
+                    if (Toolkit::isEmpty($strDistance) || is_array($strDistance)) $strDistance = '50';
 
-                    if ( $arrCords['lat'] && $arrCords['lng'] ) {
+                    if ($arrCords['lat'] && $arrCords['lng']) {
 
                         $arrQuery['distance'] = [
 
@@ -201,24 +203,24 @@ class CatalogInsertTag extends \Frontend {
                 }
             }
 
-            if ( $objModule->catalogEnableParentFilter ) {
+            if ($objModule->catalogEnableParentFilter) {
 
-                if ( \Input::get( 'pid' ) ) {
+                if (\Input::get('pid')) {
 
                     $arrQuery['where'][] = [
 
                         'field' => 'pid',
                         'operator' => 'equal',
-                        'value' => \Input::get( 'pid' )
+                        'value' => \Input::get('pid')
                     ];
                 }
             }
 
-            $arrOrderBy = \StringUtil::deserialize( $objModule->catalogOrderBy, true );
+            $arrOrderBy = \StringUtil::deserialize($objModule->catalogOrderBy, true);
 
-            if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+            if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
 
-                foreach ( $arrOrderBy as $arrOrder ) {
+                foreach ($arrOrderBy as $arrOrder) {
 
                     $arrQuery['orderBy'][] = [
 
@@ -228,67 +230,67 @@ class CatalogInsertTag extends \Frontend {
                 }
             }
 
-            if ( $objModule->catalogPerPage || $objModule->catalogOffset ) {
+            if ($objModule->catalogPerPage || $objModule->catalogOffset) {
 
                 $arrQuery['pagination'] = [
 
-                    'limit' => (int) $objModule->catalogPerPage,
-                    'offset' => (int) $objModule->catalogOffset
+                    'limit' => (int)$objModule->catalogPerPage,
+                    'offset' => (int)$objModule->catalogOffset
                 ];
             }
 
             $arrReturn = [];
-            $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+            $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 
-            if ( !$objEntities->numRows ) {
+            if (!$objEntities->numRows) {
 
                 return $strDefault;
             }
 
-            while ( $objEntities->next() ) {
+            while ($objEntities->next()) {
 
                 $strValue = $objEntities->{$strReturnField};
 
-                if ( Toolkit::isEmpty( $strValue ) ) {
+                if (Toolkit::isEmpty($strValue)) {
 
                     continue;
                 }
 
-                $arrValues = explode( ',', $strValue );
+                $arrValues = explode(',', $strValue);
 
-                if ( !is_array( $arrValues ) || empty( $arrValues ) ) {
+                if (!is_array($arrValues) || empty($arrValues)) {
 
                     continue;
                 }
 
-                foreach ( $arrValues as $strValue ) {
+                foreach ($arrValues as $strValue) {
 
                     $arrReturn[] = $strValue;
                 }
             }
 
-            $arrReturn = array_unique( $arrReturn );
+            $arrReturn = array_unique($arrReturn);
 
-            return implode( $strDelimiter, $arrReturn );
+            return implode($strDelimiter, $arrReturn);
         }
 
-        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_FORM' ) {
+        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_FORM') {
 
             $strFormId = $arrTags[1];
 
-            if ( !$strFormId ) {
+            if (!$strFormId) {
 
                 return '';
             }
 
-            $objForm = new CatalogFormFilter( $strFormId );
+            $objForm = new CatalogFormFilter($strFormId);
 
-            if ( !$objForm->getState() ) {
+            if (!$objForm->getState()) {
 
                 return '';
             }
 
-            if ( $objForm->disableAutoItem() ) {
+            if ($objForm->disableAutoItem()) {
 
                 return '';
             }
@@ -296,17 +298,17 @@ class CatalogInsertTag extends \Frontend {
             return $objForm->render();
         }
 
-        if ( isset( $arrTags[0] ) && $arrTags[0] == 'CTLG_ENTITY_URL' ) {
+        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_ENTITY_URL') {
 
             $strModuleId = $arrTags[1];
             $strEntityId = $arrTags[2];
 
-            if ( !$strModuleId || !$strEntityId ) {
+            if (!$strModuleId || !$strEntityId) {
 
                 return '';
             }
 
-            return Toolkit::getEntityUrl( $strModuleId, $strEntityId );
+            return Toolkit::getEntityUrl($strModuleId, $strEntityId);
         }
 
         return false;

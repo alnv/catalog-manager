@@ -219,14 +219,13 @@ class Toolkit
 
     public static function parseCatalog($arrCatalog)
     {
-
-        $arrCatalog['cTables'] = self::parseStringToArray($arrCatalog['cTables']);
-        $arrCatalog['languages'] = self::parseStringToArray(($arrCatalog['languages'] ?? ''));
-        $arrCatalog['operations'] = self::parseStringToArray($arrCatalog['operations']);
-        $arrCatalog['panelLayout'] = self::parseStringToArray($arrCatalog['panelLayout']);
-        $arrCatalog['labelFields'] = self::parseStringToArray($arrCatalog['labelFields']);
-        $arrCatalog['headerFields'] = self::parseStringToArray($arrCatalog['headerFields']);
-        $arrCatalog['sortingFields'] = self::parseStringToArray($arrCatalog['sortingFields']);
+        $arrCatalog['cTables'] = self::parseStringToArray($arrCatalog['cTables'] ?? []);
+        $arrCatalog['languages'] = self::parseStringToArray($arrCatalog['languages'] ?? []);
+        $arrCatalog['operations'] = self::parseStringToArray($arrCatalog['operations'] ?? []);
+        $arrCatalog['panelLayout'] = self::parseStringToArray($arrCatalog['panelLayout'] ?? []);
+        $arrCatalog['labelFields'] = self::parseStringToArray($arrCatalog['labelFields'] ?? []);
+        $arrCatalog['headerFields'] = self::parseStringToArray($arrCatalog['headerFields'] ?? []);
+        $arrCatalog['sortingFields'] = self::parseStringToArray($arrCatalog['sortingFields'] ?? []);
 
         return $arrCatalog;
     }

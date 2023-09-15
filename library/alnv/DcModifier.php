@@ -155,7 +155,7 @@ class DcModifier extends CatalogController
         return $arrPalettes;
     }
 
-    public function addLegendToPalette($arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart=[])
+    public function addLegendToPalette($arrFields, $arrPickedPalettes, &$arrPalettes = [], $arrFieldsetStart = [])
     {
 
         foreach ($arrPickedPalettes as $arrPickedPalette) {

@@ -101,10 +101,12 @@ class CatalogFieldBuilder extends CatalogController
                         unset($arrFields[$objCatalogFields->fieldname]);
                     }
 
-                    $strFieldname = $objCatalogFields->fieldname ?: $objCatalogFields->id;
+                    $strFieldname = $objCatalogFields->fieldname ?: ('f' . $objCatalogFields->id);
+
                     if (!$strFieldname) {
                         continue;
                     }
+
                     $arrFields[$strFieldname] = $arrField;
                 }
             }
@@ -559,8 +561,6 @@ class CatalogFieldBuilder extends CatalogController
                 }];
 
                 return $arrField;
-
-                break;
         }
 
         return $arrField;

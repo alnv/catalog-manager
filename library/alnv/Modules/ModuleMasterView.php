@@ -2,7 +2,8 @@
 
 namespace CatalogManager;
 
-class ModuleMasterView extends \Module {
+class ModuleMasterView extends \Module
+{
 
 
     protected $strAct = null;
@@ -10,9 +11,10 @@ class ModuleMasterView extends \Module {
     protected $strTemplate = 'mod_catalog_master';
 
 
-    public function generate() {
+    public function generate()
+    {
 
-        if ( TL_MODE == 'BE' ) {
+        if (TL_MODE == 'BE') {
 
             $objTemplate = new \BackendTemplate('be_wildcard');
 
@@ -20,23 +22,23 @@ class ModuleMasterView extends \Module {
             $objTemplate->link = $this->name;
             $objTemplate->title = $this->headline;
             $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-            $objTemplate->wildcard = '### ' . utf8_strtoupper( $GLOBALS['TL_LANG']['FMD']['catalogMasterView'][0] ) . ' ###';
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['catalogMasterView'][0]) . ' ###';
 
             return $objTemplate->parse();
         }
 
-        if ( TL_MODE == 'FE' && $this->catalogCustomTemplate ) $this->strTemplate = $this->catalogCustomTemplate;
+        if (TL_MODE == 'FE' && $this->catalogCustomTemplate) $this->strTemplate = $this->catalogCustomTemplate;
 
-        if ( !\Input::get( 'auto_item' ) ) {
+        if (!\Input::get('auto_item')) {
 
             return '';
         }
 
         \System::loadLanguageFile('tl_module');
 
-        $this->strMasterAlias = \Input::get( 'auto_item' );
+        $this->strMasterAlias = \Input::get('auto_item');
 
-        if ( \Input::get( 'pdf' . $this->id ) ) {
+        if (\Input::get('pdf' . $this->id)) {
 
             $this->strAct = 'pdf';
         }
@@ -45,17 +47,18 @@ class ModuleMasterView extends \Module {
     }
 
 
-    protected function compile() {
+    protected function compile()
+    {
 
         global $objPage;
 
-        if ( $this->strAct && $this->strAct == 'pdf' ) {
+        if ($this->strAct && $this->strAct == 'pdf') {
 
-            $objEntity = new Entity( \Input::get( 'pdf' . $this->id ), $this->catalogTablename );
-            $objEntity->getPdf( $this->id, $this->catalogPdfTemplate );
+            $objEntity = new Entity(\Input::get('pdf' . $this->id), $this->catalogTablename);
+            $objEntity->getPdf($this->id, $this->catalogPdfTemplate);
         }
 
-        $this->import( 'CatalogView' );
+        $this->import('CatalogView');
 
         $arrQuery = [
             'where' => [
@@ -69,7 +72,7 @@ class ModuleMasterView extends \Module {
             ]
         ];
 
-        if ( is_numeric( $this->strMasterAlias ) ) {
+        if (is_numeric($this->strMasterAlias)) {
 
             $arrQuery['where'][0][] = [
                 'field' => 'id',
@@ -84,17 +87,19 @@ class ModuleMasterView extends \Module {
         $this->CatalogView->strTemplate = $this->catalogMasterTemplate ? $this->catalogMasterTemplate : 'catalog_master';
         $this->CatalogView->initialize();
 
-        $strOutput = $this->CatalogView->getCatalogView( $arrQuery );
+        $strOutput = $this->CatalogView->getCatalogView($arrQuery);
 
-        $this->Template->data = is_array( $strOutput ) ? $strOutput : [];
-        $this->Template->output = is_string( $strOutput ) ? $strOutput : '';
-        $this->CatalogView->getCommentForm( $this->CatalogView->strMasterID );
-        
-        if ( empty( $strOutput ) ) {
+        $this->Template->data = is_array($strOutput) ? $strOutput : [];
+        $this->Template->output = is_string($strOutput) ? $strOutput : '';
+        $this->CatalogView->getCommentForm($this->CatalogView->strMasterID);
 
-            if ( $this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogViewPage != $objPage->id ) {
+        if (empty($strOutput)) {
 
-                \Controller::redirectToFrontendPage( $this->catalogViewPage );
+            if ($this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogViewPage != $objPage->id) {
+
+                if ($objRedirect = \PageModel::findByPk($this->catalogViewPage)) {
+                    \Controller::redirect($objRedirect->getFrontendUrl());
+                }
 
                 return null;
             }
@@ -103,9 +108,9 @@ class ModuleMasterView extends \Module {
             $objCatalogException->set404();
         }
 
-        if ( $this->catalogSendJsonHeader ) {
+        if ($this->catalogSendJsonHeader) {
 
-            $this->import( 'CatalogAjaxController' );
+            $this->import('CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
 
@@ -114,8 +119,8 @@ class ModuleMasterView extends \Module {
                 'showAsGroup' => $this->Template->showAsGroup,
             ]);
 
-            $this->CatalogAjaxController->setType( $this->catalogSendJsonHeader );
-            $this->CatalogAjaxController->setModuleID( $this->id );
+            $this->CatalogAjaxController->setType($this->catalogSendJsonHeader);
+            $this->CatalogAjaxController->setModuleID($this->id);
             $this->CatalogAjaxController->sendJsonData();
         }
     }

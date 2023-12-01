@@ -5,14 +5,16 @@ namespace CatalogManager;
 class DcBuilder extends CatalogController
 {
 
-
     protected $strID;
     protected $strTable;
     protected $arrFields = [];
     protected $arrCatalog = [];
     protected $blnActive = true;
+
     protected $arrErrorTables = [];
+
     protected $arrOverwritten = [];
+
     protected $strPermissionType = '';
 
     protected $arrOperations = [
@@ -73,13 +75,11 @@ class DcBuilder extends CatalogController
         }
     }
 
-
     public function initializeI18n()
     {
 
         $this->I18nCatalogTranslator->initialize();
     }
-
 
     protected function determineOperations()
     {
@@ -99,7 +99,6 @@ class DcBuilder extends CatalogController
             }
         }
     }
-
 
     public function createDataContainerArray()
     {
@@ -140,7 +139,6 @@ class DcBuilder extends CatalogController
             }
         }
     }
-
 
     protected function getConfigDc()
     {

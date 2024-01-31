@@ -2,62 +2,62 @@
 
 namespace CatalogManager;
 
-class RoutingBuilder extends \Frontend {
+class RoutingBuilder extends \Frontend
+{
 
 
-    public function initialize( $arrFragments ) {
+    public function initialize($arrFragments)
+    {
 
-        if ( count( $arrFragments ) > 1 ) {
+        if (count($arrFragments) > 1) {
 
             $arrReturn = [];
             $strCatalogRouting = '';
-            $objPage = \PageModel::findPublishedByIdOrAlias( $arrFragments[0] );
+            $objPage = \PageModel::findPublishedByIdOrAlias($arrFragments[0]);
 
-            if ( $objPage !== null ) {
+            if ($objPage !== null) {
 
-                if ( $objPage->catalogUseRouting ) {
+                if ($objPage->catalogUseRouting) {
 
                     $strCatalogRouting = $objPage->catalogRouting ? $objPage->catalogRouting : '';
                 }
             }
 
-            if ( $strCatalogRouting ) {
+            if ($strCatalogRouting) {
 
                 $intFragmentIndex = 1;
                 $arrFilteredFragments = [];
                 $arrReturn[] = $arrFragments[0];
-                $arrRoutingFragments = Toolkit::getRoutingParameter( $strCatalogRouting );
+                $arrRoutingFragments = Toolkit::getRoutingParameter($strCatalogRouting);
 
-                if ( in_array( 'auto_item', $arrFragments ) ) {
+                if (in_array('auto_item', $arrFragments)) {
 
-                    foreach ( $arrFragments as $strFragment ) {
+                    foreach ($arrFragments as $strFragment) {
 
-                        if ( $strFragment === 'auto_item' || !$strFragment ) continue;
+                        if ($strFragment === 'auto_item' || !$strFragment) continue;
 
                         $arrFilteredFragments[] = $strFragment;
                     }
-                }
-
-                else {
+                } else {
 
                     $arrFilteredFragments = $arrFragments;
                 }
 
-                if ( !empty( $arrRoutingFragments ) && is_array( $arrRoutingFragments ) ) {
+                if (!empty($arrRoutingFragments) && is_array($arrRoutingFragments)) {
 
-                    foreach ( $arrRoutingFragments as $arrRoutingFragment ) {
+                    foreach ($arrRoutingFragments as $arrRoutingFragment) {
 
-                        if ( !$arrFilteredFragments[ $intFragmentIndex ]  ) continue;
+                        if (!isset($arrFilteredFragments[$intFragmentIndex]) || !$arrFilteredFragments[$intFragmentIndex]) continue;
 
-                        if ( $arrRoutingFragment === 'auto_item' ) {
+                        if ($arrRoutingFragment === 'auto_item') {
 
                             $arrReturn[] = 'auto_item';
-                            $arrReturn[] = $arrFilteredFragments[ $intFragmentIndex ];
+                            $arrReturn[] = $arrFilteredFragments[$intFragmentIndex];
 
                             continue;
                         }
 
-                        \Input::setGet( $arrRoutingFragment , $arrFilteredFragments[ $intFragmentIndex ] );
+                        \Input::setGet($arrRoutingFragment, $arrFilteredFragments[$intFragmentIndex]);
 
                         $intFragmentIndex++;
                     }

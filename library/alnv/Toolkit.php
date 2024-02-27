@@ -682,12 +682,21 @@ class Toolkit
                 $arrField = $arrFields[$strField] ?? null;
 
                 if (is_null($arrField)) continue;
-                if (!$arrField['type']) continue;
+                if (!isset($arrField['type']) || !$arrField['type']) continue;
 
                 $varValue = static::parseCatalogValue($strOriginValue, $arrField, $arrData);
 
-                if (($blnJustStrings && is_array($varValue)) && $arrField['type'] != 'upload') {
-                    $varValue = implode(', ', $varValue);
+                if ($blnJustStrings) {
+                    if (is_array($varValue) && $arrField['type'] != 'upload') {
+                        $varValue = implode(', ', $varValue);
+                    }
+                    if (is_array($varValue) && $arrField['type'] == 'upload') {
+                        if (isset($varValue[0])) {
+                            $varValue = $varValue[0]['singleSRC'];
+                        } else {
+                            $varValue = $varValue['singleSRC'];
+                        }
+                    }
                 }
 
                 $arrData[$strFieldname] = Toolkit::isEmpty($varValue) ? $strOriginValue : $varValue;

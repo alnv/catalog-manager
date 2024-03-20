@@ -2,9 +2,10 @@
 
 namespace CatalogManager;
 
+use Contao\StringUtil;
+
 class OptionsGetter extends CatalogController
 {
-
 
     protected $strModuleID;
     protected $arrCache = [];
@@ -14,7 +15,6 @@ class OptionsGetter extends CatalogController
     protected $strActiveTable = '';
     protected $arrActiveEntity = [];
     protected $arrCatalogFields = [];
-
 
     public function __construct($arrField, $strModuleID = '', $arrQueries = [])
     {
@@ -34,7 +34,6 @@ class OptionsGetter extends CatalogController
         $this->import('I18nCatalogTranslator');
     }
 
-
     public function isForeignKey()
     {
 
@@ -46,13 +45,11 @@ class OptionsGetter extends CatalogController
         return false;
     }
 
-
     public function getForeignKey()
     {
 
         return $this->setForeignKey();
     }
-
 
     public function getOptions()
     {
@@ -60,21 +57,16 @@ class OptionsGetter extends CatalogController
         switch ($this->arrField['optionsType'] ?? '') {
 
             case 'useOptions':
-
                 return $this->getKeyValueOptions();
 
             case 'useForeignKey':
-
                 $this->arrField['dbTableKey'] = 'id';
-
                 return $this->getDbOptions();
 
             case 'useDbOptions':
-
                 return $this->getDbOptions();
 
             case 'useActiveDbOptions':
-
                 return $this->getActiveDbOptions();
         }
 
@@ -86,7 +78,6 @@ class OptionsGetter extends CatalogController
         return [];
     }
 
-
     public function getTableEntities()
     {
 
@@ -96,22 +87,18 @@ class OptionsGetter extends CatalogController
             case 'useForeignKey':
 
                 if (!$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue']) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->arrField['dbTable'])) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($this->arrField['dbTableKey'], $this->arrField['dbTable'])) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($this->arrField['dbTableValue'], $this->arrField['dbTable'])) {
-
                     return null;
                 }
 
@@ -122,17 +109,14 @@ class OptionsGetter extends CatalogController
                 $strDbColumn = $this->arrField['dbColumn'];
 
                 if (!$this->arrField['dbTable'] || !$strDbColumn) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->arrField['dbTable'])) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($strDbColumn, $this->arrField['dbTable'])) {
-
                     return null;
                 }
 
@@ -142,35 +126,46 @@ class OptionsGetter extends CatalogController
         return null;
     }
 
-
     protected function setValueToOption(&$arrOptions, $strValue, $strLabel = '', $strTable = '')
     {
 
-        if ($strValue && !in_array($strValue, $arrOptions)) {
+        $strKey = $strValue;
+        $strKey = \StringUtil::decodeEntities($strKey);
+        $strText = $strLabel ?: $strKey;
 
+        if (isset($this->arrField['dbParseDate']) && $this->arrField['dbParseDate']) {
+            $strFormat = $this->arrField['dbMonthBeginFormat'] ?: 'F Y';
+            if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ?: 'Y';
+            if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ?: 'l, F Y';
+            $strKey = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
+            $strText = \Controller::parseDate($strFormat, $strValue);
+        } else {
+            $strText = $this->I18nCatalogTranslator->get('option', $strKey, ['title' => $strText, 'table' => $strTable]);
+        }
+
+        if ($strKey && !in_array($strKey, array_keys($arrOptions))) {
+            $arrOptions[$strKey] = $strText;
+        }
+
+        /*
+        if ($strValue && !in_array($strValue, $arrOptions)) {
             $strValue = \StringUtil::decodeEntities($strValue);
             $strTitle = $strValue;
-
             if (isset($this->arrField['dbParseDate']) && $this->arrField['dbParseDate']) {
-
                 $strFormat = $this->arrField['dbMonthBeginFormat'] ?: 'F Y';
-
-                if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ? $this->arrField['dbYearBeginFormat'] : 'Y';
-                if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
-
+                if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ?: 'Y';
+                if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ?: 'l, F Y';
                 $strValue = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
                 $strTitle = \Controller::parseDate($strFormat, $strValue);
             } else {
-
                 $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title' => $strLabel, 'table' => $strTable]);
             }
-
             $arrOptions[$strValue] = \StringUtil::decodeEntities($strTitle);
         }
+        */
 
         return $arrOptions;
     }
-
 
     protected function parseCatalogValues($varValue, $strFieldname, $arrCatalog)
     {
@@ -178,35 +173,18 @@ class OptionsGetter extends CatalogController
         $arrField = $this->arrCatalogFields[$strFieldname];
 
         switch ($arrField['type']) {
-
             case 'select':
-
                 return Select::parseValue($varValue, $arrField, $arrCatalog);
-
-                break;
-
             case 'checkbox':
-
                 return Checkbox::parseValue($varValue, $arrField, $arrCatalog);
-
-                break;
-
             case 'radio':
-
                 return Radio::parseValue($varValue, $arrField, $arrCatalog);
-
-                break;
-
             case 'text':
-
                 return Text::parseValue($varValue, $arrField, $arrCatalog);
-
-                break;
         }
 
         return $varValue;
     }
-
 
     protected function getResults($blnUseValidValue = false)
     {
@@ -237,7 +215,6 @@ class OptionsGetter extends CatalogController
         });
 
         if (is_array($this->arrQueries) && !empty($this->arrQueries)) {
-
             $arrSQLQuery['where'][] = [
                 'multiple' => true,
                 'operator' => 'regexp',
@@ -249,12 +226,9 @@ class OptionsGetter extends CatalogController
         $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery($arrSQLQuery);
 
         if (Toolkit::isEmpty($strOrderBy)) {
-
             $this->CatalogDcExtractor->initialize($this->arrField['dbTable']);
             $this->CatalogDcExtractor->extract();
-
             if ($this->CatalogDcExtractor->hasOrderByStatement()) {
-
                 $strOrderBy = ' ORDER BY ' . $this->CatalogDcExtractor->getOrderByStatement();
             }
         }
@@ -273,7 +247,6 @@ class OptionsGetter extends CatalogController
         return $objDbOptions;
     }
 
-
     protected function getActiveTable()
     {
 
@@ -286,7 +259,6 @@ class OptionsGetter extends CatalogController
             if (is_array($arrTables) && isset($arrTables[0])) $this->strActiveTable = $arrTables[0];
         }
     }
-
 
     protected function getDbOptions()
     {
@@ -304,7 +276,6 @@ class OptionsGetter extends CatalogController
         $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy'], true);
 
         if (empty($arrOrderBy) && count($arrOptions) < 50) {
-
             asort($arrOptions);
         }
 
@@ -319,7 +290,6 @@ class OptionsGetter extends CatalogController
 
         return $arrOptions;
     }
-
 
     protected function getActiveDbOptions()
     {
@@ -354,10 +324,9 @@ class OptionsGetter extends CatalogController
             }
         }
 
-        $arrOrderBy = deserialize($this->arrField['dbOrderBy'], true);
+        $arrOrderBy = StringUtil::deserialize($this->arrField['dbOrderBy'], true);
 
         if (empty($arrOrderBy) && count($arrOptions) < 50) {
-
             asort($arrOptions);
         }
 
@@ -372,7 +341,6 @@ class OptionsGetter extends CatalogController
 
         return $arrOptions;
     }
-
 
     protected function getParseQueryValue($strValue = '', $strOperator = '', &$blnValidValue = true)
     {
@@ -430,13 +398,11 @@ class OptionsGetter extends CatalogController
         }
 
         if (in_array($strOperator, ['contain', 'notContain']) && is_string($strValue)) {
-
             $strValue = explode(',', $strValue);
         }
 
         return Toolkit::prepareValueForQuery($strValue);
     }
-
 
     protected function getKeyValueOptions()
     {
@@ -459,7 +425,6 @@ class OptionsGetter extends CatalogController
         return $arrOptions;
     }
 
-
     protected function setForeignKey()
     {
 
@@ -472,7 +437,6 @@ class OptionsGetter extends CatalogController
 
         return $this->arrField['dbTable'] . '.' . $strLabelColumn;
     }
-
 
     protected function getActiveEntityValues()
     {
@@ -622,28 +586,22 @@ class OptionsGetter extends CatalogController
         }
     }
 
-
     protected function getOrderBy()
     {
 
         if (isset($this->arrField['dbOrderBy'])) {
-
             $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy']);
-
             if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
-
                 $this->arrField['_orderBy'] = $this->OrderByHelper->getOrderByQuery($arrOrderBy, $this->arrField['dbTable']);
             }
         }
 
         if (isset($this->arrField['_orderBy']) && !Toolkit::isEmpty($this->arrField['_orderBy'])) {
-
             return ' ' . $this->arrField['_orderBy'];
         }
 
         return '';
     }
-
 
     protected function isValidValue($strValue)
     {
@@ -651,29 +609,19 @@ class OptionsGetter extends CatalogController
         if (!Toolkit::isEmpty($strValue)) return true;
 
         switch (TL_MODE) {
-
             case 'BE':
-
                 $strID = \Input::get('id');
-
                 if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) return false;
-
                 break;
-
             case 'FE':
-
                 $strID = $this->strModuleID ? \Input::get('id' . $this->strModuleID) : \Input::get('id');
-
                 if (\Input::get('act' . $this->strModuleID)) return true;
-
                 if (!$strID) return false;
-
                 break;
         }
 
         return true;
     }
-
 
     protected function hasLanguageNavigationBar($objCatalog)
     {

@@ -2,38 +2,41 @@
 
 namespace CatalogManager;
 
-class Radio {
+class Radio
+{
 
 
     public static $arrCache = [];
 
 
-    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
+    public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true)
+    {
 
-        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue( $arrField['disabled'] );
-        $arrDCAField['eval']['submitOnChange'] =  Toolkit::getBooleanByValue( $arrField['submitOnChange'] );
-        $arrDCAField['eval']['includeBlankOption'] =  Toolkit::getBooleanByValue( $arrField['includeBlankOption'] );
+        $arrDCAField['eval']['disabled'] = Toolkit::getBooleanByValue($arrField['disabled']);
+        $arrDCAField['eval']['submitOnChange'] = Toolkit::getBooleanByValue($arrField['submitOnChange']);
+        $arrDCAField['eval']['includeBlankOption'] = Toolkit::getBooleanByValue($arrField['includeBlankOption']);
 
-        if ( $arrField['blankOptionLabel'] && is_string( $arrField['blankOptionLabel'] ) ) {
+        if ($arrField['blankOptionLabel'] && is_string($arrField['blankOptionLabel'])) {
 
             $arrDCAField['eval']['blankOptionLabel'] = $arrField['blankOptionLabel'];
         }
 
-        $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
+        $strModuleID = !is_null($objModule) && is_object($objModule) ? $objModule->id : '';
 
-        if ( $blnActive ) $arrDCAField = static::getOptions( $arrDCAField, $arrField, $strModuleID, $blnActive );
+        if ($blnActive) $arrDCAField = static::getOptions($arrDCAField, $arrField, $strModuleID, $blnActive);
 
         return $arrDCAField;
     }
 
 
-    public static function parseValue($varValue, $arrField, $arrCatalog) {
+    public static function parseValue($varValue, $arrField, $arrCatalog)
+    {
 
         if (!$varValue) return '';
 
         static::getOptionsFromCache($arrField['fieldname'], $arrField);
 
-        if (!empty( static::$arrCache[$arrField['fieldname']]) && is_array(static::$arrCache[$arrField['fieldname']])) {
+        if (!empty(static::$arrCache[$arrField['fieldname']]) && is_array(static::$arrCache[$arrField['fieldname']])) {
             return static::$arrCache[$arrField['fieldname']][$varValue] ?? $varValue;
         }
 
@@ -41,7 +44,8 @@ class Radio {
     }
 
 
-    protected static function getOptionsFromCache($strFieldname, $arrField) {
+    protected static function getOptionsFromCache($strFieldname, $arrField)
+    {
 
         static::$arrCache[$strFieldname] = static::$arrCache[$strFieldname] ?? [];
 
@@ -52,23 +56,18 @@ class Radio {
     }
 
 
-    protected static function getOptions( $arrDCAField, $arrField, $strID, $blnActive ) {
+    protected static function getOptions($arrDCAField, $arrField, $strID, $blnActive)
+    {
 
         $objOptionGetter = new OptionsGetter($arrField, $strID);
 
-        if ( $objOptionGetter->isForeignKey() ) {
-
+        if ($objOptionGetter->isForeignKey()) {
             $arrField['dbTableKey'] = 'id';
             $strForeignKey = $objOptionGetter->getForeignKey();
-
-            if ( $strForeignKey ) {
-
+            if ($strForeignKey) {
                 $arrDCAField['foreignKey'] = $strForeignKey;
             }
-        }
-
-        else {
-
+        } else {
             $arrDCAField['options'] = $objOptionGetter->getOptions();
         }
 

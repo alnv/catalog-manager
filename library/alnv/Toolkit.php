@@ -216,6 +216,15 @@ class Toolkit
         ];
     }
 
+    public static function isNumericArray($arrValues): bool
+    {
+        foreach ($arrValues as $varValue) {
+            if (!is_numeric($varValue)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static function parseCatalog($arrCatalog)
     {

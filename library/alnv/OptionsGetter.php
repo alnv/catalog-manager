@@ -2,7 +2,8 @@
 
 namespace CatalogManager;
 
-class OptionsGetter extends CatalogController {
+class OptionsGetter extends CatalogController
+{
 
 
     protected $strModuleID;
@@ -15,25 +16,27 @@ class OptionsGetter extends CatalogController {
     protected $arrCatalogFields = [];
 
 
-    public function __construct( $arrField, $strModuleID = '', $arrQueries = [] ) {
+    public function __construct($arrField, $strModuleID = '', $arrQueries = [])
+    {
 
         parent::__construct();
 
         $this->arrField = $arrField;
         $this->strModuleID = $strModuleID;
 
-        foreach ( $arrQueries as $strQuery )  if ( !Toolkit::isEmpty( $strQuery ) ) $this->arrQueries[] = $strQuery;
+        foreach ($arrQueries as $strQuery) if (!Toolkit::isEmpty($strQuery)) $this->arrQueries[] = $strQuery;
 
-        $this->import( 'CatalogInput' );
-        $this->import( 'OrderByHelper' );
-        $this->import( 'SQLQueryHelper' );
-        $this->import( 'SQLQueryBuilder' );
-        $this->import( 'CatalogDcExtractor' );
-        $this->import( 'I18nCatalogTranslator' );
+        $this->import('CatalogInput');
+        $this->import('OrderByHelper');
+        $this->import('SQLQueryHelper');
+        $this->import('SQLQueryBuilder');
+        $this->import('CatalogDcExtractor');
+        $this->import('I18nCatalogTranslator');
     }
 
 
-    public function isForeignKey() {
+    public function isForeignKey()
+    {
 
         if (isset($this->arrField['optionsType']) && $this->arrField['optionsType'] && $this->arrField['optionsType'] == 'useForeignKey') {
 
@@ -44,15 +47,17 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    public function getForeignKey() {
+    public function getForeignKey()
+    {
 
         return $this->setForeignKey();
     }
 
 
-    public function getOptions() {
+    public function getOptions()
+    {
 
-        switch ($this->arrField['optionsType']??'') {
+        switch ($this->arrField['optionsType'] ?? '') {
 
             case 'useOptions':
 
@@ -73,7 +78,7 @@ class OptionsGetter extends CatalogController {
                 return $this->getActiveDbOptions();
         }
 
-        if (!isset($this->arrField['optionsType']) && in_array( $this->arrField['fieldname'], [ 'country', 'countries' ] ) && in_array( $this->arrField['type'], [ 'radio', 'select', 'checkbox' ] ) ) {
+        if (!isset($this->arrField['optionsType']) && in_array($this->arrField['fieldname'], ['country', 'countries']) && in_array($this->arrField['type'], ['radio', 'select', 'checkbox'])) {
 
             return \System::getCountries();
         }
@@ -82,62 +87,64 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    public function getTableEntities() {
+    public function getTableEntities()
+    {
 
-        switch ($this->arrField['optionsType']??'') {
+        switch ($this->arrField['optionsType'] ?? '') {
 
             case 'useDbOptions':
             case 'useForeignKey':
 
-                if ( !$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue'] ) {
+                if (!$this->arrField['dbTable'] || !$this->arrField['dbTableKey'] || !$this->arrField['dbTableValue']) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->arrField['dbTable'])) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableKey'], $this->arrField['dbTable'] ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($this->arrField['dbTableKey'], $this->arrField['dbTable'])) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $this->arrField['dbTableValue'], $this->arrField['dbTable'] ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($this->arrField['dbTableValue'], $this->arrField['dbTable'])) {
 
                     return null;
                 }
 
-                return $this->getResults( true );
+                return $this->getResults(true);
 
             case 'useActiveDbOptions':
 
                 $strDbColumn = $this->arrField['dbColumn'];
 
-                if ( !$this->arrField['dbTable'] || !$strDbColumn ) {
+                if (!$this->arrField['dbTable'] || !$strDbColumn) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->arrField['dbTable'] ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->arrField['dbTable'])) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( $strDbColumn, $this->arrField['dbTable'] ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists($strDbColumn, $this->arrField['dbTable'])) {
 
                     return null;
                 }
 
-                return $this->getResults( false );
+                return $this->getResults(false);
         }
 
         return null;
     }
 
 
-    protected function setValueToOption(&$arrOptions, $strValue, $strLabel='', $strTable='') {
+    protected function setValueToOption(&$arrOptions, $strValue, $strLabel = '', $strTable = '')
+    {
 
         if ($strValue && !in_array($strValue, $arrOptions)) {
 
@@ -148,14 +155,14 @@ class OptionsGetter extends CatalogController {
 
                 $strFormat = $this->arrField['dbMonthBeginFormat'] ?: 'F Y';
 
-                if ( $this->arrField['dbDateFormat'] == 'yearBegin' ) $strFormat =  $this->arrField['dbYearBeginFormat'] ? $this->arrField['dbYearBeginFormat'] : 'Y';
-                if ( $this->arrField['dbDateFormat'] == 'dayBegin' ) $strFormat =  $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
+                if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ? $this->arrField['dbYearBeginFormat'] : 'Y';
+                if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ? $this->arrField['dbDayBeginFormat'] : 'l, F Y';
 
-                $strValue = DateInput::parseValue( $strValue, [ 'rgxp' => $this->arrField['dbDateFormat'] ], [] );
+                $strValue = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
                 $strTitle = \Controller::parseDate($strFormat, $strValue);
             } else {
 
-                $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title'=>$strLabel,'table'=>$strTable]);
+                $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title' => $strLabel, 'table' => $strTable]);
             }
 
             $arrOptions[$strValue] = \StringUtil::decodeEntities($strTitle);
@@ -165,33 +172,34 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function parseCatalogValues( $varValue, $strFieldname, $arrCatalog ) {
+    protected function parseCatalogValues($varValue, $strFieldname, $arrCatalog)
+    {
 
-        $arrField = $this->arrCatalogFields[ $strFieldname ];
+        $arrField = $this->arrCatalogFields[$strFieldname];
 
-        switch ( $arrField['type'] ) {
+        switch ($arrField['type']) {
 
             case 'select':
 
-                return Select::parseValue( $varValue, $arrField, $arrCatalog );
+                return Select::parseValue($varValue, $arrField, $arrCatalog);
 
                 break;
 
             case 'checkbox':
 
-                return Checkbox::parseValue( $varValue, $arrField, $arrCatalog );
+                return Checkbox::parseValue($varValue, $arrField, $arrCatalog);
 
                 break;
 
             case 'radio':
 
-                return Radio::parseValue( $varValue, $arrField, $arrCatalog );
+                return Radio::parseValue($varValue, $arrField, $arrCatalog);
 
                 break;
 
             case 'text':
 
-                return Text::parseValue( $varValue, $arrField, $arrCatalog );
+                return Text::parseValue($varValue, $arrField, $arrCatalog);
 
                 break;
         }
@@ -200,113 +208,111 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getResults( $blnUseValidValue = false ) {
+    protected function getResults($blnUseValidValue = false)
+    {
 
         $arrSQLQuery = [
-
-            'table' => $this->arrField['dbTable'],
-            'where' => []
+            'table' => $this->arrField['dbTable']
         ];
 
         $this->getActiveTable();
         $this->getActiveEntityValues();
         $strOrderBy = $this->getOrderBy();
-        $arrDbTaxonomies = Toolkit::deserialize( $this->arrField['dbTaxonomy'] );
-        $arrQueries = is_array( $arrDbTaxonomies ) && isset( $arrDbTaxonomies['query'] ) ? $arrDbTaxonomies['query'] : [];
+        $arrDbTaxonomies = Toolkit::deserialize($this->arrField['dbTaxonomy']);
+        $arrQueries = is_array($arrDbTaxonomies) && isset($arrDbTaxonomies['query']) ? $arrDbTaxonomies['query'] : [];
 
-        $arrSQLQuery['where'] = Toolkit::parseQueries( $arrQueries, function( $arrQuery ) use ( $blnUseValidValue ) {
+        $arrSQLQuery['where'] = Toolkit::parseQueries($arrQueries, function ($arrQuery) use ($blnUseValidValue) {
 
             $blnValidValue = true;
             $blnIgnoreEmptyValues = isset($this->arrField['dbIgnoreEmptyValues']) && $this->arrField['dbIgnoreEmptyValues'];
 
-            if ( $blnIgnoreEmptyValues && in_array( $arrQuery['operator'], [ 'isEmpty', 'isNotEmpty' ] ) ) $blnIgnoreEmptyValues = false;
+            if ($blnIgnoreEmptyValues && in_array($arrQuery['operator'], ['isEmpty', 'isNotEmpty'])) $blnIgnoreEmptyValues = false;
 
-            $arrQuery['value'] = $this->getParseQueryValue( $arrQuery['value'], $arrQuery['operator'], $blnValidValue );
+            $arrQuery['value'] = $this->getParseQueryValue($arrQuery['value'], $arrQuery['operator'], $blnValidValue);
             $arrQuery['allowEmptyValues'] = $blnIgnoreEmptyValues ? false : true;
 
-            if ( !$blnValidValue && $blnUseValidValue ) return null;
+            if (!$blnValidValue && $blnUseValidValue) return null;
 
             return $arrQuery;
         });
 
-        if ( is_array( $this->arrQueries ) && !empty( $this->arrQueries )  ) {
+        if (is_array($this->arrQueries) && !empty($this->arrQueries)) {
 
             $arrSQLQuery['where'][] = [
-
                 'multiple' => true,
-                'operator' =>'regexp',
+                'operator' => 'regexp',
                 'field' => $this->arrField['dbTableValue'],
-                'value' => implode(',', $this->arrQueries )
+                'value' => implode(',', $this->arrQueries)
             ];
         }
 
-        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery( $arrSQLQuery );
+        $strWhereStatement = $this->SQLQueryBuilder->getWhereQuery($arrSQLQuery);
 
-        if ( Toolkit::isEmpty( $strOrderBy ) ) {
+        if (Toolkit::isEmpty($strOrderBy)) {
 
-            $this->CatalogDcExtractor->initialize( $this->arrField['dbTable'] );
+            $this->CatalogDcExtractor->initialize($this->arrField['dbTable']);
             $this->CatalogDcExtractor->extract();
 
-            if ( $this->CatalogDcExtractor->hasOrderByStatement() ) {
+            if ($this->CatalogDcExtractor->hasOrderByStatement()) {
 
                 $strOrderBy = ' ORDER BY ' . $this->CatalogDcExtractor->getOrderByStatement();
             }
         }
-        
-        $strQuery = sprintf( 'SELECT * FROM %s%s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy );
 
-        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] ) ) {
+        $strQuery = sprintf('SELECT * FROM %s%s%s', $this->arrField['dbTable'], $strWhereStatement, $strOrderBy);
 
-            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] as $callback ) {
-
-                $this->import( $callback[0] );
-                $this->{$callback[0]}->{$callback[1]}( $strQuery, $arrSQLQuery, $this->arrField, $this->strModuleID );
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptionsGetter'] as $callback) {
+                $this->import($callback[0]);
+                $this->{$callback[0]}->{$callback[1]}($strQuery, $arrSQLQuery, $this->arrField, $this->strModuleID);
             }
         }
 
-        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( $strQuery )->execute( $this->SQLQueryBuilder->getValues() );
+        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute($this->SQLQueryBuilder->getValues());
 
         return $objDbOptions;
     }
 
 
-    protected function getActiveTable() {
+    protected function getActiveTable()
+    {
 
-        $this->strActiveTable = \Input::get( 'table' ) ? \Input::get( 'table' ) : \Input::get('ctlg_table');
+        $this->strActiveTable = \Input::get('table') ? \Input::get('table') : \Input::get('ctlg_table');
 
-        if ( Toolkit::isEmpty( $this->strActiveTable ) && \Input::get('do') ) {
+        if (Toolkit::isEmpty($this->strActiveTable) && \Input::get('do')) {
 
-            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute( \Input::get('do') );
+            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute(\Input::get('do'));
 
-            if ( is_array( $arrTables ) && isset( $arrTables[0] ) ) $this->strActiveTable = $arrTables[0];
+            if (is_array($arrTables) && isset($arrTables[0])) $this->strActiveTable = $arrTables[0];
         }
     }
 
 
-    protected function getDbOptions() {
+    protected function getDbOptions()
+    {
 
         $arrOptions = [];
         $objDbOptions = $this->getTableEntities();
 
-        if ( $objDbOptions === null ) return $arrOptions;
-        if ( !$objDbOptions->numRows ) return $arrOptions;
+        if ($objDbOptions === null) return $arrOptions;
+        if (!$objDbOptions->numRows) return $arrOptions;
 
         while ($objDbOptions->next()) {
-           $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
+            $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
         }
 
-        $arrOrderBy = deserialize( $this->arrField['dbOrderBy'], true );
+        $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy'], true);
 
-        if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
+        if (empty($arrOrderBy) && count($arrOptions) < 50) {
 
-            asort( $arrOptions );
+            asort($arrOptions);
         }
 
-        if ( isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
-            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback)  {
-                if ( is_array( $arrCallback ) ) {
-                    $this->import( $arrCallback[0] );
-                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback) {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}($arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
                 }
             }
         }
@@ -314,32 +320,33 @@ class OptionsGetter extends CatalogController {
         return $arrOptions;
     }
 
-    
-    protected function getActiveDbOptions() {
+
+    protected function getActiveDbOptions()
+    {
 
         $arrOptions = [];
         $objEntities = $this->getTableEntities();
         $strDbColumn = $this->arrField['dbColumn'];
 
-        if ( $objEntities === null ) return $arrOptions;
-        if ( !$objEntities->numRows ) return $arrOptions;
+        if ($objEntities === null) return $arrOptions;
+        if (!$objEntities->numRows) return $arrOptions;
 
-        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename( $this->arrField['dbTable'] );
-        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename( $this->arrField['dbTable'] );
+        $this->arrCatalog = $this->SQLQueryHelper->getCatalogByTablename($this->arrField['dbTable']);
+        $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename($this->arrField['dbTable']);
 
-        while ( $objEntities->next() ) {
+        while ($objEntities->next()) {
 
             $strOriginValue = $objEntities->{$strDbColumn};
-            $varValue = $this->parseCatalogValues( $strOriginValue, $strDbColumn, [] );
+            $varValue = $this->parseCatalogValues($strOriginValue, $strDbColumn, []);
 
-            if ( is_array( $varValue ) ) {
+            if (is_array($varValue)) {
 
-                $arrLabels = array_values( $varValue );
-                $arrOriginValues = array_keys( $varValue );
+                $arrLabels = array_values($varValue);
+                $arrOriginValues = array_keys($varValue);
 
-                if ( !empty( $arrLabels ) && is_array( $arrLabels ) ) {
-                    foreach ( $arrLabels as $intPosition => $strLabel ) {
-                        $this->setValueToOption($arrOptions, $arrOriginValues[ $intPosition ], $strLabel, $this->arrField['dbTable']);
+                if (!empty($arrLabels) && is_array($arrLabels)) {
+                    foreach ($arrLabels as $intPosition => $strLabel) {
+                        $this->setValueToOption($arrOptions, $arrOriginValues[$intPosition], $strLabel, $this->arrField['dbTable']);
                     }
                 }
             } else {
@@ -349,16 +356,16 @@ class OptionsGetter extends CatalogController {
 
         $arrOrderBy = deserialize($this->arrField['dbOrderBy'], true);
 
-        if ( empty( $arrOrderBy ) && count( $arrOptions ) < 50 ) {
+        if (empty($arrOrderBy) && count($arrOptions) < 50) {
 
-            asort( $arrOptions );
+            asort($arrOptions);
         }
 
-        if ( isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
-            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback)  {
-                if ( is_array( $arrCallback ) ) {
-                    $this->import( $arrCallback[0] );
-                    $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyOptions'] as $arrCallback) {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $this->{$arrCallback[0]}->{$arrCallback[1]}($arrOptions, $this->arrField, $this->arrCatalog, $this->arrCatalogFields);
                 }
             }
         }
@@ -367,56 +374,50 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getParseQueryValue( $strValue = '', $strOperator = '', &$blnValidValue = true ) {
+    protected function getParseQueryValue($strValue = '', $strOperator = '', &$blnValidValue = true)
+    {
 
-        if ( !empty( $strValue ) && is_string( $strValue ) ) {
+        if (!empty($strValue) && is_string($strValue)) {
 
-            $strInsertTagValue = \Controller::replaceInsertTags( $strValue );
+            $strInsertTagValue = \Controller::replaceInsertTags($strValue);
 
-            if ( !Toolkit::isEmpty( $strInsertTagValue ) ) {
+            if (!Toolkit::isEmpty($strInsertTagValue)) {
 
                 $strValue = $strInsertTagValue;
             }
         }
 
-        if ( !empty( $strValue ) && is_string( $strValue ) && strpos( $strValue, '{{' ) !== false ) {
+        if (!empty($strValue) && is_string($strValue) && strpos($strValue, '{{') !== false) {
 
             $strActiveValue = '';
-            $arrTags = preg_split( '/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE );
+            $arrTags = preg_split('/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE);
 
-            $strInsertTag = implode( '', $arrTags );
-            $strParameter = explode( '::', $strInsertTag );
+            $strInsertTag = implode('', $arrTags);
+            $strParameter = explode('::', $strInsertTag);
             $strFieldname = $strParameter[0];
 
-            if ( $strFieldname !== '' && $strFieldname !== null ) {
+            if ($strFieldname !== '' && $strFieldname !== null) {
+                $strActiveValue = $this->arrActiveEntity[$strFieldname] ?? '';
 
-                $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?? '';
-
-                if ( TL_MODE == 'FE' ) {
-
-                    $strActiveValue = $this->CatalogInput->getActiveValue( $strFieldname );
+                if (TL_MODE == 'FE') {
+                    $strActiveValue = $this->CatalogInput->getActiveValue($strFieldname);
                 }
 
-                if ( TL_MODE == 'FE' && ( Toolkit::isEmpty( \Input::post( 'FORM_SUBMIT' ) ) && \Input::get( 'act' . $this->strModuleID ) ) ) {
-
-                    $strActiveValue = $this->arrActiveEntity[ $strFieldname ] ?: '';
+                if (TL_MODE == 'FE' && (Toolkit::isEmpty(\Input::post('FORM_SUBMIT')) && \Input::get('act' . $this->strModuleID))) {
+                    $strActiveValue = $this->arrActiveEntity[$strFieldname] ?: '';
                 }
 
-                if ( isset( $strParameter[1] ) && $strParameter[1] == 'tree' ) {
-
+                if (isset($strParameter[1]) && $strParameter[1] == 'tree') {
                     $objDatabase = \Database::getInstance();
-                    $objField = $objDatabase->prepare( 'SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?' )->limit(1)->execute( $strFieldname ); //@todo don`t work with multiple fieldnames
+                    $objField = $objDatabase->prepare('SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?')->limit(1)->execute($strFieldname); //@todo don`t work with multiple fieldnames
 
-                    if ( $objField->numRows ) {
-
-                        if ( $objField->optionsType ) {
-
-                            $objEntity = $objDatabase->prepare( 'SELECT * FROM ' . $objField->dbTable . ' WHERE `'. $objField->dbTableKey .'` = ?' )
+                    if ($objField->numRows) {
+                        if ($objField->optionsType) {
+                            $objEntity = $objDatabase->prepare('SELECT * FROM ' . $objField->dbTable . ' WHERE `' . $objField->dbTableKey . '` = ?')
                                 ->limit(1)
-                                ->execute( $strActiveValue );
+                                ->execute($strActiveValue);
 
-                            if ( $objEntity->numRows ) {
-
+                            if ($objEntity->numRows) {
                                 $strActiveValue = $objEntity->id ?: $strActiveValue;
                             }
                         }
@@ -424,32 +425,33 @@ class OptionsGetter extends CatalogController {
                 }
             }
 
-            $blnValidValue = $this->isValidValue( $strActiveValue );
+            $blnValidValue = $this->isValidValue($strActiveValue);
             $strValue = $strActiveValue;
         }
 
-        if ( in_array( $strOperator, [ 'contain', 'notContain' ] ) && is_string( $strValue ) ) {
+        if (in_array($strOperator, ['contain', 'notContain']) && is_string($strValue)) {
 
-            $strValue = explode( ',', $strValue );
+            $strValue = explode(',', $strValue);
         }
 
-        return Toolkit::prepareValueForQuery( $strValue );
+        return Toolkit::prepareValueForQuery($strValue);
     }
 
 
-    protected function getKeyValueOptions() {
+    protected function getKeyValueOptions()
+    {
 
         $arrOptions = [];
 
-        if ( $this->arrField['options'] ) {
+        if ($this->arrField['options']) {
 
-            $arrFieldOptions = \StringUtil::deserialize( $this->arrField['options'] );
+            $arrFieldOptions = \StringUtil::deserialize($this->arrField['options']);
 
-            if ( !empty( $arrFieldOptions ) && is_array( $arrFieldOptions ) ) {
+            if (!empty($arrFieldOptions) && is_array($arrFieldOptions)) {
 
-                foreach ( $arrFieldOptions as $arrOption ) {
+                foreach ($arrFieldOptions as $arrOption) {
 
-                    $this->setValueToOption( $arrOptions, $arrOption['key'], $arrOption['value'] );
+                    $this->setValueToOption($arrOptions, $arrOption['key'], $arrOption['value']);
                 }
             }
         }
@@ -458,11 +460,12 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function setForeignKey() {
+    protected function setForeignKey()
+    {
 
         $strLabelColumn = $this->arrField['dbTableValue'] ?: $this->arrField['dbTableKey'];
 
-        if ( !$this->arrField['dbTable'] || !$strLabelColumn ) {
+        if (!$this->arrField['dbTable'] || !$strLabelColumn) {
 
             return '';
         }
@@ -471,27 +474,28 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function getActiveEntityValues() {
+    protected function getActiveEntityValues()
+    {
 
-        switch ( TL_MODE ) {
+        switch (TL_MODE) {
 
             case 'BE':
 
                 $strID = \Input::get('id');
 
-                if ( Toolkit::isEmpty( $strID  )|| Toolkit::isEmpty( $this->strActiveTable ) ) {
+                if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) {
 
                     return null;
                 }
 
-                if ( !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $this->strActiveTable  ) ) {
+                if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->strActiveTable)) {
 
                     return null;
                 }
 
                 $arrQuery = [
 
-                    'table' => $this->strActiveTable ,
+                    'table' => $this->strActiveTable,
 
                     'pagination' => [
 
@@ -512,11 +516,11 @@ class OptionsGetter extends CatalogController {
 
                 $strLanguageColumn = '';
                 $strDefaultLanguage = '';
-                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1' )->execute( $this->strActiveTable  );
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare('SELECT * FROM tl_catalog WHERE tablename = ? LIMIT 1')->execute($this->strActiveTable);
 
-                if ( $objCatalog->numRows ) {
+                if ($objCatalog->numRows) {
 
-                    if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $this->strActiveTable  ) ) {
+                    if ($objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('pid', $this->strActiveTable)) {
 
                         $arrQuery['joins'][] = [
 
@@ -528,18 +532,18 @@ class OptionsGetter extends CatalogController {
                         ];
                     }
 
-                    if ( $this->hasLanguageNavigationBar( $objCatalog ) ) {
+                    if ($this->hasLanguageNavigationBar($objCatalog)) {
 
                         $strDefaultLanguage = \Input::get('ctlg_language') ?: $objCatalog->fallbackLanguage;
                         $strLanguageColumn = $objCatalog->languageEntityColumn;
                     }
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
+                $this->arrActiveEntity = $this->SQLQueryBuilder->execute($arrQuery)->row();
 
-                if ( $strLanguageColumn && $strDefaultLanguage ) {
+                if ($strLanguageColumn && $strDefaultLanguage) {
 
-                    $this->arrActiveEntity[ $strLanguageColumn ] = $strDefaultLanguage;
+                    $this->arrActiveEntity[$strLanguageColumn] = $strDefaultLanguage;
                 }
 
                 return null;
@@ -548,22 +552,22 @@ class OptionsGetter extends CatalogController {
 
             case 'FE':
 
-                if ( !$this->arrField['pid'] ) {
+                if (!$this->arrField['pid']) {
 
                     return null;
                 }
 
-                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( 'SELECT * FROM tl_catalog WHERE id = ?' )->limit(1)->execute( $this->arrField['pid'] );
+                $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare('SELECT * FROM tl_catalog WHERE id = ?')->limit(1)->execute($this->arrField['pid']);
 
-                if ( !$objCatalog->tablename || !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists( $objCatalog->tablename ) ) {
+                if (!$objCatalog->tablename || !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($objCatalog->tablename)) {
 
                     return null;
                 }
 
-                $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
-                $strAct = $this->strModuleID ? \Input::get( 'act'. $this->strModuleID ) : \Input::get('act');
+                $strID = $this->strModuleID ? \Input::get('id' . $this->strModuleID) : \Input::get('id');
+                $strAct = $this->strModuleID ? \Input::get('act' . $this->strModuleID) : \Input::get('act');
 
-                if ( !$strID && !$strAct ) {
+                if (!$strID && !$strAct) {
 
                     return null;
                 }
@@ -589,7 +593,7 @@ class OptionsGetter extends CatalogController {
                     'joins' => []
                 ];
 
-                if ( $objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists( 'pid', $objCatalog->tablename )) {
+                if ($objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('pid', $objCatalog->tablename)) {
 
                     $arrQuery['joins'][] = [
 
@@ -601,37 +605,38 @@ class OptionsGetter extends CatalogController {
                     ];
                 }
 
-                $this->arrActiveEntity = $this->SQLQueryBuilder->execute( $arrQuery )->row();
+                $this->arrActiveEntity = $this->SQLQueryBuilder->execute($arrQuery)->row();
 
-                if ( $this->hasLanguageNavigationBar( $objCatalog ) ) {
+                if ($this->hasLanguageNavigationBar($objCatalog)) {
 
-                    $this->arrActiveEntity[ $objCatalog->languageEntityColumn ] = $GLOBALS['TL_LANGUAGE'] ?: $objCatalog->fallbackLanguage;
+                    $this->arrActiveEntity[$objCatalog->languageEntityColumn] = $GLOBALS['TL_LANGUAGE'] ?: $objCatalog->fallbackLanguage;
                 }
 
                 break;
 
         }
 
-        if ( !is_array( $this->arrActiveEntity ) ) {
+        if (!is_array($this->arrActiveEntity)) {
 
             $this->arrActiveEntity = [];
         }
     }
 
 
-    protected function getOrderBy() {
+    protected function getOrderBy()
+    {
 
-        if ( isset($this->arrField['dbOrderBy']) ) {
+        if (isset($this->arrField['dbOrderBy'])) {
 
-            $arrOrderBy = \StringUtil::deserialize( $this->arrField['dbOrderBy'] );
+            $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy']);
 
-            if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+            if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
 
-                $this->arrField['_orderBy'] = $this->OrderByHelper->getOrderByQuery( $arrOrderBy, $this->arrField['dbTable'] );
+                $this->arrField['_orderBy'] = $this->OrderByHelper->getOrderByQuery($arrOrderBy, $this->arrField['dbTable']);
             }
         }
 
-        if ( isset($this->arrField['_orderBy']) && !Toolkit::isEmpty( $this->arrField['_orderBy'] ) ) {
+        if (isset($this->arrField['_orderBy']) && !Toolkit::isEmpty($this->arrField['_orderBy'])) {
 
             return ' ' . $this->arrField['_orderBy'];
         }
@@ -640,27 +645,28 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function isValidValue( $strValue ) {
+    protected function isValidValue($strValue)
+    {
 
-        if ( !Toolkit::isEmpty( $strValue ) ) return true;
+        if (!Toolkit::isEmpty($strValue)) return true;
 
-        switch ( TL_MODE ) {
+        switch (TL_MODE) {
 
             case 'BE':
 
                 $strID = \Input::get('id');
 
-                if ( Toolkit::isEmpty( $strID ) || Toolkit::isEmpty( $this->strActiveTable ) ) return false;
+                if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) return false;
 
                 break;
 
             case 'FE':
 
-                $strID = $this->strModuleID ? \Input::get( 'id'. $this->strModuleID ) : \Input::get('id');
+                $strID = $this->strModuleID ? \Input::get('id' . $this->strModuleID) : \Input::get('id');
 
-                if ( \Input::get( 'act'. $this->strModuleID ) ) return true;
-                
-                if ( !$strID ) return false;
+                if (\Input::get('act' . $this->strModuleID)) return true;
+
+                if (!$strID) return false;
 
                 break;
         }
@@ -669,8 +675,9 @@ class OptionsGetter extends CatalogController {
     }
 
 
-    protected function hasLanguageNavigationBar( $objCatalog ) {
+    protected function hasLanguageNavigationBar($objCatalog)
+    {
 
-        return $objCatalog->enableLanguageBar && !in_array( $objCatalog->mode, [ '5', '6' ] ) && $objCatalog->languageEntitySource == 'currentTable';
+        return $objCatalog->enableLanguageBar && !in_array($objCatalog->mode, ['5', '6']) && $objCatalog->languageEntitySource == 'currentTable';
     }
 }

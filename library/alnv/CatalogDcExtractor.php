@@ -345,11 +345,8 @@ class CatalogDcExtractor extends CatalogController
                     $strUpperCaseField = strtoupper($strField);
 
                     if (stripos($strUpperCaseField, 'ASC') || stripos($strUpperCaseField, 'DESC')) {
-
                         $arrFieldParameter = explode(' ', $strField);
-
                         if (!Toolkit::isEmpty($arrFieldParameter[0])) {
-
                             $arrFields[] = $arrFieldParameter[0];
                         }
 
@@ -363,7 +360,6 @@ class CatalogDcExtractor extends CatalogController
             }
 
             if (is_array($arrDataContainer[$strDcConfigType]['sorting']['headerFields']) && !empty($arrDataContainer[$strDcConfigType]['sorting']['headerFields'])) {
-
                 $arrReturn['headerFields'] = $arrDataContainer[$strDcConfigType]['sorting']['headerFields'];
             }
         }
@@ -380,7 +376,7 @@ class CatalogDcExtractor extends CatalogController
             if (isset($arrDataContainer[$strDcConfigType]['label']['format'])) {
                 $arrReturn['format'] = $arrDataContainer[$strDcConfigType]['label']['format'];
             }
-            if ($arrDataContainer[$strDcConfigType]['label']['showColumns']) {
+            if (($arrDataContainer[$strDcConfigType]['label']['showColumns']??'')) {
                 $arrReturn['showColumns'] = '1';
             }
             if (isset($arrDataContainer[$strDcConfigType]['label']['fields']) && is_array($arrDataContainer[$strDcConfigType]['label']['fields']) && !empty($arrDataContainer[$strDcConfigType]['label']['fields'])) {
@@ -396,9 +392,7 @@ class CatalogDcExtractor extends CatalogController
     {
 
         if ($this->blnCore) {
-
             $arrReturn['operations'] = '';
-
             return $arrReturn;
         }
 

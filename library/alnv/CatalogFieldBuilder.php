@@ -634,7 +634,7 @@ class CatalogFieldBuilder extends CatalogController
 
                     $arrReturn[$strFieldname]['fileType'] = $strFileType;
                     $arrReturn[$strFieldname]['extensions'] = $strExtensions;
-                    $arrReturn[$strFieldname]['filesOnly'] = $arrField['eval']['filesOnly'] ? '1' : '';
+                    $arrReturn[$strFieldname]['filesOnly'] = ($arrField['eval']['filesOnly']??'') ? '1' : '';
                 }
             }
         }

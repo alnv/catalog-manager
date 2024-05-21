@@ -295,11 +295,11 @@ class CatalogDcExtractor extends CatalogController
             $arrReturn['useVC'] = $arrDataContainer['config']['enableVersioning'] ? '1' : '';
         }
 
-        if ($arrDataContainer[$strDcConfigType]['ptable']) {
-
+        if (($arrDataContainer[$strDcConfigType]['ptable']??'')) {
             $arrReturn['pTable'] = $arrDataContainer['config']['ptable'];
         }
 
+        $arrDataContainer[$strDcConfigType]['ctable'] = $arrDataContainer[$strDcConfigType]['ctable'] ?? [];
         if (is_array($arrDataContainer[$strDcConfigType]['ctable']) && !empty($arrDataContainer['config']['ctable'])) {
 
             if (in_array('tl_content', $arrDataContainer[$strDcConfigType]['ctable'])) {
@@ -358,6 +358,8 @@ class CatalogDcExtractor extends CatalogController
 
                 $arrReturn['sortingFields'] = serialize($arrFields);
             }
+
+            $arrDataContainer[$strDcConfigType]['sorting']['headerFields'] = $arrDataContainer[$strDcConfigType]['sorting']['headerFields'] ?? [];
 
             if (is_array($arrDataContainer[$strDcConfigType]['sorting']['headerFields']) && !empty($arrDataContainer[$strDcConfigType]['sorting']['headerFields'])) {
                 $arrReturn['headerFields'] = $arrDataContainer[$strDcConfigType]['sorting']['headerFields'];

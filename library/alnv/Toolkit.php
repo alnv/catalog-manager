@@ -476,7 +476,6 @@ class Toolkit
                     $arrSubQueries = self::parseQueries($arrQuery['subQueries']);
 
                     array_insert($arrSubQueries, 0, [[
-
                         'field' => $arrQuery['field'],
                         'value' => $arrQuery['value'],
                         'operator' => $arrQuery['operator'],
@@ -536,31 +535,31 @@ class Toolkit
             }
 
             if (is_string($arrQuery['value']) && $arrQuery['operator'] == 'regexp') {
-
                 if (strpos($arrQuery['value'], ' ')) {
-
                     $arrQuery['value'] = explode(' ', $arrQuery['value']);
                 }
             }
         }
 
         if (isset($arrQuery['value']) && is_array($arrQuery['value']) && !in_array($arrQuery['operator'], ['contain', 'notContain', 'between'])) {
-
             $arrQuery['multiple'] = true;
         }
 
         if ((!isset($arrQuery['value']) || $arrQuery['value'] === '') && !$blnAllowEmptyValue) {
-
             return null;
         }
 
         if ((is_array($arrQuery['value']) && empty($arrQuery['value'])) && !$blnAllowEmptyValue) {
-
             return null;
         }
 
+
         if (is_numeric($arrQuery['value']) && in_array($arrQuery['operator'], ['lte', 'lt', 'gt', 'gte'])) {
-            $arrQuery['value'] = floatval($arrQuery['value']);
+            if (strpos((string)$arrQuery['value'], '.') !== false) {
+                $arrQuery['value'] = floatval($arrQuery['value']);
+            } else {
+                $arrQuery['value'] = (int)$arrQuery['value'];
+            }
         }
 
         $arrQuery['value'] = self::prepareValueForQuery($arrQuery['value']);

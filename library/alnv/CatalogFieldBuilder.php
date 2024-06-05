@@ -324,9 +324,7 @@ class CatalogFieldBuilder extends CatalogController
     {
 
         $arrFields = [
-
             'id' => [
-
                 'type' => '',
                 'sort' => '1',
                 'search' => '1',
@@ -337,9 +335,7 @@ class CatalogFieldBuilder extends CatalogController
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['id'][0]
             ],
-
             'tstamp' => [
-
                 'flag' => 6,
                 'type' => '',
                 'sort' => '1',
@@ -351,9 +347,7 @@ class CatalogFieldBuilder extends CatalogController
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['tstamp'][0]
             ],
-
             'pid' => [
-
                 'type' => '',
                 'invisible' => '',
                 'disableFEE' => true,
@@ -361,9 +355,7 @@ class CatalogFieldBuilder extends CatalogController
                 'fieldname' => 'pid',
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['pid'][0]
             ],
-
             'sorting' => [
-
                 'type' => '',
                 'invisible' => '',
                 'statement' => 'i10',
@@ -371,9 +363,7 @@ class CatalogFieldBuilder extends CatalogController
                 'fieldname' => 'sorting',
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['sorting'][0]
             ],
-
             'title' => [
-
                 'sort' => '1',
                 'search' => '1',
                 'type' => 'text',
@@ -390,9 +380,7 @@ class CatalogFieldBuilder extends CatalogController
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]
             ],
-
             'alias' => [
-
                 'search' => '1',
                 'unique' => '1',
                 'type' => 'text',
@@ -409,9 +397,7 @@ class CatalogFieldBuilder extends CatalogController
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['alias'][0]
             ],
-
             'invisible' => [
-
                 'exclude' => '1',
                 'multiple' => '',
                 'invisible' => '',
@@ -423,9 +409,7 @@ class CatalogFieldBuilder extends CatalogController
                 'cssID' => serialize(['', 'invisible']),
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['invisible'][0],
             ],
-
             'start' => [
-
                 'flag' => 6,
                 'sort' => '1',
                 'type' => 'date',
@@ -441,9 +425,7 @@ class CatalogFieldBuilder extends CatalogController
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['start'][0]
             ],
-
             'stop' => [
-
                 'flag' => 6,
                 'sort' => '1',
                 'type' => 'date',
@@ -475,13 +457,11 @@ class CatalogFieldBuilder extends CatalogController
             }
 
             if (!in_array($this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes) && !in_array('cut', $this->arrCatalog['operations'])) {
-
                 unset($arrFields['sorting']);
             }
         }
 
         if (isset($this->arrCatalog['type']) && $this->arrCatalog['type'] == 'modifier') {
-
             unset($arrFields['id']);
             unset($arrFields['pid']);
             unset($arrFields['stop']);
@@ -499,28 +479,24 @@ class CatalogFieldBuilder extends CatalogController
     {
 
         if ($blnCoreTable) {
-
             return $arrField;
         }
 
         switch ($strFieldname) {
-
             case 'tstamp' :
             case 'id' :
                 $arrField['_dcFormat'] = [
                     'sorting' => $arrField['_dcFormat']['sorting'] ?? false,
                     'search' => $arrField['_dcFormat']['search'] ?? false,
-                    'label' => $arrField['_dcFormat']['label'] ?? '',
+                    'label' => $arrField['_dcFormat']['label'] ?? [],
                     'flag' => $arrField['_dcFormat']['flag'] ?? null,
                     'sql' => $arrField['_dcFormat']['sql'] ?? ''
                 ];
-
                 return $arrField;
-
             case 'pid' :
                 if ($this->arrCatalog['pTable']) {
                     $arrField['_dcFormat'] = [
-                        'label' => $arrField['_dcFormat']['label'],
+                        'label' => ($arrField['_dcFormat']['label']??[]),
                         'sql' => "int(10) unsigned NOT NULL default '0'",
                         'foreignKey' => sprintf('%s.id', $this->arrCatalog['pTable']),
                         'relation' => [
@@ -534,29 +510,20 @@ class CatalogFieldBuilder extends CatalogController
                 break;
 
             case 'sorting' :
-
                 if (in_array($this->arrCatalog['mode'], Toolkit::$arrRequireSortingModes)) {
-
                     $arrField['_dcFormat'] = [
-
-                        'label' => $arrField['_dcFormat']['label'],
+                        'label' => ($arrField['_dcFormat']['label']??[]),
                         'sql' => "int(10) unsigned NOT NULL default '0'"
                     ];
-
                     return $arrField;
                 }
 
                 break;
 
-
             case 'alias':
-
                 if (TL_MODE == 'FE') return $arrField;
-
                 $arrField['_dcFormat']['save_callback'] = [function ($varValue, \DataContainer $dc) {
-
                     $objDcCallbacks = new DcCallbacks();
-
                     return $objDcCallbacks->generateAlias($varValue, $dc, 'title', $this->strTable);
                 }];
 
@@ -586,7 +553,6 @@ class CatalogFieldBuilder extends CatalogController
                 $strType = Toolkit::setCatalogConformInputType($arrField);
 
                 $arrReturn[$strFieldname] = [
-
                     '_core' => true,
                     'type' => $strType,
                     'fieldname' => $strFieldname,

@@ -1,6 +1,6 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.32.44");
+define("CATALOG_MANAGER_VERSION", "1.32.45");
 
 if (!\Config::get('hideCatalogManager')) {
     array_insert($GLOBALS['BE_MOD'], 3, [
@@ -23,7 +23,7 @@ if (!\Config::get('hideCatalogManager')) {
             ],
             'support' => [
                 'name' => 'support',
-                'callback' => CatalogManager\SupportPage::class,
+                'callback' => \CatalogManager\SupportPage::class,
                 'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
                 'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
             ],

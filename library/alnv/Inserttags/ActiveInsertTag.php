@@ -2,41 +2,44 @@
 
 namespace CatalogManager;
 
-class ActiveInsertTag extends \Frontend {
+class ActiveInsertTag extends \Frontend
+{
 
 
-    public function __construct() {
+    public function __construct()
+    {
 
         $this->import('CatalogInput');
     }
 
 
-    public function getInsertTagValue( $strTag ) {
+    public function getInsertTagValue($strTag)
+    {
 
-        $arrTags = explode( '::', $strTag );
+        $arrTags = explode('::', $strTag);
 
-        if ( is_array( $arrTags ) && $arrTags[0] == 'CTLG_ACTIVE' && isset( $arrTags[1] ) ) {
+        if (is_array($arrTags) && $arrTags[0] == 'CTLG_ACTIVE' && isset($arrTags[1])) {
 
             global $objPage;
 
-            $varValue =  $this->CatalogInput->getActiveValue( $arrTags[1] );
+            $varValue = $this->CatalogInput->getActiveValue($arrTags[1]);
 
-            if ( isset( $arrTags[2] ) && strpos( $arrTags[2], '?' ) !== false ) {
+            if (isset($arrTags[2]) && strpos($arrTags[2], '?') !== false) {
 
-                $arrChunks = explode('?', urldecode( $arrTags[2] ), 2 );
-                $strSource = \StringUtil::decodeEntities( $arrChunks[1] );
-                $strSource = str_replace( '[&]', '&', $strSource );
-                $arrParams = explode( '&', $strSource );
+                $arrChunks = explode('?', urldecode($arrTags[2]), 2);
+                $strSource = \StringUtil::decodeEntities($arrChunks[1]);
+                $strSource = str_replace('[&]', '&', $strSource);
+                $arrParams = explode('&', $strSource);
 
                 $blnIsDate = false;
                 $strDateMethod = 'tstamp';
                 $strDateFormat = $objPage->dateFormat;
 
-                foreach ( $arrParams as $strParam ) {
-                    list( $strKey, $strOption ) = explode( '=', $strParam );
+                foreach ($arrParams as $strParam) {
+                    list($strKey, $strOption) = explode('=', $strParam);
                     switch ($strKey) {
                         case 'default':
-                            if ( Toolkit::isEmpty( $varValue ) ) $varValue = \Controller::replaceInsertTags($strOption);
+                            if (Toolkit::isEmpty($varValue)) $varValue = \Controller::replaceInsertTags($strOption);
                             break;
                         case 'suffix':
                         case 'prefix':
@@ -66,61 +69,54 @@ class ActiveInsertTag extends \Frontend {
                     }
                 }
 
-                if ( $blnIsDate && is_array( $varValue ) ) {
+                if ($blnIsDate && is_array($varValue)) {
 
-                    foreach ( $varValue as $strK => $strV ) {
+                    foreach ($varValue as $strK => $strV) {
 
-                        if ( !$strV ) {
+                        if (!$strV) {
 
-                            unset( $varValue[$strK] );
+                            unset($varValue[$strK]);
 
                             continue;
                         };
 
-                        if ( \Validator::isDate( $strV ) || \Validator::isDate( $strV ) || \Validator::isTime( $strV ) ) {
+                        if (\Validator::isDate($strV) || \Validator::isDate($strV) || \Validator::isTime($strV)) {
 
-                            $objDate = new \Date( $strV, $strDateFormat );
+                            $objDate = new \Date($strV, $strDateFormat);
                             $intTimestamp = $objDate->{$strDateMethod};
 
-                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->{$strDateMethod};
-                        }
+                            if ($intTimestamp > 0) $varValue[$strK] = $objDate->{$strDateMethod};
+                        } else if (is_numeric($strV)) {
 
-                        else if ( is_numeric( $strV ) ) {
-
-                            $objDate = new \Date( $strV );
+                            $objDate = new \Date($strV);
                             $intTimestamp = $objDate->{$strDateMethod};
 
-                            if ( $intTimestamp > 0 ) $varValue[ $strK ] = $objDate->{$strDateMethod};
+                            if ($intTimestamp > 0) $varValue[$strK] = $objDate->{$strDateMethod};
                         }
                     }
                 }
 
-                if ( $blnIsDate && is_string( $varValue ) && !Toolkit::isEmpty( $varValue ) ) {
+                if ($blnIsDate && is_string($varValue) && !Toolkit::isEmpty($varValue)) {
 
-                    if ( \Validator::isDate( $varValue ) || \Validator::isDate( $varValue ) || \Validator::isTime( $varValue ) ) {
+                    if (\Validator::isDate($varValue) || \Validator::isDate($varValue) || \Validator::isTime($varValue)) {
 
-                        $objDate = new \Date( $varValue, $strDateFormat );
+                        $objDate = new \Date($varValue, $strDateFormat);
                         $intTimestamp = $objDate->{$strDateMethod};
 
-                        if ( $intTimestamp > 0 ) $varValue = $objDate->{$strDateMethod};
-                    }
+                        if ($intTimestamp > 0) $varValue = $objDate->{$strDateMethod};
+                    } else if (is_numeric($varValue)) {
 
-                    else if ( is_numeric( $varValue ) ){
-
-                        $objDate = new \Date( $varValue );
+                        $objDate = new \Date($varValue);
                         $intTimestamp = $objDate->{$strDateMethod};
 
-                        if ( $intTimestamp > 0 ) $varValue = $objDate->{$strDateMethod};
+                        if ($intTimestamp > 0) $varValue = $objDate->{$strDateMethod};
                     }
                 }
-            }
-
-            elseif( Toolkit::isEmpty( $varValue ) ) {
-
+            } elseif (Toolkit::isEmpty($varValue)) {
                 $varValue = $arrTags[2] ?? '';
             }
 
-            if ( is_array( $varValue ) ) $varValue = implode( ',', $varValue );
+            if (is_array($varValue)) $varValue = implode(',', $varValue);
 
             return $varValue;
         }

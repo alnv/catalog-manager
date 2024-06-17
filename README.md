@@ -1,6 +1,8 @@
 Catalog Manager - Eine Contao CMS Erweiterung
 =============================================
 
+**Catalog-Manager v3 für Contao 5 -> https://extensions.contao.org/?q=cata&pages=1&p=alnv%2Fcatalog-manager-bundle**
+
 ## Lizenzinformationen
 Catalog Manager kann kostenfrei und uneingeschränkt getestet werden. 
 Eine Lizenz muss erst beim Launch der Webseite erworben werden. Weitere Lizenzinformationen finden Sie auf der offiziellen [Catalog Manager][1] Seite.

@@ -69,7 +69,7 @@ class CatalogInsertTag extends \Frontend
 
                                     $strValue = \Input::get($strField);
 
-                                    if (!\Toolkit::isEmpty($strValue)) {
+                                    if (!Toolkit::isEmpty($strValue)) {
 
                                         $blnIfActive = true;
 

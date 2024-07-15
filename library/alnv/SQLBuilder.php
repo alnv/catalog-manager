@@ -2,172 +2,184 @@
 
 namespace CatalogManager;
 
-class SQLBuilder extends CatalogController {
+class SQLBuilder extends CatalogController
+{
 
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
 
-        $this->import( 'Database' );
+        $this->import('Database');
     }
 
 
-    public function parseCreateFieldStatement( $strField, $strSQLStatement ) {
-
-        return sprintf( '`%s` %s', $strField, $strSQLStatement );
+    public function parseCreateFieldStatement($strField, $strSQLStatement)
+    {
+        return sprintf('`%s` %s', $strField, $strSQLStatement);
     }
 
 
-    public function createSQLCreateStatement( $strTable, $arrFields ) {
+    public function createSQLCreateStatement($strTable, $arrFields)
+    {
 
-        if ( !$strTable ) {
+        if (!$strTable) {
 
             return null;
         }
 
         $strFieldStatements = [];
 
-        foreach ( $arrFields as $strField => $strSQLStatement ) {
+        foreach ($arrFields as $strField => $strSQLStatement) {
 
-            $strFieldStatements[] = $this->parseCreateFieldStatement( $strField, $strSQLStatement );
+            $strFieldStatements[] = $this->parseCreateFieldStatement($strField, $strSQLStatement);
         }
 
         $strFieldStatements[] = 'PRIMARY KEY  (`id`)';
 
-        $strCreateStatement = sprintf( 'CREATE TABLE IF NOT EXISTS `%s` ( %s ) ENGINE=MyISAM DEFAULT CHARSET=UTF8', $strTable, implode( ',', $strFieldStatements ) );
+        $strCreateStatement = sprintf('CREATE TABLE IF NOT EXISTS `%s` ( %s ) ENGINE=MyISAM DEFAULT CHARSET=UTF8', $strTable, implode(',', $strFieldStatements));
 
-        $this->Database->prepare( $strCreateStatement )->execute();
+        $this->Database->prepare($strCreateStatement)->execute();
     }
 
 
-    public function createSQLDropTableStatement( $strTable ) {
+    public function createSQLDropTableStatement($strTable)
+    {
 
-        if ( !$strTable || !$this->Database->tableExists( $strTable ) ) {
+        if (!$strTable || !$this->Database->tableExists($strTable)) {
 
             return null;
         }
 
-        $strDropTableStatement = sprintf( 'DROP TABLE %s;', $strTable );
+        $strDropTableStatement = sprintf('DROP TABLE %s;', $strTable);
 
-        $this->Database->prepare( $strDropTableStatement )->execute();
+        $this->Database->prepare($strDropTableStatement)->execute();
     }
 
 
-    public function createSQLRenameTableStatement( $strTable, $strOldTable ) {
+    public function createSQLRenameTableStatement($strTable, $strOldTable)
+    {
 
-        if ( !$strTable ) {
+        if (!$strTable) {
 
             return null;
         }
 
-        $strRenameTableStatement = sprintf( 'RENAME TABLE %s TO %s', $strOldTable, $strTable );
+        $strRenameTableStatement = sprintf('RENAME TABLE %s TO %s', $strOldTable, $strTable);
 
-        $this->Database->prepare( $strRenameTableStatement )->execute();
+        $this->Database->prepare($strRenameTableStatement)->execute();
     }
 
 
-    public function createSQLRenameFieldnameStatement( $strTable, $strOldFieldname, $strNewFieldname, $strStatement ) {
+    public function createSQLRenameFieldnameStatement($strTable, $strOldFieldname, $strNewFieldname, $strStatement)
+    {
 
-        if ( !$strTable ) {
+        if (!$strTable) {
 
             return null;
         }
 
-        $strRenameTableStatement = sprintf( 'ALTER TABLE %s CHANGE `%s` `%s` %s', $strTable, $strOldFieldname, $strNewFieldname, $strStatement );
+        $strRenameTableStatement = sprintf('ALTER TABLE %s CHANGE `%s` `%s` %s', $strTable, $strOldFieldname, $strNewFieldname, $strStatement);
 
-        $this->Database->prepare( $strRenameTableStatement )->execute();
+        $this->Database->prepare($strRenameTableStatement)->execute();
     }
 
 
-    public function alterTableField( $strTable, $strField, $strSQLStatement ) {
+    public function alterTableField($strTable, $strField, $strSQLStatement)
+    {
 
-        if ( !$strTable || !$strField || !$strSQLStatement ) {
-
-            return null;
-        }
-        
-        if ( !$this->Database->fieldExists( $strField, $strTable, true ) ) {
-
-            $strAlterFieldStatement = sprintf( 'ALTER TABLE %s ADD `%s` %s ', $strTable, $strField, $strSQLStatement );
-
-            $this->Database->prepare( $strAlterFieldStatement )->execute();
-        }
-    }
-
-
-    public function dropTableField( $strTable, $strField ) {
-
-        if ( !$strTable || !$strField ) {
+        if (!$strTable || !$strField || !$strSQLStatement) {
 
             return null;
         }
 
-        if ( $this->Database->fieldExists( $strField, $strTable, true ) ) {
+        if (!$this->Database->fieldExists($strField, $strTable, true)) {
 
-            $strDropFieldStatement = sprintf( 'ALTER TABLE %s DROP COLUMN `%s`', $strTable, $strField );
+            $strAlterFieldStatement = sprintf('ALTER TABLE %s ADD `%s` %s ', $strTable, $strField, $strSQLStatement);
 
-            $this->Database->prepare( $strDropFieldStatement )->execute();
+            $this->Database->prepare($strAlterFieldStatement)->execute();
         }
     }
 
 
-    public function modifyTableField( $strTable, $strField, $strSQLStatement ) {
+    public function dropTableField($strTable, $strField)
+    {
 
-        if ( !$strTable || !$strField || !$strSQLStatement ) {
+        if (!$strTable || !$strField) {
 
             return null;
         }
 
-        if ( $this->Database->fieldExists( $strField, $strTable, true ) ) {
+        if ($this->Database->fieldExists($strField, $strTable, true)) {
 
-            $strAlterFieldStatement = sprintf( 'ALTER TABLE %s MODIFY COLUMN %s %s', $strTable, $strField, $strSQLStatement );
+            $strDropFieldStatement = sprintf('ALTER TABLE %s DROP COLUMN `%s`', $strTable, $strField);
 
-            $this->Database->prepare( $strAlterFieldStatement )->execute();
+            $this->Database->prepare($strDropFieldStatement)->execute();
         }
     }
 
 
-    public function addIndex( $strTable, $strField, $strIndex ) {
+    public function modifyTableField($strTable, $strField, $strSQLStatement)
+    {
+
+        if (!$strTable || !$strField || !$strSQLStatement) {
+
+            return null;
+        }
+
+        if ($this->Database->fieldExists($strField, $strTable, true)) {
+
+            $strAlterFieldStatement = sprintf('ALTER TABLE %s MODIFY COLUMN %s %s', $strTable, $strField, $strSQLStatement);
+
+            $this->Database->prepare($strAlterFieldStatement)->execute();
+        }
+    }
+
+
+    public function addIndex($strTable, $strField, $strIndex)
+    {
 
         $strAddIndexStatement = '';
 
-        if ( $strIndex == 'index' ) {
+        if ($strIndex == 'index') {
 
-            $strAddIndexStatement = sprintf( 'ALTER TABLE %s ADD KEY `%s` (`%s`)', $strTable, $strField, $strField );
+            $strAddIndexStatement = sprintf('ALTER TABLE %s ADD KEY `%s` (`%s`)', $strTable, $strField, $strField);
         }
 
-        if ( $strIndex == 'unique' ) {
+        if ($strIndex == 'unique') {
 
-            $strAddIndexStatement = sprintf( 'ALTER TABLE %s ADD UNIQUE KEY (`%s`)', $strTable, $strField );
+            $strAddIndexStatement = sprintf('ALTER TABLE %s ADD UNIQUE KEY (`%s`)', $strTable, $strField);
         }
 
-        if ( $strAddIndexStatement ) {
+        if ($strAddIndexStatement) {
 
-            $this->Database->prepare( $strAddIndexStatement )->execute();
+            $this->Database->prepare($strAddIndexStatement)->execute();
         }
     }
 
 
-    public function dropIndex( $strTable, $strField ) {
+    public function dropIndex($strTable, $strField)
+    {
 
-        $this->Database->prepare( sprintf( 'ALTER TABLE %s DROP INDEX %s', $strTable, $strField ) )->execute();
+        $this->Database->prepare(sprintf('ALTER TABLE %s DROP INDEX %s', $strTable, $strField))->execute();
     }
 
 
-    public function showColumns( $strTable ) {
+    public function showColumns($strTable)
+    {
 
         $arrReturn = [];
 
-        $objColumn = $this->Database->prepare( sprintf( 'SHOW COLUMNS FROM %s', $strTable ) )->execute();
+        $objColumn = $this->Database->prepare(sprintf('SHOW COLUMNS FROM %s', $strTable))->execute();
 
-        while ( $objColumn->next() ) {
+        while ($objColumn->next()) {
 
-            $arrReturn[ $objColumn->Field ] = [
+            $arrReturn[$objColumn->Field] = [
 
                 'fieldname' => $objColumn->Field,
-                'index' => $this->getSQLKey( $objColumn->Key ),
-                'statement' => $objColumn->Type . ' ' . $this->getNullStatement( $objColumn->Null ) . ' ' . $this->getDefaultStatement( $objColumn->Default )
+                'index' => $this->getSQLKey($objColumn->Key),
+                'statement' => $objColumn->Type . ' ' . $this->getNullStatement($objColumn->Null) . ' ' . $this->getDefaultStatement($objColumn->Default)
             ];
         }
 
@@ -175,42 +187,45 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    public function updateTableFieldByID( $stID, $strTable, $arrValues ) {
+    public function updateTableFieldByID($stID, $strTable, $arrValues)
+    {
 
         $arrUpdateSet = [];
 
-        if ( !$stID || !$strTable ) {
+        if (!$stID || !$strTable) {
 
             return null;
         }
 
-        foreach ( $arrValues as $strFieldname => $strValue ){
+        foreach ($arrValues as $strFieldname => $strValue) {
 
             $arrUpdateSet[] = "`{$strFieldname}` = '{$strValue}'";
         }
 
-        if ( !empty( $arrUpdateSet ) && is_array( $arrUpdateSet ) ) {
+        if (!empty($arrUpdateSet) && is_array($arrUpdateSet)) {
 
-            $strUpdateFieldStatement = sprintf( 'UPDATE %s SET %s WHERE id = ?', $strTable, implode( ',', $arrUpdateSet  ) );
-            $this->Database->prepare( $strUpdateFieldStatement )->execute( $stID );
+            $strUpdateFieldStatement = sprintf('UPDATE %s SET %s WHERE id = ?', $strTable, implode(',', $arrUpdateSet));
+            $this->Database->prepare($strUpdateFieldStatement)->execute($stID);
         }
     }
 
 
-    protected function getPlaceholders( $arrValues, $strPlaceholder = '?' ) {
+    protected function getPlaceholders($arrValues, $strPlaceholder = '?')
+    {
 
-        return implode( ', ', array_fill( 0, count( $arrValues ), $strPlaceholder ) );
+        return implode(', ', array_fill(0, count($arrValues), $strPlaceholder));
     }
 
 
-    protected function getSQLKey( $strKey ) {
-        
-        if ( $strKey == 'UNI' ) {
+    protected function getSQLKey($strKey)
+    {
+
+        if ($strKey == 'UNI') {
 
             return 'unique';
         }
 
-        if ( $strKey == 'MUL' ) {
+        if ($strKey == 'MUL') {
 
             return 'index';
         }
@@ -219,9 +234,10 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    protected function getNullStatement( $strNull ) {
+    protected function getNullStatement($strNull)
+    {
 
-        if ( !$strNull ) {
+        if (!$strNull) {
 
             return '';
         }
@@ -230,13 +246,14 @@ class SQLBuilder extends CatalogController {
     }
 
 
-    protected function getDefaultStatement( $strDefault ) {
+    protected function getDefaultStatement($strDefault)
+    {
 
-        if ( is_null( $strDefault ) ) {
+        if (is_null($strDefault)) {
 
             return '';
         }
 
-        return sprintf( "default '%s'", $strDefault );
+        return sprintf("default '%s'", $strDefault);
     }
 }

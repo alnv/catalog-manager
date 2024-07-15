@@ -17,24 +17,16 @@ class CatalogDataContainer extends \DataContainer
     {
 
         switch ($strKey) {
-
             case 'activeRecord':
-
                 $objEntity = null;
-
                 if (isset($varValue['id']) && $varValue['id']) {
-
                     $objEntity = $this->Database->prepare(sprintf('SELECT * FROM %s WHERE id = ?', $this->table))->limit(1)->execute($varValue['id']);
                 }
-
                 $this->objActiveRecord = $objEntity;
-
                 break;
 
             default:
-
                 parent::__set($strKey, $varValue);
-
                 break;
         }
     }

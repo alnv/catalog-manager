@@ -1,8 +1,12 @@
 <?php
 
-define("CATALOG_MANAGER_VERSION", "1.32.45");
+use CatalogManager\SupportPage;
+use Contao\System;
+use Contao\Config;
 
-if (!\Config::get('hideCatalogManager')) {
+define("CATALOG_MANAGER_VERSION", "1.32.46");
+
+if (!Config::get('hideCatalogManager')) {
     array_insert($GLOBALS['BE_MOD'], 3, [
         'catalog-manager-extensions' => [
             'catalog-manager' => [
@@ -23,7 +27,7 @@ if (!\Config::get('hideCatalogManager')) {
             ],
             'support' => [
                 'name' => 'support',
-                'callback' => \CatalogManager\SupportPage::class,
+                'callback' => SupportPage::class,
                 'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
                 'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
             ],
@@ -52,12 +56,8 @@ array_insert($GLOBALS['TL_CTE'], 3, [
 ]);
 
 if (TL_MODE == 'BE') {
-    $GLOBALS['TL_JAVASCRIPT']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
-        ? 'system/modules/catalog-manager/assets/BackendExtension.js'
-        : 'system/modules/catalog-manager/assets/BackendExtension.js';
-    $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = $GLOBALS['TL_CONFIG']['debugMode']
-        ? 'system/modules/catalog-manager/assets/backend.css'
-        : 'system/modules/catalog-manager/assets/backend.css';
+    $GLOBALS['TL_JAVASCRIPT']['catalogManagerBackendExtension'] = 'system/modules/catalog-manager/assets/BackendExtension.js';
+    $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = 'system/modules/catalog-manager/assets/backend.css';
 }
 
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];
@@ -73,7 +73,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\FilterValuesInser
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = ['CatalogManager\RandomEntitiesIDInsertTag', 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['getAllEvents'][] = ['CatalogManager\CatalogParser', 'getAllEvents'];
 if (version_compare('4.12', VERSION, '<=')) {
-    if (\System::getContainer()->getParameter('contao.legacy_routing')) {
+    if (System::getContainer()->getParameter('contao.legacy_routing')) {
         $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = ['CatalogManager\RoutingBuilder', 'initialize'];
     }
 } else {

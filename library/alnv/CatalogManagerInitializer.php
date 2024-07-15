@@ -2,6 +2,8 @@
 
 namespace CatalogManager;
 
+use Contao\CoreBundle\Controller\BackendCsvImportController;
+
 class CatalogManagerInitializer
 {
 
@@ -109,10 +111,18 @@ class CatalogManagerInitializer
 
                 $arrBackendModule = [];
                 $intIndex = (int)$arrCatalog['navPosition'];
-                $strArea = $arrCatalog['navArea'] ? $arrCatalog['navArea'] : 'system';
-                $strModulename = $arrCatalog['modulename'] ? $arrCatalog['modulename'] : $strTablename;
+                $strArea = $arrCatalog['navArea'] ?: 'system';
+                $strModulename = $arrCatalog['modulename'] ?: $strTablename;
                 $arrBackendModule[$strModulename] = $this->createBackendModuleDc($strTablename, $arrCatalog);
                 $this->arrActiveBackendModules[] = $strModulename;
+
+                if (is_array($arrBackendModule[$strModulename]) && isset($arrBackendModule[$strModulename]['tables']) && is_array($arrBackendModule[$strModulename]['tables'])) {
+                    if (in_array('tl_content', $arrBackendModule[$strModulename]['tables'])) {
+                        $arrBackendModule[$strModulename]['table'] = [BackendCsvImportController::class, 'importTableWizardAction'];
+                        $arrBackendModule[$strModulename]['list'] = [BackendCsvImportController::class, 'importListWizardAction'];
+                    }
+                }
+
                 array_insert($GLOBALS['BE_MOD'][$strArea], $intIndex, $arrBackendModule);
                 $this->arrBackendModules[$strModulename] = $arrBackendModule[$strModulename];
                 $GLOBALS['TL_LANG']['MOD'][$strModulename] = $this->objI18nCatalogTranslator->get('module', $strTablename);
@@ -205,16 +215,12 @@ class CatalogManagerInitializer
         $objDcBuilder->createDataContainerArray();
 
         if (!Toolkit::isEmpty($arrCatalog['permissionType'])) {
-
             $GLOBALS['TL_PERMISSIONS'][] = $strTablename . 'p';
-
             if ($arrCatalog['permissionType'] == 'extended') {
-
                 $GLOBALS['TL_PERMISSIONS'][] = $strTablename;
             }
 
             $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'][] = [
-
                 'type' => $arrCatalog['permissionType'],
                 'tablename' => $strTablename
             ];

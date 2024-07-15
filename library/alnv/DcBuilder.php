@@ -87,14 +87,11 @@ class DcBuilder extends CatalogController
         $arrOperations = [];
 
         if ($this->arrCatalog['operations']) {
-
             $arrOperations = \StringUtil::deserialize($this->arrCatalog['operations'], true);
         }
 
         if (!empty($arrOperations) && is_array($arrOperations)) {
-
             foreach ($arrOperations as $strOperation) {
-
                 $this->arrOperations[$strOperation] = isset($this->arrOperations[$strOperation]);
             }
         }
@@ -109,17 +106,13 @@ class DcBuilder extends CatalogController
         $this->arrFields = $this->CatalogFieldBuilder->getCatalogFields($this->strTable, true, null);
 
         $GLOBALS['TL_DCA'][$this->strTable] = [
-
             'config' => $this->getConfigDc(),
-
             'list' => [
-
                 'label' => $this->getLabelDc(),
                 'sorting' => $this->getSortingDc(),
                 'operations' => $this->getOperationsDc(),
                 'global_operations' => $this->getGlobalOperationsDc(),
             ],
-
             'palettes' => $this->getPalettesDc(),
             'fields' => $this->CatalogFieldBuilder->getDcFormatOnly()
         ];

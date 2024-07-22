@@ -3,7 +3,8 @@
 namespace CatalogManager;
 
 
-class CatalogFormFilter extends CatalogController {
+class CatalogFormFilter extends CatalogController
+{
 
 
     protected $arrForm = [];
@@ -21,7 +22,8 @@ class CatalogFormFilter extends CatalogController {
     protected $strTemplate = 'ce_catalog_filterform';
 
 
-    public function __construct( $strId ) {
+    public function __construct($strId)
+    {
 
         parent::__construct();
 
@@ -33,56 +35,57 @@ class CatalogFormFilter extends CatalogController {
     }
 
 
-    public function render( $objFormTemplate = null, $strCustomTemplate = 'ctlg_inserttag_filterform' ) {
+    public function render($objFormTemplate = null, $strCustomTemplate = 'ctlg_inserttag_filterform')
+    {
 
-        if ( !$this->blnReady ) {
+        if (!$this->blnReady) {
 
             return '';
         }
 
-        if ( !$objFormTemplate ) {
+        if (!$objFormTemplate) {
 
-            $objFormTemplate = new \FrontendTemplate( $strCustomTemplate );
+            $objFormTemplate = new \FrontendTemplate($strCustomTemplate);
         }
 
         $arrFields = [];
         $arrParameters = [];
         $strAction = $this->getActionAttr();
-        $strFormId = md5( $this->strFormId );
+        $strFormId = md5($this->strFormId);
 
-        if ( !empty( $this->arrFormFields ) && is_array( $this->arrFormFields ) ) {
+        if (!empty($this->arrFormFields) && is_array($this->arrFormFields)) {
 
-            foreach ( $this->arrFormFields as $strName => $arrField ) {
+            foreach ($this->arrFormFields as $strName => $arrField) {
 
-                $this->arrFormFields[ $strName ] = $this->parseField( $arrField );
+                $this->arrFormFields[$strName] = $this->parseField($arrField);
 
-                if ( $this->arrFormFields[ $strName ]['type'] == 'hidden' && $this->arrFormFields[ $strName ]['name'] ) {
+                if ($this->arrFormFields[$strName]['type'] == 'hidden' && $this->arrFormFields[$strName]['name']) {
 
-                    $arrFields[ $strName ] = sprintf( '<input type="hidden" name="%s" value="%s">',
+                    $arrFields[$strName] = sprintf('<input type="hidden" name="%s" value="%s">',
 
-                        $this->arrFormFields[ $strName ]['name'],
-                        $this->arrFormFields[ $strName ]['value'] ? $this->arrFormFields[ $strName ]['value'] : $this->arrFormFields[ $strName ]['defaultValue']
+                        $this->arrFormFields[$strName]['name'],
+                        $this->arrFormFields[$strName]['value'] ? $this->arrFormFields[$strName]['value'] : $this->arrFormFields[$strName]['defaultValue']
                     );
 
                     continue;
                 }
 
-                if ( $this->arrFormFields[ $strName ]['dependOnField'] ) {
+                if ($this->arrFormFields[$strName]['dependOnField']) {
 
-                    if ( !$this->validValue( $this->getInput( $this->arrFormFields[ $strName ]['dependOnField'] ) ) ) {
+                    if (!$this->validValue($this->getInput($this->arrFormFields[$strName]['dependOnField']))) {
 
-                        if ( $this->validValue( $this->getInput( $strName ) ) ) {
+                        if ($this->validValue($this->getInput($strName))) {
 
-                            \Controller::redirect( $strAction );
+                            \Controller::redirect($strAction);
                         }
 
                         continue;
                     }
                 }
 
-                if ( $this->arrFormFields[ $strName ]['requiredOptions'] && in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+                if ($this->arrFormFields[$strName]['requiredOptions'] && in_array($this->arrFormFields[$strName]['type'], ['select', 'radio', 'checkbox']) && empty($this->arrFormFields[$strName]['options'])) {
 
-                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
+                    if ($this->validValue($this->getInput($strName))) {
 
                         $arrParameters[] = $strName;
                     }
@@ -90,19 +93,19 @@ class CatalogFormFilter extends CatalogController {
                     continue;
                 }
 
-                if ( in_array( $this->arrFormFields[ $strName ]['type'], [ 'select', 'radio', 'checkbox' ] ) && !empty( $this->arrFormFields[ $strName ]['options'] ) ) {
+                if (in_array($this->arrFormFields[$strName]['type'], ['select', 'radio', 'checkbox']) && !empty($this->arrFormFields[$strName]['options'])) {
 
-                    if ( $this->validValue( $this->getInput( $strName ) ) ) {
+                    if ($this->validValue($this->getInput($strName))) {
 
-                        $arrOptions = array_keys( $this->arrFormFields[ $strName ]['options'] );
-                        $arrActiveValues = $this->getInput( $strName );
+                        $arrOptions = array_keys($this->arrFormFields[$strName]['options']);
+                        $arrActiveValues = $this->getInput($strName);
 
-                        if ( !is_array( $arrActiveValues ) ) {
+                        if (!is_array($arrActiveValues)) {
 
-                            $arrActiveValues = [ $arrActiveValues ];
+                            $arrActiveValues = [$arrActiveValues];
                         }
 
-                        if ( !array_intersect( $arrActiveValues, $arrOptions ) ) {
+                        if (!array_intersect($arrActiveValues, $arrOptions)) {
 
                             $arrParameters[] = $strName;
                         }
@@ -114,14 +117,14 @@ class CatalogFormFilter extends CatalogController {
                     $strTemplate = 'ctlg_form_field_' . $arrField['type'];
                 }
 
-                if ( $this->getInput( '_submit' ) == $strFormId ) {
+                if ($this->getInput('_submit') == $strFormId) {
 
-                    if ( $this->arrFormFields[ $strName ]['mandatory'] && !$this->validValue( $this->arrFormFields[ $strName ]['value'], $this->arrFormFields[ $strName ]['type'] ) ) {
+                    if ($this->arrFormFields[$strName]['mandatory'] && !$this->validValue($this->arrFormFields[$strName]['value'], $this->arrFormFields[$strName]['type'])) {
 
                         $this->blnIsValid = false;
-                        $this->arrFormFields[ $strName ]['invalid'] = true;
-                        $this->arrFormFields[ $strName ]['cssClass'] .= 'error ';
-                        $this->arrFormFields[ $strName ]['description'] = sprintf( $GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[ $strName ]['title'] );
+                        $this->arrFormFields[$strName]['invalid'] = true;
+                        $this->arrFormFields[$strName]['cssClass'] .= 'error ';
+                        $this->arrFormFields[$strName]['description'] = sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->arrFormFields[$strName]['title']);
                     }
 
                     if ($this->arrFormFields[$strName]['value'] && $this->arrFormFields[$strName]['rgxp'] && $this->arrFormFields[$strName]['type'] == 'text' && !$this->validate($this->arrFormFields[$strName]['value'], $this->arrFormFields[$strName]['rgxp'])) {
@@ -133,10 +136,10 @@ class CatalogFormFilter extends CatalogController {
                     }
                 }
 
-                if (isset($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter']) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'])) {
+                if (isset($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'])) {
                     foreach ($GLOBALS['TL_HOOKS']['catalogManagerFormFieldsFilter'] as $arrCallback) {
                         if (is_array($arrCallback)) {
-                            $this->import( $arrCallback[0] );
+                            $this->import($arrCallback[0]);
                             $this->{$arrCallback[0]}->{$arrCallback[1]}($strName, $this->arrFormFields[$strName], $this->arrFormFields, $this->arrForm, $this);
                         }
                     }
@@ -149,11 +152,11 @@ class CatalogFormFilter extends CatalogController {
             }
         }
 
-        $arrAttributes = Toolkit::deserialize( $this->arrForm['attributes'] );
+        $arrAttributes = Toolkit::deserialize($this->arrForm['attributes']);
 
-        $strCssClass = ( !empty( $arrParameters ) ? 'filter_reloading ' : '' );
+        $strCssClass = (!empty($arrParameters) ? 'filter_reloading ' : '');
         $strCssClass .= $arrAttributes[1] ? $arrAttributes[1] : '';
-        $arrSubmitAttributes = Toolkit::deserialize( $this->arrForm['submitAttributes'] );
+        $arrSubmitAttributes = Toolkit::deserialize($this->arrForm['submitAttributes']);
 
         $this->arrForm['formID'] = $arrAttributes[0] ? $arrAttributes[0] : 'id_form_' . $this->strFormId;
 
@@ -166,20 +169,20 @@ class CatalogFormFilter extends CatalogController {
         $objFormTemplate->triggerId = $this->strFormId;
         $objFormTemplate->reset = $this->getResetLink();
         $objFormTemplate->method = $this->getMethodAttr();
-        $objFormTemplate->trigger = !empty( $arrParameters );
-        $objFormTemplate->formSubmit = md5( 'tl_filter' );
+        $objFormTemplate->trigger = !empty($arrParameters);
+        $objFormTemplate->formSubmit = md5('tl_filter');
         $objFormTemplate->disableSubmit = $this->arrForm['disableSubmit'];
-        $objFormTemplate->formID = sprintf( 'id="%s"', $this->arrForm['formID'] );
+        $objFormTemplate->formID = sprintf('id="%s"', $this->arrForm['formID']);
         $objFormTemplate->submit = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['filter'];
-        $objFormTemplate->submitCssClass = isset( $arrSubmitAttributes[1] ) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
+        $objFormTemplate->submitCssClass = isset($arrSubmitAttributes[1]) && $arrSubmitAttributes[1] ? ' ' . $arrSubmitAttributes[1] : '';
 
-        if ( isset( $arrSubmitAttributes[0] ) && $arrSubmitAttributes[0] ) $objFormTemplate->submitId = sprintf( 'id="%s"', $arrSubmitAttributes[0] );
+        if (isset($arrSubmitAttributes[0]) && $arrSubmitAttributes[0]) $objFormTemplate->submitId = sprintf('id="%s"', $arrSubmitAttributes[0]);
 
-        if ( $this->arrForm['disableHtml5Validation'] ) $objFormTemplate->attributes .= 'novalidate';
+        if ($this->arrForm['disableHtml5Validation']) $objFormTemplate->attributes .= 'novalidate';
 
-        if ( $this->arrForm['sendJsonHeader'] ) {
+        if ($this->arrForm['sendJsonHeader']) {
 
-            $this->import( 'CatalogAjaxController' );
+            $this->import('CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
                 'form' => $this->arrForm,
@@ -192,8 +195,8 @@ class CatalogFormFilter extends CatalogController {
                 'cssClass' => $objFormTemplate->cssClass,
             ]);
 
-            $this->CatalogAjaxController->setType( $this->arrForm['sendJsonHeader'] );
-            $this->CatalogAjaxController->setModuleID( $this->arrForm['id'] );
+            $this->CatalogAjaxController->setType($this->arrForm['sendJsonHeader']);
+            $this->CatalogAjaxController->setModuleID($this->arrForm['id']);
             $this->CatalogAjaxController->sendJsonData();
         }
 
@@ -201,9 +204,10 @@ class CatalogFormFilter extends CatalogController {
     }
 
 
-    public function parseField( $arrField ) {
+    public function parseField($arrField)
+    {
 
-        if ( $arrField['type'] == 'range' ) {
+        if ($arrField['type'] == 'range') {
 
             $arrField['gtName'] = $arrField['name'] . '_gt';
             $arrField['ltName'] = $arrField['name'] . '_lt';
@@ -211,23 +215,23 @@ class CatalogFormFilter extends CatalogController {
 
         $arrField['multiple'] = $arrField['multiple'] ? 'multiple' : '';
 
-        if ( in_array( $arrField['type'], [ 'select', 'radio', 'checkbox' ] ) ) {
+        if (in_array($arrField['type'], ['select', 'radio', 'checkbox'])) {
 
-            if ( $arrField['dbParseDate'] ) {
+            if ($arrField['dbParseDate']) {
 
                 $arrField['dbParseDate'] = true;
                 $arrField['dbDateFormat'] = $arrField['dbDateFormat'] ? $arrField['dbDateFormat'] : 'monthBegin';
             }
 
-            $objOptionGetter = new OptionsGetter( $arrField );
+            $objOptionGetter = new OptionsGetter($arrField);
             $arrField['options'] = $objOptionGetter->getOptions();
         }
 
-        if ( $arrField['type'] == 'text' && $arrField['rgxp'] && in_array( $arrField['rgxp'], [ 'date', 'time', 'dateTime' ] ) ) {
+        if ($arrField['type'] == 'text' && $arrField['rgxp'] && in_array($arrField['rgxp'], ['date', 'time', 'dateTime'])) {
 
             global $objPage;
 
-            $strFormat = ( $arrField['rgxp'] == 'dateTime' ? 'datim' : $arrField['rgxp'] ) . 'Format';
+            $strFormat = ($arrField['rgxp'] == 'dateTime' ? 'datim' : $arrField['rgxp']) . 'Format';
 
             $arrField['dateFormat'] = $objPage->{$strFormat};
         }
@@ -236,35 +240,35 @@ class CatalogFormFilter extends CatalogController {
         $arrField['attributes'] = '';
         $arrField['invalid'] = false;
         $arrField['fieldCssClass'] = $arrField['type'];
-        $arrField['value'] = $this->getActiveOptions( $arrField );
-        $arrField['cssID'] = Toolkit::deserialize( $arrField['cssID'] );
+        $arrField['value'] = $this->getActiveOptions($arrField);
+        $arrField['cssID'] = Toolkit::deserialize($arrField['cssID']);
         $arrField['cssClass'] = $arrField['cssID'][1] ? $arrField['cssID'][1] . ' ' : '';
         $arrField['onchange'] = $arrField['submitOnChange'] ? 'onchange="this.form.submit()"' : '';
-        $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf( 'id="%s"', $arrField['cssID'][0] ) : '';
-        $arrField['tabindex'] = $arrField['tabindex'] ? sprintf( 'tabindex="%s"', $arrField['tabindex'] ) : '' ;
+        $arrField['fieldID'] = $arrField['cssID'][0] ? sprintf('id="%s"', $arrField['cssID'][0]) : '';
+        $arrField['tabindex'] = $arrField['tabindex'] ? sprintf('tabindex="%s"', $arrField['tabindex']) : '';
 
-        if ( $arrField['mandatory'] ) $arrField['attributes'] .= ' required';
+        if ($arrField['mandatory']) $arrField['attributes'] .= ' required';
 
-        if ( $arrField['type'] == 'text' && $arrField['autoCompletionType'] ) {
+        if ($arrField['type'] == 'text' && $arrField['autoCompletionType']) {
 
-            $arrField['fieldCssClass'] .= ' awesomplete-field' . ( $arrField['multiple'] ? ' multiple' : '' );
+            $arrField['fieldCssClass'] .= ' awesomplete-field' . ($arrField['multiple'] ? ' multiple' : '');
 
-            if ( \Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $arrField['name'] ) {
+            if (\Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $arrField['name']) {
 
-                $this->sendJsonResponse( $arrField, \Input::get('ctlg_autocomplete_query') );
+                $this->sendJsonResponse($arrField, \Input::get('ctlg_autocomplete_query'));
             }
 
             $objScriptLoader = new CatalogScriptLoader();
-            $objScriptLoader->loadScript('awesomplete-frontend' );
-            $objScriptLoader->loadStyle('awesomplete' );
+            $objScriptLoader->loadScript('awesomplete-frontend');
+            $objScriptLoader->loadStyle('awesomplete');
         }
 
-        if ( isset( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] ) && is_array( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] ) ) {
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'])) {
 
-            foreach ( $GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] as $callback ) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] as $callback) {
 
-                $this->import( $callback[0] );
-                $arrField = $this->{$callback[0]}->{$callback[1]}( $arrField, $this );
+                $this->import($callback[0]);
+                $arrField = $this->{$callback[0]}->{$callback[1]}($arrField, $this);
             }
         }
 
@@ -272,53 +276,56 @@ class CatalogFormFilter extends CatalogController {
     }
 
 
-    protected function initialize() {
+    protected function initialize()
+    {
 
-        $objForm = $this->Database->prepare('SELECT * FROM tl_catalog_form WHERE id = ?')->limit(1)->execute( $this->strFormId );
+        $objForm = $this->Database->prepare('SELECT * FROM tl_catalog_form WHERE id = ?')->limit(1)->execute($this->strFormId);
 
-        if ( $objForm->numRows ) {
+        if ($objForm->numRows) {
 
             $this->arrForm = $objForm->row();
-            $this->getFormFields( $objForm->id );
+            $this->getFormFields($objForm->id);
 
             $this->blnReady = true;
         }
     }
 
 
-    protected function getFormFields( $strPID ) {
+    protected function getFormFields($strPID)
+    {
 
-        $objFields = $this->Database->prepare('SELECT * FROM tl_catalog_form_fields WHERE pid = ? AND invisible != "1" ORDER BY sorting')->execute( $strPID );
+        $objFields = $this->Database->prepare('SELECT * FROM tl_catalog_form_fields WHERE pid = ? AND invisible != "1" ORDER BY sorting')->execute($strPID);
 
-        if ( $objFields->numRows ) {
+        if ($objFields->numRows) {
 
-            while ( $objFields->next() ) {
+            while ($objFields->next()) {
 
-                if ( !$objFields->name ) continue;
+                if (!$objFields->name) continue;
 
-                $this->arrFormFields[ $objFields->name ] = $objFields->row();
+                $this->arrFormFields[$objFields->name] = $objFields->row();
             }
         }
     }
 
 
-    protected function getActiveOptions( $arrField ) {
+    protected function getActiveOptions($arrField)
+    {
 
-        $strValue = !Toolkit::isEmpty( $arrField['defaultValue'] ) ? \Controller::replaceInsertTags( $arrField['defaultValue'] ) : '';
-        $strValue = $this->getInput( $arrField['name'], $strValue );
+        $strValue = !Toolkit::isEmpty($arrField['defaultValue']) ? \Controller::replaceInsertTags($arrField['defaultValue']) : '';
+        $strValue = $this->getInput($arrField['name'], $strValue);
 
-        if ( $arrField['type'] == 'select' || $arrField['type'] == 'checkbox' ) {
+        if ($arrField['type'] == 'select' || $arrField['type'] == 'checkbox') {
 
             $arrReturn = [];
 
-            if ( $strValue && ( empty( $arrField['options'] ) || !is_array( $arrField['options'] ) ) ) {
+            if ($strValue && (empty($arrField['options']) || !is_array($arrField['options']))) {
 
                 return $arrReturn;
             }
 
-            if ( !is_array( $strValue ) ) {
+            if (!is_array($strValue)) {
 
-                $arrReturn[ $strValue ] = $strValue;
+                $arrReturn[$strValue] = $strValue;
 
                 return $arrReturn;
             }
@@ -326,148 +333,158 @@ class CatalogFormFilter extends CatalogController {
             return $strValue;
         }
 
-        if ( $arrField['type'] == 'range' ) {
+        if ($arrField['type'] == 'range') {
 
             return [
 
-                'ltValue' => $this->getInput( $arrField['name'] . '_lt' ),
-                'gtValue' => $this->getInput( $arrField['name'] . '_gt' )
+                'ltValue' => $this->getInput($arrField['name'] . '_lt'),
+                'gtValue' => $this->getInput($arrField['name'] . '_gt')
             ];
         }
 
-        if ( is_array( $strValue ) && $arrField['type'] == 'text' ) {
+        if (is_array($strValue) && $arrField['type'] == 'text') {
 
-            return implode( ' ', $strValue );
+            return implode(' ', $strValue);
         }
 
         return $strValue;
     }
 
 
-    protected function getInput( $strFieldname, $strDefault = '' ) {
+    protected function getInput($strFieldname, $strDefault = '')
+    {
 
-        if ( !$strFieldname ) return $strDefault;
+        if (!$strFieldname) return $strDefault;
 
-        $strValue = $this->CatalogInput->getActiveValue( $strFieldname );
+        $strValue = $this->CatalogInput->getActiveValue($strFieldname);
 
-        if ( Toolkit::isEmpty( $strValue ) ) return $strDefault;
+        if (Toolkit::isEmpty($strValue)) return $strDefault;
 
         return $strValue;
     }
 
 
-    protected function sendJsonResponse( $arrField, $strKeyword ) {
+    protected function sendJsonResponse($arrField, $strKeyword)
+    {
 
         $arrField['optionsType'] = 'useActiveDbOptions';
         $arrField['dbColumn'] = $arrField['dbTableKey'];
         $arrField['dbTableValue'] = $arrField['dbTableKey'];
 
-        $objOptionGetter = new OptionsGetter( $arrField, null, [ $strKeyword ] );
-        $arrWords = array_values( $objOptionGetter->getOptions() );
+        $objOptionGetter = new OptionsGetter($arrField, null, [$strKeyword]);
+        $arrWords = array_values($objOptionGetter->getOptions());
 
         header('Content-Type: application/json');
 
-        echo json_encode( [
+        echo json_encode([
 
             'word' => $strKeyword,
             'words' => $arrWords
 
-        ], 12 );
+        ], 12);
 
         exit;
     }
 
 
-    protected function validValue( $varValue, $strType = '' ) {
+    protected function validValue($varValue, $strType = '')
+    {
 
-        if ( is_array( $varValue ) ) $varValue = array_values( $varValue );
+        if (is_array($varValue)) $varValue = array_values($varValue);
 
-        if ( empty( $varValue ) && is_array( $varValue ) ) return false;
+        if (empty($varValue) && is_array($varValue)) return false;
 
-        if ( is_array( $varValue ) && count( $varValue ) >= 1 && Toolkit::isEmpty( $varValue[0] ) ) return false;
+        if (is_array($varValue) && count($varValue) >= 1 && Toolkit::isEmpty($varValue[0])) return false;
 
-        if ( $strType == 'range' && Toolkit::isEmpty( $varValue[1] ) ) return false;
+        if ($strType == 'range' && Toolkit::isEmpty($varValue[1])) return false;
 
-        if ( Toolkit::isEmpty( $varValue ) ) return false;
+        if (Toolkit::isEmpty($varValue)) return false;
 
         return true;
     }
 
 
-    protected function validate( $varValue, $strType ) {
+    protected function validate($varValue, $strType)
+    {
 
-        if ( $strType == 'date' ) return \Validator::isDate( $varValue ) ? true : false;
-        if ( $strType == 'time' ) return \Validator::isTime( $varValue ) ? true : false;
-        if ( $strType == 'dateTime' ) return \Validator::isDatim( $varValue ) ? true : false;
+        if ($strType == 'date') return \Validator::isDate($varValue) ? true : false;
+        if ($strType == 'time') return \Validator::isTime($varValue) ? true : false;
+        if ($strType == 'dateTime') return \Validator::isDatim($varValue) ? true : false;
 
         return false;
     }
 
 
-    protected function getActionAttr() {
+    protected function getActionAttr()
+    {
 
-        if ( !$this->blnIsValid ) return ampersand( \Environment::get('indexFreeRequest') );
+        if (!$this->blnIsValid) return ampersand(\Environment::get('indexFreeRequest'));
 
         $strAlias = '';
         $strPageID = $this->arrForm['jumpTo'];
 
-        if ( !$strPageID ) {
+        if (!$strPageID) {
 
             global $objPage;
 
             $strPageID = $objPage->id;
-            $strAlias = \Input::get( 'auto_item' ) ? '/' . \Input::get( 'auto_item' ) : '';
+            $strAlias = \Input::get('auto_item') ? '/' . \Input::get('auto_item') : '';
         }
 
         $objPageModel = new \PageModel();
-        $arrPage = $objPageModel->findPublishedById( $strPageID );
+        $arrPage = $objPageModel->findPublishedById($strPageID);
 
-        if ( $arrPage != null ) return \Controller::generateFrontendUrl( $arrPage->row(), $strAlias ) . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' );
+        if ($arrPage != null) return \Controller::generateFrontendUrl($arrPage->row(), $strAlias) . ($this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '');
 
-        return ampersand( \Environment::get('indexFreeRequest') ) . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' );
+        return ampersand(\Environment::get('indexFreeRequest')) . ($this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '');
     }
 
 
-    protected function getMethodAttr() {
+    protected function getMethodAttr()
+    {
 
         return $this->arrForm['method'] ? $this->arrForm['method'] : 'GET';
     }
 
 
-    protected function getResetLink() {
+    protected function getResetLink()
+    {
 
-        if ( !$this->arrForm['resetForm'] || $this->arrForm['method'] == 'POST' ) return '';
+        if (!$this->arrForm['resetForm'] || $this->arrForm['method'] == 'POST') return '';
 
-        $strCurrentUrl = \Environment::get( 'requestUri' );
-        $strClearUrl = strtok( $strCurrentUrl, '?' );
+        $strCurrentUrl = \Environment::get('requestUri');
+        $strClearUrl = strtok($strCurrentUrl, '?');
 
-        if ( $strClearUrl === false ) {
+        if ($strClearUrl === false) {
 
             $strClearUrl = $strCurrentUrl;
         }
 
-        return sprintf( '<a href="%s" id="id_reset_%s">'. $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] .'</a>',
+        return sprintf('<a href="%s" id="id_reset_%s">' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] . '</a>',
 
-            $strClearUrl . ( $this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '' ),
+            $strClearUrl . ($this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : ''),
             $this->strFormId
         );
     }
 
 
-    public function getCustomTemplate() {
+    public function getCustomTemplate()
+    {
 
-        return $this->arrForm['template'] ? $this->arrForm['template'] : '';
+        return $this->arrForm['template'] ?: '';
     }
 
 
-    public function getState() {
+    public function getState()
+    {
 
         return $this->blnReady;
     }
 
 
-    public function disableAutoItem() {
+    public function disableAutoItem()
+    {
 
-        return ( $this->arrForm['disableOnAutoItem'] && !Toolkit::isEmpty( \Input::get( 'auto_item' ) ) );
+        return ($this->arrForm['disableOnAutoItem'] && !Toolkit::isEmpty(\Input::get('auto_item')));
     }
 }

@@ -58,6 +58,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lt'] = 'Lower';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['contain'] = 'IN';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gt'] = 'Greater';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['equal'] = 'Equal';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['like'] = 'LIKE';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['not'] = 'Not equal';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['regexp'] = 'REGEXP';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lte'] = 'Lower then';

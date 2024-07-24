@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['notContain'] = 'NOT IN';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['gte'] = 'Größer gleich';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['lte'] = 'Kleiner gleich';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['notRegexp'] = 'NOT REGEXP';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['like'] = 'LIKE';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['findInSet'] = 'FIND_IN_SET';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['containExact'] = 'IN (und)';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['isNotEmpty'] = 'IS NOT NULL';

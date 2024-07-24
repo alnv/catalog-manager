@@ -260,6 +260,10 @@ class FrontendEditing extends CatalogController
             $arrField = $this->arrCatalogFields[$strFieldname]['_dcFormat'] ?? [];
             $arrField = $this->convertWidgetToField($arrField);
 
+            if (!isset($arrField['inputType'])) {
+                continue;
+            }
+
             $strClass = $this->fieldClassExist($arrField['inputType']);
 
             if ($strClass === false) continue;
@@ -289,13 +293,13 @@ class FrontendEditing extends CatalogController
             $objWidget->id = 'id_' . $strFieldname;
             $objWidget->value = $this->arrValues[$strFieldname];
             $objWidget->placeholder = $arrField['_placeholder'] ?: '';
-            $objWidget->description = is_array($arrField['label']) && isset($arrField['label'][1]) ? $arrField['label'][1] : '';
+            $objWidget->description = $arrField['label'][1] ?? ''; // is_array($arrField['label']) && isset($arrField['label'][1]) ? $arrField['label'][1] : '';
 
             if (isset($this->arrCatalogFields[$strFieldname]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
 
-            if (is_array($arrField['_cssID']) && ($arrField['_cssID'][0] || $arrField['_cssID'][1])) {
-                if ($arrField['_cssID'][0]) $objWidget->id = 'id_' . $arrField['_cssID'][0];
-                if ($arrField['_cssID'][1]) $objWidget->class = ' ' . $arrField['_cssID'][1];
+            if (is_array($arrField['_cssID']) && (isset($arrField['_cssID'][0]) || isset($arrField['_cssID'][1]))) {
+                if (isset($arrField['_cssID'][0])) $objWidget->id = 'id_' . $arrField['_cssID'][0];
+                if (isset($arrField['_cssID'][1])) $objWidget->class = ' ' . $arrField['_cssID'][1];
             }
 
             if ($this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true) {
@@ -813,7 +817,6 @@ class FrontendEditing extends CatalogController
     {
 
         $arrCaptcha = [
-
             'id' => 'id_',
             'required' => true,
             'type' => 'captcha',
@@ -842,23 +845,24 @@ class FrontendEditing extends CatalogController
     protected function convertWidgetToField($arrField)
     {
 
-        if ($arrField['inputType'] == 'checkboxWizard') {
+        $strInputType = $arrField['inputType'] ?? '';
 
+        if ($strInputType == 'checkboxWizard') {
             $arrField['inputType'] = 'checkbox';
         }
 
-        if ($arrField['inputType'] == 'fileTree') {
-
+        if ($strInputType == 'fileTree') {
             $arrField['inputType'] = 'upload';
         }
 
-        if ($arrField['inputType'] == 'catalogMessageWidget') {
-
+        if ($strInputType == 'catalogMessageWidget') {
             $arrField['inputType'] = 'catalogMessageForm';
         }
 
-        $arrField['eval']['tableless'] = '1';
-        $arrField['eval']['required'] = $arrField['eval']['mandatory'];
+        if (isset($arrField['eval']) && is_array($arrField['eval'])) {
+            $arrField['eval']['tableless'] = '1';
+            $arrField['eval']['required'] = (bool) ($arrField['eval']['mandatory'] ?? false);
+        }
 
         return $arrField;
     }
@@ -867,7 +871,8 @@ class FrontendEditing extends CatalogController
     protected function fieldClassExist($strInputType)
     {
 
-        $strClass = $GLOBALS['TL_FFL'][$strInputType];
+        $strClass = $GLOBALS['TL_FFL'][$strInputType] ?? '';
+
         if (!class_exists($strClass)) return false;
 
         return $strClass;

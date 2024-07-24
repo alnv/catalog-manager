@@ -319,6 +319,7 @@ class CatalogTaxonomyWizard extends \Widget
         $arrOperators = [
             'equal',
             'not',
+            'like',
             'regexp',
             'notRegexp',
             'regexpNoSpace',
@@ -341,7 +342,7 @@ class CatalogTaxonomyWizard extends \Widget
 
         foreach ($arrOperators as $strOperator) {
 
-            $strText = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][$strOperator] ? $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][$strOperator] : $strOperator;
+            $strText = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][$strOperator] ?: $strOperator;
             $strOperatorsOptions .= sprintf('<option value="%s" %s>%s</option>', $strOperator, ($arrQuery['operator'] == $strOperator ? 'selected' : ''), $strText);
         }
 

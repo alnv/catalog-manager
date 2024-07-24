@@ -94,7 +94,7 @@ class CatalogFieldBuilder extends CatalogController
 
                     if ($objCatalogFields->fieldname && in_array($objCatalogFields->fieldname, Toolkit::customizeAbleFields())) {
 
-                        $arrOrigin = $arrFields[$objCatalogFields->fieldname];
+                        $arrOrigin = $arrFields[$objCatalogFields->fieldname] ?? null;
 
                         if (is_null($arrOrigin)) continue;
 

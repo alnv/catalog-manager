@@ -293,13 +293,13 @@ class FrontendEditing extends CatalogController
             $objWidget->id = 'id_' . $strFieldname;
             $objWidget->value = $this->arrValues[$strFieldname];
             $objWidget->placeholder = $arrField['_placeholder'] ?: '';
-            $objWidget->description = $arrField['label'][1] ?? ''; // is_array($arrField['label']) && isset($arrField['label'][1]) ? $arrField['label'][1] : '';
+            $objWidget->description = $arrField['label'][1] ?? '';
 
             if (isset($this->arrCatalogFields[$strFieldname]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
 
             if (is_array($arrField['_cssID']) && (isset($arrField['_cssID'][0]) || isset($arrField['_cssID'][1]))) {
-                if (isset($arrField['_cssID'][0])) $objWidget->id = 'id_' . $arrField['_cssID'][0];
-                if (isset($arrField['_cssID'][1])) $objWidget->class = ' ' . $arrField['_cssID'][1];
+                if (isset($arrField['_cssID'][0]) && $arrField['_cssID'][0]) $objWidget->id = 'id_' . $arrField['_cssID'][0];
+                if (isset($arrField['_cssID'][1]) && $arrField['_cssID'][1]) $objWidget->class = ' ' . $arrField['_cssID'][1];
             }
 
             if ($this->strAct == 'copy' && $arrField['eval']['doNotCopy'] === true) {
@@ -326,7 +326,6 @@ class FrontendEditing extends CatalogController
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
                 $objWidget->preview = $this->arrCatalogAttributes[$strFieldname];
                 $objWidget->deleteLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'];
-
                 $this->blnHasUpload = true;
             }
 

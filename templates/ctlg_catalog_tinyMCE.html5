@@ -1,2 +1,2 @@
 <?php $selector = $this->selector; ?>
-<?php include( $this->tinyMCE ); ?>
+<?php include($this->tinyMCE); ?>

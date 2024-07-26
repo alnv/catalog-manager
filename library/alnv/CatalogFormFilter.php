@@ -3,6 +3,8 @@
 namespace CatalogManager;
 
 
+use Contao\StringUtil;
+
 class CatalogFormFilter extends CatalogController
 {
 
@@ -254,7 +256,6 @@ class CatalogFormFilter extends CatalogController
             $arrField['fieldCssClass'] .= ' awesomplete-field' . ($arrField['multiple'] ? ' multiple' : '');
 
             if (\Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $arrField['name']) {
-
                 $this->sendJsonResponse($arrField, \Input::get('ctlg_autocomplete_query'));
             }
 
@@ -370,18 +371,19 @@ class CatalogFormFilter extends CatalogController
         $arrField['optionsType'] = 'useActiveDbOptions';
         $arrField['dbColumn'] = $arrField['dbTableKey'];
         $arrField['dbTableValue'] = $arrField['dbTableKey'];
-
         $objOptionGetter = new OptionsGetter($arrField, null, [$strKeyword]);
-        $arrWords = array_values($objOptionGetter->getOptions());
+        $arrWords = [];
+
+        foreach (array_values($objOptionGetter->getOptions()) as $strWord) {
+            $arrWords[] = StringUtil::decodeEntities($strWord);
+        }
 
         header('Content-Type: application/json');
 
         echo json_encode([
-
             'word' => $strKeyword,
             'words' => $arrWords
-
-        ], 12);
+        ], 0, 512);
 
         exit;
     }
@@ -391,13 +393,9 @@ class CatalogFormFilter extends CatalogController
     {
 
         if (is_array($varValue)) $varValue = array_values($varValue);
-
         if (empty($varValue) && is_array($varValue)) return false;
-
         if (is_array($varValue) && count($varValue) >= 1 && Toolkit::isEmpty($varValue[0])) return false;
-
         if ($strType == 'range' && Toolkit::isEmpty($varValue[1])) return false;
-
         if (Toolkit::isEmpty($varValue)) return false;
 
         return true;

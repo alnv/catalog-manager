@@ -1,32 +1,25 @@
-
 var CatalogManager = CatalogManager || {};
 
 (function () {
 
     'use strict';
 
-    CatalogManager.fineUploader =  function ( objElement, objOptions ) {
+    CatalogManager.fineUploader = function (objElement, objOptions) {
 
-        objOptions = getOptions( objOptions );
+        objOptions = getOptions(objOptions);
 
         var objParams = {
-            
             element: objElement,
             debug: objOptions.debug,
             multiple: objOptions.multiple,
-
             failedUploadTextDisplay: {
-
                 mode: 'custom',
                 maxChars: 512,
                 responseProperty: 'error'
             },
-
             request: {
-
                 inputName: objOptions.name,
                 endpoint: window.location.href,
-
                 params: {
                     name: objOptions.name,
                     action: 'catalogFineUploader',
@@ -35,26 +28,25 @@ var CatalogManager = CatalogManager || {};
             }
         };
 
-        return new qq.FineUploader( objParams );
+        return new qq.FineUploader(objParams);
     };
 
 
-    function getOptions( objOptions ) {
+    function getOptions(objOptions) {
 
         var objDefault = {
-
             debug: false,
             sizeLimit: '0',
             multiple: false
         };
 
-        for ( var strOption in objDefault ) {
+        for (var strOption in objDefault) {
 
-            if ( objDefault.hasOwnProperty( strOption ) ) {
+            if (objDefault.hasOwnProperty(strOption)) {
 
-                if ( isEmpty( objOptions[ strOption ] ) ) {
+                if (isEmpty(objOptions[strOption])) {
 
-                    objOptions[ strOption ] = objDefault[ strOption ];
+                    objOptions[strOption] = objDefault[strOption];
                 }
             }
         }
@@ -63,26 +55,26 @@ var CatalogManager = CatalogManager || {};
     }
 
 
-    function isEmpty( varValue ) {
+    function isEmpty(varValue) {
 
-        if ( typeof varValue === 'undefined' ) {
-
-            return true;
-        }
-
-        if ( varValue === null && typeof varValue === 'object' ) {
+        if (typeof varValue === 'undefined') {
 
             return true;
         }
 
-        if ( typeof varValue === 'string' && !varValue.length ) {
+        if (varValue === null && typeof varValue === 'object') {
 
             return true;
         }
 
-        if ( typeof varValue === 'object' && typeof varValue.length != 'undefined' ) {
+        if (typeof varValue === 'string' && !varValue.length) {
 
-            if ( !varValue.length ) return true;
+            return true;
+        }
+
+        if (typeof varValue === 'object' && typeof varValue.length != 'undefined') {
+
+            if (!varValue.length) return true;
         }
 
         return false;

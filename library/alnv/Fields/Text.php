@@ -2,12 +2,16 @@
 
 namespace CatalogManager;
 
-class Text {
+use Contao\StringUtil;
 
-    
-    public static function generate( $arrDCAField, $arrField, $objModule = null, $blnActive = true ) {
+class Text
+{
 
-        $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue($arrField['readonly']??'');
+
+    public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true)
+    {
+
+        $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue($arrField['readonly'] ?? '');
 
         if (isset($arrField['rgxp']) && $arrField['rgxp']) {
             $arrDCAField['eval']['rgxp'] = $arrField['rgxp'];
@@ -21,44 +25,45 @@ class Text {
             $arrDCAField['eval']['maxlength'] = intval($arrField['maxlength']);
         }
 
-        if (isset($arrField['pagePicker']) && $arrField['pagePicker'] ) {
+        if (isset($arrField['pagePicker']) && $arrField['pagePicker']) {
             $arrDCAField['eval']['rgxp'] = 'url';
             $arrDCAField['eval']['dcaPicker'] = true;
             $arrDCAField['eval']['addWizardClass'] = true;
             $arrDCAField['eval']['decodeEntities'] = true;
-            if ( version_compare(VERSION, '4.4', '<' ) ) {
+            if (version_compare(VERSION, '4.4', '<')) {
                 $arrDCAField['eval']['tl_class'] .= ' wizard';
-                $arrDCAField['wizard'][] = [ 'CatalogManager\DcCallbacks', 'pagePicker' ];
+                $arrDCAField['wizard'][] = ['CatalogManager\DcCallbacks', 'pagePicker'];
             }
         }
 
         if (isset($arrField['autoCompletionType']) && $arrField['autoCompletionType']) {
             $arrDCAField['eval']['tl_class'] .= ' ctlg_awesomplete';
-            $arrDCAField['eval']['tl_class'] .= ( $arrField['multiple'] ? ' multiple' : '' );
-            $arrDCAField['eval']['tl_class'] .= ( version_compare(VERSION, '4.0', '>=' ) ? ' _contao4' : ' _contao3' );
+            $arrDCAField['eval']['tl_class'] .= ($arrField['multiple'] ? ' multiple' : '');
+            $arrDCAField['eval']['tl_class'] .= (version_compare(VERSION, '4.0', '>=') ? ' _contao4' : ' _contao3');
 
-            if ( \Input::get( 'ctlg_autocomplete_query' ) && \Input::get('ctlg_fieldname') == $arrField['fieldname'] && $blnActive ) {
-                $strModuleID = !is_null( $objModule ) && is_object( $objModule ) ? $objModule->id : '';
-                static::sendJsonResponse( $arrField, $strModuleID, \Input::get( 'ctlg_autocomplete_query' ) );
+            if (\Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $arrField['fieldname'] && $blnActive) {
+                $strModuleID = !is_null($objModule) && is_object($objModule) ? $objModule->id : '';
+                static::sendJsonResponse($arrField, $strModuleID, \Input::get('ctlg_autocomplete_query'));
             }
 
             $objScriptLoader = new CatalogScriptLoader();
-            $objScriptLoader->loadScript( 'awesomplete-backend', 'TL_JAVASCRIPT' );
-            $objScriptLoader->loadStyle( 'awesomplete', 'TL_CSS' );
+            $objScriptLoader->loadScript('awesomplete-backend', 'TL_JAVASCRIPT');
+            $objScriptLoader->loadStyle('awesomplete', 'TL_CSS');
         }
 
         return $arrDCAField;
     }
 
 
-    public static function parseValue( $varValue, $arrField, $arrCatalog ) {
+    public static function parseValue($varValue, $arrField, $arrCatalog)
+    {
 
         $varValue = \StringUtil::deserialize($varValue);
-        
+
         if (Toolkit::isEmpty($varValue) && is_string($varValue)) {
             return '';
         };
-        if ( is_array($varValue) && empty($varValue)) {
+        if (is_array($varValue) && empty($varValue)) {
             return [];
         }
         if (is_array($varValue) || isset($arrField['multiple']) && $arrField['multiple']) {
@@ -78,22 +83,25 @@ class Text {
     }
 
 
-    protected static function sendJsonResponse( $arrField, $strModuleID, $strKeyword ) {
+    protected static function sendJsonResponse($arrField, $strModuleID, $strKeyword)
+    {
 
         $arrField['optionsType'] = $arrField['autoCompletionType'];
         $arrField['dbTableValue'] = $arrField['dbTableKey'];
 
-        $objOptionGetter = new OptionsGetter( $arrField, $strModuleID, [ $strKeyword ] );
-        $arrWords = array_values( $objOptionGetter->getOptions() );
+        $objOptionGetter = new OptionsGetter($arrField, $strModuleID, [$strKeyword]);
+        $arrWords = [];
+
+        foreach (array_values($objOptionGetter->getOptions()) as $strWord) {
+            $arrWords[] = StringUtil::decodeEntities($strWord);
+        }
 
         header('Content-Type: application/json');
 
-        echo json_encode( [
-
+        echo json_encode([
             'word' => $strKeyword,
             'words' => $arrWords
-
-        ], 12 );
+        ], 0, 512);
 
         exit;
     }

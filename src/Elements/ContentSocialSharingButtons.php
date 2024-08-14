@@ -2,52 +2,60 @@
 
 namespace Alnv\CatalogManagerBundle\Elements;
 
-class ContentSocialSharingButtons extends \ContentElement {
+use Alnv\CatalogManagerBundle\CatalogMasterEntity;
+use Alnv\CatalogManagerBundle\SocialSharingButtons;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Contao\BackendTemplate;
+use Contao\ContentElement;
+use Contao\Environment;
+use Contao\Idna;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 
+class ContentSocialSharingButtons extends ContentElement
+{
 
     protected $strTemplate = 'ce_social_sharing_buttons';
 
+    public function generate()
+    {
 
-    public function generate() {
-
-        if ( TL_MODE == 'BE' ) {
-
-            $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . utf8_strtoupper( $GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'][0] ) . ' ###';
-
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
+            $objTemplate = new BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'][0]) . ' ###';
             return $objTemplate->parse();
         }
 
-        if ( !$this->catalogSocialSharingTable ) return null;
+        if (!$this->catalogSocialSharingTable) return null;
 
         return parent::generate();
     }
 
+    protected function compile()
+    {
 
-    protected function compile() {
 
+        $this->import(CatalogMasterEntity::class);
+        $this->import(SocialSharingButtons::class);
 
-        $this->import( 'CatalogMasterEntity' );
-        $this->import( 'SocialSharingButtons' );
-
-        $this->cssID = Toolkit::deserialize( $this->cssID );
+        $this->cssID = Toolkit::deserialize($this->cssID);
 
         $strTitleColumn = $this->catalogSocialSharingTitle;
         $strDescriptionColumn = $this->catalogSocialSharingDescription;
         $blnDefaultTheme = $this->catalogDisableSocialSharingCSS ? false : true;
-        $arrSocialButtons = Toolkit::deserialize( $this->catalogSocialSharingButtons );
+        $arrSocialButtons = Toolkit::deserialize($this->catalogSocialSharingButtons);
 
-        $this->CatalogMasterEntity->initialize( $this->catalogSocialSharingTable, [], false );
+        $this->CatalogMasterEntity->initialize($this->catalogSocialSharingTable, [], false);
         $arrEntity = $this->CatalogMasterEntity->getMasterEntity();
-        $arrEntity['masterUrl'] = \Idna::decode( \Environment::get('base') ) . \Environment::get('indexFreeRequest');
-        $this->SocialSharingButtons->initialize( $arrSocialButtons, $this->catalogSocialSharingTemplate, $blnDefaultTheme );
-        $arrData = $this->SocialSharingButtons->getSocialSharingButtons( $arrEntity, $strTitleColumn, $strDescriptionColumn );
+        $arrEntity['masterUrl'] = Idna::decode(Environment::get('base')) . Environment::get('indexFreeRequest');
+        $this->SocialSharingButtons->initialize($arrSocialButtons, $this->catalogSocialSharingTemplate, $blnDefaultTheme);
+        $arrData = $this->SocialSharingButtons->getSocialSharingButtons($arrEntity, $strTitleColumn, $strDescriptionColumn);
 
-        $arrData['customClass'] = Toolkit::isEmpty( $this->cssID[1] ) ? '' : ' ' . $this->cssID[1];
-        $arrData['customID'] = Toolkit::isEmpty( $this->cssID[0] ) ? '' : $this->cssID[0];
-        $arrData['headline'] = Toolkit::isEmpty( $this->headline ) ? '' : $this->headline;
-        $arrData['hl'] = Toolkit::isEmpty( $this->hl ) ? '' : $this->hl;
+        $arrData['customClass'] = Toolkit::isEmpty($this->cssID[1]) ? '' : ' ' . $this->cssID[1];
+        $arrData['customID'] = Toolkit::isEmpty($this->cssID[0]) ? '' : $this->cssID[0];
+        $arrData['headline'] = Toolkit::isEmpty($this->headline) ? '' : $this->headline;
+        $arrData['hl'] = Toolkit::isEmpty($this->hl) ? '' : $this->hl;
 
-        $this->Template->setData( $arrData );
+        $this->Template->setData($arrData);
     }
 }

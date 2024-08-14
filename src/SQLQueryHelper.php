@@ -2,38 +2,37 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class SQLQueryHelper extends CatalogController {
+class SQLQueryHelper extends CatalogController
+{
 
-
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
 
-        $this->import( 'SQLQueryBuilder' );
-        $this->import( 'CatalogFieldBuilder' );
+        $this->import(SQLQueryBuilder::class);
+        $this->import(CatalogFieldBuilder::class);
     }
 
+    public function getCatalogTableItemByID($strTablename, $strID)
+    {
 
-    public function getCatalogTableItemByID( $strTablename, $strID ) {
-        
-        if ( !$strTablename || !$strID ) return [];
+        if (!$strTablename || !$strID) return [];
 
-        return $this->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $strTablename ) )->limit( 1 )->execute( $strID )->row();
+        return $this->SQLQueryBuilder->Database->prepare(sprintf('SELECT * FROM %s WHERE id = ?', $strTablename))->limit(1)->execute($strID)->row();
     }
 
-
-    public function getCatalogs() {
-
+    public function getCatalogs()
+    {
         return $this->SQLQueryBuilder->execute([
-
             'table' => 'tl_catalog'
         ]);
     }
 
+    public function getCatalogByTablename($strTablename)
+    {
 
-    public function getCatalogByTablename( $strTablename ) {
-
-        if ( !$strTablename ) return [];
+        if (!$strTablename) return [];
 
         return $this->SQLQueryBuilder->execute([
 
@@ -57,10 +56,10 @@ class SQLQueryHelper extends CatalogController {
         ])->row();
     }
 
-    
-    public function getCatalogFieldsByCatalogID( $strID, $arrCallback = [], $arrFields = [] ) {
-        
-        if ( !$strID ) return $arrFields;
+    public function getCatalogFieldsByCatalogID($strID, $arrCallback = [], $arrFields = [])
+    {
+
+        if (!$strID) return $arrFields;
 
         $objFields = $this->SQLQueryBuilder->execute([
 
@@ -94,22 +93,20 @@ class SQLQueryHelper extends CatalogController {
         $intIndex = 0;
         $intCount = $objFields->count();
 
-        while ( $objFields->next() ) {
+        while ($objFields->next()) {
 
-            $arrFields[ $objFields->id ] = $objFields->row();
+            $arrFields[$objFields->id] = $objFields->row();
 
-            if ( !empty( $arrCallback ) && is_array( $arrCallback ) ) {
+            if (!empty($arrCallback) && is_array($arrCallback)) {
 
-                $this->import( $arrCallback[0] );
-                $arrFields[ $objFields->id ] = $this->{$arrCallback[0]}->{$arrCallback[1]}( $arrFields[ $objFields->id ], $objFields->fieldname, $intIndex, $intCount );
+                $this->import($arrCallback[0]);
+                $arrFields[$objFields->id] = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrFields[$objFields->id], $objFields->fieldname, $intIndex, $intCount);
+            } elseif (is_callable($arrCallback)) {
+
+                $arrFields[$objFields->id] = $arrCallback($arrFields[$objFields->id], $objFields->fieldname, $intIndex, $intCount);
             }
 
-            elseif ( is_callable( $arrCallback ) ) {
-
-                $arrFields[ $objFields->id ] = $arrCallback( $arrFields[ $objFields->id ], $objFields->fieldname, $intIndex, $intCount );
-            }
-
-            if ( $arrFields[ $objFields->id ] == null ) {
+            if ($arrFields[$objFields->id] == null) {
 
                 continue;
             }
@@ -120,27 +117,27 @@ class SQLQueryHelper extends CatalogController {
         return $arrFields;
     }
 
+    public function getCatalogFieldsByCatalogTablename($strTablename, $arrFields = [], $blnUseTablePrefix = false, &$staticFields = [])
+    {
 
-    public function getCatalogFieldsByCatalogTablename( $strTablename, $arrFields = [], $blnUseTablePrefix = false, &$staticFields = [] ) {
+        if (!$strTablename) return $arrFields;
 
-        if ( !$strTablename ) return $arrFields;
+        $this->CatalogFieldBuilder->initialize($strTablename);
 
-        $this->CatalogFieldBuilder->initialize( $strTablename );
+        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields(false, null);
 
-        $arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields( false, null );
+        if (!empty($arrCatalogFields) && is_array($arrCatalogFields)) {
 
-        if ( !empty( $arrCatalogFields ) && is_array( $arrCatalogFields ) ) {
+            foreach ($arrCatalogFields as $strAlias => $arrCatalogField) {
 
-            foreach ( $arrCatalogFields as $strAlias => $arrCatalogField ) {
+                if ($blnUseTablePrefix) $strAlias = $strTablename . ucfirst($strAlias);
 
-                if ( $blnUseTablePrefix ) $strAlias = $strTablename . ucfirst( $strAlias );
-
-                if ( in_array( $arrCatalogField['type'], [ 'map', 'message' ] ) ) {
+                if (in_array($arrCatalogField['type'], ['map', 'message'])) {
 
                     $staticFields[] = $strAlias;
                 }
 
-                $arrFields[ $strAlias ] = $arrCatalogField;
+                $arrFields[$strAlias] = $arrCatalogField;
             }
         }
 

@@ -2,39 +2,84 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Alnv\CatalogManagerBundle\Fields\Map;
+use Alnv\CatalogManagerBundle\Fields\Select;
+use Alnv\CatalogManagerBundle\Fields\Radio;
+use Alnv\CatalogManagerBundle\Fields\Checkbox;
+use Alnv\CatalogManagerBundle\Fields\DateInput;
+use Alnv\CatalogManagerBundle\Fields\Textarea;
+use Alnv\CatalogManagerBundle\Fields\DbColumn;
+use Alnv\CatalogManagerBundle\Fields\Upload;
+use Alnv\CatalogManagerBundle\Fields\Text;
+use Alnv\CatalogManagerBundle\Fields\Number;
+use Alnv\CatalogManagerBundle\Fields\MessageInput;
+use Alnv\CatalogManagerBundle\Maps\GeoCoding;
+use Contao\ArrayUtil;
+use Contao\Config;
+use Contao\ContentModel;
+use Contao\Controller;
+use Contao\Date;
+use Contao\Environment;
+use Contao\Image;
+use Contao\Input;
+use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\FrontendTemplate;
 
 class CatalogView extends CatalogController
 {
 
-
     public $strMode;
+
     public $strMasterID;
+
     public $strTemplate;
+
     public $objMainTemplate;
-    public $arrOptions = [];
 
-    public $strTimeFormat = 'H:i';
-    public $strDateFormat = 'd.m.Y';
-    public $strDateTimeFormat = 'd.m.Y H:i';
+    public array $arrOptions = [];
 
-    public $arrPage = [];
-    public $arrViewPage = [];
-    public $arrMasterPage = [];
-    public $arrFrontendEditingPage = [];
+    public string $strTimeFormat = 'H:i';
 
-    protected $arrGroups = [];
-    protected $arrCatalog = [];
-    protected $arrParseAsArray = [];
-    protected $arrEntityFields = [];
-    protected $arrCatalogFields = [];
-    protected $arrRelatedTables = [];
-    protected $blnMapViewMode = false;
-    protected $blnShowAsGroup = false;
-    protected $blnHasOperations = false;
-    protected $arrRoutingParameter = [];
-    protected $blnGoogleMapScript = false;
-    protected $arrCatalogStaticFields = [];
-    protected $arrCatalogMapViewOptions = [];
+    public string $strDateFormat = 'd.m.Y';
+
+    public string $strDateTimeFormat = 'd.m.Y H:i';
+
+    public array $arrPage = [];
+
+    public array $arrViewPage = [];
+
+    public array $arrMasterPage = [];
+
+    public array $arrFrontendEditingPage = [];
+
+    protected array $arrGroups = [];
+
+
+    protected array $arrCatalog = [];
+
+    protected array $arrParseAsArray = [];
+
+    protected array $arrEntityFields = [];
+
+    protected array $arrCatalogFields = [];
+
+    protected array $arrRelatedTables = [];
+
+    protected bool $blnMapViewMode = false;
+
+    protected bool $blnShowAsGroup = false;
+
+    protected bool $blnHasOperations = false;
+
+    protected array $arrRoutingParameter = [];
+
+    protected bool $blnGoogleMapScript = false;
+
+    protected array $arrCatalogStaticFields = [];
+
+    protected array $arrCatalogMapViewOptions = [];
 
 
     public function __construct()
@@ -42,15 +87,15 @@ class CatalogView extends CatalogController
 
         parent::__construct();
 
-        $this->import('IconGetter');
-        $this->import('CatalogInput');
-        $this->import('CatalogEvents');
-        $this->import('TemplateHelper');
-        $this->import('SQLQueryHelper');
-        $this->import('SQLQueryBuilder');
-        $this->import('CatalogFieldBuilder');
-        $this->import('I18nCatalogTranslator');
-        $this->import('FrontendEditingPermission');
+        $this->import(IconGetter::class);
+        $this->import(CatalogInput::class);
+        $this->import(CatalogEvents::class);
+        $this->import(TemplateHelper::class);
+        $this->import(SQLQueryHelper::class);
+        $this->import(SQLQueryBuilder::class);
+        $this->import(CatalogFieldBuilder::class);
+        $this->import(I18nCatalogTranslator::class);
+        $this->import(FrontendEditingPermission::class);
     }
 
 
@@ -63,9 +108,9 @@ class CatalogView extends CatalogController
 
         $this->setOptions();
 
-        $this->strTimeFormat = $objPage->timeFormat ?? \Config::get('timeFormat');
-        $this->strDateFormat = $objPage->dateFormat ?? \Config::get('dateFormat');
-        $this->strDateTimeFormat = $objPage->datimFormat ?? \Config::get('datimFormat');
+        $this->strTimeFormat = $objPage->timeFormat ?? Config::get('timeFormat');
+        $this->strDateFormat = $objPage->dateFormat ?? Config::get('dateFormat');
+        $this->strDateTimeFormat = $objPage->datimFormat ?? Config::get('datimFormat');
 
         $this->I18nCatalogTranslator->initialize();
 
@@ -103,30 +148,25 @@ class CatalogView extends CatalogController
         $this->arrFrontendEditingPage = $this->arrPage;
 
         if ($this->catalogUseViewPage && $this->catalogViewPage !== '0') {
-
             $this->arrViewPage = $this->getPageModel($this->catalogViewPage);
         }
 
         if ($this->catalogUseMasterPage && $this->catalogMasterPage !== '0') {
-
             $this->arrMasterPage = $this->getPageModel($this->catalogMasterPage);
         }
 
         if ($this->catalogUseFrontendEditingViewPage && $this->catalogFrontendEditingViewPage !== '0') {
-
             $this->arrFrontendEditingPage = $this->getPageModel($this->catalogFrontendEditingViewPage);
         }
 
         if ($this->catalogUseMap && $this->strMode == 'view') {
-
             $this->arrCatalogMapViewOptions = Map::getMapViewOptions([
-
                 'id' => 'map_' . $this->id,
                 'lat' => $this->catalogMapLat,
                 'lng' => $this->catalogMapLng,
                 'mapZoom' => $this->catalogMapZoom,
                 'mapType' => $this->catalogMapType,
-                'mapStyle' => \StringUtil::decodeEntities($this->catalogMapStyle),
+                'mapStyle' => StringUtil::decodeEntities($this->catalogMapStyle),
                 'mapMarker' => $this->catalogMapMarker,
                 'addMapInfoBox' => $this->catalogAddMapInfoBox,
                 'mapScrollWheel' => $this->catalogMapScrollWheel
@@ -150,28 +190,22 @@ class CatalogView extends CatalogController
         $this->setRelatedTables();
 
         if ($objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename) {
-
             $objPage->catalogUseRouting = '';
         }
 
-        if ($objPage->catalogUseRouting && $objPage->catalogRouting && !\Config::get('CTLG_IGNORE_LIST_ROUTING')) {
-
+        if ($objPage->catalogUseRouting && $objPage->catalogRouting && !Config::get('CTLG_IGNORE_LIST_ROUTING')) {
             $this->arrRoutingParameter = Toolkit::getRoutingParameter($objPage->catalogRouting);
         }
 
         if (empty($this->arrRoutingParameter) && $this->catalogUseMasterPage) {
-
             if ($this->arrMasterPage['catalogUseRouting']) {
-
                 $this->arrRoutingParameter = Toolkit::getRoutingParameter($this->arrMasterPage['catalogRouting']);
             }
         }
 
         if ($this->enableTableView && $this->strMode == 'view') {
-
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
-
             $this->objMainTemplate->activeTableColumns = $this->catalogActiveTableColumns ?: [];
             $this->objMainTemplate->hasRelations = (bool)$this->catalogUseRelation;
             $this->objMainTemplate->hasDownloads = (bool)$this->catalogUseDownloads;
@@ -190,14 +224,13 @@ class CatalogView extends CatalogController
         $this->objMainTemplate->dateTimeFormat = $this->strDateTimeFormat;
         $this->objMainTemplate->catalogEntityFields = $this->arrEntityFields;
 
-        $this->objMainTemplate->mapProtected = \Config::get('catalogMapProtected');
-        $this->objMainTemplate->mapPrivacyText = \Controller::replaceInsertTags(\Config::get('catalogMapPrivacyText'));
-        $this->objMainTemplate->mapPrivacyButtonText = \Controller::replaceInsertTags((\Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText']));
+        $this->objMainTemplate->mapProtected = Config::get('catalogMapProtected');
+        $this->objMainTemplate->mapPrivacyText = Controller::replaceInsertTags(Config::get('catalogMapPrivacyText'));
+        $this->objMainTemplate->mapPrivacyButtonText = Controller::replaceInsertTags((Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText']));
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
 
         if (!$this->FrontendEditingPermission->blnDisablePermissions) {
-
             $this->FrontendEditingPermission->initialize();
         }
 
@@ -207,23 +240,18 @@ class CatalogView extends CatalogController
             $blnDefaultTheme = $this->catalogDisableSocialSharingCSS ? false : true;
             $arrSocialSharingButtons = Toolkit::deserialize($this->catalogSocialSharingButtons);
             $this->SocialSharingButtons->initialize($arrSocialSharingButtons, $this->catalogSocialSharingTemplate, $blnDefaultTheme, [
-
                 'catalogSocialSharingCssID' => $this->catalogSocialSharingCssID,
                 'catalogSocialSharingHeadline' => $this->catalogSocialSharingHeadline
             ]);
         }
 
-        if (\Input::get('toggleVisibility' . $this->id)) {
-
+        if (Input::get('toggleVisibility' . $this->id)) {
             $this->toggleVisibility();
         }
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerInitializeView']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerInitializeView'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerInitializeView'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $this->{$arrCallback[0]}->{$arrCallback[1]}($this);
                 }
@@ -234,20 +262,18 @@ class CatalogView extends CatalogController
     }
 
 
-    protected function toggleVisibility()
+    protected function toggleVisibility(): void
     {
 
-        $strId = \Input::get('toggleVisibility' . $this->id);
+        $strId = Input::get('toggleVisibility' . $this->id);
 
         if ($this->catalogTablename && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('invisible', $this->catalogTablename)) {
 
             $objEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare('SELECT invisible FROM ' . $this->catalogTablename . ' WHERE id = ?')->limit(1)->execute($strId);
-
             $strValue = $objEntity->invisible ? '' : '1';
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrValues = [
-
                 'tstamp' => $dteTime,
                 'invisible' => $strValue
 
@@ -256,7 +282,6 @@ class CatalogView extends CatalogController
             $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare('UPDATE ' . $this->catalogTablename . ' %s WHERE id = ?')->set($arrValues)->execute($strId);
 
             $arrData = [
-
                 'id' => $strId,
                 'row' => $arrValues,
                 'table' => $this->catalogTablename,
@@ -266,22 +291,17 @@ class CatalogView extends CatalogController
         }
     }
 
-
-    public function showAsGroup()
+    public function showAsGroup(): bool
     {
-
         return $this->blnShowAsGroup;
     }
 
-
-    public function getHasOperationFlag()
+    public function getHasOperationFlag(): bool
     {
-
         return $this->blnHasOperations;
     }
 
-
-    public function setActiveTableColumns()
+    public function setActiveTableColumns(): array
     {
 
         $this->catalogActiveTableColumns = Toolkit::deserialize($this->catalogActiveTableColumns, true);
@@ -302,40 +322,31 @@ class CatalogView extends CatalogController
         return $this->catalogActiveTableColumns;
     }
 
-
-    protected function setPreviewEntityFields($strFieldname, $arrField)
+    protected function setPreviewEntityFields($strFieldname, $arrField): void
     {
-
         if (in_array($strFieldname, ['title', 'alias', 'id', 'pid', 'sorting', 'tstamp'])) {
-
-            return null;
+            return;
         }
 
         if ($arrField['type'] == 'dbColumn') {
-
-            return null;
+            return;
         }
 
         if ($arrField['type'] == 'upload' && $arrField['useArrayFormat']) {
-
-            return null;
+            return;
         }
 
         $this->arrEntityFields[$strFieldname] = $arrField;
     }
 
-
-    protected function rebuildCatalogFieldIndexes()
+    protected function rebuildCatalogFieldIndexes(): void
     {
 
         $arrReturn = [];
 
-        if (!empty($this->arrCatalogFields) && is_array($this->arrCatalogFields)) {
-
+        if (!empty($this->arrCatalogFields)) {
             foreach ($this->arrCatalogFields as $arrCatalogField) {
-
                 if (!$arrCatalogField['fieldname']) continue;
-
                 $arrReturn[$arrCatalogField['fieldname']] = $arrCatalogField;
             }
         }
@@ -344,9 +355,8 @@ class CatalogView extends CatalogController
     }
 
 
-    public function getMapViewOptions()
+    public function getMapViewOptions(): array
     {
-
         return $this->arrCatalogMapViewOptions;
     }
 
@@ -361,8 +371,8 @@ class CatalogView extends CatalogController
         $blnActive = $this->catalogActiveParameters ? false : true;
         $intOffset = $this->catalogOffset;
         $strPageID = 'page_e' . $this->id;
-        $intPerPage = intval($this->catalogPerPage);
-        $intPagination = intval(\Input::get($strPageID));
+        $intPerPage = \intval($this->catalogPerPage);
+        $intPagination = \intval(Input::get($strPageID));
 
         $arrQuery['table'] = $this->catalogTablename;
         $arrQuery['joins'] = [];
@@ -375,7 +385,6 @@ class CatalogView extends CatalogController
         }
 
         if ($this->catalogJoinParentTable && $this->arrCatalog['pTable']) {
-
             $this->preparePTableJoinData($arrQuery['joins']);
         }
 
@@ -383,51 +392,43 @@ class CatalogView extends CatalogController
             $arrTaxonomies = Toolkit::parseQueries($this->catalogTaxonomies['query']);
         }
 
-        array_insert($arrQuery['where'], 0, $arrTaxonomies);
+        ArrayUtil::arrayInsert($arrQuery['where'], 0, $arrTaxonomies);
 
         if ($this->hasVisibility()) {
 
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
-
                 'field' => 'tstamp',
                 'operator' => 'gt',
                 'value' => 0
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 'field' => 'invisible',
                 'operator' => 'not',
                 'value' => '1'
@@ -435,32 +436,25 @@ class CatalogView extends CatalogController
         }
 
         if ($this->catalogUseRadiusSearch && $this->strMode == 'view') {
-
             $arrRSValues = [];
             $strDistance = $this->CatalogInput->getActiveValue('rs_dstnc');
             $arrRSAttributes = ['rs_cty', 'rs_strt', 'rs_pstl', 'rs_cntry', 'rs_strtn'];
 
             if (Toolkit::isEmpty($strDistance) || is_array($strDistance)) {
-
                 $strDistance = '50';
             }
 
             foreach ($arrRSAttributes as $strSRAttribute) {
-
                 $strValue = $this->CatalogInput->getActiveValue($strSRAttribute);
-
                 if (!Toolkit::isEmpty($strValue) && is_string($strValue)) {
-
                     $arrRSValues[$strSRAttribute] = $strValue;
                 }
             }
 
             if (!empty($arrRSValues) && is_array($arrRSValues)) {
-
                 if (!$arrRSValues['rs_cntry'] && $this->catalogRadioSearchCountry) {
                     $arrRSValues['rs_cntry'] = $this->catalogRadioSearchCountry;
                 }
-
                 $objGeoCoding = new GeoCoding();
                 $objGeoCoding->setCity($arrRSValues['rs_cty']);
                 $objGeoCoding->setStreet($arrRSValues['rs_strt']);
@@ -510,23 +504,18 @@ class CatalogView extends CatalogController
         }
 
         if ($this->catalogEnableParentFilter) {
-
-            if (\Input::get('pid')) {
-
+            if (Input::get('pid')) {
                 $arrQuery['where'][] = [
                     'field' => 'pid',
                     'operator' => 'equal',
-                    'value' => \Input::get('pid')
+                    'value' => Input::get('pid')
                 ];
             }
         }
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerViewQuery']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerViewQuery'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerViewQuery'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrQuery, $this);
                 }
@@ -534,32 +523,22 @@ class CatalogView extends CatalogController
         }
 
         if ($this->catalogActiveParameters) {
-
             $arrActiveParameterFields = explode(',', $this->catalogActiveParameters);
-
             foreach ($arrActiveParameterFields as $strFieldname) {
-
                 if ($this->CatalogInput->getActiveValue($strFieldname) !== '' && $this->CatalogInput->getActiveValue($strFieldname) !== null) {
-
                     $blnActive = true;
-
                     break;
                 }
             }
         }
 
         if (!$blnActive) {
-
             if ($this->blnGoogleMapScript) {
-
                 $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
             }
-
             if ($this->catalogUseArray || $this->blnShowAsGroup) {
-
                 return [];
             }
-
             return '';
         }
 
@@ -576,15 +555,11 @@ class CatalogView extends CatalogController
 
         if ($this->catalogOffset) $intTotal -= $intOffset;
 
-        if (\Input::get($strPageID) && $this->catalogAddPagination) {
-
+        if (Input::get($strPageID) && $this->catalogAddPagination) {
             $intOffset = $intPagination;
-
             if ($intPerPage > 0 && $this->catalogOffset) {
-
                 $intOffset += round($this->catalogOffset / $intPerPage);
             }
-
             $arrQuery['pagination']['offset'] = ($intOffset - 1) * $intPerPage;
         }
 
@@ -604,7 +579,6 @@ class CatalogView extends CatalogController
             $arrCatalog['origin'] = $arrCatalog;
 
             if ($this->strMode === 'master') {
-
                 $this->strMasterID = $arrCatalog['id'];
             }
 
@@ -612,18 +586,15 @@ class CatalogView extends CatalogController
             $arrCatalog['hasGoBackLink'] = $this->catalogUseViewPage && $this->catalogViewPage !== '0';
 
             if (!empty($this->arrViewPage)) {
-
                 $arrCatalog['goBackLink'] = $this->generateUrl($this->arrViewPage, '');
                 $arrCatalog['goBackLabel'] = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
             }
 
             if ($this->catalogEnableFrontendEditing) {
-
                 $arrCatalog['operations'] = $this->generateOperations($arrCatalog['id'], $arrCatalog['alias'], $arrCatalog);
             }
 
             if ($this->catalogUseDownloads) {
-
                 $arrCatalog['downloads'] = $this->generateDownloads($arrCatalog['id'], $arrCatalog['alias']);
             }
 
@@ -638,11 +609,8 @@ class CatalogView extends CatalogController
                 }
 
                 foreach ($arrCatalog as $strFieldname => $varValue) {
-
                     if (isset($this->arrParseAsArray[$strFieldname])) {
-
                         $arrCatalog[$strFieldname] = $this->getJoinedEntities($varValue, $strFieldname);
-
                         continue;
                     }
 
@@ -651,45 +619,30 @@ class CatalogView extends CatalogController
             }
 
             if ($this->catalogUseRelation) {
-
                 $arrCatalog['relations'] = $this->setRelatedTableLinks($arrCatalog['id']);
             }
 
             $arrCatalog['contentElements'] = '';
 
             if (($this->strMode === 'master' || $this->catalogAddContentElements) && $this->arrCatalog['addContentElements']) {
-
-                $objContent = \ContentModel::findPublishedByPidAndTable($arrCatalog['id'], $this->catalogTablename);
-
+                $objContent = ContentModel::findPublishedByPidAndTable($arrCatalog['id'], $this->catalogTablename);
                 if ($objContent !== null) {
-
                     while ($objContent->next()) {
-
                         $arrCatalog['contentElements'] .= $this->getContentElement($objContent->current());
                     }
                 }
             }
 
             if (!empty($this->arrCatalogStaticFields) && is_array($this->arrCatalogStaticFields) && !$this->blnMapViewMode) {
-
                 foreach ($this->arrCatalogStaticFields as $strID) {
-
                     $arrField = $this->arrCatalogFields[$strID];
-
                     switch ($arrField['type']) {
-
                         case 'map':
-
                             if (!$this->blnGoogleMapScript) $this->blnGoogleMapScript = true;
-
                             $arrCatalog[$strID] = Map::parseValue('', $arrField, $arrCatalog);
-
                             break;
-
                         case 'message':
-
                             $arrCatalog[$strID] = MessageInput::parseValue('', $arrField, $arrCatalog);
-
                             break;
                     }
                 }
@@ -725,7 +678,6 @@ class CatalogView extends CatalogController
             $arrCatalog['readMore'] = $GLOBALS['TL_LANG']['MSC']['more'];
 
             if ($this->strMode == 'view') {
-
                 $intPageNumber = $intPagination - 1;
                 $intPageOffset = !$this->catalogOffset ? $intPerPage : $this->catalogOffset;
                 $intMultiplicator = $intPageNumber > 0 ? $intPageOffset * $intPageNumber : 0;
@@ -733,12 +685,10 @@ class CatalogView extends CatalogController
             }
 
             if ($this->enableTableView && $this->strMode == 'view') {
-
                 $arrCatalog['activeTableColumns'] = $this->catalogActiveTableColumns;
             }
 
             if ($this->blnShowAsGroup && !$this->enableTableView) {
-
                 $this->createGroups($arrCatalog[$this->catalogGroupBy]);
             }
 
@@ -760,7 +710,6 @@ class CatalogView extends CatalogController
             }
 
             if ($this->catalogUseArray) {
-
                 if (in_array('origin', $this->catalogExcludeArrayOptions)) unset($arrCatalog['origin']);
                 if (in_array('catalogFields', $this->catalogExcludeArrayOptions)) unset($arrCatalog['catalogFields']);
                 if (in_array('catalogEntityFields', $this->catalogExcludeArrayOptions)) unset($arrCatalog['catalogEntityFields']);
@@ -809,7 +758,7 @@ class CatalogView extends CatalogController
     }
 
 
-    protected function getJoinedEntities($strValue, $strFieldname)
+    protected function getJoinedEntities($strValue, $strFieldname): array
     {
 
         $arrReturn = [];
@@ -818,14 +767,13 @@ class CatalogView extends CatalogController
         $arrOrderBy = Toolkit::parseStringToArray($this->arrCatalogFields[$strFieldname]['dbOrderBy']);
 
         $arrQuery = [
-
             'table' => $strTable,
             'where' => [
 
                 [
                     'field' => $strField,
                     'operator' => 'findInSet',
-                    'value' => explode(',', $strValue)
+                    'value' => \explode(',', $strValue)
                 ]
             ],
             'orderBy' => []
@@ -845,45 +793,38 @@ class CatalogView extends CatalogController
 
         if ($this->arrParseAsArray[$strFieldname]['hasVisibility']) {
 
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
-
                 'field' => 'tstamp',
                 'operator' => 'gt',
                 'value' => 0
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
 
                 'field' => 'invisible',
@@ -905,7 +846,7 @@ class CatalogView extends CatalogController
     }
 
 
-    public function hasVisibility()
+    public function hasVisibility(): bool
     {
 
         if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('invisible', $this->catalogTablename)) {
@@ -920,11 +861,7 @@ class CatalogView extends CatalogController
             return false;
         }
 
-        if (\BackendUser::getInstance()->id && \Input::get('preview') == '1') {
-            return false;
-        }
-
-        if (defined('BE_USER_LOGGED_IN') && BE_USER_LOGGED_IN) {
+        if (System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             return false;
         }
 
@@ -932,7 +869,7 @@ class CatalogView extends CatalogController
     }
 
 
-    protected function createGroups($varGroupName)
+    protected function createGroups($varGroupName): void
     {
 
         if (is_array($varGroupName)) {
@@ -940,7 +877,6 @@ class CatalogView extends CatalogController
             foreach ($varGroupName as $strGroup) {
 
                 if (is_array($strGroup)) {
-
                     $strKeyname = $this->arrCatalogFields[$this->catalogGroupBy]['dbTableValue'] ?: 'title';
                     $strGroup = $strGroup[$strKeyname];
                 }
@@ -950,19 +886,17 @@ class CatalogView extends CatalogController
         }
 
         if ($varGroupName && is_string($varGroupName) && !isset($this->arrGroups[$varGroupName])) {
-
             $this->arrGroups[$varGroupName] = [];
         }
     }
 
 
-    protected function getGroupedValue($arrCatalogs)
+    protected function getGroupedValue($arrCatalogs): array
     {
 
         $arrIndexes = [];
 
         foreach ($arrCatalogs as $arrCatalog) {
-
             $varGroupName = $arrCatalog[$this->catalogGroupBy];
             $this->groupByValue($varGroupName, $arrCatalog, $arrIndexes);
         }
@@ -971,15 +905,13 @@ class CatalogView extends CatalogController
     }
 
 
-    protected function groupByValue($varGroupName, $arrCatalog, &$arrIndexes)
+    protected function groupByValue($varGroupName, $arrCatalog, &$arrIndexes): void
     {
 
         if (is_array($varGroupName)) {
 
             foreach ($varGroupName as $strGroupName) {
-
                 if (is_array($strGroupName)) {
-
                     $strKeyname = $this->arrCatalogFields[$this->catalogGroupBy]['dbTableValue'] ?: 'title';
                     $strGroupName = $strGroupName[$strKeyname];
                 }
@@ -990,7 +922,7 @@ class CatalogView extends CatalogController
 
         if ($varGroupName && is_string($varGroupName)) {
 
-            $objTemplate = new \FrontendTemplate($this->strTemplate);
+            $objTemplate = new FrontendTemplate($this->strTemplate);
 
             if (!$this->arrGroups[$varGroupName]) $arrIndexes[$varGroupName] = 0;
 
@@ -1008,7 +940,7 @@ class CatalogView extends CatalogController
     {
 
         $strContent = '';
-        $objTemplate = new \FrontendTemplate($this->strTemplate);
+        $objTemplate = new FrontendTemplate($this->strTemplate);
 
         foreach ($arrCatalogs as $intIndex => $arrCatalog) {
 
@@ -1146,7 +1078,7 @@ class CatalogView extends CatalogController
         if (Toolkit::isEmpty($strType)) return $varValue;
         if ($this->isFastMode($strType, $strFieldname)) return '';
 
-        $arrImgSize = \StringUtil::deserialize($this->arrOptions['imgSize']);
+        $arrImgSize = StringUtil::deserialize($this->arrOptions['imgSize']);
         if (is_array($arrImgSize) && !empty(array_filter($arrImgSize))) $arrField['size'] = $this->arrOptions['imgSize'];
 
         switch ($strType) {
@@ -1181,24 +1113,15 @@ class CatalogView extends CatalogController
         return $varValue;
     }
 
-
     public function getCommentForm($strMasterID)
     {
 
-        if (!in_array('comments', \ModuleLoader::getActive())) {
-
-            return null;
-        }
-
         if (!$this->catalogAllowComments) {
-
             return null;
         }
 
         $this->TemplateHelper->addComments(
-
             $this->objMainTemplate,
-
             [
                 'template' => $this->com_template,
                 'bbcode' => $this->catalogCommentBBCode,
@@ -1207,63 +1130,43 @@ class CatalogView extends CatalogController
                 'moderate' => $this->catalogCommentModerate,
                 'requireLogin' => $this->catalogCommentRequireLogin,
                 'disableCaptcha' => $this->catalogCommentDisableCaptcha
-            ],
-
-            $this->catalogTablename,
-
-            ($strMasterID ? $strMasterID : '0'),
-
-            []
+            ], $this->catalogTablename, ($strMasterID ? $strMasterID : '0'), []
         );
     }
 
-
-    protected function setOptions()
+    protected function setOptions(): void
     {
-
         if (!empty($this->arrOptions) && is_array($this->arrOptions)) {
-
             foreach ($this->arrOptions as $strKey => $varValue) {
-
                 $this->{$strKey} = $varValue;
             }
         }
     }
 
-
-    protected function getPageModel($strID)
+    protected function getPageModel($strID): array
     {
-
         return $this->SQLQueryHelper->SQLQueryBuilder->execute([
-
             'table' => 'tl_page',
-
             'pagination' => [
-
                 'limit' => 1,
                 'offset' => 0
             ],
-
             'where' => [
-
                 [
                     'field' => 'id',
                     'value' => $strID,
                     'operator' => 'equal'
                 ]
             ]
-
         ])->row();
     }
 
-
-    protected function prepareJoinData(&$arrReturn)
+    protected function prepareJoinData(&$arrReturn): void
     {
 
         foreach ($this->catalogJoinFields as $strFieldJoinID) {
 
             $arrRelatedJoinData = [];
-
             if (!$this->arrCatalogFields[$strFieldJoinID]) {
                 continue;
             }
@@ -1279,17 +1182,12 @@ class CatalogView extends CatalogController
             }
 
             $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename($arrRelatedJoinData['onTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields);
-
             if ($arrRelatedJoinData['multiple'] && $this->catalogJoinAsArray) {
-
                 $objCatalogFieldBuilder = new CatalogFieldBuilder();
                 $objCatalogFieldBuilder->initialize($arrRelatedJoinData['onTable']);
-
                 $arrCatalog = $objCatalogFieldBuilder->getCatalog();
                 $arrRelatedJoinData['hasVisibility'] = in_array('invisible', $arrCatalog['operations']);
-
                 $this->arrParseAsArray[$arrRelatedJoinData['field']] = $arrRelatedJoinData;
-
                 continue;
             }
 
@@ -1309,7 +1207,6 @@ class CatalogView extends CatalogController
         $arrFields = $objFieldBuilder->getCatalogFields(true, null);
 
         $arrQuery = [
-
             'table' => $strTable,
             'where' => [
                 [
@@ -1322,7 +1219,7 @@ class CatalogView extends CatalogController
 
         if (in_array('invisible', $arrCatalog['operations'])) {
 
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
 
@@ -1332,13 +1229,11 @@ class CatalogView extends CatalogController
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
@@ -1347,13 +1242,11 @@ class CatalogView extends CatalogController
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
@@ -1362,7 +1255,6 @@ class CatalogView extends CatalogController
             ];
 
             $arrQuery['where'][] = [
-
                 'field' => 'invisible',
                 'operator' => 'not',
                 'value' => '1'
@@ -1370,13 +1262,9 @@ class CatalogView extends CatalogController
         }
 
         if (!empty($arrCatalog['sortingFields'])) {
-
             $numFlag = (int)$arrCatalog['flag'] ?: 1;
-
             foreach ($arrCatalog['sortingFields'] as $strSortingField) {
-
                 $arrQuery['orderBy'][] = [
-
                     'field' => $strSortingField,
                     'order' => ($numFlag % 2 == 0) ? 'DESC' : 'ASC'
                 ];
@@ -1386,49 +1274,51 @@ class CatalogView extends CatalogController
         $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 
         if (!$objEntities->numRows) {
-
             return $arrReturn;
         }
 
         while ($objEntities->next()) {
-
             $arrReturn[] = Toolkit::parseCatalogValues($objEntities->row(), $arrFields);
         }
 
         return $arrReturn;
     }
 
-
     protected function generateUrl($objPage, $strAlias)
     {
 
         if ($objPage == null) return '';
 
-        return $this->generateFrontendUrl($objPage, ($strAlias ? '/' . $strAlias : ''));
+        if (!is_object($objPage)) {
+            return $objPage->getFrontendUrl(($strAlias ? '/' . $strAlias : ''));
+        }
+
+        if (isset($objPage['id']) && $objPage['id']) {
+            if ($oPage = PageModel::findByPk($objPage['id'])) {
+                return $oPage->getFrontendUrl(($strAlias ? '/' . $strAlias : ''));
+            }
+        }
+
+        return '';
     }
 
-
-    protected function generateDownloads($strID, $strAlias = '')
+    protected function generateDownloads($strID, $strAlias = ''): array
     {
 
         $arrReturn = [];
         $strConnector = '?';
-        $strUrl = ampersand(\Environment::get('indexFreeRequest'));
+        $strUrl = StringUtil::ampersand(Environment::get('indexFreeRequest'));
 
         if (strpos($strUrl, $strConnector) !== false) {
-
             $strConnector = '&';
         }
 
         if (!empty($this->catalogDownloads) && is_array($this->catalogDownloads)) {
-
             foreach ($this->catalogDownloads as $strDownload) {
-
                 $arrReturn[$strDownload] = [
-
                     'href' => $strUrl . $strConnector . $strDownload . $this->id . '=' . $strID,
                     'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'][$strDownload],
-                    'image' => \Image::getHtml(Toolkit::getIcon($strDownload), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'][$strDownload]),
+                    'image' => Image::getHtml(Toolkit::getIcon($strDownload), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloadTitles'][$strDownload]),
                     'attributes' => '',
                 ];
             }
@@ -1437,8 +1327,7 @@ class CatalogView extends CatalogController
         return $arrReturn;
     }
 
-
-    protected function generateOperations($strID, $strAlias = '', $arrCatalog = [])
+    protected function generateOperations($strID, $strAlias = '', $arrCatalog = []): array
     {
 
         $arrReturn = [];
@@ -1453,23 +1342,20 @@ class CatalogView extends CatalogController
                 if (!$strOperation || $strOperation == 'create') continue;
 
                 if (!$this->FrontendEditingPermission->hasPermission(($strOperation === 'copy' ? 'create' : $strOperation), $this->catalogTablename)) {
-
                     continue;
                 }
 
                 $strActFragment = sprintf('?act%s=%s&id%s=%s', $this->id, $strOperation, $this->id, $strID);
 
                 if ($this->arrCatalog['pTable']) {
-
-                    $strActFragment .= sprintf('&amp;pid=%s', (\Input::get('pid') ? \Input::get('pid') : $arrCatalog['pid']));
+                    $strActFragment .= sprintf('&amp;pid=%s', (Input::get('pid') ? Input::get('pid') : $arrCatalog['pid']));
                 }
 
                 $arrReturn[$strOperation] = [
-
                     'class' => 'act_' . $strOperation,
                     'href' => $this->generateUrl($this->arrFrontendEditingPage, $strAlias) . $strActFragment,
                     'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][$strOperation],
-                    'image' => \Image::getHtml(Toolkit::getIcon($strOperation), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][$strOperation]),
+                    'image' => Image::getHtml(Toolkit::getIcon($strOperation), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'][$strOperation]),
                     'attributes' => $strOperation === 'delete' ? 'onclick="if(!confirm(\'' . sprintf($GLOBALS['TL_LANG']['MSC']['deleteConfirm'], $strID) . '\'))return false;"' : '',
                 ];
             }
@@ -1480,8 +1366,7 @@ class CatalogView extends CatalogController
         return $arrReturn;
     }
 
-
-    public function getCreateOperation()
+    public function getCreateOperation(): array
     {
 
         $strPTableFragment = '';
@@ -1490,36 +1375,30 @@ class CatalogView extends CatalogController
         if (!$this->catalogEnableFrontendEditing) return [];
 
         if (!$this->FrontendEditingPermission->hasPermission('create', $this->catalogTablename)) {
-
             return [];
         }
 
         if (empty($this->catalogItemOperations) || !in_array('create', $this->catalogItemOperations)) {
-
             return [];
         }
 
-        if ($this->arrCatalog['pTable'] && !\Input::get('pid')) {
-
+        if ($this->arrCatalog['pTable'] && !Input::get('pid')) {
             return [];
         }
 
         if ($this->arrCatalog['pTable']) {
-
-            $strPTableFragment = sprintf('&amp;pid=%s', \Input::get('pid'));
+            $strPTableFragment = sprintf('&amp;pid=%s', Input::get('pid'));
         }
 
         return [
-
             'attributes' => '',
             'title' => $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'],
             'href' => $this->generateUrl($this->arrFrontendEditingPage, '') . sprintf('?act%s=create%s', $this->id, $strPTableFragment),
-            'image' => \Image::getHtml(Toolkit::getIcon('new'), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'])
+            'image' => Image::getHtml(Toolkit::getIcon('new'), $GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations']['create'])
         ];
     }
 
-
-    protected function preparePTableJoinData(&$arrReturn)
+    protected function preparePTableJoinData(&$arrReturn): void
     {
 
         $this->arrCatalogFields = $this->SQLQueryHelper->getCatalogFieldsByCatalogTablename($this->arrCatalog['pTable'], $this->arrCatalogFields, true, $this->arrCatalogStaticFields);
@@ -1533,8 +1412,7 @@ class CatalogView extends CatalogController
         ];
     }
 
-
-    protected function setRelatedTableLinks($strID)
+    protected function setRelatedTableLinks($strID): array
     {
 
         foreach ($this->arrRelatedTables as $strTablename => $arrRelatedTable) {
@@ -1548,8 +1426,7 @@ class CatalogView extends CatalogController
         return $this->arrRelatedTables;
     }
 
-
-    protected function setRelatedTables()
+    protected function setRelatedTables(): void
     {
 
         if (!empty($this->catalogRelatedChildTables) && is_array($this->catalogRelatedChildTables)) {
@@ -1571,38 +1448,31 @@ class CatalogView extends CatalogController
                 $arrTableData['title'] = $strTitle;
                 $arrTableData['info'] = $arrCatalog['info'];
                 $arrTableData['description'] = $arrCatalog['description'];
-                $arrTableData['url'] = \Controller::replaceInsertTags($arrRelatedTable['pageURL']);
-                $arrTableData['image'] = \Image::getHtml($this->IconGetter->setCatalogIcon($arrRelatedTable['table']), $strTitle);
+                $arrTableData['url'] = Controller::replaceInsertTags($arrRelatedTable['pageURL']);
+                $arrTableData['image'] = Image::getHtml($this->IconGetter->setCatalogIcon($arrRelatedTable['table']), $strTitle);
 
                 $this->arrRelatedTables[$arrRelatedTable['table']] = $arrTableData;
             }
         }
     }
 
-
-    public function getCatalog()
+    public function getCatalog(): array
     {
-
-        return is_array($this->arrCatalog) && !empty($this->arrCatalog) ? $this->arrCatalog : [];
+        return !empty($this->arrCatalog) ? $this->arrCatalog : [];
     }
 
-
-    public function changeItemOperations($arrItemOperations)
+    public function changeItemOperations($arrItemOperations): void
     {
-
         $this->catalogItemOperations = $arrItemOperations;
     }
 
-
-    public function getItemOperations()
+    public function getItemOperations(): array
     {
-
         return $this->catalogItemOperations;
     }
 
-    public function getCatalogFields()
+    public function getCatalogFields(): array
     {
-
         return $this->arrCatalogFields;
     }
 }

@@ -2,23 +2,34 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Contao\ArrayUtil;
+use Contao\Database;
+use Contao\Input;
+use Contao\Message;
+use Contao\StringUtil;
+use Contao\DataContainer;
+use Contao\System;
+use Contao\Date;
+
 class DcBuilder extends CatalogController
 {
 
     protected $strID;
+
     protected $strTable;
-    protected $arrFields = [];
-    protected $arrCatalog = [];
-    protected $blnActive = true;
 
-    protected $arrErrorTables = [];
+    protected array $arrFields = [];
 
-    protected $arrOverwritten = [];
+    protected array $arrCatalog = [];
+    protected bool $blnActive = true;
 
-    protected $strPermissionType = '';
+    protected array $arrErrorTables = [];
 
-    protected $arrOperations = [
+    protected array $arrOverwritten = [];
 
+    protected string $strPermissionType = '';
+
+    protected array $arrOperations = [
         'cut' => false,
         'copy' => false,
         'invisible' => false
@@ -30,11 +41,11 @@ class DcBuilder extends CatalogController
 
         parent::__construct();
 
-        $this->import('Database');
-        $this->import('IconGetter');
-        $this->import('CatalogDcExtractor');
-        $this->import('CatalogFieldBuilder');
-        $this->import('I18nCatalogTranslator');
+        $this->import(Database::class);
+        $this->import(IconGetter::class);
+        $this->import(CatalogDcExtractor::class);
+        $this->import(CatalogFieldBuilder::class);
+        $this->import(I18nCatalogTranslator::class);
 
         $this->blnActive = $blnActive;
         $this->arrCatalog = $arrCatalog;
@@ -47,7 +58,7 @@ class DcBuilder extends CatalogController
         $this->CatalogDcExtractor->initialize($this->strTable);
         $this->CatalogFieldBuilder->initialize($this->strTable, $this->blnActive);
 
-        if (\Input::get('do') && \Input::get('do') == $this->arrCatalog['tablename']) {
+        if (Input::get('do') && Input::get('do') == $this->arrCatalog['tablename']) {
 
             $objReviseRelatedTables = new ReviseRelatedTables();
 
@@ -55,19 +66,16 @@ class DcBuilder extends CatalogController
 
                 foreach ($objReviseRelatedTables->getErrorTables() as $strTable) {
 
-                    \Message::addError(sprintf("Table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable));
+                    Message::addError(sprintf("Table '%s' can not be used as relation. Please delete all rows or create valid pid value.", $strTable));
 
                     $this->arrErrorTables[] = $strTable;
 
                     if ($strTable == $this->arrCatalog['pTable']) {
-
                         $this->arrCatalog['pTable'] = '';
                     }
 
                     if (in_array($strTable, $this->arrCatalog['cTables'])) {
-
                         $intPosition = array_search($strTable, $this->arrCatalog['cTables']);
-
                         unset($this->arrCatalog['cTables'][$intPosition]);
                     }
                 }
@@ -75,19 +83,18 @@ class DcBuilder extends CatalogController
         }
     }
 
-    public function initializeI18n()
+    public function initializeI18n(): void
     {
-
         $this->I18nCatalogTranslator->initialize();
     }
 
-    protected function determineOperations()
+    protected function determineOperations(): void
     {
 
         $arrOperations = [];
 
         if ($this->arrCatalog['operations']) {
-            $arrOperations = \StringUtil::deserialize($this->arrCatalog['operations'], true);
+            $arrOperations = StringUtil::deserialize($this->arrCatalog['operations'], true);
         }
 
         if (!empty($arrOperations) && is_array($arrOperations)) {
@@ -97,7 +104,7 @@ class DcBuilder extends CatalogController
         }
     }
 
-    public function createDataContainerArray()
+    public function createDataContainerArray(): void
     {
 
         $this->initializeI18n();
@@ -133,13 +140,13 @@ class DcBuilder extends CatalogController
         }
     }
 
-    protected function getConfigDc()
+    protected function getConfigDc(): array
     {
 
         $arrReturn = [
             'dataContainer' => 'Table',
             'label' => $this->I18nCatalogTranslator->get('module', $this->strTable, ['titleOnly' => true]),
-            'enableVersioning' => $this->arrCatalog['useVC'] ? true : false,
+            'enableVersioning' => (bool)$this->arrCatalog['useVC'],
             'oncut_callback' => [],
             'onload_callback' => [],
             'onsubmit_callback' => [],
@@ -152,7 +159,6 @@ class DcBuilder extends CatalogController
         ];
 
         if ($this->arrCatalog['useGeoCoordinates']) {
-
             $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'generateGeoCords'];
         }
 
@@ -171,7 +177,6 @@ class DcBuilder extends CatalogController
         if ($this->arrCatalog['addContentElements']) {
 
             if (!is_array($this->arrCatalog['cTables'])) {
-
                 $this->arrCatalog['cTables'] = [];
             }
 
@@ -179,21 +184,19 @@ class DcBuilder extends CatalogController
         }
 
         if (!empty($this->arrCatalog['cTables']) && is_array($this->arrCatalog['cTables'])) {
-
             $arrReturn['ctable'] = $this->arrCatalog['cTables'];
         }
 
         if ($this->arrCatalog['permissionType']) {
 
             $arrReturn['onload_callback'][] = function () {
-
                 $objDcPermission = new DcPermission();
                 $objDcPermission->checkPermission($this->strTable, $this->strTable, $this->strTable . 'p', $this->strPermissionType);
             };
         }
 
         if ($this->hasLanguageNavigationBar()) {
-            if (\Input::get('ctlg_language') && \Input::get('act') !== 'create') {
+            if (Input::get('ctlg_language') && Input::get('act') !== 'create') {
                 $arrReturn['closed'] = true;
             }
             $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'setFallbackAndLanguage'];
@@ -206,7 +209,6 @@ class DcBuilder extends CatalogController
         $arrReturn['oncut_callback'][] = ['CatalogManager\DcCallbacks', 'onCutCallback'];
         $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'onSubmitCallback'];
         $arrReturn['ondelete_callback'][] = ['CatalogManager\DcCallbacks', 'onDeleteCallback'];
-        $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'checkForDynValues'];
 
         return $arrReturn;
     }
@@ -219,14 +221,13 @@ class DcBuilder extends CatalogController
             'fields' => ['title'],
         ]);
 
-        // contao 4.13 bugfix
-        if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll') {
+        if (Input::get('act') == 'delete' || Input::get('act') == 'deleteAll') {
             $arrReturn['format'] = '';
         }
 
         if ($this->arrCatalog['mode'] == '5') {
 
-            $arrReturn['label_callback'] = function ($arrRow, $strLabel, \DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false) use ($arrReturn) {
+            $arrReturn['label_callback'] = function ($arrRow, $strLabel, DataContainer $dc = null, $strImageAttribute = '', $blnReturnImage = false, $blnProtected = false) use ($arrReturn) {
 
                 $objDcCallbacks = new DcCallbacks();
                 $strTemplate = $this->IconGetter->setTreeViewIcon($this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected);
@@ -275,7 +276,7 @@ class DcBuilder extends CatalogController
                 $arrView = [];
                 foreach ($arrReturn['fields'] as $strField) {
                     if ($strField === 'tstamp') {
-                        $arrRow['tstamp'] = (new \Date($arrRow['tstamp']))->datim;
+                        $arrRow['tstamp'] = (new Date($arrRow['tstamp']))->datim;
                     }
                     $arrView[$strField] = $arrRow[$strField];
                 }
@@ -290,7 +291,7 @@ class DcBuilder extends CatalogController
     protected function getSortingDc()
     {
 
-        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode((int) $this->arrCatalog['mode'], $this->arrCatalog, [
+        $arrReturn = $this->CatalogDcExtractor->setDcSortingByMode((int)$this->arrCatalog['mode'], $this->arrCatalog, [
             'fields' => ['title'],
             'labelFields' => ['title'],
             'headerFields' => ['id', 'alias', 'title'],
@@ -330,13 +331,11 @@ class DcBuilder extends CatalogController
 
         if ($this->hasLanguageNavigationBar() && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn']) {
 
-            $strLanguage = \Input::get('ctlg_language') ?: $this->arrCatalog['fallbackLanguage'];
-
+            $strLanguage = Input::get('ctlg_language') ?: $this->arrCatalog['fallbackLanguage'];
             $arrReturn['filter'][] = [$this->arrCatalog['languageEntityColumn'] . '=?', $strLanguage];
 
-            if (\Input::get('ctlg_language')) {
-
-                $arrReturn['filter'][] = [$this->arrCatalog['linkEntityColumn'] . '=?', \Input::get('ctlg_fallback')];
+            if (Input::get('ctlg_language')) {
+                $arrReturn['filter'][] = [$this->arrCatalog['linkEntityColumn'] . '=?', Input::get('ctlg_fallback')];
             }
         }
 
@@ -347,51 +346,39 @@ class DcBuilder extends CatalogController
         return $arrReturn;
     }
 
-
-    protected function getOperationsDc()
+    protected function getOperationsDc(): array
     {
 
         $arrReturn = [
-
             'edit' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
                 'href' => sprintf('act=edit&ctlg_table=%s', $this->strTable),
                 'icon' => 'header.gif'
             ],
-
             'copy' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
                 'href' => sprintf('act=copy&ctlg_table=%s', $this->strTable),
                 'icon' => 'copy.gif'
             ],
-
             'cut' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
                 'href' => sprintf('act=paste&amp;mode=cut&ctlg_table=%s', $this->strTable),
                 'icon' => 'cut.gif',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
             ],
-
             'delete' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
                 'href' => sprintf('act=delete&ctlg_table=%s', $this->strTable),
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $this->I18nCatalogTranslator->getDeleteConfirmLabel() . '\'))return false;Backend.getScrollOffset()"'
             ],
-
             'toggle' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
                 'icon' => 'visible.gif',
                 'href' => sprintf('catalogTable=%s', $this->strTable),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility( this,%s,' . sprintf("'%s'", $this->strTable) . ' )"',
                 'button_callback' => ['DcCallbacks', 'toggleIcon']
             ],
-
             'show' => [
 
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['show'],
@@ -401,26 +388,20 @@ class DcBuilder extends CatalogController
         ];
 
         if (in_array($this->arrCatalog['mode'], ['4', '5', '6'])) {
-
             $arrReturn['copy']['href'] = sprintf('act=paste&amp;mode=copy&ctlg_table=%s', $this->strTable);
         }
 
         if (!$this->arrCatalog['mode'] || !in_array('cut', $this->arrCatalog['operations'])) {
-
             unset($arrReturn['cut']);
         }
 
         foreach ($this->arrOperations as $strOperation => $blnActive) {
-
             if ($strOperation == 'invisible' && !$blnActive) {
-
                 unset($arrReturn['toggle']);
-
                 continue;
             }
 
             if (!$blnActive && isset($arrReturn[$strOperation])) {
-
                 unset($arrReturn[$strOperation]);
             }
         }
@@ -435,25 +416,22 @@ class DcBuilder extends CatalogController
             $strOperationName = sprintf('go_to_%s', $strTable);
 
             if (isset($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable]) && is_array($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable])) {
-
                 $strTitle = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable]['name'] ?: $strTable;
                 $strDescription = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTable]['description'] ?: sprintf($GLOBALS['TL_LANG']['catalog_manager']['operations']['goTo'][1], $strTitle);
             }
 
             if ($strTable == 'tl_content') {
-
                 $strTitle = $GLOBALS['TL_LANG']['catalog_manager']['tl_content'][0];
                 $strDescription = $GLOBALS['TL_LANG']['catalog_manager']['tl_content'][1];
             }
 
             $arrOperator[$strOperationName] = [
-
                 'label' => [$strTitle, $strDescription],
                 'href' => sprintf('table=%s&ctlg_table=%s', $strTable, $this->strTable),
                 'icon' => $strTable !== 'tl_content' ? $this->IconGetter->setCatalogIcon($strTable) : 'articles.gif'
             ];
 
-            array_insert($arrReturn, 1, $arrOperator);
+            ArrayUtil::arrayInsert($arrReturn, 1, $arrOperator);
         }
 
         if (!empty($this->arrFields) && is_array($this->arrFields)) {
@@ -478,25 +456,22 @@ class DcBuilder extends CatalogController
                         'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,' . sprintf("'%s'", $strVisibleIcon) . ', ' . sprintf("'%s'", $strInVisibleIcon) . ', ' . sprintf("'%s'", $strHref) . ' )"'
                     ];
 
-                    array_insert($arrReturn, count($arrReturn), $arrToggleIcon);
+                    ArrayUtil::arrayInsert($arrReturn, count($arrReturn), $arrToggleIcon);
                 }
             }
         }
 
         if ($this->hasLanguageNavigationBar() && is_array($this->arrCatalog['languages'])) {
 
-            if (\Input::get('ctlg_language')) {
-
+            if (Input::get('ctlg_language')) {
                 unset($arrReturn['cut']);
                 unset($arrReturn['copy']);
             } else {
 
-                $arrLanguages = \System::getLanguages();
+                $arrLanguages = System::getLanguages();
 
                 foreach ($this->arrCatalog['languages'] as $strLanguage) {
-
                     $arrReturn[$strLanguage] = [
-
                         'href' => 'ctlg_language=' . $strLanguage,
                         'label' => ['', $arrLanguages[$strLanguage]],
                         'icon' => $this->IconGetter->setLanguageIcon($strLanguage),
@@ -509,14 +484,10 @@ class DcBuilder extends CatalogController
         return $arrReturn;
     }
 
-
-    protected function getGlobalOperationsDc()
+    protected function getGlobalOperationsDc(): array
     {
-
         $arrReturn = [
-
             'all' => [
-
                 'class' => 'header_edit_all',
                 'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => sprintf('act=select&ctlg_table=%s', $this->strTable),
@@ -524,10 +495,9 @@ class DcBuilder extends CatalogController
             ]
         ];
 
-        if ($this->hasLanguageNavigationBar() && \Input::get('ctlg_language')) {
+        if ($this->hasLanguageNavigationBar() && Input::get('ctlg_language')) {
 
             $arrReturn['new'] = [
-
                 'label' => &$GLOBALS['TL_LANG']['MSC']['translate'],
                 'class' => 'header_new',
                 'button_callback' => ['DcCallbacks', 'generateNewTranslationButton'],
@@ -540,8 +510,7 @@ class DcBuilder extends CatalogController
         return $arrReturn;
     }
 
-
-    protected function getPalettesDc()
+    protected function getPalettesDc(): array
     {
 
         $strReturn = '';
@@ -592,16 +561,14 @@ class DcBuilder extends CatalogController
     }
 
 
-    public function getCatalog()
+    public function getCatalog(): array
     {
-
-        return is_array($this->arrCatalog) && !empty($this->arrCatalog) ? $this->arrCatalog : [];
+        return !empty($this->arrCatalog) ? $this->arrCatalog : [];
     }
 
 
-    protected function hasLanguageNavigationBar()
+    protected function hasLanguageNavigationBar(): bool
     {
-
         return $this->arrCatalog['enableLanguageBar'] && !in_array($this->arrCatalog['mode'], ['5', '6']) && $this->arrCatalog['languageEntitySource'] == 'currentTable';
     }
 }

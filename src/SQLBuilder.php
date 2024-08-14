@@ -2,6 +2,8 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Contao\Database;
+
 class SQLBuilder extends CatalogController
 {
 
@@ -10,7 +12,7 @@ class SQLBuilder extends CatalogController
 
         parent::__construct();
 
-        $this->import('Database');
+        $this->import(Database::class);
     }
 
     public function parseCreateFieldStatement($strField, $strSQLStatement)

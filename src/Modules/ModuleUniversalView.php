@@ -2,80 +2,83 @@
 
 namespace Alnv\CatalogManagerBundle\Modules;
 
-class ModuleUniversalView extends \Module
+use Alnv\CatalogManagerBundle\CatalogAjaxController;
+use Alnv\CatalogManagerBundle\CatalogException;
+use Alnv\CatalogManagerBundle\CatalogMessage;
+use Alnv\CatalogManagerBundle\CatalogView;
+use Alnv\CatalogManagerBundle\Elements\Entity;
+use Alnv\CatalogManagerBundle\FrontendEditing;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Contao\BackendTemplate;
+use Contao\Controller;
+use Contao\Input;
+use Contao\Module;
+use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
+
+class ModuleUniversalView extends Module
 {
 
-
     protected $strAct;
+
     protected $strMasterAlias;
+
     protected $strTemplate = 'mod_catalog_universal';
 
 
     public function generate()
     {
 
-        if (TL_MODE == 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
 
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
 
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
             $objTemplate->title = $this->headline;
             $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['catalogUniversalView'][0]) . ' ###';
+            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD']['catalogUniversalView'][0]) . ' ###';
 
             return $objTemplate->parse();
         }
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerBeforeInitializeView'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $this->{$arrCallback[0]}->{$arrCallback[1]}($this);
                 }
             }
         }
 
-        $this->strAct = \Input::get('act' . $this->id);
-        $this->strMasterAlias = \Input::get('auto_item');
+        $this->strAct = Input::get('act' . $this->id);
+        $this->strMasterAlias = Input::get('auto_item');
 
-        if (!$this->strAct && \Input::get('pdf' . $this->id)) {
-
+        if (!$this->strAct && Input::get('pdf' . $this->id)) {
             $this->strAct = 'pdf';
         }
 
-        if (TL_MODE == 'FE' && $this->catalogCustomTemplate) {
-
+        if ($this->catalogCustomTemplate) {
             $this->strTemplate = $this->catalogCustomTemplate;
         }
 
-        if (TL_MODE == 'FE' && $this->catalogUseMap && !$this->strAct) {
-
+        if ($this->catalogUseMap && !$this->strAct) {
             $this->strTemplate = $this->catalogMapViewTemplate;
         }
 
-        if (TL_MODE == 'FE' && $this->enableTableView && !$this->strAct) {
-
+        if ($this->enableTableView && !$this->strAct) {
             if (!$this->strMasterAlias || $this->catalogPreventMasterView) {
-
                 $this->strTemplate = $this->catalogTableViewTemplate;
             }
         }
 
-        if (TL_MODE == 'FE') {
-
-            if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'])) {
-
-                foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'] as $arrCallback) {
-
-                    if (is_array($arrCallback)) {
-
-                        $this->import($arrCallback[0]);
-                        $this->strTemplate = $this->{$arrCallback[0]}->{$arrCallback[1]}($this->strTemplate, $this);
-                    }
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyMainTemplate'] as $arrCallback) {
+                if (is_array($arrCallback)) {
+                    $this->import($arrCallback[0]);
+                    $this->strTemplate = $this->{$arrCallback[0]}->{$arrCallback[1]}($this->strTemplate, $this);
                 }
             }
         }
@@ -83,56 +86,39 @@ class ModuleUniversalView extends \Module
         return parent::generate();
     }
 
-
     protected function compile()
     {
 
         switch ($this->strAct) {
-
             case 'create':
             case 'copy':
             case 'edit':
-
                 $this->determineFormView();
-
                 break;
-
-
             case 'delete':
-
                 $this->deleteEntityFromCatalog();
-
                 break;
-
             case 'pdf':
-
                 $this->downloadPdf();
-
                 break;
-
             default:
-
                 if ($this->strMasterAlias && !$this->catalogPreventMasterView) {
-
                     $this->determineMasterView();
                 } else {
-
                     $this->determineCatalogView();
                 }
-
                 break;
         }
     }
 
-
     private function deleteEntityFromCatalog()
     {
 
-        $this->import('FrontendEditing');
+        $this->import(FrontendEditing::class);
 
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = \Input::get('id' . $this->id);
+        $this->FrontendEditing->strItemID = Input::get('id' . $this->id);
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 
@@ -153,15 +139,13 @@ class ModuleUniversalView extends \Module
         $this->FrontendEditing->deleteEntity();
     }
 
-
     private function determineCatalogView()
     {
 
-        $this->import('CatalogView');
-        $this->import('CatalogMessage');
+        $this->import(CatalogView::class);
+        $this->import(CatalogMessage::class);
 
         $arrQuery = [
-
             'where' => [],
             'orderBy' => []
         ];
@@ -189,10 +173,9 @@ class ModuleUniversalView extends \Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import('CatalogAjaxController');
+            $this->import(CatalogAjaxController::class);
 
             $this->CatalogAjaxController->setData([
-
                 'map' => $this->Template->map,
                 'data' => $this->Template->data,
                 'output' => $this->Template->output,
@@ -208,11 +191,10 @@ class ModuleUniversalView extends \Module
         }
     }
 
-
     private function determineMasterView()
     {
 
-        $this->import('CatalogView');
+        $this->import(CatalogView::class);
 
         $arrQuery = [
             'where' => [
@@ -227,7 +209,6 @@ class ModuleUniversalView extends \Module
         ];
 
         if (is_numeric($this->strMasterAlias)) {
-
             $arrQuery['where'][0][] = [
                 'field' => 'id',
                 'operator' => 'equal',
@@ -248,8 +229,8 @@ class ModuleUniversalView extends \Module
 
             if ($this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogUseViewPage) {
 
-                if ($objRedirect = \PageModel::findByPk($this->catalogViewPage)) {
-                    \Controller::redirect($objRedirect->getFrontendUrl());
+                if ($objRedirect = PageModel::findByPk($this->catalogViewPage)) {
+                    Controller::redirect($objRedirect->getFrontendUrl());
                 }
 
                 return null;
@@ -265,10 +246,9 @@ class ModuleUniversalView extends \Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import('CatalogAjaxController');
+            $this->import(CatalogAjaxController::class);
 
             $this->CatalogAjaxController->setData([
-
                 'data' => $this->Template->data,
                 'output' => $this->Template->output,
                 'showAsGroup' => $this->Template->showAsGroup,
@@ -280,15 +260,14 @@ class ModuleUniversalView extends \Module
         }
     }
 
-
-    private function determineFormView()
+    private function determineFormView(): void
     {
 
-        $this->import('FrontendEditing');
+        $this->import(FrontendEditing::class);
 
-        $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(\StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : []; // out
+        $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : []; // out
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ?: 'form_catalog_default';
-        $this->FrontendEditing->strItemID = \Input::get('id' . $this->id);
+        $this->FrontendEditing->strItemID = Input::get('id' . $this->id);
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrQueries = empty($arrQueries) ? [] : $arrQueries; // []
@@ -311,74 +290,55 @@ class ModuleUniversalView extends \Module
         $this->Template->output = $this->FrontendEditing->render();
     }
 
-
-    public function setOffset($numOffset)
+    public function setOffset($numOffset): void
     {
-
         $this->catalogOffset = $numOffset;
     }
 
-
-    public function setPerPage($numPerPage)
+    public function setPerPage($numPerPage): void
     {
-
         $this->catalogPerPage = $numPerPage;
     }
 
-
-    public function setPagination($strPagination)
+    public function setPagination($strPagination): void
     {
-
         $this->catalogAddPagination = $strPagination;
     }
 
-
-    public function setTableView($strTableView, $strFields)
+    public function setTableView($strTableView, $strFields): void
     {
-
         $this->enableTableView = $strTableView;
         $this->catalogActiveTableColumns = $strFields;
 
         if ($this->catalogUseArray) $this->catalogUseArray = '';
     }
 
-
-    public function setFastMode($strFastMode, $strFields)
+    public function setFastMode($strFastMode, $strFields): void
     {
-
         $this->catalogFastMode = $strFastMode;
         $this->catalogPreventFieldFromFastMode = $strFields;
     }
 
-
-    public function setTemplate($strTemplate)
+    public function setTemplate($strTemplate): void
     {
-
         $this->catalogTemplate = $strTemplate;
         $this->catalogMasterTemplate = $strTemplate;
         $this->catalogTableBodyViewTemplate = $strTemplate;
     }
 
-
-    public function setCss($strClass)
+    public function setCss($strClass): void
     {
-
         if (is_array($this->cssID) && isset($this->cssID[1])) {
-
             $strId = $this->cssID[0];
             $strCss = $this->cssID[01];
-
             $strCss .= (empty($this->cssID[1]) ? '' : ' ') . $strClass;
-
             $this->cssID = [$strId, $strCss];
         }
     }
 
-
-    protected function downloadPdf()
+    protected function downloadPdf(): void
     {
-
-        $objEntity = new Entity(\Input::get('pdf' . $this->id), $this->catalogTablename);
+        $objEntity = new Entity(Input::get('pdf' . $this->id), $this->catalogTablename);
         $objEntity->getPdf($this->id, $this->catalogPdfTemplate);
     }
 }

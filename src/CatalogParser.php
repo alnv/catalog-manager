@@ -2,20 +2,24 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class CatalogParser extends CatalogController {
+use Contao\Database;
 
-    protected $arrFields = [];
-    protected $arrCatalog = [];
-    protected $blnActive = false;
+class CatalogParser extends CatalogController
+{
 
-    public function __construct() {
+    protected array $arrFields = [];
+    protected array $arrCatalog = [];
+    protected bool $blnActive = false;
+
+    public function __construct()
+    {
 
         parent::__construct();
-
-        $this->import( 'Database' );
+        $this->import(Database::class);
     }
 
-    protected function initialize($strTable) {
+    protected function initialize($strTable)
+    {
 
         $objFieldBuilder = new CatalogFieldBuilder();
         $this->blnActive = $objFieldBuilder->initialize($strTable);
@@ -28,26 +32,23 @@ class CatalogParser extends CatalogController {
         if (!is_array($arrFields)) return null;
 
         foreach ($arrFields as $strFieldname => $arrField) {
-
             if (!isset($arrField['_core']) || !$arrField['_core']) $this->arrFields[$strFieldname] = $arrField;
         }
     }
 
-    public function getAllEvents($arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents) {
+    public function getAllEvents($arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents)
+    {
 
         $this->initialize('tl_calendar_events');
 
-        if ( !is_array( $arrCalendarEvents ) || !$this->blnActive ) return $arrCalendarEvents;
+        if (!is_array($arrCalendarEvents) || !$this->blnActive) return $arrCalendarEvents;
 
         $arrReturn = [];
 
-        foreach ( $arrCalendarEvents as $intArchive => $arrArchive ) {
-
-            foreach ( $arrArchive as $arrEventIndex => $arrEvents ) {
-
-                foreach ( $arrEvents as $arrEvent ) {
-
-                    $arrReturn[ $intArchive ][ $arrEventIndex ][] = $this->parseCatalogValues( $arrEvent );
+        foreach ($arrCalendarEvents as $intArchive => $arrArchive) {
+            foreach ($arrArchive as $arrEventIndex => $arrEvents) {
+                foreach ($arrEvents as $arrEvent) {
+                    $arrReturn[$intArchive][$arrEventIndex][] = $this->parseCatalogValues($arrEvent);
                 }
             }
         }
@@ -55,8 +56,8 @@ class CatalogParser extends CatalogController {
         return $arrReturn;
     }
 
-    protected function parseCatalogValues($arrData) {
-
+    protected function parseCatalogValues($arrData)
+    {
         return Toolkit::parseCatalogValues($arrData, $this->arrFields);
     }
 }

@@ -19,7 +19,6 @@ class tl_settings extends Backend
         }
     }
 
-
     public function verifyLicence($varValue): string
     {
 
@@ -39,7 +38,6 @@ class tl_settings extends Backend
 
         return $varValue;
     }
-
 
     public function parseNavigationName($varValue): string
     {

@@ -3,18 +3,28 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\StringUtil;
+use Contao\System;
+use Alnv\CatalogManagerBundle\Fields\DateInput;
+use Alnv\CatalogManagerBundle\Fields\Select;
+use Alnv\CatalogManagerBundle\Fields\Checkbox;
+use Alnv\CatalogManagerBundle\Fields\Text;
+use Alnv\CatalogManagerBundle\Fields\Radio;
+use Contao\Controller;
+use Contao\Input;
+use Contao\Database;
+use Symfony\Component\HttpFoundation\Request;
 
 class OptionsGetter extends CatalogController
 {
 
     protected $strModuleID;
-    protected $arrCache = [];
-    protected $arrField = [];
-    protected $arrQueries = [];
-    protected $arrCatalog = [];
-    protected $strActiveTable = '';
-    protected $arrActiveEntity = [];
-    protected $arrCatalogFields = [];
+    protected array $arrCache = [];
+    protected array $arrField = [];
+    protected array $arrQueries = [];
+    protected array $arrCatalog = [];
+    protected string $strActiveTable = '';
+    protected array $arrActiveEntity = [];
+    protected array $arrCatalogFields = [];
 
     public function __construct($arrField, $strModuleID = '', $arrQueries = [])
     {
@@ -26,12 +36,12 @@ class OptionsGetter extends CatalogController
 
         foreach ($arrQueries as $strQuery) if (!Toolkit::isEmpty($strQuery)) $this->arrQueries[] = $strQuery;
 
-        $this->import('CatalogInput');
-        $this->import('OrderByHelper');
-        $this->import('SQLQueryHelper');
-        $this->import('SQLQueryBuilder');
-        $this->import('CatalogDcExtractor');
-        $this->import('I18nCatalogTranslator');
+        $this->import(CatalogInput::class);
+        $this->import(OrderByHelper::class);
+        $this->import(SQLQueryHelper::class);
+        $this->import(SQLQueryBuilder::class);
+        $this->import(CatalogDcExtractor::class);
+        $this->import(I18nCatalogTranslator::class);
     }
 
     public function isForeignKey()
@@ -72,7 +82,7 @@ class OptionsGetter extends CatalogController
 
         if (!isset($this->arrField['optionsType']) && in_array($this->arrField['fieldname'], ['country', 'countries']) && in_array($this->arrField['type'], ['radio', 'select', 'checkbox'])) {
 
-            return \System::getCountries();
+            return System::getCountries();
         }
 
         return [];
@@ -130,7 +140,7 @@ class OptionsGetter extends CatalogController
     {
 
         $strKey = $strValue;
-        $strKey = \StringUtil::decodeEntities($strKey);
+        $strKey = StringUtil::decodeEntities($strKey);
         $strText = $strLabel ?: $strKey;
 
         if (isset($this->arrField['dbParseDate']) && $this->arrField['dbParseDate']) {
@@ -138,7 +148,7 @@ class OptionsGetter extends CatalogController
             if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ?: 'Y';
             if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ?: 'l, F Y';
             $strKey = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
-            $strText = \Controller::parseDate($strFormat, $strValue);
+            $strText = Controller::parseDate($strFormat, $strValue);
         } else {
             $strText = $this->I18nCatalogTranslator->get('option', $strKey, ['title' => $strText, 'table' => $strTable]);
         }
@@ -146,23 +156,6 @@ class OptionsGetter extends CatalogController
         if ($strKey && !in_array($strKey, array_keys($arrOptions))) {
             $arrOptions[$strKey] = $strText;
         }
-
-        /*
-        if ($strValue && !in_array($strValue, $arrOptions)) {
-            $strValue = \StringUtil::decodeEntities($strValue);
-            $strTitle = $strValue;
-            if (isset($this->arrField['dbParseDate']) && $this->arrField['dbParseDate']) {
-                $strFormat = $this->arrField['dbMonthBeginFormat'] ?: 'F Y';
-                if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ?: 'Y';
-                if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ?: 'l, F Y';
-                $strValue = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
-                $strTitle = \Controller::parseDate($strFormat, $strValue);
-            } else {
-                $strTitle = $this->I18nCatalogTranslator->get('option', $strTitle, ['title' => $strLabel, 'table' => $strTable]);
-            }
-            $arrOptions[$strValue] = \StringUtil::decodeEntities($strTitle);
-        }
-        */
 
         return $arrOptions;
     }
@@ -250,11 +243,11 @@ class OptionsGetter extends CatalogController
     protected function getActiveTable()
     {
 
-        $this->strActiveTable = \Input::get('table') ? \Input::get('table') : \Input::get('ctlg_table');
+        $this->strActiveTable = Input::get('table') ? Input::get('table') : Input::get('ctlg_table');
 
-        if (Toolkit::isEmpty($this->strActiveTable) && \Input::get('do')) {
+        if (Toolkit::isEmpty($this->strActiveTable) && Input::get('do')) {
 
-            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute(\Input::get('do'));
+            $arrTables = Toolkit::getBackendModuleTablesByDoAttribute(Input::get('do'));
 
             if (is_array($arrTables) && isset($arrTables[0])) $this->strActiveTable = $arrTables[0];
         }
@@ -273,7 +266,7 @@ class OptionsGetter extends CatalogController
             $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
         }
 
-        $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy'], true);
+        $arrOrderBy = StringUtil::deserialize($this->arrField['dbOrderBy'], true);
 
         if (empty($arrOrderBy) && count($arrOptions) < 50) {
             asort($arrOptions);
@@ -347,7 +340,7 @@ class OptionsGetter extends CatalogController
 
         if (!empty($strValue) && is_string($strValue)) {
 
-            $strInsertTagValue = \Controller::replaceInsertTags($strValue);
+            $strInsertTagValue = Controller::replaceInsertTags($strValue);
 
             if (!Toolkit::isEmpty($strInsertTagValue)) {
 
@@ -363,20 +356,21 @@ class OptionsGetter extends CatalogController
             $strInsertTag = implode('', $arrTags);
             $strParameter = explode('::', $strInsertTag);
             $strFieldname = $strParameter[0];
+            $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
 
             if ($strFieldname !== '' && $strFieldname !== null) {
                 $strActiveValue = $this->arrActiveEntity[$strFieldname] ?? '';
 
-                if (TL_MODE == 'FE') {
+                if (!$blnIsBackend) {
                     $strActiveValue = $this->CatalogInput->getActiveValue($strFieldname);
                 }
 
-                if (TL_MODE == 'FE' && (Toolkit::isEmpty(\Input::post('FORM_SUBMIT')) && \Input::get('act' . $this->strModuleID))) {
+                if (!$blnIsBackend && (Toolkit::isEmpty(Input::post('FORM_SUBMIT')) && Input::get('act' . $this->strModuleID))) {
                     $strActiveValue = $this->arrActiveEntity[$strFieldname] ?: '';
                 }
 
                 if (isset($strParameter[1]) && $strParameter[1] == 'tree') {
-                    $objDatabase = \Database::getInstance();
+                    $objDatabase = Database::getInstance();
                     $objField = $objDatabase->prepare('SELECT * FROM tl_catalog_fields WHERE `fieldname` = ?')->limit(1)->execute($strFieldname); //@todo don`t work with multiple fieldnames
 
                     if ($objField->numRows) {
@@ -411,7 +405,7 @@ class OptionsGetter extends CatalogController
 
         if ($this->arrField['options']) {
 
-            $arrFieldOptions = \StringUtil::deserialize($this->arrField['options']);
+            $arrFieldOptions = StringUtil::deserialize($this->arrField['options']);
 
             if (!empty($arrFieldOptions) && is_array($arrFieldOptions)) {
 
@@ -441,11 +435,14 @@ class OptionsGetter extends CatalogController
     protected function getActiveEntityValues()
     {
 
-        switch (TL_MODE) {
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
+        $strMode = $blnIsBackend ? 'BE' : 'FE';
+
+        switch ($strMode) {
 
             case 'BE':
 
-                $strID = \Input::get('id');
+                $strID = Input::get('id');
 
                 if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) {
 
@@ -498,7 +495,7 @@ class OptionsGetter extends CatalogController
 
                     if ($this->hasLanguageNavigationBar($objCatalog)) {
 
-                        $strDefaultLanguage = \Input::get('ctlg_language') ?: $objCatalog->fallbackLanguage;
+                        $strDefaultLanguage = Input::get('ctlg_language') ?: $objCatalog->fallbackLanguage;
                         $strLanguageColumn = $objCatalog->languageEntityColumn;
                     }
                 }
@@ -511,8 +508,6 @@ class OptionsGetter extends CatalogController
                 }
 
                 return null;
-
-                break;
 
             case 'FE':
 
@@ -528,8 +523,8 @@ class OptionsGetter extends CatalogController
                     return null;
                 }
 
-                $strID = $this->strModuleID ? \Input::get('id' . $this->strModuleID) : \Input::get('id');
-                $strAct = $this->strModuleID ? \Input::get('act' . $this->strModuleID) : \Input::get('act');
+                $strID = $this->strModuleID ? Input::get('id' . $this->strModuleID) : Input::get('id');
+                $strAct = $this->strModuleID ? Input::get('act' . $this->strModuleID) : Input::get('act');
 
                 if (!$strID && !$strAct) {
 
@@ -558,9 +553,7 @@ class OptionsGetter extends CatalogController
                 ];
 
                 if ($objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('pid', $objCatalog->tablename)) {
-
                     $arrQuery['joins'][] = [
-
                         'field' => 'pid',
                         'onField' => 'id',
                         'multiple' => false,
@@ -586,11 +579,11 @@ class OptionsGetter extends CatalogController
         }
     }
 
-    protected function getOrderBy()
+    protected function getOrderBy(): string
     {
 
         if (isset($this->arrField['dbOrderBy'])) {
-            $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy']);
+            $arrOrderBy = StringUtil::deserialize($this->arrField['dbOrderBy']);
             if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
                 $this->arrField['_orderBy'] = $this->OrderByHelper->getOrderByQuery($arrOrderBy, $this->arrField['dbTable']);
             }
@@ -608,14 +601,17 @@ class OptionsGetter extends CatalogController
 
         if (!Toolkit::isEmpty($strValue)) return true;
 
-        switch (TL_MODE) {
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
+        $strMode = $blnIsBackend ? 'BE' : 'FE';
+
+        switch ($strMode) {
             case 'BE':
-                $strID = \Input::get('id');
+                $strID = Input::get('id');
                 if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) return false;
                 break;
             case 'FE':
-                $strID = $this->strModuleID ? \Input::get('id' . $this->strModuleID) : \Input::get('id');
-                if (\Input::get('act' . $this->strModuleID)) return true;
+                $strID = $this->strModuleID ? Input::get('id' . $this->strModuleID) : Input::get('id');
+                if (Input::get('act' . $this->strModuleID)) return true;
                 if (!$strID) return false;
                 break;
         }
@@ -625,7 +621,6 @@ class OptionsGetter extends CatalogController
 
     protected function hasLanguageNavigationBar($objCatalog)
     {
-
         return $objCatalog->enableLanguageBar && !in_array($objCatalog->mode, ['5', '6']) && $objCatalog->languageEntitySource == 'currentTable';
     }
 }

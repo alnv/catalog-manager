@@ -2,16 +2,22 @@
 
 namespace Alnv\CatalogManagerBundle\Inserttags;
 
-class MasterInsertTag extends \Frontend {
+use Alnv\CatalogManagerBundle\CatalogMasterEntity;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Contao\Frontend;
+use Contao\StringUtil;
 
+class MasterInsertTag extends Frontend
+{
 
-    public function getInsertTagValue($strTag) {
+    public function getInsertTagValue($strTag)
+    {
 
         global $objPage;
 
         $arrTags = explode('::', $strTag);
 
-        if ( empty( $arrTags ) || !is_array( $arrTags ) ) {
+        if (empty($arrTags) || !is_array($arrTags)) {
 
             return false;
         }
@@ -22,7 +28,7 @@ class MasterInsertTag extends \Frontend {
                 return '';
             }
 
-            $this->import('CatalogMasterEntity');
+            $this->import(CatalogMasterEntity::class);
 
             $strText = '';
             $arrJoinOnly = [];
@@ -36,86 +42,63 @@ class MasterInsertTag extends \Frontend {
 
             if (!$strFieldname || !$strTable) return false;
 
-            if ( isset($arrTags[2]) && strpos($arrTags[2], '?') !== false) {
+            if (isset($arrTags[2]) && \strpos($arrTags[2], '?') !== false) {
 
-                $arrChunks = explode('?', urldecode( $arrTags[2] ), 2 );
-                $strSource = \StringUtil::decodeEntities( $arrChunks[1] );
-                $strSource = str_replace( '[&]', '&', $strSource );
-                $arrParams = explode( '&', $strSource );
+                $arrChunks = \explode('?', urldecode($arrTags[2]), 2);
+                $strSource = StringUtil::decodeEntities($arrChunks[1]);
+                $strSource = \str_replace('[&]', '&', $strSource);
+                $arrParams = \explode('&', $strSource);
 
-                foreach ( $arrParams as $strParam ) {
+                foreach ($arrParams as $strParam) {
 
-                    list( $strKey, $strOption ) = explode( '=', $strParam );
+                    list($strKey, $strOption) = \explode('=', $strParam);
 
-                    switch ( $strKey ) {
-
+                    switch ($strKey) {
                         case 'default':
-
                             $strDefaultValue = $strOption ?: '';
-
                             break;
-
                         case 'parse':
-
-                            $blnParseValues = $strOption ? true : false;
-
+                            $blnParseValues = (bool)$strOption;
                             break;
-
                         case 'joinParent':
-
-                            $blnJoinParent = $strOption ? true : false;
-
+                            $blnJoinParent = (bool)$strOption;
                             break;
-
                         case 'joinFields':
-
-                            $blnJoinFields = $strOption ? true : false;
-
+                            $blnJoinFields = (bool)$strOption;
                             break;
-
                         case 'addText':
-
                             $blnAddText = true;
                             $strText = $strOption ?? '';
-
                             break;
-
                         case 'joinOnly':
-
-                            $arrFields = explode( ',', $strOption );
-
-                            if ( !empty( $arrFields ) && is_array( $arrFields ) ) {
-
+                            $arrFields = explode(',', $strOption);
+                            if (!empty($arrFields) && is_array($arrFields)) {
                                 $arrJoinOnly = $arrFields;
                             }
 
                             break;
                     }
                 }
+            } else {
+                $strDefaultValue = Toolkit::isEmpty($arrTags[2] ?? '') ? '' : $arrTags[2];
             }
 
-            else {
-
-                $strDefaultValue = Toolkit::isEmpty($arrTags[2]??'') ? '' : $arrTags[2];
-            }
-
-            $this->CatalogMasterEntity->initialize( $strTable, [
-
+            $this->CatalogMasterEntity->initialize($strTable, [
                 'joinOnly' => $arrJoinOnly,
                 'joinFields' => $blnJoinFields,
                 'joinParent' => $blnJoinParent
             ]);
 
-            $arrMaster = $this->CatalogMasterEntity->getMasterEntity( $blnParseValues );
+            $arrMaster = $this->CatalogMasterEntity->getMasterEntity($blnParseValues);
 
-            if (Toolkit::isEmpty($arrMaster[$strFieldname]??'') && !Toolkit::isEmpty($strDefaultValue)) {
+            if (Toolkit::isEmpty($arrMaster[$strFieldname] ?? '') && !Toolkit::isEmpty($strDefaultValue)) {
                 return $strDefaultValue;
             }
 
-            $varValue = Toolkit::isEmpty($arrMaster[$strFieldname]??'') ? '' : $arrMaster[$strFieldname];
-            $varValue = $this->setValue($varValue, $arrTags[3]??'');
+            $varValue = Toolkit::isEmpty($arrMaster[$strFieldname] ?? '') ? '' : $arrMaster[$strFieldname];
+            $varValue = $this->setValue($varValue, $arrTags[3] ?? '');
 
-            if ( $blnAddText && $varValue ) $varValue .= $strText;
+            if ($blnAddText && $varValue) $varValue .= $strText;
 
             return $varValue;
         }
@@ -123,19 +106,17 @@ class MasterInsertTag extends \Frontend {
         return false;
     }
 
+    protected function setValue($varValue, $strKey = '')
+    {
 
-    protected function setValue( $varValue, $strKey = '' ) {
+        if (!is_array($varValue)) return $varValue;
 
-        if ( !is_array( $varValue ) ) return $varValue;
-
-        if ( Toolkit::isAssoc( $varValue ) ) {
-
+        if (Toolkit::isAssoc($varValue)) {
             $strKeyname = $strKey ?: '';
-
-            if ( $strKeyname && isset( $varValue[ $strKeyname ] ) ) $varValue = $varValue[ $strKeyname ];
+            if ($strKeyname && isset($varValue[$strKeyname])) $varValue = $varValue[$strKeyname];
         }
 
-        if ( is_array( $varValue ) ) return implode( ', ' , $varValue );
+        if (is_array($varValue)) return implode(', ', $varValue);
 
         return $varValue;
     }

@@ -2,65 +2,61 @@
 
 namespace Alnv\CatalogManagerBundle\Inserttags;
 
-class FilterValuesInsertTag extends \Frontend {
+use Contao\Frontend;
+use Alnv\CatalogManagerBundle\CatalogInput;
 
+class FilterValuesInsertTag extends Frontend
+{
 
-    public function getInsertTagValue( $strTag ) {
+    public function getInsertTagValue($strTag)
+    {
 
-        $arrTags = explode( '::', $strTag );
+        $arrTags = explode('::', $strTag);
 
-        if ( is_array( $arrTags ) && $arrTags[0] == 'CTLG_FILTER_VALUES' ) {
+        if (is_array($arrTags) && $arrTags[0] == 'CTLG_FILTER_VALUES') {
 
-            $varValue =  '';
+            $varValue = '';
             $arrParameter = [];
-            $arrMethods = [ 'POST', 'GET' ];
-            $strMethod = $arrTags[1] ? $arrTags[1] : 'GET';
+            $arrMethods = ['POST', 'GET'];
+            $strMethod = $arrTags[1] ?: 'GET';
 
-            if ( !in_array( $strMethod, $arrMethods ) )  $strMethod = 'GET';
+            if (!in_array($strMethod, $arrMethods)) $strMethod = 'GET';
 
-            switch ( $strMethod ) {
-
+            switch ($strMethod) {
                 case 'GET':
-
-                    $arrParameter = array_keys( $_GET );
-
+                    $arrParameter = array_keys($_GET);
                     break;
-
                 case 'POST':
-
-                    $arrParameter = array_keys( $_POST );
-
-                    if ( empty( $arrParameter ) ) {
-
-                        $arrParameter = array_keys( $_COOKIE );
+                    $arrParameter = array_keys($_POST);
+                    if (empty($arrParameter)) {
+                        $arrParameter = array_keys($_COOKIE);
                     }
-
                     break;
             }
 
 
             $intIndex = 0;
-            $this->import( 'CatalogInput' );
-            
-            if ( !empty( $arrParameter ) && is_array( $arrParameter ) ) {
+            $this->import(CatalogInput::class);
 
-                foreach ( $arrParameter as $strParameter ) {
+            if (!empty($arrParameter) && is_array($arrParameter)) {
 
-                    $varInputValue = $this->CatalogInput->getActiveValue( $strParameter );
+                foreach ($arrParameter as $strParameter) {
 
-                    if ( is_null( $varInputValue ) || $varInputValue === '' ) continue;
+                    $varInputValue = $this->CatalogInput->getActiveValue($strParameter);
 
-                    if ( is_array( $varInputValue ) ) {
+                    if (is_null($varInputValue) || $varInputValue === '') continue;
 
-                        foreach ( $varInputValue as $strValue ) {
+                    if (is_array($varInputValue)) {
 
-                            $varValue .= $this->parseToUri( $strParameter, $strValue, true, $intIndex );
+                        foreach ($varInputValue as $strValue) {
+
+                            $varValue .= $this->parseToUri($strParameter, $strValue, true, $intIndex);
                         }
                     }
 
-                    if ( is_string( $varInputValue ) ) {
+                    if (is_string($varInputValue)) {
 
-                        $varValue .= $this->parseToUri( $strParameter, $varInputValue, false, $intIndex );
+                        $varValue .= $this->parseToUri($strParameter, $varInputValue, false, $intIndex);
                     }
 
                     $intIndex++;
@@ -73,10 +69,11 @@ class FilterValuesInsertTag extends \Frontend {
         return false;
     }
 
-    protected function parseToUri( $strParameter, $strValue, $blnMultiple, $intIndex ) {
+    protected function parseToUri($strParameter, $strValue, $blnMultiple, $intIndex)
+    {
 
-        if ( !$strValue ) return '';
+        if (!$strValue) return '';
 
-        return ( $intIndex ? '&' : '?' ) . $strParameter . ( $blnMultiple ? '[]' : '' ) . '=' . $strValue;
+        return ($intIndex ? '&' : '?') . $strParameter . ($blnMultiple ? '[]' : '') . '=' . $strValue;
     }
 }

@@ -2,7 +2,18 @@
 
 namespace Alnv\CatalogManagerBundle\Inserttags;
 
-class CatalogInsertTag extends \Frontend
+use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
+use Alnv\CatalogManagerBundle\CatalogInput;
+use Alnv\CatalogManagerBundle\Maps\GeoCoding;
+use Alnv\CatalogManagerBundle\SQLQueryBuilder;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Alnv\CatalogManagerBundle\CatalogFormFilter;
+use Contao\Date;
+use Contao\Frontend;
+use Contao\Input;
+use Contao\StringUtil;
+
+class CatalogInsertTag extends Frontend
 {
 
 
@@ -23,63 +34,41 @@ class CatalogInsertTag extends \Frontend
 
             if (isset($arrTags[1]) && strpos($arrTags[1], '?') !== false) {
 
-                $arrChunks = explode('?', urldecode($arrTags[1]), 2);
-                $strSource = \StringUtil::decodeEntities($arrChunks[1]);
-                $strSource = str_replace('[&]', '&', $strSource);
-                $arrParams = explode('&', $strSource);
+                $arrChunks = \explode('?', urldecode($arrTags[1]), 2);
+                $strSource = StringUtil::decodeEntities($arrChunks[1]);
+                $strSource = \str_replace('[&]', '&', $strSource);
+                $arrParams = \explode('&', $strSource);
 
                 foreach ($arrParams as $strParam) {
 
-                    list($strKey, $strOption) = explode('=', $strParam);
+                    list($strKey, $strOption) = \explode('=', $strParam);
 
                     switch ($strKey) {
-
                         case 'module':
-
                             $strModuleId = $strOption;
-
                             break;
-
                         case 'get':
-
                             $strReturnField = $strOption;
-
                             break;
-
                         case 'default':
-
                             $strDefault = $strOption;
-
                             break;
-
                         case 'delimiter':
-
                             $strDelimiter = $strOption;
-
                             break;
-
                         case 'if':
-
                             $blnIfActive = false;
                             $arrOptions = explode(',', $strOption);
-
                             if (is_array($arrOptions) && !empty($strOption)) {
-
                                 foreach ($arrOptions as $strField) {
-
-                                    $strValue = \Input::get($strField);
-
+                                    $strValue = Input::get($strField);
                                     if (!Toolkit::isEmpty($strValue)) {
-
                                         $blnIfActive = true;
-
                                         break;
                                     }
                                 }
                             }
-
                             $blnActive = $blnIfActive;
-
                             break;
                     }
                 }
@@ -91,9 +80,9 @@ class CatalogInsertTag extends \Frontend
 
             if (!$objModule->numRows) return '';
 
-            $this->import('CatalogInput');
-            $this->import('SQLQueryBuilder');
-            $this->import('CatalogFieldBuilder');
+            $this->import(CatalogInput::class);
+            $this->import(SQLQueryBuilder::class);
+            $this->import(CatalogFieldBuilder::class);
 
             $arrQuery = [
 
@@ -112,23 +101,18 @@ class CatalogInsertTag extends \Frontend
 
             if (is_array($arrCatalog['operations']) && in_array('invisible', $arrCatalog['operations']) && !BE_USER_LOGGED_IN) {
 
-                $dteTime = \Date::floorToMinute();
-
+                $dteTime = Date::floorToMinute();
                 $arrQuery['where'][] = [
-
                     'field' => 'tstamp',
                     'operator' => 'gt',
                     'value' => 0
                 ];
-
                 $arrQuery['where'][] = [
-
                     [
                         'value' => '',
                         'field' => 'start',
                         'operator' => 'equal'
                     ],
-
                     [
                         'field' => 'start',
                         'operator' => 'lte',
@@ -152,7 +136,6 @@ class CatalogInsertTag extends \Frontend
                 ];
 
                 $arrQuery['where'][] = [
-
                     'field' => 'invisible',
                     'operator' => 'not',
                     'value' => '1'
@@ -205,25 +188,20 @@ class CatalogInsertTag extends \Frontend
 
             if ($objModule->catalogEnableParentFilter) {
 
-                if (\Input::get('pid')) {
-
+                if (Input::get('pid')) {
                     $arrQuery['where'][] = [
-
                         'field' => 'pid',
                         'operator' => 'equal',
-                        'value' => \Input::get('pid')
+                        'value' => Input::get('pid')
                     ];
                 }
             }
 
-            $arrOrderBy = \StringUtil::deserialize($objModule->catalogOrderBy, true);
+            $arrOrderBy = StringUtil::deserialize($objModule->catalogOrderBy, true);
 
             if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
-
                 foreach ($arrOrderBy as $arrOrder) {
-
                     $arrQuery['orderBy'][] = [
-
                         'field' => $arrOrder['key'],
                         'order' => $arrOrder['value']
                     ];
@@ -231,9 +209,7 @@ class CatalogInsertTag extends \Frontend
             }
 
             if ($objModule->catalogPerPage || $objModule->catalogOffset) {
-
                 $arrQuery['pagination'] = [
-
                     'limit' => (int)$objModule->catalogPerPage,
                     'offset' => (int)$objModule->catalogOffset
                 ];
@@ -252,19 +228,16 @@ class CatalogInsertTag extends \Frontend
                 $strValue = $objEntities->{$strReturnField};
 
                 if (Toolkit::isEmpty($strValue)) {
-
                     continue;
                 }
 
                 $arrValues = explode(',', $strValue);
 
                 if (!is_array($arrValues) || empty($arrValues)) {
-
                     continue;
                 }
 
                 foreach ($arrValues as $strValue) {
-
                     $arrReturn[] = $strValue;
                 }
             }
@@ -279,19 +252,16 @@ class CatalogInsertTag extends \Frontend
             $strFormId = $arrTags[1];
 
             if (!$strFormId) {
-
                 return '';
             }
 
             $objForm = new CatalogFormFilter($strFormId);
 
             if (!$objForm->getState()) {
-
                 return '';
             }
 
             if ($objForm->disableAutoItem()) {
-
                 return '';
             }
 

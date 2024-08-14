@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
     ],
     'palettes' => [
         '__selector__' => ['type', 'mode', 'isBackendModule', 'useGeoCoordinates', 'addressInputType', 'useChangeLanguage', 'languageEntitySource', 'useRedirect', 'useOwnLabelFormat', 'useOwnGroupFormat', 'enableLanguageBar'],
-        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements,useVC;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend:hide},useOwnLabelFormat;{group_format_legend:hide},useOwnGroupFormat;{permission_legend:hide},permissionType;{redirect_legend:hide},useRedirect;{field_settings_legend:hide},titleIsMandatory,titleDynValue;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
+        'default' => '{table_settings},type,tablename,cTables,pTable,addContentElements,useVC;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{navigation_legend},isBackendModule;{operations_legend},operations;{panel_layout_legend},panelLayout;{label_format_legend:hide},useOwnLabelFormat;{group_format_legend:hide},useOwnGroupFormat;{permission_legend:hide},permissionType;{redirect_legend:hide},useRedirect;{field_settings_legend:hide},titleIsMandatory;{geoCoordinates_legend:hide},useGeoCoordinates;{changeLanguageModule_legend:hide},useChangeLanguage',
         'modifier' => '{table_settings},type,tablename,cTables,pTable,addContentElements,useVC;{description_settings},name,info,description;{dcSorting_settings},mode;{dcLabel_settings},labelFields,showColumns,format;{panel_layout_legend},panelLayout;{geoCoordinates_legend:hide},useGeoCoordinates;'
     ],
     'subpalettes' => [
@@ -806,62 +806,32 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         ],
 
         'groupFormat' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'],
             'inputType' => 'textarea',
-
             'eval' => [
-
                 'allowHtml' => true,
                 'doNotCopy' => true,
                 'tl_class' => 'clr',
             ],
-
             'exclude' => true,
             'sql' => "text NULL"
         ],
-
         'useVC' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['useVC'],
             'inputType' => 'checkbox',
-
             'eval' => [
-
                 'doNotCopy' => true,
                 'tl_class' => 'clr'
             ],
-
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
         ],
-
         'titleIsMandatory' => [
-
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'],
             'inputType' => 'checkbox',
-
             'eval' => [
-
                 'doNotCopy' => true,
                 'tl_class' => 'w50 m12'
             ],
-
             'exclude' => true,
             'sql' => "char(1) NOT NULL default ''"
-        ],
-
-        'titleDynValue' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'],
-            'inputType' => 'text',
-            'eval' => [
-                'allowHtml' => true,
-                'doNotCopy' => true,
-                'maxlength' => 255,
-                'tl_class' => 'w50',
-            ],
-            'exclude' => true,
-            'sql' => "varchar(255) NOT NULL default ''"
         ]
     ]
 ];

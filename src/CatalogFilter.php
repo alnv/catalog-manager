@@ -9,10 +9,12 @@ use Contao\PageModel;
 class CatalogFilter extends CatalogController
 {
 
-
     public $strTable;
+
     public array $arrFields = [];
+
     public array $arrCatalog = [];
+
     public array $arrOptions = [];
     public array $arrDependencies = [];
     public array $arrActiveFields = [];
@@ -35,7 +37,6 @@ class CatalogFilter extends CatalogController
         $this->import(CatalogFieldBuilder::class);
     }
 
-
     public function initialize()
     {
 
@@ -56,7 +57,6 @@ class CatalogFilter extends CatalogController
         $this->setActiveFields();
     }
 
-
     public function generateForm()
     {
 
@@ -73,7 +73,7 @@ class CatalogFilter extends CatalogController
                 $arrField = $this->convertWidgetToField($arrField);
                 $strClass = $this->fieldClassExist($arrField['inputType']);
 
-                if ($strClass == false) return null;
+                if ($strClass === false) return null;
 
                 $objWidget = new $strClass($strClass::getAttributesFromDca($arrField, $arrField['_fieldname'], $arrField['default'], '', ''));
 
@@ -83,7 +83,6 @@ class CatalogFilter extends CatalogController
                 $objWidget->placeholder = $arrField['_placeholder'] ?: '';
 
                 if ($objWidget->value) {
-
                     $this->arrDependencies[] = $arrField['_fieldname'];
                 }
 
@@ -140,7 +139,6 @@ class CatalogFilter extends CatalogController
         return $strFields;
     }
 
-
     public function setActionAttribute()
     {
 
@@ -150,7 +148,6 @@ class CatalogFilter extends CatalogController
             $arrPage = $objPage->findPublishedById($this->catalogInternalFormRedirect);
 
             if ($arrPage != null) {
-
                 return $arrPage->getFrontendUrl();
             }
         }
@@ -163,7 +160,6 @@ class CatalogFilter extends CatalogController
         return Environment::get('indexFreeRequest');
     }
 
-
     public function setResetLink()
     {
 
@@ -175,7 +171,6 @@ class CatalogFilter extends CatalogController
             $this->id
         );
     }
-
 
     protected function getValue($strFieldname)
     {

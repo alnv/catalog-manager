@@ -2,21 +2,28 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class CatalogMessage extends CatalogController {
+use Contao\FrontendTemplate;
+use Contao\Input;
+use Contao\StringUtil;
+
+class CatalogMessage extends CatalogController
+{
 
     protected $strTemplate = 'ctlg_message_default';
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
 
-        $this->import('Input');
+        $this->import(Input::class);
     }
 
-    public function set($strType, $arrData=[], $strID='') {
+    public function set($strType, $arrData = [], $strID = '')
+    {
 
         $strMessage = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER'][$strType] ?: $strType;
-        $objTemplate = new \FrontendTemplate($this->strTemplate);
+        $objTemplate = new FrontendTemplate($this->strTemplate);
 
         $arrTemplate = [
             'message' => $strMessage,
@@ -26,10 +33,11 @@ class CatalogMessage extends CatalogController {
         $objTemplate->setData($arrTemplate);
         $strMessageTemplate = $objTemplate->parse();
 
-        $_SESSION['ctlg_FEE_Message'.($strID ?: '')] = $strMessageTemplate;
+        $_SESSION['ctlg_FEE_Message' . ($strID ?: '')] = $strMessageTemplate;
     }
 
-    public function get($strID='') {
+    public function get($strID = '')
+    {
 
         $strCookieName = 'ctlg_FEE_Message' . ($strID ?: '');
         $strMessage = $_SESSION[$strCookieName] ?? '';
@@ -37,6 +45,6 @@ class CatalogMessage extends CatalogController {
         if (!$strMessage) $strMessage = '';
         unset($_SESSION[$strCookieName]);
 
-        return \StringUtil::decodeEntities($strMessage);
+        return StringUtil::decodeEntities($strMessage);
     }
 }

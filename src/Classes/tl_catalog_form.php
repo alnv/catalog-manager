@@ -10,7 +10,6 @@ class tl_catalog_form extends Backend
 
     public function checkPermission()
     {
-
         $objDcPermission = new DcPermission();
         $objDcPermission->checkPermission('tl_catalog_form', 'filterform', 'filterformp');
     }

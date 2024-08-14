@@ -2,42 +2,49 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class CatalogFineUploader {
+use Contao\Input;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 
-    
+class CatalogFineUploader
+{
+
     protected array $arrOptions = [];
-    protected $blnAssetsLoaded = false;
 
-    
-    public function loadAssets() {
-        
-        if ( TL_MODE == 'FE' && !$this->blnAssetsLoaded ) {
+    protected bool $blnAssetsLoaded = false;
 
-            $GLOBALS['TL_JAVASCRIPT']['catalogFineUploader'] = 'system/modules/catalog-manager/assets/fineUploader/fine-uploader.min.js';
-            $GLOBALS['TL_JAVASCRIPT']['catalogFrontendExtension'] = 'system/modules/catalog-manager/assets/FrontendExtension.js';
-            $GLOBALS['TL_CSS']['catalogFineUploader'] = 'system/modules/catalog-manager/assets/fineUploader/fine-uploader-new.min.css';
+    public function loadAssets(): void
+    {
+
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
+
+        if ($blnIsBackend && !$this->blnAssetsLoaded) {
+
+            $GLOBALS['TL_JAVASCRIPT']['catalogFineUploader'] = 'bundles/alnvcatalogmanager/fineUploader/fine-uploader.min.js';
+            $GLOBALS['TL_JAVASCRIPT']['catalogFrontendExtension'] = 'bundles/alnvcatalogmanager/FrontendExtension.js';
+            $GLOBALS['TL_CSS']['catalogFineUploader'] = 'bundles/alnvcatalogmanager/fineUploader/fine-uploader-new.min.css';
 
             $this->blnAssetsLoaded = true;
         }
     }
 
+    public function sendAjaxResponse($arrAttributes)
+    {
 
-    public function sendAjaxResponse( $arrAttributes ) {
+        Input::setGet('_doNotTriggerAjax', '1');
 
-        \Input::setGet( '_doNotTriggerAjax', '1' );
+        if (Input::post('action') == 'catalogFineUploader') {
 
-        if ( \Input::post('action') == 'catalogFineUploader' ) {
-            
-            $objWidget = new $GLOBALS['TL_FFL']['catalogFineUploader']( $arrAttributes );
+            $objWidget = new $GLOBALS['TL_FFL']['catalogFineUploader']($arrAttributes);
             $objWidget->bnyUploadFolder = $arrAttributes['configAttributes']['uploadFolder'];
-            $objWidget->blnStoreFile = $arrAttributes['configAttributes']['storeFile'] ? true : false;
-            $objWidget->blnUseHomeDir = $arrAttributes['configAttributes']['useHomeDir'] ? true : false;
-            $objWidget->blnDoNotOverwrite = $arrAttributes['configAttributes']['doNotOverwrite'] ? true : false;
+            $objWidget->blnStoreFile = (bool)$arrAttributes['configAttributes']['storeFile'];
+            $objWidget->blnUseHomeDir = (bool)$arrAttributes['configAttributes']['useHomeDir'];
+            $objWidget->blnDoNotOverwrite = (bool)$arrAttributes['configAttributes']['doNotOverwrite'];
 
             $arrResponse = $objWidget->upload();
 
-            header( 'Content-Type: application/json' );
-            echo json_encode( $arrResponse );
+            header('Content-Type: application/json');
+            echo json_encode($arrResponse);
             exit;
         }
     }

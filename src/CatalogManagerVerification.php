@@ -2,42 +2,43 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Contao\Config;
+use Contao\Date;
+use Contao\Environment;
+use Symfony\Component\HttpFoundation\Request;
 
-class CatalogManagerVerification extends CatalogController {
+class CatalogManagerVerification extends CatalogController
+{
 
+    protected function getContaoInstallData()
+    {
 
-    protected function getContaoInstallData() {
-        
         return [
-
             'name' => 'catalog-manager',
             'version' => constant('VERSION'),
-            'ip' => \Environment::get('server'),
-            'domain' => \Environment::get('base'),
-            'title' => \Config::get('websiteTitle'),
-            'licence' => \Config::get('catalogLicence'),
-            'lastUpdate' => date( 'Y.m.d H:i',\Date::floorToMinute() ),
+            'ip' => Environment::get('server'),
+            'domain' => Environment::get('base'),
+            'title' => Config::get('websiteTitle'),
+            'licence' => Config::get('catalogLicence'),
+            'lastUpdate' => date('Y.m.d H:i', Date::floorToMinute()),
             'catalog_manager_version' => constant('CATALOG_MANAGER_VERSION')
         ];
     }
 
+    public function verify($strLicence = '')
+    {
 
-    public function verify( $strLicence = '' ) {
-
-        $objRequest = new \Request();
+        $objRequest = new Request();
         $arrContaoInstallData = $this->getContaoInstallData();
-        
-        if ( $strLicence ) $arrContaoInstallData['licence'] = $strLicence;
 
-        $strRequestData = http_build_query( $arrContaoInstallData );
-        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/verify-catalog-manager?%s', $strRequestData ) );
+        if ($strLicence) $arrContaoInstallData['licence'] = $strLicence;
 
-        if ( !$objRequest->hasError() ) {
+        $strRequestData = http_build_query($arrContaoInstallData);
+        $objRequest->send(sprintf('https://verification-center.alexandernaumov.de/verify-catalog-manager?%s', $strRequestData));
 
-            $arrResponse = (array) json_decode( $objRequest->response );
-
-            if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
-
+        if (!$objRequest->hasError()) {
+            $arrResponse = (array)json_decode($objRequest->response);
+            if (!empty($arrResponse) && is_array($arrResponse)) {
                 return $arrResponse['valid'];
             }
         }
@@ -45,22 +46,18 @@ class CatalogManagerVerification extends CatalogController {
         return true;
     }
 
+    public function isBlocked()
+    {
 
-    public function isBlocked() {
-
-        $objRequest = new \Request();
+        $objRequest = new Request();
         $arrContaoInstallData = $this->getContaoInstallData();
-        $strRequestData = http_build_query( $arrContaoInstallData );
-        $objRequest->send( sprintf( 'https://verification-center.alexandernaumov.de/is_blocked?%s', $strRequestData ) );
+        $strRequestData = http_build_query($arrContaoInstallData);
+        $objRequest->send(sprintf('https://verification-center.alexandernaumov.de/is_blocked?%s', $strRequestData));
 
-        if ( !$objRequest->hasError() ) {
-
-            $arrResponse = (array) json_decode( $objRequest->response );
-
-            if ( !empty( $arrResponse ) && is_array( $arrResponse ) ) {
-
-                if ( is_bool( $arrResponse['blocked'] ) && $arrResponse['blocked'] == true ) {
-
+        if (!$objRequest->hasError()) {
+            $arrResponse = (array)json_decode($objRequest->response);
+            if (!empty($arrResponse) && is_array($arrResponse)) {
+                if (is_bool($arrResponse['blocked']) && $arrResponse['blocked'] == true) {
                     return $arrResponse['blocked'];
                 }
             }
@@ -69,19 +66,15 @@ class CatalogManagerVerification extends CatalogController {
         return false;
     }
 
+    public function toggleIsBlocked($strValue)
+    {
 
-    public function toggleIsBlocked( $strValue ) {
+        $objConfig = Config::getInstance();
 
-        $objConfig = \Config::getInstance();
-
-        if ( isset( $GLOBALS['TL_CONFIG']['_isBlocked'] ) ) {
-
-            $objConfig->update( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue );
-        }
-
-        else {
-
-            $objConfig->add( '$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue );
+        if (isset($GLOBALS['TL_CONFIG']['_isBlocked'])) {
+            $objConfig->update('$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue);
+        } else {
+            $objConfig->add('$GLOBALS[\'TL_CONFIG\'][\'_isBlocked\']', $strValue);
         }
 
         $objConfig->save();

@@ -2,57 +2,65 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class CatalogMasterEntity extends CatalogController {
+use Contao\Input;
+
+class CatalogMasterEntity extends CatalogController
+{
 
 
-    protected $strTable = '';
-    protected $arrCatalog = [];
-    protected $arrJoinFields = [];
-    protected $arrCatalogFields = [];
-    protected $blnJoinParent = false;
-    protected $blnJoinFields = false;
+    protected string $strTable = '';
 
+    protected array $arrCatalog = [];
 
-    public function __construct() {
+    protected array $arrJoinFields = [];
+
+    protected array $arrCatalogFields = [];
+
+    protected bool $blnJoinParent = false;
+
+    protected bool $blnJoinFields = false;
+
+    public function __construct()
+    {
 
         parent::__construct();
 
-        $this->import( 'Database' );
-        $this->import( 'SQLQueryBuilder' );
+        $this->import('Database');
+        $this->import('SQLQueryBuilder');
     }
 
-
-    public function initialize( $strTablename, $arrOptions  = [] ) {
+    public function initialize($strTablename, $arrOptions = [])
+    {
 
         $this->strTable = $strTablename;
 
-        $this->blnJoinFields = isset( $arrOptions['joinFields'] ) &&  $arrOptions['joinFields'] ? true : false;
-        $this->blnJoinParent = isset( $arrOptions['joinParent'] ) &&  $arrOptions['joinParent'] ? true : false;
-        $arrJoinOnly = isset( $arrOptions['joinOnly'] ) &&  $arrOptions['joinOnly'] ? $arrOptions['joinOnly'] : [];
+        $this->blnJoinFields = isset($arrOptions['joinFields']) && $arrOptions['joinFields'] ? true : false;
+        $this->blnJoinParent = isset($arrOptions['joinParent']) && $arrOptions['joinParent'] ? true : false;
+        $arrJoinOnly = isset($arrOptions['joinOnly']) && $arrOptions['joinOnly'] ? $arrOptions['joinOnly'] : [];
 
-        $objCatalog = $this->Database->prepare( sprintf( 'SELECT * FROM tl_catalog WHERE tablename = ?' ) )->limit(1)->execute( $this->strTable );
+        $objCatalog = $this->Database->prepare(sprintf('SELECT * FROM tl_catalog WHERE tablename = ?'))->limit(1)->execute($this->strTable);
 
-        if ( $objCatalog !== null ) {
+        if ($objCatalog !== null) {
 
-            if ( $objCatalog->numRows ) $this->arrCatalog = $objCatalog->row();
+            if ($objCatalog->numRows) $this->arrCatalog = $objCatalog->row();
         }
 
-        $objFields = $this->Database->prepare( sprintf( 'SELECT * FROM tl_catalog_fields WHERE pid = ? AND invisible != "1" ORDER BY sorting ASC' ) )->execute( $objCatalog->id );
+        $objFields = $this->Database->prepare(sprintf('SELECT * FROM tl_catalog_fields WHERE pid = ? AND invisible != "1" ORDER BY sorting ASC'))->execute($objCatalog->id);
 
-        if ( $objFields !== null ) {
+        if ($objFields !== null) {
 
-            if ( $objFields->numRows ) {
+            if ($objFields->numRows) {
 
-                while ( $objFields->next() ) {
+                while ($objFields->next()) {
 
-                    if ( !$objFields->fieldname ) continue;
+                    if (!$objFields->fieldname) continue;
 
-                    $this->arrCatalogFields[ $objFields->fieldname ] = $objFields->row();
+                    $this->arrCatalogFields[$objFields->fieldname] = $objFields->row();
 
-                    if ( !empty( $arrJoinOnly ) && !in_array( $objFields->fieldname, $arrJoinOnly ) ) continue;
-                    if ( !in_array( $objFields->type, [ 'select', 'radio' ] ) ) continue;
-                    if ( !in_array( $objFields->optionsType, [ 'useForeignKey', 'useDbOptions' ] ) ) continue;
-                    if ( !$objFields->dbTable ) continue;
+                    if (!empty($arrJoinOnly) && !in_array($objFields->fieldname, $arrJoinOnly)) continue;
+                    if (!in_array($objFields->type, ['select', 'radio'])) continue;
+                    if (!in_array($objFields->optionsType, ['useForeignKey', 'useDbOptions'])) continue;
+                    if (!$objFields->dbTable) continue;
 
                     $this->arrJoinFields[] = $objFields->fieldname;
                 }
@@ -60,13 +68,13 @@ class CatalogMasterEntity extends CatalogController {
         }
     }
 
-
-    public function getMasterEntity( $blnParseValues = true ) {
+    public function getMasterEntity($blnParseValues = true)
+    {
 
         $arrMaster = [];
-        $strAlias = \Input::get('auto_item');
+        $strAlias = Input::get('auto_item');
 
-        if ( Toolkit::isEmpty( $strAlias ) ) return $arrMaster;
+        if (Toolkit::isEmpty($strAlias)) return $arrMaster;
 
         $arrQuery = [
             'table' => $this->strTable,
@@ -95,37 +103,33 @@ class CatalogMasterEntity extends CatalogController {
             ];
         }
 
-        if ( !empty( $this->arrJoinFields ) && is_array( $this->arrJoinFields ) && $this->blnJoinFields ) {
-
+        if (!empty($this->arrJoinFields) && is_array($this->arrJoinFields) && $this->blnJoinFields) {
             $arrQuery['joins'] = $this->joinFields();
         }
 
-        if ( $this->arrCatalog['pTable'] && $this->blnJoinParent ) {
-
-            if ( $this->Database->tableExists( $this->arrCatalog['pTable'] ) ) {
-
+        if ($this->arrCatalog['pTable'] && $this->blnJoinParent) {
+            if ($this->Database->tableExists($this->arrCatalog['pTable'])) {
                 $arrQuery['joins'][] = $this->joinParent();
             }
         }
 
-        $objMaster = $this->SQLQueryBuilder->execute( $arrQuery );
+        $objMaster = $this->SQLQueryBuilder->execute($arrQuery);
 
-        if ( !$blnParseValues ) return $objMaster->row();
+        if (!$blnParseValues) return $objMaster->row();
 
-        if ( $objMaster->numRows ) {
-
+        if ($objMaster->numRows) {
             $objFieldBuilder = new CatalogFieldBuilder();
-            $objFieldBuilder->initialize(  $this->strTable );
-            $arrFields = $objFieldBuilder->getCatalogFields( false, null, false, false );
+            $objFieldBuilder->initialize($this->strTable);
+            $arrFields = $objFieldBuilder->getCatalogFields(false, null, false, false);
 
-            $arrMaster = Toolkit::parseCatalogValues( $objMaster->row(), $arrFields );
+            $arrMaster = Toolkit::parseCatalogValues($objMaster->row(), $arrFields);
         }
 
         return $arrMaster;
     }
 
-
-    protected function joinParent() {
+    protected function joinParent()
+    {
 
         return [
 
@@ -138,25 +142,24 @@ class CatalogMasterEntity extends CatalogController {
     }
 
 
-    protected function joinFields() {
+    protected function joinFields()
+    {
 
         $arrReturn = [];
 
-        foreach ( $this->arrJoinFields as $strFieldname ) {
+        foreach ($this->arrJoinFields as $strFieldname) {
 
-            $arrField = $this->arrCatalogFields[ $strFieldname ];
+            $arrField = $this->arrCatalogFields[$strFieldname];
 
-            if ( !$arrField ) continue;
+            if (!$arrField) continue;
 
-            if ( !$this->Database->tableExists( $arrField['dbTable'] ) ) continue;
+            if (!$this->Database->tableExists($arrField['dbTable'])) continue;
 
-            if ( $arrField['optionsType'] == 'useForeignKey' ) {
-
+            if ($arrField['optionsType'] == 'useForeignKey') {
                 $arrField['dbTableKey'] = 'id';
             }
 
             $arrJoin = [
-
                 'onField' => $arrField['dbTableKey'],
                 'onTable' => $arrField['dbTable'],
                 'field' => $arrField['fieldname'],
@@ -171,21 +174,18 @@ class CatalogMasterEntity extends CatalogController {
         return $arrReturn;
     }
 
-
-    public function getCatalog() {
-
+    public function getCatalog()
+    {
         return $this->arrCatalog;
     }
 
-
-    public function getCatalogFields() {
-
+    public function getCatalogFields()
+    {
         return $this->arrCatalogFields;
     }
 
-
-    public function getJoinFields() {
-
+    public function getJoinFields()
+    {
         return $this->arrJoinFields;
     }
 }

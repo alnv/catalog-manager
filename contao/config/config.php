@@ -4,7 +4,6 @@ use Alnv\CatalogManagerBundle\Backend\SupportPage;
 use Alnv\CatalogManagerBundle\Modules\ModuleCatalogBookNavigation;
 use Alnv\CatalogManagerBundle\Modules\ModuleUniversalView;
 use Alnv\CatalogManagerBundle\Modules\ModuleMasterView;
-use Alnv\CatalogManagerBundle\Modules\ModuleCatalogFilter;
 use Alnv\CatalogManagerBundle\Elements\ContentCatalogEntity;
 use Alnv\CatalogManagerBundle\Elements\ContentCatalogFilterForm;
 use Alnv\CatalogManagerBundle\Elements\ContentSocialSharingButtons;
@@ -45,7 +44,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [
         'catalog-manager' => [
             'name' => 'catalog-manager',
-            'icon' => 'system/modules/catalog-manager/assets/icons/icon.svg',
+            'icon' => 'bundles/alnvcatalogmanager/icons/icon.svg',
             'tables' => [
                 'tl_catalog',
                 'tl_catalog_fields'
@@ -53,7 +52,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
         ],
         'filterform' => [
             'name' => 'filterform',
-            'icon' => 'system/modules/catalog-manager/assets/icons/filterform.svg',
+            'icon' => 'bundles/alnvcatalogmanager/icons/filterform.svg',
             'tables' => [
                 'tl_catalog_form',
                 'tl_catalog_form_fields'
@@ -62,8 +61,8 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
         'support' => [
             'name' => 'support',
             'callback' => SupportPage::class,
-            'stylesheet' => 'system/modules/catalog-manager/assets/support.css',
-            'icon' => 'system/modules/catalog-manager/assets/icons/support-icon.svg'
+            'stylesheet' => 'bundles/alnvcatalogmanager/support.css',
+            'icon' => 'bundles/alnvcatalogmanager/icons/support-icon.svg'
         ]
     ]
 ]);
@@ -72,8 +71,7 @@ ArrayUtil::arrayInsert($GLOBALS['FE_MOD'], 3, [
     'catalog-manager' => [
         'catalogBookNavigation' => ModuleCatalogBookNavigation::class,
         'catalogUniversalView' => ModuleUniversalView::class,
-        'catalogMasterView' => ModuleMasterView::class,
-        'catalogFilter' => ModuleCatalogFilter::class,
+        'catalogMasterView' => ModuleMasterView::class
     ]
 ]);
 

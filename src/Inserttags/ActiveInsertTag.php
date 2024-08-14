@@ -2,16 +2,24 @@
 
 namespace Alnv\CatalogManagerBundle\Inserttags;
 
-class ActiveInsertTag extends \Frontend
-{
+use Alnv\CatalogManagerBundle\CatalogInput;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Contao\Date;
+use Contao\Frontend;
+use Contao\Validator;
+use Contao\Controller;
+use Contao\StringUtil;
 
+class ActiveInsertTag extends Frontend
+{
 
     public function __construct()
     {
 
-        $this->import('CatalogInput');
-    }
+        $this->import(CatalogInput::class);
 
+        parent::__construct();
+    }
 
     public function getInsertTagValue($strTag)
     {
@@ -26,10 +34,10 @@ class ActiveInsertTag extends \Frontend
 
             if (isset($arrTags[2]) && strpos($arrTags[2], '?') !== false) {
 
-                $arrChunks = explode('?', urldecode($arrTags[2]), 2);
-                $strSource = \StringUtil::decodeEntities($arrChunks[1]);
-                $strSource = str_replace('[&]', '&', $strSource);
-                $arrParams = explode('&', $strSource);
+                $arrChunks = \explode('?', urldecode($arrTags[2]), 2);
+                $strSource = StringUtil::decodeEntities($arrChunks[1]);
+                $strSource = \str_replace('[&]', '&', $strSource);
+                $arrParams = \explode('&', $strSource);
 
                 $blnIsDate = false;
                 $strDateMethod = 'tstamp';
@@ -39,12 +47,12 @@ class ActiveInsertTag extends \Frontend
                     list($strKey, $strOption) = explode('=', $strParam);
                     switch ($strKey) {
                         case 'default':
-                            if (Toolkit::isEmpty($varValue)) $varValue = \Controller::replaceInsertTags($strOption);
+                            if (Toolkit::isEmpty($varValue)) $varValue = Controller::replaceInsertTags($strOption);
                             break;
                         case 'suffix':
                         case 'prefix':
                             if (is_string($varValue)) {
-                                $strFix = \Controller::replaceInsertTags($strOption);
+                                $strFix = Controller::replaceInsertTags($strOption);
                                 $blnNoFix = false;
                                 if ($strKey == 'suffix') {
                                     $blnNoFix = strpos($strFix, substr($varValue, -strlen($strFix))) === false;
@@ -74,21 +82,17 @@ class ActiveInsertTag extends \Frontend
                     foreach ($varValue as $strK => $strV) {
 
                         if (!$strV) {
-
                             unset($varValue[$strK]);
-
                             continue;
                         };
 
-                        if (\Validator::isDate($strV) || \Validator::isDate($strV) || \Validator::isTime($strV)) {
-
-                            $objDate = new \Date($strV, $strDateFormat);
+                        if (Validator::isDate($strV) || Validator::isDate($strV) || Validator::isTime($strV)) {
+                            $objDate = new Date($strV, $strDateFormat);
                             $intTimestamp = $objDate->{$strDateMethod};
-
                             if ($intTimestamp > 0) $varValue[$strK] = $objDate->{$strDateMethod};
                         } else if (is_numeric($strV)) {
 
-                            $objDate = new \Date($strV);
+                            $objDate = new Date($strV);
                             $intTimestamp = $objDate->{$strDateMethod};
 
                             if ($intTimestamp > 0) $varValue[$strK] = $objDate->{$strDateMethod};
@@ -97,18 +101,13 @@ class ActiveInsertTag extends \Frontend
                 }
 
                 if ($blnIsDate && is_string($varValue) && !Toolkit::isEmpty($varValue)) {
-
-                    if (\Validator::isDate($varValue) || \Validator::isDate($varValue) || \Validator::isTime($varValue)) {
-
-                        $objDate = new \Date($varValue, $strDateFormat);
+                    if (Validator::isDate($varValue) || Validator::isDate($varValue) || Validator::isTime($varValue)) {
+                        $objDate = new Date($varValue, $strDateFormat);
                         $intTimestamp = $objDate->{$strDateMethod};
-
                         if ($intTimestamp > 0) $varValue = $objDate->{$strDateMethod};
                     } else if (is_numeric($varValue)) {
-
-                        $objDate = new \Date($varValue);
+                        $objDate = new Date($varValue);
                         $intTimestamp = $objDate->{$strDateMethod};
-
                         if ($intTimestamp > 0) $varValue = $objDate->{$strDateMethod};
                     }
                 }

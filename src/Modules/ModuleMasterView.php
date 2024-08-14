@@ -2,44 +2,54 @@
 
 namespace Alnv\CatalogManagerBundle\Modules;
 
-class ModuleMasterView extends \Module
+use Alnv\CatalogManagerBundle\CatalogView;
+use Alnv\CatalogManagerBundle\Elements\Entity;
+use Alnv\CatalogManagerBundle\CatalogException;
+use Contao\Module;
+use Contao\Input;
+use Contao\PageModel;
+use Contao\System;
+use Contao\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Contao\BackendTemplate;
+
+class ModuleMasterView extends Module
 {
 
-
     protected $strAct = null;
+
     protected $strMasterAlias = null;
+
     protected $strTemplate = 'mod_catalog_master';
 
 
     public function generate()
     {
 
-        if (TL_MODE == 'BE') {
+        if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
 
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
 
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
             $objTemplate->title = $this->headline;
             $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['catalogMasterView'][0]) . ' ###';
+            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD']['catalogMasterView'][0]) . ' ###';
 
             return $objTemplate->parse();
         }
 
-        if (TL_MODE == 'FE' && $this->catalogCustomTemplate) $this->strTemplate = $this->catalogCustomTemplate;
+        if ($this->catalogCustomTemplate) $this->strTemplate = $this->catalogCustomTemplate;
 
-        if (!\Input::get('auto_item')) {
-
+        if (!Input::get('auto_item')) {
             return '';
         }
 
-        \System::loadLanguageFile('tl_module');
+        System::loadLanguageFile('tl_module');
 
-        $this->strMasterAlias = \Input::get('auto_item');
+        $this->strMasterAlias = Input::get('auto_item');
 
-        if (\Input::get('pdf' . $this->id)) {
-
+        if (Input::get('pdf' . $this->id)) {
             $this->strAct = 'pdf';
         }
 
@@ -53,12 +63,11 @@ class ModuleMasterView extends \Module
         global $objPage;
 
         if ($this->strAct && $this->strAct == 'pdf') {
-
-            $objEntity = new Entity(\Input::get('pdf' . $this->id), $this->catalogTablename);
+            $objEntity = new Entity(Input::get('pdf' . $this->id), $this->catalogTablename);
             $objEntity->getPdf($this->id, $this->catalogPdfTemplate);
         }
 
-        $this->import('CatalogView');
+        $this->import(CatalogView::class);
 
         $arrQuery = [
             'where' => [
@@ -73,7 +82,6 @@ class ModuleMasterView extends \Module
         ];
 
         if (is_numeric($this->strMasterAlias)) {
-
             $arrQuery['where'][0][] = [
                 'field' => 'id',
                 'operator' => 'equal',
@@ -97,8 +105,8 @@ class ModuleMasterView extends \Module
 
             if ($this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogViewPage != $objPage->id) {
 
-                if ($objRedirect = \PageModel::findByPk($this->catalogViewPage)) {
-                    \Controller::redirect($objRedirect->getFrontendUrl());
+                if ($objRedirect = PageModel::findByPk($this->catalogViewPage)) {
+                    Controller::redirect($objRedirect->getFrontendUrl());
                 }
 
                 return null;
@@ -113,7 +121,6 @@ class ModuleMasterView extends \Module
             $this->import('CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
-
                 'data' => $this->Template->data,
                 'output' => $this->Template->output,
                 'showAsGroup' => $this->Template->showAsGroup,

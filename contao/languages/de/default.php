@@ -31,11 +31,11 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'Es wurden keine E
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['entitiesAmount'] = 'Es wurden %s Einträge gefunden.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] = 'Alle Filtereinstellungen zurücksetzen.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'Es wurden keine Bilder gefunden.';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogValueSetterWizard'] = [ 'Spalte', 'Standardwert' ];
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogValueSetterWizard'] = ['Spalte', 'Standardwert'];
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Eingabefeld "%s <em>[%s]</em>" im Template ausgeben';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Catalog Einstellungen mit den originalen Tabellenwerten überschreiben.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Es wurden folgende Eingabefelder im <em>"%s"</em> Template gefunden';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.' ];
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = ['Hier können Sie den Zugriff auf Katalogoperationen ermöglichen.', 'Hier können Sie die Berechtigungen definieren.'];
 
 $GLOBALS['TL_LANG']['MSC']['translate'] = 'Übersetzung erstellen';
 

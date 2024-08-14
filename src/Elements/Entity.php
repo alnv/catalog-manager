@@ -2,49 +2,67 @@
 
 namespace Alnv\CatalogManagerBundle\Elements;
 
-class Entity extends CatalogController {
+use Alnv\CatalogManagerBundle\CatalogController;
+use Alnv\CatalogManagerBundle\SQLQueryBuilder;
+use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Alnv\CatalogManagerBundle\CatalogException;
+use Contao\ArrayUtil;
+use Contao\Database;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Environment;
+use Contao\Controller;
+use Contao\FrontendTemplate;
+use Contao\ContentModel;
+use Contao\Date;
 
+class Entity extends CatalogController
+{
 
     protected $catalogTablename = null;
+
     protected $catalogEntityId = null;
-    protected $arrSettings = [];
-    protected $arrCatalog = [];
-    protected $arrFields = [];
+
+    protected array $arrSettings = [];
+
+    protected array $arrCatalog = [];
+
+    protected array $arrFields = [];
 
 
-    public function __construct( $strId, $strTable, $arrSettings = [] ) {
+    public function __construct($strId, $strTable, $arrSettings = [])
+    {
 
         $this->catalogEntityId = $strId;
         $this->arrSettings = $arrSettings;
         $this->catalogTablename = $strTable;
 
-        $this->import( 'Database' );
-        $this->import( 'SQLQueryBuilder' );
+        $this->import(Database::class);
+        $this->import(SQLQueryBuilder::class);
 
-        \System::loadLanguageFile('catalog_manager');
+        System::loadLanguageFile('catalog_manager');
 
         parent::__construct();
     }
 
 
-    public function getEntity() {
+    public function getEntity()
+    {
 
         $objFieldBuilder = new CatalogFieldBuilder();
-        $objFieldBuilder->initialize( $this->catalogTablename );
+        $objFieldBuilder->initialize($this->catalogTablename);
 
         $this->arrCatalog = $objFieldBuilder->getCatalog();
         $arrFields = $objFieldBuilder->getCatalogFields();
 
-        foreach ( $arrFields as $strFieldname => $strValue ) {
-
-            if ( !is_numeric( $strFieldname ) ) {
-
-                $this->arrFields[ $strFieldname ] = $strValue;
+        foreach ($arrFields as $strFieldname => $strValue) {
+            if (!is_numeric($strFieldname)) {
+                $this->arrFields[$strFieldname] = $strValue;
             }
         }
 
         $arrQuery = [
-
             'table' => $this->catalogTablename,
             'where' => [
                 [
@@ -62,50 +80,40 @@ class Entity extends CatalogController {
         ];
 
         if (isset($this->arrSettings['queries']) && is_array($this->arrSettings['queries']) && !empty($this->arrSettings['queries'])) {
-            array_insert($arrQuery['where'], 0, $this->arrSettings['queries']);
+            ArrayUtil::arrayInsert($arrQuery['where'], 0, $this->arrSettings['queries']);
         }
 
         if (isset($this->arrCatalog['operations']) && is_array($this->arrCatalog['operations']) && in_array('invisible', $this->arrCatalog['operations']) && (!isset($this->arrSettings['ignoreVisibility']) || !$this->arrSettings['ignoreVisibility'])) {
-
-            $dteTime = \Date::floorToMinute();
-
+            $dteTime = Date::floorToMinute();
             $arrQuery['where'][] = [
-
                 'field' => 'tstamp',
                 'operator' => 'gt',
                 'value' => 0
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
 
                 'field' => 'invisible',
@@ -115,9 +123,9 @@ class Entity extends CatalogController {
         }
 
         $arrJoinedTables = [];
-        foreach ( $this->arrFields as $strFieldname => $arrField ) {
+        foreach ($this->arrFields as $strFieldname => $arrField) {
 
-            if (($this->arrSettings['noJoins']??'')) {
+            if (($this->arrSettings['noJoins'] ?? '')) {
                 continue;
             }
 
@@ -128,7 +136,6 @@ class Entity extends CatalogController {
                     $arrField['multiple'] = $arrField['multiple'] ?? '';
 
                     if (!$arrField['multiple'] && !in_array($arrField['dbTable'], $arrJoinedTables)) {
-
                         $arrQuery['joins'][] = [
                             'multiple' => false,
                             'type' => 'LEFT JOIN',
@@ -148,7 +155,7 @@ class Entity extends CatalogController {
             }
         }
 
-        if (($this->arrCatalog['pTable']??'') && !($this->arrSettings['noParentJoin']??'')) {
+        if (($this->arrCatalog['pTable'] ?? '') && !($this->arrSettings['noParentJoin'] ?? '')) {
 
             $arrQuery['joins'][] = [
                 'field' => 'pid',
@@ -161,7 +168,7 @@ class Entity extends CatalogController {
             $objParentFieldBuilder = new CatalogFieldBuilder();
             $objParentFieldBuilder->initialize($this->arrCatalog['pTable']);
 
-            $this->mergeFields($objParentFieldBuilder->getCatalogFields( true, null ), $this->arrCatalog['pTable']);
+            $this->mergeFields($objParentFieldBuilder->getCatalogFields(true, null), $this->arrCatalog['pTable']);
         }
 
         $objEntity = $this->SQLQueryBuilder->execute($arrQuery);
@@ -192,7 +199,7 @@ class Entity extends CatalogController {
 
         if (isset($this->arrCatalog['addContentElements']) && $this->arrCatalog['addContentElements']) {
             $arrEntity['contentElements'] = '';
-            $objContent = \ContentModel::findPublishedByPidAndTable($arrEntity['id'], $this->catalogTablename);
+            $objContent = ContentModel::findPublishedByPidAndTable($arrEntity['id'], $this->catalogTablename);
             if ($objContent !== null) {
                 while ($objContent->next()) {
                     $arrEntity['contentElements'] .= $this->getContentElement($objContent->current());
@@ -204,19 +211,20 @@ class Entity extends CatalogController {
     }
 
 
-    public function getPdf( $strModuleId = '', $strTemplate = 'ctlg_pdf_default' ) {
+    public function getPdf($strModuleId = '', $strTemplate = 'ctlg_pdf_default')
+    {
 
         $arrEntity = $this->getEntity();
         $arrFields = $this->getTemplateFields();
 
-        if ( empty( $arrEntity ) ) {
+        if (empty($arrEntity)) {
 
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }
 
-        $strName = $arrEntity['alias'] .'.pdf';
-        $objTemplate = new \FrontendTemplate( $strTemplate );
+        $strName = $arrEntity['alias'] . '.pdf';
+        $objTemplate = new FrontendTemplate($strTemplate);
 
         $objTemplate->setData([
             'data' => $arrEntity,
@@ -227,15 +235,15 @@ class Entity extends CatalogController {
             'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value']
         ]);
 
-        $objModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute( $strModuleId );
+        $objModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute($strModuleId);
         $strOrientation = $objModule->catalogPdfOrientation ?: 'P';
         $strDocument = $objTemplate->parse();
 
-        $objPDF = new \TCPDF( $strOrientation, 'pt', 'A4', true, 'UTF-8', false );
-        $objPDF->SetTitle( $arrEntity['title'] ? $arrEntity['title'] : $arrEntity['alias'] );
+        $objPDF = new TCPDF($strOrientation, 'pt', 'A4', true, 'UTF-8', false);
+        $objPDF->SetTitle($arrEntity['title'] ? $arrEntity['title'] : $arrEntity['alias']);
         $objPDF->SetPrintHeader(false);
         $objPDF->SetPrintFooter(false);
-        $objPDF->SetFont( 'helvetica', '', 10 );
+        $objPDF->SetFont('helvetica', '', 10);
 
         $objPDF->AddPage();
         $objPDF->lastPage();
@@ -243,54 +251,55 @@ class Entity extends CatalogController {
         $strDom = <<<EOD
 <!DOCTYPE html><html><head></head><body>$strDocument</body></html>
 EOD;
-        $objPDF->writeHTML( $strDom, true, 0, true, 0 );
-        $objPDF->Output( $strName, 'D' ); // I
+        $objPDF->writeHTML($strDom, true, 0, true, 0);
+        $objPDF->Output($strName, 'D'); // I
 
         $strQuery = 'pdf' . $strModuleId . '=' . $arrEntity['id'];
-        $strRedirect = ampersand( \Environment::get('indexFreeRequest') );
-        $strRedirect = preg_replace( '/[?&]'.$strQuery.'/gm', '', $strRedirect );
-        \Controller::redirect( $strRedirect );
+        $strRedirect = StringUtil::ampersand(Environment::get('indexFreeRequest'));
+        $strRedirect = preg_replace('/[?&]' . $strQuery . '/gm', '', $strRedirect);
+        Controller::redirect($strRedirect);
     }
 
 
-    protected function mergeFields( $arrFields, $strTablename ) {
+    protected function mergeFields($arrFields, $strTablename)
+    {
 
-        foreach ( $arrFields as $strFieldname => $arrField ) {
+        foreach ($arrFields as $strFieldname => $arrField) {
 
-            if ( is_numeric( $strFieldname ) ) {
+            if (is_numeric($strFieldname)) {
 
                 continue;
             }
 
-            $this->arrFields[ $strTablename . ucfirst( $strFieldname ) ] = $arrField;
+            $this->arrFields[$strTablename . ucfirst($strFieldname)] = $arrField;
         }
     }
 
 
-    public function getTemplateFields() {
+    public function getTemplateFields(): array
+    {
 
         $arrReturn = [];
 
-        foreach ( $this->arrFields as $strFieldname => $arrField ) {
+        foreach ($this->arrFields as $strFieldname => $arrField) {
 
             $strLabel = $strFieldname;
 
-            if ( is_array( $arrField['_dcFormat'] ) && isset( $arrField['_dcFormat']['label'] ) ) {
+            if (is_array($arrField['_dcFormat']) && isset($arrField['_dcFormat']['label'])) {
 
                 $strLabel = $arrField['_dcFormat']['label'][0];
             }
 
-            $arrReturn[ $strFieldname ] = $strLabel;
+            $arrReturn[$strFieldname] = $strLabel;
         }
 
-        if ( is_array( $this->arrCatalog['cTables'] ) && !empty( $this->arrCatalog['cTables'] ) ) {
+        if (is_array($this->arrCatalog['cTables']) && !empty($this->arrCatalog['cTables'])) {
 
-            foreach ( $this->arrCatalog['cTables'] as $strTable ) {
-
+            foreach ($this->arrCatalog['cTables'] as $strTable) {
                 $objFieldBuilder = new CatalogFieldBuilder();
-                $objFieldBuilder->initialize( $strTable );
+                $objFieldBuilder->initialize($strTable);
                 $arrCatalog = $objFieldBuilder->getCatalog();
-                $arrReturn[ $strTable ] = $arrCatalog['name'];
+                $arrReturn[$strTable] = $arrCatalog['name'];
             }
         }
 
@@ -298,7 +307,8 @@ EOD;
     }
 
 
-    protected function getJoinedEntities($strValue, $arrField) {
+    protected function getJoinedEntities($strValue, $arrField)
+    {
 
         $arrReturn = [];
         if (Toolkit::isCoreTable($arrField['dbTable']) && !in_array($arrField['dbTable'], $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'])) {
@@ -321,15 +331,15 @@ EOD;
                 [
                     'operator' => 'findInSet',
                     'field' => $arrField['dbTableKey'],
-                    'value' => explode( ',', $strValue )
+                    'value' => explode(',', $strValue)
                 ]
             ],
             'orderBy' => []
         ];
 
-        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+        if (in_array('invisible', $arrCatalog['operations'])) {
 
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
 
@@ -376,9 +386,9 @@ EOD;
             ];
         }
 
-        if ( is_array( $arrOrderBy ) && !empty( $arrOrderBy ) ) {
+        if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
 
-            foreach ( $arrOrderBy as $arrOrder ) {
+            foreach ($arrOrderBy as $arrOrder) {
 
                 $arrQuery['orderBy'][] = [
 
@@ -388,38 +398,36 @@ EOD;
             }
         }
 
-        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+        $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 
-        if ( !$objEntities->numRows ) return $arrReturn;
+        if (!$objEntities->numRows) return $arrReturn;
 
-        while ( $objEntities->next() ) {
+        while ($objEntities->next()) {
 
-            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $arrFields );
+            $arrReturn[] = Toolkit::parseCatalogValues($objEntities->row(), $arrFields);
         }
 
         return $arrReturn;
     }
 
 
-    protected function getChildrenEntities( $strValue, $strTable ) {
+    protected function getChildrenEntities($strValue, $strTable): array
+    {
 
         $arrReturn = [];
 
-        if ( Toolkit::isCoreTable( $strTable ) && !in_array( $strTable, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] ) ) {
-
+        if (Toolkit::isCoreTable($strTable) && !in_array($strTable, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'])) {
             return $arrReturn;
         }
 
         $objFieldBuilder = new CatalogFieldBuilder();
-        $objFieldBuilder->initialize( $strTable );
-        $arrFields = $objFieldBuilder->getCatalogFields( true, null );
+        $objFieldBuilder->initialize($strTable);
+        $arrFields = $objFieldBuilder->getCatalogFields(true, null);
         $arrCatalog = $objFieldBuilder->getCatalog();
 
         $arrQuery = [
-
             'table' => $strTable,
             'where' => [
-
                 [
                     'field' => 'pid',
                     'operator' => 'equal',
@@ -429,9 +437,9 @@ EOD;
             'orderBy' => []
         ];
 
-        if ( is_array( $arrCatalog['operations'] ) && in_array( 'invisible', $arrCatalog['operations'] ) ) {
+        if (in_array('invisible', $arrCatalog['operations'])) {
 
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
 
@@ -441,13 +449,11 @@ EOD;
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
@@ -456,49 +462,42 @@ EOD;
             ];
 
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 'field' => 'invisible',
                 'operator' => 'not',
                 'value' => '1'
             ];
         }
 
-        if ( !empty( $arrCatalog['sortingFields'] ) ) {
+        if (!empty($arrCatalog['sortingFields'])) {
 
-            $numFlag = (int) $arrCatalog['flag'] ?: 1;
+            $numFlag = (int)$arrCatalog['flag'] ?: 1;
 
-            foreach ( $arrCatalog['sortingFields'] as $strSortingField ) {
-
+            foreach ($arrCatalog['sortingFields'] as $strSortingField) {
                 $arrQuery['orderBy'][] = [
-
                     'field' => $strSortingField,
-                    'order' => ( $numFlag % 2 == 0 ) ? 'DESC' : 'ASC'
+                    'order' => ($numFlag % 2 == 0) ? 'DESC' : 'ASC'
                 ];
             }
         }
 
-        $objEntities = $this->SQLQueryBuilder->execute( $arrQuery );
+        $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 
-        if ( !$objEntities->numRows ) return $arrReturn;
+        if (!$objEntities->numRows) return $arrReturn;
 
-        while ( $objEntities->next() ) {
-
-            $arrReturn[] = Toolkit::parseCatalogValues( $objEntities->row(), $arrFields );
+        while ($objEntities->next()) {
+            $arrReturn[] = Toolkit::parseCatalogValues($objEntities->row(), $arrFields);
         }
 
         return $arrReturn;

@@ -146,13 +146,13 @@ button.ctlg_loadWizard {
     outline: none;
     cursor: pointer;
     position: absolute;
-    background: url("/system/modules/catalog-manager/assets/icons/catalog-setting-loader.svg") no-repeat center;
+    background: url("bundles/alnvcatalogmanager/icons/catalog-setting-loader.svg") no-repeat center;
     background-size: 100% 100%;
 }
 
 #tl_navigation .group-catalog_manager,
 #tl_navigation .group-catalog-manager-extensions {
 
-    background: url("/system/modules/catalog-manager/assets/icons/catalog-manager.svg") 3px 2px no-repeat;
+    background: url("bundles/alnvcatalogmanager/icons/catalog-manager.svg") 3px 2px no-repeat;
     background-size: 15px 15px;
 }

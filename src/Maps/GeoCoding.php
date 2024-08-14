@@ -2,25 +2,26 @@
 
 namespace Alnv\CatalogManagerBundle\Maps;
 
+use Contao\Config;
+use Alnv\CatalogManagerBundle\Toolkit;
+use Alnv\CatalogManagerBundle\CatalogController;
+
 class GeoCoding extends CatalogController
 {
 
-    private $strCity;
-    private $strStreet;
-    private $strPostal;
-    private $strCountry;
-    private $strStreetNumber;
-    private $arrGoogleMapsCache = [];
-
+    private string $strCity;
+    private string $strStreet;
+    private string $strPostal;
+    private string $strCountry;
+    private string $strStreetNumber;
+    private array $arrGoogleMapsCache = [];
 
     public function __construct()
     {
-
         parent::__construct();
     }
 
-
-    public function getCords($strAddress = '', $strLanguage = 'en', $blnServer = false)
+    public function getCords($strAddress = '', $strLanguage = 'en', $blnServer = false): array
     {
 
         $arrReturn = ['lat' => '', 'lng' => ''];
@@ -47,7 +48,7 @@ class GeoCoding extends CatalogController
 
         $strGoogleIDKey = '';
         $strCacheID = md5(urlencode($strAddress));
-        $strGoogleID = $blnServer ? \Config::get('catalogGoogleMapsServerKey') : \Config::get('catalogGoogleMapsClientKey');
+        $strGoogleID = $blnServer ? Config::get('catalogGoogleMapsServerKey') : Config::get('catalogGoogleMapsClientKey');
 
         if (is_array($this->arrGoogleMapsCache[$strCacheID])) {
 
@@ -66,7 +67,7 @@ class GeoCoding extends CatalogController
 
         if ($objRequest->hasError()) {
 
-            \System::log($objRequest->error, __METHOD__, TL_GENERAL);
+            // \System::log($objRequest->error, __METHOD__, TL_GENERAL);
 
             return $arrReturn;
         }
@@ -75,7 +76,7 @@ class GeoCoding extends CatalogController
 
         if (isset($arrResponse['error_message']) && $arrResponse['error_message']) {
 
-            \System::log($arrResponse['error_message'], '\CatalogManager\GeoCoding\getCords', 'Google Maps');
+            // \System::log($arrResponse['error_message'], '\CatalogManager\GeoCoding\getCords', 'Google Maps');
 
             return $arrReturn;
         }
@@ -83,10 +84,8 @@ class GeoCoding extends CatalogController
         if (!empty($arrResponse) && is_array($arrResponse)) {
 
             $arrGeometry = $arrResponse['results'][0]['geometry'];
-
             $arrReturn['lat'] = $arrGeometry['location'] ? preg_replace('/,/', '.', (string)$arrGeometry['location']['lat']) : '';
             $arrReturn['lng'] = $arrGeometry['location'] ? preg_replace('/,/', '.', (string)$arrGeometry['location']['lng']) : '';
-
             $this->arrGoogleMapsCache[$strCacheID] = $arrReturn;
 
             return $arrReturn;
@@ -95,38 +94,28 @@ class GeoCoding extends CatalogController
         return $arrReturn;
     }
 
-
     public function setCity($strCity)
     {
-
-        $this->strCity = $strCity ? $strCity : '';
+        $this->strCity = $strCity ?: '';
     }
-
 
     public function setStreet($strStreet)
     {
-
-        $this->strStreet = $strStreet ? $strStreet : '';
+        $this->strStreet = $strStreet ?: '';
     }
-
 
     public function setStreetNumber($strStreetNumber)
     {
-
-        $this->strStreetNumber = $strStreetNumber ? $strStreetNumber : '';
+        $this->strStreetNumber = $strStreetNumber ?: '';
     }
-
 
     public function setPostal($strPostal)
     {
-
-        $this->strPostal = $strPostal ? $strPostal : '';
+        $this->strPostal = $strPostal ?: '';
     }
-
 
     public function setCountry($strCountry)
     {
-
-        $this->strCountry = $strCountry ? $strCountry : '';
+        $this->strCountry = $strCountry ? : '';
     }
 }

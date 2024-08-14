@@ -29,13 +29,11 @@ class CatalogDcExtractor extends CatalogController
         $this->import(IconGetter::class);
     }
 
-
     public function initialize($strTablename): void
     {
         $this->strTable = $strTablename;
         $this->blnCore = Toolkit::isCoreTable($strTablename);
     }
-
 
     public function convertDataContainerToCatalog()
     {
@@ -118,18 +116,15 @@ class CatalogDcExtractor extends CatalogController
         }
     }
 
-
     public function getOrderByStatement()
     {
         return $this->strOrderBy;
     }
 
-
     public function hasOrderByStatement()
     {
         return !Toolkit::isEmpty($this->strOrderBy);
     }
-
 
     public function setDcSortingByMode($strMode, $arrCatalog = [], $arrDefaults = [])
     {
@@ -250,7 +245,6 @@ class CatalogDcExtractor extends CatalogController
         return $arrReturn;
     }
 
-
     protected function extractDCASorting($arrSorting)
     {
 
@@ -283,7 +277,6 @@ class CatalogDcExtractor extends CatalogController
 
         $this->strOrderBy = implode(',', $arrOrderBy);
     }
-
 
     protected function convertDcConfigToCatalog($arrReturn, $arrDataContainer, $strDcConfigType)
     {
@@ -464,8 +457,6 @@ class CatalogDcExtractor extends CatalogController
         if ($arrCatalog['useGeoCoordinates']) {
             $arrConfigDc['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'generateGeoCords'];
         }
-
-        $arrConfigDc['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'checkForDynValues'];
 
         foreach ($arrConfigDc as $strKey => $strValue) {
 

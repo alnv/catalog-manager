@@ -4,6 +4,8 @@ namespace Alnv\CatalogManagerBundle;
 
 use Contao\Input;
 use Contao\Session;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 
 class CatalogInput extends CatalogController
 {
@@ -21,6 +23,7 @@ class CatalogInput extends CatalogController
     protected function getPostCookie($strName)
     {
 
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
         $objSession = Session::getInstance();
         $strActiveValue = $this->Input->post($strName);
         $arrEditingMode = preg_grep('/^act(\d+)/i', array_keys($_GET));
@@ -29,21 +32,17 @@ class CatalogInput extends CatalogController
         if ($this->Input->post('FORM_SUBMIT') == $this->strFormId) $objSession->set($strName, $strActiveValue);
 
         if (!empty($arrPagination) || (Toolkit::isEmpty($strActiveValue) && !Toolkit::isEmpty($objSession->get($strName)))) {
-
-            if (TL_MODE == 'FE') {
-
+            if (!$blnIsBackend) {
                 $strActiveValue = $objSession->get($strName);
             }
         }
 
         if (!empty($arrEditingMode)) {
-
             $strActiveValue = $this->Input->post($strName);
         }
 
         return $strActiveValue;
     }
-
 
     public function post($strName)
     {
@@ -55,7 +54,6 @@ class CatalogInput extends CatalogController
         return '';
     }
 
-
     public function get($strName)
     {
 
@@ -65,7 +63,6 @@ class CatalogInput extends CatalogController
 
         return '';
     }
-
 
     public function getActiveValue($strName)
     {
@@ -78,7 +75,6 @@ class CatalogInput extends CatalogController
 
         return '';
     }
-
 
     public function getValue($strName)
     {

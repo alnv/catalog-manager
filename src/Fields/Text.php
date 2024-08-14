@@ -12,7 +12,7 @@ class Text
 {
 
 
-    public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true)
+    public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true): array
     {
 
         $arrDCAField['eval']['readonly'] = Toolkit::getBooleanByValue($arrField['readonly'] ?? '');

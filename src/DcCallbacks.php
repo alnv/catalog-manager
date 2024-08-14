@@ -42,40 +42,6 @@ class DcCallbacks extends Backend
         return '<button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="ctlg_loadWizard" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] . '"></button>';
     }
 
-    public function checkForDynValues($objDc)
-    {
-
-        if (!($objDc instanceof DataContainer)) {
-            return null;
-        }
-
-        $strId = Input::get('id') ? Input::get('id') : $objDc->id;
-
-        if (!$strId) return null;
-        if (is_null($objDc)) return null;
-        if (isset($_POST['SUBMIT_TYPE']) && $_POST['SUBMIT_TYPE'] == 'auto') return null;
-        if (is_null($objDc->activeRecord)) return null;
-        if (!$objDc->table || !$this->Database->tableExists($objDc->table)) return null;
-
-        $arrValues = [];
-        $objFields = new CatalogFieldBuilder();
-        $objFields->initialize($objDc->table);
-        $arrFields = $objFields->getCatalogFields(false);
-
-        foreach ($arrFields as $strFieldname => $arrField) {
-
-            if (isset($arrField['dynValue']) && !Toolkit::isEmpty($arrField['dynValue'])) {
-
-                $arrActiveRecords = Toolkit::prepareValues4Db($objDc->activeRecord->row());
-                $arrValues[$strFieldname] = Toolkit::generateDynValue($arrField['dynValue'], $arrActiveRecords);
-                if ($strFieldname == 'title' && Toolkit::hasDynAlias()) $arrValues['alias'] = $this->generateFEAlias('', $arrValues[$strFieldname], $objDc->table, $strId);
-            }
-        }
-
-        if (is_array($arrValues) && count($arrValues) > 0) $this->Database->prepare('UPDATE ' . $objDc->table . ' %s WHERE id = ?')->set($arrValues)->execute($strId);
-    }
-
-
     function groupCallback($strTemplate, $arrCatalogField, $strGroup, $strMode, $strField, $arrRow, $dc)
     {
 
@@ -499,7 +465,6 @@ class DcCallbacks extends Backend
         return [];
     }
 
-
     protected function entityExist($strTable, $strID)
     {
 
@@ -510,7 +475,6 @@ class DcCallbacks extends Backend
 
         return false;
     }
-
 
     protected function getDoAttributeByTable($strTablename): string
     {
@@ -533,7 +497,6 @@ class DcCallbacks extends Backend
 
         return '';
     }
-
 
     public function setFallbackAndLanguage(DataContainer $dc)
     {
@@ -568,7 +531,6 @@ class DcCallbacks extends Backend
 
         $this->Database->prepare('UPDATE ' . $dc->table . ' %s WHERE id=?')->set($arrSet)->execute($dc->activeRecord->id);
     }
-
 
     public function setGlobalTranslateButton(DataContainer $dc)
     {
@@ -612,7 +574,6 @@ class DcCallbacks extends Backend
         }
     }
 
-
     protected function getCatalog()
     {
 
@@ -635,7 +596,6 @@ class DcCallbacks extends Backend
 
         return $arrCatalog;
     }
-
 
     public function generateLanguageButton($arrRow, $strHref, $strLabel, $strTitle, $strIcon)
     {

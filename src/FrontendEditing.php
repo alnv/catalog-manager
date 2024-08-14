@@ -2,29 +2,55 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Contao\Config;
+use Contao\Date;
+use Contao\Environment;
+use Contao\FilesModel;
+use Contao\FrontendTemplate;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\PageModel;
+
 class FrontendEditing extends CatalogController
 {
 
 
-    public $strAct = '';
-    public $strItemID = '';
-    public $arrOptions = [];
-    public $strTemplate = '';
-    public $arrQueries = [];
+    public string $strAct = '';
 
-    public $strFormId = '';
-    protected $arrValues = [];
-    protected $arrCatalog = [];
-    protected $arrPalettes = [];
-    protected $strOnChangeId = '';
-    protected $strRedirectID = '';
+    public string $strItemID = '';
+
+    public array $arrOptions = [];
+
+    public string $strTemplate = '';
+
+    public array $arrQueries = [];
+
+    public string $strFormId = '';
+
+    protected array $arrValues = [];
+
+    protected array $arrCatalog = [];
+
+    protected array $arrPalettes = [];
+
+    protected string $strOnChangeId = '';
+
+    protected string $strRedirectID = '';
+
     protected $objTemplate = null;
-    protected $blnNoSubmit = false;
-    protected $blnHasUpload = false;
-    protected $arrCatalogFields = [];
-    protected $arrPaletteLabels = [];
-    protected $arrCatalogAttributes = [];
-    protected $arrValidFormTemplates = [];
+
+    protected bool $blnNoSubmit = false;
+
+    protected bool $blnHasUpload = false;
+
+    protected array $arrCatalogFields = [];
+
+    protected array $arrPaletteLabels = [];
+
+    protected array $arrCatalogAttributes = [];
+
+    protected array $arrValidFormTemplates = [];
 
 
     public function __construct()
@@ -32,24 +58,24 @@ class FrontendEditing extends CatalogController
 
         parent::__construct();
 
-        $this->import('CatalogEvents');
-        $this->import('CatalogMessage');
-        $this->import('SQLQueryHelper');
-        $this->import('SQLQueryBuilder');
-        $this->import('CatalogFineUploader');
-        $this->import('CatalogFieldBuilder');
-        $this->import('I18nCatalogTranslator');
+        $this->import(CatalogEvents::class);
+        $this->import(CatalogMessage::class);
+        $this->import(SQLQueryHelper::class);
+        $this->import(SQLQueryBuilder::class);
+        $this->import(CatalogFineUploader::class);
+        $this->import(CatalogFieldBuilder::class);
+        $this->import(I18nCatalogTranslator::class);
     }
 
 
-    public function initialize()
+    public function initialize(): void
     {
 
         global $objPage;
 
         $this->setOptions();
 
-        \System::loadLanguageFile('catalog_manager');
+        System::loadLanguageFile('catalog_manager');
 
         $strPalette = 'general_legend';
         $this->strFormId = md5('id_' . $this->catalogTablename);
@@ -122,7 +148,7 @@ class FrontendEditing extends CatalogController
     public function render()
     {
 
-        $this->objTemplate = new \FrontendTemplate($this->strTemplate);
+        $this->objTemplate = new FrontendTemplate($this->strTemplate);
         $this->objTemplate->setData($this->arrOptions);
         $arrCategories = [];
 
@@ -149,17 +175,17 @@ class FrontendEditing extends CatalogController
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
-        if (!$this->blnNoSubmit && \Input::post('FORM_DELETE_IMAGE')) {
+        if (!$this->blnNoSubmit && Input::post('FORM_DELETE_IMAGE')) {
 
             $this->deleteImage();
         }
 
-        if (!$this->blnNoSubmit && \Input::post('FORM_SUBMIT') == $this->strFormId) {
+        if (!$this->blnNoSubmit && Input::post('FORM_SUBMIT') == $this->strFormId) {
 
             $this->saveEntity();
         }
 
-        if (\Input::post('FORM_SUBMIT_BACK') == $this->strFormId) {
+        if (Input::post('FORM_SUBMIT_BACK') == $this->strFormId) {
 
             global $objPage;
 
@@ -170,9 +196,8 @@ class FrontendEditing extends CatalogController
 
             $strQuery = '';
 
-            if (\Input::get('pid')) {
-
-                $strQuery .= '?pid=' . \Input::get('pid');
+            if (Input::get('pid')) {
+                $strQuery .= '?pid=' . Input::get('pid');
             }
 
             $this->redirectAfterInsertion($this->catalogFrontendEditingViewPage, $strQuery);
@@ -183,7 +208,7 @@ class FrontendEditing extends CatalogController
         $this->objTemplate->categories = $arrCategories;
         $this->objTemplate->onChangeId = $this->strOnChangeId;
         $this->objTemplate->catalogAttributes = $this->arrCatalogAttributes;
-        $this->objTemplate->action = \Environment::get('indexFreeRequest');
+        $this->objTemplate->action = Environment::get('indexFreeRequest');
         $this->objTemplate->message = $this->CatalogMessage->get($this->id);
         $this->objTemplate->attributes = $this->catalogNoValidate ? 'novalidate' : '';
         $this->objTemplate->back = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['back'];
@@ -201,33 +226,25 @@ class FrontendEditing extends CatalogController
         $this->import('SQLBuilder');
 
         $strTempUuid = '';
-        $strFieldname = \Input::post('FORM_DELETE_IMAGE');
+        $strFieldname = Input::post('FORM_DELETE_IMAGE');
+        $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
 
         if ($strFieldname && isset($this->arrValues[$strFieldname])) {
-
             $strTempUuid = $this->arrValues[$strFieldname];
             $this->arrValues[$strFieldname] = '';
         }
 
         switch ($this->strAct) {
-
             case 'create':
-
                 //
-
                 break;
-
             case 'copy':
             case 'edit':
-
                 $this->SQLBuilder->Database->prepare(sprintf('UPDATE %s SET %s = "" WHERE id = ?', $this->catalogTablename, $strFieldname))->execute($this->strItemID);
-                $objFile = \FilesModel::findByUuid($strTempUuid);
-
+                $objFile = FilesModel::findByUuid($strTempUuid);
                 if ($objFile !== null) {
-
-                    if (file_exists(TL_ROOT . '/' . $objFile->path)) {
-
-                        unlink(TL_ROOT . '/' . $objFile->path);
+                    if (file_exists($strRootDir . '/' . $objFile->path)) {
+                        unlink($strRootDir . '/' . $objFile->path);
                     }
                 }
 
@@ -237,16 +254,12 @@ class FrontendEditing extends CatalogController
         $this->reload();
     }
 
-
-    protected function setCatalogAttributes()
+    protected function setCatalogAttributes(): void
     {
-
-        if (!empty($this->arrCatalogFields) && is_array($this->arrCatalogFields)) {
-
+        if (!empty($this->arrCatalogFields) && \is_array($this->arrCatalogFields)) {
             $this->arrCatalogAttributes = Toolkit::parseCatalogValues($this->arrValues, $this->arrCatalogFields, false);
         }
     }
-
 
     protected function renderFieldsByPalette($arrFieldNames, $strPalette = '')
     {
@@ -333,15 +346,8 @@ class FrontendEditing extends CatalogController
 
                 $objWidget->mandatory = false;
                 $arrTextareaData = ['selector' => 'ctrl_' . $objWidget->id];
-
-                if (version_compare(VERSION, '4.0', '>=')) {
-                    $strTemplate = 'be_' . $arrField['eval']['rte'];
-                } else {
-                    $strTemplate = 'ctlg_catalog_tinyMCE';
-                    $arrTextareaData['tinyMCE'] = TL_ROOT . '/' . 'system/config/' . $arrField['eval']['rte'] . '.php';
-                }
-
-                $objScript = new \FrontendTemplate($strTemplate);
+                $strTemplate = 'be_' . $arrField['eval']['rte'];
+                $objScript = new FrontendTemplate($strTemplate);
                 $objScript->setData($arrTextareaData);
                 $strScript = $objScript->parse();
 
@@ -353,8 +359,8 @@ class FrontendEditing extends CatalogController
                 $objWidget->class .= ' awesomplete-field';
                 $objWidget->class .= ($arrField['multiple'] ? ' multiple' : '');
 
-                if (\Input::get('ctlg_autocomplete_query') && \Input::get('ctlg_fieldname') == $strFieldname) {
-                    $this->sendJsonResponse($this->arrCatalogFields[$strFieldname], $this->id, \Input::get('ctlg_autocomplete_query'));
+                if (Input::get('ctlg_autocomplete_query') && Input::get('ctlg_fieldname') == $strFieldname) {
+                    $this->sendJsonResponse($this->arrCatalogFields[$strFieldname], $this->id, Input::get('ctlg_autocomplete_query'));
                 }
 
                 $objScriptLoader = new CatalogScriptLoader();
@@ -370,9 +376,8 @@ class FrontendEditing extends CatalogController
             }
 
             if (isset($arrField['eval']['rgxp']) && $arrField['eval']['rgxp'] && in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
-
-                $strDateFormat = \Date::getFormatFromRgxp($arrField['eval']['rgxp']);
-                $objWidget->value = $objWidget->value ? \Date::parse($strDateFormat, $objWidget->value) : '';
+                $strDateFormat = Date::getFormatFromRgxp($arrField['eval']['rgxp']);
+                $objWidget->value = $objWidget->value ? Date::parse($strDateFormat, $objWidget->value) : '';
             }
 
             $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] = $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] ?? '';
@@ -383,9 +388,8 @@ class FrontendEditing extends CatalogController
                 }
             }
 
-            if (\Input::post('FORM_SUBMIT') == $this->strOnChangeId && !Toolkit::isEmpty(\Input::post($strFieldname))) {
-
-                $objWidget->value = \Input::post($strFieldname);
+            if (Input::post('FORM_SUBMIT') == $this->strOnChangeId && !Toolkit::isEmpty(Input::post($strFieldname))) {
+                $objWidget->value = Input::post($strFieldname);
             }
 
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
@@ -399,7 +403,7 @@ class FrontendEditing extends CatalogController
                 }
             }
 
-            if (\Input::post('FORM_SUBMIT') == $this->strFormId) {
+            if (Input::post('FORM_SUBMIT') == $this->strFormId) {
 
                 $objWidget->validate();
                 $varValue = $objWidget->value;
@@ -426,7 +430,7 @@ class FrontendEditing extends CatalogController
 
                     try {
 
-                        $objDate = new \Date($varValue, \Date::getFormatFromRgxp($arrField['eval']['rgxp']));
+                        $objDate = new Date($varValue, Date::getFormatFromRgxp($arrField['eval']['rgxp']));
                         $varValue = $objDate->tstamp;
 
                     } catch (\OutOfBoundsException $objError) {
@@ -441,11 +445,8 @@ class FrontendEditing extends CatalogController
                 }
 
                 if ($objWidget->submitInput() && !$objWidget->hasErrors() && isset($arrField['save_callback']) && is_array($arrField['save_callback'])) {
-
                     foreach ($arrField['save_callback'] as $arrCallback) {
-
                         $objDataContainer = new CatalogDataContainer($this->catalogTablename);
-
                         $objDataContainer->value = $varValue;
                         $objDataContainer->id = $this->strItemID;
                         $objDataContainer->field = $strFieldname;
@@ -454,9 +455,7 @@ class FrontendEditing extends CatalogController
                         $objDataContainer->ctable = $this->arrCatalog['cTables'];
 
                         try {
-
                             if (is_array($arrCallback)) {
-
                                 $this->import($arrCallback[0]);
                                 $varValue = $this->{$arrCallback[0]}->{$arrCallback[1]}($varValue, $objDataContainer);
                             } elseif (is_callable($arrCallback)) {
@@ -464,7 +463,6 @@ class FrontendEditing extends CatalogController
                                 $varValue = $arrCallback($varValue, $objDataContainer);
                             }
                         } catch (\Exception $objError) {
-
                             $objWidget->class = 'error';
                             $objWidget->addError($objError->getMessage());
                         }
@@ -482,7 +480,7 @@ class FrontendEditing extends CatalogController
                     $arrField['eval']['encrypt'] = $arrField['eval']['encrypt'] ?? '';
 
                     if ($arrField['eval']['encrypt']) {
-                        $varValue = \Encryption::encrypt($varValue);
+                        // $varValue = Encryption::encrypt($varValue); todo
                     }
 
                     $this->arrValues[$strFieldname] = $varValue;
@@ -501,17 +499,13 @@ class FrontendEditing extends CatalogController
                         foreach ($arrFiles[$strFieldname] as $arrFile) {
                             $arrUUIDValues[] = $this->getFileUUID($arrFile);
                         }
-
-                        if (\Config::get('catalogMergeMultipleUploads') && $arrField['eval']['multiple']) {
-
-                            $arrUUIDValues = array_merge(\StringUtil::deserialize($this->arrValues[$strFieldname], true), $arrUUIDValues);
+                        if (Config::get('catalogMergeMultipleUploads') && $arrField['eval']['multiple']) {
+                            $arrUUIDValues = array_merge(StringUtil::deserialize($this->arrValues[$strFieldname], true), $arrUUIDValues);
                             $arrUUIDValues = array_unique($arrUUIDValues);
                             $arrUUIDValues = array_values($arrUUIDValues);
                         }
-
                         $strUUIDValue = serialize($arrUUIDValues);
                     } else {
-
                         $strUUIDValue = $this->getFileUUID($arrFiles[$strFieldname]);
                     }
 
@@ -527,39 +521,33 @@ class FrontendEditing extends CatalogController
     }
 
 
-    public function isVisible()
+    public function isVisible(): bool
     {
 
-        if (!\Input::get('auto_item') || !$this->catalogTablename) {
-
+        if (!Input::get('auto_item') || !$this->catalogTablename) {
             return false;
         }
 
         $arrQuery = [
-
             'table' => $this->catalogTablename,
-
             'where' => [
-
                 [
                     [
                         'field' => 'id',
                         'operator' => 'equal',
-                        'value' => \Input::get('auto_item')
+                        'value' => Input::get('auto_item')
                     ],
-
                     [
                         'field' => 'alias',
                         'operator' => 'equal',
-                        'value' => \Input::get('auto_item')
+                        'value' => Input::get('auto_item')
                     ]
                 ]
             ]
         ];
 
         if ($this->hasVisibility()) {
-
-            $dteTime = \Date::floorToMinute();
+            $dteTime = Date::floorToMinute();
 
             $arrQuery['where'][] = [
 
@@ -600,11 +588,8 @@ class FrontendEditing extends CatalogController
         }
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrQuery, $this);
                 }
@@ -613,11 +598,11 @@ class FrontendEditing extends CatalogController
 
         $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 
-        return $objEntities->numRows ? true : false;
+        return (bool)$objEntities->numRows;
     }
 
 
-    protected function hasVisibility()
+    protected function hasVisibility(): bool
     {
 
         if ($this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing) {
@@ -635,16 +620,14 @@ class FrontendEditing extends CatalogController
             return false;
         }
 
-        if (BE_USER_LOGGED_IN) {
-
+        if (System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             return false;
         }
 
         return true;
     }
 
-
-    public function checkAccess()
+    public function checkAccess(): bool
     {
 
         $this->import('FrontendEditingPermission');
@@ -655,11 +638,10 @@ class FrontendEditing extends CatalogController
         return $this->FrontendEditingPermission->hasAccess($this->catalogTablename);
     }
 
-
     public function checkPermission($strMode)
     {
 
-        $this->import('FrontendEditingPermission');
+        $this->import(FrontendEditingPermission::class);
 
         if (!is_array($this->catalogItemOperations)) $this->catalogItemOperations = [];
         if (!in_array($strMode, $this->catalogItemOperations)) return false;
@@ -709,24 +691,21 @@ class FrontendEditing extends CatalogController
 
             $this->CatalogEvents->addEventListener('delete', $arrData, $this);
             $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE id = ? ', $this->catalogTablename))->execute($this->strItemID);
-            \System::log('DELETE FROM ' . $this->catalogTablename . ' WHERE id=' . $this->strItemID, __METHOD__, TL_GENERAL);
+            // \System::log('DELETE FROM ' . $this->catalogTablename . ' WHERE id=' . $this->strItemID, __METHOD__, TL_GENERAL);
             // $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
         }
 
         $strAttributes = '';
-        $objPage = \PageModel::findWithDetails($this->strRedirectID);
-        $strUrl = $this->generateFrontendUrl($objPage->row(), '', $objPage->language, true);
+        $objPage = PageModel::findWithDetails($this->strRedirectID);
+        $strUrl = $objPage?->getFrontendUrl(); //$this->generateFrontendUrl($objPage->row(), '', $objPage->language, true);
 
-        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = \Environment::get('base') . $strUrl;
-        if (\Input::get('pid')) $strAttributes .= '?pid=' . \Input::get('pid');
+        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = Environment::get('base') . $strUrl;
+        if (Input::get('pid')) $strAttributes .= '?pid=' . Input::get('pid');
         if ($strAttributes) $strUrl .= $strAttributes;
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
                 }
@@ -735,7 +714,6 @@ class FrontendEditing extends CatalogController
 
         $this->redirect($strUrl);
     }
-
 
     protected function deleteChildEntities($strTable, $strID, $strPtable = '')
     {
@@ -746,18 +724,13 @@ class FrontendEditing extends CatalogController
         $arrTables = $arrCatalog['cTables'];
 
         if (is_array($arrTables) && !empty($arrTables)) {
-
             foreach ($arrTables as $strTable) {
-
                 $arrValues = [$strID];
-
                 if ($strTable == 'tl_content') $strPtable = $strTable;
                 if ($strPtable) $arrValues[] = $strPtable;
 
                 if (!$strPtable) {
-
                     $objEntity = $this->SQLBuilder->Database->prepare(sprintf('SELECT id FROM %s WHERE pid = ?', $strTable))->limit(1)->execute($strID);
-
                     $this->deleteChildEntities($strTable, $objEntity->id);
                 }
 
@@ -765,7 +738,6 @@ class FrontendEditing extends CatalogController
             }
         }
     }
-
 
     protected function setPalettes()
     {
@@ -798,19 +770,14 @@ class FrontendEditing extends CatalogController
         }
     }
 
-
-    protected function setOptions()
+    protected function setOptions(): void
     {
-
-        if (!empty($this->arrOptions) && is_array($this->arrOptions)) {
-
+        if (!empty($this->arrOptions)) {
             foreach ($this->arrOptions as $strKey => $varValue) {
-
                 $this->{$strKey} = $varValue;
             }
         }
     }
-
 
     protected function getCaptcha()
     {
@@ -830,7 +797,7 @@ class FrontendEditing extends CatalogController
 
         $objCaptcha = new $strClass($arrCaptcha);
 
-        if (\Input::post('FORM_SUBMIT') == $this->strFormId) {
+        if (Input::post('FORM_SUBMIT') == $this->strFormId) {
 
             $objCaptcha->validate();
 
@@ -860,12 +827,11 @@ class FrontendEditing extends CatalogController
 
         if (isset($arrField['eval']) && is_array($arrField['eval'])) {
             $arrField['eval']['tableless'] = '1';
-            $arrField['eval']['required'] = (bool) ($arrField['eval']['mandatory'] ?? false);
+            $arrField['eval']['required'] = (bool)($arrField['eval']['mandatory'] ?? false);
         }
 
         return $arrField;
     }
-
 
     protected function fieldClassExist($strInputType)
     {
@@ -877,14 +843,12 @@ class FrontendEditing extends CatalogController
         return $strClass;
     }
 
-
     protected function setValues()
     {
 
         if ($this->strItemID && $this->catalogTablename) {
 
-            // $arrEntity = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare( sprintf( 'SELECT * FROM %s WHERE id = ?', $this->catalogTablename ) )->limit( 1 )->execute( $this->strItemID )->row();
-            $arrEntity = (new \CatalogManager\Entity($this->strItemID, $this->catalogTablename, ['ignoreVisibility' => (bool)$this->catalogIgnoreVisibility, 'operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
+            $arrEntity = (new Entity($this->strItemID, $this->catalogTablename, ['ignoreVisibility' => (bool)$this->catalogIgnoreVisibility, 'operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
 
             if ($this->strAct == 'copy') {
 
@@ -899,11 +863,10 @@ class FrontendEditing extends CatalogController
             $this->arrValues = $arrEntity;
         }
 
-        if (!empty($this->arrValues) && is_array($this->arrValues)) {
+        if (!empty($this->arrValues)) {
 
             foreach ($this->arrValues as $strFieldname => $varValue) {
-
-                $this->arrValues[$strFieldname] = \Input::post($strFieldname) !== null ? \Input::post($strFieldname) : $varValue;
+                $this->arrValues[$strFieldname] = Input::post($strFieldname) !== null ? Input::post($strFieldname) : $varValue;
             }
         }
 
@@ -913,21 +876,18 @@ class FrontendEditing extends CatalogController
         }
     }
 
-
-    protected function decodeValue($varValue)
+    protected function decodeValue($varValue): string
     {
-
-        return \StringUtil::decodeEntities($varValue);
+        return StringUtil::decodeEntities($varValue);
     }
-
 
     protected function getFileUUID($arrFile)
     {
 
-        $strRoot = TL_ROOT . '/';
+        $strRoot = System::getContainer()->getParameter('kernel.project_dir') . '/';
         $strUuid = $arrFile['uuid'];
         $strFile = substr($arrFile['tmp_name'], strlen($strRoot));
-        $objFiles = \FilesModel::findByPath($strFile);
+        $objFiles = FilesModel::findByPath($strFile);
 
         if ($objFiles !== null) {
 
@@ -937,25 +897,21 @@ class FrontendEditing extends CatalogController
         return $strUuid;
     }
 
-
     protected function saveEntity()
     {
 
         $strQuery = '';
-        $this->import('SQLBuilder');
+        $this->import(SQLBuilder::class);
 
         if ($this->arrCatalog['useGeoCoordinates']) {
             $this->getGeoCordValues();
         }
 
-        if (\Input::get('pid')) {
-            $strQuery = sprintf('?pid=%s', \Input::get('pid'));
+        if (Input::get('pid')) {
+            $strQuery = sprintf('?pid=%s', Input::get('pid'));
         }
 
-
-        //if (isset($this->arrValues['tstamp'])) {
         $this->arrValues['tstamp'] = (string)time();
-        //}
 
         if (is_array($this->catalogDefaultValues) && $this->catalogDefaultValues[0]) {
             foreach ($this->catalogDefaultValues as $arrDefaultValue) {
@@ -982,11 +938,8 @@ class FrontendEditing extends CatalogController
         $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias($this->arrValues['alias'], $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $this->arrValues = $this->{$arrCallback[0]}->{$arrCallback[1]}($this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields, $this);
                 }
@@ -1001,9 +954,9 @@ class FrontendEditing extends CatalogController
 
                 if ($this->SQLBuilder->Database->fieldExists('pid', $this->catalogTablename) && $this->arrCatalog['pTable']) {
 
-                    if (!\Input::get('pid')) return null;
+                    if (!Input::get('pid')) return null;
 
-                    $this->arrValues['pid'] = \Input::get('pid');
+                    $this->arrValues['pid'] = Input::get('pid');
                 }
 
                 if ($this->SQLBuilder->Database->fieldExists('sorting', $this->catalogTablename)) {
@@ -1015,11 +968,11 @@ class FrontendEditing extends CatalogController
 
                 if ($this->SQLBuilder->Database->fieldExists('tstamp', $this->catalogTablename)) {
 
-                    $this->arrValues['tstamp'] = \Date::floorToMinute();
+                    $this->arrValues['tstamp'] = Date::floorToMinute();
                 }
 
                 $strInsertId = $this->SQLBuilder->Database->prepare('INSERT INTO ' . $this->catalogTablename . ' %s')->set($this->arrValues)->execute()->insertId;
-                \System::log('A new entry "' . $this->catalogTablename . '=' . $strInsertId . '" has been created', __METHOD__, TL_GENERAL);
+                // System::log('A new entry "' . $this->catalogTablename . '=' . $strInsertId . '" has been created', __METHOD__, TL_GENERAL);
 
                 $this->arrValues['id'] = $strInsertId;
 
@@ -1076,7 +1029,7 @@ class FrontendEditing extends CatalogController
                     $this->CatalogEvents->addEventListener('update', $arrData, $this);
                     $this->SQLBuilder->Database->prepare('UPDATE ' . $this->catalogTablename . ' %s WHERE id = ?')->set($this->arrValues)->execute($this->strItemID);
 
-                    \System::log('An entry "' . $this->catalogTablename . '=' . $this->strItemID . '" has been updated', __METHOD__, TL_GENERAL);
+                    // \System::log('An entry "' . $this->catalogTablename . '=' . $this->strItemID . '" has been updated', __METHOD__, TL_GENERAL);
                 }
 
                 if (!$this->isVisible()) $blnReload = false;
@@ -1098,7 +1051,7 @@ class FrontendEditing extends CatalogController
 
                 $objInsert = $this->SQLBuilder->Database->prepare('INSERT INTO ' . $this->catalogTablename . ' %s')->set($arrSet)->execute();
 
-                \System::log('An entry "' . $this->catalogTablename . '=' . $objInsert->insertId . '" has been duplicated', __METHOD__, TL_GENERAL);
+                // \System::log('An entry "' . $this->catalogTablename . '=' . $objInsert->insertId . '" has been duplicated', __METHOD__, TL_GENERAL);
 
                 if ($this->catalogNotifyDuplicate) {
                     $objCatalogNotification = new CatalogNotification($this, $this->strItemID);
@@ -1125,26 +1078,21 @@ class FrontendEditing extends CatalogController
 
         if (($intPage = intval($intPage)) <= 0) return '';
 
-        $objPage = \PageModel::findWithDetails($intPage);
+        $objPage = PageModel::findWithDetails($intPage);
         $strUrl = $this->generateFrontendUrl($objPage->row(), '', $objPage->language, true);
 
-        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = \Environment::get('base') . $strUrl;
+        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = Environment::get('base') . $strUrl;
         if ($strAttributes) $strUrl .= $strAttributes;
 
         if ($this->catalogFormRedirectParameter) {
-
-            $strParameters = \StringUtil::parseSimpleTokens($this->catalogFormRedirectParameter, $this->arrValues);
+            $strParameters = StringUtil::parseSimpleTokens($this->catalogFormRedirectParameter, $this->arrValues);
             $strUrl .= $strAttributes ? '&' . $strParameters : '?' . $strParameters;
         }
 
         if (!$blnReturn) {
-
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'])) {
-
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback) {
-
                     if (is_array($arrCallback)) {
-
                         $this->import($arrCallback[0]);
                         $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
                     }
@@ -1158,7 +1106,7 @@ class FrontendEditing extends CatalogController
     }
 
 
-    protected function getGeoCordValues()
+    protected function getGeoCordValues(): void
     {
 
         $arrCords = [];
@@ -1168,13 +1116,10 @@ class FrontendEditing extends CatalogController
         switch ($strGeoInputType) {
 
             case 'useSingleField':
-
                 $arrCords = $objGeoCoding->getCords($this->arrValues[$this->arrCatalog['geoAddress']], 'en', true);
-
                 break;
 
             case 'useMultipleFields':
-
                 $objGeoCoding->setCity($this->arrValues[$this->arrCatalog['geoCity']]);
                 $objGeoCoding->setStreet($this->arrValues[$this->arrCatalog['geoStreet']]);
                 $objGeoCoding->setPostal($this->arrValues[$this->arrCatalog['geoPostal']]);
@@ -1186,14 +1131,13 @@ class FrontendEditing extends CatalogController
         }
 
         if (($arrCords['lat'] || $arrCords['lng']) && ($this->arrCatalog['lngField'] && $this->arrCatalog['latField'])) {
-
             $this->arrValues[$this->arrCatalog['lngField']] = $arrCords['lng'];
             $this->arrValues[$this->arrCatalog['latField']] = $arrCords['lat'];
         }
     }
 
 
-    protected function prepare()
+    protected function prepare(): void
     {
 
         if (!empty($this->arrValues) && is_array($this->arrValues)) {
@@ -1218,7 +1162,7 @@ class FrontendEditing extends CatalogController
                 $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
 
                 if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
-                    $varValue = $varValue ? (new \Date($varValue))->tstamp : 0;
+                    $varValue = $varValue ? (new Date($varValue))->tstamp : 0;
                     if ($varValue === 0) {
                         unset($this->arrValues[$strFieldname]);
                         continue;
@@ -1235,26 +1179,20 @@ class FrontendEditing extends CatalogController
     }
 
 
-    public function getCatalog()
+    public function getCatalog(): array
     {
-
-        return is_array($this->arrCatalog) && !empty($this->arrCatalog) ? $this->arrCatalog : [];
+        return !empty($this->arrCatalog) ? $this->arrCatalog : [];
     }
 
-
-    public function getRedirectID()
+    public function getRedirectID(): string
     {
-
         return $this->strRedirectID;
     }
 
-
-    public function getValues()
+    public function getValues(): array
     {
-
         return $this->arrValues;
     }
-
 
     protected function sendJsonResponse($arrField, $strModuleID, $strKeyword)
     {
@@ -1269,12 +1207,9 @@ class FrontendEditing extends CatalogController
         header('Content-Type: application/json');
 
         echo json_encode([
-
             'word' => $strKeyword,
             'words' => $arrWords
-
         ], 12);
-
         exit;
     }
 }

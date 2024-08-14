@@ -393,7 +393,6 @@ class CatalogFieldBuilder extends CatalogController
                 '_palette' => 'general_legend',
                 'tl_class' => serialize(['w50']),
                 'cssID' => serialize(['', 'title']),
-                'dynValue' => $this->arrCatalog['titleDynValue'] ?? '',
                 'mandatory' => isset($this->arrCatalog['titleIsMandatory']) && $this->arrCatalog['titleIsMandatory'] ? '1' : '',
                 'title' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0],
                 'placeholder' => &$GLOBALS['TL_LANG']['catalog_manager']['fields']['title'][0]

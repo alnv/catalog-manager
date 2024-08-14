@@ -1,6 +1,6 @@
 <?php
 
-$GLOBALS['TL_LANG']['tl_catalog']['new'] = [ 'Create new catalog', 'Here you can create new catalog.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['new'] = ['Create new catalog', 'Here you can create new catalog.'];
 
 $GLOBALS['TL_LANG']['tl_catalog']['label_settings'] = 'Row settings';
 $GLOBALS['TL_LANG']['tl_catalog']['table_settings'] = 'Table settings';
@@ -17,68 +17,67 @@ $GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Group header Format 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
-$GLOBALS['TL_LANG']['tl_catalog']['type'] = [ 'Type', 'Please select module type.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['mode'] = [ 'Mode', 'Please select catalog mode.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['flag'] = [ 'Sorting', 'Please select your sorting.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['tablename'] = [ 'Table', 'Please enter valid table name.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['name'] = [ 'Module name', 'Please enter your module name.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['cTables'] = [ 'Child tables', 'Please select your tables.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['navPosition'] = [ 'Position', 'Please select your position' ];
-$GLOBALS['TL_LANG']['tl_catalog']['format'] = [ 'Format', 'Here you can customize your table row.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['pTable'] = [ 'Parent table', 'Please select your parent table.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['operations'] = [ 'Operations', 'Please select your operations.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['panelLayout'] = [ 'Panel', 'Here you can customize your panel.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['navArea'] = [ 'Navigation area', 'Please select your navigation area.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = [ 'Header fields', 'Please select your header fields.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['description'] = [ 'Description', 'Please enter short module description.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = [ 'Multiple columns', 'Here you can show multiple columns.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['info'] = [ 'Information', 'Please enter a short information about your table.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useVC'] = [ 'Versioning', 'Here you can activate the Contao internal versioning.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = [ 'Use content elements', 'Here you can use content elements.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = [ 'Shown field/s', 'One or more fields that will be shown in the list.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['modulename'] = [ 'Modulename', 'Please enter your modulename in machine-readable form.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = [ 'Permission Types', 'Here you can enable backend module permission.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = [ 'Sorting field/s', 'One or more fields that are used to sort the table.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = [ 'Use as back end module', 'Here you can use this table as back end module.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['type'] = ['Type', 'Please select module type.'];
+$GLOBALS['TL_LANG']['tl_catalog']['mode'] = ['Mode', 'Please select catalog mode.'];
+$GLOBALS['TL_LANG']['tl_catalog']['flag'] = ['Sorting', 'Please select your sorting.'];
+$GLOBALS['TL_LANG']['tl_catalog']['tablename'] = ['Table', 'Please enter valid table name.'];
+$GLOBALS['TL_LANG']['tl_catalog']['name'] = ['Module name', 'Please enter your module name.'];
+$GLOBALS['TL_LANG']['tl_catalog']['cTables'] = ['Child tables', 'Please select your tables.'];
+$GLOBALS['TL_LANG']['tl_catalog']['navPosition'] = ['Position', 'Please select your position'];
+$GLOBALS['TL_LANG']['tl_catalog']['format'] = ['Format', 'Here you can customize your table row.'];
+$GLOBALS['TL_LANG']['tl_catalog']['pTable'] = ['Parent table', 'Please select your parent table.'];
+$GLOBALS['TL_LANG']['tl_catalog']['operations'] = ['Operations', 'Please select your operations.'];
+$GLOBALS['TL_LANG']['tl_catalog']['panelLayout'] = ['Panel', 'Here you can customize your panel.'];
+$GLOBALS['TL_LANG']['tl_catalog']['navArea'] = ['Navigation area', 'Please select your navigation area.'];
+$GLOBALS['TL_LANG']['tl_catalog']['headerFields'] = ['Header fields', 'Please select your header fields.'];
+$GLOBALS['TL_LANG']['tl_catalog']['description'] = ['Description', 'Please enter short module description.'];
+$GLOBALS['TL_LANG']['tl_catalog']['showColumns'] = ['Multiple columns', 'Here you can show multiple columns.'];
+$GLOBALS['TL_LANG']['tl_catalog']['info'] = ['Information', 'Please enter a short information about your table.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useVC'] = ['Versioning', 'Here you can activate the Contao internal versioning.'];
+$GLOBALS['TL_LANG']['tl_catalog']['addContentElements'] = ['Use content elements', 'Here you can use content elements.'];
+$GLOBALS['TL_LANG']['tl_catalog']['labelFields'] = ['Shown field/s', 'One or more fields that will be shown in the list.'];
+$GLOBALS['TL_LANG']['tl_catalog']['modulename'] = ['Modulename', 'Please enter your modulename in machine-readable form.'];
+$GLOBALS['TL_LANG']['tl_catalog']['permissionType'] = ['Permission Types', 'Here you can enable backend module permission.'];
+$GLOBALS['TL_LANG']['tl_catalog']['sortingFields'] = ['Sorting field/s', 'One or more fields that are used to sort the table.'];
+$GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'] = ['Use as back end module', 'Here you can use this table as back end module.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['languages'] = [ 'Languages', 'Please select a language.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['fallbackLanguage'] = [ 'Default language', 'Please select a default language.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['enableLanguageBar'] = [ 'Enable language menu', 'Here you can enable the language menu panel.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languages'] = ['Languages', 'Please select a language.'];
+$GLOBALS['TL_LANG']['tl_catalog']['fallbackLanguage'] = ['Default language', 'Please select a default language.'];
+$GLOBALS['TL_LANG']['tl_catalog']['enableLanguageBar'] = ['Enable language menu', 'Here you can enable the language menu panel.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'] = [ 'Group header Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'] = [ 'Overwrite Group header', 'Here you can overwrite the default routine to create the group header.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['groupFormat'] = ['Group header Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnGroupFormat'] = ['Overwrite Group header', 'Here you can overwrite the default routine to create the group header.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['labelFormat'] = [ 'Label Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useOwnLabelFormat'] = [ 'Overwrite Label', 'Here you can overwrite the default routine to create the labels.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['labelFormat'] = ['Label Format', 'You can use SimpleTokens to access individual table values, eg ##title##. HTML tags are allowed.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useOwnLabelFormat'] = ['Overwrite Label', 'Here you can overwrite the default routine to create the labels.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = [ 'Address Type', 'Please select address type.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = [ 'City Column', 'Please select a column for city value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = [ 'Street Column', 'Please select a column for street value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = [ 'Country Column', 'Please select a column for country value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['latField'] = [ 'Latitude Column', 'Please select a column for latitude value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = [ 'ZIP-Code Column', 'Please select a column for zip-code value' ];
-$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = [ 'Longitude Column', 'Please select a column for longitude value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = [ 'Full address Column', 'Please select a column for full address value' ];
-$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = [ 'Street number Column', 'Please select a column for street number value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = [ 'Create latitude & longitude', 'Here you can create lat & long values for your entity.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['addressInputType'] = ['Address Type', 'Please select address type.'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCity'] = ['City Column', 'Please select a column for city value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreet'] = ['Street Column', 'Please select a column for street value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoCountry'] = ['Country Column', 'Please select a column for country value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['latField'] = ['Latitude Column', 'Please select a column for latitude value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoPostal'] = ['ZIP-Code Column', 'Please select a column for zip-code value'];
+$GLOBALS['TL_LANG']['tl_catalog']['lngField'] = ['Longitude Column', 'Please select a column for longitude value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoAddress'] = ['Full address Column', 'Please select a column for full address value'];
+$GLOBALS['TL_LANG']['tl_catalog']['geoStreetNumber'] = ['Street number Column', 'Please select a column for street number value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useGeoCoordinates'] = ['Create latitude & longitude', 'Here you can create lat & long values for your entity.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = [ 'Language source', 'Please select a language source.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = [ 'Fallback Column', 'Please select a column for fallback value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = [ 'Language Column', 'Please select a column for language value.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = [ 'Use changelanguage module', 'Here you can use changelanguage module for your catalog.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntitySource'] = ['Language source', 'Please select a language source.'];
+$GLOBALS['TL_LANG']['tl_catalog']['linkEntityColumn'] = ['Fallback Column', 'Please select a column for fallback value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['languageEntityColumn'] = ['Language Column', 'Please select a column for language value.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useChangeLanguage'] = ['Use changelanguage module', 'Here you can use changelanguage module for your catalog.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = [ 'Internal field', 'Here you can chose a field for internal redirect.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = [ 'External field', 'Here you can chose a field for external redirect.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = [ 'Overwrite redirect', 'Here you can define a internal or external redirect.' ];
+$GLOBALS['TL_LANG']['tl_catalog']['internalUrlColumn'] = ['Internal field', 'Here you can chose a field for internal redirect.'];
+$GLOBALS['TL_LANG']['tl_catalog']['externalUrlColumn'] = ['External field', 'Here you can chose a field for external redirect.'];
+$GLOBALS['TL_LANG']['tl_catalog']['useRedirect'] = ['Overwrite redirect', 'Here you can define a internal or external redirect.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = [ 'Mandatory (Clear name)', 'The clear name becomes a mandatory field.' ];
-$GLOBALS['TL_LANG']['tl_catalog']['titleDynValue'] = [ 'Dynamic value for clear name', 'Here you can generate the field value dynamically. You can access the field values ​​via simple tokens, eg ##my_field## ##my_other_field##' ];
+$GLOBALS['TL_LANG']['tl_catalog']['titleIsMandatory'] = ['Mandatory (Clear name)', 'The clear name becomes a mandatory field.'];
 
-$GLOBALS['TL_LANG']['tl_catalog']['edit'] = [ 'Edit catalog', 'Edit catalog ID "%s".' ];
-$GLOBALS['TL_LANG']['tl_catalog']['copy'] = [ 'Copy catalog', 'Copy catalog ID "%s".' ];
-$GLOBALS['TL_LANG']['tl_catalog']['delete'] = [ 'Delete catalog', 'Delete catalog ID "%s".' ];
-$GLOBALS['TL_LANG']['tl_catalog']['show'] = [ 'Show details', 'Show the details of catalog ID "%s".' ];
-$GLOBALS['TL_LANG']['tl_catalog']['editFields'] = [ 'Edit catalog fields', 'Edit the fields of catalog ID "%s".' ];
+$GLOBALS['TL_LANG']['tl_catalog']['edit'] = ['Edit catalog', 'Edit catalog ID "%s".'];
+$GLOBALS['TL_LANG']['tl_catalog']['copy'] = ['Copy catalog', 'Copy catalog ID "%s".'];
+$GLOBALS['TL_LANG']['tl_catalog']['delete'] = ['Delete catalog', 'Delete catalog ID "%s".'];
+$GLOBALS['TL_LANG']['tl_catalog']['show'] = ['Show details', 'Show the details of catalog ID "%s".'];
+$GLOBALS['TL_LANG']['tl_catalog']['editFields'] = ['Edit catalog fields', 'Edit the fields of catalog ID "%s".'];
 
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['sort'] = 'Sort';
 $GLOBALS['TL_LANG']['tl_catalog']['reference']['limit'] = 'Limit';

@@ -18,29 +18,18 @@
     "wiki": "https://catalog-manager.org/dokumentation.html"
   },
   "require": {
-    "php":"^7.0 || ^8.0",
-    "tecnickcom/tcpdf": "^6.2",
-    "contao/core-bundle":"^4.4",
-    "contao-community-alliance/composer-plugin":"~2.4 || ~3.0"
+    "php": "^8.1",
+    "contao/core-bundle": "~5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Alnv\\CatalogManagerBundle\\": "src/"
+    }
   },
   "conflict": {
     "alnv/catalog-manager-bundle": "*"
   },
-  "replace": {
-    "contao-legacy/catalog-manager": "self.version"
-  },
   "extra": {
-    "contao": {
-      "sources": {
-        "": "system/modules/catalog-manager"
-      }
-    }
-  },
-  "config": {
-    "allow-plugins": {
-      "contao-components/installer": true,
-      "composer/package-versions-deprecated": true,
-      "contao-community-alliance/composer-plugin": true
-    }
+    "contao-manager-plugin": "Alnv\\CatalogManagerBundle\\ContaoManager\\Plugin"
   }
 }

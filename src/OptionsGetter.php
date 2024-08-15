@@ -340,7 +340,7 @@ class OptionsGetter extends CatalogController
 
         if (!empty($strValue) && is_string($strValue)) {
 
-            $strInsertTagValue = Controller::replaceInsertTags($strValue);
+            $strInsertTagValue = Toolkit::replaceInsertTags($strValue);
 
             if (!Toolkit::isEmpty($strInsertTagValue)) {
 

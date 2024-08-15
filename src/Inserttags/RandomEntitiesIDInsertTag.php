@@ -3,7 +3,7 @@
 namespace Alnv\CatalogManagerBundle\Inserttags;
 
 use Contao\Config;
-use Contao\Controller;
+use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Frontend;
 use Contao\Input;
 use Contao\StringUtil;
@@ -78,7 +78,7 @@ class RandomEntitiesIDInsertTag extends Frontend
                 if ($strQuery) {
                     $strWhere .= $strWhere ? ' AND ' . $strQuery : 'WHERE ' . $strQuery;
                     foreach ($_arrValues as $strValue) {
-                        $arrValues[] = Controller::replaceInsertTags($strValue);
+                        $arrValues[] = Toolkit::replaceInsertTags($strValue);
                     }
                 }
             }

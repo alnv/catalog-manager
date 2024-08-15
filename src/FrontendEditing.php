@@ -12,7 +12,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\PageModel;
-use Contao\Entity;
+use Alnv\CatalogManagerBundle\Elements\Entity;
 
 class FrontendEditing extends CatalogController
 {
@@ -415,7 +415,7 @@ class FrontendEditing extends CatalogController
 
                 if ($varValue && is_string($varValue)) {
                     $varValue = $this->decodeValue($varValue);
-                    $varValue = $this->replaceInsertTags($varValue);
+                    $varValue = Toolkit::replaceInsertTags($varValue);
                 }
 
                 $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
@@ -431,7 +431,6 @@ class FrontendEditing extends CatalogController
                 }
 
                 if ($arrField['eval']['unique'] && $varValue != '' && !$this->SQLQueryHelper->SQLQueryBuilder->Database->isUniqueValue($this->catalogTablename, $strFieldname, $varValue, ($this->strAct == 'edit' ? $this->strItemID : null))) {
-
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $arrField['label'][0] ?: $strFieldname));
                 }
 
@@ -906,7 +905,7 @@ class FrontendEditing extends CatalogController
         if (is_array($this->catalogDefaultValues) && $this->catalogDefaultValues[0]) {
             foreach ($this->catalogDefaultValues as $arrDefaultValue) {
                 $strKeyname = $arrDefaultValue['key'];
-                $strValue = $this->replaceInsertTags($arrDefaultValue['value']);
+                $strValue = Toolkit::replaceInsertTags($arrDefaultValue['value']);
                 if (Toolkit::isEmpty($strKeyname) || Toolkit::isEmpty($strValue)) continue;
                 if (Toolkit::isEmpty($this->arrValues[$strKeyname])) {
                     $this->arrValues[$strKeyname] = $strValue;
@@ -914,15 +913,15 @@ class FrontendEditing extends CatalogController
             }
         }
 
+        /*
         foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
-
             $arrField['dynValue'] = $arrField['dynValue'] ?? '';
-
             if (!Toolkit::isEmpty($arrField['dynValue'])) {
                 $this->arrValues[$strFieldname] = Toolkit::generateDynValue($arrField['dynValue'], Toolkit::prepareValues4Db($this->arrValues));
                 if ($strFieldname == 'title' && Toolkit::hasDynAlias()) $this->arrValues['alias'] = '';
             }
         }
+        */
 
         $objDcCallbacks = new DcCallbacks();
         $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias($this->arrValues['alias'], $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);

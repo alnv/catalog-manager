@@ -147,7 +147,7 @@ class DownloadsCreator extends Frontend
                     }
 
                     if ($arrMeta['title'] == '') {
-                        $arrMeta['title'] = specialchars($objFile->basename);
+                        $arrMeta['title'] = StringUtil::specialchars($objFile->basename);
                     }
 
                     $strHref = Environment::get('request');

@@ -3,11 +3,9 @@
 namespace Alnv\CatalogManagerBundle\Fields;
 
 use Alnv\CatalogManagerBundle\Toolkit;
-use Contao\Controller;
 use Contao\FrontendTemplate;
 use Contao\Database;
 use Contao\Config;
-use Contao\StringUtil;
 use Contao\Input;
 
 class Map
@@ -67,8 +65,8 @@ class Map
             'mapScrollWheel' => $arrField['mapScrollWheel'] ? 'true' : 'false',
             'mapType' => $arrField['mapType'] ? $arrField['mapType'] : 'HYBRID',
             'mapZoom' => $arrField['mapZoom'] ? intval($arrField['mapZoom']) : 10,
-            'mapPrivacyText' => Controller::replaceInsertTags(Config::get('catalogMapPrivacyText')),
-            'mapPrivacyButtonText' => Controller::replaceInsertTags(Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'])
+            'mapPrivacyText' => Toolkit::replaceInsertTags(Config::get('catalogMapPrivacyText')),
+            'mapPrivacyButtonText' => Toolkit::replaceInsertTags(Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText'])
         ];
 
         if ($arrField['mapInfoBoxContent']) {
@@ -84,7 +82,7 @@ class Map
 
         $arrTokens = [];
         Toolkit::flatterWithoutKeyValue($arrData, $arrTokens);
-        $strInfoBox = StringUtil::parseSimpleTokens(($strInfoBox ?: ''), $arrTokens);
+        $strInfoBox = Toolkit::parseSimpleTokens(($strInfoBox ?: ''), $arrTokens);
         $strInfoBox = Toolkit::removeBreakLines($strInfoBox);
         return Toolkit::removeApostrophe($strInfoBox);
     }

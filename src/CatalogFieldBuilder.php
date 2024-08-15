@@ -220,7 +220,7 @@ class CatalogFieldBuilder extends CatalogController
         $arrDcField['_type'] = $arrField['type'] ?? '';
 
         if (isset($arrField['value']) && Toolkit::isDefined($arrField['value']) && is_string($arrField['value'])) {
-            $strDefaultValue = Controller::replaceInsertTags($arrField['value']);
+            $strDefaultValue = Toolkit::replaceInsertTags($arrField['value']);
             if (Toolkit::isDefined($strDefaultValue)) {
                 $arrDcField['default'] = $strDefaultValue;
             }

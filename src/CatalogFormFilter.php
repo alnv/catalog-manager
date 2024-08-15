@@ -11,7 +11,6 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\Validator;
 
-
 class CatalogFormFilter extends CatalogController
 {
 
@@ -298,7 +297,7 @@ class CatalogFormFilter extends CatalogController
     protected function getActiveOptions($arrField)
     {
 
-        $strValue = !Toolkit::isEmpty($arrField['defaultValue']) ? Controller::replaceInsertTags($arrField['defaultValue']) : '';
+        $strValue = !Toolkit::isEmpty($arrField['defaultValue']) ? Toolkit::replaceInsertTags($arrField['defaultValue']) : '';
         $strValue = $this->getInput($arrField['name'], $strValue);
 
         if ($arrField['type'] == 'select' || $arrField['type'] == 'checkbox') {

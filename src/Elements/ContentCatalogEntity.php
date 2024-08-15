@@ -5,7 +5,7 @@ namespace Alnv\CatalogManagerBundle\Elements;
 use Contao\ContentElement;
 use Contao\BackendTemplate;
 use Contao\PageModel;
-use Contao\Controller;
+use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -76,7 +76,7 @@ class ContentCatalogEntity extends ContentElement
                     $this->catalogRedirectTarget = '';
                     break;
                 case 'link':
-                    $strMasterUrl = Controller::replaceInsertTags($this->catalogRedirectUrl);
+                    $strMasterUrl = Toolkit::replaceInsertTags($this->catalogRedirectUrl);
 
                     break;
             }
@@ -86,7 +86,7 @@ class ContentCatalogEntity extends ContentElement
         $this->Template->masterUrlText = $this->getLinkText();
         $this->Template->fields = $objEntity->getTemplateFields();
         $this->Template->masterUrlTarget = $this->catalogRedirectTarget;
-        $this->Template->masterUrlTitle = Controller::replaceInsertTags($this->catalogRedirectTitle);
+        $this->Template->masterUrlTitle = Toolkit::replaceInsertTags($this->catalogRedirectTitle);
     }
 
     protected function getPage()
@@ -102,12 +102,10 @@ class ContentCatalogEntity extends ContentElement
     protected function getLinkText()
     {
 
-        $strText = Controller::replaceInsertTags($this->catalogRedirectText);
-
+        $strText = Toolkit::replaceInsertTags($this->catalogRedirectText);
         if ($strText) {
             return $strText;
         }
-
         return $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['detailLink'];
     }
 }

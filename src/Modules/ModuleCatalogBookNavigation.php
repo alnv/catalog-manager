@@ -8,7 +8,6 @@ use Contao\Module;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
-use Contao\Controller;
 use Contao\Date;
 use Symfony\Component\HttpFoundation\Request;
 use Contao\BackendTemplate;
@@ -310,17 +309,13 @@ class ModuleCatalogBookNavigation extends Module
     {
 
         if ($this->arrCatalog['useRedirect'] && $this->arrCatalog['internalUrlColumn']) {
-
             if ($arrCatalog[$this->arrCatalog['internalUrlColumn']]) {
-
-                return Controller::replaceInsertTags($arrCatalog[$this->arrCatalog['internalUrlColumn']]);
+                return Toolkit::replaceInsertTags($arrCatalog[$this->arrCatalog['internalUrlColumn']]);
             }
         }
 
         if ($this->arrCatalog['useRedirect'] && $this->arrCatalog['externalUrlColumn']) {
-
             if ($arrCatalog[$this->arrCatalog['externalUrlColumn']]) {
-
                 return $arrCatalog[$this->arrCatalog['externalUrlColumn']];
             }
         }

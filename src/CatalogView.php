@@ -693,7 +693,6 @@ class CatalogView extends CatalogController
             }
 
             if ($arrCatalog['useSocialSharingButtons']) {
-
                 $arrCatalog['socialSharingButtons'] = $this->SocialSharingButtons->render($arrCatalog, $this->catalogSEOTitle, $this->catalogSEODescription);
             }
 
@@ -719,12 +718,10 @@ class CatalogView extends CatalogController
         }
 
         if ($intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view') {
-
             $this->objMainTemplate->pagination = $this->TemplateHelper->addPagination($intTotal, $intPerPage, $strPageID, ($this->arrViewPage['id'] ?? ''));
         }
 
         if ($this->blnGoogleMapScript) {
-
             $GLOBALS['TL_HEAD']['CatalogManagerGoogleMaps'] = Map::generateGoogleMapJSInitializer();
         }
 
@@ -735,28 +732,22 @@ class CatalogView extends CatalogController
         return $this->getTemplateValue($arrCatalogs, $intNumRows);
     }
 
-
     protected function setHasOperationsFlag()
     {
 
         if (!$this->catalogEnableFrontendEditing || empty($this->catalogItemOperations)) {
-
             $this->blnHasOperations = false;
-
             return null;
         }
 
         if (isset($this->catalogItemOperations[0]) && !Toolkit::isEmpty($this->catalogItemOperations[0])) {
-
             $this->blnHasOperations = true;
         }
 
         if (count($this->catalogItemOperations) === 1 && in_array('create', $this->catalogItemOperations)) {
-
             $this->blnHasOperations = false;
         }
     }
-
 
     protected function getJoinedEntities($strValue, $strFieldname): array
     {
@@ -844,7 +835,6 @@ class CatalogView extends CatalogController
 
         return $arrReturn;
     }
-
 
     public function hasVisibility(): bool
     {

@@ -3,12 +3,23 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\StringUtil;
+use Alnv\CatalogManagerBundle\Fields\Checkbox;
+use Alnv\CatalogManagerBundle\Fields\Radio;
+use Alnv\CatalogManagerBundle\Fields\Select;
+use Alnv\CatalogManagerBundle\Fields\Upload;
+use Alnv\CatalogManagerBundle\Fields\Number;
+use Alnv\CatalogManagerBundle\Fields\DateInput;
+use Alnv\CatalogManagerBundle\Fields\Textarea;
+use Alnv\CatalogManagerBundle\Fields\DbColumn;
 use Ausi\SlugGenerator\SlugGenerator;
 use Ausi\SlugGenerator\SlugOptions;
 use Contao\Database;
 use Contao\PageModel;
 use Contao\Controller;
-
+use Contao\System;
+use Contao\ArrayUtil;
+use Contao\Config;
+use Symfony\Component\HttpFoundation\Request;
 
 class Toolkit
 {
@@ -78,62 +89,46 @@ class Toolkit
         ];
     }
 
-
-    public static function columnOnlyFields()
+    public static function columnOnlyFields(): array
     {
-
         return [
-
             'dbColumn'
         ];
     }
 
-
-    public static function readOnlyFields()
+    public static function readOnlyFields(): array
     {
-
         return [
-
             'message'
         ];
     }
 
-
-    public static function wrapperFields()
+    public static function wrapperFields(): array
     {
-
         return [
-
             'fieldsetStart',
             'fieldsetStop'
         ];
     }
 
-
-    public static function excludeFromDc()
+    public static function excludeFromDc(): array
     {
-
         return [
-
             'map',
             'fieldsetStop',
             'fieldsetStart'
         ];
     }
 
-
     public static function setDcConformInputType($strType)
     {
-
         return $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPE_CONVERTER'][$strType] ?? '';
     }
 
-
-    public static function convertCatalogTypeToFormType($strType)
+    public static function convertCatalogTypeToFormType($strType): string
     {
 
         $arrFormTypes = [
-
             'radio' => 'radio',
             'map' => 'textfield',
             'select' => 'select',
@@ -147,11 +142,10 @@ class Toolkit
             'message' => 'catalogMessageWidget'
         ];
 
-        return $arrFormTypes[$strType] ?: '';
+        return $arrFormTypes[$strType] ?? '';
     }
 
-
-    public static function setCatalogConformInputType($strField)
+    public static function setCatalogConformInputType($strField): string
     {
 
         $strType = $strField['inputType'] ?? '';
@@ -163,7 +157,6 @@ class Toolkit
         }
 
         $arrInputTypes = [
-
             'text' => 'text',
             'radio' => 'radio',
             'select' => 'select',
@@ -184,7 +177,7 @@ class Toolkit
         return $strSql ?: "varchar(256) NOT NULL default ''";
     }
 
-    public static function isDcConformField($arrField)
+    public static function isDcConformField($arrField): bool
     {
 
         if (empty($arrField) && !is_array($arrField)) {
@@ -202,12 +195,9 @@ class Toolkit
         return true;
     }
 
-
-    public static function columnsBlacklist()
+    public static function columnsBlacklist(): array
     {
-
         return [
-
             'id',
             'pid',
             'tstamp',
@@ -217,8 +207,7 @@ class Toolkit
         ];
     }
 
-
-    public static function customizeAbleFields()
+    public static function customizeAbleFields(): array
     {
         return [
             'title',
@@ -238,7 +227,7 @@ class Toolkit
         return true;
     }
 
-    public static function parseCatalog($arrCatalog)
+    public static function parseCatalog($arrCatalog): array
     {
 
         $arrCatalog['cTables'] = self::parseStringToArray(($arrCatalog['cTables'] ?? ''));
@@ -252,56 +241,46 @@ class Toolkit
         return $arrCatalog;
     }
 
-
-    public static function parseStringToArray($strValue)
+    public static function parseStringToArray($strValue): array
     {
 
         if (isset($strValue) && $strValue && is_string($strValue)) {
-
             return StringUtil::deserialize($strValue, true);
         }
 
         if (is_array($strValue)) {
-
             return $strValue;
         }
 
         return [];
     }
 
-
     public static function removeBreakLines($strValue)
     {
 
         if (!$strValue || !is_string($strValue)) {
-
             return $strValue;
         }
 
         return preg_replace("/\r|\n/", "", $strValue);
     }
 
-
     public static function removeApostrophe($strValue)
     {
 
         if (!$strValue || !is_string($strValue)) {
-
             return $strValue;
         }
 
         return str_replace("'", "", $strValue);
     }
 
-
-    public static function parseConformSQLValue($varValue)
+    public static function parseConformSQLValue($varValue): string
     {
-
         return str_replace('-', '_', $varValue);
     }
 
-
-    public static function isAssoc($arrAssoc)
+    public static function isAssoc($arrAssoc): bool
     {
 
         if (!is_array($arrAssoc)) return false;
@@ -311,16 +290,12 @@ class Toolkit
         return array_keys($arrKeys) !== $arrKeys;
     }
 
-
-    public static function prepareValues4Db($arrValues)
+    public static function prepareValues4Db($arrValues): array
     {
 
         $arrReturn = [];
-
         if (!empty($arrValues) && is_array($arrValues)) {
-
             foreach ($arrValues as $strKey => $varValue) {
-
                 $arrReturn[$strKey] = self::prepareValue4Db($varValue);
             }
         }
@@ -328,19 +303,15 @@ class Toolkit
         return $arrReturn;
     }
 
-
     public static function prepareValue4Db($varValue)
     {
 
         if (!self::isDefined($varValue)) return $varValue;
-
         if (is_array($varValue)) return implode(',', $varValue);
-
         if (is_float($varValue)) return floatval($varValue);
 
         return $varValue;
     }
-
 
     public static function prepareValueForQuery($varValue)
     {
@@ -348,18 +319,13 @@ class Toolkit
         if (is_array($varValue)) {
 
             if (!empty($varValue)) {
-
                 $arrReturn = [];
-
                 $varValue = array_filter($varValue, function ($varValue) {
-
                     if ($varValue === '0') return true;
-
                     return $varValue;
                 });
 
                 foreach ($varValue as $strKey => $strValue) {
-
                     $arrReturn[$strKey] = Toolkit::prepareValueForQuery($strValue);
                 }
 
@@ -370,101 +336,74 @@ class Toolkit
             }
         }
 
-        if (is_string($varValue) && $varValue === '0') return 0;
+        if ($varValue === '0') return 0;
         if (is_null($varValue)) return '';
 
         return $varValue;
     }
 
-
-    public static function deserialize($strValue)
+    public static function deserialize($strValue): array
     {
-
-        $strValue = deserialize($strValue);
-
-        if (!is_array($strValue)) {
-
-            return is_string($strValue) ? [$strValue] : [];
-        }
-
-        return $strValue;
+        return StringUtil::deserialize($strValue, true);
     }
 
-
-    public static function getBooleanByValue($varValue)
+    public static function getBooleanByValue($varValue): bool
     {
 
         if (!$varValue) {
-
             return false;
         }
 
         return true;
     }
 
-
-    public static function deserializeAndImplode($strValue, $strDelimiter = ',')
+    public static function deserializeAndImplode($strValue, $strDelimiter = ','): string
     {
-
         if (!$strValue || !is_string($strValue)) {
-
             return '';
         }
 
-        $arrValue = deserialize($strValue);
-
+        $arrValue = StringUtil::deserialize($strValue);
         if (!empty($arrValue) && is_array($arrValue)) {
-
             return implode($strDelimiter, $arrValue);
         }
 
         return '';
     }
 
-
-    public static function isDefined($varValue)
+    public static function isDefined($varValue): bool
     {
 
         if (is_numeric($varValue)) {
-
             return true;
         }
 
         if (is_array($varValue)) {
-
             return true;
         }
 
         if ($varValue && is_string($varValue)) {
-
             return true;
         }
 
         return false;
     }
 
-
-    public static function parseColumns($arrColumns)
+    public static function parseColumns($arrColumns): array
     {
 
         $arrReturn = [];
-
         if (!empty($arrColumns) && is_array($arrColumns)) {
-
             foreach ($arrColumns as $arrColumn) {
-
                 if ($arrColumn['name'] == 'PRIMARY' || $arrColumn['type'] == 'index') {
-
                     continue;
                 }
-
                 $arrReturn[$arrColumn['name']] = $arrColumn['name'];
             }
         }
 
         return $arrReturn;
     }
-
 
     public static function parseQueries($arrQueries, $fnCallback = null)
     {
@@ -476,7 +415,6 @@ class Toolkit
             foreach ($arrQueries as $arrQuery) {
 
                 if (in_array($arrQuery['operator'], self::$nullableOperators)) $arrQuery['allowEmptyValues'] = '1';
-
                 if (!is_null($fnCallback) && is_callable($fnCallback)) $arrQuery = $fnCallback($arrQuery);
 
                 $arrQuery = self::parseQuery($arrQuery);
@@ -486,8 +424,7 @@ class Toolkit
                 if (!empty($arrQuery['subQueries']) && is_array($arrQuery['subQueries'])) {
 
                     $arrSubQueries = self::parseQueries($arrQuery['subQueries']);
-
-                    array_insert($arrSubQueries, 0, [[
+                    ArrayUtil::arrayInsert($arrSubQueries, 0, [[
                         'field' => $arrQuery['field'],
                         'value' => $arrQuery['value'],
                         'operator' => $arrQuery['operator'],
@@ -504,15 +441,13 @@ class Toolkit
         return $arrReturn;
     }
 
-
-    public static function isEmpty($varValue)
+    public static function isEmpty($varValue): bool
     {
 
         if (is_null($varValue) || $varValue === '') return true;
 
         return false;
     }
-
 
     public static function parseQuery($arrQuery)
     {
@@ -523,12 +458,11 @@ class Toolkit
 
             if (!empty($arrQuery['value'])) {
                 foreach ($arrQuery['value'] as $strK => $strV) {
-                    $arrQuery['value'][$strK] = \Controller::replaceInsertTags($strV);
+                    $arrQuery['value'][$strK] = self::replaceInsertTags($strV);
                 }
             }
 
             if ($arrQuery['operator'] == 'between' && is_array($arrQuery['value'])) {
-
                 if ($arrQuery['value'][0] === '' && $arrQuery['value'][1] === '') return null;
                 if ($arrQuery['value'][0] === '') $arrQuery['value'][0] = '0';
                 if ($arrQuery['value'][1] === '') {
@@ -540,7 +474,7 @@ class Toolkit
 
         if (isset($arrQuery['value']) && is_string($arrQuery['value'])) {
 
-            $arrQuery['value'] = \Controller::replaceInsertTags($arrQuery['value']);
+            $arrQuery['value'] = self::replaceInsertTags($arrQuery['value']);
 
             if (strpos($arrQuery['value'], ',') && $arrQuery['operator'] != 'equal') {
                 $arrQuery['value'] = explode(',', $arrQuery['value']);
@@ -579,21 +513,16 @@ class Toolkit
         return $arrQuery;
     }
 
-
-    public static function returnOnlyExistedItems($arrItems, $arrExistedFields, $blnKeysOnly = false)
+    public static function returnOnlyExistedItems($arrItems, $arrExistedFields, $blnKeysOnly = false): array
     {
 
         $arrReturn = [];
         $arrExistedValues = $blnKeysOnly ? array_keys($arrExistedFields) : $arrExistedFields;
 
         if (!empty($arrItems) && is_array($arrItems)) {
-
             foreach ($arrItems as $varValue) {
-
                 if (!$varValue || !is_string($varValue)) continue;
-
                 if (!in_array($varValue, $arrExistedValues)) continue;
-
                 $arrReturn[] = $varValue;
             }
         }
@@ -601,25 +530,17 @@ class Toolkit
         return $arrReturn;
     }
 
-
     public static function getRoutingParameter($strRoutingParameter, $blnEmptyArray = false)
     {
 
         $arrReturn = [];
         $arrRoutingFragments = explode('/', $strRoutingParameter);
-
         if (!empty($arrRoutingFragments) && is_array($arrRoutingFragments)) {
-
             foreach ($arrRoutingFragments as $strRoutingFragment) {
-
                 if (!$strRoutingFragment) continue;
-
                 preg_match_all('/{(.*?)}/', $strRoutingFragment, $arrMatches);
-
                 $strParamName = implode('', $arrMatches[1]);
-
                 if ($strParamName) {
-
                     $arrReturn[$strParamName] = $blnEmptyArray ? [] : $strParamName;
                 }
             }
@@ -628,60 +549,47 @@ class Toolkit
         return $arrReturn;
     }
 
-
     public static function parseMultipleOptions($varValue)
     {
 
         if (is_string($varValue)) {
-
             $varValue = explode(',', $varValue);
         }
 
         return $varValue;
     }
 
-
-    public static function isCoreTable($strTable)
+    public static function isCoreTable($strTable): bool
     {
-
         return is_string($strTable) && substr($strTable, 0, 3) == 'tl_';
     }
 
-
-    public static function getColumnsFromCoreTable($strTable, $blnFullContext = false)
+    public static function getColumnsFromCoreTable($strTable, $blnFullContext = false): array
     {
 
         $arrReturn = [];
 
-        \System::loadLanguageFile($strTable);
-        \Controller::loadDataContainer($strTable);
+        System::loadLanguageFile($strTable);
+        Controller::loadDataContainer($strTable);
 
         $arrFields = $GLOBALS['TL_DCA'][$strTable]['fields'];
 
         if (!empty($arrFields) && is_array($arrFields)) {
-
             foreach ($arrFields as $strFieldname => $arrField) {
-
                 if (!isset($arrField['sql'])) continue;
-
                 $varContext = $arrField;
-
                 if (!$blnFullContext) {
-
                     $strTitle = $strFieldname;
-
                     if (is_array($arrField['label'])) {
                         $varContext = $arrField['label'][0] ?: $strTitle;
                     }
                 }
-
                 $arrReturn[$strFieldname] = $varContext;
             }
         }
 
         return $arrReturn;
     }
-
 
     public static function parseCatalogValues($arrData, $arrFields = [], $blnJustStrings = false, $strJoinedTable = '')
     {
@@ -695,7 +603,6 @@ class Toolkit
                 if (Toolkit::isEmpty($strOriginValue)) continue;
 
                 if ($strJoinedTable) {
-
                     $strField = $strJoinedTable . ucfirst($strFieldname);
                 }
 
@@ -726,15 +633,14 @@ class Toolkit
         return $arrData;
     }
 
-
-    public static function parseCatalogValue($strValue, $arrField, $arrData = [])
+    public static function parseCatalogValue($strValue, $arrField, $arrData = []): string
     {
 
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
+
         switch ($arrField['type']) {
-
             case 'upload':
-
-                $blnFrontend = TL_MODE == 'FE' || $arrField['useArrayFormat'];
+                $blnFrontend = !$blnIsBackend || $arrField['useArrayFormat'];
                 if ($blnFrontend) {
                     $strValue = Upload::parseValue($strValue, $arrField, $arrData);
                     if (is_array($strValue) && $arrField['fileType'] == 'gallery') {
@@ -744,55 +650,32 @@ class Toolkit
                 } else {
                     $strValue = Upload::parseThumbnails($strValue, $arrField, $arrData);
                 }
-
                 break;
-
             case 'select':
-
                 $strValue = Select::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'checkbox':
-
                 $strValue = Checkbox::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'radio':
-
                 $strValue = Radio::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'date':
-
                 $strValue = DateInput::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'number':
-
                 $strValue = Number::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'textarea':
-
                 $strValue = Textarea::parseValue($strValue, $arrField, $arrData);
-
                 break;
-
             case 'dbColumn':
-
                 $strValue = DbColumn::parseValue($strValue, $arrField, $arrData);
-
                 break;
         }
 
         return $strValue;
     }
-
 
     public static function createPanelLayout($arrPanelLayout)
     {
@@ -801,17 +684,14 @@ class Toolkit
         $strPanelLayout = implode(',', $arrPanelLayout);
 
         if (strpos($strPanelLayout, 'filter') !== false) {
-
             $strPanelLayout = preg_replace('/,/', ';', $strPanelLayout, 1);
         }
 
         return $strPanelLayout;
     }
 
-
     public static function getLabelValue($varValue, $strFallback)
     {
-
         if (Toolkit::isEmpty($varValue)) return $strFallback;
         if (is_array($varValue)) return $varValue[0] ?: '';
         if (is_string($varValue)) return $varValue ?: '';
@@ -819,18 +699,14 @@ class Toolkit
         return $strFallback;
     }
 
-
-    public static function getBackendModuleTablesByDoAttribute($strDo)
+    public static function getBackendModuleTablesByDoAttribute($strDo): array
     {
 
-        if (is_array($GLOBALS['BE_MOD']) && TL_MODE == 'BE' && !Toolkit::isEmpty($strDo)) {
-
+        $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
+        if (is_array($GLOBALS['BE_MOD']) && $blnIsBackend && !Toolkit::isEmpty($strDo)) {
             foreach ($GLOBALS['BE_MOD'] as $arrModules) {
-
                 foreach ($arrModules as $strModulename => $arrModule) {
-
                     if ($strModulename == $strDo) {
-
                         return is_array($arrModule['tables']) ? $arrModule['tables'] : [];
                     }
                 }
@@ -840,45 +716,34 @@ class Toolkit
         return [];
     }
 
-
-    public static function strictMode()
+    public static function strictMode(): bool
     {
-
         if (!isset($GLOBALS['TL_CONFIG']['ctlg_strict_mode']) || !is_bool($GLOBALS['TL_CONFIG']['ctlg_strict_mode'])) return true;
-
         return $GLOBALS['TL_CONFIG']['ctlg_strict_mode'] ? true : false;
     }
 
-
-    public static function ignoreRomanization()
+    public static function ignoreRomanization(): bool
     {
-
         if (!isset($GLOBALS['TL_CONFIG']['ctlg_ignore_romanization']) || !is_bool($GLOBALS['TL_CONFIG']['ctlg_ignore_romanization'])) return false;
-
         return $GLOBALS['TL_CONFIG']['ctlg_ignore_romanization'] ? true : false;
     }
 
-
     public static function dump($varDump)
     {
-
         echo '<pre>' . var_export($varDump, true) . '</pre>';
     }
 
-
-    public static function flatter($arrValues, &$arrFlattedArray = [])
+    public static function flatter($arrValues, &$arrFlattedArray = []): array
     {
 
         foreach ($arrValues as $strKey => $varValue) {
 
             if (is_array($varValue)) {
-
                 static::flatter($varValue, $arrFlattedArray);
                 continue;
             }
 
             $arrFlattedArray[] = [
-
                 'key' => $strKey,
                 'value' => $varValue
             ];
@@ -887,36 +752,28 @@ class Toolkit
         return $arrFlattedArray;
     }
 
-
-    public static function hasDynAlias()
+    public static function hasDynAlias(): bool
     {
-
-        return is_bool(\Config::get('dynAlias')) && \Config::get('dynAlias') === true;
+        return is_bool(Config::get('dynAlias')) && Config::get('dynAlias') === true;
     }
-
 
     public static function setTokens($arrRow, $strName, &$arrTokens = [])
     {
 
         foreach ($arrRow as $strFieldname => $strValue) {
-
             $arrTokens[$strName . $strFieldname] = $strValue;
         }
 
         return $arrTokens;
     }
 
-
-    public static function parsePseudoInserttag($strValue = '', $arrData = [])
+    public static function parsePseudoInserttag($strValue = '', $arrData = []): string
     {
 
         if (!empty($strValue) && is_string($strValue) && strpos($strValue, '{{') !== false) {
-
             $arrTags = preg_split('/{{(([^{}]*|(?R))*)}}/', $strValue, -1, PREG_SPLIT_DELIM_CAPTURE);
             $strTag = implode('', $arrTags);
-
             if ($strTag && isset($arrData) && is_array($arrData)) {
-
                 return Toolkit::isEmpty($arrData[$strTag]) ? '' : $arrData[$strTag];
             }
         }
@@ -924,19 +781,14 @@ class Toolkit
         return $strValue;
     }
 
-
-    public static function flatterWithoutKeyValue($arrValues, &$arrReturn, $strPrefix = '')
+    public static function flatterWithoutKeyValue($arrValues, &$arrReturn, $strPrefix = ''): void
     {
 
         if (is_array($arrValues) && !empty($arrValues)) {
-
             foreach ($arrValues as $strField => $varValue) {
-
                 if (is_array($varValue)) {
-
                     static::flatterWithoutKeyValue($varValue, $arrReturn, $strField);
                 } else {
-
                     $arrReturn[($strPrefix ? $strPrefix . '_' : '') . $strField] = $varValue;
                 }
             }
@@ -945,7 +797,7 @@ class Toolkit
 
     public static function getIcon($strType)
     {
-        return $GLOBALS['CM_ICON_SET'][$strType];
+        return $GLOBALS['CM_ICON_SET'][$strType] ?? '';
     }
 
     public static function slug($strValue, $arrOptions = [])
@@ -967,40 +819,34 @@ class Toolkit
         return $objSlugGenerator->generate($strValue);
     }
 
-
-    public static function getEntityUrl($strModuleId, $strEntityId)
+    public static function getEntityUrl($strModuleId, $strEntityId): string
     {
 
         $objDatabase = Database::getInstance();
         $objModule = $objDatabase->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute($strModuleId);
 
         if (!$objModule->catalogTablename || !$objModule->catalogUseMasterPage || !$objModule->catalogMasterPage) {
-
             return '';
         }
 
         $objEntity = $objDatabase->prepare('SELECT * FROM ' . $objModule->catalogTablename . ' WHERE id = ?')->limit(1)->execute($strEntityId);
 
         if (!$objEntity->alias) {
-
             return '';
         }
 
         $objPage = PageModel::findByPk($objModule->catalogMasterPage);
 
         if ($objPage == null) {
-
             return '';
         }
 
         if ($objPage->catalogUseRouting && $objPage->catalogRouting) {
-
             $objEntity->alias = static::generateAliasWithRouting($objEntity->alias, static::getRoutingParameter($objPage->catalogRouting), $objEntity->row());
         }
 
-        return Controller::generateFrontendUrl($objPage->row(), ($objEntity->alias ? '/' . $objEntity->alias : ''));
+        return $objPage->getFrontendUrl(($objEntity->alias ? '/' . $objEntity->alias : ''));
     }
-
 
     public static function generateAliasWithRouting($strAlias, $arrRoutingParameter, $arrCatalog = [])
     {
@@ -1008,7 +854,6 @@ class Toolkit
         $strAliasWithFragments = '';
 
         if (!in_array('auto_item', $arrRoutingParameter)) {
-
             return $strAlias;
         }
 
@@ -1023,7 +868,6 @@ class Toolkit
             if ($strParameter === 'auto_item') {
                 if (Toolkit::isEmpty($strAlias)) continue;
                 $strAliasWithFragments .= '/' . $strAlias;
-
                 continue;
             }
 
@@ -1035,16 +879,20 @@ class Toolkit
         }
 
         if ($strAliasWithFragments) {
-
             $strAlias = $strAliasWithFragments;
         }
 
         return $strAlias;
     }
 
-
-    public static function generateDynValue($strSimpleTokens, $arrValues)
+    public static function parseSimpleTokens($strSimpleTokens, $arrValues): string
     {
-        return StringUtil::parseSimpleTokens($strSimpleTokens, $arrValues);
+        $objSimpleTokenParser = System::getContainer()->get('contao.string.simple_token_parser');
+        return $objSimpleTokenParser->parse($strSimpleTokens, $arrValues);
+    }
+
+    public static function replaceInsertTags($strTemplate)
+    {
+        return System::getContainer()->get('contao.insert_tag.parser')->replaceInline($strTemplate);
     }
 }

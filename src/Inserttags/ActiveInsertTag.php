@@ -7,7 +7,6 @@ use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Date;
 use Contao\Frontend;
 use Contao\Validator;
-use Contao\Controller;
 use Contao\StringUtil;
 
 class ActiveInsertTag extends Frontend
@@ -47,12 +46,12 @@ class ActiveInsertTag extends Frontend
                     list($strKey, $strOption) = explode('=', $strParam);
                     switch ($strKey) {
                         case 'default':
-                            if (Toolkit::isEmpty($varValue)) $varValue = Controller::replaceInsertTags($strOption);
+                            if (Toolkit::isEmpty($varValue)) $varValue = Toolkit::replaceInsertTags($strOption);
                             break;
                         case 'suffix':
                         case 'prefix':
                             if (is_string($varValue)) {
-                                $strFix = Controller::replaceInsertTags($strOption);
+                                $strFix = Toolkit::replaceInsertTags($strOption);
                                 $blnNoFix = false;
                                 if ($strKey == 'suffix') {
                                     $blnNoFix = strpos($strFix, substr($varValue, -strlen($strFix))) === false;

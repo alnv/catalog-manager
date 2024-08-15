@@ -41,12 +41,12 @@ class FrontendEditingPermission extends CatalogController
         $this->setMemberGroup();
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->isAdmin ? true : false;
     }
 
-    public function hasPermission($strMode, $strCatalogname)
+    public function hasPermission($strMode, $strCatalogname): bool
     {
 
         if ($this->isAdmin() || $this->blnDisablePermissions) {
@@ -64,7 +64,7 @@ class FrontendEditingPermission extends CatalogController
         return false;
     }
 
-    public function hasAccess($strCatalogname)
+    public function hasAccess($strCatalogname): bool
     {
 
         if ($this->isAdmin() || $this->blnDisablePermissions) {
@@ -74,7 +74,7 @@ class FrontendEditingPermission extends CatalogController
         return $this->{$strCatalogname} ? true : false;
     }
 
-    protected function setCatalogManagerPermissionFields()
+    protected function setCatalogManagerPermissionFields(): void
     {
 
         $objCatalogs = $this->SQLQueryHelper->getCatalogs();
@@ -84,7 +84,7 @@ class FrontendEditingPermission extends CatalogController
         }
     }
 
-    protected function setAttributes()
+    protected function setAttributes(): void
     {
 
         $arrUser = $this->User->getData();
@@ -96,7 +96,7 @@ class FrontendEditingPermission extends CatalogController
         }
     }
 
-    protected function setMemberGroup()
+    protected function setMemberGroup(): void
     {
 
         $intTime = Date::floorToMinute();

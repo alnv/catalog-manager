@@ -36,21 +36,21 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'fields' => ['name', 'tablename', 'info']
         ],
         'operations' => [
-            'editFields' => [
-                'href' => 'table=tl_catalog_fields',
-                'icon' => 'edit.gif'
-            ],
             'edit' => [
                 'href' => 'act=edit',
-                'icon' => 'header.gif'
+                'icon' => 'edit.svg'
+            ],
+            'editFields' => [
+                'href' => 'table=tl_catalog_fields',
+                'icon' => 'children.svg'
             ],
             'copy' => [
                 'href' => 'act=copy',
-                'icon' => 'copy.gif'
+                'icon' => 'copy.svg'
             ],
             'delete' => [
                 'href' => 'act=delete',
-                'icon' => 'delete.gif',
+                'icon' => 'delete.svg',
                 'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\'))return false;Backend.getScrollOffset()"'
             ],
             'show' => [
@@ -60,8 +60,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         ],
         'global_operations' => [
             'all' => [
-
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'

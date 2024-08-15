@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             ],
             'edit' => [
                 'href' => 'act=edit',
-                'icon' => 'header.svg'
+                'icon' => 'children.svg'
             ],
             'copy' => [
                 'href' => 'act=copy',

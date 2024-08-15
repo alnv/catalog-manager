@@ -108,7 +108,7 @@ class Map
     public static function generateGoogleMapJSInitializer()
     {
 
-        $strScript = sprintf("https://maps.google.com/maps/api/js?language=%s%s", ($GLOBALS['TL_LANGUAGE'] ? $GLOBALS['TL_LANGUAGE'] : 'en'), (Config::get('catalogGoogleMapsClientKey') ? '&key=' . Config::get('catalogGoogleMapsClientKey') . '' : ''));
+        $strScript = sprintf("https://maps.google.com/maps/api/js?language=%s%s", ($GLOBALS['TL_LANGUAGE'] ?: 'en'), (Config::get('catalogGoogleMapsClientKey') ? '&key=' . Config::get('catalogGoogleMapsClientKey') . '' : ''));
 
         return '' .
 
@@ -125,7 +125,7 @@ class Map
             '}' .
             'function loadGoogleMapsInfoBoxLibrary() {' .
             ' var objJSScript=document.createElement("script");' .
-            ' objJSScript.src="system/modules/catalog-manager/assets/InfoBox.js";' .
+            ' objJSScript.src="bundles/alnvcatalogmanager/InfoBox.js";' .
             ' objJSScript.id="id_ctlg_ib";' .
             ' objJSScript.defer="true";' .
             ' objJSScript.onload=loadCatalogManagerMaps;' .

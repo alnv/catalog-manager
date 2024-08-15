@@ -351,6 +351,6 @@ class CatalogTaxonomyWizard extends Widget
 
     protected function getOrButton($intIndex, $intSubIndex)
     {
-        return '<a href="' . Environment::get('indexFreeRequest') . '&amp;cid=' . $intIndex . '&amp;subId=' . $intSubIndex . '&amp;cmd_' . $this->strId . '=addOrQuery" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] . '">' . Image::getHtml('system/modules/catalog-manager/assets/icons/or.svg', 'add or Query') . '</a>';
+        return '<a href="' . Environment::get('indexFreeRequest') . '&amp;cid=' . $intIndex . '&amp;subId=' . $intSubIndex . '&amp;cmd_' . $this->strId . '=addOrQuery" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] . '">' . Image::getHtml('bundles/alnvcatalogmanager/icons/or.svg', 'add or Query') . '</a>';
     }
 }

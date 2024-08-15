@@ -3,8 +3,8 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\DataContainer;
-use Contao\Image;
 use Contao\Files;
+use Contao\Image;
 use Contao\System;
 
 class IconGetter extends CatalogController
@@ -14,7 +14,7 @@ class IconGetter extends CatalogController
 
     protected array $arrFileFormats = ['svg', 'png', 'jpg'];
 
-    protected string $strCatalogDefaultIcon = 'catalog-icon.gif';
+    protected string $strCatalogDefaultIcon = 'catalog-icon.svg';
 
 
     public function setCatalogIcon($strTablename): string
@@ -51,7 +51,7 @@ class IconGetter extends CatalogController
             $strIcon = $strCustomIcon;
         }
 
-        $strImageAttribute = trim($strImageAttribute . ' data-icon="edit.gif" data-icon-disabled="header.gif" ');
+        $strImageAttribute = trim($strImageAttribute . ' data-icon="edit.gif" data-icon-disabled="header.svg" ');
 
         return Image::getHtml($strIcon, '', $strImageAttribute);
     }

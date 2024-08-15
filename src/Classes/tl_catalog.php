@@ -458,7 +458,7 @@ class tl_catalog extends Backend
     {
 
         $strFallback = $dc->activeRecord->fallbackLanguage;
-        $arrLanguages = System::getLanguages();
+        $arrLanguages = Toolkit::getLanguages();
 
         if ($strFallback) {
 
@@ -470,6 +470,6 @@ class tl_catalog extends Backend
 
     public function getFallbackLanguages()
     {
-        return System::getLanguages();
+        return Toolkit::getLanguages();
     }
 }

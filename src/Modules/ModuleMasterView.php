@@ -12,6 +12,7 @@ use Contao\System;
 use Contao\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Contao\BackendTemplate;
+use Alnv\CatalogManagerBundle\CatalogAjaxController;
 
 class ModuleMasterView extends Module
 {
@@ -102,13 +103,10 @@ class ModuleMasterView extends Module
         $this->CatalogView->getCommentForm($this->CatalogView->strMasterID);
 
         if (empty($strOutput)) {
-
             if ($this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogViewPage != $objPage->id) {
-
                 if ($objRedirect = PageModel::findByPk($this->catalogViewPage)) {
                     Controller::redirect($objRedirect->getFrontendUrl());
                 }
-
                 return null;
             }
 
@@ -118,7 +116,7 @@ class ModuleMasterView extends Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import('CatalogAjaxController');
+            $this->import(CatalogAjaxController::class);
 
             $this->CatalogAjaxController->setData([
                 'data' => $this->Template->data,

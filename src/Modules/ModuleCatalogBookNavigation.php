@@ -2,6 +2,7 @@
 
 namespace Alnv\CatalogManagerBundle\Modules;
 
+use Alnv\CatalogManagerBundle\SQLQueryBuilder;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Module;
 use Contao\Input;
@@ -60,7 +61,7 @@ class ModuleCatalogBookNavigation extends Module
 
         global $objPage;
 
-        $this->import('SQLQueryBuilder');
+        $this->import(SQLQueryBuilder::class);
 
         if ($this->catalogMasterPage) {
             $this->objMasterPage = PageModel::findByPk($this->catalogMasterPage);

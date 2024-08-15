@@ -2,96 +2,103 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class DownloadsCreator extends \Frontend {
+use Contao\Config;
+use Contao\Controller;
+use Contao\Environment;
+use Contao\File;
+use Contao\FilesModel;
+use Contao\Frontend;
+use Contao\Image;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\FrontendTemplate;
 
+class DownloadsCreator extends Frontend
+{
 
     public $sortBy;
+
     public $orderSRC;
+
     public $metaIgnore;
-    public $multiSRC = [];
+
+    public array $multiSRC = [];
+
     public $useArrayFormat;
 
-    protected $arrData = [];
+
+    protected array $arrData = [];
+
     protected $objFiles = null;
 
+    public function __construct($arrMultiSRC, $arrEnclosure)
+    {
 
-    public function __construct( $arrMultiSRC, $arrEnclosure ) {
-
-        foreach ( $arrEnclosure as $strKey => $strValue ) {
-
+        foreach ($arrEnclosure as $strKey => $strValue) {
             $this->{$strKey} = $strValue;
         }
 
-        if ( !$this->objFiles && is_array( $arrMultiSRC ) ) {
-
+        if (!$this->objFiles && is_array($arrMultiSRC)) {
             $this->multiSRC = $arrMultiSRC;
-            $this->objFiles = \FilesModel::findMultipleByUuids( $arrMultiSRC );
+            $this->objFiles = FilesModel::findMultipleByUuids($arrMultiSRC);
         }
 
         $this->setDataContainer();
+        parent::__construct();
     }
 
 
-    public function render() {
+    public function render()
+    {
 
         global $objPage;
 
         $arrFiles = [];
         $arrAuxDate = [];
 
-        if ( $this->objFiles === null ) return '';
+        if ($this->objFiles === null) return '';
 
         $objFiles = $this->objFiles;
-        $strDownload = \Input::get( 'file', true );
-        $arrAllowedDownload = trimsplit( ',', strtolower( \Config::get('allowedDownload') ) );
+        $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
+        $strDownload = Input::get('file', true);
+        $arrAllowedDownload = StringUtil::trimsplit(',', strtolower(Config::get('allowedDownload')));
 
-        while ( $objFiles->next() ) {
+        while ($objFiles->next()) {
 
-            if ( isset( $files[ $objFiles->path ] ) || !file_exists( TL_ROOT . '/' . $objFiles->path ) ) {
-
+            if (isset($files[$objFiles->path]) || !file_exists($strRootDir . '/' . $objFiles->path)) {
                 continue;
             }
 
-            if ( $objFiles->type == 'file' ) {
+            if ($objFiles->type == 'file') {
 
-                $objFile = new \File( $objFiles->path, true );
+                $objFile = new File($objFiles->path, true);
 
-                if ( !in_array( $objFile->extension, $arrAllowedDownload ) || preg_match( '/^meta(_[a-z]{2})?\.txt$/', $objFile->basename ) ) {
-
+                if (!in_array($objFile->extension, $arrAllowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
                     continue;
                 }
 
-                $arrMeta = $this->getMetaData( $objFiles->meta, $objPage->language );
-
-                if ( empty( $arrMeta ) ) {
-
-                    if ( $this->metaIgnore ) {
-
+                $arrMeta = $this->getMetaData($objFiles->meta, $objPage->language);
+                if (empty($arrMeta)) {
+                    if ($this->metaIgnore) {
                         continue;
-                    }
-
-                    elseif ( $objPage->rootFallbackLanguage !== null ) {
-
-                        $arrMeta = $this->getMetaData( $objFiles->meta, $objPage->rootFallbackLanguage );
+                    } elseif ($objPage->rootFallbackLanguage !== null) {
+                        $arrMeta = $this->getMetaData($objFiles->meta, $objPage->rootFallbackLanguage);
                     }
                 }
 
-                if ( $arrMeta['title'] == '' ) {
-
-                    $arrMeta['title'] = specialchars( $objFile->basename );
+                if ($arrMeta['title'] == '') {
+                    $arrMeta['title'] = StringUtil::specialchars($objFile->basename);
                 }
 
-                $strHref = \Environment::get('request');
-
-                if ( preg_match( '/(&(amp;)?|\?)file=/', $strHref ) ) {
-
-                    $strHref = preg_replace( '/(&(amp;)?|\?)file=[^&]+/', '', $strHref );
+                $strHref = Environment::get('request');
+                if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
+                    $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
                 }
 
-                $strHref .= ( ( \Config::get('disableAlias') || strpos( $strHref, '?' ) !== false) ? '&amp;' : '?' ) . 'file=' . \System::urlEncode( $objFiles->path );
+                $strHref .= ((Config::get('disableAlias') || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . System::urlEncode($objFiles->path);
 
-                $arrFiles[ $objFiles->path ] = [
-
+                $arrFiles[$objFiles->path] = [
                     'href' => $strHref,
                     'meta' => $arrMeta,
                     'id' => $objFiles->id,
@@ -102,70 +109,56 @@ class DownloadsCreator extends \Frontend {
                     'name' => $objFile->basename,
                     'caption' => $arrMeta['caption'],
                     'extension' => $objFile->extension,
-                    'icon' => \Image::getPath( $objFile->icon ),
-                    'filesize' => $this->getReadableSize( $objFile->filesize, 1 ),
-                    'title' => specialchars( sprintf($GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename ) ),
+                    'icon' => Image::getPath($objFile->icon),
+                    'filesize' => $this->getReadableSize($objFile->filesize, 1),
+                    'title' => StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename)),
                 ];
 
                 $arrAuxDate[] = $objFile->mtime;
 
-                if ( $strDownload != '' && $objFiles->path ) \Controller::sendFileToBrowser( $strDownload );
-            }
+                if ($strDownload != '' && $objFiles->path) Controller::sendFileToBrowser($strDownload);
+            } else {
 
-            else {
+                $objSubFiles = FilesModel::findByPid($objFiles->uuid);
 
-                $objSubFiles = \FilesModel::findByPid( $objFiles->uuid );
-
-                if ( $objSubFiles === null ) {
-
+                if ($objSubFiles === null) {
                     continue;
                 }
 
-                while ( $objSubFiles->next() ) {
+                while ($objSubFiles->next()) {
 
-                    if ( $objSubFiles->type == 'folder' ) {
-
+                    if ($objSubFiles->type == 'folder') {
                         continue;
                     }
 
-                    $objFile = new \File( $objSubFiles->path, true );
+                    $objFile = new File($objSubFiles->path, true);
 
-                    if (!in_array( $objFile->extension, $arrAllowedDownload ) || preg_match( '/^meta(_[a-z]{2})?\.txt$/', $objFile->basename ) ) {
-
+                    if (!in_array($objFile->extension, $arrAllowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
                         continue;
                     }
 
-                    $arrMeta = $this->getMetaData( $objSubFiles->meta, $objPage->language );
-
+                    $arrMeta = $this->getMetaData($objSubFiles->meta, $objPage->language);
                     if (empty($arrMeta)) {
-
                         if ($this->metaIgnore) {
-
                             continue;
-                        }
-
-                        elseif ($objPage->rootFallbackLanguage !== null) {
-
-                            $arrMeta = $this->getMetaData( $objSubFiles->meta, $objPage->rootFallbackLanguage );
+                        } elseif ($objPage->rootFallbackLanguage !== null) {
+                            $arrMeta = $this->getMetaData($objSubFiles->meta, $objPage->rootFallbackLanguage);
                         }
                     }
 
                     if ($arrMeta['title'] == '') {
-
-                        $arrMeta['title'] = specialchars( $objFile->basename );
+                        $arrMeta['title'] = specialchars($objFile->basename);
                     }
 
-                    $strHref = \Environment::get('request');
+                    $strHref = Environment::get('request');
 
-                    if ( preg_match( '/(&(amp;)?|\?)file=/', $strHref ) ) {
-
+                    if (preg_match('/(&(amp;)?|\?)file=/', $strHref)) {
                         $strHref = preg_replace('/(&(amp;)?|\?)file=[^&]+/', '', $strHref);
                     }
 
-                    $strHref .= ( ( \Config::get('disableAlias') || strpos( $strHref, '?' ) !== false ) ? '&amp;' : '?' ) . 'file=' . \System::urlEncode( $objSubFiles->path );
+                    $strHref .= ((Config::get('disableAlias') || strpos($strHref, '?') !== false) ? '&amp;' : '?') . 'file=' . System::urlEncode($objSubFiles->path);
 
-                    $arrFiles[ $objSubFiles->path ] = [
-
+                    $arrFiles[$objSubFiles->path] = [
                         'meta' => $arrMeta,
                         'href' => $strHref,
                         'mime' => $objFile->mime,
@@ -176,101 +169,77 @@ class DownloadsCreator extends \Frontend {
                         'name' => $objFile->basename,
                         'caption' => $arrMeta['caption'],
                         'extension' => $objFile->extension,
-                        'icon' => \Image::getPath( $objFile->icon ),
-                        'filesize' => $this->getReadableSize( $objFile->filesize, 1 ),
-                        'title' => specialchars( sprintf( $GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename ) ),
+                        'icon' => Image::getPath($objFile->icon),
+                        'filesize' => $this->getReadableSize($objFile->filesize, 1),
+                        'title' => StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename)),
                     ];
 
                     $arrAuxDate[] = $objFile->mtime;
 
-                    if ( $strDownload != '' && $objSubFiles->path ) \Controller::sendFileToBrowser( $strDownload );
+                    if ($strDownload != '' && $objSubFiles->path) Controller::sendFileToBrowser($strDownload);
                 }
             }
 
-            switch ( $this->sortBy ) {
-
+            switch ($this->sortBy) {
                 case 'name_asc':
-
-                    uksort( $arrFiles, 'basename_natcasecmp' );
-
+                    uksort($arrFiles, 'basename_natcasecmp');
                     break;
-
                 case 'name_desc':
-
-                    uksort( $arrFiles, 'basename_natcasercmp' );
-
+                    uksort($arrFiles, 'basename_natcasercmp');
                     break;
-
                 case 'date_asc':
-
-                    array_multisort( $arrFiles, SORT_NUMERIC, $arrAuxDate, SORT_ASC );
-
+                    array_multisort($arrFiles, SORT_NUMERIC, $arrAuxDate, SORT_ASC);
                     break;
-
                 case 'date_desc':
-
-                    array_multisort( $arrFiles, SORT_NUMERIC, $arrAuxDate, SORT_DESC );
-
+                    array_multisort($arrFiles, SORT_NUMERIC, $arrAuxDate, SORT_DESC);
                     break;
-
                 case 'random':
-
-                    shuffle( $arrFiles );
-
+                    shuffle($arrFiles);
                     break;
-
                 case 'custom':
-
                     if ($this->orderSRC != '') {
+                        $arrTmp = StringUtil::deserialize($this->orderSRC);
+                        if (!empty($arrTmp) && is_array($arrTmp)) {
 
-                        $arrTmp = deserialize( $this->orderSRC );
+                            $arrOrder = array_map(function () {
+                            }, array_flip($arrTmp));
 
-                        if ( !empty( $arrTmp ) && is_array( $arrTmp ) ) {
-
-                            $arrOrder = array_map( function () {}, array_flip( $arrTmp ));
-
-                            foreach ( $arrFiles as $strKey => $arrValue ) {
-
-                                if ( array_key_exists( $arrValue['uuid'], $arrOrder ) ) {
-
-                                    $arrOrder[ $arrValue['uuid'] ] = $arrValue;
-                                    unset( $arrFiles[$strKey] );
+                            foreach ($arrFiles as $strKey => $arrValue) {
+                                if (array_key_exists($arrValue['uuid'], $arrOrder)) {
+                                    $arrOrder[$arrValue['uuid']] = $arrValue;
+                                    unset($arrFiles[$strKey]);
                                 }
                             }
 
-                            if ( !empty( $arrFiles ) ) {
-
-                                $arrOrder = array_merge( $arrOrder, array_values( $arrFiles ) );
+                            if (!empty($arrFiles)) {
+                                $arrOrder = array_merge($arrOrder, array_values($arrFiles));
                             }
 
-                            $arrFiles = array_values( array_filter( $arrOrder ) );
+                            $arrFiles = array_values(array_filter($arrOrder));
 
-                            unset( $arrOrder );
+                            unset($arrOrder);
                         }
                     }
-
                     break;
             }
         }
 
-        if ( $this->useArrayFormat ) {
-            
-            return is_array( $arrFiles ) ? array_values( $arrFiles ) : [];
+        if ($this->useArrayFormat) {
+            return is_array($arrFiles) ? array_values($arrFiles) : [];
         }
 
         $this->arrData['files'] = $arrFiles;
 
-        $objTemplate = new \FrontendTemplate( $this->downloadsTpl );
-        $objTemplate->setData( $this->arrData );
+        $objTemplate = new FrontendTemplate($this->downloadsTpl);
+        $objTemplate->setData($this->arrData);
 
         return $objTemplate->parse();
     }
 
+    protected function setDataContainer(): void
 
-    protected function setDataContainer(){
-
+    {
         $this->arrData = [
-
             'hl' => 'h1',
             'id' => '',
             'typePrefix' => 'ce_',

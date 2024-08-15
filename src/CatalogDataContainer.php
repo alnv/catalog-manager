@@ -9,7 +9,6 @@ class CatalogDataContainer extends DataContainer
 
     public function __construct($strTable)
     {
-
         parent::__construct();
         $this->table = $strTable;
     }

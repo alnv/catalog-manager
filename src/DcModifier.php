@@ -2,19 +2,21 @@
 
 namespace Alnv\CatalogManagerBundle;
 
+use Contao\Controller;
+
 class DcModifier extends CatalogController
 {
 
-    protected $arrFields = [];
-    protected $arrPalettes = [];
-    protected $strTablename = '';
+    protected array $arrFields = [];
+
+    protected array $arrPalettes = [];
+
+    protected string $strTablename = '';
 
     public function __construct()
     {
-
         parent::__construct();
-
-        $this->import('I18nCatalogTranslator');
+        $this->import(I18nCatalogTranslator::class);
     }
 
     public function initialize($strTablename)
@@ -26,8 +28,8 @@ class DcModifier extends CatalogController
 
         $this->strTablename = $strTablename;
         $this->I18nCatalogTranslator->initialize();
-        \Controller::loadLanguageFile($this->strTablename);
-        \Controller::loadDataContainer($this->strTablename);
+        Controller::loadLanguageFile($this->strTablename);
+        Controller::loadDataContainer($this->strTablename);
 
         $this->I18nCatalogTranslator->initialize();
 
@@ -40,17 +42,13 @@ class DcModifier extends CatalogController
         }
     }
 
-    public function getPalettes()
+    public function getPalettes(): array
     {
 
         $arrReturn = [];
-
         if (is_array($this->arrPalettes)) {
-
             foreach ($this->arrPalettes as $strPalette) {
-
                 if ($strPalette == '__selector__') continue;
-
                 $arrReturn[$strPalette] = $strPalette;
             }
         }
@@ -58,7 +56,7 @@ class DcModifier extends CatalogController
         return $arrReturn;
     }
 
-    public function getFields($strName)
+    public function getFields($strName): array
     {
 
         $arrReturn = [];
@@ -85,32 +83,22 @@ class DcModifier extends CatalogController
     {
 
         $arrReturn = [];
-
         if (!$strName) return $arrReturn;
-
         $strPalette = $GLOBALS['TL_DCA'][$this->strTablename]['palettes'][$strName];
-
         if ($strPalette) {
-
             $arrLegends = explode(';', $strPalette);
-
             if (is_array($arrLegends) && !empty($arrLegends)) {
-
                 foreach ($arrLegends as $strLegend) {
-
                     $strLegendName = '';
                     preg_match('/{(([^{}]*|(?R))*)}/', $strLegend, $arrMatch, PREG_OFFSET_CAPTURE, 0);
 
                     if (isset($arrMatch[1]) && is_array($arrMatch[1])) {
-
                         $strLegendName = $arrMatch[1][0] ?: '';
                     }
 
                     if ($strLegendName) {
-
                         $arrLegendName = explode(':', $strLegendName);
                         $strLabel = $GLOBALS['TL_LANG'][$this->strTablename][$arrLegendName[0]];
-
                         $arrReturn[$strLegendName] = $strLabel ?: $arrLegendName[0];
                     }
                 }
@@ -137,13 +125,9 @@ class DcModifier extends CatalogController
             foreach ($arrFieldsPlucked as $intIndex => $strFieldPlucked) {
 
                 $blnEnding = false;
-
                 if (Toolkit::isEmpty($strFieldPlucked)) continue;
-
                 if (isset($arrFieldsPlucked[$intIndex + 1]) && $this->isLegend($arrFieldsPlucked[$intIndex + 1])) $blnEnding = true;
-
                 if ($strFieldPlucked != $strFieldname) $strModifiedPalette .= $strFieldPlucked;
-
                 if ($strField == $strFieldPlucked) $strModifiedPalette .= ',' . $strFieldname;
 
                 $strModifiedPalette .= ($blnEnding ? ';' : ',');
@@ -165,9 +149,7 @@ class DcModifier extends CatalogController
             $strLegend = $arrPickedPalette['value'];
 
             if (Toolkit::isEmpty($strPalette)) continue;
-
             if (Toolkit::isEmpty($strLegend)) {
-
                 $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ($arrFieldsetStart['isHidden'] ? ':hide' : '') . '},' . implode(',', $arrFields);
                 $GLOBALS['TL_LANG'][$this->strTablename][$arrFieldsetStart['title']] = $this->I18nCatalogTranslator->get('legend', $arrFieldsetStart['title'], ['title' => $arrFieldsetStart['label']]);
             }
@@ -175,18 +157,12 @@ class DcModifier extends CatalogController
             $arrPalettesPlucked = explode(';', $arrPalettes[$strPalette]);
 
             foreach ($arrPalettesPlucked as $strFieldset) {
-
                 if (Toolkit::isEmpty($strFieldset)) continue;
-
                 $arrModifiedPalettes[] = $strFieldset;
-
                 if ($arrMatch = $this->isLegend($strFieldset, true)) {
-
                     $arrLegendName = isset($arrMatch[1]) ? $arrMatch[1][0] : '';
                     $arrLegendName = explode(':', $arrLegendName);
-
                     if ($arrLegendName[0] == $strLegend) {
-
                         $arrModifiedPalettes[] = '{' . $arrFieldsetStart['title'] . ($arrFieldsetStart['isHidden'] ? ':hide' : '') . '},' . implode(',', $arrFields);
                         $GLOBALS['TL_LANG'][$this->strTablename][$arrFieldsetStart['title']] = $this->I18nCatalogTranslator->get('legend', $arrFieldsetStart['title'], ['title' => $arrFieldsetStart['label']]);
                     }
@@ -197,14 +173,10 @@ class DcModifier extends CatalogController
         }
 
     }
-
     protected function isLegend($strValue, $blnReturnMatch = false)
     {
-
         preg_match('/{(([^{}]*|(?R))*)}/', $strValue, $arrMatch, PREG_OFFSET_CAPTURE, 0);
-
         if ($blnReturnMatch) return $arrMatch;
-
         return !empty($arrMatch);
     }
 }

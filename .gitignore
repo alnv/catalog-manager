@@ -1,8 +1,5 @@
-# OS
 .DS_Store
 Thumbs.db
-
-# IDEs 
 .buildpath
 .project
 .settings/
@@ -10,11 +7,7 @@ Thumbs.db
 .external*/
 .idea/
 nbproject/
-
-# composer related
 vendor/
 composer.lock
-
-# build
 build/
 build.properties

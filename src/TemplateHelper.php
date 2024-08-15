@@ -11,7 +11,6 @@ class TemplateHelper extends CatalogController
 
     public function __construct()
     {
-
         parent::__construct();
     }
 

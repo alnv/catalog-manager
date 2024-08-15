@@ -2,18 +2,23 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class SQLCompileCommands extends CatalogController {
+use Contao\Database;
 
-    protected $arrCatalogs = [];
+class SQLCompileCommands extends CatalogController
+{
 
-    public function __construct() {
+    protected array $arrCatalogs = [];
+
+    public function __construct()
+    {
 
         parent::__construct();
 
-        $this->import('Database');
+        $this->import(Database::class);
     }
 
-    public function initialize($arrSQLCommands) {
+    public function initialize($arrSQLCommands)
+    {
 
         if (!is_array($arrSQLCommands) || empty($arrSQLCommands)) return $arrSQLCommands;
         if (!$this->Database->tableExists('tl_catalog')) return $arrSQLCommands;
@@ -35,7 +40,7 @@ class SQLCompileCommands extends CatalogController {
                 $arrCmTables[] = $objCatalog->tablename;
             }
 
-            $objFields = $this->Database->prepare('SELECT tl_catalog_fields.fieldname, tl_catalog_fields.id FROM tl_catalog_fields WHERE pid = ?')->execute( $objCatalog->id );
+            $objFields = $this->Database->prepare('SELECT tl_catalog_fields.fieldname, tl_catalog_fields.id FROM tl_catalog_fields WHERE pid = ?')->execute($objCatalog->id);
             if (!$objFields->numRows) continue;
             while ($objFields->next()) {
                 if (Toolkit::isEmpty($objFields->fieldname)) continue;
@@ -73,34 +78,28 @@ class SQLCompileCommands extends CatalogController {
         return $arrSQLCommands;
     }
 
-    protected function preventPermissionFieldsFromAlter( &$arrSQLCommands, $strType ) {
+    protected function preventPermissionFieldsFromAlter(&$arrSQLCommands, $strType)
+    {
 
-        foreach ( $arrSQLCommands[ $strType ] as $strHash => $arrSQLCommand ) {
-
-            if ( strpos( $arrSQLCommand, 'tl_member' ) !== false || strpos( $arrSQLCommand, 'tl_user' ) !== false || strpos( $arrSQLCommand, 'tl_user_group' ) !== false ) {
-
-                foreach ( $this->arrCatalogs as $strTable => $arrCatalog ) {
-
-                    if ( strpos( $arrSQLCommand, $strTable ) !== false || strpos( $arrSQLCommand, $strTable . 'p' ) !== false ) {
-
-                        if ( isset( $arrSQLCommands[ $strType ][ $strHash ] ) ) unset( $arrSQLCommands[ $strType ][ $strHash ] );
+        foreach ($arrSQLCommands[$strType] as $strHash => $arrSQLCommand) {
+            if (strpos($arrSQLCommand, 'tl_member') !== false || strpos($arrSQLCommand, 'tl_user') !== false || strpos($arrSQLCommand, 'tl_user_group') !== false) {
+                foreach ($this->arrCatalogs as $strTable => $arrCatalog) {
+                    if (strpos($arrSQLCommand, $strTable) !== false || strpos($arrSQLCommand, $strTable . 'p') !== false) {
+                        if (isset($arrSQLCommands[$strType][$strHash])) unset($arrSQLCommands[$strType][$strHash]);
                     }
                 }
             }
         }
     }
 
-    protected function preventModifiedFieldsFromAlter( &$arrSQLCommands, $strType ) {
+    protected function preventModifiedFieldsFromAlter(&$arrSQLCommands, $strType)
+    {
 
-        foreach ( $arrSQLCommands[ $strType ] as $strHash => $arrSQLCommand ) {
-
-            foreach ( $this->arrCatalogs as $strTable => $arrCatalog ) {
-
-                foreach ( $arrCatalog['fields'] as $strField ) {
-
-                    if ( strpos( $arrSQLCommand, $strTable ) !== false && strpos( $arrSQLCommand, $strField ) !== false ) {
-
-                        if ( isset( $arrSQLCommands[ $strType ][ $strHash ] ) ) unset( $arrSQLCommands[ $strType ][ $strHash ] );
+        foreach ($arrSQLCommands[$strType] as $strHash => $arrSQLCommand) {
+            foreach ($this->arrCatalogs as $strTable => $arrCatalog) {
+                foreach ($arrCatalog['fields'] as $strField) {
+                    if (strpos($arrSQLCommand, $strTable) !== false && strpos($arrSQLCommand, $strField) !== false) {
+                        if (isset($arrSQLCommands[$strType][$strHash])) unset($arrSQLCommands[$strType][$strHash]);
                     }
                 }
             }

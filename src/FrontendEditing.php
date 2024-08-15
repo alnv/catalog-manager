@@ -7,10 +7,12 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\FrontendTemplate;
+use Alnv\CatalogManagerBundle\Maps\GeoCoding;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\PageModel;
+use Contao\Entity;
 
 class FrontendEditing extends CatalogController
 {
@@ -343,14 +345,12 @@ class FrontendEditing extends CatalogController
             }
 
             if ($arrField['inputType'] == 'textarea' && isset($arrField['eval']['rte'])) {
-
                 $objWidget->mandatory = false;
                 $arrTextareaData = ['selector' => 'ctrl_' . $objWidget->id];
                 $strTemplate = 'be_' . $arrField['eval']['rte'];
                 $objScript = new FrontendTemplate($strTemplate);
                 $objScript->setData($arrTextareaData);
                 $strScript = $objScript->parse();
-
                 $GLOBALS['TL_HEAD'][] = $strScript;
             }
 
@@ -371,7 +371,6 @@ class FrontendEditing extends CatalogController
             $arrField['default'] = $arrField['default'] ?? '';
 
             if (Toolkit::isEmpty($objWidget->value) && !Toolkit::isEmpty($arrField['default'])) {
-
                 $objWidget->value = $arrField['default'];
             }
 
@@ -395,9 +394,7 @@ class FrontendEditing extends CatalogController
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
 
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'])) {
-
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'] as $callback) {
-
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($objWidget, $strFieldname, $this->arrCatalogFields, $this->arrCatalog, $arrData, $this);
                 }
@@ -409,17 +406,14 @@ class FrontendEditing extends CatalogController
                 $varValue = $objWidget->value;
 
                 if (Toolkit::isEmpty($varValue) && $arrField['inputType'] == 'catalogFineUploader') {
-
                     $varValue = $this->arrValues[$strFieldname];
                 }
 
                 if (Toolkit::isEmpty($varValue) && !Toolkit::isEmpty($arrField['default'])) {
-
                     $varValue = $arrField['default'];
                 }
 
                 if ($varValue && is_string($varValue)) {
-
                     $varValue = $this->decodeValue($varValue);
                     $varValue = $this->replaceInsertTags($varValue);
                 }
@@ -427,14 +421,11 @@ class FrontendEditing extends CatalogController
                 $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
 
                 if ($varValue != '' && in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {
-
                     try {
-
                         $objDate = new Date($varValue, Date::getFormatFromRgxp($arrField['eval']['rgxp']));
                         $varValue = $objDate->tstamp;
 
                     } catch (\OutOfBoundsException $objError) {
-
                         $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['invalidDate'], $varValue));
                     }
                 }
@@ -665,7 +656,6 @@ class FrontendEditing extends CatalogController
 
         return $this->FrontendEditingPermission->hasPermission($strMode, $this->catalogTablename);
     }
-
 
     public function deleteEntity()
     {

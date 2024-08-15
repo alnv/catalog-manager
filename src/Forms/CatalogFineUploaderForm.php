@@ -2,16 +2,20 @@
 
 namespace Alnv\CatalogManagerBundle\Forms;
 
-use Contao\UploadableWidgetInterface;
-use Contao\Widget;
-use Contao\Environment;
-use Contao\Input;
-use Contao\Validator;
-use Contao\FilesModel;
-use Contao\StringUtil;
-use Contao\File;
-use Contao\Dbafs;
+use Alnv\CatalogManagerBundle\CatalogFineUploader;
 use Contao\Config;
+use Contao\Dbafs;
+use Contao\Environment;
+use Contao\File;
+use Contao\FilesModel;
+use Contao\FrontendUser;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\UploadableWidgetInterface;
+use Contao\Validator;
+use Contao\Files;
+use Contao\Widget;
 
 class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterface
 {
@@ -30,15 +34,13 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 
     protected $strPrefix = 'widget widget-fine-uploader';
 
-
     public function __construct($arrAttributes = null)
     {
 
         $strPost = Input::post('name') ? Input::post('name') : '';
 
         if (Environment::get('isAjaxRequest') && ($arrAttributes['id'] === $strPost || $arrAttributes['name'] === $strPost) && !Input::get('_doNotTriggerAjax')) {
-
-            $this->import('CatalogFineUploader');
+            $this->import(CatalogFineUploader::class);
             $this->CatalogFineUploader->sendAjaxResponse($arrAttributes);
 
             return null;
@@ -47,51 +49,31 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         parent::__construct($arrAttributes);
     }
 
-
     public function __set($strKey, $varValue)
     {
 
         switch ($strKey) {
-
             case 'maxsize':
-
                 $this->arrConfiguration['maxsize'] = $varValue;
-
                 break;
-
-
             case 'mandatory':
-
                 if ($varValue) {
-
                     $this->arrAttributes['required'] = 'required';
-
                 } else {
-
                     unset($this->arrAttributes['required']);
                 }
-
                 parent::__set($strKey, $varValue);
-
                 break;
-
             case 'fSize':
-
                 if ($varValue > 0) {
-
                     $this->arrAttributes['size'] = $varValue;
                 }
-
                 break;
-
             default:
-
                 parent::__set($strKey, $varValue);
-
                 break;
         }
     }
-
 
     public function validate()
     {
@@ -99,32 +81,23 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         $arrFiles = null;
 
         if ($this->multiple && isset($_SESSION['FILES'])) {
-
             $arrFiles = isset($_SESSION['FILES'][$this->strName]) && is_array($_SESSION['FILES'][$this->strName]) ? $_SESSION['FILES'][$this->strName][0] : null;
         }
 
         if (!$this->multiple && isset($_SESSION['FILES'])) {
-
             $arrFiles = isset($_SESSION['FILES'][$this->strName]) && is_array($_SESSION['FILES'][$this->strName]) ? $_SESSION['FILES'][$this->strName] : null;
         }
 
         if (!$arrFiles) {
-
             if ($this->mandatory) {
-
                 if ($this->strLabel == '') {
-
                     $this->addError($GLOBALS['TL_LANG']['ERR']['mdtryNoLabel']);
                 } else {
-
                     $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
                 }
             }
-
-            return;
         }
     }
-
 
     public function upload()
     {
@@ -136,17 +109,13 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
             if ($this->mandatory) {
 
                 if ($this->strLabel == '') {
-
                     $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['mdtryNoLabel'];
                     $arrReturn['success'] = false;
-
                     return $arrReturn;
 
                 } else {
-
                     $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel);
                     $arrReturn['success'] = false;
-
                     return $arrReturn;
                 }
             }
@@ -160,47 +129,36 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         $intMaxSizeKb = $this->getReadableSize($this->maxsize);
 
         try {
-
             $arrFile['name'] = StringUtil::sanitizeFileName($arrFile['name']);
         } catch (\InvalidArgumentException $objError) {
-
             $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['filename'];
             $arrReturn['success'] = false;
-
             return $arrReturn;
         }
 
         if (!Validator::isValidFileName($arrFile['name'])) {
-
             $arrReturn['error'] = $GLOBALS['TL_LANG']['ERR']['filename'];
             $arrReturn['success'] = false;
-
             return $arrReturn;
         }
 
         if (!is_uploaded_file($arrFile['tmp_name'])) {
 
             if ($arrFile['error'] == 1 || $arrFile['error'] == 2) {
-
                 $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $intMaxSizeKb);
                 $arrReturn['success'] = false;
-
                 return $arrReturn;
             }
 
             if ($arrFile['error'] == 3) {
-
                 $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['filepartial'], $arrFile['name']);
                 $arrReturn['success'] = false;
-
                 return $arrReturn;
             }
 
             if ($arrFile['error'] > 0) {
-
                 $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['fileerror'], $arrFile['error'], $arrFile['name']);
                 $arrReturn['success'] = false;
-
                 return $arrReturn;
             }
 
@@ -261,20 +219,14 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         if (!$this->hasErrors()) {
 
             if (is_null($_SESSION['FILES'][$this->strName])) {
-
                 $_SESSION['FILES'][$this->strName] = [];
             }
 
             if ($this->blnStoreFile) {
-
                 $bnyUploadFolder = $this->bnyUploadFolder;
-
-                if ($this->blnUseHomeDir && FE_USER_LOGGED_IN) {
-
-                    $this->import('FrontendUser', 'User');
-
+                if ($this->blnUseHomeDir && System::getContainer()->get('contao.security.token_checker')->hasFrontendUser()) {
+                    $this->import(FrontendUser::class, 'User');
                     if ($this->User->assignDir && $this->User->homeDir) {
-
                         $bnyUploadFolder = $this->User->homeDir;
                     }
                 }
@@ -288,28 +240,25 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
                     return $arrReturn;
                 }
 
+                $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
                 $strUploadFolder = $objUploadFolder->path;
 
-                if ($strUploadFolder != '' && is_dir(TL_ROOT . '/' . $strUploadFolder)) {
+                if ($strUploadFolder != '' && is_dir($strRootDir . '/' . $strUploadFolder)) {
 
-                    $this->import('Files');
+                    $this->import(Files::class);
 
-                    if ($this->blnDoNotOverwrite && file_exists(TL_ROOT . '/' . $strUploadFolder . '/' . $arrFile['name'])) {
-
+                    if ($this->blnDoNotOverwrite && file_exists($strRootDir . '/' . $strUploadFolder . '/' . $arrFile['name'])) {
                         $intOffset = 1;
-                        $arrAll = scan(TL_ROOT . '/' . $strUploadFolder);
+                        $arrAll = scandir($strRootDir . '/' . $strUploadFolder);
                         $arrFiles = preg_grep('/^' . preg_quote($objFile->filename, '/') . '.*\.' . preg_quote($objFile->extension, '/') . '/', $arrAll);
 
                         foreach ($arrFiles as $strFile) {
-
                             if (preg_match('/__[0-9]+\.' . preg_quote($objFile->extension, '/') . '$/', $strFile)) {
-
                                 $strFile = str_replace('.' . $objFile->extension, '', $strFile);
                                 $intValue = intval(substr($strFile, (strrpos($strFile, '_') + 1)));
                                 $intOffset = max($intOffset, $intValue);
                             }
                         }
-
                         $arrFile['name'] = str_replace($objFile->filename, $objFile->filename . '__' . ++$intOffset, $arrFile['name']);
                     }
 
@@ -326,7 +275,7 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 
                             $objModel->tstamp = time();
                             $objModel->path = $strFile;
-                            $objModel->hash = md5_file(TL_ROOT . '/' . $strFile);
+                            $objModel->hash = md5_file($strRootDir . '/' . $strFile);
                             $objModel->save();
 
                             $strUuid = StringUtil::binToUuid($objModel->uuid);
@@ -341,14 +290,14 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
                     $_SESSION['FILES'][$this->strName][] = [
                         'name' => $arrFile['name'],
                         'type' => $arrFile['type'],
-                        'tmp_name' => TL_ROOT . '/' . $strFile,
+                        'tmp_name' => $strRootDir . '/' . $strFile,
                         'error' => $arrFile['error'],
                         'size' => $arrFile['size'],
                         'uploaded' => true,
                         'uuid' => $strUuid
                     ];
 
-                    $this->log('File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', __METHOD__, TL_FILES);
+                    // $this->log('File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', __METHOD__, TL_FILES);
                 }
             }
         }
@@ -357,10 +306,8 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         return $arrReturn;
     }
 
-
     public function parse($arrAttributes = null)
     {
-
         $this->multiple = json_encode($this->arrConfiguration['multiple']);
         $this->extensions = json_encode(explode(',', $this->arrConfiguration['extensions']));
         $this->maxsize = $this->arrConfiguration['maxsize'] ? $this->arrConfiguration['maxsize'] : '0';

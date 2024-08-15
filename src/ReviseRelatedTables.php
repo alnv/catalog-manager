@@ -2,16 +2,23 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-class ReviseRelatedTables extends \Controller {
+use Contao\Controller;
+use Contao\Database;
+use Contao\DcaLoader;
 
-    private $arrErrorTables = [];
+class ReviseRelatedTables extends Controller
+{
 
-    public function __construct() {
+    private array $arrErrorTables = [];
 
-        $this->import('Database');
+    public function __construct()
+    {
+        $this->import(Database::class);
+        parent::__construct();
     }
 
-    public function reviseCatalogTables($strTable, $strPTable, $arrCTables) {
+    public function reviseCatalogTables($strTable, $strPTable, $arrCTables): bool
+    {
 
         $objCatalogDb = $this->Database->prepare('SELECT id FROM tl_catalog WHERE tablename = ?')->execute($strTable);
 
@@ -20,7 +27,7 @@ class ReviseRelatedTables extends \Controller {
         }
 
         if ($strPTable && $this->Database->TableExists($strPTable)) {
-            if (isset($GLOBALS['TL_DCA'][ $strTable ]['config']['dynamicPtable']) && $GLOBALS['TL_DCA'][$strTable]['config']['dynamicPtable']) {
+            if (isset($GLOBALS['TL_DCA'][$strTable]['config']['dynamicPtable']) && $GLOBALS['TL_DCA'][$strTable]['config']['dynamicPtable']) {
                 $objStmt = $this->Database->prepare(sprintf(' SELECT * FROM %s WHERE ptable=? AND NOT EXISTS( SELECT * FROM %s WHERE %s.pid = %s.id )', $strTable, $strPTable, $strTable, $strPTable))->execute($strPTable);
             } else {
                 $objStmt = $this->Database->prepare(sprintf('SELECT * FROM %s WHERE NOT EXISTS( SELECT * FROM %s WHERE %s.pid = %s.id )', $strTable, $strPTable, $strTable, $strPTable))->execute();
@@ -38,11 +45,11 @@ class ReviseRelatedTables extends \Controller {
                 if ($v && $this->Database->TableExists($v)) {
 
                     if (!isset($GLOBALS['TL_DCA'][$v])) {
-                        $objLoader = new \DcaLoader( $strTable );
-                        $objLoader->load(false);
+                        $objLoader = new DcaLoader($strTable);
+                        $objLoader->load();
                     }
 
-                    if (!($GLOBALS['TL_DCA'][$v]??'')) {
+                    if (!($GLOBALS['TL_DCA'][$v] ?? '')) {
                         continue;
                     }
 
@@ -63,8 +70,8 @@ class ReviseRelatedTables extends \Controller {
         return false;
     }
 
-    public function getErrorTables() {
-
+    public function getErrorTables(): array
+    {
         return $this->arrErrorTables;
     }
 }

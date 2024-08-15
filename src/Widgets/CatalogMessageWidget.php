@@ -2,14 +2,15 @@
 
 namespace Alnv\CatalogManagerBundle\Widgets;
 
-class CatalogMessageWidget extends \Widget {
+use Contao\Widget;
 
+class CatalogMessageWidget extends Widget
+{
 
     protected $strTemplate = 'be_widget';
 
-
-    public function generate() {
-
+    public function generate()
+    {
         return $this->ctlgMessage;
     }
 }

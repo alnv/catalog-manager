@@ -35,24 +35,18 @@ class SQLQueryHelper extends CatalogController
         if (!$strTablename) return [];
 
         return $this->SQLQueryBuilder->execute([
-
             'table' => 'tl_catalog',
-
             'pagination' => [
-
                 'limit' => 1,
                 'offset' => 0,
             ],
-
             'where' => [
-
                 [
                     'operator' => 'equal',
                     'field' => 'tablename',
                     'value' => $strTablename
                 ]
             ]
-
         ])->row();
     }
 

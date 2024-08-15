@@ -26,16 +26,16 @@ $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['oneEntity'] = 'An entry was found
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'] = 'Delete image';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noEntities'] = 'No items were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['prev'] = 'Go to the previous article';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] ='Sort sequence';
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogManagerOrder'] = 'Sort sequence';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['resetForm'] = 'Reset all filter settings.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['noGalleryImages'] = 'No images were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['entitiesAmount'] = '%s entries were found.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey'] = 'Your license key is invalid.';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogValueSetterWizard'] = [ 'Column', 'Default value' ];
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['catalogValueSetterWizard'] = ['Column', 'Default value'];
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsOutput'] = 'Output "%s <em>[%s]</em>" field in template';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] = 'Overwrite catalog settings with origin table values.';
 $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['activeFieldsHeadline'] = 'Following fields were found in <em>"%s"</em> template';
-$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = [ 'Here you can allow access to catalog operations.', 'Here you can define the permissions.' ];
+$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['permissionInfo'] = ['Here you can allow access to catalog operations.', 'Here you can define the permissions.'];
 
 $GLOBALS['TL_LANG']['MSC']['translate'] = 'Add translation';
 

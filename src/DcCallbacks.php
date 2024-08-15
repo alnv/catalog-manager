@@ -73,7 +73,9 @@ class DcCallbacks extends Backend
             return $strTemplate;
 
         }
-        $strField = isset($arrLabel['fields'][0]) ? $arrLabel['fields'][0] : 'title';
+
+        $strField = ($arrLabel['fields'][0] ?? 'title');
+
         return $arrRow[$strField];
     }
 
@@ -210,7 +212,7 @@ class DcCallbacks extends Backend
             $arrValues[] = $dc->activeRecord->pid;
         }
 
-        $objCatalogs = $this->Database->prepare(sprintf('SELECT * FROM %s ' . $strQuery, $strTable))->execute($arrValues);
+        $objCatalogs = $this->Database->prepare(sprintf('SELECT * FROM %s ' . $strQuery, $strTable))->execute(...$arrValues);
 
         if ($objCatalogs->numRows && !$blnAutoAlias) {
             throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));

@@ -833,13 +833,13 @@ class Toolkit
     {
 
         $objDatabase = Database::getInstance();
-        $objModule = $objDatabase->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute($strModuleId);
+        $objModule = $objDatabase->prepare('SELECT * FROM tl_module WHERE id=?')->limit(1)->execute($strModuleId);
 
         if (!$objModule->catalogTablename || !$objModule->catalogUseMasterPage || !$objModule->catalogMasterPage) {
             return '';
         }
 
-        $objEntity = $objDatabase->prepare('SELECT * FROM ' . $objModule->catalogTablename . ' WHERE id = ?')->limit(1)->execute($strEntityId);
+        $objEntity = $objDatabase->prepare('SELECT * FROM ' . $objModule->catalogTablename . ' WHERE id=?')->limit(1)->execute($strEntityId);
 
         if (!$objEntity->alias) {
             return '';
@@ -849,10 +849,6 @@ class Toolkit
 
         if ($objPage == null) {
             return '';
-        }
-
-        if ($objPage->catalogUseRouting && $objPage->catalogRouting) {
-            $objEntity->alias = static::generateAliasWithRouting($objEntity->alias, static::getRoutingParameter($objPage->catalogRouting), $objEntity->row());
         }
 
         return $objPage->getFrontendUrl(($objEntity->alias ? '/' . $objEntity->alias : ''));

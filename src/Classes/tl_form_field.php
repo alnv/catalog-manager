@@ -1,6 +1,6 @@
 <?php
 
-namespace Alnv\CatalogManagerBundle\classes;
+namespace Alnv\CatalogManagerBundle\Classes;
 
 use Contao\Input;
 use Contao\Backend;
@@ -14,7 +14,6 @@ class tl_form_field extends Backend
         'catalogMessageForm',
         'catalogFineUploader'
     ];
-
 
     public function setInfo(DataContainer $dc)
     {

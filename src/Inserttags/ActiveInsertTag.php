@@ -15,7 +15,7 @@ class ActiveInsertTag extends Frontend
     public function __construct()
     {
 
-        $this->import(CatalogInput::class);
+        $this->import(CatalogInput::class, 'CatalogInput');
 
         parent::__construct();
     }
@@ -24,8 +24,9 @@ class ActiveInsertTag extends Frontend
     {
 
         $arrTags = explode('::', $strTag);
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
 
-        if (is_array($arrTags) && $arrTags[0] == 'CTLG_ACTIVE' && isset($arrTags[1])) {
+        if (is_array($arrTags) && $strInsertTagName == 'CTLG_ACTIVE' && isset($arrTags[1])) {
 
             global $objPage;
 

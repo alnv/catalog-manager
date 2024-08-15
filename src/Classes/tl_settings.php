@@ -1,6 +1,6 @@
 <?php
 
-namespace Alnv\CatalogManagerBundle\classes;
+namespace Alnv\CatalogManagerBundle\Classes;
 
 use Alnv\CatalogManagerBundle\CatalogManagerVerification;
 use Contao\Backend;
@@ -30,9 +30,7 @@ class tl_settings extends Backend
         $objCatalogManagerVerification->toggleIsBlocked($objCatalogManagerVerification->isBlocked());
 
         if (!$objCatalogManagerVerification->verify($varValue)) {
-
             if (!$varValue) return '';
-
             throw new \Exception($GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey']);
         }
 

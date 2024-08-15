@@ -40,9 +40,6 @@ class CatalogBreadcrumb extends Frontend
 
                     $strHref = $arrItem['href'];
 
-                    if (!$arrItem['data']['catalogUseRouting']) {
-                        $strHref = $this->generateHref($arrItem['data']['id'], $objEntity->alias);
-                    }
                     if (Toolkit::isEmpty($strHref)) {
                         $strHref = $arrItem['href'];
                     }

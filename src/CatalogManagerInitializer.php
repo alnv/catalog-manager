@@ -280,14 +280,11 @@ class CatalogManagerInitializer
     protected function getActiveModule(): string
     {
 
-        $strActiveModule = Input::get('do');
+        $strActiveModule = Input::get('do') ?: '';
 
         if (!Toolkit::isEmpty(Input::get('target')) && $strActiveModule == 'files') {
-
             $arrTarget = explode('.', Input::get('target'));
-
             if (!empty($arrTarget) && is_array($arrTarget)) {
-
                 $strActiveModule = !Toolkit::isEmpty($arrTarget[0]) ? $arrTarget[0] : $strActiveModule;
             }
         }

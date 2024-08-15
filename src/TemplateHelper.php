@@ -20,11 +20,8 @@ class TemplateHelper extends CatalogController
         $this->import('Comments');
 
         $objCommentConfig = new \stdClass();
-
         if (!empty($arrConfig) && is_array($arrConfig)) {
-
             foreach ($arrConfig as $strKey => $varValue) {
-
                 $objCommentConfig->{$strKey} = $varValue;
             }
         }
@@ -36,9 +33,7 @@ class TemplateHelper extends CatalogController
     {
 
         $strPage = (Input::get($strPageID) !== null) ? Input::get($strPageID) : 1;
-
         if ($strPage < 1 || $strPage > max(ceil($intTotal / $intPerPage), 1)) {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }

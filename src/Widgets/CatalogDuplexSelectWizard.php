@@ -6,8 +6,11 @@ use Alnv\CatalogManagerBundle\Cache;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\ArrayUtil;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\Widget;
 use Contao\Database;
+use Contao\System;
+use Contao\Image;
 
 class CatalogDuplexSelectWizard extends Widget
 {
@@ -71,7 +74,7 @@ class CatalogDuplexSelectWizard extends Widget
     public function generate()
     {
 
-        $this->import(Database::class);
+        $this->import(Database::class, 'Database');
         $strCommand = 'cmd_' . $this->strField;
         $arrButtons = ['copy', 'up', 'down', 'delete'];
 
@@ -102,10 +105,10 @@ class CatalogDuplexSelectWizard extends Widget
 
         if (!Cache::has('tabindex')) Cache::set('tabindex', 1);
 
+        $strRequestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
         $tabindex = Cache::get('tabindex');
 
         if (!empty($this->mainOptions) && is_array($this->mainOptions)) {
-
             $this->import($this->mainOptions[0]);
             $this->arrMainOptions = $this->{$this->mainOptions[0]}->{$this->mainOptions[1]}($this);
         }
@@ -123,16 +126,15 @@ class CatalogDuplexSelectWizard extends Widget
         for ($i = 0, $c = count($this->varValue); $i < $c; $i++) {
             $return .= '
                         <tr>
-                          <td><select name="' . $this->strId . '[' . $i . '][key]" id="' . $this->strId . '_key_' . $i . '" onchange="Backend.autoSubmit(\'' . \Input::get('table') . '\')" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateMainOptions($i) . '</select></td>
+                          <td><select name="' . $this->strId . '[' . $i . '][key]" id="' . $this->strId . '_key_' . $i . '" onchange="Backend.autoSubmit(\'' . Input::get('table') . '\')" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateMainOptions($i) . '</select></td>
                           <td><select name="' . $this->strId . '[' . $i . '][value]" id="' . $this->strId . '_value_' . $i . '" class="tl_select tl_chosen tl_catalog_widget min-width">' . $this->generateDependedOptions($i) . '</select></td>';
 
             $return .= '
                           <td style="white-space:nowrap;padding-left:3px">';
 
             foreach ($arrButtons as $button) {
-
                 $class = ($button == 'up' || $button == 'down') ? ' class="button-move"' : '';
-                $return .= '<a href="' . $this->addToUrl('&amp;' . $strCommand . '=' . $button . '&amp;cid=' . $i . '&amp;rt=' . REQUEST_TOKEN . '&amp;id=' . $this->currentRecord) . '"' . $class . ' title="' . specialchars($GLOBALS['TL_LANG']['MSC']['ow_' . $button]) . '" onclick="CatalogManager.CatalogOrderByWizard(this,\'' . $button . '\',\'ctrl_' . $this->strId . '\');return false">' . \Image::getHtml($button . '.gif', $GLOBALS['TL_LANG']['MSC']['ow_' . $button]) . '</a> ';
+                $return .= '<a href="' . $this->addToUrl('&amp;' . $strCommand . '=' . $button . '&amp;cid=' . $i . '&amp;rt=' . $strRequestToken . '&amp;id=' . $this->currentRecord) . '"' . $class . ' title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['ow_' . $button]) . '" onclick="CatalogManager.CatalogOrderByWizard(this,\'' . $button . '\',\'ctrl_' . $this->strId . '\');return false">' . Image::getHtml($button . '.gif', $GLOBALS['TL_LANG']['MSC']['ow_' . $button]) . '</a> ';
             }
             $return .= '</td>
                         </tr>';

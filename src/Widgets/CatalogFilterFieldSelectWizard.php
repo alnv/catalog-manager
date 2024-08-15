@@ -37,7 +37,7 @@ class CatalogFilterFieldSelectWizard extends Widget
     public function generate()
     {
 
-        $this->import(Database::class);
+        $this->import(Database::class, 'Database');
 
         if (!$this->varValue) $this->varValue = [];
         if (!Cache::has('tabindex')) Cache::set('tabindex', 1);

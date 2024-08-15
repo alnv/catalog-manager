@@ -16,7 +16,7 @@ class CatalogMessage extends CatalogController
 
         parent::__construct();
 
-        $this->import(Input::class);
+        $this->import(Input::class, 'Input');
     }
 
     public function set($strType, $arrData = [], $strID = '')

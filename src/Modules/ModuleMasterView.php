@@ -49,7 +49,6 @@ class ModuleMasterView extends Module
         System::loadLanguageFile('tl_module');
 
         $this->strMasterAlias = Input::get('auto_item');
-
         if (Input::get('pdf' . $this->id)) {
             $this->strAct = 'pdf';
         }
@@ -68,7 +67,7 @@ class ModuleMasterView extends Module
             $objEntity->getPdf($this->id, $this->catalogPdfTemplate);
         }
 
-        $this->import(CatalogView::class);
+        $this->import(CatalogView::class, 'CatalogView');
 
         $arrQuery = [
             'where' => [
@@ -116,7 +115,7 @@ class ModuleMasterView extends Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import(CatalogAjaxController::class);
+            $this->import(CatalogAjaxController::class, 'CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
                 'data' => $this->Template->data,

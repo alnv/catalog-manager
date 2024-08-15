@@ -17,9 +17,8 @@ class CatalogAjaxController extends CatalogController
 
     public function __construct()
     {
-
+        $this->import(Environment::class, 'Environment');
         parent::__construct();
-        $this->import(Environment::class);
     }
 
     public function setModuleID($strID): void

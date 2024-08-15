@@ -19,7 +19,7 @@ class SearchIndexBuilder extends Frontend
 
         $arrRoot = [];
         $this->arrRoutings = [];
-        $this->import(SQLQueryBuilder::class);
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
 
         if ($intRoot > 0) $arrRoot = $this->Database->getChildRecords($intRoot, 'tl_page');
 

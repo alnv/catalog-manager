@@ -29,12 +29,11 @@ class CatalogFilter extends CatalogController
 
     public function __construct()
     {
+        $this->import(Database::class, 'Database');
+        $this->import(CatalogInput::class, 'CatalogInput');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
 
         parent::__construct();
-
-        $this->import(Database::class);
-        $this->import(CatalogInput::class);
-        $this->import(CatalogFieldBuilder::class);
     }
 
     public function initialize()
@@ -48,9 +47,7 @@ class CatalogFilter extends CatalogController
         $arrFields = $this->CatalogFieldBuilder->getCatalogFields(true, null, true);
 
         foreach ($arrFields as $strFieldname => $arrField) {
-
             if (in_array($arrField['type'], $this->arrForbiddenFilterTypes)) continue;
-
             $this->arrFields[$arrField['id']] = $arrField['_dcFormat'];
         }
 
@@ -89,12 +86,10 @@ class CatalogFilter extends CatalogController
                 if (is_array($arrField['_cssID']) && ($arrField['_cssID'][0] || $arrField['_cssID'][1])) {
 
                     if ($arrField['_cssID'][0]) {
-
                         $objWidget->id = 'id_' . $arrField['_cssID'][0];
                     }
 
                     if ($arrField['_cssID'][1]) {
-
                         $objWidget->class = ' ' . $arrField['_cssID'][1];
                     }
                 }
@@ -102,7 +97,6 @@ class CatalogFilter extends CatalogController
                 if (!empty($arrFieldsChangeOnSubmit) && is_array($arrFieldsChangeOnSubmit)) {
 
                     if (in_array($arrField['_fieldname'], $arrFieldsChangeOnSubmit)) {
-
                         $objWidget->addAttributes(['onchange' => 'this.form.submit()']);
                     }
                 }
@@ -112,7 +106,6 @@ class CatalogFilter extends CatalogController
                     $arrTemplate = $arrFieldTemplates[$arrField['_fieldname']];
 
                     if ($arrTemplate && $arrTemplate['value']) {
-
                         $objWidget->template = $arrTemplate['value'];
                     }
                 }
@@ -120,15 +113,12 @@ class CatalogFilter extends CatalogController
                 if (!empty($arrFieldDependencies) && is_array($arrFieldDependencies)) {
 
                     $arrDependencies = $arrFieldDependencies[$arrField['_fieldname']];
-
                     if ($arrDependencies && $arrDependencies['value'] && !in_array($arrDependencies['value'], $this->arrDependencies)) {
-
                         continue;
                     }
                 }
 
                 if (!$objWidget->value && $arrField['default']) {
-
                     $objWidget->value = $arrField['default'];
                 }
 

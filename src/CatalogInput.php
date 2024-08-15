@@ -3,7 +3,6 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\Input;
-use Contao\Session;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,19 +16,21 @@ class CatalogInput extends CatalogController
         parent::__construct();
 
         $this->strFormId = md5('tl_filter');
-        $this->import(Input::class);
+        $this->import(Input::class, 'Input');
     }
 
     protected function getPostCookie($strName)
     {
 
         $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
-        $objSession = Session::getInstance();
+        $objSession = System::getContainer()->get('request_stack')->getSession();
         $strActiveValue = $this->Input->post($strName);
         $arrEditingMode = preg_grep('/^act(\d+)/i', array_keys($_GET));
         $arrPagination = preg_grep('/^page_e(\d+)/i', array_keys($_GET));
 
-        if ($this->Input->post('FORM_SUBMIT') == $this->strFormId) $objSession->set($strName, $strActiveValue);
+        if ($this->Input->post('FORM_SUBMIT') == $this->strFormId) {
+            $objSession->set($strName, $strActiveValue);
+        }
 
         if (!empty($arrPagination) || (Toolkit::isEmpty($strActiveValue) && !Toolkit::isEmpty($objSession->get($strName)))) {
             if (!$blnIsBackend) {

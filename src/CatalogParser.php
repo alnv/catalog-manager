@@ -13,9 +13,8 @@ class CatalogParser extends CatalogController
 
     public function __construct()
     {
-
+        $this->import(Database::class, 'Database');
         parent::__construct();
-        $this->import(Database::class);
     }
 
     protected function initialize($strTable)
@@ -42,9 +41,7 @@ class CatalogParser extends CatalogController
         $this->initialize('tl_calendar_events');
 
         if (!is_array($arrCalendarEvents) || !$this->blnActive) return $arrCalendarEvents;
-
         $arrReturn = [];
-
         foreach ($arrCalendarEvents as $intArchive => $arrArchive) {
             foreach ($arrArchive as $arrEventIndex => $arrEvents) {
                 foreach ($arrEvents as $arrEvent) {

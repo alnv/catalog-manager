@@ -13,6 +13,8 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
 use Contao\Database;
+use Alnv\CatalogManagerBundle\DcCallbacks;
+use Alnv\CatalogManagerBundle\Classes\tl_catalog as Catalog;
 
 class tl_catalog extends Backend
 {
@@ -56,8 +58,8 @@ class tl_catalog extends Backend
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['inputType'] = 'select';
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['chosen'] = true;
             $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['eval']['tl_class'] = 'w50 wizard';
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] = ['CatalogManager\classes\catalog', 'getCoreTables'];
-            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['wizard'][] = ['CatalogManager\DcCallbacks', 'getCoreTableLoaderButton'];
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['options_callback'] = [Catalog::class, 'getCoreTables'];
+            $GLOBALS['TL_DCA']['tl_catalog']['fields']['tablename']['wizard'][] = [DcCallbacks::class, 'getCoreTableLoaderButton'];
         }
     }
 
@@ -343,7 +345,6 @@ class tl_catalog extends Backend
     {
 
         if ($varValue && $dc->activeRecord->isBackendModule) {
-
             throw new \Exception('you can not use parent table for backend module.');
         }
 

@@ -7,11 +7,10 @@ class SQLQueryHelper extends CatalogController
 
     public function __construct()
     {
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
 
         parent::__construct();
-
-        $this->import(SQLQueryBuilder::class);
-        $this->import(CatalogFieldBuilder::class);
     }
 
     public function getCatalogTableItemByID($strTablename, $strID)

@@ -22,11 +22,11 @@ class CatalogDcExtractor extends CatalogController
     public function __construct()
     {
 
-        parent::__construct();
+        $this->import(Database::class, 'Database');
+        $this->import(DcModifier::class, 'DcModifier');
+        $this->import(IconGetter::class, 'IconGetter');
 
-        $this->import(Database::class);
-        $this->import(DcModifier::class);
-        $this->import(IconGetter::class);
+        parent::__construct();
     }
 
     public function initialize($strTablename): void
@@ -455,7 +455,7 @@ class CatalogDcExtractor extends CatalogController
         }
 
         if ($arrCatalog['useGeoCoordinates']) {
-            $arrConfigDc['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'generateGeoCords'];
+            $arrConfigDc['onsubmit_callback'][] = [DcCallbacks::class, 'generateGeoCords'];
         }
 
         foreach ($arrConfigDc as $strKey => $strValue) {

@@ -9,7 +9,7 @@ use Alnv\CatalogManagerBundle\Fields\Select;
 use Alnv\CatalogManagerBundle\Fields\Checkbox;
 use Alnv\CatalogManagerBundle\Fields\Text;
 use Alnv\CatalogManagerBundle\Fields\Radio;
-use Contao\Controller;
+use Contao\Date;
 use Contao\Input;
 use Contao\Database;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class OptionsGetter extends CatalogController
     protected array $arrField = [];
     protected array $arrQueries = [];
     protected array $arrCatalog = [];
-    protected string $strActiveTable = '';
+    protected $strActiveTable = '';
     protected array $arrActiveEntity = [];
     protected array $arrCatalogFields = [];
 
@@ -36,19 +36,18 @@ class OptionsGetter extends CatalogController
 
         foreach ($arrQueries as $strQuery) if (!Toolkit::isEmpty($strQuery)) $this->arrQueries[] = $strQuery;
 
-        $this->import(CatalogInput::class);
-        $this->import(OrderByHelper::class);
-        $this->import(SQLQueryHelper::class);
-        $this->import(SQLQueryBuilder::class);
-        $this->import(CatalogDcExtractor::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(CatalogInput::class, 'CatalogInput');
+        $this->import(OrderByHelper::class, 'OrderByHelper');
+        $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
+        $this->import(CatalogDcExtractor::class, 'CatalogDcExtractor');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
     }
 
-    public function isForeignKey()
+    public function isForeignKey(): bool
     {
 
         if (isset($this->arrField['optionsType']) && $this->arrField['optionsType'] && $this->arrField['optionsType'] == 'useForeignKey') {
-
             return true;
         }
 
@@ -57,7 +56,6 @@ class OptionsGetter extends CatalogController
 
     public function getForeignKey()
     {
-
         return $this->setForeignKey();
     }
 
@@ -68,21 +66,18 @@ class OptionsGetter extends CatalogController
 
             case 'useOptions':
                 return $this->getKeyValueOptions();
-
             case 'useForeignKey':
                 $this->arrField['dbTableKey'] = 'id';
                 return $this->getDbOptions();
-
             case 'useDbOptions':
                 return $this->getDbOptions();
-
             case 'useActiveDbOptions':
                 return $this->getActiveDbOptions();
         }
 
         if (!isset($this->arrField['optionsType']) && in_array($this->arrField['fieldname'], ['country', 'countries']) && in_array($this->arrField['type'], ['radio', 'select', 'checkbox'])) {
 
-            return System::getCountries();
+            return Toolkit::getCountries();
         }
 
         return [];
@@ -148,7 +143,7 @@ class OptionsGetter extends CatalogController
             if ($this->arrField['dbDateFormat'] == 'yearBegin') $strFormat = $this->arrField['dbYearBeginFormat'] ?: 'Y';
             if ($this->arrField['dbDateFormat'] == 'dayBegin') $strFormat = $this->arrField['dbDayBeginFormat'] ?: 'l, F Y';
             $strKey = DateInput::parseValue($strValue, ['rgxp' => $this->arrField['dbDateFormat']], []);
-            $strText = Controller::parseDate($strFormat, $strValue);
+            $strText = Date::parse($strFormat, $strValue);
         } else {
             $strText = $this->I18nCatalogTranslator->get('option', $strKey, ['title' => $strText, 'table' => $strTable]);
         }
@@ -235,15 +230,14 @@ class OptionsGetter extends CatalogController
             }
         }
 
-        $objDbOptions = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute($this->SQLQueryBuilder->getValues());
-
-        return $objDbOptions;
+        $arrDbValues = $this->SQLQueryBuilder->getValues();
+        return $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare($strQuery)->execute(...$arrDbValues);
     }
 
     protected function getActiveTable()
     {
 
-        $this->strActiveTable = Input::get('table') ? Input::get('table') : Input::get('ctlg_table');
+        $this->strActiveTable = Input::get('table') ? Input::get('table') : (Input::get('ctlg_table') ?: '');
 
         if (Toolkit::isEmpty($this->strActiveTable) && Input::get('do')) {
 
@@ -425,7 +419,6 @@ class OptionsGetter extends CatalogController
         $strLabelColumn = $this->arrField['dbTableValue'] ?: $this->arrField['dbTableKey'];
 
         if (!$this->arrField['dbTable'] || !$strLabelColumn) {
-
             return '';
         }
 
@@ -445,26 +438,19 @@ class OptionsGetter extends CatalogController
                 $strID = Input::get('id');
 
                 if (Toolkit::isEmpty($strID) || Toolkit::isEmpty($this->strActiveTable)) {
-
                     return null;
                 }
 
                 if (!$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->strActiveTable)) {
-
                     return null;
                 }
 
                 $arrQuery = [
-
                     'table' => $this->strActiveTable,
-
                     'pagination' => [
-
                         'limit' => 1
                     ],
-
                     'where' => [
-
                         [
                             'field' => 'id',
                             'value' => $strID,
@@ -484,7 +470,6 @@ class OptionsGetter extends CatalogController
                     if ($objCatalog->pTable && $this->SQLQueryHelper->SQLQueryBuilder->Database->fieldExists('pid', $this->strActiveTable)) {
 
                         $arrQuery['joins'][] = [
-
                             'field' => 'pid',
                             'onField' => 'id',
                             'multiple' => false,
@@ -494,7 +479,6 @@ class OptionsGetter extends CatalogController
                     }
 
                     if ($this->hasLanguageNavigationBar($objCatalog)) {
-
                         $strDefaultLanguage = Input::get('ctlg_language') ?: $objCatalog->fallbackLanguage;
                         $strLanguageColumn = $objCatalog->languageEntityColumn;
                     }

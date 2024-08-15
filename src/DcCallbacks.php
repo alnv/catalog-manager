@@ -20,10 +20,8 @@ class DcCallbacks extends Backend
 
     public function __construct()
     {
-
+        $this->import(CatalogEvents::class, 'CatalogEvents');
         parent::__construct();
-
-        $this->import(CatalogEvents::class);
     }
 
     public function removeDcFormOperations(&$arrButtons)
@@ -51,7 +49,7 @@ class DcCallbacks extends Backend
         $arrRow['_group'] = $strGroup;
         $arrRow['_field'] = $strField;
 
-        return StringUtil::parseSimpleTokens($strTemplate, $arrRow);
+        return Toolkit::parseSimpleTokens($strTemplate, $arrRow);
     }
 
 
@@ -61,7 +59,7 @@ class DcCallbacks extends Backend
         $arrRow = Toolkit::parseCatalogValues($arrRow, $arrCatalogField, true);
         if ($arrCatalog['labelFormat']) {
             $arrRow['_label'] = $strLabel;
-            return StringUtil::parseSimpleTokens($arrCatalog['labelFormat'], $arrRow);
+            return Toolkit::parseSimpleTokens($arrCatalog['labelFormat'], $arrRow);
         }
         if ($arrCatalog['showColumns']) {
             $strTemplate = '<div class="cm_table" style="margin-left:-20px"><div class="cm_table_tr">';
@@ -87,14 +85,13 @@ class DcCallbacks extends Backend
         $arrRow['_field'] = $strField;
         $arrRow['_label'] = !Toolkit::isEmpty($arrRow[$strField]) ? $arrRow[$strField] : '';
 
-        return StringUtil::parseSimpleTokens($strTemplate, $arrRow);
+        return Toolkit::parseSimpleTokens($strTemplate, $arrRow);
     }
 
     public function pagePicker(DataContainer $dc)
     {
         return ' <a href="' . (($dc->value == '' || strpos($dc->value, '{{link_url::') !== false) ? 'contao/page.php' : 'contao/file.php') . '?do=' . Input::get('do') . '&amp;table=' . $dc->table . '&amp;field=' . $dc->field . '&amp;value=' . rawurlencode(str_replace(array('{{link_url::', '}}'), '', $dc->value)) . '&amp;switch=1' . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\'' . StringUtil::specialchars(str_replace("'", "\\'", $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['label'][0])) . '\',\'url\':this.href,\'id\':\'' . $dc->field . '\',\'tag\':\'ctrl_' . $dc->field . ((Input::get('act') == 'editAll') ? '_' . $dc->id : '') . '\',\'self\':this});return false">' . Image::getHtml('pickpage.gif', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="cursor:pointer"') . '</a>';
     }
-
 
     public function setMultiSrcFlags($varValue, DataContainer $dc)
     {
@@ -106,17 +103,13 @@ class DcCallbacks extends Backend
             switch ($objField->fileType) {
 
                 case 'gallery':
-
                     $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['isGallery'] = true;
                     $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['extensions'] = Config::get('validImageTypes');
-
                     break;
 
                 case 'files':
-
                     $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['isDownloads'] = true;
                     $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['extensions'] = Config::get('allowedDownload');
-
                     break;
             }
         }
@@ -131,8 +124,7 @@ class DcCallbacks extends Backend
         parse_str($strHref, $arrHrefAttributes);
 
         $arrOptions = [
-
-            'icon' => 'invisible.gif',
+            'icon' => 'invisible.svg',
             'fieldname' => 'invisible'
         ];
 
@@ -144,7 +136,6 @@ class DcCallbacks extends Backend
         if ($strCustomFieldname) $arrOptions['fieldname'] = $strCustomFieldname;
 
         if (strlen(Input::get('tid'))) {
-
             $this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1), $strTable, $arrOptions, (@func_get_arg(12) ?: null));
             $this->redirect($this->getReferer());
         }
@@ -152,7 +143,6 @@ class DcCallbacks extends Backend
         $strHref .= '&amp;tid=' . $arrRow['id'] . '&amp;state=' . $arrRow[$arrOptions['fieldname']];
 
         if ($arrRow[$arrOptions['fieldname']]) {
-
             $strIcon = $arrOptions['icon'];
         }
 
@@ -169,16 +159,11 @@ class DcCallbacks extends Backend
         if ($dc) $dc->id = $intId;
 
         if (is_array($GLOBALS['TL_DCA'][$strTable]['config']['onload_callback'])) {
-
             foreach ($GLOBALS['TL_DCA'][$strTable]['config']['onload_callback'] as $callback) {
-
                 if (is_array($callback)) {
-
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}(($dc ?: $this));
-
                 } elseif (is_callable($callback)) {
-
                     $callback(($dc ?: $this));
                 }
             }
@@ -187,11 +172,9 @@ class DcCallbacks extends Backend
         $strTstamp = time();
 
         $arrData = [
-
             'id' => $intId,
             'table' => $strTable,
             'row' => [
-
                 'tstamp' => $strTstamp
             ]
         ];
@@ -214,7 +197,6 @@ class DcCallbacks extends Backend
         if (!$strTable) return $varValue . uniqid('_');
 
         if (!$varValue) {
-
             $blnAutoAlias = true;
             $varValue = str_replace(',', '-', $dc->activeRecord->{$strField});
             $varValue = Toolkit::slug($varValue);
@@ -224,7 +206,6 @@ class DcCallbacks extends Backend
         $strQuery = ' WHERE `alias` = ? AND `id` != ?';
 
         if ($dc->activeRecord->pid) {
-
             $strQuery .= ' AND pid = ?';
             $arrValues[] = $dc->activeRecord->pid;
         }
@@ -232,12 +213,10 @@ class DcCallbacks extends Backend
         $objCatalogs = $this->Database->prepare(sprintf('SELECT * FROM %s ' . $strQuery, $strTable))->execute($arrValues);
 
         if ($objCatalogs->numRows && !$blnAutoAlias) {
-
             throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['aliasExists'], $varValue));
         }
 
         if ($objCatalogs->numRows && $blnAutoAlias) {
-
             $varValue .= '_' . $dc->activeRecord->id;
         }
 
@@ -300,12 +279,10 @@ class DcCallbacks extends Backend
         }
 
         if (!$dc->activeRecord) {
-
             return null;
         }
 
         if ($dc->activeRecord->suspend_geocoding) {
-
             return null;
         }
 
@@ -330,32 +307,24 @@ class DcCallbacks extends Backend
         $strGeoInputType = $arrCatalog['addressInputType'];
 
         switch ($strGeoInputType) {
-
             case 'useSingleField':
-
                 $arrCords = $objGeoCoding->getCords($dc->activeRecord->{$arrCatalog['geoAddress']}, 'en', true);
-
                 break;
 
             case 'useMultipleFields':
-
                 $objGeoCoding->setCity($dc->activeRecord->{$arrCatalog['geoCity']});
                 $objGeoCoding->setStreet($dc->activeRecord->{$arrCatalog['geoStreet']});
                 $objGeoCoding->setPostal($dc->activeRecord->{$arrCatalog['geoPostal']});
                 $objGeoCoding->setCountry($dc->activeRecord->{$arrCatalog['geoCountry']});
                 $objGeoCoding->setStreetNumber($dc->activeRecord->{$arrCatalog['geoStreetNumber']});
-
                 $arrCords = $objGeoCoding->getCords('', 'en', true);
-
                 break;
         }
 
         if (($arrCords['lat'] || $arrCords['lng']) && ($arrCatalog['lngField'] && $arrCatalog['latField'])) {
-
             $arrSet = [];
             $arrSet[$arrCatalog['lngField']] = $arrCords['lng'];
             $arrSet[$arrCatalog['latField']] = $arrCords['lat'];
-
             $this->Database->prepare('UPDATE ' . $arrCatalog['tablename'] . ' %s WHERE id = ?')->set($arrSet)->execute($dc->id);
         }
     }
@@ -428,7 +397,6 @@ class DcCallbacks extends Backend
         if (is_null($dc->activeRecord) || !$strID) return;
 
         $arrData = [
-
             'id' => $strID,
             'table' => $dc->table,
             'row' => $this->getActiveRecordRow($dc->table, $strID)
@@ -442,7 +410,6 @@ class DcCallbacks extends Backend
     {
 
         $arrData = [
-
             'id' => $dc->id,
             'table' => $dc->table,
             'row' => $this->getActiveRecordRow($dc->table, $dc->id)

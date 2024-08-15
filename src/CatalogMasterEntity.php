@@ -3,10 +3,10 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\Input;
+use Contao\Database;
 
 class CatalogMasterEntity extends CatalogController
 {
-
 
     protected string $strTable = '';
 
@@ -23,10 +23,9 @@ class CatalogMasterEntity extends CatalogController
     public function __construct()
     {
 
+        $this->import(Database::class, 'Database');
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
         parent::__construct();
-
-        $this->import('Database');
-        $this->import('SQLQueryBuilder');
     }
 
     public function initialize($strTablename, $arrOptions = [])
@@ -142,7 +141,7 @@ class CatalogMasterEntity extends CatalogController
     }
 
 
-    protected function joinFields()
+    protected function joinFields(): array
     {
 
         $arrReturn = [];
@@ -174,17 +173,17 @@ class CatalogMasterEntity extends CatalogController
         return $arrReturn;
     }
 
-    public function getCatalog()
+    public function getCatalog(): array
     {
         return $this->arrCatalog;
     }
 
-    public function getCatalogFields()
+    public function getCatalogFields(): array
     {
         return $this->arrCatalogFields;
     }
 
-    public function getJoinFields()
+    public function getJoinFields(): array
     {
         return $this->arrJoinFields;
     }

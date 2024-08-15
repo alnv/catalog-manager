@@ -57,7 +57,7 @@ class I18nCatalogTranslator
                     $arrLabels = [$strTitle, $strDescription];
                 }
 
-                if ($blnTitle) return $arrLabels[0] ? $arrLabels[0] : $strName;
+                if ($blnTitle) return $arrLabels[0] ?: $strName;
 
                 return $arrLabels;
 

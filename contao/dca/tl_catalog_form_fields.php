@@ -1,7 +1,9 @@
 <?php
 
-use Contao\DC_Table;
 use Alnv\CatalogManagerBundle\Classes\tl_catalog_form_fields;
+use Contao\DC_Table;
+use Alnv\CatalogManagerBundle\OrderByHelper;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 
 $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
     'config' => [
@@ -9,7 +11,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         'enableVersioning' => true,
         'ptable' => 'tl_catalog_form',
         'onload_callback' => [
-            [tl_catalog_form_fields::class, 'checkPermission' ]
+            [tl_catalog_form_fields::class, 'checkPermission']
         ],
         'sql' => [
             'keys' => [
@@ -19,76 +21,51 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             ]
         ]
     ],
-
     'list' => [
         'sorting' => [
             'mode' => 4,
-            'fields' => [ 'sorting' ],
-            'headerFields' => [ 'id' ],
+            'fields' => ['sorting'],
+            'headerFields' => ['id'],
             'child_record_callback' => [
-
                 tl_catalog_form_fields::class,
                 'setBackendRow'
             ]
         ],
-
         'operations' => [
-
             'edit' => [
-
-                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['edit'],
                 'href' => 'act=edit',
-                'icon' => 'header.gif'
+                'icon' => 'header.svg'
             ],
-
             'copy' => [
-
-                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['copy'],
                 'href' => 'act=paste&amp;mode=copy',
-                'icon' => 'copy.gif'
+                'icon' => 'copy.svg'
             ],
-
             'delete' => [
-
-                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['delete'],
                 'href' => 'act=delete',
-                'icon' => 'delete.gif',
-                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm']??'') . '\'))return false;Backend.getScrollOffset()"'
+                'icon' => 'delete.svg',
+                'attributes' => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\'))return false;Backend.getScrollOffset()"'
             ],
-
             'toggle' => [
-
-                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['toggle'],
-                'icon' => 'visible.gif',
-                'href' => sprintf( 'catalogTable=%s', 'tl_catalog_form_fields' ),
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, '. sprintf( "'%s'", 'tl_catalog_form_fields' ) .' )"',
-                'button_callback' => [ 'CatalogManager\DcCallbacks', 'toggleIcon' ]
+                'icon' => 'visible.svg',
+                'href' => sprintf('catalogTable=%s', 'tl_catalog_form_fields'),
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, ' . sprintf("'%s'", 'tl_catalog_form_fields') . ' )"',
+                'button_callback' => [DcCallbacks::class, 'toggleIcon']
             ],
-
             'show' => [
-
-                'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['show'],
                 'href' => 'act=show',
-                'icon' => 'show.gif'
+                'icon' => 'show.svg'
             ]
         ],
-
         'global_operations' => [
-
             'all' => [
-
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href' => 'act=select',
                 'class' => 'header_edit_all',
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
             ]
         ]
     ],
-
     'palettes' => [
-
-        '__selector__' => [ 'type', 'optionsType', 'dbParseDate', 'autoCompletionType' ],
-
+        '__selector__' => ['type', 'optionsType', 'dbParseDate', 'autoCompletionType'],
         'default' => '{field_type_legend},type,name,title;',
         'text' => '{field_type_legend},type,name,title;{general_legend},label,placeholder,description,defaultValue,rgxp,mandatory,tabindex,cssID;{autocompletion_legend:hide},autoCompletionType;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
         'hidden' => '{field_type_legend},type,name,title,defaultValue;{invisible_legend},invisible;',
@@ -97,49 +74,33 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         'checkbox' => '{field_type_legend},type,name,title;{general_legend},label,description,defaultValue,submitOnChange,mandatory,cssID;{option_legend},optionsType;{date_legend:hide},dbParseDate;{dependency_legend},dependOnField,requiredOptions;{template_legend:hide},template;{invisible_legend},invisible;',
         'range' => '{field_type_legend},type,name,title;{general_legend},rangeLowLabel,rangeGreatLabel,description,mandatory,cssID;{dependency_legend:hide},dependOnField;{template_legend:hide},template;{invisible_legend:hide},invisible;',
     ],
-
     'subpalettes' => [
-
         'optionsType_useOptions' => 'options',
         'dbParseDate' => 'dbDateFormat,dbDayBeginFormat,dbMonthBeginFormat,dbYearBeginFormat',
         'autoCompletionType_useDbOptions' => 'dbTable,dbTableKey,dbTaxonomy,multiple',
         'optionsType_useActiveDbOptions' => 'dbTable,dbColumn,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
         'optionsType_useDbOptions' => 'dbTable,dbTableKey,dbTableValue,dbTaxonomy,dbOrderBy,dbIgnoreEmptyValues',
     ],
-
     'fields' => [
-
         'id' => [
-
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ],
-
         'pid' => [
-
             'foreignKey' => 'tl_catalog_form.id',
-
             'relation' => [
-
                 'type' => 'belongsTo',
                 'load' => 'eager'
             ],
-
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-
         'sorting' => [
-
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ],
-
         'tstamp' => [
-
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ],
-
         'type' => [
-
-            'label' =>  &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'],
+            'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['type'],
             'inputType' => 'select',
             'default' => 'text',
 
@@ -327,7 +288,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"
         ],
-        
+
         'dependOnField' => [
 
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dependOnField'],
@@ -339,10 +300,10 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 128,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getFormFields' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getFormFields'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -376,7 +337,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'submitOnChange' => true
             ],
 
-            'options' => [ 'useOptions', 'useDbOptions', 'useActiveDbOptions' ],
+            'options' => ['useOptions', 'useDbOptions', 'useActiveDbOptions'],
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['optionsType'],
 
             'exclude' => true,
@@ -410,7 +371,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'tl_class' => 'w50'
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getTableColumns' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getTableColumns'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -429,10 +390,10 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'mandatory' => true,
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=>true,
+                'includeBlankOption' => true,
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getTables' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getTables'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -451,7 +412,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'mandatory' => true,
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getColumnsByDbTable' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getColumnsByDbTable'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -470,7 +431,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'mandatory' => true
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getColumnsByDbTable' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getColumnsByDbTable'],
 
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
@@ -485,8 +446,8 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
                 'tl_class' => 'clr',
                 'dcTable' => 'tl_catalog_form_fields',
-                'taxonomyTable' => [tl_catalog_form_fields::class, 'getTaxonomyTable' ],
-                'taxonomyEntities' => [tl_catalog_form_fields::class, 'getTaxonomyFields' ]
+                'taxonomyTable' => [tl_catalog_form_fields::class, 'getTaxonomyTable'],
+                'taxonomyEntities' => [tl_catalog_form_fields::class, 'getTaxonomyFields']
             ],
 
             'exclude' => true,
@@ -534,7 +495,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'tl_class' => 'clr',
             ],
 
-            'options' => [ 'dayBegin', 'monthBegin', 'yearBegin' ],
+            'options' => ['dayBegin', 'monthBegin', 'yearBegin'],
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['dbDateFormat'],
             'exclude' => true,
             'sql' => "varchar(12) NOT NULL default ''"
@@ -587,21 +548,17 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
         ],
 
         'dbOrderBy' => [
-
             'label' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['dbOrderBy'],
             'inputType' => 'catalogDuplexSelectWizard',
-
             'eval' => [
-
                 'chosen' => true,
                 'blankOptionLabel' => '-',
                 'includeBlankOption' => true,
                 'mainLabel' => 'catalogManagerFields',
                 'dependedLabel' => 'catalogManagerOrder',
-                'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
-                'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
+                'mainOptions' => [OrderByHelper::class, 'getSortableFields'],
+                'dependedOptions' => [OrderByHelper::class, 'getOrderByItems']
             ],
-
             'exclude' => true,
             'sql' => "blob NULL"
         ],
@@ -660,13 +617,13 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
 
             'eval' => [
 
-                'chosen'=> true,
-                'tl_class'=> 'w50',
+                'chosen' => true,
+                'tl_class' => 'w50',
                 'maxlength' => 64,
-                'includeBlankOption'=> true
+                'includeBlankOption' => true
             ],
 
-            'options_callback' => [tl_catalog_form_fields::class, 'getFieldTemplates' ],
+            'options_callback' => [tl_catalog_form_fields::class, 'getFieldTemplates'],
 
             'exclude' => true,
             'sql' => "varchar(64) NOT NULL default ''"
@@ -705,7 +662,7 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'tl_class' => 'clr',
                 'submitOnChange' => true,
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
             'options' => [
@@ -730,10 +687,10 @@ $GLOBALS['TL_DCA']['tl_catalog_form_fields'] = [
                 'maxlength' => 16,
                 'tl_class' => 'w50',
                 'blankOptionLabel' => '-',
-                'includeBlankOption'=> true,
+                'includeBlankOption' => true,
             ],
 
-            'options' => [ 'date', 'time', 'dateTime' ],
+            'options' => ['date', 'time', 'dateTime'],
             'reference' => &$GLOBALS['TL_LANG']['tl_catalog_form_fields']['reference']['rgxp'],
 
             'exclude' => true,

@@ -9,10 +9,8 @@ class SQLBuilder extends CatalogController
 
     public function __construct()
     {
-
+        $this->import(Database::class, 'Database');
         parent::__construct();
-
-        $this->import(Database::class);
     }
 
     public function parseCreateFieldStatement($strField, $strSQLStatement)

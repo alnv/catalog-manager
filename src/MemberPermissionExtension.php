@@ -9,11 +9,9 @@ class MemberPermissionExtension extends CatalogController
 
     public function __construct()
     {
-
+        $this->import(SQLBuilder::class, 'SQLBuilder');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
         parent::__construct();
-
-        $this->import(SQLBuilder::class);
-        $this->import(I18nCatalogTranslator::class);
     }
 
 

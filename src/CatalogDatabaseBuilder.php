@@ -37,8 +37,8 @@ class CatalogDatabaseBuilder extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
-        $this->import(Automator::class);
+        $this->import(Database::class, 'Database');
+        $this->import(Automator::class, 'Automator');
     }
 
 

@@ -88,7 +88,6 @@ class ModuleUniversalView extends Module
 
     protected function compile()
     {
-
         switch ($this->strAct) {
             case 'create':
             case 'copy':
@@ -114,7 +113,7 @@ class ModuleUniversalView extends Module
     private function deleteEntityFromCatalog()
     {
 
-        $this->import(FrontendEditing::class);
+        $this->import(FrontendEditing::class, 'FrontendEditing');
 
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
@@ -123,15 +122,12 @@ class ModuleUniversalView extends Module
         $this->FrontendEditing->initialize();
 
         $blnIsVisible = $this->FrontendEditing->isVisible();
-
         if (!$this->FrontendEditing->checkPermission($this->strAct) || !$this->catalogEnableFrontendEditing) {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set403();
         }
 
         if (!$blnIsVisible) {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }
@@ -142,8 +138,8 @@ class ModuleUniversalView extends Module
     private function determineCatalogView()
     {
 
-        $this->import(CatalogView::class);
-        $this->import(CatalogMessage::class);
+        $this->import(CatalogView::class, 'CatalogView');
+        $this->import(CatalogMessage::class, 'CatalogMessage');
 
         $arrQuery = [
             'where' => [],
@@ -153,7 +149,7 @@ class ModuleUniversalView extends Module
         $this->CatalogView->strMode = 'view';
         $this->CatalogView->arrOptions = $this->arrData;
         $this->CatalogView->objMainTemplate = $this->Template;
-        $this->CatalogView->strTemplate = $this->catalogTemplate ? $this->catalogTemplate : 'catalog_teaser';
+        $this->CatalogView->strTemplate = $this->catalogTemplate ?: 'catalog_teaser';
         $this->CatalogView->initialize();
 
         $this->Template->showAsGroup = $this->CatalogView->showAsGroup();
@@ -173,7 +169,7 @@ class ModuleUniversalView extends Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import(CatalogAjaxController::class);
+            $this->import(CatalogAjaxController::class, 'CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
                 'map' => $this->Template->map,
@@ -194,7 +190,7 @@ class ModuleUniversalView extends Module
     private function determineMasterView()
     {
 
-        $this->import(CatalogView::class);
+        $this->import(CatalogView::class, 'CatalogView');
 
         $arrQuery = [
             'where' => [
@@ -226,16 +222,12 @@ class ModuleUniversalView extends Module
         $this->CatalogView->getCommentForm($this->CatalogView->strMasterID);
 
         if (empty($strOutput)) {
-
             if ($this->catalogAutoRedirect && $this->catalogViewPage && $this->catalogUseViewPage) {
-
                 if ($objRedirect = PageModel::findByPk($this->catalogViewPage)) {
                     Controller::redirect($objRedirect->getFrontendUrl());
                 }
-
                 return null;
             }
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }
@@ -246,7 +238,7 @@ class ModuleUniversalView extends Module
 
         if ($this->catalogSendJsonHeader) {
 
-            $this->import(CatalogAjaxController::class);
+            $this->import(CatalogAjaxController::class, 'CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
                 'data' => $this->Template->data,
@@ -263,7 +255,7 @@ class ModuleUniversalView extends Module
     private function determineFormView(): void
     {
 
-        $this->import(FrontendEditing::class);
+        $this->import(FrontendEditing::class, 'FrontendEditing');
 
         $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : []; // out
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ?: 'form_catalog_default';
@@ -272,17 +264,14 @@ class ModuleUniversalView extends Module
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrQueries = empty($arrQueries) ? [] : $arrQueries; // []
         $this->FrontendEditing->initialize();
-
         $blnIsVisible = $this->FrontendEditing->isVisible();
 
         if (!$this->FrontendEditing->checkPermission($this->strAct) || !$this->catalogEnableFrontendEditing) {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set403();
         }
 
         if (!$blnIsVisible && $this->strAct != 'create') {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Alnv\CatalogManagerBundle\classes;
+namespace Alnv\CatalogManagerBundle\Classes;
 
 
 use Alnv\CatalogManagerBundle\CatalogFieldBuilder;

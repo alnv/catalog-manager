@@ -10,19 +10,16 @@ class UserPermissionExtension extends CatalogController
 
         parent::__construct();
 
-        $this->import(SQLBuilder::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(SQLBuilder::class, 'SQLBuilder');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
     }
 
     public function initialize($strDcName)
     {
 
         if ($strDcName == 'tl_user' || $strDcName == 'tl_user_group') {
-
             if (!empty($GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS']) && is_array($GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'])) {
-
                 foreach ($GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] as $arrCatalog) {
-
                     $this->extendUserAndUserGroupDCA($arrCatalog['tablename'], $strDcName, $arrCatalog['type']);
                 }
             }

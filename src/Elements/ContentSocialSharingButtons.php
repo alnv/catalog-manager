@@ -22,7 +22,7 @@ class ContentSocialSharingButtons extends ContentElement
 
         if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
             $objTemplate = new BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'][0]) . ' ###';
+            $objTemplate->wildcard = '### ' . \strtoupper($GLOBALS['TL_LANG']['CTE']['catalogSocialSharingButtons'][0]) . ' ###';
             return $objTemplate->parse();
         }
 
@@ -34,9 +34,8 @@ class ContentSocialSharingButtons extends ContentElement
     protected function compile()
     {
 
-
-        $this->import(CatalogMasterEntity::class);
-        $this->import(SocialSharingButtons::class);
+        $this->import(CatalogMasterEntity::class, 'CatalogMasterEntity');
+        $this->import(SocialSharingButtons::class, 'SocialSharingButtons');
 
         $this->cssID = Toolkit::deserialize($this->cssID);
 

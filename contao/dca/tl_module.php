@@ -1,6 +1,7 @@
 <?php
 
 use Alnv\CatalogManagerBundle\Classes\tl_module;
+use Alnv\CatalogManagerBundle\OrderByHelper;
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = [tl_module::class, 'generateGeoCords'];
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [tl_module::class, 'checkModuleRequirements'];
@@ -416,8 +417,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
         'includeBlankOption' => true,
         'mainLabel' => 'catalogManagerFields',
         'dependedLabel' => 'catalogManagerOrder',
-        'mainOptions' => ['CatalogManager\OrderByHelper', 'getSortableFields'],
-        'dependedOptions' => ['CatalogManager\OrderByHelper', 'getOrderByItems']
+        'mainOptions' => [OrderByHelper::class, 'getSortableFields'],
+        'dependedOptions' => [OrderByHelper::class, 'getOrderByItems']
     ],
 
     'exclude' => true,

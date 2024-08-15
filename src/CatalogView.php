@@ -73,8 +73,6 @@ class CatalogView extends CatalogController
 
     protected bool $blnHasOperations = false;
 
-    protected array $arrRoutingParameter = [];
-
     protected bool $blnGoogleMapScript = false;
 
     protected array $arrCatalogStaticFields = [];
@@ -87,15 +85,15 @@ class CatalogView extends CatalogController
 
         parent::__construct();
 
-        $this->import(IconGetter::class);
-        $this->import(CatalogInput::class);
-        $this->import(CatalogEvents::class);
-        $this->import(TemplateHelper::class);
-        $this->import(SQLQueryHelper::class);
-        $this->import(SQLQueryBuilder::class);
-        $this->import(CatalogFieldBuilder::class);
-        $this->import(I18nCatalogTranslator::class);
-        $this->import(FrontendEditingPermission::class);
+        $this->import(IconGetter::class, 'IconGetter');
+        $this->import(CatalogInput::class, 'CatalogInput');
+        $this->import(CatalogEvents::class, 'CatalogEvents');
+        $this->import(TemplateHelper::class, 'TemplateHelper');
+        $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
+        $this->import(FrontendEditingPermission::class, 'FrontendEditingPermission');
     }
 
 
@@ -189,20 +187,6 @@ class CatalogView extends CatalogController
 
         $this->setRelatedTables();
 
-        if ($objPage->catalogRoutingTable && $objPage->catalogRoutingTable !== $this->catalogTablename) {
-            $objPage->catalogUseRouting = '';
-        }
-
-        if ($objPage->catalogUseRouting && $objPage->catalogRouting && !Config::get('CTLG_IGNORE_LIST_ROUTING')) {
-            $this->arrRoutingParameter = Toolkit::getRoutingParameter($objPage->catalogRouting);
-        }
-
-        if (empty($this->arrRoutingParameter) && $this->catalogUseMasterPage) {
-            if ($this->arrMasterPage['catalogUseRouting']) {
-                $this->arrRoutingParameter = Toolkit::getRoutingParameter($this->arrMasterPage['catalogRouting']);
-            }
-        }
-
         if ($this->enableTableView && $this->strMode == 'view') {
             $this->strTemplate = $this->catalogTableBodyViewTemplate;
             $this->catalogActiveTableColumns = $this->setActiveTableColumns();
@@ -225,8 +209,8 @@ class CatalogView extends CatalogController
         $this->objMainTemplate->catalogEntityFields = $this->arrEntityFields;
 
         $this->objMainTemplate->mapProtected = Config::get('catalogMapProtected');
-        $this->objMainTemplate->mapPrivacyText = Controller::replaceInsertTags(Config::get('catalogMapPrivacyText'));
-        $this->objMainTemplate->mapPrivacyButtonText = Controller::replaceInsertTags((Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText']));
+        $this->objMainTemplate->mapPrivacyText = Toolkit::replaceInsertTags(Config::get('catalogMapPrivacyText'));
+        $this->objMainTemplate->mapPrivacyButtonText = Toolkit::replaceInsertTags((Config::get('catalogMapPrivacyButtonText') ?: $GLOBALS['TL_LANG']['MSC']['googleMapPrivacyAcceptText']));
 
         $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
 
@@ -940,7 +924,6 @@ class CatalogView extends CatalogController
             if ($intIndex == ($intNumRows - 1)) $arrCatalog['cssClass'] .= ' last';
 
             $objTemplate->setData($arrCatalog);
-
             $strContent .= $objTemplate->parse();
         }
 
@@ -1012,7 +995,7 @@ class CatalogView extends CatalogController
 
         if ($this->arrCatalog['useRedirect'] && $this->arrCatalog['internalUrlColumn']) {
             if ($arrCatalog[$this->arrCatalog['internalUrlColumn']]) {
-                return \Controller::replaceInsertTags($arrCatalog[$this->arrCatalog['internalUrlColumn']]);
+                return Toolkit::replaceInsertTags($arrCatalog[$this->arrCatalog['internalUrlColumn']]);
             }
         }
 
@@ -1030,11 +1013,6 @@ class CatalogView extends CatalogController
 
     protected function getAliasWithParameters($strAlias, $arrCatalog = [])
     {
-
-        if (!empty($this->arrRoutingParameter) && is_array($this->arrRoutingParameter)) {
-            return Toolkit::generateAliasWithRouting($strAlias, $this->arrRoutingParameter, $arrCatalog);
-        }
-
         return $strAlias;
     }
 
@@ -1279,7 +1257,7 @@ class CatalogView extends CatalogController
 
         if ($objPage == null) return '';
 
-        if (!is_object($objPage)) {
+        if (is_object($objPage)) {
             return $objPage->getFrontendUrl(($strAlias ? '/' . $strAlias : ''));
         }
 
@@ -1438,7 +1416,7 @@ class CatalogView extends CatalogController
                 $arrTableData['title'] = $strTitle;
                 $arrTableData['info'] = $arrCatalog['info'];
                 $arrTableData['description'] = $arrCatalog['description'];
-                $arrTableData['url'] = Controller::replaceInsertTags($arrRelatedTable['pageURL']);
+                $arrTableData['url'] = Toolkit::replaceInsertTags($arrRelatedTable['pageURL']);
                 $arrTableData['image'] = Image::getHtml($this->IconGetter->setCatalogIcon($arrRelatedTable['table']), $strTitle);
 
                 $this->arrRelatedTables[$arrRelatedTable['table']] = $arrTableData;

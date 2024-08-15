@@ -6,11 +6,11 @@ use Contao\Input;
 use Contao\StringUtil;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Alnv\CatalogManagerBundle\OptionsGetter;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\CatalogScriptLoader;
 
 class Text
 {
-
 
     public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true): array
     {
@@ -35,7 +35,7 @@ class Text
             $arrDCAField['eval']['addWizardClass'] = true;
             $arrDCAField['eval']['decodeEntities'] = true;
             $arrDCAField['eval']['tl_class'] .= ' wizard';
-            $arrDCAField['wizard'][] = ['CatalogManager\DcCallbacks', 'pagePicker'];
+            $arrDCAField['wizard'][] = [DcCallbacks::class, 'pagePicker'];
         }
 
         if (isset($arrField['autoCompletionType']) && $arrField['autoCompletionType']) {
@@ -54,7 +54,6 @@ class Text
 
         return $arrDCAField;
     }
-
 
     public static function parseValue($varValue, $arrField, $arrCatalog)
     {
@@ -82,7 +81,6 @@ class Text
 
         return $varValue;
     }
-
 
     protected static function sendJsonResponse($arrField, $strModuleID, $strKeyword)
     {

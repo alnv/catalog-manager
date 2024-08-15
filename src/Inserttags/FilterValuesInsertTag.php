@@ -12,8 +12,9 @@ class FilterValuesInsertTag extends Frontend
     {
 
         $arrTags = explode('::', $strTag);
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
 
-        if (is_array($arrTags) && $arrTags[0] == 'CTLG_FILTER_VALUES') {
+        if (is_array($arrTags) && $strInsertTagName == 'CTLG_FILTER_VALUES') {
 
             $varValue = '';
             $arrParameter = [];
@@ -36,26 +37,20 @@ class FilterValuesInsertTag extends Frontend
 
 
             $intIndex = 0;
-            $this->import(CatalogInput::class);
+            $this->import(CatalogInput::class, 'CatalogInput');
 
             if (!empty($arrParameter) && is_array($arrParameter)) {
 
                 foreach ($arrParameter as $strParameter) {
-
                     $varInputValue = $this->CatalogInput->getActiveValue($strParameter);
-
                     if (is_null($varInputValue) || $varInputValue === '') continue;
-
                     if (is_array($varInputValue)) {
-
                         foreach ($varInputValue as $strValue) {
-
                             $varValue .= $this->parseToUri($strParameter, $strValue, true, $intIndex);
                         }
                     }
 
                     if (is_string($varInputValue)) {
-
                         $varValue .= $this->parseToUri($strParameter, $varInputValue, false, $intIndex);
                     }
 

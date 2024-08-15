@@ -25,7 +25,7 @@ class IconGetter extends CatalogController
 
         if ($strCustomIcon != '') return $strCustomIcon;
 
-        return 'system/modules/catalog-manager/assets/icons/catalog-icon.svg';
+        return 'bundles/alnvcatalogmanager/icons/catalog-icon.svg';
     }
 
 
@@ -36,7 +36,7 @@ class IconGetter extends CatalogController
 
         if ($strCustomIcon != '') return $strCustomIcon;
 
-        return 'system/modules/catalog-manager/assets/icons/catalog-icon.svg';
+        return 'bundles/alnvcatalogmanager/icons/catalog-icon.svg';
     }
 
 
@@ -45,7 +45,7 @@ class IconGetter extends CatalogController
 
         $strIconname = $strTablename . '-' . 'tag';
         $strCustomIcon = $this->getIcon($strIconname);
-        $strIcon = 'system/modules/catalog-manager/assets/icons/tag-icon.svg';
+        $strIcon = 'bundles/alnvcatalogmanager/icons/tag-icon.svg';
 
         if ($strCustomIcon != '') {
             $strIcon = $strCustomIcon;
@@ -62,7 +62,7 @@ class IconGetter extends CatalogController
 
         $strIconname = $strTablename . (!$blnVisible ? '_' : '');
         $strCustomIcon = $this->getIcon($strIconname);
-        $strPath = 'system/modules/catalog-manager/assets/icons/';
+        $strPath = 'bundles/alnvcatalogmanager/icons/';
 
         if ($blnVisible) {
             return $strCustomIcon ?: $strPath . 'featured.svg';

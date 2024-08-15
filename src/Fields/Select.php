@@ -4,13 +4,12 @@ namespace Alnv\CatalogManagerBundle\Fields;
 
 use Alnv\CatalogManagerBundle\Toolkit;
 use Alnv\CatalogManagerBundle\OptionsGetter;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 
 class Select
 {
 
-
     public static array $arrCache = [];
-
 
     public static function generate($arrDCAField, $arrField, $objModule = null, $blnActive = true): array
     {
@@ -34,7 +33,7 @@ class Select
         if ($arrField['addRelationWizard'] && in_array($arrField['optionsType'], ['useDbOptions', 'useForeignKey']) && !$arrDCAField['eval']['multiple']) {
 
             if ($arrField['dbTable'] && $arrField['dbTableKey'] == 'id') {
-                $arrDCAField['wizard'] = [['CatalogManager\DcCallbacks', 'generateRelationWizard']];
+                $arrDCAField['wizard'] = [[DcCallbacks::class, 'generateRelationWizard']];
                 $arrDCAField['eval']['chosen'] = true;
                 $arrDCAField['eval']['submitOnChange'] = true;
                 $arrDCAField['eval']['tl_class'] .= $arrDCAField['eval']['tl_class'] ? ' wizard' : 'wizard';
@@ -44,12 +43,10 @@ class Select
         return $arrDCAField;
     }
 
-
     public static function parseValue($varValue, $arrField, $arrCatalog)
     {
 
         if (!$varValue) return $arrField['multiple'] ? [] : '';
-
 
         static::getOptionsFromCache($arrField['fieldname'], $arrField);
 
@@ -72,7 +69,6 @@ class Select
         return $arrSet[$varValue] ?? $varValue;
     }
 
-
     protected static function getOptionsFromCache($strFieldname, $arrField)
     {
 
@@ -83,7 +79,6 @@ class Select
             static::$arrCache[$strFieldname] = $objOptionGetter->getOptions();
         }
     }
-
 
     protected static function getOptions($arrDCAField, $arrField, $strID, $blnActive)
     {

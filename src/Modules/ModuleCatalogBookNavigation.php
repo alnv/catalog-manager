@@ -17,11 +17,11 @@ class ModuleCatalogBookNavigation extends Module
     
     protected array $arrFields = [];
     
-    protected $strAlias = null;
+    protected $strAlias;
     
     protected array $arrCatalog = [];
     
-    protected $objMasterPage = null;
+    protected $objMasterPage;
     
     protected array $arrRoutingParameter = [];
     
@@ -54,13 +54,12 @@ class ModuleCatalogBookNavigation extends Module
         return parent::generate();
     }
 
-
     protected function compile()
     {
 
         global $objPage;
 
-        $this->import(SQLQueryBuilder::class);
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
 
         if ($this->catalogMasterPage) {
             $this->objMasterPage = PageModel::findByPk($this->catalogMasterPage);
@@ -148,12 +147,10 @@ class ModuleCatalogBookNavigation extends Module
         $this->Template->items = $arrNavigationItems;
     }
 
-
     protected function getManuelNavigation($arrQuery, $blnVisibility, $arrTaxonomies)
     {
 
         $arrReturn = [];
-
         $arrQuery['where'][] = [
             [
                 'field' => 'alias',

@@ -2,6 +2,7 @@
 
 use Contao\Input;
 use Alnv\CatalogManagerBundle\Classes\tl_content;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogCatalogEntity'] = '{type_legend},type,headline;{entity_legend},catalogTablename,catalogEntityId,catalogEntityTemplate,catalogRedirectType;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['catalogFilterForm'] = '{type_legend},type,headline;{include_legend},catalogForm;{template_legend:hide},customCatalogElementTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space;{invisible_legend:hide},invisible,start,stop';
@@ -257,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['catalogEntityTemplate'] = [
 if (!isset($GLOBALS['TL_DCA']['tl_content']['edit'])) $GLOBALS['TL_DCA']['tl_content']['edit'] = [];
 if (!isset($GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'])) $GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'] = [];
 
-$GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'][] = ['CatalogManager\DcCallbacks', 'removeDcFormOperations'];
+$GLOBALS['TL_DCA']['tl_content']['edit']['buttons_callback'][] = [DcCallbacks::class, 'removeDcFormOperations'];
 
 if (Input::get('do') && is_array($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'])) {
 

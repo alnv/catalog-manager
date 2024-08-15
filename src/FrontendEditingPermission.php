@@ -19,10 +19,10 @@ class FrontendEditingPermission extends CatalogController
 
     public function __construct()
     {
-        parent::__construct();
-
-        $this->import(SQLQueryHelper::class);
+        $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
         $this->import(FrontendUser::class, 'User');
+
+        parent::__construct();
     }
 
     public function initialize()

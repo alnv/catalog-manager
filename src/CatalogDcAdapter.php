@@ -15,7 +15,6 @@ class CatalogDcAdapter extends CatalogController
         parent::__construct();
     }
 
-
     public function initialize($strTablename): void
     {
         if ($this->shouldLoadDc($strTablename)) {
@@ -25,7 +24,6 @@ class CatalogDcAdapter extends CatalogController
         }
     }
 
-
     protected function shouldLoadDc($strTablename): bool
     {
 
@@ -33,10 +31,8 @@ class CatalogDcAdapter extends CatalogController
         $blnIsCoreTable = in_array($strTablename, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES']);
 
         if (!$blnIsBackend && !$blnIsCoreTable) {
-
             $objDatabase = Database::getInstance();
             $objCatalog = $objDatabase->prepare('SELECT id FROM tl_catalog WHERE tablename = ?')->limit(1)->execute($strTablename);
-
             return (bool)$objCatalog->numRows;
         }
 

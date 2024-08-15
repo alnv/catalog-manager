@@ -1,6 +1,8 @@
 <?php
 
 use Contao\DC_Table;
+use Alnv\CatalogManagerBundle\OrderByHelper;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\Classes\tl_catalog_fields;
 
 $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
@@ -59,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'icon' => 'visible.svg',
                 'href' => sprintf('catalogTable=%s', 'tl_catalog_fields'),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s, ' . sprintf("'%s'", 'tl_catalog_fields') . ' )"',
-                'button_callback' => ['CatalogManager\DcCallbacks', 'toggleIcon']
+                'button_callback' => [DcCallbacks::class, 'toggleIcon']
             ],
             'show' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_catalog_fields']['show'],
@@ -1298,8 +1300,8 @@ $GLOBALS['TL_DCA']['tl_catalog_fields'] = [
                 'includeBlankOption' => true,
                 'mainLabel' => 'catalogManagerFields',
                 'dependedLabel' => 'catalogManagerOrder',
-                'mainOptions' => ['CatalogManager\OrderByHelper', 'getSortableFields'],
-                'dependedOptions' => ['CatalogManager\OrderByHelper', 'getOrderByItems']
+                'mainOptions' => [OrderByHelper::class, 'getSortableFields'],
+                'dependedOptions' => [OrderByHelper::class, 'getOrderByItems']
             ],
 
             'exclude' => true,

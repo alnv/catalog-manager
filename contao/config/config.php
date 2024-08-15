@@ -1,6 +1,7 @@
 <?php
 
 use Alnv\CatalogManagerBundle\Backend\SupportPage;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\Modules\ModuleCatalogBookNavigation;
 use Alnv\CatalogManagerBundle\Modules\ModuleUniversalView;
 use Alnv\CatalogManagerBundle\Modules\ModuleMasterView;
@@ -95,17 +96,15 @@ $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnUpdate'] = [];
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnDelete'] = [];
 
-
+$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [UserPermissionExtension::class, 'initialize'];
+$GLOBALS['TL_HOOKS']['initializeSystem'][] = [CatalogManagerInitializer::class, 'initialize'];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [CatalogDcAdapter::class, 'initialize'];
 $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [CatalogBreadcrumb::class, 'initialize'];
 $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [SearchIndexBuilder::class, 'initialize'];
-$GLOBALS['TL_HOOKS']['loadDataContainer'][] = [UserPermissionExtension::class, 'initialize'];
-$GLOBALS['TL_HOOKS']['initializeSystem'][] = [CatalogManagerInitializer::class, 'initialize'];
 $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [MemberPermissionExtension::class, 'initialize'];
 $GLOBALS['TL_HOOKS']['outputBackendTemplate'][] = [BackendTemplateParser::class, 'outputBackendTemplate'];
 $GLOBALS['TL_HOOKS']['getContentElement'][] = [CatalogContentElementParser::class, 'parseVisibilityPanels'];
 $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [CatalogWidgetAttributeParser::class, 'parseCatalogNavigationAreasWidget'];
-
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [PseudoInsertTag::class, 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [ActiveInsertTag::class, 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [MasterInsertTag::class, 'getInsertTagValue'];

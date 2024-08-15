@@ -3,6 +3,7 @@
 namespace Alnv\CatalogManagerBundle\Fields;
 
 use Alnv\CatalogManagerBundle\Toolkit;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\GalleryCreator;
 use Alnv\CatalogManagerBundle\DownloadsCreator;
 use Contao\Config;
@@ -32,7 +33,7 @@ class Upload
         if ($arrField['fileType'] == 'gallery') {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
-            $arrDCAField['load_callback'] = [['DcCallbacks', 'setMultiSrcFlags']];
+            $arrDCAField['load_callback'] = [[DcCallbacks::class, 'setMultiSrcFlags']];
 
             if ($arrField['sortBy'] == 'custom' && $arrField['orderField']) {
                 $arrDCAField['eval']['orderField'] = $arrField['orderField'];
@@ -52,7 +53,7 @@ class Upload
         if ($arrField['fileType'] == 'files') {
             $arrDCAField['eval']['multiple'] = true;
             $arrDCAField['eval']['fieldType'] = 'checkbox';
-            $arrDCAField['load_callback'] = [['DcCallbacks', 'setMultiSrcFlags']];
+            $arrDCAField['load_callback'] = [[DcCallbacks::class, 'setMultiSrcFlags']];
 
             if ($arrField['sortBy'] == 'custom' && $arrField['orderField']) {
 
@@ -147,9 +148,7 @@ class Upload
         if ($varValue != '') {
 
             $objFile = FilesModel::findByUuid($varValue);
-
             if ($objFile !== null) {
-
                 return Image::getHtml(Image::get($objFile->path, 0, 0), '', 'class="' . $arrField['fieldname'] . '_preview ctlg_thumbnail_preview"');
             }
         }

@@ -17,7 +17,6 @@ use Alnv\CatalogManagerBundle\Elements\Entity;
 class FrontendEditing extends CatalogController
 {
 
-
     public string $strAct = '';
 
     public string $strItemID = '';
@@ -60,13 +59,13 @@ class FrontendEditing extends CatalogController
 
         parent::__construct();
 
-        $this->import(CatalogEvents::class);
-        $this->import(CatalogMessage::class);
-        $this->import(SQLQueryHelper::class);
-        $this->import(SQLQueryBuilder::class);
-        $this->import(CatalogFineUploader::class);
-        $this->import(CatalogFieldBuilder::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(CatalogEvents::class, 'CatalogEvents');
+        $this->import(CatalogMessage::class, 'CatalogMessage');
+        $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
+        $this->import(CatalogFineUploader::class, 'CatalogFineUploader');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
     }
 
 
@@ -172,18 +171,15 @@ class FrontendEditing extends CatalogController
         }
 
         if (!$this->disableCaptcha) {
-
             $objCaptcha = $this->getCaptcha();
             $this->objTemplate->captchaWidget = $objCaptcha->parse();
         }
 
         if (!$this->blnNoSubmit && Input::post('FORM_DELETE_IMAGE')) {
-
             $this->deleteImage();
         }
 
         if (!$this->blnNoSubmit && Input::post('FORM_SUBMIT') == $this->strFormId) {
-
             $this->saveEntity();
         }
 
@@ -192,7 +188,6 @@ class FrontendEditing extends CatalogController
             global $objPage;
 
             if (!$this->catalogFrontendEditingViewPage) {
-
                 $this->catalogFrontendEditingViewPage = $objPage->id;
             }
 
@@ -1068,13 +1063,13 @@ class FrontendEditing extends CatalogController
         if (($intPage = intval($intPage)) <= 0) return '';
 
         $objPage = PageModel::findWithDetails($intPage);
-        $strUrl = $this->generateFrontendUrl($objPage->row(), '', $objPage->language, true);
+        $strUrl = $objPage->getFrontendUrl();
 
         if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = Environment::get('base') . $strUrl;
         if ($strAttributes) $strUrl .= $strAttributes;
 
         if ($this->catalogFormRedirectParameter) {
-            $strParameters = StringUtil::parseSimpleTokens($this->catalogFormRedirectParameter, $this->arrValues);
+            $strParameters = Toolkit::parseSimpleTokens($this->catalogFormRedirectParameter, $this->arrValues);
             $strUrl .= $strAttributes ? '&' . $strParameters : '?' . $strParameters;
         }
 

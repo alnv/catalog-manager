@@ -11,6 +11,7 @@ use Alnv\CatalogManagerBundle\CatalogFormFilter;
 use Contao\Date;
 use Contao\Frontend;
 use Contao\Input;
+use Contao\System;
 use Contao\StringUtil;
 
 class CatalogInsertTag extends Frontend
@@ -24,7 +25,9 @@ class CatalogInsertTag extends Frontend
 
         if (empty($arrTags) || !is_array($arrTags)) return false;
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_LIST') {
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
+
+        if ($strInsertTagName == 'CTLG_LIST') {
 
             $strDefault = '';
             $strModuleId = '';
@@ -80,9 +83,9 @@ class CatalogInsertTag extends Frontend
 
             if (!$objModule->numRows) return '';
 
-            $this->import(CatalogInput::class);
-            $this->import(SQLQueryBuilder::class);
-            $this->import(CatalogFieldBuilder::class);
+            $this->import(CatalogInput::class, 'CatalogInput');
+            $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
+            $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
 
             $arrQuery = [
 
@@ -99,7 +102,7 @@ class CatalogInsertTag extends Frontend
                 $arrQuery['where'] = Toolkit::parseQueries($arrTaxonomies['query']);
             }
 
-            if (is_array($arrCatalog['operations']) && in_array('invisible', $arrCatalog['operations']) && !BE_USER_LOGGED_IN) {
+            if (is_array($arrCatalog['operations']) && in_array('invisible', $arrCatalog['operations']) && !System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
 
                 $dteTime = Date::floorToMinute();
                 $arrQuery['where'][] = [
@@ -232,7 +235,6 @@ class CatalogInsertTag extends Frontend
                 }
 
                 $arrValues = explode(',', $strValue);
-
                 if (!is_array($arrValues) || empty($arrValues)) {
                     continue;
                 }
@@ -247,7 +249,7 @@ class CatalogInsertTag extends Frontend
             return implode($strDelimiter, $arrReturn);
         }
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_FORM') {
+        if ($strInsertTagName == 'CTLG_FORM') {
 
             $strFormId = $arrTags[1];
 
@@ -268,10 +270,10 @@ class CatalogInsertTag extends Frontend
             return $objForm->render();
         }
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_ENTITY_URL') {
+        if ($strInsertTagName == 'CTLG_ENTITY_URL') {
 
-            $strModuleId = $arrTags[1];
-            $strEntityId = $arrTags[2];
+            $strModuleId = $arrTags[1] ?? '';
+            $strEntityId = $arrTags[2] ?? '';
 
             if (!$strModuleId || !$strEntityId) {
 

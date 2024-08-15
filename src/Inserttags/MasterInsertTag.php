@@ -18,17 +18,18 @@ class MasterInsertTag extends Frontend
         $arrTags = explode('::', $strTag);
 
         if (empty($arrTags) || !is_array($arrTags)) {
-
             return false;
         }
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_MASTER') {
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
+
+        if ($strInsertTagName == 'CTLG_MASTER') {
 
             if (!$objPage->catalogUseMaster) {
                 return '';
             }
 
-            $this->import(CatalogMasterEntity::class);
+            $this->import(CatalogMasterEntity::class, 'CatalogMasterEntity');
 
             $strText = '';
             $arrJoinOnly = [];

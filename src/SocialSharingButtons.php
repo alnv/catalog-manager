@@ -26,7 +26,6 @@ class SocialSharingButtons extends CatalogController
         $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
         $this->strTemplate = $strTemplate ? $strTemplate : $this->strTemplate;
         $this->arrSocialSharingButtons = is_array($arrSocialSharingButtons) ? $arrSocialSharingButtons : [];
-
         $this->arrCssID = Toolkit::deserialize($arrTemplateData['catalogSocialSharingCssID']);
         $this->arrHeadline = Toolkit::deserialize($arrTemplateData['catalogSocialSharingHeadline']);
 

@@ -123,7 +123,7 @@ class tl_module extends Backend
 
     public function getSystemCountries(): array
     {
-        return array_values($this->getcountries());
+        return array_values(Toolkit::getcountries());
     }
 
 
@@ -451,9 +451,7 @@ class tl_module extends Backend
         $arrFields = $objFieldBuilder->getCatalogFields(true, null);
 
         foreach ($arrFields as $strFieldname => $arrField) {
-
             if (!in_array($arrField['type'], Toolkit::$arrDoNotRenderInFastMode)) continue;
-
             $arrReturn[$strFieldname] = Toolkit::getLabelValue($arrField['_dcFormat']['label'], $strFieldname);
         }
 
@@ -470,9 +468,7 @@ class tl_module extends Backend
         $arrColumns = $this->getTaxonomyFields($dc, $dc->activeRecord->catalogTablename, []);
 
         if (!empty($arrColumns) && is_array($arrColumns)) {
-
             foreach ($arrColumns as $strFieldname => $arrField) {
-
                 $arrReturn[$strFieldname] = Toolkit::getLabelValue($arrField['label'], $strFieldname) . '[' . $strFieldname . ']';
             }
         }
@@ -492,7 +488,6 @@ class tl_module extends Backend
         $arrTypes = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'];
 
         if (!empty($arrTypes) && is_array($arrTypes)) {
-
             $strWhere = ' WHERE ' . implode(' OR ', array_fill(0, count($arrTypes), 'type=?'));
             $arrValues = $arrTypes;
         }
@@ -500,7 +495,6 @@ class tl_module extends Backend
         $objNotifications = $this->Database->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')->execute($arrValues);
 
         while ($objNotifications->next()) {
-
             $arrChoices[$objNotifications->id] = $objNotifications->title;
         }
 
@@ -512,7 +506,6 @@ class tl_module extends Backend
     {
 
         $arrTemplates = [
-
             'catalogFilter' => 'mod_catalog_filter',
             'catalogMasterView' => 'mod_catalog_master',
             'catalogTaxonomyTree' => 'mod_catalog_taxonomy',

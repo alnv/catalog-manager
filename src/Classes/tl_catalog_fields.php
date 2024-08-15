@@ -7,7 +7,7 @@ use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
 use Alnv\CatalogManagerBundle\DcModifier;
 use Alnv\CatalogManagerBundle\DcPermission;
 use Alnv\CatalogManagerBundle\I18nCatalogTranslator;
-use CatalogManager\Toolkit;
+use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\ArrayUtil;
 use Contao\Backend;
 use Contao\DataContainer;
@@ -124,24 +124,21 @@ class tl_catalog_fields extends Backend
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `id` = ?')->limit(1)->execute($strCatalogID)->row();
         $strTablename = $arrCatalog['tablename'];
 
+
         $objDatabaseBuilder = new CatalogDatabaseBuilder();
         $objDatabaseBuilder->initialize($strTablename, $arrCatalog);
-        $objDatabaseBuilder->setColumn($dc->activeRecord->row());
+        $objDatabaseBuilder->setColumn((array) $dc->activeRecord);
 
         if (in_array($strFieldname, Toolkit::columnsBlacklist())) {
-
             throw new \Exception(sprintf('fieldname "%s" is not allowed.', $strFieldname));
         }
 
         if ($dc->activeRecord->tstamp) {
-
             $objDatabaseBuilder->columnCheck();
-
             return null;
         }
 
         if (!$this->Database->fieldExists($strFieldname, $strTablename)) {
-
             $objDatabaseBuilder->createColumn();
         }
     }

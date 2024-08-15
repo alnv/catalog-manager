@@ -15,8 +15,8 @@ class DcModifier extends CatalogController
 
     public function __construct()
     {
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
         parent::__construct();
-        $this->import(I18nCatalogTranslator::class);
     }
 
     public function initialize($strTablename)

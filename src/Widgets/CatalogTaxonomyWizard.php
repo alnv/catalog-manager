@@ -41,7 +41,7 @@ class CatalogTaxonomyWizard extends Widget
     public function generate()
     {
 
-        $this->import(CatalogFieldBuilder::class);
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
         $strCommand = 'cmd_' . $this->strField;
 
         if (!$this->varValue) $this->varValue = [];
@@ -67,7 +67,6 @@ class CatalogTaxonomyWizard extends Widget
                 case 'addOrQuery':
                     $arrOrQuery = [
                         'value' => '',
-                        'field' => 'id',
                         'operator' => 'equal'
                     ];
                     $arrOrQuery['field'] = $this->varValue['query'][$strCID]['field'];

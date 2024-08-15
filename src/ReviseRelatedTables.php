@@ -13,7 +13,7 @@ class ReviseRelatedTables extends Controller
 
     public function __construct()
     {
-        $this->import(Database::class);
+        $this->import(Database::class, 'Database');
         parent::__construct();
     }
 
@@ -21,7 +21,6 @@ class ReviseRelatedTables extends Controller
     {
 
         $objCatalogDb = $this->Database->prepare('SELECT id FROM tl_catalog WHERE tablename = ?')->execute($strTable);
-
         if (!$objCatalogDb->count()) {
             return false;
         }

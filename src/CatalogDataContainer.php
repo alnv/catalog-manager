@@ -9,8 +9,8 @@ class CatalogDataContainer extends DataContainer
 
     public function __construct($strTable)
     {
-        parent::__construct();
         $this->table = $strTable;
+        parent::__construct();
     }
 
     public function __set($strKey, $varValue)

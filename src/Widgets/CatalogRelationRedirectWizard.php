@@ -42,8 +42,8 @@ class CatalogRelationRedirectWizard extends Widget
     public function generate()
     {
 
-        $this->import(Database::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(Database::class, 'Database');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
 
         $arrButtons = ['up', 'down'];
         $strCommand = 'cmd_' . $this->strField;

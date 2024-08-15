@@ -8,7 +8,7 @@ use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\DataContainer;
-use Contao\System;
+use Contao\DC_Table;
 use Contao\Date;
 
 class DcBuilder extends CatalogController
@@ -41,11 +41,11 @@ class DcBuilder extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
-        $this->import(IconGetter::class);
-        $this->import(CatalogDcExtractor::class);
-        $this->import(CatalogFieldBuilder::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(Database::class, 'Database');
+        $this->import(IconGetter::class, 'IconGetter');
+        $this->import(CatalogDcExtractor::class, 'CatalogDcExtractor');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
 
         $this->blnActive = $blnActive;
         $this->arrCatalog = $arrCatalog;
@@ -128,11 +128,8 @@ class DcBuilder extends CatalogController
         $GLOBALS['TL_LANG'][$this->strTable]['show'] = $this->I18nCatalogTranslator->getShowLabel();
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerOnCreateDataContainerArray'] as $arrCallback) {
-
                 if (is_array($arrCallback)) {
-
                     $this->import($arrCallback[0]);
                     $this->{$arrCallback[0]}->{$arrCallback[1]}($this->strTable, $this);
                 }
@@ -144,7 +141,7 @@ class DcBuilder extends CatalogController
     {
 
         $arrReturn = [
-            'dataContainer' => 'Table',
+            'dataContainer' => DC_Table::class,
             'label' => $this->I18nCatalogTranslator->get('module', $this->strTable, ['titleOnly' => true]),
             'enableVersioning' => (bool)$this->arrCatalog['useVC'],
             'oncut_callback' => [],
@@ -159,7 +156,7 @@ class DcBuilder extends CatalogController
         ];
 
         if ($this->arrCatalog['useGeoCoordinates']) {
-            $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'generateGeoCords'];
+            $arrReturn['onsubmit_callback'][] = [DcCallbacks::class, 'generateGeoCords'];
         }
 
         foreach ($this->arrFields as $arrField) {
@@ -199,16 +196,16 @@ class DcBuilder extends CatalogController
             if (Input::get('ctlg_language') && Input::get('act') !== 'create') {
                 $arrReturn['closed'] = true;
             }
-            $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'setFallbackAndLanguage'];
-            $arrReturn['onload_callback'][] = ['CatalogManager\DcCallbacks', 'setGlobalTranslateButton'];
-            $arrReturn['ondelete_callback'][] = ['CatalogManager\DcCallbacks', 'deleteTranslations'];
-            $arrReturn['oncopy_callback'][] = ['CatalogManager\DcCallbacks', 'copyTranslations'];
-            $arrReturn['oncut_callback'][] = ['CatalogManager\DcCallbacks', 'cutTranslations'];
+            $arrReturn['onsubmit_callback'][] = [DcCallbacks::class, 'setFallbackAndLanguage'];
+            $arrReturn['onload_callback'][] = [DcCallbacks::class, 'setGlobalTranslateButton'];
+            $arrReturn['ondelete_callback'][] = [DcCallbacks::class, 'deleteTranslations'];
+            $arrReturn['oncopy_callback'][] = [DcCallbacks::class, 'copyTranslations'];
+            $arrReturn['oncut_callback'][] = [DcCallbacks::class, 'cutTranslations'];
         }
 
-        $arrReturn['oncut_callback'][] = ['CatalogManager\DcCallbacks', 'onCutCallback'];
-        $arrReturn['onsubmit_callback'][] = ['CatalogManager\DcCallbacks', 'onSubmitCallback'];
-        $arrReturn['ondelete_callback'][] = ['CatalogManager\DcCallbacks', 'onDeleteCallback'];
+        $arrReturn['oncut_callback'][] = [DcCallbacks::class, 'onCutCallback'];
+        $arrReturn['onsubmit_callback'][] = [DcCallbacks::class, 'onSubmitCallback'];
+        $arrReturn['ondelete_callback'][] = [DcCallbacks::class, 'onDeleteCallback'];
 
         return $arrReturn;
     }
@@ -233,12 +230,9 @@ class DcBuilder extends CatalogController
                 $strTemplate = $this->IconGetter->setTreeViewIcon($this->arrCatalog['tablename'], $arrRow, $strLabel, $dc, $strImageAttribute, $blnReturnImage, $blnProtected);
 
                 if ($this->arrCatalog['useOwnLabelFormat']) {
-
                     $strTemplate .= !Toolkit::isEmpty($this->arrCatalog['labelFormat']) ? $this->arrCatalog['labelFormat'] : $strTemplate;
                 } else {
-
                     if (!$arrRow['pid']) $strTemplate .= ' <strong>' . $strLabel . '</strong>';
-
                     else $strTemplate .= ' <span>' . $strLabel . '</span>';
                 }
 
@@ -326,7 +320,7 @@ class DcBuilder extends CatalogController
 
         if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['mode'] = 5;
-            $arrReturn['paste_button_callback'] = ['CatalogManager\DcCallbacks', 'pasteItem'];
+            $arrReturn['paste_button_callback'] = [DcCallbacks::class, 'pasteItem'];
         }
 
         if ($this->hasLanguageNavigationBar() && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn']) {
@@ -377,7 +371,7 @@ class DcBuilder extends CatalogController
                 'icon' => 'visible.gif',
                 'href' => sprintf('catalogTable=%s', $this->strTable),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility( this,%s,' . sprintf("'%s'", $this->strTable) . ' )"',
-                'button_callback' => ['DcCallbacks', 'toggleIcon']
+                'button_callback' => [DcCallbacks::class, 'toggleIcon']
             ],
             'show' => [
 
@@ -451,7 +445,7 @@ class DcBuilder extends CatalogController
 
                         'href' => $strHref,
                         'icon' => $strInVisibleIcon,
-                        'button_callback' => ['DcCallbacks', 'toggleIcon'],
+                        'button_callback' => [DcCallbacks::class, 'toggleIcon'],
                         'label' => $this->I18nCatalogTranslator->get('field', $arrField['fieldname'], ['title' => $arrField['title'], 'description' => $arrField['description']]),
                         'attributes' => 'onclick="Backend.getScrollOffset();return CatalogManager.CatalogToggleVisibility( this,%s,' . sprintf("'%s'", $strVisibleIcon) . ', ' . sprintf("'%s'", $strInVisibleIcon) . ', ' . sprintf("'%s'", $strHref) . ' )"'
                     ];
@@ -468,14 +462,13 @@ class DcBuilder extends CatalogController
                 unset($arrReturn['copy']);
             } else {
 
-                $arrLanguages = System::getLanguages();
-
+                $arrLanguages = Toolkit::getLanguages();
                 foreach ($this->arrCatalog['languages'] as $strLanguage) {
                     $arrReturn[$strLanguage] = [
                         'href' => 'ctlg_language=' . $strLanguage,
                         'label' => ['', $arrLanguages[$strLanguage]],
                         'icon' => $this->IconGetter->setLanguageIcon($strLanguage),
-                        'button_callback' => ['DcCallbacks', 'generateLanguageButton']
+                        'button_callback' => [DcCallbacks::class, 'generateLanguageButton']
                     ];
                 }
             }
@@ -500,7 +493,7 @@ class DcBuilder extends CatalogController
             $arrReturn['new'] = [
                 'label' => &$GLOBALS['TL_LANG']['MSC']['translate'],
                 'class' => 'header_new',
-                'button_callback' => ['DcCallbacks', 'generateNewTranslationButton'],
+                'button_callback' => [DcCallbacks::class, 'generateNewTranslationButton'],
                 'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="n"'
             ];
 

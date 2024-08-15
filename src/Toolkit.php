@@ -303,6 +303,16 @@ class Toolkit
         return $arrReturn;
     }
 
+    public static function getCountries(): array
+    {
+        return System::getContainer()->get('contao.intl.countries')->getCountries();
+    }
+
+    public static function getLanguages(): array
+    {
+        return System::getContainer()->get('contao.intl.locales')->getLocales();
+    }
+
     public static function prepareValue4Db($varValue)
     {
 
@@ -633,7 +643,7 @@ class Toolkit
         return $arrData;
     }
 
-    public static function parseCatalogValue($strValue, $arrField, $arrData = []): string
+    public static function parseCatalogValue($strValue, $arrField, $arrData = [])
     {
 
         $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
@@ -888,11 +898,11 @@ class Toolkit
     public static function parseSimpleTokens($strSimpleTokens, $arrValues): string
     {
         $objSimpleTokenParser = System::getContainer()->get('contao.string.simple_token_parser');
-        return $objSimpleTokenParser->parse($strSimpleTokens, $arrValues);
+        return $objSimpleTokenParser->parse(($strSimpleTokens ?: ''), $arrValues);
     }
 
     public static function replaceInsertTags($strTemplate)
     {
-        return System::getContainer()->get('contao.insert_tag.parser')->replaceInline($strTemplate);
+        return System::getContainer()->get('contao.insert_tag.parser')->replaceInline(($strTemplate ?: ''));
     }
 }

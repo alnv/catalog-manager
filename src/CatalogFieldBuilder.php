@@ -35,8 +35,8 @@ class CatalogFieldBuilder extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
-        $this->import(I18nCatalogTranslator::class);
+        $this->import(Database::class, 'Database');
+        $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
     }
 
     public function initialize($strTablename, $blnActive = true)
@@ -51,10 +51,8 @@ class CatalogFieldBuilder extends CatalogController
             return true;
         } else {
 
-            $objCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `tablename` = ?')->limit(1)->execute($strTablename, '1');
-
+            $objCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `tablename` = ?')->limit(1)->execute($strTablename);
             if ($objCatalog !== null) {
-
                 if ($objCatalog->numRows) {
                     $this->arrCatalog = Toolkit::parseCatalog($objCatalog->row());
                     return true;

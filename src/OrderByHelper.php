@@ -12,7 +12,7 @@ class OrderByHelper extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
+        $this->import(Database::class, 'Database');
     }
 
     protected function getCatalogTablename($objWidget): string

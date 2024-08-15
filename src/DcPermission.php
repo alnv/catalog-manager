@@ -15,7 +15,7 @@ class DcPermission extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
+        $this->import(Database::class, 'Database');
         $this->import(BackendUser::class, 'User');
     }
 

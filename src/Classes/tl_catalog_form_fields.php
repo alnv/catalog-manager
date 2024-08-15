@@ -1,18 +1,20 @@
 <?php
 
-namespace Alnv\CatalogManagerBundle\classes;
+namespace Alnv\CatalogManagerBundle\Classes;
 
 use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
 use Alnv\CatalogManagerBundle\DcPermission;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Backend;
+use Contao\Input;
 use Contao\DataContainer;
 
 class tl_catalog_form_fields extends Backend
 {
 
     protected $strTablename;
-    protected $arrFields = [];
+
+    protected array $arrFields = [];
 
     public function __construct()
     {
@@ -21,13 +23,11 @@ class tl_catalog_form_fields extends Backend
         $this->strTablename = $this->getTablename();
     }
 
-
     public function checkPermission()
     {
         $objDcPermission = new DcPermission();
         $objDcPermission->checkPermissionByParent('tl_catalog_form_fields', 'tl_catalog_form', 'filterform', 'filterformp');
     }
-
 
     public function getFilterFormFields(): array
     {
@@ -41,13 +41,10 @@ class tl_catalog_form_fields extends Backend
         ];
     }
 
-
     public function setBackendRow($arrRow)
     {
-
         return $arrRow["title"] . '<span style="color: #cccccc;"> [' . $arrRow["name"] . ']</span>';
     }
-
 
     public function getTableColumns()
     {
@@ -58,19 +55,16 @@ class tl_catalog_form_fields extends Backend
         if (empty($arrFields) || !is_array($arrFields)) return $arrReturn;
 
         foreach ($arrFields as $strFieldname => $arrField) {
-
-            $arrReturn[$strFieldname] = $arrField['label'][0] ? $arrField['label'][0] : $strFieldname;
+            $arrReturn[$strFieldname] = $arrField['label'][0] ?: $strFieldname;
         }
 
         return $arrReturn;
     }
 
-
     public function getTables()
     {
         return $this->Database->listTables(null);
     }
-
 
     public function getColumnsByDbTable(DataContainer $dc)
     {
@@ -85,9 +79,7 @@ class tl_catalog_form_fields extends Backend
             $arrFields = $objCatalogFieldBuilder->getCatalogFields(true, null);
 
             foreach ($arrFields as $strFieldname => $arrField) {
-
                 if (!$this->Database->fieldExists($strFieldname, $strTablename)) continue;
-
                 $arrReturn[$strFieldname] = Toolkit::getLabelValue($arrField['_dcFormat']['label'], $strFieldname);
             }
         }
@@ -95,32 +87,26 @@ class tl_catalog_form_fields extends Backend
         return $arrReturn;
     }
 
-
     public function getTaxonomyTable(DataContainer $dc)
     {
         return $dc->activeRecord->dbTable ? $dc->activeRecord->dbTable : '';
     }
-
 
     public function getTaxonomyFields(DataContainer $dc, $strTablename)
     {
         return $this->getTableColumnsByTablename($strTablename, ['upload'], true);
     }
 
-
     protected function getTablename()
     {
 
-        $objForm = $this->Database->prepare('SELECT * FROM tl_catalog_form_fields WHERE id = ?')->limit(1)->execute(\Input::get('id'));
-
+        $objForm = $this->Database->prepare('SELECT * FROM tl_catalog_form_fields WHERE id=?')->limit(1)->execute(Input::get('id'));
         if ($objForm->numRows) {
-
             return $objForm->dbTable;
         }
 
         return null;
     }
-
 
     protected function getTableColumnsByTablename($strTablename, $arrForbiddenTypes = [], $blnFullContext = false)
     {
@@ -146,17 +132,14 @@ class tl_catalog_form_fields extends Backend
         return $arrReturn;
     }
 
-
-    public function getFieldTemplates(\DataContainer $dc)
+    public function getFieldTemplates(DataContainer $dc)
     {
-
         $strType = $dc->activeRecord->type ? $dc->activeRecord->type : '';
-
         return $this->getTemplateGroup(sprintf('ctlg_form_field_%s', $strType));
     }
 
 
-    public function getFormFields(\DataContainer $dc)
+    public function getFormFields(DataContainer $dc)
     {
 
         $arrReturn = [];
@@ -165,7 +148,6 @@ class tl_catalog_form_fields extends Backend
         if (!$objFields->numRows) return $arrReturn;
 
         while ($objFields->next()) {
-
             $arrReturn[$objFields->name] = $objFields->title ? $objFields->title : $objFields->name;
         }
 
@@ -173,9 +155,8 @@ class tl_catalog_form_fields extends Backend
     }
 
 
-    public function getRGXPTypes()
+    public function getRGXPTypes(): array
     {
-
         return ['url', 'time', 'date', 'alias', 'alnum', 'alpha', 'datim', 'digit', 'email', 'extnd', 'phone', 'prcnt', 'locale', 'emails', 'natural', 'friendly', 'language', 'folderalias'];
     }
 }

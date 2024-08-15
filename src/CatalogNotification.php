@@ -33,8 +33,8 @@ class CatalogNotification extends CatalogController
 
         $this->strItemID = $strID;
         $this->objModule = $objModule;
-        $this->import(SQLQueryHelper::class);
-        $this->import(CatalogFieldBuilder::class);
+        $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
+        $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
 
         $this->blnEnable = (class_exists('NotificationCenter\Model\Notification') && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists('tl_nc_notification'));
 

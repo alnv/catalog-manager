@@ -40,8 +40,8 @@ class CatalogFormFilter extends CatalogController
 
         parent::__construct();
 
-        $this->import(Database::class);
-        $this->import(CatalogInput::class);
+        $this->import(Database::class, 'Database');
+        $this->import(CatalogInput::class, 'CatalogInput');
 
         $this->strFormId = $strId;
         $this->initialize();
@@ -181,7 +181,7 @@ class CatalogFormFilter extends CatalogController
 
         if ($this->arrForm['sendJsonHeader']) {
 
-            $this->import(CatalogAjaxController::class);
+            $this->import(CatalogAjaxController::class, 'CatalogAjaxController');
 
             $this->CatalogAjaxController->setData([
                 'form' => $this->arrForm,

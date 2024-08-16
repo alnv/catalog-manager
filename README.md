@@ -1,7 +1,12 @@
 Catalog Manager - Eine Contao CMS Erweiterung
 =============================================
 
-**Catalog-Manager v3 für Contao 5 -> https://extensions.contao.org/?q=cata&pages=1&p=alnv%2Fcatalog-manager-bundle**
+| Contao Version | PHP Version  | Catalog-Manager Version                                                   | Status                                          |
+|----------------|--------------|---------------------------------------------------------------------------|-------------------------------------------------|
+| 4.1.* - 4.13.* | ^7.0 ǀǀ ^8.0 | [1.32.*](https://github.com/alnv/catalog-manager)                         | Bugfixing & Sicherheitsupdates                  |
+| 4.9.* ǀǀ 4.13  | > 8.0        | 2.0                                                                       | Deprecated                                      |
+| 5.3.*          | > 8.2        | [2.0.0 - Legacy ](https://github.com/alnv/catalog-manager/tree/contao5)   | Bugfixing & Sicherheitsupdates                  |
+| 4.13.* - 5.3.* | > 8.1        | [3.0.*](https://github.com/alnv/contao-catalog-manager-bundle)            | Neue Funktionen, Bugfixing & Sicherheitsupdates |
 
 ## Lizenzinformationen
 Catalog Manager kann kostenfrei und uneingeschränkt getestet werden. 

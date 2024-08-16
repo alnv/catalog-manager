@@ -28,12 +28,12 @@ $GLOBALS['TL_DCA']['tl_catalog_form'] = [
             'fields' => ['id', 'title', 'method']
         ],
         'operations' => [
-            'editFields' => [
-                'href' => 'table=tl_catalog_form_fields',
-                'icon' => 'edit.svg'
-            ],
             'edit' => [
                 'href' => 'act=edit',
+                'icon' => 'edit.svg'
+            ],
+            'editFields' => [
+                'href' => 'table=tl_catalog_form_fields',
                 'icon' => 'children.svg'
             ],
             'copy' => [

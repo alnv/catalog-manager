@@ -4,7 +4,7 @@
       <?= $this->message ?>
    <?php endif; ?>
    <form method="<?= $this->method ?>" <?php if ( $this->action ): ?> action="<?= $this->action ?>"<?php endif; ?> enctype="<?= $this->enctype ?>" <?= $this->attributes ?>>
-      <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+      <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>" />
       <input type="hidden" name="FORM_SUBMIT" value="<?=$this->onChangeId ?>" />
       <div class="fields_container">
          <?php foreach ( $this->categories as $strPalette => $strField ): ?>

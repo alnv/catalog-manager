@@ -4,6 +4,7 @@ namespace Alnv\CatalogManagerBundle\Forms;
 
 use Alnv\CatalogManagerBundle\CatalogFineUploader;
 use Contao\Config;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Dbafs;
 use Contao\Environment;
 use Contao\File;
@@ -16,6 +17,7 @@ use Contao\UploadableWidgetInterface;
 use Contao\Validator;
 use Contao\Files;
 use Contao\Widget;
+use Psr\Log\LogLevel;
 
 class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterface
 {
@@ -297,7 +299,9 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
                         'uuid' => $strUuid
                     ];
 
-                    // $this->log('File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', __METHOD__, TL_FILES);
+                    System::getContainer()
+                        ->get('monolog.logger.contao')
+                        ->log(LogLevel::INFO, 'File "' . $strUploadFolder . '/' . $arrFile['name'] . '" has been uploaded', ['contao' => new ContaoContext(__CLASS__ . '::' . __FUNCTION__)]);
                 }
             }
         }

@@ -3,6 +3,7 @@
 namespace Alnv\CatalogManagerBundle;
 
 use Contao\Config;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Date;
 use Contao\Environment;
 use Contao\FilesModel;
@@ -13,6 +14,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\PageModel;
 use Alnv\CatalogManagerBundle\Elements\Entity;
+use Psr\Log\LogLevel;
 
 class FrontendEditing extends CatalogController
 {
@@ -57,8 +59,6 @@ class FrontendEditing extends CatalogController
     public function __construct()
     {
 
-        parent::__construct();
-
         $this->import(CatalogEvents::class, 'CatalogEvents');
         $this->import(CatalogMessage::class, 'CatalogMessage');
         $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
@@ -66,6 +66,8 @@ class FrontendEditing extends CatalogController
         $this->import(CatalogFineUploader::class, 'CatalogFineUploader');
         $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
         $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
+
+        parent::__construct();
     }
 
 
@@ -154,16 +156,12 @@ class FrontendEditing extends CatalogController
         $arrCategories = [];
 
         if (!is_array($this->catalogExcludedFields)) {
-
             $this->catalogExcludedFields = [];
         }
 
         if (!empty($this->arrPalettes) && is_array($this->arrPalettes)) {
-
             foreach ($this->arrPalettes as $strPalette => $arrFieldNames) {
-
                 if (!empty($arrFieldNames) && is_array($arrFieldNames)) {
-
                     $strLegend = $this->arrPaletteLabels[$strPalette];
                     $arrCategories[$strLegend] = $this->renderFieldsByPalette($arrFieldNames, $strPalette);
                 }
@@ -201,6 +199,7 @@ class FrontendEditing extends CatalogController
         }
 
         $this->objTemplate->method = 'POST';
+        $this->objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
         $this->objTemplate->formId = $this->strFormId;
         $this->objTemplate->categories = $arrCategories;
         $this->objTemplate->onChangeId = $this->strOnChangeId;
@@ -589,19 +588,16 @@ class FrontendEditing extends CatalogController
 
     protected function hasVisibility(): bool
     {
-
+        
         if ($this->catalogIgnoreVisibility && $this->catalogEnableFrontendEditing) {
-
             return false;
         }
 
         if (!is_array($this->arrCatalog['operations'])) {
-
             return false;
         }
 
         if (!in_array('invisible', $this->arrCatalog['operations'])) {
-
             return false;
         }
 
@@ -617,7 +613,7 @@ class FrontendEditing extends CatalogController
 
         $this->import(FrontendEditingPermission::class, 'FrontendEditingPermission');
 
-        $this->FrontendEditingPermission->blnDisablePermissions = (bool)$this->catalogEnableFrontendPermission;
+        $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
         $this->FrontendEditingPermission->initialize();
 
         return $this->FrontendEditingPermission->hasAccess($this->catalogTablename);
@@ -631,7 +627,7 @@ class FrontendEditing extends CatalogController
         if (!is_array($this->catalogItemOperations)) $this->catalogItemOperations = [];
         if (!in_array($strMode, $this->catalogItemOperations)) return false;
 
-        $this->FrontendEditingPermission->blnDisablePermissions = (bool)$this->catalogEnableFrontendPermission;
+        $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
         $this->FrontendEditingPermission->initialize();
 
         if ($strMode == 'copy') $strMode = 'create';
@@ -675,15 +671,18 @@ class FrontendEditing extends CatalogController
 
             $this->CatalogEvents->addEventListener('delete', $arrData, $this);
             $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE id = ? ', $this->catalogTablename))->execute($this->strItemID);
-            // \System::log('DELETE FROM ' . $this->catalogTablename . ' WHERE id=' . $this->strItemID, __METHOD__, TL_GENERAL);
-            // $this->deleteChildEntities( $this->catalogTablename, $this->strItemID );
+
+            System::getContainer()
+                ->get('monolog.logger.contao')
+                ->log(LogLevel::INFO, 'DELETE FROM ' . $this->catalogTablename . ' WHERE id=' . $this->strItemID, ['contao' => new ContaoContext(__CLASS__ . '::' . __FUNCTION__)]);
+
+            // $this->deleteChildEntities($this->catalogTablename, $this->strItemID);
         }
 
         $strAttributes = '';
         $objPage = PageModel::findWithDetails($this->strRedirectID);
-        $strUrl = $objPage?->getFrontendUrl(); //$this->generateFrontendUrl($objPage->row(), '', $objPage->language, true);
+        $strUrl = $objPage?->getFrontendUrl();
 
-        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = Environment::get('base') . $strUrl;
         if (Input::get('pid')) $strAttributes .= '?pid=' . Input::get('pid');
         if ($strAttributes) $strUrl .= $strAttributes;
 
@@ -718,7 +717,7 @@ class FrontendEditing extends CatalogController
                     $this->deleteChildEntities($strTable, $objEntity->id);
                 }
 
-                $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE pid = ?' . ($strPtable ? ' AND ptable = ?' : ''), $strTable))->execute($arrValues);
+                $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE pid = ?' . ($strPtable ? ' AND ptable = ?' : ''), $strTable))->execute(...$arrValues);
             }
         }
     }
@@ -845,10 +844,12 @@ class FrontendEditing extends CatalogController
             }
 
             $this->arrValues = $arrEntity;
+            if (!isset($this->arrValues['id'])) {
+                $this->arrValues['id'] = $this->strItemID;
+            }
         }
 
         if (!empty($this->arrValues)) {
-
             foreach ($this->arrValues as $strFieldname => $varValue) {
                 $this->arrValues[$strFieldname] = Input::post($strFieldname) !== null ? Input::post($strFieldname) : $varValue;
             }
@@ -919,7 +920,7 @@ class FrontendEditing extends CatalogController
         */
 
         $objDcCallbacks = new DcCallbacks();
-        $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias($this->arrValues['alias'], $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);
+        $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias(($this->arrValues['alias'] ?? ''), $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] as $arrCallback) {
@@ -937,37 +938,34 @@ class FrontendEditing extends CatalogController
             case 'create':
 
                 if ($this->SQLBuilder->Database->fieldExists('pid', $this->catalogTablename) && $this->arrCatalog['pTable']) {
-
                     if (!Input::get('pid')) return null;
-
                     $this->arrValues['pid'] = Input::get('pid');
                 }
 
                 if ($this->SQLBuilder->Database->fieldExists('sorting', $this->catalogTablename)) {
-
                     $intSort = $this->SQLBuilder->Database->prepare(sprintf('SELECT MAX(sorting) FROM %s;', $this->catalogTablename))->execute()->row('MAX(sorting)')[0];
                     $this->arrValues['sorting'] = intval($intSort) + 100;
                 }
 
 
                 if ($this->SQLBuilder->Database->fieldExists('tstamp', $this->catalogTablename)) {
-
                     $this->arrValues['tstamp'] = Date::floorToMinute();
                 }
 
                 $strInsertId = $this->SQLBuilder->Database->prepare('INSERT INTO ' . $this->catalogTablename . ' %s')->set($this->arrValues)->execute()->insertId;
-                // System::log('A new entry "' . $this->catalogTablename . '=' . $strInsertId . '" has been created', __METHOD__, TL_GENERAL);
+
+                System::getContainer()
+                    ->get('monolog.logger.contao')
+                    ->log(LogLevel::INFO, 'A new entry "' . $this->catalogTablename . '=' . $strInsertId . '" has been created', ['contao' => new ContaoContext(__CLASS__ . '::' . __FUNCTION__)]);
 
                 $this->arrValues['id'] = $strInsertId;
 
                 if ($this->catalogNotifyInsert) {
-
                     $objCatalogNotification = new CatalogNotification($this);
                     $objCatalogNotification->notifyOnInsert($this->catalogNotifyInsert, $this->arrValues);
                 }
 
                 $arrData = [
-
                     'id' => $strInsertId,
                     'row' => $this->arrValues,
                     'table' => $this->catalogTablename,
@@ -1009,7 +1007,9 @@ class FrontendEditing extends CatalogController
                     $this->CatalogEvents->addEventListener('update', $arrData, $this);
                     $this->SQLBuilder->Database->prepare('UPDATE ' . $this->catalogTablename . ' %s WHERE id = ?')->set($this->arrValues)->execute($this->strItemID);
 
-                    // \System::log('An entry "' . $this->catalogTablename . '=' . $this->strItemID . '" has been updated', __METHOD__, TL_GENERAL);
+                    System::getContainer()
+                        ->get('monolog.logger.contao')
+                        ->log(LogLevel::INFO, 'An entry "' . $this->catalogTablename . '=' . $this->strItemID . '" has been updated', ['contao' => new ContaoContext(__CLASS__ . '::' . __FUNCTION__)]);
                 }
 
                 if (!$this->isVisible()) $blnReload = false;
@@ -1031,7 +1031,10 @@ class FrontendEditing extends CatalogController
 
                 $objInsert = $this->SQLBuilder->Database->prepare('INSERT INTO ' . $this->catalogTablename . ' %s')->set($arrSet)->execute();
 
-                // \System::log('An entry "' . $this->catalogTablename . '=' . $objInsert->insertId . '" has been duplicated', __METHOD__, TL_GENERAL);
+                System::getContainer()
+                    ->get('monolog.logger.contao')
+                    ->log(LogLevel::INFO, 'An entry "' . $this->catalogTablename . '=' . $objInsert->insertId . '" has been duplicated', ['contao' => new ContaoContext(__CLASS__ . '::' . __FUNCTION__)]);
+
 
                 if ($this->catalogNotifyDuplicate) {
                     $objCatalogNotification = new CatalogNotification($this, $this->strItemID);
@@ -1060,7 +1063,6 @@ class FrontendEditing extends CatalogController
         $objPage = PageModel::findWithDetails($intPage);
         $strUrl = $objPage->getFrontendUrl();
 
-        if (strncmp($strUrl, 'http://', 7) !== 0 && strncmp($strUrl, 'https://', 8) !== 0) $strUrl = Environment::get('base') . $strUrl;
         if ($strAttributes) $strUrl .= $strAttributes;
 
         if ($this->catalogFormRedirectParameter) {

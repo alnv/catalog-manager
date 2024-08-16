@@ -250,7 +250,7 @@ class DcCallbacks extends Backend
             }
         }
 
-        $objCatalogs = $this->Database->prepare($strSQLStatement)->execute($arrValues);
+        $objCatalogs = $this->Database->prepare($strSQLStatement)->execute(...$arrValues);
 
         if ($objCatalogs->numRows && Input::get('id' . $strModuleID)) {
             $varValue .= '_' . Input::get('id' . $strModuleID);

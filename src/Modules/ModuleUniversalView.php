@@ -110,7 +110,7 @@ class ModuleUniversalView extends Module
         }
     }
 
-    private function deleteEntityFromCatalog()
+    private function deleteEntityFromCatalog(): void
     {
 
         $this->import(FrontendEditing::class, 'FrontendEditing');
@@ -135,7 +135,7 @@ class ModuleUniversalView extends Module
         $this->FrontendEditing->deleteEntity();
     }
 
-    private function determineCatalogView()
+    private function determineCatalogView(): void
     {
 
         $this->import(CatalogView::class, 'CatalogView');

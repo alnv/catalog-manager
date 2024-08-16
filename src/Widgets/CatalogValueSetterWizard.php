@@ -7,8 +7,11 @@ use Contao\ArrayUtil;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\Widget;
+use Contao\Database;
+use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\System;
 use Contao\Image;
+use Contao\Environment;
 
 class CatalogValueSetterWizard extends Widget
 {
@@ -54,12 +57,12 @@ class CatalogValueSetterWizard extends Widget
                     break;
 
                 case 'delete':
-                    $this->varValue = array_delete($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_delete($this->varValue, Input::get('cid'));
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);
-            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($this->strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
+            Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);
+            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($this->strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
         }
 
         if (!is_array($this->varValue) || !$this->varValue[0]) {

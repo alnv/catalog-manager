@@ -150,9 +150,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'exclude' => true,
             'sql' => "varchar(16) NOT NULL default ''"
         ],
-
         'tablename' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_catalog']['tablename'],
             'inputType' => 'text',
             'eval' => [
                 'rgxp' => 'extnd',
@@ -171,7 +169,6 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             'exclude' => true,
             'sql' => "varchar(128) NOT NULL default ''"
         ],
-
         'isBackendModule' => [
             'label' => &$GLOBALS['TL_LANG']['tl_catalog']['isBackendModule'],
             'inputType' => 'checkbox',

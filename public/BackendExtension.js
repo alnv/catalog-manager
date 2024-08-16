@@ -4,14 +4,13 @@ var CatalogManager = CatalogManager || {};
 
     'use strict';
 
-    if ( typeof window.addEventListener !== "undefined" ) {
-
-        window.addEventListener( 'DOMContentLoaded', initialize, false );
+    if (typeof window.addEventListener !== "undefined") {
+        window.addEventListener('DOMContentLoaded', initialize, false);
     }
 
     function initialize() {
 
-        CatalogManager.CatalogRelationWizard = function ( objElement, strCommand, strID ) {
+        CatalogManager.CatalogRelationWizard = function (objElement, strCommand, strID) {
 
             var table = $(strID),
                 tbody = table.getElement('tbody'),
@@ -29,7 +28,7 @@ var CatalogManager = CatalogManager || {};
                     var tr = new Element('tr');
                     childs = parent.getChildren();
 
-                    for (i=0; i<childs.length; i++) {
+                    for (i = 0; i < childs.length; i++) {
 
                         var next = childs[i].clone(true).inject(tr, 'bottom');
 
@@ -77,35 +76,35 @@ var CatalogManager = CatalogManager || {};
 
             rows = tbody.getChildren();
 
-            for (i=0; i<rows.length; i++) {
+            for (i = 0; i < rows.length; i++) {
 
                 childs = rows[i].getChildren();
 
-                for (j=0; j<childs.length; j++) {
+                for (j = 0; j < childs.length; j++) {
 
-                    if (input = childs[j].getFirst('input') ) {
+                    if (input = childs[j].getFirst('input')) {
 
-                        reIndexInput( input, tabindex );
+                        reIndexInput(input, tabindex);
 
-                        if ( input = input.getNext('input') ) {
+                        if (input = input.getNext('input')) {
 
-                            reIndexInput( input, tabindex );
+                            reIndexInput(input, tabindex);
                         }
                     }
                 }
             }
 
-            function reIndexInput( objInput, tabindex ) {
+            function reIndexInput(objInput, tabindex) {
 
-                objInput.set( 'tabindex', tabindex++ );
+                objInput.set('tabindex', tabindex++);
                 objInput.name = objInput.name.replace(/\[[0-9]+]/g, '[' + i + ']');
 
-                if ( objInput.type === 'checkbox' ) {
+                if (objInput.type === 'checkbox') {
 
                     objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
                 }
 
-                if ( objInput.type === 'text' ) {
+                if (objInput.type === 'text') {
 
                     objInput.id = objInput.name.replace(/\[[0-9]+]/g, '').replace(/\[/g, '_').replace(/]/g, '') + '_' + i;
                 }
@@ -120,7 +119,7 @@ var CatalogManager = CatalogManager || {};
         };
 
 
-        CatalogManager.CatalogOrderByWizard = function ( objElement, strCommand, strID ) {
+        CatalogManager.CatalogOrderByWizard = function (objElement, strCommand, strID) {
 
             var table = $(strID),
                 tbody = table.getElement('tbody'),
@@ -131,14 +130,14 @@ var CatalogManager = CatalogManager || {};
 
             Backend.getScrollOffset();
 
-            switch ( strCommand ) {
+            switch (strCommand) {
 
                 case 'copy':
 
                     var tr = new Element('tr');
                     childs = parent.getChildren();
 
-                    for (i=0; i<childs.length; i++) {
+                    for (i = 0; i < childs.length; i++) {
 
                         var next = childs[i].clone(true).inject(tr, 'bottom');
 
@@ -175,7 +174,7 @@ var CatalogManager = CatalogManager || {};
                     if (tr = parent.getNext('tr')) {
 
                         parent.inject(tr, 'after');
-                        
+
                     } else {
 
                         parent.inject(tbody, 'top');
@@ -195,32 +194,32 @@ var CatalogManager = CatalogManager || {};
 
             rows = tbody.getChildren();
 
-            for (i=0; i<rows.length; i++) {
+            for (i = 0; i < rows.length; i++) {
 
                 childs = rows[i].getChildren();
 
-                for (j=0; j<childs.length; j++) {
+                for (j = 0; j < childs.length; j++) {
 
-                    $$( childs[j].getElement('.chzn-container') ).destroy();
-                    $$( childs[j].getElement('.tl_select_column') ).destroy();
+                    $$(childs[j].getElement('.chzn-container')).destroy();
+                    $$(childs[j].getElement('.tl_select_column')).destroy();
 
-                    if (input = childs[j].getFirst('select') ) {
+                    if (input = childs[j].getFirst('select')) {
 
                         input.set('tabindex', tabindex++);
                         input.name = input.name.replace(/\[[0-9]+]/g, '[' + i + ']');
 
-                        new Chosen( childs[j].getFirst('select.tl_chosen') );
+                        new Chosen(childs[j].getFirst('select.tl_chosen'));
                     }
 
-                    if (input = childs[j].getFirst('input') ) {
+                    if (input = childs[j].getFirst('input')) {
 
-                        input.set('tabindex', tabindex++ );
+                        input.set('tabindex', tabindex++);
                         input.name = input.name.replace(/\[[0-9]+]/g, '[' + i + ']');
                     }
                 }
             }
 
-            new Sortables( tbody, {
+            new Sortables(tbody, {
 
                 constrain: true,
                 opacity: 0.6,
@@ -229,26 +228,32 @@ var CatalogManager = CatalogManager || {};
         };
 
 
-        CatalogManager.CatalogToggleVisibility = function ( objElement, strID, strVisibleIcon, strInVisibleIcon, strAjaxPath ) {
+        CatalogManager.CatalogToggleVisibility = function (objElement, strID, strVisibleIcon, strInVisibleIcon, strAjaxPath) {
 
             objElement.blur();
 
-            var objImage = $( objElement ).getFirst('img');
-            var blnPublished = ( objImage.get('data-state') === '1' );
+            var objImage = $(objElement).getFirst('img');
+            var blnPublished = (objImage.get('data-state') === '1');
 
-            if ( !blnPublished ) {
+            if (!blnPublished) {
 
                 objImage.src = strInVisibleIcon;
-                objImage.set( 'data-state', 1 );
+                objImage.set('data-state', 1);
 
-                new Request.Contao( { 'url': window.location.href + '&' + strAjaxPath, 'followRedirects': false } ).get( {'tid': strID, 'state': 1, 'rt': Contao.request_token } );
+                new Request.Contao({
+                    'url': window.location.href + '&' + strAjaxPath,
+                    'followRedirects': false
+                }).get({'tid': strID, 'state': 1, 'rt': Contao.request_token});
 
             } else {
 
                 objImage.src = strVisibleIcon;
                 objImage.set('data-state', 0);
 
-                new Request.Contao( { 'url': window.location.href + '&' + strAjaxPath, 'followRedirects': false } ).get( {'tid': strID, 'state': 0, 'rt': Contao.request_token } );
+                new Request.Contao({
+                    'url': window.location.href + '&' + strAjaxPath,
+                    'followRedirects': false
+                }).get({'tid': strID, 'state': 0, 'rt': Contao.request_token});
             }
 
             return false;

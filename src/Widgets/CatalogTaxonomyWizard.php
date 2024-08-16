@@ -82,7 +82,7 @@ class CatalogTaxonomyWizard extends Widget
                     break;
             }
 
-            $this->Database->prepare(sprintf('UPDATE %s SET `%s`=? WHERE id=? ', $this->dcTable, $this->strField))->execute(serialize($this->varValue), $this->currentRecord);
+            Database::getInstance()->prepare(sprintf('UPDATE %s SET `%s`=? WHERE id=? ', $this->dcTable, $this->strField))->execute(serialize($this->varValue), $this->currentRecord);
             $strRedirectUrl = Environment::get('request');
             $strRedirectUrl = preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $strRedirectUrl));
             $strRedirectUrl = preg_replace('/&(amp;)?subId=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', $strRedirectUrl));
@@ -310,7 +310,7 @@ class CatalogTaxonomyWizard extends Widget
         return $strOperatorsOptions;
     }
 
-    protected function getFieldSelector()
+    protected function getFieldSelector(): string
     {
 
         $this->varValue['field'] = $this->varValue['field'] ?? '';
@@ -323,7 +323,7 @@ class CatalogTaxonomyWizard extends Widget
         );
     }
 
-    protected function getFieldOptions($strValue, $blnEmptyOption = true)
+    protected function getFieldOptions($strValue, $blnEmptyOption = true): string
     {
 
         $strOptions = $blnEmptyOption ? '<option value="">-</option>' : '';
@@ -339,17 +339,17 @@ class CatalogTaxonomyWizard extends Widget
         return $strOptions;
     }
 
-    protected function getDeleteButton($intIndex, $intSubIndex)
+    protected function getDeleteButton($intIndex, $intSubIndex): string
     {
         return '<a href="' . Environment::get('indexFreeRequest') . '&amp;cid=' . $intIndex . '&amp;subId=' . $intSubIndex . '&amp;cmd_' . $this->strId . '=deleteQuery" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteQuery'], $intIndex) . '">' . Image::getHtml('delete.gif', 'delete query') . '</a>';
     }
 
-    protected function getAddButton()
+    protected function getAddButton(): string
     {
         return '<a href="' . Environment::get('indexFreeRequest') . '&amp;cid=0&amp;cmd_' . $this->strId . '=addQuery" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['addQuery'] . '">' . Image::getHtml('copy.gif', 'add query') . '</a>';
     }
 
-    protected function getOrButton($intIndex, $intSubIndex)
+    protected function getOrButton($intIndex, $intSubIndex): string
     {
         return '<a href="' . Environment::get('indexFreeRequest') . '&amp;cid=' . $intIndex . '&amp;subId=' . $intSubIndex . '&amp;cmd_' . $this->strId . '=addOrQuery" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['orQuery'] . '">' . Image::getHtml('bundles/alnvcatalogmanager/icons/or.svg', 'add or Query') . '</a>';
     }

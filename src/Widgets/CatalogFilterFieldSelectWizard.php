@@ -30,7 +30,6 @@ class CatalogFilterFieldSelectWizard extends Widget
 
     public function validate()
     {
-
         parent::validate();
     }
 
@@ -46,14 +45,12 @@ class CatalogFilterFieldSelectWizard extends Widget
         $arrActiveFilterFields = Toolkit::deserialize($this->objDca->activeRecord->catalogActiveFilterFields);
 
         if (empty($arrActiveFilterFields) || !is_array($arrActiveFilterFields)) {
-
             return '-';
         }
 
         $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE id IN ( ' . implode(',', $arrActiveFilterFields) . ' )')->execute();
 
         while ($objCatalogFields->next()) {
-
             $this->arrCatalogFields[] = $objCatalogFields->row();
         }
 
@@ -74,8 +71,7 @@ class CatalogFilterFieldSelectWizard extends Widget
         return $this->blnEmpty ? '-' : $strTemplate;
     }
 
-
-    protected function generateRows($intTabindex)
+    protected function generateRows($intTabindex): string
     {
 
         $strRows = '';
@@ -102,7 +98,7 @@ class CatalogFilterFieldSelectWizard extends Widget
         return $strRows;
     }
 
-    protected function getSelectOptions($arrField, $intIndex)
+    protected function getSelectOptions($arrField, $intIndex): string
     {
 
         switch ($this->selectType) {
@@ -115,7 +111,7 @@ class CatalogFilterFieldSelectWizard extends Widget
         return '<option value="">-</option>';
     }
 
-    protected function getDependenciesOptions($arrField, $intIndex)
+    protected function getDependenciesOptions($arrField, $intIndex): string
     {
 
         $strOptions = '<option value="">-</option>';
@@ -129,14 +125,14 @@ class CatalogFilterFieldSelectWizard extends Widget
                 '<option value="%s" %s>%s</option>',
                 $arrCatalogField['fieldname'],
                 $this->varValue[$intIndex]['value'] == $arrCatalogField['fieldname'] ? 'selected' : '',
-                $arrCatalogField['title'] ? $arrCatalogField['title'] : $arrCatalogField['fieldname']
+                $arrCatalogField['title'] ?: $arrCatalogField['fieldname']
             );
         }
 
         return $strOptions;
     }
 
-    protected function getTemplateOptions($arrField, $intIndex)
+    protected function getTemplateOptions($arrField, $intIndex): string
     {
 
         $strOptions = '<option value="">-</option>';

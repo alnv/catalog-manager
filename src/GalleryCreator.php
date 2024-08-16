@@ -310,7 +310,7 @@ class GalleryCreator extends Frontend
                     $arrImages[($i + $j)]['size'] = $this->size;
                     $arrImages[($i + $j)]['fullsize'] = $this->fullsize;
 
-                    $this->addImageToTemplate($objCell, $arrImages[($i + $j)], $intMaxWidth, $strLightBoxID, $arrImages[($i + $j)]['filesModel']);
+                    Toolkit::addImageToTemplate($objCell, $arrImages[($i + $j)], $intMaxWidth, $strLightBoxID, $arrImages[($i + $j)]['filesModel']);
 
                     $objCell->colWidth = $intColWidth . '%';
                     $objCell->class = 'col_' . $j . $strRowTDClass;

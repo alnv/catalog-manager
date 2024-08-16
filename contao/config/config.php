@@ -39,7 +39,7 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.0";
+const CATALOG_MANAGER_VERSION = "2.0.0-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [
@@ -89,7 +89,7 @@ ArrayUtil::arrayInsert($GLOBALS['TL_CTE'], 3, [
 
 if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
     $GLOBALS['TL_JAVASCRIPT']['catalogManagerBackendExtension'] = 'bundles/alnvcatalogmanager/BackendExtension.js';
-    $GLOBALS['TL_HEAD']['catalogManagerBackendExtension'] = '<link href="bundles/alnvcatalogmanager/backend.css" rel="stylesheet">';
+    $GLOBALS['TL_CSS']['catalogManagerBackendExtension'] = 'bundles/alnvcatalogmanager/backend.css';
 }
 
 $GLOBALS['TL_HOOKS']['catalogManagerEntityOnCreate'] = [];

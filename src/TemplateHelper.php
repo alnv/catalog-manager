@@ -17,16 +17,16 @@ class TemplateHelper extends CatalogController
     public function addComments($objTemplate, $arrConfig, $strTablename, $strID, $arrNotifies = [])
     {
 
+        /*
         $this->import('Comments');
-
         $objCommentConfig = new \stdClass();
         if (!empty($arrConfig) && is_array($arrConfig)) {
             foreach ($arrConfig as $strKey => $varValue) {
                 $objCommentConfig->{$strKey} = $varValue;
             }
         }
-
         $this->Comments->addCommentsToTemplate($objTemplate, $objCommentConfig, $strTablename, $strID, $arrNotifies);
+        */
     }
 
     public function addPagination($intTotal, $intPerPage, $strPageID, $pageID)

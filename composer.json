@@ -19,7 +19,8 @@
   },
   "require": {
     "php": "^8.1",
-    "contao/core-bundle": "~5.0"
+    "contao/core-bundle": "~5.3",
+    "tecnickcom/tcpdf": "^6.7"
   },
   "autoload": {
     "psr-4": {

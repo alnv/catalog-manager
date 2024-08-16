@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+  Alnv\CatalogManagerBundle\EventListener\DoctrineSchemaListener:
+    arguments:
+      - '@contao.framework'
+      - '@doctrine'
+    tags:
+      - { name: doctrine.event_listener, event: postGenerateSchema }

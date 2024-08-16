@@ -27,7 +27,6 @@ class CatalogRelationRedirectWizard extends Widget
             case 'options':
                 $this->arrOptions = StringUtil::deserialize($varValue);
                 break;
-
             default:
                 parent::__set($strKey, $varValue);
                 break;
@@ -49,17 +48,16 @@ class CatalogRelationRedirectWizard extends Widget
         $strCommand = 'cmd_' . $this->strField;
 
         if (!is_array($this->varValue)) {
-
             $this->varValue = [['']];
         }
 
         if (Input::get($strCommand) && is_numeric(Input::get('cid')) && Input::get('id') == $this->currentRecord) {
             switch (Input::get($strCommand)) {
                 case 'up':
-                    $this->varValue = array_move_up($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_move_up($this->varValue, Input::get('cid'));
                     break;
                 case 'down':
-                    $this->varValue = array_move_down($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_move_down($this->varValue, Input::get('cid'));
                     break;
             }
 
@@ -122,7 +120,7 @@ class CatalogRelationRedirectWizard extends Widget
         return $strTemplate;
     }
 
-    protected function generateRelatedInputField($arrOption, $intIndex, $intTabindex, $strButtons)
+    protected function generateRelatedInputField($arrOption, $intIndex, $intTabindex, $strButtons): string
     {
 
         $strName = $this->I18nCatalogTranslator->get('module', $arrOption['table'], ['titleOnly' => true]);
@@ -154,7 +152,7 @@ class CatalogRelationRedirectWizard extends Widget
         );
     }
 
-    protected function createPagePicker($intIndex)
+    protected function createPagePicker($intIndex): string
     {
 
         $varValue = $this->getValues($intIndex);

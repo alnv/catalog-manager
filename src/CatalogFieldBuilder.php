@@ -33,10 +33,10 @@ class CatalogFieldBuilder extends CatalogController
     public function __construct()
     {
 
-        parent::__construct();
-
         $this->import(Database::class, 'Database');
         $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
+
+        parent::__construct();
     }
 
     public function initialize($strTablename, $blnActive = true)
@@ -50,7 +50,6 @@ class CatalogFieldBuilder extends CatalogController
             $this->arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$strTablename];
             return true;
         } else {
-
             $objCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `tablename` = ?')->limit(1)->execute($strTablename);
             if ($objCatalog !== null) {
                 if ($objCatalog->numRows) {
@@ -73,7 +72,7 @@ class CatalogFieldBuilder extends CatalogController
         return false;
     }
 
-    public function getCatalog()
+    public function getCatalog(): array
     {
         return $this->arrCatalog;
     }
@@ -85,15 +84,12 @@ class CatalogFieldBuilder extends CatalogController
         $blnIsCoreTable = Toolkit::isCoreTable($this->strTable);
 
         if ($blnIsCoreTable) {
-
             $blnDcFormat = true;
             $arrFields = $this->getCoreFields($blnDcFormat);
         }
 
         if (!$blnExcludeDefaults) {
-
             foreach ($this->getDefaultCatalogFields() as $strFieldname => $arrField) {
-
                 $arrFields[$strFieldname] = $arrField;
             }
         }
@@ -101,28 +97,19 @@ class CatalogFieldBuilder extends CatalogController
         $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE `pid` = ( SELECT id FROM tl_catalog WHERE `tablename` = ? LIMIT 1 )' . ($blnVisible ? ' AND invisible != "1" ' : '') . 'ORDER BY `sorting`')->execute($this->strTable);
 
         if ($objCatalogFields !== null) {
-
             if ($objCatalogFields->numRows) {
-
                 while ($objCatalogFields->next()) {
-
                     $arrField = $objCatalogFields->row();
-
                     if ($objCatalogFields->fieldname && in_array($objCatalogFields->fieldname, Toolkit::customizeAbleFields())) {
-
                         $arrOrigin = $arrFields[$objCatalogFields->fieldname] ?? null;
-
                         if (is_null($arrOrigin)) continue;
-
                         unset($arrFields[$objCatalogFields->fieldname]);
                     }
 
                     $strFieldname = $objCatalogFields->fieldname ?: ('f' . $objCatalogFields->id);
-
                     if (!$strFieldname) {
                         continue;
                     }
-
                     $arrFields[$strFieldname] = $arrField;
                 }
             }
@@ -137,11 +124,8 @@ class CatalogFieldBuilder extends CatalogController
     {
 
         $arrReturn = [];
-
         foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
-
             if (!empty($arrField['_dcFormat']) && is_array($arrField['_dcFormat'])) {
-
                 $arrReturn[$strFieldname] = $arrField['_dcFormat'];
             }
         }
@@ -238,69 +222,47 @@ class CatalogFieldBuilder extends CatalogController
         switch ($arrField['type']) {
 
             case 'text':
-
                 $arrDcField = Text::generate($arrDcField, $arrField, null, $this->blnActive);
-
                 break;
 
             case 'date':
-
                 $arrDcField = DateInput::generate($arrDcField, $arrField);
-
                 break;
 
             case 'hidden':
-
                 $arrDcField = Hidden::generate($arrDcField, $arrField);
-
                 break;
 
             case 'number':
-
                 $arrDcField = Number::generate($arrDcField, $arrField);
-
                 break;
 
             case 'textarea':
-
                 $arrDcField = Textarea::generate($arrDcField, $arrField);
-
                 break;
 
             case 'select':
-
                 $arrDcField = Select::generate($arrDcField, $arrField, $objModule, $this->blnActive);
-
                 break;
 
             case 'radio':
-
                 $arrDcField = Radio::generate($arrDcField, $arrField, $objModule, $this->blnActive);
-
                 break;
 
             case 'checkbox':
-
                 $arrDcField = Checkbox::generate($arrDcField, $arrField, $objModule, $this->blnActive);
-
                 break;
 
             case 'upload':
-
                 $arrDcField = Upload::generate($arrDcField, $arrField);
-
                 break;
 
             case 'message':
-
                 $arrDcField = MessageInput::generate($arrDcField, $arrField);
-
                 break;
 
             case 'dbColumn':
-
                 $arrDcField = DbColumn::generate($arrDcField, $arrField);
-
                 break;
         }
 
@@ -316,8 +278,7 @@ class CatalogFieldBuilder extends CatalogController
         return $arrDcField;
     }
 
-
-    public function shouldBeUsedParentTable()
+    public function shouldBeUsedParentTable(): bool
     {
 
         if (!isset($this->arrCatalog['pTable']) || !$this->arrCatalog['pTable']) {
@@ -335,8 +296,7 @@ class CatalogFieldBuilder extends CatalogController
         return true;
     }
 
-
-    protected function getDefaultCatalogFields($arrIncludeOnly = [])
+    protected function getDefaultCatalogFields($arrIncludeOnly = []): array
     {
 
         $arrFields = [
@@ -489,7 +449,6 @@ class CatalogFieldBuilder extends CatalogController
         return $arrFields;
     }
 
-
     protected function prepareDefaultFields($arrField, $strFieldname, $blnCoreTable = false)
     {
 
@@ -549,8 +508,7 @@ class CatalogFieldBuilder extends CatalogController
         return $arrField;
     }
 
-
-    protected function getCoreFields($blnDcFormat)
+    protected function getCoreFields($blnDcFormat): array
     {
 
         Controller::loadLanguageFile($this->strTable);

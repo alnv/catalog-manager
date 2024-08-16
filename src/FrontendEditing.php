@@ -220,7 +220,7 @@ class FrontendEditing extends CatalogController
     protected function deleteImage()
     {
 
-        $this->import('SQLBuilder');
+        $this->import(SQLBuilder::class, 'SQLBuilder');
 
         $strTempUuid = '';
         $strFieldname = Input::post('FORM_DELETE_IMAGE');
@@ -615,9 +615,9 @@ class FrontendEditing extends CatalogController
     public function checkAccess(): bool
     {
 
-        $this->import('FrontendEditingPermission');
+        $this->import(FrontendEditingPermission::class, 'FrontendEditingPermission');
 
-        $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
+        $this->FrontendEditingPermission->blnDisablePermissions = (bool)$this->catalogEnableFrontendPermission;
         $this->FrontendEditingPermission->initialize();
 
         return $this->FrontendEditingPermission->hasAccess($this->catalogTablename);
@@ -626,12 +626,12 @@ class FrontendEditing extends CatalogController
     public function checkPermission($strMode)
     {
 
-        $this->import(FrontendEditingPermission::class);
+        $this->import(FrontendEditingPermission::class, 'FrontendEditingPermission');
 
         if (!is_array($this->catalogItemOperations)) $this->catalogItemOperations = [];
         if (!in_array($strMode, $this->catalogItemOperations)) return false;
 
-        $this->FrontendEditingPermission->blnDisablePermissions = $this->catalogEnableFrontendPermission ? false : true;
+        $this->FrontendEditingPermission->blnDisablePermissions = (bool)$this->catalogEnableFrontendPermission;
         $this->FrontendEditingPermission->initialize();
 
         if ($strMode == 'copy') $strMode = 'create';
@@ -654,7 +654,7 @@ class FrontendEditing extends CatalogController
     public function deleteEntity()
     {
 
-        $this->import('SQLBuilder');
+        $this->import(SQLBuilder::class, 'SQLBuilder');
 
         if ($this->SQLBuilder->Database->tableExists($this->catalogTablename)) {
 
@@ -885,7 +885,7 @@ class FrontendEditing extends CatalogController
     {
 
         $strQuery = '';
-        $this->import(SQLBuilder::class);
+        $this->import(SQLBuilder::class, 'SQLBuilder');
 
         if ($this->arrCatalog['useGeoCoordinates']) {
             $this->getGeoCordValues();
@@ -986,13 +986,9 @@ class FrontendEditing extends CatalogController
                 $objEntity = $this->SQLBuilder->Database->prepare('SELECT * FROM ' . $this->catalogTablename . ' WHERE id = ?')->limit(1)->execute($this->strItemID);
 
                 if ($objEntity->numRows) {
-
                     if ($this->arrValues['alias'] && $this->arrValues['alias'] !== $objEntity->alias) {
-
                         $blnReload = false;
-
                         if ($objEntity->pid) {
-
                             $strQuery = sprintf('?pid=%s', $objEntity->pid);
                         }
                     }
@@ -1056,7 +1052,6 @@ class FrontendEditing extends CatalogController
         }
     }
 
-
     protected function redirectAfterInsertion($intPage, $strAttributes = '', $blnReturn = false)
     {
 
@@ -1089,7 +1084,6 @@ class FrontendEditing extends CatalogController
         return $strUrl;
     }
 
-
     protected function getGeoCordValues(): void
     {
 
@@ -1119,7 +1113,6 @@ class FrontendEditing extends CatalogController
             $this->arrValues[$this->arrCatalog['latField']] = $arrCords['lat'];
         }
     }
-
 
     protected function prepare(): void
     {
@@ -1161,7 +1154,6 @@ class FrontendEditing extends CatalogController
             }
         }
     }
-
 
     public function getCatalog(): array
     {

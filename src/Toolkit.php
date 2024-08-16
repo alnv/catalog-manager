@@ -2,23 +2,27 @@
 
 namespace Alnv\CatalogManagerBundle;
 
-use Contao\StringUtil;
 use Alnv\CatalogManagerBundle\Fields\Checkbox;
+use Alnv\CatalogManagerBundle\Fields\DateInput;
+use Alnv\CatalogManagerBundle\Fields\DbColumn;
+use Alnv\CatalogManagerBundle\Fields\Number;
 use Alnv\CatalogManagerBundle\Fields\Radio;
 use Alnv\CatalogManagerBundle\Fields\Select;
-use Alnv\CatalogManagerBundle\Fields\Upload;
-use Alnv\CatalogManagerBundle\Fields\Number;
-use Alnv\CatalogManagerBundle\Fields\DateInput;
 use Alnv\CatalogManagerBundle\Fields\Textarea;
-use Alnv\CatalogManagerBundle\Fields\DbColumn;
+use Alnv\CatalogManagerBundle\Fields\Upload;
 use Ausi\SlugGenerator\SlugGenerator;
 use Ausi\SlugGenerator\SlugOptions;
-use Contao\Database;
-use Contao\PageModel;
-use Contao\Controller;
-use Contao\System;
 use Contao\ArrayUtil;
 use Contao\Config;
+use Contao\ContentModel;
+use Contao\Controller;
+use Contao\CoreBundle\File\Metadata;
+use Contao\Database;
+use Contao\FilesModel;
+use Contao\Image\PictureConfiguration;
+use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
 class Toolkit
@@ -47,7 +51,7 @@ class Toolkit
     public static array $arrFileExtensions = ['odt', 'ods', 'odp', 'odg', 'ott', 'ots', 'otp', 'otg', 'pdf', 'doc', 'docx', 'dot', 'dotx', 'xls', 'xlsx', 'xlt', 'xltx', 'ppt', 'pptx', 'pot', 'potx', 'mp3', 'mp4', 'm4a', 'm4v', 'webm', 'ogg', 'ogv', 'wma', 'wmv', 'ram', 'rm', 'mov', 'zip', 'rar', '7z'];
 
     public static array $arrSqlTypes = [
-        'c256' => "varchar(256) NOT NULL default ''",
+        'c256' => "varchar(255) NOT NULL default ''",
         'c1' => "char(1) NOT NULL default ''",
         'c16' => "varchar(16) NOT NULL default ''",
         'c32' => "varchar(32) NOT NULL default ''",
@@ -900,5 +904,210 @@ class Toolkit
     public static function replaceInsertTags($strTemplate)
     {
         return System::getContainer()->get('contao.insert_tag.parser')->replaceInline(($strTemplate ?: ''));
+    }
+
+    public static function array_delete($arrStack, $intIndex): array
+    {
+        unset($arrStack[$intIndex]);
+
+        return array_values($arrStack);
+    }
+
+    public static function array_move_down($arrStack, $intIndex): array
+    {
+
+        if (($intIndex + 1) < count($arrStack)) {
+            $arrBuffer = $arrStack[$intIndex];
+            $arrStack[$intIndex] = $arrStack[($intIndex + 1)];
+            $arrStack[($intIndex + 1)] = $arrBuffer;
+        } else {
+            array_unshift($arrStack, $arrStack[$intIndex]);
+            array_pop($arrStack);
+        }
+
+        return $arrStack;
+    }
+
+    public static function array_move_up($arrStack, $intIndex): array
+    {
+
+        if ($intIndex > 0) {
+            $arrBuffer = $arrStack[$intIndex];
+            $arrStack[$intIndex] = $arrStack[($intIndex - 1)];
+            $arrStack[($intIndex - 1)] = $arrBuffer;
+        } else {
+            $arrStack[] = $arrStack[$intIndex];
+            array_shift($arrStack);
+        }
+
+        return $arrStack;
+    }
+
+    public static function addImageToTemplate($template, array $rowData, $maxWidth = null, $lightboxGroupIdentifier = null, FilesModel $filesModel = null): void
+    {
+
+        $createMetadataOverwriteFromRowData = static function (bool $interpretAsContentModel) use ($rowData) {
+            if ($interpretAsContentModel) {
+                return (new ContentModel())->setRow($rowData)->getOverwriteMetadata();
+            }
+
+            return new Metadata(array(
+                Metadata::VALUE_ALT => $rowData['alt'] ?? '',
+                Metadata::VALUE_TITLE => $rowData['imageTitle'] ?? '',
+                Metadata::VALUE_URL => System::getContainer()->get('contao.insert_tag.parser')->replaceInline($rowData['imageUrl'] ?? ''),
+                'linkTitle' => (string)($rowData['linkTitle'] ?? ''),
+            ));
+        };
+
+        $createFallBackTemplateData = static function () use ($filesModel, $rowData) {
+            $templateData = array(
+                'width' => null,
+                'height' => null,
+                'picture' => array(
+                    'img' => array(
+                        'src' => '',
+                        'srcset' => '',
+                    ),
+                    'sources' => array(),
+                    'alt' => '',
+                    'title' => '',
+                ),
+                'singleSRC' => $rowData['singleSRC'],
+                'src' => '',
+                'linkTitle' => '',
+                'margin' => '',
+                'addImage' => true,
+                'addBefore' => true,
+                'fullsize' => false,
+            );
+
+            if (null !== $filesModel) {
+
+                $templateData = array_replace_recursive(
+                    $templateData,
+                    array(
+                        'alt' => '',
+                        'caption' => '',
+                        'imageTitle' => '',
+                        'imageUrl' => '',
+                    )
+                );
+            }
+
+            return $templateData;
+        };
+
+        $getSizeAndMargin = static function () use ($rowData, $maxWidth) {
+            $size = $rowData['size'] ?? null;
+            $margin = StringUtil::deserialize($rowData['imagemargin'] ?? null);
+            $maxWidth = (int)($maxWidth ?? Config::get('maxImageWidth'));
+
+            if (0 === $maxWidth) {
+                return array($size, $margin);
+            }
+
+            if ('px' === ($margin['unit'] ?? null)) {
+                $horizontalMargin = (int)($margin['left'] ?? 0) + (int)($margin['right'] ?? 0);
+
+                if ($maxWidth - $horizontalMargin < 1) {
+                    $margin['left'] = '';
+                    $margin['right'] = '';
+                } else {
+                    $maxWidth -= $horizontalMargin;
+                }
+            }
+
+            if ($size instanceof PictureConfiguration) {
+                return array($size, $margin);
+            }
+
+            $size = StringUtil::deserialize($size);
+
+            if (is_numeric($size)) {
+                $size = array(0, 0, (int)$size);
+            } else {
+                $size = (\is_array($size) ? $size : array()) + array(0, 0, 'crop');
+                $size[0] = (int)$size[0];
+                $size[1] = (int)$size[1];
+            }
+
+            if ($size[0] > 0 && $size[1] > 0) {
+                list($width, $height) = $size;
+            } else {
+                $container = System::getContainer();
+                $originalSize = $container
+                    ->get('contao.image.factory')
+                    ->create($container->getParameter('kernel.project_dir') . '/' . $rowData['singleSRC'])
+                    ->getDimensions()
+                    ->getSize();
+
+                $width = $originalSize->getWidth();
+                $height = $originalSize->getHeight();
+            }
+
+            if ($width <= $maxWidth) {
+                return array($size, $margin);
+            }
+
+            $size[0] = $maxWidth;
+            $size[1] = (int)floor($maxWidth * ($height / $width));
+
+            return array($size, $margin);
+        };
+
+        $figureBuilder = System::getContainer()->get('contao.image.studio')->createFigureBuilder();
+
+        if (null !== $filesModel) {
+            $filesModel = clone $filesModel;
+            $filesModel->path = $rowData['singleSRC'];
+
+            $figureBuilder
+                ->fromFilesModel($filesModel)
+                ->setMetadata($createMetadataOverwriteFromRowData(true));
+
+            $includeFullMetadata = true;
+        } else {
+            $figureBuilder
+                ->fromPath($rowData['singleSRC'], false)
+                ->setMetadata($createMetadataOverwriteFromRowData(false));
+
+            $includeFullMetadata = false;
+        }
+
+        list($size, $margin) = $getSizeAndMargin();
+
+        $lightboxSize = StringUtil::deserialize($rowData['lightboxSize'] ?? null) ?: null;
+
+        $figure = $figureBuilder
+            ->setSize($size)
+            ->setLightboxGroupIdentifier($lightboxGroupIdentifier)
+            ->setLightboxSize($lightboxSize)
+            ->enableLightbox((bool)($rowData['fullsize'] ?? false))
+            ->buildIfResourceExists();
+
+        if (null === $figure) {
+            foreach ($createFallBackTemplateData() as $key => $value) {
+                $template->$key = $value;
+            }
+
+            return;
+        }
+
+        $figure->applyLegacyTemplateData($template, $margin, $rowData['floating'] ?? null, $includeFullMetadata);
+
+        $template->linkTitle ??= StringUtil::specialchars($rowData['title'] ?? '');
+    }
+
+    public static function getImage($image, $width, $height, $mode = '', $target = null, $force = false)
+    {
+
+        if (!$image) {
+            return null;
+        }
+
+        $objFactory = System::getContainer()->get('contao.image.factory')->createFigureBuilder();
+        $image = $objFactory->create($image, [$width, $height, $mode]);
+
+        return $image->getPath();
     }
 }

@@ -1,98 +1,80 @@
 .tl_catalog_widget.tl_select {
-
     max-width: 100%;
     min-width: 130px;
 }
 
 table.ctlg_taxonomies_field_selector_table tbody td {
-
     width: 150px;
     padding: 5px 4px;
 }
 
 td.ctlg_select_field {
-
     width: 225px;
     padding: 5px 4px;
 }
 
 td.ctlg_select_operator {
-
     width: 100px;
     padding: 5px 4px;
 }
 
 td.ctlg_text_value {
-
     width: 225px;
     padding: 5px 4px;
 }
 
 td.ctlg_button {
-
     width: 25px;
     padding: 5px 4px;
     text-align: right;
 }
 
 .ctlg_text.tl_text {
-
     width: 100%;
 }
 
 .ctlg_text_w50.tl_text {
-
     width: 49%;
     float: left;
     margin-right: 1%;
 }
 
 .ctlg_text_w50.tl_text.last {
-
     margin-right: 0;
 }
 
 .ctlg_taxonomies_field_selector_table .ctlg_taxonomy_main_selector .tl_select {
-
     width: 315px;
 }
 
 .tl_select.ctlg_select {
-
     width: 100%;
 }
 
 .tl_select.min-width {
-
     min-width: 100px;
 }
 
 .tl_catalogRelatedChildTables {
-
     margin-top: 2px;
 }
 
 .tl_catalogRelatedChildTables td {
-
     padding: 0 3px 0 0;
 }
 
 @media only screen and ( min-width: 480px ) {
-
     .tl_select.min-width {
-
         min-width: 145px;
     }
 }
 
 ul.ctlg_thumbnails_preview {
-
     overflow: hidden;
     display: inline-block;
 }
 
 ul.ctlg_thumbnails_preview li {
-
     width: 64px;
     float: left;
     height: 64px;
@@ -101,7 +83,6 @@ ul.ctlg_thumbnails_preview li {
 }
 
 ul.ctlg_thumbnails_preview img {
-
     width: 100%;
     height: 100%;
     margin-left: -50%;
@@ -109,35 +90,29 @@ ul.ctlg_thumbnails_preview img {
 }
 
 .ctlg_thumbnail_preview {
-
     margin-right: .5em;
     max-width: 64px;
     height: auto;
 }
 
 ul.ctlg_files_preview {
-
     display: inline-block;
 }
 
 ul.ctlg_files_preview li {
-
     display: inline-block;
 }
 
 .w50.wizard {
-
     position: relative;
 }
 
 .widget .awesomplete {
-
     display: block;
     width: 100%;
 }
 
 button.ctlg_loadWizard {
-
     top: 48%;
     right: 0;
     width: 22px;
@@ -146,13 +121,12 @@ button.ctlg_loadWizard {
     outline: none;
     cursor: pointer;
     position: absolute;
-    background: url("bundles/alnvcatalogmanager/icons/catalog-setting-loader.svg") no-repeat center;
+    background: url("/bundles/alnvcatalogmanager/icons/catalog-setting-loader.svg") no-repeat center;
     background-size: 100% 100%;
 }
 
 #tl_navigation .group-catalog_manager,
 #tl_navigation .group-catalog-manager-extensions {
-
-    background: url("bundles/alnvcatalogmanager/icons/catalog-manager.svg") 3px 2px no-repeat;
+    background: url("/bundles/alnvcatalogmanager/icons/catalog-manager.svg") 3px 2px no-repeat;
     background-size: 15px 15px;
 }

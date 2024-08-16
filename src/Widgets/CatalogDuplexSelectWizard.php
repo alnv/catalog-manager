@@ -11,6 +11,7 @@ use Contao\Widget;
 use Contao\Database;
 use Contao\System;
 use Contao\Image;
+use Contao\Environment;
 
 class CatalogDuplexSelectWizard extends Widget
 {
@@ -84,19 +85,19 @@ class CatalogDuplexSelectWizard extends Widget
                     ArrayUtil::arrayInsert($this->varValue, Input::get('cid'), array($this->varValue[Input::get('cid')]));
                     break;
                 case 'up':
-                    $this->varValue = array_move_up($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_move_up($this->varValue, Input::get('cid'));
                     break;
                 case 'down':
-                    $this->varValue = array_move_down($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_move_down($this->varValue, Input::get('cid'));
                     break;
 
                 case 'delete':
-                    $this->varValue = array_delete($this->varValue, Input::get('cid'));
+                    $this->varValue = Toolkit::array_delete($this->varValue, Input::get('cid'));
                     break;
             }
 
-            $this->Database->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);
-            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
+            Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")->execute(serialize($this->varValue), $this->currentRecord);
+            $this->redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
         }
 
         if (!is_array($this->varValue) || !isset($this->varValue[0]) || !$this->varValue[0]) {
@@ -145,7 +146,7 @@ class CatalogDuplexSelectWizard extends Widget
               </table>';
     }
 
-    protected function generateMainOptions($intIndex)
+    protected function generateMainOptions($intIndex): string
     {
 
         $strOptions = $this->includeBlankOption ? '<option value>' . ($this->blankOptionLabel ? $this->blankOptionLabel : '') . '</option>' : '';
@@ -156,7 +157,7 @@ class CatalogDuplexSelectWizard extends Widget
         return $strOptions;
     }
 
-    protected function generateDependedOptions($intIndex)
+    protected function generateDependedOptions($intIndex): string
     {
 
         $arrOptions = [];
@@ -179,7 +180,7 @@ class CatalogDuplexSelectWizard extends Widget
         return $strOptions;
     }
 
-    protected function isCustomSelected($strValue, $strPrefix, $intIndex)
+    protected function isCustomSelected($strValue, $strPrefix, $intIndex): string
     {
 
         if (!isset($this->varValue[$intIndex])) {

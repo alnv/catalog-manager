@@ -21,13 +21,11 @@ use Contao\Environment;
 class Upload
 {
 
-
     public static function generate($arrDCAField, $arrField): array
     {
 
         $arrDCAField['eval']['files'] = true;
         $arrDCAField['eval']['filesOnly'] = Toolkit::getBooleanByValue($arrField['filesOnly']);
-
         $arrField['fileType'] = $arrField['fileType'] ?? '';
 
         if ($arrField['fileType'] == 'gallery') {
@@ -56,7 +54,6 @@ class Upload
             $arrDCAField['load_callback'] = [[DcCallbacks::class, 'setMultiSrcFlags']];
 
             if ($arrField['sortBy'] == 'custom' && $arrField['orderField']) {
-
                 $arrDCAField['eval']['orderField'] = $arrField['orderField'];
             }
         }
@@ -72,7 +69,6 @@ class Upload
 
         return $arrDCAField;
     }
-
 
     public static function parseValue($varValue, $arrField, $arrCatalog = [])
     {
@@ -94,7 +90,6 @@ class Upload
 
         return '';
     }
-
 
     public static function parseThumbnails($varValue, $arrField, $arrCatalog = [])
     {
@@ -141,7 +136,6 @@ class Upload
         return '';
     }
 
-
     public static function renderThumbnail($varValue, $arrField = [])
     {
 
@@ -149,13 +143,12 @@ class Upload
 
             $objFile = FilesModel::findByUuid($varValue);
             if ($objFile !== null) {
-                return Image::getHtml(Image::get($objFile->path, 0, 0), '', 'class="' . $arrField['fieldname'] . '_preview ctlg_thumbnail_preview"');
+                return Image::getHtml(Toolkit::getImage($objFile->path, 0, 0), '', 'class="' . $arrField['fieldname'] . '_preview ctlg_thumbnail_preview"');
             }
         }
 
         return $varValue;
     }
-
 
     public static function parseAttachment($varValue, $arrField, $arrCatalog = [])
     {
@@ -173,8 +166,7 @@ class Upload
         return implode(',', $arrReturn);
     }
 
-
-    public static function renderGallery($varValue, $arrField, $arrCatalog)
+    public static function renderGallery($varValue, $arrField, $arrCatalog): array
     {
 
         if (!empty($varValue) && is_array($varValue)) {
@@ -233,7 +225,6 @@ class Upload
         return $arrField['useArrayFormat'] ? [] : '';
     }
 
-
     public static function renderImage($varValue, $arrField, $arrCatalog)
     {
 
@@ -246,27 +237,23 @@ class Upload
         return static::generateImage($arrImage, $arrField, $blnArray);
     }
 
-
     public static function renderFile($varValue, $arrField, $arrCatalog)
     {
 
         if (!is_string($varValue)) {
-
             return $arrField['useArrayFormat'] ? [] : '';
         }
 
         $arrFile = static::createEnclosureArray($varValue, $arrField, $arrCatalog);
 
-        if ($arrField['useArrayFormat']) {
-
+        if (($arrField['useArrayFormat'] ?? '')) {
             return $arrFile;
         }
 
         return static::generateEnclosure($arrFile, $arrField);
     }
 
-
-    public static function createImageArray($varValue, $arrField, $arrCatalog)
+    public static function createImageArray($varValue, $arrField, $arrCatalog): array
     {
 
         $objModel = static::getImagePath($varValue, true);
@@ -284,8 +271,7 @@ class Upload
         ];
     }
 
-
-    public static function createEnclosureArray($varValue, $arrField, $arrCatalog)
+    public static function createEnclosureArray($varValue, $arrField, $arrCatalog): array
     {
 
         global $objPage;
@@ -337,14 +323,12 @@ class Upload
         ];
     }
 
-
     public static function getImagePath($strSingleSrc, $blnModel = false)
     {
 
         if (!Toolkit::isEmpty($strSingleSrc)) {
 
             $objModel = FilesModel::findByUuid($strSingleSrc);
-
             if ($blnModel) {
                 return $objModel;
             }
@@ -357,18 +341,16 @@ class Upload
         }
 
         if ($blnModel) {
-
             return null;
         }
 
         return $strSingleSrc;
     }
 
-
     public static function generateImage($arrImage, $arrField = [], $blnArray = false)
     {
 
-        $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
+        $strTemplate = $arrField['imageTemplate'] ?: 'ce_image';
         $objPicture = new FrontendTemplate($strTemplate);
 
         if (Toolkit::isEmpty($arrImage['singleSRC'])) return $blnArray ? [] : '';
@@ -378,16 +360,15 @@ class Upload
             $arrImage['overwriteMeta'] = true;
         }
 
-        Controller::addImageToTemplate($objPicture, $arrImage, null, null, $arrImage['model']);
+        Toolkit::addImageToTemplate($objPicture, $arrImage, null, null, $arrImage['model']);
 
         return $blnArray ? $objPicture->getData() : $objPicture->parse();
     }
 
-
-    public static function generateEnclosure($arrEnclosure, $arrField = [])
+    public static function generateEnclosure($arrEnclosure, $arrField = []): string
     {
 
-        $strTemplate = $arrField['fileTemplate'] ? $arrField['fileTemplate'] : 'ce_download';
+        $strTemplate = $arrField['fileTemplate'] ?: 'ce_download';
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($arrEnclosure);
 

@@ -38,8 +38,8 @@ class Entity extends CatalogController
         $this->arrSettings = $arrSettings;
         $this->catalogTablename = $strTable;
 
-        $this->import(Database::class);
-        $this->import(SQLQueryBuilder::class);
+        $this->import(Database::class, 'Database');
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
 
         System::loadLanguageFile('catalog_manager');
 
@@ -130,9 +130,7 @@ class Entity extends CatalogController
             }
 
             if (in_array($arrField['type'], ['select', 'checkbox', 'radio'])) {
-
                 if (isset($arrField['optionsType']) && in_array($arrField['optionsType'], ['useDbOptions', 'useForeignKey'])) {
-
                     $arrField['multiple'] = $arrField['multiple'] ?? '';
 
                     if (!$arrField['multiple'] && !in_array($arrField['dbTable'], $arrJoinedTables)) {
@@ -156,7 +154,6 @@ class Entity extends CatalogController
         }
 
         if (($this->arrCatalog['pTable'] ?? '') && !($this->arrSettings['noParentJoin'] ?? '')) {
-
             $arrQuery['joins'][] = [
                 'field' => 'pid',
                 'onField' => 'id',
@@ -172,7 +169,6 @@ class Entity extends CatalogController
         }
 
         $objEntity = $this->SQLQueryBuilder->execute($arrQuery);
-
         if (!$objEntity->numRows) {
             return [];
         }
@@ -210,7 +206,6 @@ class Entity extends CatalogController
         return $arrEntity;
     }
 
-
     public function getPdf($strModuleId = '', $strTemplate = 'ctlg_pdf_default')
     {
 
@@ -218,7 +213,6 @@ class Entity extends CatalogController
         $arrFields = $this->getTemplateFields();
 
         if (empty($arrEntity)) {
-
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }
@@ -231,16 +225,16 @@ class Entity extends CatalogController
             'fields' => $arrFields,
             'table' => $this->catalogTablename,
             'name' => $this->arrCatalog['name'],
-            'fieldLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'],
-            'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value']
+            'fieldLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['field'] ?? '',
+            'valueLabel' => $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['value'] ?? ''
         ]);
 
         $objModule = $this->Database->prepare('SELECT * FROM tl_module WHERE id = ?')->limit(1)->execute($strModuleId);
         $strOrientation = $objModule->catalogPdfOrientation ?: 'P';
         $strDocument = $objTemplate->parse();
 
-        $objPDF = new TCPDF($strOrientation, 'pt', 'A4', true, 'UTF-8', false);
-        $objPDF->SetTitle($arrEntity['title'] ? $arrEntity['title'] : $arrEntity['alias']);
+        $objPDF = new \TCPDF($strOrientation, 'pt', 'A4', true, 'UTF-8', false);
+        $objPDF->SetTitle($arrEntity['title'] ?: $arrEntity['alias']);
         $objPDF->SetPrintHeader(false);
         $objPDF->SetPrintFooter(false);
         $objPDF->SetFont('helvetica', '', 10);
@@ -338,48 +332,37 @@ EOD;
         ];
 
         if (in_array('invisible', $arrCatalog['operations'])) {
-
             $dteTime = Date::floorToMinute();
-
             $arrQuery['where'][] = [
-
                 'field' => 'tstamp',
                 'operator' => 'gt',
                 'value' => 0
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'start',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'start',
                     'operator' => 'lte',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 [
                     'value' => '',
                     'field' => 'stop',
                     'operator' => 'equal'
                 ],
-
                 [
                     'field' => 'stop',
                     'operator' => 'gt',
                     'value' => $dteTime
                 ]
             ];
-
             $arrQuery['where'][] = [
-
                 'field' => 'invisible',
                 'operator' => 'not',
                 'value' => '1'
@@ -389,9 +372,7 @@ EOD;
         if (is_array($arrOrderBy) && !empty($arrOrderBy)) {
 
             foreach ($arrOrderBy as $arrOrder) {
-
                 $arrQuery['orderBy'][] = [
-
                     'field' => $arrOrder['key'],
                     'order' => $arrOrder['value']
                 ];
@@ -403,7 +384,6 @@ EOD;
         if (!$objEntities->numRows) return $arrReturn;
 
         while ($objEntities->next()) {
-
             $arrReturn[] = Toolkit::parseCatalogValues($objEntities->row(), $arrFields);
         }
 

@@ -20,7 +20,9 @@ class TimestampInsertTag extends Frontend
             return false;
         }
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_TIMESTAMP') {
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
+
+        if ($strInsertTagName == 'CTLG_TIMESTAMP') {
 
             $objToday = new Date();
             $objDate = new Date($objToday->date);

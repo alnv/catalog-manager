@@ -461,12 +461,6 @@ class FrontendEditing extends CatalogController
                         $varValue = $objWidget->getEmptyValue();
                     }
 
-                    $arrField['eval']['encrypt'] = $arrField['eval']['encrypt'] ?? '';
-
-                    if ($arrField['eval']['encrypt']) {
-                        // $varValue = Encryption::encrypt($varValue); todo
-                    }
-
                     $this->arrValues[$strFieldname] = $varValue;
                 }
 
@@ -770,26 +764,19 @@ class FrontendEditing extends CatalogController
             'required' => true,
             'type' => 'captcha',
             'mandatory' => true,
-            'tableless' => '1',
-            'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion']
+            'label' => ($GLOBALS['TL_LANG']['MSC']['securityQuestion'] ?? '')
         ];
 
-        $strClass = $GLOBALS['TL_FFL']['captcha'];
-
-        if (!class_exists($strClass)) $strClass = 'FormCaptcha';
-
+        $strClass = $GLOBALS['TL_FFL']['captcha'] ?? '';
         $objCaptcha = new $strClass($arrCaptcha);
 
         if (Input::post('FORM_SUBMIT') == $this->strFormId) {
-
             $objCaptcha->validate();
-
             if ($objCaptcha->hasErrors()) $this->blnNoSubmit = true;
         }
 
         return $objCaptcha;
     }
-
 
     protected function convertWidgetToField($arrField)
     {
@@ -826,7 +813,7 @@ class FrontendEditing extends CatalogController
         return $strClass;
     }
 
-    protected function setValues()
+    protected function setValues(): void
     {
 
         if ($this->strItemID && $this->catalogTablename) {
@@ -908,16 +895,6 @@ class FrontendEditing extends CatalogController
                 }
             }
         }
-
-        /*
-        foreach ($this->arrCatalogFields as $strFieldname => $arrField) {
-            $arrField['dynValue'] = $arrField['dynValue'] ?? '';
-            if (!Toolkit::isEmpty($arrField['dynValue'])) {
-                $this->arrValues[$strFieldname] = Toolkit::generateDynValue($arrField['dynValue'], Toolkit::prepareValues4Db($this->arrValues));
-                if ($strFieldname == 'title' && Toolkit::hasDynAlias()) $this->arrValues['alias'] = '';
-            }
-        }
-        */
 
         $objDcCallbacks = new DcCallbacks();
         $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias(($this->arrValues['alias'] ?? ''), $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);
@@ -1015,10 +992,8 @@ class FrontendEditing extends CatalogController
                 if (!$this->isVisible()) $blnReload = false;
 
                 if ($blnReload && (Toolkit::isEmpty($this->catalogFormRedirect) || $this->catalogFormRedirect == '0')) {
-
                     $this->reload();
                 } else {
-
                     $this->redirectAfterInsertion($this->strRedirectID, $strQuery);
                 }
 
@@ -1137,7 +1112,6 @@ class FrontendEditing extends CatalogController
                 if (is_null($arrField)) continue;
 
                 $arrField['_type'] = $arrField['_type'] ?? '';
-
                 $arrField['eval']['rgxp'] = $arrField['eval']['rgxp'] ?? '';
 
                 if ($arrField['_type'] == 'date' || in_array($arrField['eval']['rgxp'], ['date', 'time', 'datim'])) {

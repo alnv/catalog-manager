@@ -22,7 +22,9 @@ class RandomEntitiesIDInsertTag extends Frontend
             return false;
         }
 
-        if (isset($arrTags[0]) && $arrTags[0] == 'CTLG_RANDOM_ENTITY_IDS') {
+        $strInsertTagName = strtoupper($arrTags[0] ?? '');
+
+        if ($strInsertTagName == 'CTLG_RANDOM_ENTITY_IDS') {
 
             $strWhere = '';
             $strLimit = '';
@@ -32,7 +34,6 @@ class RandomEntitiesIDInsertTag extends Frontend
             $strTablename = isset($arrTags[1]) ? $arrTags[1] : '';
 
             if (!$this->Database->tableExists($strTablename)) {
-
                 return false;
             }
 
@@ -84,7 +85,7 @@ class RandomEntitiesIDInsertTag extends Frontend
             }
 
             $strIds = [];
-            $objIds = $this->Database->prepare(sprintf('SELECT id FROM %s %s ORDER BY RAND() %s', $strTablename, $strWhere, $strLimit))->execute($arrValues);
+            $objIds = $this->Database->prepare(sprintf('SELECT id FROM %s %s ORDER BY RAND() %s', $strTablename, $strWhere, $strLimit))->execute(...$arrValues);
 
             if ($objIds->numRows) {
                 while ($objIds->next()) {

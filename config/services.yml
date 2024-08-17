@@ -2,6 +2,23 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+  ctlg.services.notification_center:
+    class: Alnv\CatalogManagerBundle\Services\NotificationCenter
+    public: true
+    arguments:
+      - '@Terminal42\NotificationCenterBundle\NotificationCenter'
+  Alnv\CatalogManagerBundle\NotificationType\EntityDeleteNotificationType:
+    tags:
+      notification_center: notification_type
+  Alnv\CatalogManagerBundle\NotificationType\EntityDuplicateNotificationType:
+    tags:
+      notification_center: notification_type
+  Alnv\CatalogManagerBundle\NotificationType\EntityInsertNotificationType:
+    tags:
+      notification_center: notification_type
+  Alnv\CatalogManagerBundle\NotificationType\EntityUpdateNotificationType:
+    tags:
+      notification_center: notification_type
   Alnv\CatalogManagerBundle\EventListener\DoctrineSchemaListener:
     arguments:
       - '@contao.framework'

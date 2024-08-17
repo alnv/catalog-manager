@@ -12,6 +12,7 @@ use Alnv\CatalogManagerBundle\Fields\Number;
 use Alnv\CatalogManagerBundle\Fields\DbColumn;
 use Contao\Environment;
 use Contao\Idna;
+use Contao\System;
 
 class CatalogNotification extends CatalogController
 {
@@ -26,6 +27,8 @@ class CatalogNotification extends CatalogController
 
     protected array $arrCatalogFields = [];
 
+    protected $objNotificationCenter;
+
     public function __construct($objModule, $strID = null)
     {
 
@@ -35,6 +38,7 @@ class CatalogNotification extends CatalogController
         $this->objModule = $objModule;
         $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
         $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
+        $this->objNotificationCenter = System::getContainer()->get('ctlg.services.notification_center');
 
         $this->blnEnable = (class_exists('NotificationCenter\Model\Notification') && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists('tl_nc_notification'));
 
@@ -48,34 +52,20 @@ class CatalogNotification extends CatalogController
     public function notifyOnDelete($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable) return;
-
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($intNotificationId);
-
-        if ($objNotification === null) {
-            // $this->log( 'The notification was not found ID ' . $intNotificationId , __METHOD__, TL_ERROR );
-            return;
-        }
+        if (!$this->blnEnable || !$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens = $this->getOldData($arrTokens);
         $arrTokens['domain'] = $this->getDomain();
         $arrTokens['admin_email'] = $this->getAdminEmail();
 
-        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
     }
 
     public function notifyOnUpdate($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable) return;
-
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($intNotificationId);
-
-        if ($objNotification === null) {
-            // $this->log('The notification was not found ID ' . $intNotificationId, __METHOD__, TL_ERROR);
-            return;
-        }
+        if (!$this->blnEnable || !$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens = $this->getOldData($arrTokens);
@@ -94,21 +84,13 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
     }
-
 
     public function notifyOnInsert($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable) return;
-
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($intNotificationId);
-
-        if ($objNotification === null) {
-            // $this->log('The notification was not found ID ' . $intNotificationId, __METHOD__, TL_ERROR);
-            return;
-        }
+        if (!$this->blnEnable || !$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens['domain'] = $this->getDomain();
@@ -126,11 +108,10 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
     }
 
-
-    protected function getOldData($arrTokens = [])
+    protected function getOldData($arrTokens = []): array
     {
 
         if ($this->strItemID && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($this->objModule->catalogTablename)) {
@@ -153,7 +134,7 @@ class CatalogNotification extends CatalogController
         return $arrTokens;
     }
 
-    protected function setDataTokens($arrData)
+    protected function setDataTokens($arrData): array
     {
 
         $arrTokens = [];

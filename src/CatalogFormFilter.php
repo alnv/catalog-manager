@@ -37,14 +37,13 @@ class CatalogFormFilter extends CatalogController
 
     public function __construct($strId)
     {
-
-        parent::__construct();
-
         $this->import(Database::class, 'Database');
         $this->import(CatalogInput::class, 'CatalogInput');
 
         $this->strFormId = $strId;
         $this->initialize();
+
+        parent::__construct();
     }
 
 
@@ -162,6 +161,7 @@ class CatalogFormFilter extends CatalogController
         $objFormTemplate->submitId = '';
         $objFormTemplate->attributes = '';
         $objFormTemplate->fields = $arrFields;
+        $objFormTemplate->style = '';
         $objFormTemplate->formId = $strFormId;
         $objFormTemplate->action = $strAction;
         $objFormTemplate->cssClass = $strCssClass;
@@ -243,9 +243,7 @@ class CatalogFormFilter extends CatalogController
         $arrField['tabindex'] = $arrField['tabindex'] ? sprintf('tabindex="%s"', $arrField['tabindex']) : '';
 
         if ($arrField['mandatory']) $arrField['attributes'] .= ' required';
-
         if ($arrField['type'] == 'text' && $arrField['autoCompletionType']) {
-
             $arrField['fieldCssClass'] .= ' awesomplete-field' . ($arrField['multiple'] ? ' multiple' : '');
 
             if (Input::get('ctlg_autocomplete_query') && Input::get('ctlg_fieldname') == $arrField['name']) {
@@ -258,7 +256,6 @@ class CatalogFormFilter extends CatalogController
         }
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'])) {
-
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFilterField'] as $callback) {
                 $this->import($callback[0]);
                 $arrField = $this->{$callback[0]}->{$callback[1]}($arrField, $this);
@@ -330,7 +327,6 @@ class CatalogFormFilter extends CatalogController
         return $strValue;
     }
 
-
     protected function getInput($strFieldname, $strDefault = '')
     {
 
@@ -341,7 +337,6 @@ class CatalogFormFilter extends CatalogController
 
         return $strValue;
     }
-
 
     protected function sendJsonResponse($arrField, $strKeyword)
     {
@@ -388,7 +383,7 @@ class CatalogFormFilter extends CatalogController
         return false;
     }
 
-    protected function getActionAttr()
+    protected function getActionAttr(): string
     {
 
         if (!$this->blnIsValid) return StringUtil::ampersand(Environment::get('indexFreeRequest'));
@@ -413,7 +408,7 @@ class CatalogFormFilter extends CatalogController
 
     protected function getMethodAttr()
     {
-        return $this->arrForm['method'] ? $this->arrForm['method'] : 'GET';
+        return $this->arrForm['method'] ?: 'GET';
     }
 
     protected function getResetLink()
@@ -439,12 +434,12 @@ class CatalogFormFilter extends CatalogController
         return $this->arrForm['template'] ?: '';
     }
 
-    public function getState()
+    public function getState(): bool
     {
         return $this->blnReady;
     }
 
-    public function disableAutoItem()
+    public function disableAutoItem(): bool
     {
         return ($this->arrForm['disableOnAutoItem'] && !Toolkit::isEmpty(Input::get('auto_item')));
     }

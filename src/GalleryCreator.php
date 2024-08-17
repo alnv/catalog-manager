@@ -337,7 +337,7 @@ class GalleryCreator extends Frontend
         $objTemplate = new FrontendTemplate($this->galleryTpl);
         $objTemplate->setData($this->arrData);
         $objTemplate->body = $arrBody;
-
+        $objMainTemplate->style = '';
         $objMainTemplate->images = $objTemplate->parse();
 
         return $objMainTemplate->parse();
@@ -350,7 +350,7 @@ class GalleryCreator extends Frontend
         ]);
     }
 
-    protected function setDataContainer(): array
+    protected function setDataContainer(): void
     {
         $this->arrData = [
             'hl' => 'h1',

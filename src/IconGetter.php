@@ -16,7 +16,6 @@ class IconGetter extends CatalogController
 
     protected string $strCatalogDefaultIcon = 'catalog-icon.svg';
 
-
     public function setCatalogIcon($strTablename): string
     {
 
@@ -25,7 +24,7 @@ class IconGetter extends CatalogController
 
         if ($strCustomIcon != '') return $strCustomIcon;
 
-        return 'bundles/alnvcatalogmanager/icons/catalog-icon.svg';
+        return 'children.svg';
     }
 
 
@@ -51,7 +50,7 @@ class IconGetter extends CatalogController
             $strIcon = $strCustomIcon;
         }
 
-        $strImageAttribute = trim($strImageAttribute . ' data-icon="edit.gif" data-icon-disabled="header.svg" ');
+        $strImageAttribute = trim($strImageAttribute . ' data-icon="edit.svg" data-icon-disabled="header.svg" ');
 
         return Image::getHtml($strIcon, '', $strImageAttribute);
     }

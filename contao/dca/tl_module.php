@@ -1413,125 +1413,87 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludeArrayOptions'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSendJsonHeader'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogSendJsonHeader'],
     'inputType' => 'radio',
-
     'eval' => [
-
         'maxlength' => 16,
         'tl_class' => 'clr',
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
-
     'options' => ['permanent', 'onAjaxCall'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSendJsonHeader'],
-
     'exclude' => true,
     'sql' => "varchar(16) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyInsert'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
         'ncNotificationChoices' => ['ctlg_entity_status_insert']
     ],
-
     'options_callback' => [tl_module::class, 'getNotificationChoices'],
-
     'relation' => [
-
         'load' => 'lazy',
         'type' => 'hasOne',
         'table' => 'tl_nc_notification'
     ],
-
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyDuplicate'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
         'ncNotificationChoices' => ['ctlg_entity_status_duplicate']
     ],
-
     'options_callback' => [tl_module::class, 'getNotificationChoices'],
-
     'relation' => [
-
         'load' => 'lazy',
         'type' => 'hasOne',
         'table' => 'tl_nc_notification'
     ],
-
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyUpdate'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
         'ncNotificationChoices' => ['ctlg_entity_status_update']
     ],
-
     'options_callback' => [tl_module::class, 'getNotificationChoices'],
-
     'relation' => [
-
         'load' => 'lazy',
         'type' => 'hasOne',
         'table' => 'tl_nc_notification'
     ],
-
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogNotifyDelete'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
         'ncNotificationChoices' => ['ctlg_entity_status_delete']
     ],
-
     'options_callback' => [tl_module::class, 'getNotificationChoices'],
-
     'relation' => [
-
         'load' => 'lazy',
         'type' => 'hasOne',
         'table' => 'tl_nc_notification'
     ],
-
     'exclude' => true,
     'sql' => "int(10) unsigned NOT NULL default '0'"
 ];

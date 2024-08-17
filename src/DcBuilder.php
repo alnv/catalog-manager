@@ -21,6 +21,7 @@ class DcBuilder extends CatalogController
     protected array $arrFields = [];
 
     protected array $arrCatalog = [];
+
     protected bool $blnActive = true;
 
     protected array $arrErrorTables = [];
@@ -296,16 +297,13 @@ class DcBuilder extends CatalogController
         $arrReturn['panelLayout'] = Toolkit::createPanelLayout($this->arrCatalog['panelLayout']);
 
         if ($this->arrCatalog['mode'] == '4') {
-
             $arrLabelFields = ['title'];
 
             if (is_array($this->arrCatalog['labelFields']) && !empty($this->arrCatalog['labelFields'])) {
-
                 $arrLabelFields = $this->arrCatalog['labelFields'] ?? [];
             }
 
             $arrReturn['child_record_callback'] = function ($arrRow) use ($arrLabelFields) {
-
                 $strLabel = $arrLabelFields[0] ?? '';
                 $strTemplate = '##' . $strLabel . '##';
                 $objDcCallbacks = new DcCallbacks();
@@ -347,37 +345,36 @@ class DcBuilder extends CatalogController
             'edit' => [
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['edit'],
                 'href' => sprintf('act=edit&ctlg_table=%s', $this->strTable),
-                'icon' => 'header.gif'
+                'icon' => 'edit.svg'
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['copy'],
                 'href' => sprintf('act=copy&ctlg_table=%s', $this->strTable),
-                'icon' => 'copy.gif'
+                'icon' => 'copy.svg'
             ],
             'cut' => [
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['cut'],
                 'href' => sprintf('act=paste&amp;mode=cut&ctlg_table=%s', $this->strTable),
-                'icon' => 'cut.gif',
+                'icon' => 'cut.svg',
                 'attributes' => 'onclick="Backend.getScrollOffset()"'
             ],
             'delete' => [
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['delete'],
                 'href' => sprintf('act=delete&ctlg_table=%s', $this->strTable),
-                'icon' => 'delete.gif',
+                'icon' => 'delete.svg',
                 'attributes' => 'onclick="if(!confirm(\'' . $this->I18nCatalogTranslator->getDeleteConfirmLabel() . '\'))return false;Backend.getScrollOffset()"'
             ],
             'toggle' => [
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['toggle'],
-                'icon' => 'visible.gif',
+                'icon' => 'visible.svg',
                 'href' => sprintf('catalogTable=%s', $this->strTable),
                 'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility( this,%s,' . sprintf("'%s'", $this->strTable) . ' )"',
                 'button_callback' => [DcCallbacks::class, 'toggleIcon']
             ],
             'show' => [
-
                 'label' => &$GLOBALS['TL_LANG']['catalog_manager']['operations']['show'],
                 'href' => 'act=show',
-                'icon' => 'show.gif'
+                'icon' => 'show.svg'
             ]
         ];
 
@@ -422,7 +419,7 @@ class DcBuilder extends CatalogController
             $arrOperator[$strOperationName] = [
                 'label' => [$strTitle, $strDescription],
                 'href' => sprintf('table=%s&ctlg_table=%s', $strTable, $this->strTable),
-                'icon' => $strTable !== 'tl_content' ? $this->IconGetter->setCatalogIcon($strTable) : 'articles.gif'
+                'icon' => $strTable !== 'tl_content' ? $this->IconGetter->setCatalogIcon($strTable) : 'children.svg'
             ];
 
             ArrayUtil::arrayInsert($arrReturn, 1, $arrOperator);

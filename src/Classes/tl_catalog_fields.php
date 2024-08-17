@@ -17,8 +17,9 @@ use Contao\System;
 
 class tl_catalog_fields extends Backend
 {
-    protected $arrTypes = [];
-    protected $strTable = '';
+    protected array $arrTypes = [];
+
+    protected string $strTable = '';
 
     public function __construct()
     {
@@ -28,9 +29,9 @@ class tl_catalog_fields extends Backend
         $strId = Input::get('id') ?: '';
         if (Toolkit::isEmpty($strId)) return;
 
-        $strQuery = 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE id = ? LIMIT 1 )';
+        $strQuery = 'SELECT * FROM tl_catalog WHERE id = ( SELECT pid FROM tl_catalog_fields WHERE id=? LIMIT 1 )';
 
-        if (Input::get('act') == 'editAll') $strQuery = 'SELECT * FROM tl_catalog WHERE id = ?';
+        if (Input::get('act') == 'editAll') $strQuery = 'SELECT * FROM tl_catalog WHERE id=?';
 
         $objCatalog = $this->Database->prepare($strQuery)->limit(1)->execute($strId);
         $this->strTable = $objCatalog->tablename;
@@ -45,7 +46,7 @@ class tl_catalog_fields extends Backend
         if (Toolkit::isEmpty($varValue) && !Toolkit::isEmpty($dc->activeRecord->title)) {
 
             $varValue = Toolkit::slug($dc->activeRecord->title, ['delimiter' => '_']);
-            $objField = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE fieldname = ? AND id != ?')->limit(1)->execute($varValue, $dc->activeRecord->id);
+            $objField = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE fieldname=? AND id !=?')->limit(1)->execute($varValue, $dc->activeRecord->id);
 
             if ($objField->numRows) $varValue .= '_' . $objField->id;
 
@@ -55,13 +56,11 @@ class tl_catalog_fields extends Backend
         return $varValue;
     }
 
-
     public function checkPermission()
     {
         $objDcPermission = new DcPermission();
         $objDcPermission->checkPermissionByParent('tl_catalog_fields', 'tl_catalog', 'catalog', 'catalogp');
     }
-
 
     public function changeGlobals()
     {
@@ -88,7 +87,6 @@ class tl_catalog_fields extends Backend
         return $strValue;
     }
 
-
     public function setOrderField(DataContainer $dc)
     {
 
@@ -111,7 +109,6 @@ class tl_catalog_fields extends Backend
             }
         }
     }
-
 
     public function createFieldOnSubmit(DataContainer $dc)
     {
@@ -143,7 +140,6 @@ class tl_catalog_fields extends Backend
         }
     }
 
-
     public function checkUniqueValue($varValue, DataContainer $dc)
     {
 
@@ -156,15 +152,12 @@ class tl_catalog_fields extends Backend
         return $varValue;
     }
 
-
-    public function getFilesTypes()
+    public function getFilesTypes(): array
     {
-
         return ['image', 'gallery', 'file', 'files'];
     }
 
-
-    public function getTextFieldsByParentID()
+    public function getTextFieldsByParentID(): array
     {
 
         $objI18nCatalogTranslator = new I18nCatalogTranslator();
@@ -174,41 +167,34 @@ class tl_catalog_fields extends Backend
             'title' => $objI18nCatalogTranslator->get('field', 'title', ['titleOnly' => true])
         ];
 
-        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )')->execute(\Input::get('id'));
+        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )')->execute(Input::get('id'));
 
         while ($objCatalogFields->next()) {
-
             if ($objCatalogFields->type !== 'text') {
-
                 continue;
             }
-
             $arrReturn[$objCatalogFields->fieldname] = $objI18nCatalogTranslator->get('field', $objCatalogFields->fieldname, ['title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true]);
         }
 
         return $arrReturn;
     }
 
-
-    public function getCatalogFieldsByParentID()
+    public function getCatalogFieldsByParentID(): array
     {
 
         $arrReturn = [];
-        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )')->execute(\Input::get('id'));
+        $objCatalogFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ( SELECT pid FROM tl_catalog_fields WHERE id = ? )')->execute(Input::get('id'));
 
         $objI18nCatalogTranslator = new I18nCatalogTranslator();
         $objI18nCatalogTranslator->initialize();
 
         while ($objCatalogFields->next()) {
-
             if (!$objCatalogFields->fieldname) continue;
-
             $arrReturn[$objCatalogFields->fieldname] = $objI18nCatalogTranslator->get('field', $objCatalogFields->fieldname, ['title' => $objCatalogFields->title, 'description' => $objCatalogFields->description, 'titleOnly' => true]);
         }
 
         return $arrReturn;
     }
-
 
     public function renameFieldname($varValue, DataContainer $dc)
     {
@@ -216,7 +202,6 @@ class tl_catalog_fields extends Backend
         $strFieldname = $dc->activeRecord->fieldname;
 
         if (Toolkit::isEmpty($varValue) || Toolkit::isEmpty($strFieldname) || $strFieldname == $varValue) {
-
             return $varValue;
         }
 
@@ -224,23 +209,19 @@ class tl_catalog_fields extends Backend
         $arrCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE `id` = ?')->limit(1)->execute($strCatalogID)->row();
 
         if ($this->Database->fieldExists($varValue, $arrCatalog['tablename'])) {
-
             throw new \Exception(sprintf('fieldname "%s" already exist', $varValue));
         }
 
         $objDatabaseBuilder = new CatalogDatabaseBuilder();
         $objDatabaseBuilder->initialize($arrCatalog['tablename'], $arrCatalog);
-
         $objDatabaseBuilder->setColumn($dc->activeRecord->row());
 
         if ($this->Database->fieldExists($strFieldname, $arrCatalog['tablename'])) {
-
             $objDatabaseBuilder->renameColumn($varValue);
         }
 
         return $varValue;
     }
-
 
     public function checkFieldname($varValue)
     {
@@ -252,18 +233,15 @@ class tl_catalog_fields extends Backend
         return $varValue;
     }
 
-
     public function checkBlacklist($varValue)
     {
 
         if ($varValue && in_array($varValue, Toolkit::columnsBlacklist())) {
-
             throw new \Exception(sprintf('fieldname "%s" is forbidden.', $varValue));
         }
 
         return $varValue;
     }
-
 
     public function dropFieldOnDelete(DataContainer $dc)
     {
@@ -278,13 +256,10 @@ class tl_catalog_fields extends Backend
         $objDatabaseBuilder->dropColumn();
     }
 
-
     public function getTables()
     {
-
         return $this->Database->listTables(null);
     }
-
 
     public function getColumnsByDbTable(DataContainer $dc)
     {
@@ -299,9 +274,7 @@ class tl_catalog_fields extends Backend
             $arrFields = $objCatalogFieldBuilder->getCatalogFields(true, null);
 
             foreach ($arrFields as $strFieldname => $arrField) {
-
                 if (!$this->Database->fieldExists($strFieldname, $strTablename)) continue;
-
                 $arrReturn[$strFieldname] = Toolkit::getLabelValue($arrField['_dcFormat']['label'], $strFieldname);
             }
         }
@@ -309,29 +282,24 @@ class tl_catalog_fields extends Backend
         return $arrReturn;
     }
 
-
     public function getFieldTypes(): array
     {
         return array_keys($this->arrTypes);
     }
-
 
     public function getIndexes(): array
     {
         return ['index', 'unique'];
     }
 
-
     public function getRGXPTypes(DataContainer $dc)
     {
 
         if ($dc->activeRecord->type && $dc->activeRecord->type == 'number') {
-
             return Toolkit::$arrDigitRgxp;
         }
 
         if ($dc->activeRecord->type && $dc->activeRecord->type == 'date') {
-
             return Toolkit::$arrDateRgxp;
         }
 
@@ -345,9 +313,7 @@ class tl_catalog_fields extends Backend
         $arrReturn = ['tinyMCE', 'tinyFlash'];
 
         $arrCustomTinyMce = $this->getTemplateGroup('be_tiny');
-
         if (!empty($arrCustomTinyMce) && is_array($arrCustomTinyMce)) {
-
             foreach ($arrCustomTinyMce as $strTinyMCE => $strTinyMCEName) {
 
                 $strTinyMCE = $strTinyMCE ? str_replace('be_', '', $strTinyMCE) : '';
@@ -355,7 +321,6 @@ class tl_catalog_fields extends Backend
                 if (!$strTinyMCE) continue;
 
                 if (!in_array($strTinyMCE, $arrReturn)) {
-
                     $arrReturn[] = $strTinyMCE;
                 }
             }
@@ -364,18 +329,15 @@ class tl_catalog_fields extends Backend
         return $arrReturn;
     }
 
-
     public function getTLClasses(): array
     {
         return ['clr', 'w50', 'long', 'm12'];
     }
 
-
     public function getFieldFlags(): array
     {
         return ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
     }
-
 
     public function getSQLStatements(DataContainer $dc)
     {
@@ -467,7 +429,6 @@ class tl_catalog_fields extends Backend
     {
 
         if (!Toolkit::isEmpty($varValue) && in_array($dc->activeRecord->type, ['fieldsetStart', 'fieldsetStop'])) {
-
             $varValue = Toolkit::slug($varValue, ['delimiter' => '_']);
         }
 
@@ -502,14 +463,11 @@ class tl_catalog_fields extends Backend
         if ($dc->activeRecord) {
 
             $objFields = $this->Database->prepare('SELECT * FROM tl_catalog_fields WHERE pid = ? AND statement = ?')->execute($dc->activeRecord->pid, 'blob');
-
             $objI18nCatalogTranslator = new I18nCatalogTranslator();
             $objI18nCatalogTranslator->initialize();
 
             while ($objFields->next()) {
-
                 if ($objFields->fieldname && $objFields->type == 'dbColumn') {
-
                     $arrReturn[$objFields->fieldname] = $objI18nCatalogTranslator->get('field', $objFields->fieldname, ['title' => $objFields->title, 'description' => $objFields->description, 'titleOnly' => true]);
                 }
             }
@@ -525,9 +483,7 @@ class tl_catalog_fields extends Backend
         if (!Toolkit::isCoreTable($this->strTable)) return null;
 
         foreach ($this->arrTypes as $strType => $arrType) {
-
             if (!empty($arrType) && is_array($arrType)) {
-
                 $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][$strType] = str_replace($arrType['dcPicker'], $arrType['dcPicker'] . '{palettes_legend},' . $arrType['dcType'] . ';', $GLOBALS['TL_DCA']['tl_catalog_fields']['palettes'][$strType]);
             }
         }
@@ -551,7 +507,7 @@ class tl_catalog_fields extends Backend
         return $objDcModifier->getLegends($strCurrentPalette);
     }
 
-    public function getDcFields($strCurrentPalette)
+    public function getDcFields($strCurrentPalette): array
     {
 
         $objDcModifier = new DcModifier();
@@ -561,7 +517,7 @@ class tl_catalog_fields extends Backend
     }
 
 
-    public function getFieldTemplates(DataContainer $dc)
+    public function getFieldTemplates(DataContainer $dc): array
     {
 
         if (!$dc->activeRecord->type) return [];
@@ -569,7 +525,6 @@ class tl_catalog_fields extends Backend
         $strType = Toolkit::$arrFormTemplates[$dc->activeRecord->type];
 
         if ($dc->activeRecord->type == 'upload' && $dc->activeRecord->useFineUploader) {
-
             $strType = 'ctlg_form_fine_uploader';
         }
 
@@ -577,12 +532,11 @@ class tl_catalog_fields extends Backend
     }
 
 
-    public function getImagesSizes()
+    public function getImagesSizes(): array
     {
 
         if ($this->Database->tableExists('tl_image_size')) {
-
-            return System::getImageSizes();
+            return System::getContainer()->get('contao.image.sizes')->getAllOptions();
         }
 
         return [];

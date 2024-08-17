@@ -20,7 +20,6 @@ class tl_module extends Backend
         parent::__construct();
     }
 
-
     public function checkModuleRequirements()
     {
 
@@ -60,23 +59,19 @@ class tl_module extends Backend
         }
     }
 
-
     public function getCatalogs(): array
     {
 
         $arrReturn = [];
 
         if (!empty($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS']) && is_array($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'])) {
-
             foreach ($GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'] as $arrCatalog) {
-
                 $arrReturn[$arrCatalog['tablename']] = $arrCatalog['name'] . ($arrCatalog['info'] ? ' (' . StringUtil::substr($arrCatalog['info'], 16) . ')' : '');
             }
         }
 
         return $arrReturn;
     }
-
 
     public function disableNotRequiredFields(DataContainer $dc)
     {
@@ -101,7 +96,6 @@ class tl_module extends Backend
         }
     }
 
-
     public function generateGeoCords(DataContainer $dc)
     {
 
@@ -112,20 +106,16 @@ class tl_module extends Backend
         $arrCords = $objGeoCoding->getCords($dc->activeRecord->catalogMapAddress, 'en', true);
 
         if (($arrCords['lat'] || $arrCords['lng'])) {
-
             $arrSet['catalogMapLng'] = $arrCords['lng'];
             $arrSet['catalogMapLat'] = $arrCords['lat'];
-
             $this->Database->prepare('UPDATE ' . $dc->table . ' %s WHERE id = ?')->set($arrSet)->execute($dc->id);
         }
     }
-
 
     public function getSystemCountries(): array
     {
         return array_values(Toolkit::getcountries());
     }
-
 
     public function getCatalogTemplates()
     {
@@ -492,7 +482,7 @@ class tl_module extends Backend
             $arrValues = $arrTypes;
         }
 
-        $objNotifications = $this->Database->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')->execute($arrValues);
+        $objNotifications = $this->Database->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')->execute(...$arrValues);
 
         while ($objNotifications->next()) {
             $arrChoices[$objNotifications->id] = $objNotifications->title;
@@ -500,7 +490,6 @@ class tl_module extends Backend
 
         return $arrChoices;
     }
-
 
     public function getCustomTemplate(DataContainer $dc)
     {
@@ -513,11 +502,8 @@ class tl_module extends Backend
         ];
 
         if ($dc->activeRecord->type) {
-
             $strTemplate = $arrTemplates[$dc->activeRecord->type];
-
             if ($strTemplate) {
-
                 return $this->getTemplateGroup($strTemplate);
             }
         }
@@ -525,13 +511,10 @@ class tl_module extends Backend
         return [];
     }
 
-
     public function getTaxonomyNavTemplate()
     {
-
         return $this->getTemplateGroup('ctlg_taxonomy_nav');
     }
-
 
     public function getKeyColumns($objWidget)
     {

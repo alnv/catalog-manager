@@ -22,6 +22,7 @@
     "contao/core-bundle": "~5.3",
     "tecnickcom/tcpdf": "^6.7",
     "alnv/contao-geocoding": "^3.0",
+    "guzzlehttp/guzzle": "^7.9",
     "terminal42/notification_center": "^2.0"
   },
   "autoload": {

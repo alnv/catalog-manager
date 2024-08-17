@@ -8,9 +8,11 @@ use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
 use Alnv\CatalogManagerBundle\DcPermission;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Backend;
+use Contao\Config;
 use Contao\Controller;
 use Contao\DataContainer;
 use Contao\Input;
+use Contao\Message;
 use Contao\System;
 use Contao\Database;
 use Alnv\CatalogManagerBundle\DcCallbacks;
@@ -25,6 +27,16 @@ class tl_catalog extends Backend
     {
         $this->Database = Database::getInstance();
         parent::__construct();
+    }
+
+    public function checkLicense(): void
+    {
+        $strInfo = "Sie verwenden aktuell die uneingeschränkte Testversion. Sobald Ihr Projekt abgeschlossen ist, können Sie unter https://shop.catalog-manager.org/ eine Lizenz erwerben. Mit dem Kauf einer Lizenz unterstützen Sie das Projekt und helfen dabei, dessen Weiterentwicklung zu fördern.";
+        $strLicense = Config::get('catalogLicence') ?: '';
+
+        if (!$strLicense) {
+            Message::addInfo($strInfo);
+        }
     }
 
     public function checkPermission(): void

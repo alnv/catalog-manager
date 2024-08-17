@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Group header Format 
 $GLOBALS['TL_LANG']['tl_catalog']['geoCoordinates_legend'] = 'Latitude & Longitude settings';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Changelanguage settings';
 
+$GLOBALS['TL_LANG']['tl_catalog']['license'] = ['Licensing', ''];
 $GLOBALS['TL_LANG']['tl_catalog']['type'] = ['Type', 'Please select module type.'];
 $GLOBALS['TL_LANG']['tl_catalog']['mode'] = ['Mode', 'Please select catalog mode.'];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = ['Sorting', 'Please select your sorting.'];

@@ -8,6 +8,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'dataContainer' => DC_Table::class,
         'ctable' => ['tl_catalog_fields'],
         'onload_callback' => [
+            [tl_catalog::class, 'checkLicense'],
             [tl_catalog::class, 'checkPermission'],
             [tl_catalog::class, 'checkEditMask']
         ],
@@ -59,6 +60,12 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
             ]
         ],
         'global_operations' => [
+            'license' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_catalog']['license'],
+                'href' => 'table=tl_catalog_license',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"'
+            ],
             'all' => [
                 'href' => 'act=select',
                 'class' => 'header_edit_all',

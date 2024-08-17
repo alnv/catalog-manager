@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_catalog']['label_format_legend'] = 'Bezeichnung Format-E
 $GLOBALS['TL_LANG']['tl_catalog']['group_format_legend'] = 'Gruppennamen Format-Einstellungen';
 $GLOBALS['TL_LANG']['tl_catalog']['changeLanguageModule_legend'] = 'Sprachwechsler-Einstellungen';
 
+$GLOBALS['TL_LANG']['tl_catalog']['license'] = ['Lizenzieren', ''];
 $GLOBALS['TL_LANG']['tl_catalog']['type'] = ['Typ', 'Bitte wählen Sie ein Modul-Typ aus.'];
 $GLOBALS['TL_LANG']['tl_catalog']['name'] = ['Name', 'Bitte geben Sie den Names des Moduls ein.'];
 $GLOBALS['TL_LANG']['tl_catalog']['flag'] = ['Sortierung', 'Bitte wählen Sie eine Sortierung aus.'];

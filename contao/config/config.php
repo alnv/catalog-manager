@@ -48,7 +48,8 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
             'icon' => 'bundles/alnvcatalogmanager/icons/icon.svg',
             'tables' => [
                 'tl_catalog',
-                'tl_catalog_fields'
+                'tl_catalog_fields',
+                'tl_catalog_license'
             ]
         ],
         'filterform' => [

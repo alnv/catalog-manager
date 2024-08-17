@@ -2,10 +2,8 @@
 
 namespace Alnv\CatalogManagerBundle\Classes;
 
-use Alnv\CatalogManagerBundle\CatalogManagerVerification;
 use Contao\Backend;
 use Contao\Input;
-use Contao\Config;
 use Contao\StringUtil;
 
 class tl_settings extends Backend
@@ -17,24 +15,6 @@ class tl_settings extends Backend
             $GLOBALS['TL_LANG']['MSC']['ow_key'] = &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_key'];
             $GLOBALS['TL_LANG']['MSC']['ow_value'] = &$GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['ow_value'];
         }
-    }
-
-    public function verifyLicence($varValue): string
-    {
-
-        if (Config::get('catalogLicence') == $varValue) {
-            return $varValue;
-        }
-
-        $objCatalogManagerVerification = new CatalogManagerVerification();
-        $objCatalogManagerVerification->toggleIsBlocked($objCatalogManagerVerification->isBlocked());
-
-        if (!$objCatalogManagerVerification->verify($varValue)) {
-            if (!$varValue) return '';
-            throw new \Exception($GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['invalidKey']);
-        }
-
-        return $varValue;
     }
 
     public function parseNavigationName($varValue): string

@@ -15,6 +15,7 @@ class DoctrineSchemaListener
 
     public function postGenerateSchema(GenerateSchemaEventArgs $event): void
     {
+
         if (!Database::getInstance()->tableExists('tl_catalog')) {
             return;
         }

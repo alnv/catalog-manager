@@ -35,12 +35,12 @@ class DcCallbacks extends Backend
         return $arrButtons;
     }
 
-    public function getCoreTableLoaderButton()
+    public function getCoreTableLoaderButton(): string
     {
         return '<button type="submit" id="tl_loadDataContainer" name="tl_loadDataContainer" value="1" class="ctlg_loadWizard" title="' . $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['coreTableLoader'] . '"></button>';
     }
 
-    function groupCallback($strTemplate, $arrCatalogField, $strGroup, $strMode, $strField, $arrRow, $dc)
+    function groupCallback($strTemplate, $arrCatalogField, $strGroup, $strMode, $strField, $arrRow, $dc): string
     {
 
         $arrRow = Toolkit::parseCatalogValues($arrRow, $arrCatalogField, true);
@@ -79,7 +79,7 @@ class DcCallbacks extends Backend
         return $arrRow[$strField];
     }
 
-    public function childRecordCallback($strTemplate, $arrCatalogField, $arrRow, $strField)
+    public function childRecordCallback($strTemplate, $arrCatalogField, $arrRow, $strField): string
     {
 
         $arrRow = Toolkit::parseCatalogValues($arrRow, $arrCatalogField, true);
@@ -90,7 +90,7 @@ class DcCallbacks extends Backend
         return Toolkit::parseSimpleTokens($strTemplate, $arrRow);
     }
 
-    public function pagePicker(DataContainer $dc)
+    public function pagePicker(DataContainer $dc): string
     {
         return ' <a href="' . (($dc->value == '' || strpos($dc->value, '{{link_url::') !== false) ? 'contao/page.php' : 'contao/file.php') . '?do=' . Input::get('do') . '&amp;table=' . $dc->table . '&amp;field=' . $dc->field . '&amp;value=' . rawurlencode(str_replace(array('{{link_url::', '}}'), '', $dc->value)) . '&amp;switch=1' . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pagepicker']) . '" onclick="Backend.getScrollOffset();Backend.openModalSelector({\'width\':768,\'title\':\'' . StringUtil::specialchars(str_replace("'", "\\'", $GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['label'][0])) . '\',\'url\':this.href,\'id\':\'' . $dc->field . '\',\'tag\':\'ctrl_' . $dc->field . ((Input::get('act') == 'editAll') ? '_' . $dc->id : '') . '\',\'self\':this});return false">' . Image::getHtml('pickpage.svg', $GLOBALS['TL_LANG']['MSC']['pagepicker'], 'style="cursor:pointer"') . '</a>';
     }
@@ -205,10 +205,10 @@ class DcCallbacks extends Backend
         }
 
         $arrValues = [$varValue, $dc->activeRecord->id];
-        $strQuery = ' WHERE `alias` = ? AND `id` != ?';
+        $strQuery = ' WHERE `alias`=? AND `id`!=?';
 
-        if ($dc->activeRecord->pid) {
-            $strQuery .= ' AND pid = ?';
+        if (($dc->activeRecord->pid ?? '')) {
+            $strQuery .= ' AND pid=?';
             $arrValues[] = $dc->activeRecord->pid;
         }
 

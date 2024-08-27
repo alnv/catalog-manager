@@ -5,18 +5,17 @@ namespace Alnv\CatalogManagerBundle\Classes;
 use Alnv\CatalogManagerBundle\CatalogDatabaseBuilder;
 use Alnv\CatalogManagerBundle\CatalogDcExtractor;
 use Alnv\CatalogManagerBundle\CatalogFieldBuilder;
+use Alnv\CatalogManagerBundle\Classes\tl_catalog as Catalog;
+use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\DcPermission;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Contao\Backend;
 use Contao\Config;
 use Contao\Controller;
+use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\Message;
-use Contao\System;
-use Contao\Database;
-use Alnv\CatalogManagerBundle\DcCallbacks;
-use Alnv\CatalogManagerBundle\Classes\tl_catalog as Catalog;
 
 class tl_catalog extends Backend
 {
@@ -102,7 +101,7 @@ class tl_catalog extends Backend
         if (!$strTablename) return null;
 
         $objDatabaseBuilder = new CatalogDatabaseBuilder();
-        $objDatabaseBuilder->initialize($strTablename, $dc->activeRecord->row());
+        $objDatabaseBuilder->initialize($strTablename, (array)$dc->activeRecord);
 
         if ($this->Database->tableExists($strTablename)) {
             $objDatabaseBuilder->tableCheck();

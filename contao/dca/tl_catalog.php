@@ -241,9 +241,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
                 'multiple' => true,
                 'tl_class' => 'w50'
             ],
-
             'options_callback' => [tl_catalog::class, 'getSystemTables'],
-
             'search' => true,
             'exclude' => true,
             'sql' => "varchar(255) NOT NULL default ''"

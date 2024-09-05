@@ -1,7 +1,6 @@
 <?php
 
 use Alnv\CatalogManagerBundle\Backend\SupportPage;
-use Alnv\CatalogManagerBundle\DcCallbacks;
 use Alnv\CatalogManagerBundle\Modules\ModuleCatalogBookNavigation;
 use Alnv\CatalogManagerBundle\Modules\ModuleUniversalView;
 use Alnv\CatalogManagerBundle\Modules\ModuleMasterView;
@@ -39,7 +38,7 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0-beta.1-legacy";
+const CATALOG_MANAGER_VERSION = "2.0-beta.2-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [

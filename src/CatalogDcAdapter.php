@@ -31,9 +31,13 @@ class CatalogDcAdapter extends CatalogController
         $blnIsCoreTable = in_array($strTablename, $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES']);
 
         if (!$blnIsBackend && !$blnIsCoreTable) {
-            $objDatabase = Database::getInstance();
-            $objCatalog = $objDatabase->prepare('SELECT id FROM tl_catalog WHERE tablename = ?')->limit(1)->execute($strTablename);
-            return (bool)$objCatalog->numRows;
+
+            if (Database::getInstance()->tableExists('tl_catalog')) {
+
+                $objCatalog = Database::getInstance()->prepare('SELECT id FROM tl_catalog WHERE tablename=?')->limit(1)->execute($strTablename);
+
+                return (bool)$objCatalog->numRows;
+            }
         }
 
         return $blnIsCoreTable && (Input::get('do') != 'catalog-manager' || Input::get('table') == 'tl_catalog_fields');

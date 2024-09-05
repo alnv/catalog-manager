@@ -34,7 +34,7 @@ class tl_catalog_fields extends Backend
         if (Input::get('act') == 'editAll') $strQuery = 'SELECT * FROM tl_catalog WHERE id=?';
 
         $objCatalog = $this->Database->prepare($strQuery)->limit(1)->execute($strId);
-        $this->strTable = $objCatalog->tablename;
+        $this->strTable = $objCatalog->tablename ?: '';
 
         $this->arrTypes = $GLOBALS['TL_CATALOG_MANAGER']['FIELD_TYPES'];
     }

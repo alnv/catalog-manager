@@ -821,7 +821,6 @@ class FrontendEditing extends CatalogController
             $arrEntity = (new Entity($this->strItemID, $this->catalogTablename, ['ignoreVisibility' => (bool)$this->catalogIgnoreVisibility, 'operations' => [], 'noJoins' => true, 'noParentJoin' => true, 'queries' => $this->arrQueries]))->getEntity()['origin'];
 
             if ($this->strAct == 'copy') {
-
                 unset($arrEntity['id']);
                 unset($arrEntity['alias']);
             }
@@ -842,7 +841,7 @@ class FrontendEditing extends CatalogController
             }
         }
 
-        if (($this->strAct == 'edit' || $this->strAct == 'copy') && empty($this->arrValues)) { // new
+        if (($this->strAct == 'edit' || $this->strAct == 'copy') && empty($this->arrValues)) {
             $objCatalogException = new CatalogException();
             $objCatalogException->set404();
         }
@@ -961,7 +960,7 @@ class FrontendEditing extends CatalogController
                 $objEntity = $this->SQLBuilder->Database->prepare('SELECT * FROM ' . $this->catalogTablename . ' WHERE id = ?')->limit(1)->execute($this->strItemID);
 
                 if ($objEntity->numRows) {
-                    if ($this->arrValues['alias'] && $this->arrValues['alias'] !== $objEntity->alias) {
+                    if (($this->arrValues['alias'] ?? '') && ($this->arrValues['alias'] ?? '') !== $objEntity->alias) {
                         $blnReload = false;
                         if ($objEntity->pid) {
                             $strQuery = sprintf('?pid=%s', $objEntity->pid);

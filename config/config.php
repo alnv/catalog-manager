@@ -4,7 +4,7 @@ use CatalogManager\SupportPage;
 use Contao\System;
 use Contao\Config;
 
-define("CATALOG_MANAGER_VERSION", "1.32.50");
+define("CATALOG_MANAGER_VERSION", "1.32.51");
 
 if (!Config::get('hideCatalogManager')) {
     array_insert($GLOBALS['BE_MOD'], 3, [

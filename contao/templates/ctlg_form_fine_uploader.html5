@@ -1,4 +1,7 @@
-<?php $this->extend('form_row'); ?>
+<?php
+use Contao\System;
+$this->extend('form_row');
+?>
 
 <?php $this->block('label'); ?>
 
@@ -124,14 +127,11 @@
    </script>
 
    <script>
-
       CatalogManager.fineUploader( document.getElementById('<?= $this->id; ?>'), {
-
          name: '<?= $this->name; ?>',
          multiple: <?= $this->multiple; ?>,
-         REQUEST_TOKEN: '<?php echo REQUEST_TOKEN; ?>'
+         REQUEST_TOKEN: '<?= System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(); ?>'
       });
-
    </script>
 
 <?php $this->endblock(); ?>

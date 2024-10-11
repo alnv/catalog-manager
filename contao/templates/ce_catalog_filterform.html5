@@ -1,9 +1,12 @@
+<?php
+use Contao\System;
+?>
 <?php $this->extend('block_unsearchable'); ?>
 <?php $this->block('content'); ?>
     <form <?= $this->formID ?> action="<?= $this->action ?>" method="<?= $this->method ?>" <?php if ( $this->cssClass ): ?>class="<?= $this->cssClass ?>"<?php endif; ?> <?= $this->attributes ?>>
         <?php if ( $this->method == 'POST' ): ?>
             <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
-            <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+            <input type="hidden" name="REQUEST_TOKEN" value="<?= System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(); ?>">
         <?php endif; ?>
         <?php if( !empty( $this->fields ) && is_array( $this->fields ) ): ?>
             <?php foreach( $this->fields as $strField ): ?>

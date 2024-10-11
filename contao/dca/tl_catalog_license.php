@@ -2,7 +2,7 @@
 
 use Contao\DC_File;
 use Contao\Environment;
-use Alnv\ContaoCatalogManagerBundle\Security\Authorization;
+use Alnv\CatalogManagerBundle\Security\Authorization;
 
 $GLOBALS['TL_DCA']['tl_catalog_license'] = [
     'config' => [

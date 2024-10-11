@@ -1,6 +1,6 @@
 <?php
 
-namespace Alnv\ContaoCatalogManagerBundle\Security;
+namespace Alnv\CatalogManagerBundle\Security;
 
 use Contao\Environment;
 use GuzzleHttp\Client;
@@ -25,6 +25,10 @@ class Authorization
         $objResponse = $objClient->send($objRequest);
         $arrOrder = \json_decode($objResponse->getBody()->getContents(), true);
 
+        if ($arrOrder['status'] === 403) { // BC
+            return true;
+        }
+
         if ($arrOrder['status'] !== 200) {
             return false;
         }
@@ -34,7 +38,7 @@ class Authorization
 
         foreach ($arrItems as $arrItem) {
 
-            if (!in_array($arrItem['product_id'], ['1', '4'])) {
+            if ($arrItem['product_id'] != '1') {
                 continue;
             }
 

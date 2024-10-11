@@ -35,7 +35,7 @@ class CatalogParser extends CatalogController
         }
     }
 
-    public function getAllEvents($arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents)
+    public function getAllEvents($arrCalendarEvents, $arrCalendars, $intStart, $intEnd, $objEvents): array
     {
 
         $this->initialize('tl_calendar_events');

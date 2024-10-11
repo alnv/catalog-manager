@@ -30,6 +30,9 @@
       "Alnv\\CatalogManagerBundle\\": "src/"
     }
   },
+  "suggest": {
+    "alnv/catalog-manager-bundle": "Catalog-Manager is deprecated. Please use Catalog-Manager-Bundle instead"
+  },
   "conflict": {
     "alnv/catalog-manager-bundle": "*"
   },

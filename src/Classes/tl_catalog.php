@@ -28,6 +28,12 @@ class tl_catalog extends Backend
         parent::__construct();
     }
 
+    public function addLegacyMessage(): void
+    {
+        $strInfo = 'Bitte verwenden Sie, wenn möglich, die aktuellste Version des Catalog Managers, um sicherzustellen, dass Sie stets von den neuesten Funktionen und Sicherheitsupdates profitieren. Sie können die neueste Version direkt unter folgendem Link herunterladen: <a href="https://extensions.contao.org/?q=cata&pages=1&p=alnv%2Fcatalog-manager-bundle" target="_blank">Catalog Manager auf Contao Extensions</a>.';
+        Message::addError($strInfo);
+    }
+
     public function checkLicense(): void
     {
         $strInfo = "Sie verwenden aktuell die uneingeschränkte Testversion. Sobald Ihr Projekt abgeschlossen ist, können Sie unter https://shop.catalog-manager.org/ eine Lizenz erwerben. Mit dem Kauf einer Lizenz unterstützen Sie das Projekt und helfen dabei, dessen Weiterentwicklung zu fördern.";

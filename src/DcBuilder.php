@@ -316,6 +316,11 @@ class DcBuilder extends CatalogController
             };
         }
 
+        if ($this->arrCatalog['mode'] == '5') {
+            $arrReturn['rootPaste'] = true;
+            $arrReturn['showRootTrails'] = true;
+        }
+
         if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['mode'] = 5;
             $arrReturn['paste_button_callback'] = [DcCallbacks::class, 'pasteItem'];

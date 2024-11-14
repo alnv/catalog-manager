@@ -13,6 +13,7 @@ use Alnv\CatalogManagerBundle\CatalogDcAdapter;
 use Alnv\CatalogManagerBundle\CatalogBreadcrumb;
 use Alnv\CatalogManagerBundle\SearchIndexBuilder;
 use Alnv\CatalogManagerBundle\CatalogContentElementParser;
+use Alnv\CatalogManagerBundle\Toolkit;
 use Alnv\CatalogManagerBundle\UserPermissionExtension;
 use Alnv\CatalogManagerBundle\MemberPermissionExtension;
 use Alnv\CatalogManagerBundle\BackendTemplateParser;
@@ -38,7 +39,7 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.1-legacy";
+const CATALOG_MANAGER_VERSION = "2.0.2-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [

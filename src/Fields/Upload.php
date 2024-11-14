@@ -140,7 +140,6 @@ class Upload
     {
 
         if ($varValue != '') {
-
             $objFile = FilesModel::findByUuid($varValue);
             if ($objFile !== null) {
                 return Image::getHtml(Toolkit::getImage($objFile->path, 0, 0), '', 'class="' . $arrField['fieldname'] . '_preview ctlg_thumbnail_preview"');

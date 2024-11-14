@@ -1102,11 +1102,12 @@ class Toolkit
     {
 
         if (!$image) {
-            return null;
+            return '';
         }
 
-        $objFactory = System::getContainer()->get('contao.image.factory')->createFigureBuilder();
-        $image = $objFactory->create($image, [$width, $height, $mode]);
+        $strRootDir = System::getContainer()->getParameter('kernel.project_dir');
+        $objFactory = System::getContainer()->get('contao.image.factory');
+        $image = $objFactory->create($strRootDir . '/' . $image, [$width, $height, $mode]);
 
         return $image->getPath();
     }

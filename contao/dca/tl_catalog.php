@@ -9,6 +9,7 @@ $GLOBALS['TL_DCA']['tl_catalog'] = [
         'ctable' => ['tl_catalog_fields'],
         'onload_callback' => [
             [tl_catalog::class, 'checkLicense'],
+            [tl_catalog::class, 'addLegacyMessage'],
             [tl_catalog::class, 'checkPermission'],
             [tl_catalog::class, 'checkEditMask']
         ],

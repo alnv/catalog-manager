@@ -113,7 +113,6 @@ class FrontendEditing extends CatalogController
                 if ($arrField['type'] == 'hidden') $arrField['_dcFormat']['inputType'] = 'hidden';
 
                 if ($arrField['type'] == 'upload' && $arrField['useFineUploader']) {
-
                     $arrField['_dcFormat']['inputType'] = 'catalogFineUploader';
                     $this->CatalogFineUploader->loadAssets();
                 }
@@ -141,8 +140,7 @@ class FrontendEditing extends CatalogController
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerInitializeFrontendEditing'] as $callback) {
-                $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}($this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrValues, $this);
+                System::importStatic($callback[0])->{$callback[1]}($this->catalogTablename, $this->arrCatalog, $this->arrCatalogFields, $this->arrValues, $this);
             }
         }
     }
@@ -292,8 +290,7 @@ class FrontendEditing extends CatalogController
 
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'])) {
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->{$callback[0]}->{$callback[1]}($strFieldname, $strClass, $arrData, $this->arrCatalogFields[$strFieldname], $this->arrCatalog);
+                    System::importStatic($callback[0])->{$callback[1]}($strFieldname, $strClass, $arrData, $this->arrCatalogFields[$strFieldname], $this->arrCatalog);
                 }
             }
 
@@ -334,7 +331,8 @@ class FrontendEditing extends CatalogController
                 $objWidget->extensions = $arrField['eval']['extensions'];
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
                 $objWidget->preview = $this->arrCatalogAttributes[$strFieldname];
-                $objWidget->deleteLabel = $GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'];
+                $objWidget->deleteLabel = ($GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'] ?? '');
+
                 $this->blnHasUpload = true;
             }
 
@@ -374,7 +372,6 @@ class FrontendEditing extends CatalogController
             }
 
             $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] = $this->arrCatalogFields[$strFieldname]['tstampAsDefault'] ?? '';
-
             if (in_array($arrField['_type'], ['hidden', 'date']) && $this->arrCatalogFields[$strFieldname]['tstampAsDefault']) {
                 if (Toolkit::isEmpty($objWidget->value)) {
                     $objWidget->value = time();
@@ -386,11 +383,9 @@ class FrontendEditing extends CatalogController
             }
 
             $objWidget->catalogAttributes = $this->arrCatalogAttributes;
-
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'])) {
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingWidgetBeforeParsing'] as $callback) {
-                    $this->import($callback[0]);
-                    $this->{$callback[0]}->{$callback[1]}($objWidget, $strFieldname, $this->arrCatalogFields, $this->arrCatalog, $arrData, $this);
+                    System::importStatic($callback[0])->{$callback[1]}($objWidget, $strFieldname, $this->arrCatalogFields, $this->arrCatalog, $arrData, $this);
                 }
             }
 
@@ -468,8 +463,13 @@ class FrontendEditing extends CatalogController
                     $_SESSION['FILES'] = [];
                 }
 
-                $arrFiles = $_SESSION['FILES'];
+                if ($arrField['inputType'] == 'upload' || $arrField['inputType'] == 'catalogFineUploader') {
+                    if (empty($_SESSION['FILES'][$objWidget->name])) {
+                        $_SESSION['FILES'][$objWidget->name] = $objWidget->value;
+                    }
+                }
 
+                $arrFiles = $_SESSION['FILES'];
                 if (isset($arrFiles[$strFieldname]) && is_array($arrFiles[$strFieldname]) && $this->catalogStoreFile) {
 
                     if (!Toolkit::isAssoc($arrFiles[$strFieldname])) {
@@ -568,8 +568,7 @@ class FrontendEditing extends CatalogController
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingQuery'] as $arrCallback) {
                 if (is_array($arrCallback)) {
-                    $this->import($arrCallback[0]);
-                    $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrQuery, $this);
+                    $arrQuery = System::importStatic($arrCallback[0])->{$arrCallback[1]}($arrQuery, $this);
                 }
             }
         }
@@ -629,8 +628,7 @@ class FrontendEditing extends CatalogController
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingCheckPermission'] as $arrCallback) {
                 if (is_array($arrCallback)) {
-                    $this->import($arrCallback[0]);
-                    $varReturn = $this->{$arrCallback[0]}->{$arrCallback[1]}($strMode, $this->strItemID, $this->catalogTablename, $this);
+                    $varReturn = System::importStatic($arrCallback[0])->{$arrCallback[1]}($strMode, $this->strItemID, $this->catalogTablename, $this);
                     if (is_bool($varReturn)) {
                         return $varReturn;
                     }
@@ -683,8 +681,7 @@ class FrontendEditing extends CatalogController
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback) {
                 if (is_array($arrCallback)) {
-                    $this->import($arrCallback[0]);
-                    $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
+                    $strUrl = System::importStatic($arrCallback[0])->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
                 }
             }
         }
@@ -711,7 +708,7 @@ class FrontendEditing extends CatalogController
                     $this->deleteChildEntities($strTable, $objEntity->id);
                 }
 
-                $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE pid = ?' . ($strPtable ? ' AND ptable = ?' : ''), $strTable))->execute(...$arrValues);
+                $this->SQLBuilder->Database->prepare(sprintf('DELETE FROM %s WHERE pid = ?' . ($strPtable ? ' AND ptable=?' : ''), $strTable))->execute(...$arrValues);
             }
         }
     }
@@ -901,8 +898,7 @@ class FrontendEditing extends CatalogController
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] as $arrCallback) {
                 if (is_array($arrCallback)) {
-                    $this->import($arrCallback[0]);
-                    $this->arrValues = $this->{$arrCallback[0]}->{$arrCallback[1]}($this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields, $this);
+                    $this->arrValues = System::importStatic($arrCallback[0])->{$arrCallback[1]}($this->arrValues, $this->strAct, $this->arrCatalog, $this->arrCatalogFields, $this);
                 }
             }
         }
@@ -1048,8 +1044,7 @@ class FrontendEditing extends CatalogController
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'])) {
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingRedirect'] as $arrCallback) {
                     if (is_array($arrCallback)) {
-                        $this->import($arrCallback[0]);
-                        $strUrl = $this->{$arrCallback[0]}->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
+                        $strUrl = System::importStatic($arrCallback[0])->{$arrCallback[1]}($strUrl, $strAttributes, $objPage, $this->arrValues, $this->strAct, $this->id, $this->catalogTablename, $this);
                     }
                 }
             }

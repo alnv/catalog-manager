@@ -274,15 +274,12 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
                         $objModel = FilesModel::findByPath($strFile);
 
                         if ($objModel !== null) {
-
                             $objModel->tstamp = time();
                             $objModel->path = $strFile;
                             $objModel->hash = md5_file($strRootDir . '/' . $strFile);
                             $objModel->save();
-
                             $strUuid = StringUtil::binToUuid($objModel->uuid);
                         } else {
-
                             $strUuid = StringUtil::binToUuid(Dbafs::addResource($strFile)->uuid);
                         }
 

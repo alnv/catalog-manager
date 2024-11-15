@@ -252,6 +252,7 @@ class DcBuilder extends CatalogController
 
         if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['format'] = '%s';
+            $this->arrCatalog['showColumns'] = false;
             $arrReturn['label_callback'] = function ($arrRow, $strLabel) use ($arrReturn) {
                 $objDcCallbacks = new DcCallbacks();
                 return $objDcCallbacks->labelCallback($this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn);
@@ -323,7 +324,10 @@ class DcBuilder extends CatalogController
 
         if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
             $arrReturn['mode'] = 5;
+            $arrReturn['rootPaste'] = true;
+            $arrReturn['showRootTrails'] = true;
             $arrReturn['paste_button_callback'] = [DcCallbacks::class, 'pasteItem'];
+            unset($arrReturn['flag']);
         }
 
         if ($this->hasLanguageNavigationBar() && $this->arrCatalog['languageEntityColumn'] && $this->arrCatalog['linkEntityColumn']) {

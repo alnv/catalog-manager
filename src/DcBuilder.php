@@ -168,7 +168,6 @@ class DcBuilder extends CatalogController
         }
 
         if ($this->CatalogFieldBuilder->shouldBeUsedParentTable()) {
-
             $arrReturn['ptable'] = $this->arrCatalog['pTable'];
         }
 
@@ -186,7 +185,6 @@ class DcBuilder extends CatalogController
         }
 
         if ($this->arrCatalog['permissionType']) {
-
             $arrReturn['onload_callback'][] = function () {
                 $objDcPermission = new DcPermission();
                 $objDcPermission->checkPermission($this->strTable, $this->strTable, $this->strTable . 'p', $this->strPermissionType);
@@ -210,7 +208,6 @@ class DcBuilder extends CatalogController
 
         return $arrReturn;
     }
-
 
     protected function getLabelDc()
     {
@@ -250,16 +247,6 @@ class DcBuilder extends CatalogController
             };
         }
 
-        if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
-            $arrReturn['format'] = '%s';
-            $this->arrCatalog['showColumns'] = false;
-            $arrReturn['label_callback'] = function ($arrRow, $strLabel) use ($arrReturn) {
-                $objDcCallbacks = new DcCallbacks();
-                return $objDcCallbacks->labelCallback($this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn);
-            };
-            return $arrReturn;
-        }
-
         if ($this->arrCatalog['useOwnGroupFormat'] && !Toolkit::isEmpty($this->arrCatalog['groupFormat'])) {
             $arrReturn['group_callback'] = function ($strGroup, $strMode, $strField, $arrRow, $dc) {
                 $objDcCallbacks = new DcCallbacks();
@@ -280,9 +267,17 @@ class DcBuilder extends CatalogController
             };
         }
 
+        if (in_array($this->arrCatalog['mode'], ['1', '2']) && in_array('cut', $this->arrCatalog['operations']) && in_array('sorting', $this->arrCatalog['sortingFields'])) {
+            $arrReturn['format'] = '%s';
+            $arrReturn['label_callback'] = function ($arrRow, $strLabel) use ($arrReturn) {
+                $objDcCallbacks = new DcCallbacks();
+                return $objDcCallbacks->labelCallback($this->arrCatalog, $this->arrFields, $arrRow, $strLabel, $arrReturn);
+            };
+            return $arrReturn;
+        }
+
         return $arrReturn;
     }
-
 
     protected function getSortingDc()
     {
@@ -559,12 +554,10 @@ class DcBuilder extends CatalogController
         return ['default' => $strReturn];
     }
 
-
     public function getCatalog(): array
     {
         return !empty($this->arrCatalog) ? $this->arrCatalog : [];
     }
-
 
     protected function hasLanguageNavigationBar(): bool
     {

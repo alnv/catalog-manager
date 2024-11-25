@@ -23,17 +23,11 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 {
 
     public $blnStoreFile;
-
     public $blnUseHomeDir;
-
     public $bnyUploadFolder;
-
     public $blnDoNotOverwrite;
-
     protected $blnSubmitInput = true;
-
     protected $strTemplate = 'ctlg_form_fine_uploader';
-
     protected $strPrefix = 'widget widget-fine-uploader';
 
     public function __construct($arrAttributes = null)
@@ -42,10 +36,10 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         $strPost = Input::post('name') ? Input::post('name') : '';
 
         if (Environment::get('isAjaxRequest') && ($arrAttributes['id'] === $strPost || $arrAttributes['name'] === $strPost) && !Input::get('_doNotTriggerAjax')) {
-            $this->import(CatalogFineUploader::class);
+            $this->import(CatalogFineUploader::class, 'CatalogFineUploader');
             $this->CatalogFineUploader->sendAjaxResponse($arrAttributes);
 
-            return null;
+            return;
         }
 
         parent::__construct($arrAttributes);
@@ -171,15 +165,13 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
         }
 
         if ($this->maxsize > 0 && $arrFile['size'] > $this->maxsize) {
-
             $arrReturn['error'] = sprintf($GLOBALS['TL_LANG']['ERR']['filesize'], $intMaxSizeKb);
             unset($_FILES[$this->strName]);
             $arrReturn['success'] = false;
-
             return $arrReturn;
         }
 
-        $objFile = new File($arrFile['name'], true);
+        $objFile = new File($arrFile['name']);
         $arrUploadedTypes = StringUtil::trimsplit(',', strtolower($this->extensions));
 
         if (!in_array($objFile->extension, $arrUploadedTypes)) {
@@ -247,7 +239,7 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 
                 if ($strUploadFolder != '' && is_dir($strRootDir . '/' . $strUploadFolder)) {
 
-                    $this->import(Files::class);
+                    $this->import(Files::class, 'Files');
 
                     if ($this->blnDoNotOverwrite && file_exists($strRootDir . '/' . $strUploadFolder . '/' . $arrFile['name'])) {
                         $intOffset = 1;
@@ -309,9 +301,9 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 
     public function parse($arrAttributes = null)
     {
-        $this->multiple = json_encode($this->arrConfiguration['multiple']);
-        $this->extensions = json_encode(explode(',', $this->arrConfiguration['extensions']));
-        $this->maxsize = $this->arrConfiguration['maxsize'] ? $this->arrConfiguration['maxsize'] : '0';
+        $this->multiple = \json_encode($this->arrConfiguration['multiple']);
+        $this->extensions = \json_encode(\explode(',', ($this->arrConfiguration['extensions'] ?? '')));
+        $this->maxsize = $this->arrConfiguration['maxsize'] ?: '0';
 
         return parent::parse($arrAttributes);
     }

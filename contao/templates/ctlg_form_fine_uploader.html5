@@ -61,7 +61,7 @@ $this->extend('form_row');
                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
 
                <div class="qq-thumbnail-wrapper">
-                  <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale>
+                  <img class="qq-thumbnail-selector" qq-max-size="120" qq-server-scale alt="">
                </div>
                <button type="button" class="qq-upload-cancel-selector qq-upload-cancel">X</button>
 
@@ -127,7 +127,7 @@ $this->extend('form_row');
    </script>
 
    <script>
-      CatalogManager.fineUploader( document.getElementById('<?= $this->id; ?>'), {
+      CatalogManager.fineUploader(document.getElementById('<?= $this->id; ?>'), {
          name: '<?= $this->name; ?>',
          multiple: <?= $this->multiple; ?>,
          REQUEST_TOKEN: '<?= System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(); ?>'

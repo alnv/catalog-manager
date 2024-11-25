@@ -8,7 +8,7 @@ var CatalogManager = CatalogManager || {};
 
         objOptions = getOptions(objOptions);
 
-        var objParams = {
+        let objParams = {
             element: objElement,
             debug: objOptions.debug,
             multiple: objOptions.multiple,
@@ -34,18 +34,15 @@ var CatalogManager = CatalogManager || {};
 
     function getOptions(objOptions) {
 
-        var objDefault = {
+        let objDefault = {
             debug: false,
             sizeLimit: '0',
             multiple: false
         };
 
-        for (var strOption in objDefault) {
-
+        for (let strOption in objDefault) {
             if (objDefault.hasOwnProperty(strOption)) {
-
                 if (isEmpty(objOptions[strOption])) {
-
                     objOptions[strOption] = objDefault[strOption];
                 }
             }
@@ -58,22 +55,18 @@ var CatalogManager = CatalogManager || {};
     function isEmpty(varValue) {
 
         if (typeof varValue === 'undefined') {
-
             return true;
         }
 
         if (varValue === null && typeof varValue === 'object') {
-
             return true;
         }
 
         if (typeof varValue === 'string' && !varValue.length) {
-
             return true;
         }
 
         if (typeof varValue === 'object' && typeof varValue.length != 'undefined') {
-
             if (!varValue.length) return true;
         }
 

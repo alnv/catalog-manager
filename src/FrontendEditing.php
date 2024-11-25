@@ -337,13 +337,14 @@ class FrontendEditing extends CatalogController
             }
 
             if ($arrField['inputType'] == 'textarea' && isset($arrField['eval']['rte'])) {
+                $GLOBALS['TL_BODY'] = ($GLOBALS['TL_BODY'] ?? []);
                 $objWidget->mandatory = false;
                 $arrTextareaData = ['selector' => 'ctrl_' . $objWidget->id];
                 $strTemplate = 'be_' . $arrField['eval']['rte'];
                 $objScript = new FrontendTemplate($strTemplate);
                 $objScript->setData($arrTextareaData);
                 $strScript = $objScript->parse();
-                $GLOBALS['TL_HEAD'][] = $strScript;
+                $GLOBALS['TL_BODY'][] = $strScript;
             }
 
             if (isset($this->arrCatalogFields[$strFieldname]['autoCompletionType']) && $this->arrCatalogFields[$strFieldname]['autoCompletionType']) {

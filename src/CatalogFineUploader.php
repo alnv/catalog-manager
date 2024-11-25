@@ -18,7 +18,7 @@ class CatalogFineUploader
 
         $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
 
-        if ($blnIsBackend && !$this->blnAssetsLoaded) {
+        if (!$blnIsBackend && !$this->blnAssetsLoaded) {
 
             $GLOBALS['TL_JAVASCRIPT']['catalogFineUploader'] = 'bundles/alnvcatalogmanager/fineUploader/fine-uploader.min.js';
             $GLOBALS['TL_JAVASCRIPT']['catalogFrontendExtension'] = 'bundles/alnvcatalogmanager/FrontendExtension.js';

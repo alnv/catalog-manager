@@ -42,9 +42,11 @@ class Authorization
                 continue;
             }
 
-            $arrAttributes = array_values($arrItem['attributes'] ?? []);
+            $arrAttributes = \array_values($arrItem['attributes'] ?? []);
             foreach ($arrAttributes as $arrData) {
-
+                if (is_string($arrData)) {
+                    $arrData = [$arrData];
+                }
                 foreach ($arrData as $strDomain) {
                     if ($this->parseDomain($strUrl) === $this->parseDomain($strDomain)) {
                         return true;

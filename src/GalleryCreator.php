@@ -343,7 +343,7 @@ class GalleryCreator extends Frontend
         return $objMainTemplate->parse();
     }
 
-    public function getPreviewImage(): array
+    public function getPreviewImage()
     {
         return Upload::generateImage($this->arrPreviewImage, [
             'imageTemplate' => $this->imageTemplate

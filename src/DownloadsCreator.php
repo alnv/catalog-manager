@@ -237,7 +237,6 @@ class DownloadsCreator extends Frontend
     }
 
     protected function setDataContainer(): void
-
     {
         $this->arrData = [
             'hl' => 'h1',

@@ -39,7 +39,7 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.4-legacy";
+const CATALOG_MANAGER_VERSION = "2.0.5-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [

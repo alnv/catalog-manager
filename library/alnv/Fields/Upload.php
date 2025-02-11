@@ -201,8 +201,8 @@ class Upload {
 
         if (!empty($varValue) && is_array($varValue)) {
 
-            $strTemplate = $arrField['filesTemplate'] ?: 'ce_downloads';
-            $strOrderField = $arrCatalog[$arrField['orderField']] ? : '';
+            $strTemplate = $arrField['filesTemplate'] ?? 'ce_downloads';
+            $strOrderField = $arrCatalog[$arrField['orderField'] ?? ''] ?? '';
             $objDownloads = new DownloadsCreator($varValue, [
                 'orderSRC' => $strOrderField,
                 'downloadsTpl' => $strTemplate,
@@ -220,7 +220,7 @@ class Upload {
 
     public static function renderImage( $varValue, $arrField, $arrCatalog ) {
 
-        $blnArray = $arrField['useArrayFormat'] ? true : false;
+        $blnArray = $arrField['useArrayFormat'] ?? false;
 
         if ( !is_string( $varValue ) ) return $blnArray ? [] : '';
 
@@ -255,13 +255,13 @@ class Upload {
         return [
             'model' => $objModel,
             'overwriteMeta' => false,
-            'size' => $arrField['size'],
-            'fullsize' => $arrField['fullsize'],
-            'alt' => $arrCatalog[$arrField['imageAlt']] ?? '',
-            'href' => $arrCatalog[$arrField['imageURL']] ?? '',
+            'size' => $arrField['size'] ?? null,
+            'fullsize' => $arrField['fullsize'] ?? null,
+            'alt' => $arrCatalog[$arrField['imageAlt'] ?? null] ?? '',
+            'href' => $arrCatalog[$arrField['imageURL'] ?? null] ?? '',
             'singleSRC' => $objModel ? $objModel->path : '',
-            'title' => $arrCatalog[$arrField['imageTitle']] ?? '',
-            'caption' => $arrCatalog[$arrField['imageCaption']] ?? ''
+            'title' => $arrCatalog[$arrField['imageTitle'] ?? null] ?? '',
+            'caption' => $arrCatalog[$arrField['imageCaption'] ?? null] ?? ''
         ];
     }
 
@@ -296,7 +296,7 @@ class Upload {
             $arrMeta = \Frontend::getMetaData($objFileEntity->meta, $objPage->rootFallbackLanguage);
         }
 
-        if ($arrMeta['title'] == '') {
+        if (!isset($arrMeta['title']) || $arrMeta['title'] === '') {
             $arrMeta['title'] = \StringUtil::specialchars($objFile->basename);
         }
 
@@ -348,7 +348,7 @@ class Upload {
 
     public static function generateImage( $arrImage, $arrField = [], $blnArray = false ) {
 
-        $strTemplate = $arrField['imageTemplate'] ? $arrField['imageTemplate'] : 'ce_image';
+        $strTemplate = $arrField['imageTemplate'] ?? 'ce_image';
         $objPicture = new \FrontendTemplate( $strTemplate );
 
         if ( Toolkit::isEmpty( $arrImage['singleSRC'] ) ) return $blnArray ? [] : '';

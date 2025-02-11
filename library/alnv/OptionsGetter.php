@@ -196,7 +196,7 @@ class OptionsGetter extends CatalogController
         $this->getActiveTable();
         $this->getActiveEntityValues();
         $strOrderBy = $this->getOrderBy();
-        $arrDbTaxonomies = Toolkit::deserialize($this->arrField['dbTaxonomy']);
+        $arrDbTaxonomies = Toolkit::deserialize($this->arrField['dbTaxonomy'] ?? null);
         $arrQueries = is_array($arrDbTaxonomies) && isset($arrDbTaxonomies['query']) ? $arrDbTaxonomies['query'] : [];
 
         $arrSQLQuery['where'] = Toolkit::parseQueries($arrQueries, function ($arrQuery) use ($blnUseValidValue) {
@@ -273,7 +273,7 @@ class OptionsGetter extends CatalogController
             $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
         }
 
-        $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy'], true);
+        $arrOrderBy = \StringUtil::deserialize($this->arrField['dbOrderBy'] ?? null, true);
 
         if (empty($arrOrderBy) && count($arrOptions) < 50) {
             asort($arrOptions);
@@ -516,7 +516,7 @@ class OptionsGetter extends CatalogController
 
             case 'FE':
 
-                if (!$this->arrField['pid']) {
+                if (empty($this->arrField['pid'])) {
 
                     return null;
                 }

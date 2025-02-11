@@ -76,10 +76,10 @@ class DownloadsCreator extends \Frontend {
                     }
                 }
 
-                if ( $arrMeta['title'] == '' ) {
-
-                    $arrMeta['title'] = specialchars( $objFile->basename );
+                if (!isset($arrMeta['title']) || $arrMeta['title'] === '') {
+                    $arrMeta['title'] = specialchars($objFile->basename);
                 }
+                
 
                 $strHref = \Environment::get('request');
 
@@ -98,9 +98,9 @@ class DownloadsCreator extends \Frontend {
                     'mime' => $objFile->mime,
                     'uuid' => $objFiles->uuid,
                     'path' => $objFile->dirname,
-                    'link' => $arrMeta['title'],
+                    'link' => $arrMeta['title'] ?? null,
                     'name' => $objFile->basename,
-                    'caption' => $arrMeta['caption'],
+                    'caption' => $arrMeta['caption'] ?? null,
                     'extension' => $objFile->extension,
                     'icon' => \Image::getPath( $objFile->icon ),
                     'filesize' => $this->getReadableSize( $objFile->filesize, 1 ),

@@ -76,7 +76,6 @@ class OptionsGetter extends CatalogController
         }
 
         if (!isset($this->arrField['optionsType']) && in_array($this->arrField['fieldname'], ['country', 'countries']) && in_array($this->arrField['type'], ['radio', 'select', 'checkbox'])) {
-
             return Toolkit::getCountries();
         }
 
@@ -184,7 +183,7 @@ class OptionsGetter extends CatalogController
         $this->getActiveTable();
         $this->getActiveEntityValues();
         $strOrderBy = $this->getOrderBy();
-        $arrDbTaxonomies = Toolkit::deserialize($this->arrField['dbTaxonomy']);
+        $arrDbTaxonomies = Toolkit::deserialize(($this->arrField['dbTaxonomy'] ?? ''));
         $arrQueries = is_array($arrDbTaxonomies) && isset($arrDbTaxonomies['query']) ? $arrDbTaxonomies['query'] : [];
 
         $arrSQLQuery['where'] = Toolkit::parseQueries($arrQueries, function ($arrQuery) use ($blnUseValidValue) {
@@ -260,7 +259,7 @@ class OptionsGetter extends CatalogController
             $this->setValueToOption($arrOptions, $objDbOptions->{$this->arrField['dbTableKey']}, $objDbOptions->{$this->arrField['dbTableValue']}, $this->arrField['dbTable']);
         }
 
-        $arrOrderBy = StringUtil::deserialize($this->arrField['dbOrderBy'], true);
+        $arrOrderBy = StringUtil::deserialize(($this->arrField['dbOrderBy'] ?? ''), true);
 
         if (empty($arrOrderBy) && count($arrOptions) < 50) {
             asort($arrOptions);
@@ -495,15 +494,12 @@ class OptionsGetter extends CatalogController
 
             case 'FE':
 
-                if (!$this->arrField['pid']) {
-
+                if (empty(!$this->arrField['pid'])) {
                     return null;
                 }
 
                 $objCatalog = $this->SQLQueryHelper->SQLQueryBuilder->Database->prepare('SELECT * FROM tl_catalog WHERE id = ?')->limit(1)->execute($this->arrField['pid']);
-
                 if (!$objCatalog->tablename || !$this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists($objCatalog->tablename)) {
-
                     return null;
                 }
 
@@ -511,28 +507,21 @@ class OptionsGetter extends CatalogController
                 $strAct = $this->strModuleID ? Input::get('act' . $this->strModuleID) : Input::get('act');
 
                 if (!$strID && !$strAct) {
-
                     return null;
                 }
 
                 $arrQuery = [
-
                     'table' => $objCatalog->tablename,
-
                     'pagination' => [
-
                         'limit' => 1
                     ],
-
                     'where' => [
-
                         [
                             'field' => 'id',
                             'value' => $strID,
                             'operator' => 'equal'
                         ]
                     ],
-
                     'joins' => []
                 ];
 
@@ -549,7 +538,6 @@ class OptionsGetter extends CatalogController
                 $this->arrActiveEntity = $this->SQLQueryBuilder->execute($arrQuery)->row();
 
                 if ($this->hasLanguageNavigationBar($objCatalog)) {
-
                     $this->arrActiveEntity[$objCatalog->languageEntityColumn] = $GLOBALS['TL_LANGUAGE'] ?: $objCatalog->fallbackLanguage;
                 }
 
@@ -558,7 +546,6 @@ class OptionsGetter extends CatalogController
         }
 
         if (!is_array($this->arrActiveEntity)) {
-
             $this->arrActiveEntity = [];
         }
     }

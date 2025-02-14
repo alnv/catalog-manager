@@ -208,8 +208,8 @@ class Upload
 
         if (!empty($varValue) && is_array($varValue)) {
 
-            $strTemplate = $arrField['filesTemplate'] ?: 'ce_downloads';
-            $strOrderField = $arrCatalog[$arrField['orderField']] ?: '';
+            $strTemplate = ($arrField['filesTemplate'] ?? '') ?: 'ce_downloads';
+            $strOrderField = $arrCatalog[($arrField['orderField'] ?? '')] ?? '';
             $objDownloads = new DownloadsCreator($varValue, [
                 'orderSRC' => $strOrderField,
                 'downloadsTpl' => $strTemplate,
@@ -221,13 +221,13 @@ class Upload
             return $objDownloads->render();
         }
 
-        return $arrField['useArrayFormat'] ? [] : '';
+        return ($arrField['useArrayFormat'] ?? '') ? [] : '';
     }
 
     public static function renderImage($varValue, $arrField, $arrCatalog)
     {
 
-        $blnArray = $arrField['useArrayFormat'] ? true : false;
+        $blnArray = (bool) ($arrField['useArrayFormat'] ?? '');
 
         if (!is_string($varValue)) return $blnArray ? [] : '';
 
@@ -240,7 +240,7 @@ class Upload
     {
 
         if (!is_string($varValue)) {
-            return $arrField['useArrayFormat'] ? [] : '';
+            return ($arrField['useArrayFormat'] ?? '') ? [] : '';
         }
 
         $arrFile = static::createEnclosureArray($varValue, $arrField, $arrCatalog);
@@ -260,8 +260,8 @@ class Upload
         return [
             'model' => $objModel,
             'overwriteMeta' => false,
-            'size' => $arrField['size'],
-            'fullsize' => $arrField['fullsize'],
+            'size' => $arrField['size'] ?? '',
+            'fullsize' => $arrField['fullsize'] ?? '',
             'alt' => $arrCatalog[$arrField['imageAlt']] ?? '',
             'href' => $arrCatalog[$arrField['imageURL']] ?? '',
             'singleSRC' => $objModel ? $objModel->path : '',
@@ -280,7 +280,7 @@ class Upload
 
         if (!$objFileEntity->path || $objFileEntity->type != 'file') return [];
 
-        $objFile = new File($objFileEntity->path, true);
+        $objFile = new File($objFileEntity->path);
         $strTitle = $arrCatalog[$arrField['fileTitle']] ?? '';
         $strDescription = $arrCatalog[$arrField['fileText']] ?? '';
 
@@ -301,7 +301,7 @@ class Upload
             $arrMeta = Frontend::getMetaData($objFileEntity->meta, $objPage->rootFallbackLanguage);
         }
 
-        if ($arrMeta['title'] == '') {
+        if (!isset($arrMeta['title']) || $arrMeta['title'] === '') {
             $arrMeta['title'] = StringUtil::specialchars($objFile->basename);
         }
 
@@ -328,6 +328,7 @@ class Upload
         if (!Toolkit::isEmpty($strSingleSrc)) {
 
             $objModel = FilesModel::findByUuid($strSingleSrc);
+
             if ($blnModel) {
                 return $objModel;
             }
@@ -349,7 +350,7 @@ class Upload
     public static function generateImage($arrImage, $arrField = [], $blnArray = false)
     {
 
-        $strTemplate = $arrField['imageTemplate'] ?: 'ce_image';
+        $strTemplate = ($arrField['imageTemplate'] ?? '') ?: 'ce_image';
         $objPicture = new FrontendTemplate($strTemplate);
 
         if (Toolkit::isEmpty($arrImage['singleSRC'])) return $blnArray ? [] : '';
@@ -367,7 +368,7 @@ class Upload
     public static function generateEnclosure($arrEnclosure, $arrField = []): string
     {
 
-        $strTemplate = $arrField['fileTemplate'] ?: 'ce_download';
+        $strTemplate = ($arrField['fileTemplate'] ?? '') ?: 'ce_download';
         $objTemplate = new FrontendTemplate($strTemplate);
         $objTemplate->setData($arrEnclosure);
 

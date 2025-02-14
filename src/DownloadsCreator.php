@@ -87,7 +87,7 @@ class DownloadsCreator extends Frontend
                     }
                 }
 
-                if ($arrMeta['title'] == '') {
+                if (!isset($arrMeta['title']) || $arrMeta['title'] === '') {
                     $arrMeta['title'] = StringUtil::specialchars($objFile->basename);
                 }
 
@@ -164,14 +164,14 @@ class DownloadsCreator extends Frontend
                         'mime' => $objFile->mime,
                         'id' => $objSubFiles->id,
                         'path' => $objFile->dirname,
-                        'link' => $arrMeta['title'],
+                        'link' => $arrMeta['title'] ?? '',
                         'uuid' => $objSubFiles->uuid,
                         'name' => $objFile->basename,
                         'caption' => $arrMeta['caption'],
                         'extension' => $objFile->extension,
                         'icon' => Image::getPath($objFile->icon),
                         'filesize' => $this->getReadableSize($objFile->filesize, 1),
-                        'title' => StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['download'], $objFile->basename)),
+                        'title' => StringUtil::specialchars(sprintf(($GLOBALS['TL_LANG']['MSC']['download'] ?? ''), $objFile->basename)),
                     ];
 
                     $arrAuxDate[] = $objFile->mtime;

@@ -177,10 +177,10 @@ class GalleryCreator extends Frontend
         switch ($this->sortBy) {
 
             case 'name_asc':
-                uksort($arrImages, 'basename_natcasecmp');
+                // uksort($arrImages, 'basename_natcasecmp');
                 break;
             case 'name_desc':
-                uksort($arrImages, 'basename_natcasercmp');
+                // uksort($arrImages, 'basename_natcasercmp');
                 break;
             case 'date_asc':
                 array_multisort($arrImages, SORT_NUMERIC, $arrAuxDate, SORT_ASC);

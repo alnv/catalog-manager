@@ -943,7 +943,7 @@ class Toolkit
         return $arrStack;
     }
 
-    public static function addImageToTemplate($template, array $rowData, $maxWidth = null, $lightboxGroupIdentifier = null, FilesModel $filesModel = null): void
+    public static function addImageToTemplate($template, array $rowData, $maxWidth = null, $lightboxGroupIdentifier = null, $filesModel = null): void
     {
 
         $createMetadataOverwriteFromRowData = static function (bool $interpretAsContentModel) use ($rowData) {

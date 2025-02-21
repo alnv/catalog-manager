@@ -171,7 +171,7 @@ class Upload
         if (!empty($varValue) && is_array($varValue)) {
 
             $strTemplate = $arrField['galleryTemplate'] ?: 'gallery_default';
-            $strOrderField = $arrCatalog[$arrField['orderField']] ?: '';
+            $strOrderField = $arrCatalog[$arrField['orderField']] ?? '';
 
             $objGallery = new GalleryCreator($varValue, [
                 'id' => $arrCatalog['id'],
@@ -356,11 +356,10 @@ class Upload
         if (Toolkit::isEmpty($arrImage['singleSRC'])) return $blnArray ? [] : '';
 
         if ($arrImage['alt']) {
-
             $arrImage['overwriteMeta'] = true;
         }
 
-        Toolkit::addImageToTemplate($objPicture, $arrImage, null, null, $arrImage['model']);
+        Toolkit::addImageToTemplate($objPicture, $arrImage, null, null, ($arrImage['model'] ?? null));
 
         return $blnArray ? $objPicture->getData() : $objPicture->parse();
     }

@@ -259,7 +259,7 @@ class ModuleUniversalView extends Module
 
         $arrQueries = $this->catalogUseTaxonomies ? Toolkit::parseQueries(StringUtil::deserialize($this->catalogTaxonomies, true)['query']) : []; // out
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ?: 'form_catalog_default';
-        $this->FrontendEditing->strItemID = Input::get('id' . $this->id);
+        $this->FrontendEditing->strItemID = Input::get('id' . $this->id) ?: '';
         $this->FrontendEditing->arrOptions = $this->arrData;
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrQueries = empty($arrQueries) ? [] : $arrQueries; // []

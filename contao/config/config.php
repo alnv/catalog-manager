@@ -1,40 +1,39 @@
 <?php
 
-use gAlnv\CatalogManagerBundle\Backend\SupportPage;
-use Alnv\CatalogManagerBundle\Modules\ModuleCatalogBookNavigation;
-use Alnv\CatalogManagerBundle\Modules\ModuleUniversalView;
-use Alnv\CatalogManagerBundle\Modules\ModuleMasterView;
+use Alnv\CatalogManagerBundle\Backend\SupportPage;
+use Alnv\CatalogManagerBundle\BackendTemplateParser;
+use Alnv\CatalogManagerBundle\CatalogBreadcrumb;
+use Alnv\CatalogManagerBundle\CatalogContentElementParser;
+use Alnv\CatalogManagerBundle\CatalogDcAdapter;
+use Alnv\CatalogManagerBundle\CatalogManagerInitializer;
+use Alnv\CatalogManagerBundle\CatalogParser;
+use Alnv\CatalogManagerBundle\CatalogWidgetAttributeParser;
 use Alnv\CatalogManagerBundle\Elements\ContentCatalogEntity;
 use Alnv\CatalogManagerBundle\Elements\ContentCatalogFilterForm;
 use Alnv\CatalogManagerBundle\Elements\ContentSocialSharingButtons;
-use Alnv\CatalogManagerBundle\Elements\ContentVisibilityPanelStop;
 use Alnv\CatalogManagerBundle\Elements\ContentVisibilityPanelStart;
-use Alnv\CatalogManagerBundle\CatalogDcAdapter;
-use Alnv\CatalogManagerBundle\CatalogBreadcrumb;
-use Alnv\CatalogManagerBundle\SearchIndexBuilder;
-use Alnv\CatalogManagerBundle\CatalogContentElementParser;
-use Alnv\CatalogManagerBundle\Toolkit;
-use Alnv\CatalogManagerBundle\UserPermissionExtension;
+use Alnv\CatalogManagerBundle\Elements\ContentVisibilityPanelStop;
+use Alnv\CatalogManagerBundle\Forms\CatalogFineUploaderForm;
+use Alnv\CatalogManagerBundle\Forms\CatalogMessageForm;
+use Alnv\CatalogManagerBundle\Inserttags\ActiveInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\CatalogInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\FilterValuesInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\MasterInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\PseudoInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\RandomEntitiesIDInsertTag;
+use Alnv\CatalogManagerBundle\Inserttags\TimestampInsertTag;
 use Alnv\CatalogManagerBundle\MemberPermissionExtension;
-use Alnv\CatalogManagerBundle\BackendTemplateParser;
-use Alnv\CatalogManagerBundle\CatalogManagerInitializer;
-use Alnv\CatalogManagerBundle\CatalogWidgetAttributeParser;
-use Alnv\CatalogManagerBundle\Widgets\CatalogMessageWidget;
-use Alnv\CatalogManagerBundle\Widgets\CatalogTaxonomyWizard;
+use Alnv\CatalogManagerBundle\Modules\ModuleCatalogBookNavigation;
+use Alnv\CatalogManagerBundle\Modules\ModuleMasterView;
+use Alnv\CatalogManagerBundle\Modules\ModuleUniversalView;
+use Alnv\CatalogManagerBundle\SearchIndexBuilder;
+use Alnv\CatalogManagerBundle\UserPermissionExtension;
 use Alnv\CatalogManagerBundle\Widgets\CatalogDuplexSelectWizard;
 use Alnv\CatalogManagerBundle\Widgets\CatalogFilterFieldSelectWizard;
+use Alnv\CatalogManagerBundle\Widgets\CatalogMessageWidget;
 use Alnv\CatalogManagerBundle\Widgets\CatalogRelationRedirectWizard;
+use Alnv\CatalogManagerBundle\Widgets\CatalogTaxonomyWizard;
 use Alnv\CatalogManagerBundle\Widgets\CatalogValueSetterWizard;
-use Alnv\CatalogManagerBundle\Forms\CatalogMessageForm;
-use Alnv\CatalogManagerBundle\Forms\CatalogFineUploaderForm;
-use Alnv\CatalogManagerBundle\Inserttags\PseudoInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\ActiveInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\MasterInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\CatalogInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\TimestampInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\FilterValuesInsertTag;
-use Alnv\CatalogManagerBundle\Inserttags\RandomEntitiesIDInsertTag;
-use Alnv\CatalogManagerBundle\CatalogParser;
 use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +43,7 @@ const CATALOG_MANAGER_VERSION = "2.0.10-legacy";
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [
         'catalog-manager' => [
-            'name' => 'catalog-manager',
+            'name' => 'catalog-manager',g
             'icon' => 'bundles/alnvcatalogmanager/icons/icon.svg',
             'tables' => [
                 'tl_catalog',

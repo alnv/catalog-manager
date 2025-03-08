@@ -17,7 +17,7 @@ use Alnv\CatalogManagerBundle\Maps\GeoCoding;
 use Contao\ArrayUtil;
 use Contao\Config;
 use Contao\ContentModel;
-use Contao\Controller;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\Date;
 use Contao\Environment;
 use Contao\Image;
@@ -79,7 +79,6 @@ class CatalogView extends CatalogController
 
     protected array $arrCatalogMapViewOptions = [];
 
-
     public function __construct()
     {
 
@@ -95,7 +94,6 @@ class CatalogView extends CatalogController
         $this->import(I18nCatalogTranslator::class, 'I18nCatalogTranslator');
         $this->import(FrontendEditingPermission::class, 'FrontendEditingPermission');
     }
-
 
     public function initialize()
     {
@@ -244,7 +242,6 @@ class CatalogView extends CatalogController
 
         $this->setHasOperationsFlag();
     }
-
 
     protected function toggleVisibility(): void
     {
@@ -587,12 +584,12 @@ class CatalogView extends CatalogController
                 if ($arrCatalog['id'] && !empty($this->catalogJoinCTables)) {
 
                     foreach ($this->catalogJoinCTables as $strTable) {
-
                         $arrCatalog[$strTable] = $this->getChildrenByIdAndTable($arrCatalog['id'], $strTable);
                     }
                 }
 
                 foreach ($arrCatalog as $strFieldname => $varValue) {
+
                     if (isset($this->arrParseAsArray[$strFieldname])) {
                         $arrCatalog[$strFieldname] = $this->getJoinedEntities($varValue, $strFieldname);
                         continue;
@@ -642,14 +639,18 @@ class CatalogView extends CatalogController
             }
 
             if ($this->strMode == 'master') {
-                if ($this->catalogSEOTitle) {
-                        $arrCatalog[$this->catalogSEOTitle] ?? '';
-                    $objPage->pageTitle = $arrCatalog[$this->catalogSEOTitle] ? strip_tags($arrCatalog[$this->catalogSEOTitle]) : $objPage->pageTitle;
-                }
-                if ($this->catalogSEODescription) {
-                        $arrCatalog[$this->catalogSEODescription] ?? '';
-                    $objPage->description = $arrCatalog[$this->catalogSEODescription] ? strip_tags($arrCatalog[$this->catalogSEODescription]) : $objPage->description;
-                }
+
+                $objResponseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+                $objHeadBag = $objResponseContext->get(HtmlHeadBag::class);
+
+                $strMetaTitle = \strip_tags($arrCatalog[$this->catalogSEOTitle ?: '']);
+                $strMetaDescription = \strip_tags($arrCatalog[$this->catalogSEODescription ?: '']);
+
+                $GLOBALS['objPage']->pageTitle = $strMetaTitle ?: $objPage->pageTitle;
+                $GLOBALS['objPage']->description = $strMetaDescription ?: $objPage->description;
+
+                $objHeadBag->setTitle(StringUtil::decodeEntities($GLOBALS['objPage']->pageTitle ?: ''));
+                $objHeadBag->setMetaDescription(StringUtil::decodeEntities($GLOBALS['objPage']->description ?: ''));
             }
 
             $arrCatalog['_moduleId'] = $this->id;
@@ -1277,7 +1278,7 @@ class CatalogView extends CatalogController
         $strConnector = '?';
         $strUrl = StringUtil::ampersand(Environment::get('indexFreeRequest'));
 
-        if (strpos($strUrl, $strConnector) !== false) {
+        if (\strpos($strUrl, $strConnector) !== false) {
             $strConnector = '&';
         }
 
@@ -1376,7 +1377,7 @@ class CatalogView extends CatalogController
             'onField' => 'id',
             'multiple' => false,
             'table' => $this->catalogTablename,
-            'onTable' => $this->arrCatalog['pTable']
+            'onTable' => $this->arrCatalog['pTable'] ?? ''
         ];
     }
 
@@ -1386,7 +1387,7 @@ class CatalogView extends CatalogController
         foreach ($this->arrRelatedTables as $strTablename => $arrRelatedTable) {
 
             $strUrl = $this->arrRelatedTables[$strTablename]['url'];
-            $strSuffix = sprintf('?pid=%s', $strID);
+            $strSuffix = \sprintf('?pid=%s', $strID);
 
             $this->arrRelatedTables[$strTablename]['href'] = $strUrl . $strSuffix;
         }
@@ -1397,11 +1398,11 @@ class CatalogView extends CatalogController
     protected function setRelatedTables(): void
     {
 
-        if (!empty($this->catalogRelatedChildTables) && is_array($this->catalogRelatedChildTables)) {
+        if (!empty($this->catalogRelatedChildTables) && \is_array($this->catalogRelatedChildTables)) {
 
             foreach ($this->catalogRelatedChildTables as $arrRelatedTable) {
 
-                if (!is_array($arrRelatedTable)) continue;
+                if (!\is_array($arrRelatedTable)) continue;
 
                 if (Toolkit::isEmpty($arrRelatedTable['active'])) continue;
 

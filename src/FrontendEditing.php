@@ -212,8 +212,7 @@ class FrontendEditing extends CatalogController
 
         return $this->objTemplate->parse();
     }
-
-
+    
     protected function deleteImage()
     {
 

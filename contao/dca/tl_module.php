@@ -1209,83 +1209,55 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEODescription'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEOTitle'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogSEOTitle'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
-
     'options_callback' => [tl_module::class, 'getCatalogFieldsByTablename'],
-
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludedFields'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogExcludedFields'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'multiple' => true,
         'tl_class' => 'clr'
     ],
-
     'options_callback' => [tl_module::class, 'getExcludedCatalogFields'],
-
     'exclude' => true,
     'sql' => "blob NULL"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDisableMasterLink'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogDisableMasterLink'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'w50'
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['enableTableView'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['enableTableView'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'clr',
         'submitOnChange' => true
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveTableColumns'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogActiveTableColumns'],
     'inputType' => 'checkboxWizard',
-
     'eval' => [
-
         'multiple' => true,
         'tl_class' => 'clr'
     ],
-
     'options_callback' => [tl_module::class, 'getAllColumns'],
-
     'exclude' => true,
     'sql' => "blob NULL"
 ];
@@ -1310,49 +1282,33 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableViewTemplate'] = [
 
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableBodyViewTemplate'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTableBodyViewTemplate'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'tl_class' => 'w50',
         'mandatory' => true
     ],
-
     'options_callback' => [tl_module::class, 'getTableBodyViewTemplates'],
-
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogEnableFrontendEditing'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogEnableFrontendEditing'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'clr m12',
         'submitOnChange' => true
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogUseFrontendEditingViewPage'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogUseFrontendEditingViewPage'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'clr w50',
         'submitOnChange' => true
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];
@@ -1679,36 +1635,25 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNoSearch'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSitemap'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogSitemap'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'maxlength' => 32,
         'tl_class' => 'w50',
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
-
     'options' => ['map_default', 'map_never'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'],
-
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogAddContentElements'] = [
-
-    'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogAddContentElements'],
     'inputType' => 'checkbox',
-
     'eval' => [
-
         'tl_class' => 'w50'
     ],
-
     'exclude' => true,
     'sql' => "char(1) NOT NULL default ''"
 ];

@@ -23,8 +23,6 @@ class CatalogNotification extends CatalogController
 
     protected $objModule = null;
 
-    protected bool $blnEnable = false;
-
     protected array $arrCatalogFields = [];
 
     protected $objNotificationCenter;
@@ -40,9 +38,7 @@ class CatalogNotification extends CatalogController
         $this->import(CatalogFieldBuilder::class, 'CatalogFieldBuilder');
         $this->objNotificationCenter = System::getContainer()->get('ctlg.services.notification_center');
 
-        $this->blnEnable = (class_exists('NotificationCenter\Model\Notification') && $this->SQLQueryHelper->SQLQueryBuilder->Database->tableExists('tl_nc_notification'));
-
-        if ($this->blnEnable && $this->objModule->catalogTablename) {
+        if ($this->objModule->catalogTablename) {
             $this->CatalogFieldBuilder->initialize($this->objModule->catalogTablename);
             $this->arrCatalog = $this->CatalogFieldBuilder->getCatalog();
             $this->arrCatalogFields = $this->CatalogFieldBuilder->getCatalogFields($this->objModule->catalogTablename, false, null);
@@ -52,20 +48,20 @@ class CatalogNotification extends CatalogController
     public function notifyOnDelete($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable || !$intNotificationId) return;
+        if (!$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens = $this->getOldData($arrTokens);
         $arrTokens['domain'] = $this->getDomain();
         $arrTokens['admin_email'] = $this->getAdminEmail();
 
-        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
+        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
     }
 
     public function notifyOnUpdate($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable || !$intNotificationId) return;
+        if (!$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens = $this->getOldData($arrTokens);
@@ -84,13 +80,13 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
+        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
     }
 
     public function notifyOnInsert($intNotificationId, $arrData = [])
     {
 
-        if (!$this->blnEnable || !$intNotificationId) return;
+        if (!$intNotificationId) return;
 
         $arrTokens = $this->setDataTokens($arrData);
         $arrTokens['domain'] = $this->getDomain();
@@ -108,7 +104,7 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $this->objNotificationCenter->send($arrTokens, ($GLOBALS['TL_LANGUAGE'] ?? ''));
+        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
     }
 
     protected function getOldData($arrTokens = []): array

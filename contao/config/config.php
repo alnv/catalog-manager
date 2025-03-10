@@ -38,12 +38,12 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.10-legacy";
+const CATALOG_MANAGER_VERSION = "2.0.11-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [
         'catalog-manager' => [
-            'name' => 'catalog-manager',g
+            'name' => 'catalog-manager',
             'icon' => 'bundles/alnvcatalogmanager/icons/icon.svg',
             'tables' => [
                 'tl_catalog',

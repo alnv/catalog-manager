@@ -73,7 +73,7 @@ class CatalogRelationRedirectWizard extends Widget
         }
 
         $intTabindex = Cache::get('tabindex');
-        if (is_array($this->varValue) && Toolkit::isEmpty($this->varValue[0]['table'])) {
+        if (is_array($this->varValue) && (isset($this->varValue[0]['table']) && Toolkit::isEmpty($this->varValue[0]['table']))) {
             $arrValueTemp = [];
             foreach ($this->arrOptions as $arrOption) {
                 $arrValueTemp[] = [
@@ -123,7 +123,8 @@ class CatalogRelationRedirectWizard extends Widget
     protected function generateRelatedInputField($arrOption, $intIndex, $intTabindex, $strButtons): string
     {
 
-        $strName = $this->I18nCatalogTranslator->get('module', $arrOption['table'], ['titleOnly' => true]);
+        // TODO : I'm not sure if this proposed fix is relevant. $arrOption['table'] may be undefined
+        $strName = $this->I18nCatalogTranslator->get('module', $arrOption['table'] ?? 'table', ['titleOnly' => true]);
 
         $strTemplate =
             '<tr>' .
@@ -137,7 +138,7 @@ class CatalogRelationRedirectWizard extends Widget
         return sprintf(
             $strTemplate,
             $this->strId . '[' . $intIndex . '][table]',
-            $arrOption['table'],
+            $arrOption['table'] ?? 'table',
             $this->strId . '[' . $intIndex . '][active]',
             $this->strId . '_active_' . $intIndex,
             $intTabindex++,
@@ -169,10 +170,8 @@ class CatalogRelationRedirectWizard extends Widget
     protected function isCustomChecked($intIndex): string
     {
 
-        if (isset($this->varValue[$intIndex])) {
-            if ($this->varValue[$intIndex]['active']) {
-                return 'checked';
-            }
+        if (isset($this->varValue[$intIndex]['active']) && $this->varValue[$intIndex]['active']) {
+            return 'checked';
         }
 
         return '';

@@ -75,7 +75,7 @@ class Toolkit
     public static array $arrFormTemplates = [
         'checkbox' => 'form_checkbox',
         'textarea' => 'form_textarea',
-        'number' => 'form_textfield',
+        'number' => 'form_text',
         'text' => 'form_textfield',
         'date' => 'form_textfield',
         'select' => 'form_select',

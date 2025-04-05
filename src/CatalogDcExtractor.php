@@ -66,6 +66,10 @@ class CatalogDcExtractor extends CatalogController
 
         $this->DcModifier->initialize($this->strTable);
 
+        if (!isset($GLOBALS['TL_DCA'][$this->strTable])) {
+            return null;
+        }
+
         $arrReturn = $GLOBALS['TL_DCA'][$this->strTable];
         $arrCatalog = $GLOBALS['TL_CATALOG_MANAGER']['CATALOG_EXTENSIONS'][$this->strTable];
 

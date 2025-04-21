@@ -101,8 +101,18 @@ class CatalogValueSetterWizard extends Widget
         $strReturn = '';
         foreach ($this->varValue as $intIndex => $arrValue) {
             $strReturn .= '<tr>';
-            $strReturn .= sprintf('<td><select name="%s" id="%s" class="tl_select tl_chosen tl_catalog_widget min-width">%s</select></td>', $this->strId . '[' . $intIndex . '][key]', $this->strId . '_key_' . $intIndex, $this->getSelectOptions($arrValue['key']));
-            $strReturn .= sprintf('<td><input type="text" name="%s" id="%s" value="%s" class="tl_text"/></td>', $this->strId . '[' . $intIndex . '][value]', $this->strId . '_value_' . $intIndex, $arrValue['value']);
+            $strReturn .= sprintf(
+                '<td><select name="%s" id="%s" class="tl_select tl_chosen tl_catalog_widget min-width">%s</select></td>',
+                $this->strId . '[' . $intIndex . '][key]',
+                $this->strId . '_key_' . $intIndex,
+                $this->getSelectOptions($arrValue['key'] ?? '')
+            );
+            $strReturn .= sprintf(
+                '<td><input type="text" name="%s" id="%s" value="%s" class="tl_text"/></td>',
+                $this->strId . '[' . $intIndex . '][value]',
+                $this->strId . '_value_' . $intIndex,
+                $arrValue['value'] ?? ''
+            );
             $strReturn .= sprintf('<td style="white-space:nowrap;padding-left:3px">%s</td>', $this->parseButtons($intIndex));
             $strReturn .= '</tr>';
         }

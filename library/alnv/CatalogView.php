@@ -2,6 +2,8 @@
 
 namespace CatalogManager;
 
+use Contao\System;
+
 
 class CatalogView extends CatalogController
 {
@@ -767,6 +769,17 @@ class CatalogView extends CatalogController
             }
 
             $arrCatalogs[] = $arrCatalog;
+        }
+
+        if (System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
+            $responseTagger = System::getContainer()->get('fos_http_cache.http.symfony_response_tagger');
+            $tag = 'contao.db.'.$this->catalogTablename;
+
+            if ('view' === $this->strMode) {
+                $responseTagger->addTags([$tag]);
+            } elseif ('master' === $this->strMode) {
+                $responseTagger->addTags(array_map(static function ($record) use ($tag) { return $tag.'.'.$record['id']; }, $arrCatalogs));
+            }
         }
 
         if ($intPerPage > 0 && $this->catalogAddPagination && $this->strMode == 'view') {

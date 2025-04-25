@@ -211,7 +211,7 @@ class tl_content extends Backend
             ];
         }
 
-        $this->import(SQLQueryBuilder::class);
+        $this->import(SQLQueryBuilder::class, 'SQLQueryBuilder');
 
         $objEntities = $this->SQLQueryBuilder->execute($arrQuery);
 

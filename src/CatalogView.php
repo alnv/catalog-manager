@@ -349,7 +349,7 @@ class CatalogView extends CatalogController
 
         $this->catalogOffset = (int)$this->catalogOffset;
 
-        $blnActive = $this->catalogActiveParameters ? false : true;
+        $blnActive = (bool) $this->catalogActiveParameters;
         $intOffset = $this->catalogOffset;
         $strPageID = 'page_e' . $this->id;
         $intPerPage = \intval($this->catalogPerPage);
@@ -361,7 +361,7 @@ class CatalogView extends CatalogController
 
         if (!$this->catalogTablename || !$this->SQLQueryBuilder->tableExist($this->catalogTablename)) return '';
 
-        if (!empty($this->catalogJoinFields) || is_array($this->catalogJoinFields)) {
+        if (!empty($this->catalogJoinFields) || \is_array($this->catalogJoinFields)) {
             $this->prepareJoinData($arrQuery['joins']);
         }
 
@@ -369,7 +369,7 @@ class CatalogView extends CatalogController
             $this->preparePTableJoinData($arrQuery['joins']);
         }
 
-        if (in_array($this->strMode, ['view', 'master']) && !empty($this->catalogTaxonomies['query']) && is_array($this->catalogTaxonomies['query']) && $this->catalogUseTaxonomies) {
+        if (\in_array($this->strMode, ['view', 'master']) && !empty($this->catalogTaxonomies['query']) && \is_array($this->catalogTaxonomies['query']) && $this->catalogUseTaxonomies) {
             $arrTaxonomies = Toolkit::parseQueries($this->catalogTaxonomies['query']);
         }
 
@@ -459,7 +459,6 @@ class CatalogView extends CatalogController
             }
 
             if (!isset($arrQuery['distance']) && $this->CatalogInput->getActiveValue('_latitude') && $this->CatalogInput->getActiveValue('_longitude')) {
-
                 $arrQuery['distance'] = [
                     'value' => $strDistance,
                     'latCord' => $this->CatalogInput->getActiveValue('_latitude'),
@@ -470,7 +469,7 @@ class CatalogView extends CatalogController
             }
         }
 
-        if (is_array($this->catalogOrderBy)) {
+        if (\is_array($this->catalogOrderBy)) {
             $this->setOrderByParameters();
             if (!empty($this->catalogOrderBy)) {
                 foreach ($this->catalogOrderBy as $arrOrderBy) {
@@ -494,9 +493,9 @@ class CatalogView extends CatalogController
             }
         }
 
-        if (isset($GLOBALS['TL_HOOKS']['catalogManagerViewQuery']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerViewQuery'])) {
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerViewQuery']) && \is_array($GLOBALS['TL_HOOKS']['catalogManagerViewQuery'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerViewQuery'] as $arrCallback) {
-                if (is_array($arrCallback)) {
+                if (\is_array($arrCallback)) {
                     $this->import($arrCallback[0]);
                     $arrQuery = $this->{$arrCallback[0]}->{$arrCallback[1]}($arrQuery, $this);
                 }

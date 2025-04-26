@@ -172,7 +172,7 @@ class tl_catalog extends Backend
 
             Controller::loadDataContainer($strTablename);
 
-            $blnDynamicPtable = $GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable'] ?: false;
+            $blnDynamicPtable = isset($GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable']) ? $GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable'] : false;
         }
 
         if ($dc->activeRecord->pTable || $blnDynamicPtable) {
@@ -252,7 +252,7 @@ class tl_catalog extends Backend
 
             Controller::loadDataContainer($strTablename);
 
-            $blnDynamicPtable = $GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable'] ?: false;
+            $blnDynamicPtable = isset($GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable']) ? $GLOBALS['TL_DCA'][$strTablename]['config']['dynamicPtable'] : false;
         }
 
         if (in_array($varValue, ['3', '4', '6']) && (Toolkit::isEmpty($dc->activeRecord->pTable) && !$blnDynamicPtable)) {

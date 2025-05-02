@@ -1,8 +1,8 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = [ 'CatalogManager\tl_module', 'generateGeoCords' ];
-$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'checkModuleRequirements' ];
-$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = [ 'CatalogManager\tl_module', 'disableNotRequiredFields' ];
+$GLOBALS['TL_DCA']['tl_module']['config']['onsubmit_callback'][] = ['CatalogManager\tl_module', 'generateGeoCords'];
+$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = ['CatalogManager\tl_module', 'checkModuleRequirements'];
+$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = ['CatalogManager\tl_module', 'disableNotRequiredFields'];
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseMap';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'enableTableView';
@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseSocia
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogBookNavigationSortingType';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'catalogUseFrontendEditingViewPage';
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogBookNavigation'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_book_navigation_settings},catalogBookNavigationSortingType;{catalog_master_legend},catalogMasterPage;{catalog_taxonomy_legend:hide},catalogUseTaxonomies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['catalogBookNavigation'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_book_navigation_settings},catalogBookNavigationSortingType;{catalog_master_legend},catalogMasterPage;{catalog_taxonomy_legend},catalogUseTaxonomies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogTaxonomyTree'] = '{title_legend},name,headline,type;{catalog_taxonomy_legend},catalogRoutingSource,catalogUseTaxonomyRedirect,catalogUseTaxonomies;{catalog_orderBy_legend:hide},catalogOrderByTaxonomies;{template_legend:hide},catalogCustomTemplate,catalogTaxonomyNavTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogFilter'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_filterFields_legend},catalogActiveFilterFields;{catalog_filterSettings_legend:hide},catalogFieldsChangeOnSubmit,catalogFormMethod,catalogResetFilterForm,catalogDisableSubmit,catalogIgnoreFilterOnAutoItem;{catalog_filterRedirect_legend:hide},catalogRedirectType;{catalog_filterTemplates_legend:hide},catalogFilterFieldTemplates;{catalog_fieldDependencies_legend:hide},catalogFilterFieldDependencies;{template_legend:hide},catalogCustomTemplate;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['catalogMasterView'] = '{title_legend},name,headline,type;{catalog_legend},catalogTablename;{catalog_master_legend},catalogSEOTitle,catalogSEODescription,catalogUseViewPage,catalogIgnoreVisibility;{catalog_taxonomy_legend},catalogUseTaxonomies,catalogEnableParentFilter,catalogActiveParameters;{download_legend:hide},catalogUseDownloads;{social_sharing_legend:hide},catalogUseSocialSharingButtons;{template_legend:hide},catalogMasterTemplate,catalogCustomTemplate;{catalog_join_legend:hide},catalogJoinFields,catalogJoinCTables,catalogJoinParentTable,catalogJoinAsArray;{catalog_relation_legend:hide},catalogUseRelation;{catalog_comments_legend:hide},catalogAllowComments;{catalog_json_legend:hide},catalogUseArray,catalogExcludeArrayOptions,catalogSendJsonHeader;{image_legend:hide},imgSize;{protected_legend:hide:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -55,56 +55,42 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogBookNavigationSortingType
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['catalogBookNavigationSortingType_custom'] = 'catalogBookNavigationItem,catalogOrderBy';
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTablename'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogTablename'],
     'inputType' => 'select',
-
     'eval' => [
-
         'chosen' => true,
         'maxlength' => 128,
         'tl_class' => 'w50',
         'mandatory' => true,
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
-        'includeBlankOption'=>true,
+        'includeBlankOption' => true,
     ],
-
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogs' ],
-
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogs'],
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveParameters'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogActiveParameters'],
     'inputType' => 'text',
-
     'eval' => [
-
         'maxlength' => 255,
         'tl_class' => 'long'
     ],
-
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRoutingParameter'] = [
-
     'label' => &$GLOBALS['TL_LANG']['tl_module']['catalogRoutingParameter'],
     'inputType' => 'checkboxWizard',
-
     'eval' => [
-
         'multiple' => true,
         'mandatory' => true,
         'tl_class' => 'clr',
     ],
-
-    'options_callback' => [ 'CatalogManager\tl_module', 'getRoutingFields' ],
-
+    'options_callback' => ['CatalogManager\tl_module', 'getRoutingFields'],
     'exclude' => true,
     'sql' => "blob NULL"
 ];
@@ -119,10 +105,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPageRouting'] = [
         'mandatory' => true,
         'tl_class' => 'clr',
         'blankOptionLabel' => '-',
-        'includeBlankOption'=>true
+        'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getPageRouting' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getPageRouting'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -139,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRoutingSource'] = [
         'mandatory' => true,
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
-        'includeBlankOption'=>true,
+        'includeBlankOption' => true,
     ],
 
     'options' => [
@@ -165,8 +151,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveFilterFields'] = [
         'submitOnChange' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getFilterFields' ],
-    
+    'options_callback' => ['CatalogManager\tl_module', 'getFilterFields'],
+
     'exclude' => true,
     'sql' => "blob NULL"
 ];
@@ -209,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldsChangeOnSubmit'] = [
         'multiple' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getActiveFilterFields' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getActiveFilterFields'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -253,10 +239,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRedirectType'] = [
 
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
-        'includeBlankOption'=>true
+        'includeBlankOption' => true
     ],
 
-    'options' => [ 'internal', 'external' ],
+    'options' => ['internal', 'external'],
 
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogRedirectType'],
 
@@ -275,11 +261,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogBookNavigationSortingType'] = 
         'mandatory' => true,
         'submitOnChange' => true,
         'blankOptionLabel' => '-',
-        'includeBlankOption'=> true
+        'includeBlankOption' => true
     ],
 
-    'options' => [ 'manuel', 'custom' ],
-    'save_callback' => [ [ 'CatalogManager\tl_module', 'checkSortingField' ] ],
+    'options' => ['manuel', 'custom'],
+    'save_callback' => [['CatalogManager\tl_module', 'checkSortingField']],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogBookNavigationSortingType'],
 
     'exclude' => true,
@@ -298,10 +284,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogBookNavigationItem'] = [
         'mandatory' => true,
         'tl_class' => 'w50 clr',
         'blankOptionLabel' => '-',
-        'includeBlankOption'=> true
+        'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getAllColumns'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -476,7 +462,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDownloads'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogDownloads' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogDownloads'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogDownloads'],
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -495,7 +481,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPdfTemplate'] = [
         'tl_class' => 'w50',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getPdfTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getPdfTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(64) NOT NULL default ''"
@@ -512,7 +498,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPdfOrientation'] = [
         'tl_class' => 'w50',
     ],
 
-    'options' => [ 'P', 'L' ],
+    'options' => ['P', 'L'],
 
     'exclude' => true,
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogPdfOrientation'],
@@ -546,7 +532,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTemplate'] = [
         'tl_class' => 'w50',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
@@ -631,7 +617,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMasterTemplate'] = [
         'tl_class' => 'w50',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
@@ -650,8 +636,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderBy'] = [
         'includeBlankOption' => true,
         'mainLabel' => 'catalogManagerFields',
         'dependedLabel' => 'catalogManagerOrder',
-        'mainOptions' => [ 'CatalogManager\OrderByHelper', 'getSortableFields' ],
-        'dependedOptions' => [ 'CatalogManager\OrderByHelper', 'getOrderByItems' ]
+        'mainOptions' => ['CatalogManager\OrderByHelper', 'getSortableFields'],
+        'dependedOptions' => ['CatalogManager\OrderByHelper', 'getOrderByItems']
     ],
 
     'exclude' => true,
@@ -669,7 +655,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOrderByTaxonomies'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 'ASC','DESC' ],
+    'options' => ['ASC', 'DESC'],
 
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogOrderByTaxonomies'],
 
@@ -688,10 +674,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogGroupBy'] = [
         'maxlength' => 128,
         'tl_class' => 'w50',
         'blankOptionLabel' => '-',
-        'includeBlankOption'=>true
+        'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getAllColumns'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -708,7 +694,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogGroupHeadlineTag'] = [
         'tl_class' => 'w50',
     ],
 
-    'options' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ],
+    'options' => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
 
     'exclude' => true,
     'sql' => "varchar(8) NOT NULL default ''"
@@ -750,8 +736,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogOffset'] = [
 
     'eval' => [
 
-        'rgxp'=>'natural',
-        'tl_class'=>'w50'
+        'rgxp' => 'natural',
+        'tl_class' => 'w50'
     ],
 
     'exclude' => true,
@@ -766,8 +752,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPerPage'] = [
 
     'eval' => [
 
-        'rgxp'=>'natural',
-        'tl_class'=>'w50'
+        'rgxp' => 'natural',
+        'tl_class' => 'w50'
     ],
 
     'exclude' => true,
@@ -786,7 +772,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinFields'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getJoinAbleFields' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getJoinAbleFields'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -832,7 +818,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogJoinCTables'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getChildTablesByTablename' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getChildTablesByTablename'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -859,8 +845,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRelatedChildTables'] = [
 
     'eval' => [],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getChildTablesByTablename' ],
-    
+    'options_callback' => ['CatalogManager\tl_module', 'getChildTablesByTablename'],
+
     'exclude' => true,
     'sql' => "blob NULL"
 ];
@@ -884,7 +870,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormTemplate'] = [
         'maxlength' => 32,
         'tl_class' => 'w50',
     ],
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFormTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogFormTemplates'],
     'exclude' => true,
     'sql' => "varchar(32) NOT NULL default ''"
 ];
@@ -901,7 +887,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogItemOperations'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogOperationItems' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogOperationItems'],
 
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogItemOperations'],
 
@@ -1062,7 +1048,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogCommentSortOrder'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 'ascending', 'descending' ],
+    'options' => ['ascending', 'descending'],
 
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
 
@@ -1198,7 +1184,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLat'] = [
         'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogFieldsByTablename'],
 
     'exclude' => true,
     'sql' => "char(128) NOT NULL default ''"
@@ -1219,7 +1205,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFieldLng'] = [
         'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogFieldsByTablename'],
 
     'exclude' => true,
     'sql' => "char(128) NOT NULL default ''"
@@ -1239,7 +1225,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapViewTemplate'] = [
         'mandatory' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getMapViewTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getMapViewTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
@@ -1259,7 +1245,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapTemplate'] = [
         'mandatory' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getMapTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getMapTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
@@ -1277,7 +1263,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapZoom'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ],
+    'options' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
 
     'exclude' => true,
     'sql' => "smallint(5) unsigned NOT NULL default '0'"
@@ -1295,7 +1281,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogMapType'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 'ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN' ],
+    'options' => ['ROADMAP', 'SATELLITE', 'HYBRID', 'TERRAIN'],
 
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogMapType'],
 
@@ -1404,7 +1390,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogRadioSearchCountry'] = [
         'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getSystemCountries' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getSystemCountries'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -1433,8 +1419,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTaxonomies'] = [
     'eval' => [
 
         'dcTable' => 'tl_module',
-        'taxonomyTable' => [ 'CatalogManager\tl_module', 'getTaxonomyTable' ],
-        'taxonomyEntities' => [ 'CatalogManager\tl_module', 'getTaxonomyFields' ]
+        'taxonomyTable' => ['CatalogManager\tl_module', 'getTaxonomyTable'],
+        'taxonomyEntities' => ['CatalogManager\tl_module', 'getTaxonomyFields']
     ],
 
     'exclude' => true,
@@ -1454,7 +1440,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEODescription'] = [
         'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogFieldsByTablename'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -1473,7 +1459,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSEOTitle'] = [
         'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCatalogFieldsByTablename' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCatalogFieldsByTablename'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -1490,7 +1476,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludedFields'] = [
         'tl_class' => 'clr'
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getExcludedCatalogFields' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getExcludedCatalogFields'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -1536,7 +1522,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogActiveTableColumns'] = [
         'tl_class' => 'clr'
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getAllColumns' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getAllColumns'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -1554,7 +1540,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableViewTemplate'] = [
         'mandatory' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getTableViewTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getTableViewTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
@@ -1573,7 +1559,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTableBodyViewTemplate'] = [
         'mandatory' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getTableBodyViewTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getTableBodyViewTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
@@ -1658,7 +1644,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogExcludeArrayOptions'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getArrayOptions' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getArrayOptions'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -1677,7 +1663,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSendJsonHeader'] = [
         'includeBlankOption' => true
     ],
 
-    'options' => [ 'permanent', 'onAjaxCall' ],
+    'options' => ['permanent', 'onAjaxCall'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSendJsonHeader'],
 
     'exclude' => true,
@@ -1694,16 +1680,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyInsert'] = [
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
-        'ncNotificationChoices' => [ 'ctlg_entity_status_insert' ]
+        'ncNotificationChoices' => ['ctlg_entity_status_insert']
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getNotificationChoices'],
 
     'relation' => [
 
-        'load'=>'lazy',
-        'type'=>'hasOne',
-        'table'=>'tl_nc_notification'
+        'load' => 'lazy',
+        'type' => 'hasOne',
+        'table' => 'tl_nc_notification'
     ],
 
     'exclude' => true,
@@ -1720,16 +1706,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDuplicate'] = [
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
-        'ncNotificationChoices' => [ 'ctlg_entity_status_duplicate' ]
+        'ncNotificationChoices' => ['ctlg_entity_status_duplicate']
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getNotificationChoices'],
 
     'relation' => [
 
-        'load'=>'lazy',
-        'type'=>'hasOne',
-        'table'=>'tl_nc_notification'
+        'load' => 'lazy',
+        'type' => 'hasOne',
+        'table' => 'tl_nc_notification'
     ],
 
     'exclude' => true,
@@ -1746,16 +1732,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyUpdate'] = [
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
-        'ncNotificationChoices' => [ 'ctlg_entity_status_update' ]
+        'ncNotificationChoices' => ['ctlg_entity_status_update']
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getNotificationChoices'],
 
     'relation' => [
 
-        'load'=>'lazy',
-        'type'=>'hasOne',
-        'table'=>'tl_nc_notification'
+        'load' => 'lazy',
+        'type' => 'hasOne',
+        'table' => 'tl_nc_notification'
     ],
 
     'exclude' => true,
@@ -1772,16 +1758,16 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogNotifyDelete'] = [
         'chosen' => true,
         'tl_class' => 'w50',
         'includeBlankOption' => true,
-        'ncNotificationChoices' => [ 'ctlg_entity_status_delete' ]
+        'ncNotificationChoices' => ['ctlg_entity_status_delete']
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getNotificationChoices' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getNotificationChoices'],
 
     'relation' => [
 
-        'load'=>'lazy',
-        'type'=>'hasOne',
-        'table'=>'tl_nc_notification'
+        'load' => 'lazy',
+        'type' => 'hasOne',
+        'table' => 'tl_nc_notification'
     ],
 
     'exclude' => true,
@@ -1795,13 +1781,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogCustomTemplate'] = [
 
     'eval' => [
 
-        'chosen'=>true,
-        'tl_class'=>'w50',
+        'chosen' => true,
+        'tl_class' => 'w50',
         'maxlength' => 64,
-        'includeBlankOption'=>true
+        'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getCustomTemplate' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getCustomTemplate'],
 
     'exclude' => true,
     'sql' => "varchar(64) NOT NULL default ''"
@@ -1814,13 +1800,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogTaxonomyNavTemplate'] = [
 
     'eval' => [
 
-        'chosen'=>true,
-        'tl_class'=>'w50',
+        'chosen' => true,
+        'tl_class' => 'w50',
         'maxlength' => 64,
-        'includeBlankOption'=>true
+        'includeBlankOption' => true
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getTaxonomyNavTemplate' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getTaxonomyNavTemplate'],
 
     'exclude' => true,
     'sql' => "varchar(64) NOT NULL default ''"
@@ -1835,10 +1821,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogFormMethod'] = [
     'eval' => [
 
         'maxlength' => 8,
-        'tl_class'=>'w50'
+        'tl_class' => 'w50'
     ],
 
-    'options' => [ 'GET', 'POST' ],
+    'options' => ['GET', 'POST'],
 
     'exclude' => true,
     'sql' => "varchar(8) NOT NULL default ''"
@@ -1870,7 +1856,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogPreventFieldFromFastMode'] = [
         'tl_class' => 'clr'
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getFastModeFields' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getFastModeFields'],
 
     'exclude' => true,
     'sql' => "blob NULL"
@@ -1886,7 +1872,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogDefaultValues'] = [
         'tl_class' => 'clr',
         'blankOptionLabel' => '-',
         'includeBlankOption' => true,
-        'getKeys' => [ 'CatalogManager\tl_module', 'getKeyColumns' ],
+        'getKeys' => ['CatalogManager\tl_module', 'getKeyColumns'],
     ],
 
     'exclude' => true,
@@ -1919,7 +1905,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingButtons'] = [
         'tl_class' => 'clr',
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getSocialSharingButtons' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getSocialSharingButtons'],
     'reference' => &$GLOBALS['TL_LANG']['MSC']['sharingButtons'],
 
     'exclude' => true,
@@ -1933,12 +1919,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingTemplate'] = [
 
     'eval' => [
 
-        'chosen'=>true,
+        'chosen' => true,
         'maxlength' => 128,
         'tl_class' => 'w50'
     ],
 
-    'options_callback' => [ 'CatalogManager\tl_module', 'getSocialSharingTemplates' ],
+    'options_callback' => ['CatalogManager\tl_module', 'getSocialSharingTemplates'],
 
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
@@ -1969,7 +1955,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSocialSharingHeadline'] = [
         'tl_class' => 'w50'
     ],
 
-    'options' => [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p' ],
+    'options' => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'],
 
     'exclude' => true,
     'sql' => "varchar(255) NOT NULL default ''"
@@ -2019,7 +2005,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['catalogSitemap'] = [
         'includeBlankOption' => true
     ],
 
-    'options' => [ 'map_default', 'map_never' ],
+    'options' => ['map_default', 'map_never'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['reference']['catalogSitemap'],
 
     'exclude' => true,

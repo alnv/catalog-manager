@@ -293,7 +293,7 @@ class CatalogView extends CatalogController
         foreach ($this->catalogActiveTableColumns as $strIndex => $strActiveTableColumn) {
             $arrField = $this->arrCatalogFields[$strActiveTableColumn];
             if (is_array($arrField)) {
-                if ($arrField['type'] == 'upload' && $arrField['useArrayFormat']) {
+                if ($arrField['type'] == 'upload' && ($arrField['useArrayFormat'] ?? false)) {
                     unset($this->catalogActiveTableColumns[$strIndex]);
                 }
             }
@@ -316,7 +316,7 @@ class CatalogView extends CatalogController
             return null;
         }
 
-        if ($arrField['type'] == 'upload' && $arrField['useArrayFormat']) {
+        if ($arrField['type'] == 'upload' && ($arrField['useArrayFormat'] ?? false)) {
 
             return null;
         }
@@ -1151,7 +1151,7 @@ class CatalogView extends CatalogController
 
         switch ($strType) {
             case 'upload':
-                if (is_null($varValue)) return $arrField['useArrayFormat'] ? [] : '';
+                if (is_null($varValue)) return ($arrField['useArrayFormat'] ?? false) ? [] : '';
                 $varValue = Upload::parseValue($varValue, $arrField, $arrCatalog);
                 if (is_array($varValue) && $arrField['fileType'] == 'gallery') {
                     if ($varValue['preview']) {

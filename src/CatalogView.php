@@ -349,7 +349,7 @@ class CatalogView extends CatalogController
 
         $this->catalogOffset = (int)$this->catalogOffset;
 
-        $blnActive = (bool) $this->catalogActiveParameters;
+        $blnActive = $this->catalogActiveParameters ? false : true;
         $intOffset = $this->catalogOffset;
         $strPageID = 'page_e' . $this->id;
         $intPerPage = \intval($this->catalogPerPage);

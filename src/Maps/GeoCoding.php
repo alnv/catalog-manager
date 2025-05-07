@@ -5,6 +5,7 @@ namespace Alnv\CatalogManagerBundle\Maps;
 use Alnv\CatalogManagerBundle\CatalogController;
 use Alnv\CatalogManagerBundle\Toolkit;
 use Alnv\ContaoGeoCodingBundle\Library\GeoCoding as GeoCodingBundle;
+use Contao\System;
 
 class GeoCoding extends CatalogController
 {
@@ -27,6 +28,8 @@ class GeoCoding extends CatalogController
     public function getCords($strAddress = '', $strLanguage = 'en', $blnServer = false): array
     {
 
+        $arrReturn = [];
+
         if (Toolkit::isEmpty($strAddress)) {
 
             $arrAddress = [];
@@ -41,6 +44,14 @@ class GeoCoding extends CatalogController
             if ($this->strCountry) $arrAddress[] = $this->strCountry;
 
             $strAddress = implode(',', $arrAddress);
+        }
+
+        if (isset($GLOBALS['TL_HOOKS']['catalogManagerGeoCoords']) && \is_array($GLOBALS['TL_HOOKS']['catalogManagerGeoCoords'])) {
+            foreach ($GLOBALS['TL_HOOKS']['catalogManagerGeoCoords'] as $arrCallback) {
+                if (\is_array($arrCallback)) {
+                    return System::importStatic($arrCallback[0])->{$arrCallback[1]}($arrReturn, $strAddress, $strLanguage, $blnServer, $this);
+                }
+            }
         }
 
         $arrGeoCodingData = (new GeoCodingBundle())->getGeoCodingByAddress('google-geocoding', $strAddress, $strLanguage);

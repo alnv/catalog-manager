@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['catalogChangeLanguageTable'] = [
         'blankOptionLabel' => '-',
         'includeBlankOption' => true
     ],
-    'options_callback' => ['CatalogManager\classes\tl_page', 'getCatalogTables' ],
+    'options_callback' => [tl_page::class, 'getCatalogTables' ],
     'exclude' => true,
     'sql' => "varchar(128) NOT NULL default ''"
 ];

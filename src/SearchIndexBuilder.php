@@ -24,7 +24,7 @@ class SearchIndexBuilder extends Frontend
         if ($intRoot > 0) $arrRoot = $this->Database->getChildRecords($intRoot, 'tl_page');
 
         $arrProcessed = [];
-        $objModules = $this->Database->prepare('SELECT * FROM tl_module WHERE type = ?')->execute('catalogUniversalView');
+        $objModules = $this->Database->prepare('SELECT * FROM tl_module WHERE type=?')->execute('catalogUniversalView');
 
         while ($objModules->next()) {
 
@@ -43,7 +43,7 @@ class SearchIndexBuilder extends Frontend
                 $arrProcessed[$objModules->catalogMasterPage] = $this->setProcessedDomain($objParent, $objModules->catalogTablename);
             }
 
-            $objCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE tablename = ?')->limit(1)->execute($objModules->catalogTablename);
+            $objCatalog = $this->Database->prepare('SELECT * FROM tl_catalog WHERE tablename=?')->limit(1)->execute($objModules->catalogTablename);
 
             if (!$objCatalog->numRows) continue;
 
@@ -111,7 +111,7 @@ class SearchIndexBuilder extends Frontend
                 }
             }
 
-            $objEntities = $this->Database->prepare($strQuery)->execute($arrValues);
+            $objEntities = $this->Database->prepare($strQuery)->execute(...$arrValues);
 
             if (!$objEntities->numRows) continue;
 
@@ -133,7 +133,7 @@ class SearchIndexBuilder extends Frontend
         return $arrPages;
     }
 
-    protected function createMasterUrl($arrCatalog, $objEntities, $strUrl, $strTablename)
+    protected function createMasterUrl($arrCatalog, $objEntities, $strUrl, $strTablename): string
     {
 
         $strBase = '';
@@ -152,7 +152,7 @@ class SearchIndexBuilder extends Frontend
 
         if ($arrCatalog['useRedirect'] && $arrCatalog['externalUrlColumn']) {
             if ($objEntities->{$arrCatalog['externalUrlColumn']}) {
-                return null;
+                return '';
             }
         }
 
@@ -160,7 +160,7 @@ class SearchIndexBuilder extends Frontend
 
         if (isset($this->arrRoutings[$strTablename]) && is_array($this->arrRoutings[$strTablename])) {
             foreach ($this->arrRoutings[$strTablename] as $strParameter) {
-                $arrParameters[] = $objEntities->{$strParameter} ? $objEntities->{$strParameter} : ' ';
+                $arrParameters[] = $objEntities->{$strParameter} ?: ' ';
             }
         }
 
@@ -185,7 +185,7 @@ class SearchIndexBuilder extends Frontend
         return $objPage;
     }
 
-    protected function setProcessedDomain($objPage, $strTablename)
+    protected function setProcessedDomain($objPage, $strTablename): string
     {
 
         $strRoutings = '';

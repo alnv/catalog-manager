@@ -19,6 +19,10 @@ services:
   Alnv\CatalogManagerBundle\NotificationType\EntityUpdateNotificationType:
     tags:
       notification_center: notification_type
+  catalogmanager.listener.sitemap:
+    class: Alnv\CatalogManagerBundle\EventListener\SitemapListener
+    arguments:
+      - '@contao.framework'
   Alnv\CatalogManagerBundle\EventListener\DoctrineSchemaListener:
     arguments:
       - '@contao.framework'

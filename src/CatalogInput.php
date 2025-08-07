@@ -23,19 +23,25 @@ class CatalogInput extends CatalogController
     {
 
         $blnIsBackend = System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''));
-        $objSession = System::getContainer()->get('request_stack')->getSession();
+
         $strActiveValue = $this->Input->post($strName);
         $arrEditingMode = preg_grep('/^act(\d+)/i', array_keys($_GET));
         $arrPagination = preg_grep('/^page_e(\d+)/i', array_keys($_GET));
 
         if ($this->Input->post('FORM_SUBMIT') == $this->strFormId) {
+            $objSession = System::getContainer()->get('request_stack')->getSession();
             $objSession->set($strName, $strActiveValue);
         }
 
-        if (!empty($arrPagination) || (Toolkit::isEmpty($strActiveValue) && !Toolkit::isEmpty($objSession->get($strName)))) {
-            if (!$blnIsBackend) {
-                $strActiveValue = $objSession->get($strName);
-            }
+        if (!empty($arrPagination) || Toolkit::isEmpty($strActiveValue)) {
+            try {
+                $objSession = System::getContainer()->get('request_stack')->getSession();
+                if (!Toolkit::isEmpty($objSession->get($strName))) {
+                    if (!$blnIsBackend) {
+                        $strActiveValue = $objSession->get($strName);
+                    }
+                }
+            } catch (\Exception $objError) {}
         }
 
         if (!empty($arrEditingMode)) {

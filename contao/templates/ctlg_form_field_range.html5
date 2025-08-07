@@ -1,17 +1,19 @@
-<div <?= $this->fieldID ?> class="<?= $this->cssClass;?>ctlg_form_field range">
-   <div class="range_lower_field">
-      <?php if( $this->rangeLowLabel ): ?>
-         <label for="id_form_<?= $this->ltName ?>"><?= $this->rangeLowLabel ?></label>
-      <?php endif; ?>
-      <input type="text" id="id_form_<?= $this->ltName ?>" name="<?= $this->ltName ?>" value="<?= $this->value['ltValue'] ?>">
-   </div>
-   <div class="range_greater_field">
-      <?php if( $this->rangeLowLabel ): ?>
-         <label for="id_form_<?= $this->gtName ?>"><?= $this->rangeGreatLabel ?></label>
-      <?php endif; ?>
-      <input type="text" id="id_form_<?= $this->gtName ?>" name="<?= $this->gtName ?>" value="<?= $this->value['gtValue'] ?>">
-   </div>
-   <?php if( $this->description ): ?>
-      <p class="description<?= ( $this->invalid ? ' error' : '' ) ?>"><?= $this->description ?></p>
-   <?php endif; ?>
+<div <?= $this->fieldID ?> class="<?= $this->cssClass; ?>ctlg_form_field range">
+    <div class="range_lower_field">
+        <?php if ($this->rangeLowLabel): ?>
+            <label for="id_form_<?= $this->ltName ?>"><?= $this->rangeLowLabel ?></label>
+        <?php endif; ?>
+        <input type="text" id="id_form_<?= $this->ltName ?>" name="<?= $this->ltName ?>"
+               value="<?= $this->value['ltValue'] ?>">
+    </div>
+    <div class="range_greater_field">
+        <?php if ($this->rangeLowLabel): ?>
+            <label for="id_form_<?= $this->gtName ?>"><?= $this->rangeGreatLabel ?></label>
+        <?php endif; ?>
+        <input type="text" id="id_form_<?= $this->gtName ?>" name="<?= $this->gtName ?>"
+               value="<?= $this->value['gtValue'] ?>">
+    </div>
+    <?php if ($this->description): ?>
+        <p class="description<?= ($this->invalid ? ' error' : '') ?>"><?= $this->description ?></p>
+    <?php endif; ?>
 </div>

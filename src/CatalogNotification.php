@@ -55,7 +55,7 @@ class CatalogNotification extends CatalogController
         $arrTokens['domain'] = $this->getDomain();
         $arrTokens['admin_email'] = $this->getAdminEmail();
 
-        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
+        $this->objNotificationCenter->sendNotification($intNotificationId, $arrTokens);
     }
 
     public function notifyOnUpdate($intNotificationId, $arrData = [])
@@ -80,7 +80,7 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
+        $this->objNotificationCenter->sendNotification($intNotificationId, $arrTokens);
     }
 
     public function notifyOnInsert($intNotificationId, $arrData = [])
@@ -104,7 +104,7 @@ class CatalogNotification extends CatalogController
             }
         }
 
-        $this->objNotificationCenter->send($intNotificationId, $arrTokens);
+        $this->objNotificationCenter->sendNotification($intNotificationId, $arrTokens);
     }
 
     protected function getOldData($arrTokens = []): array

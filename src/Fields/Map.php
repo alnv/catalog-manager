@@ -7,6 +7,7 @@ use Contao\FrontendTemplate;
 use Contao\Database;
 use Contao\Config;
 use Contao\Input;
+use Contao\StringUtil;
 
 class Map
 {
@@ -82,8 +83,13 @@ class Map
 
         $arrTokens = [];
         Toolkit::flatterWithoutKeyValue($arrData, $arrTokens);
+
+        $strInfoBox = StringUtil::decodeEntities($strInfoBox);
         $strInfoBox = Toolkit::parseSimpleTokens(($strInfoBox ?: ''), $arrTokens);
+        $strInfoBox = StringUtil::decodeEntities($strInfoBox);
         $strInfoBox = Toolkit::removeBreakLines($strInfoBox);
+        $strInfoBox = Toolkit::replaceInsertTags($strInfoBox);
+
         return Toolkit::removeApostrophe($strInfoBox);
     }
 

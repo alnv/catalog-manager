@@ -76,7 +76,7 @@ class CatalogFormFilter extends CatalogController
                 }
 
                 if ($this->arrFormFields[$strName]['dependOnField']) {
-                    if ($this->validValue($this->getInput($this->arrFormFields[$strName]['dependOnField']))) {
+                    if (!$this->validValue($this->getInput($this->arrFormFields[$strName]['dependOnField']))) {
                         if ($this->validValue($this->getInput($strName))) {
                             Controller::redirect($strAction);
                         }
@@ -110,7 +110,7 @@ class CatalogFormFilter extends CatalogController
                     }
                 }
 
-                $strTemplate = $arrField['template'] ? $arrField['template'] : $this->arrTemplateMap[$arrField['type']];
+                $strTemplate = $arrField['template'] ?: $this->arrTemplateMap[$arrField['type']];
                 if (!$strTemplate) {
                     $strTemplate = 'ctlg_form_field_' . $arrField['type'];
                 }

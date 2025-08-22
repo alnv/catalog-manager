@@ -852,12 +852,18 @@ class FrontendEditing extends CatalogController
     protected function getFileUUID($arrFile)
     {
 
+        if (\is_string($arrFile) && !empty($arrFile)) {
+            $arrFile = [
+                'uuid' => $arrFile,
+                'tmp_name' => ''
+            ];
+        }
+
         $strRoot = System::getContainer()->getParameter('kernel.project_dir') . '/';
         $strUuid = $arrFile['uuid'] ?? '';
-        $strFile = substr($arrFile['tmp_name'], strlen($strRoot));
-        $objFiles = FilesModel::findByPath($strFile);
+        $strFile = ($arrFile['tmp_name'] ?? '') ? substr($arrFile['tmp_name'] ?? '', strlen($strRoot)) : '';
 
-        if ($objFiles !== null) {
+        if (($objFiles = FilesModel::findByPath($strFile)) && $strFile) {
             $strUuid = $objFiles->uuid;
         }
 

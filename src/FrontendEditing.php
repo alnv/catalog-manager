@@ -325,7 +325,7 @@ class FrontendEditing extends CatalogController
                 $objWidget->storeFile = $this->catalogStoreFile;
                 $objWidget->useHomeDir = $this->catalogUseHomeDir;
                 $objWidget->maxlength = $arrField['eval']['maxsize'];
-                $objWidget->multiple = $arrField['eval']['multiple'];
+                $objWidget->multiple = ($arrField['eval']['multiple'] ?? false);
                 $objWidget->uploadFolder = $this->catalogUploadFolder;
                 $objWidget->extensions = $arrField['eval']['extensions'];
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
@@ -349,7 +349,7 @@ class FrontendEditing extends CatalogController
             if (isset($this->arrCatalogFields[$strFieldname]['autoCompletionType']) && $this->arrCatalogFields[$strFieldname]['autoCompletionType']) {
 
                 $objWidget->class .= ' awesomplete-field';
-                $objWidget->class .= ($arrField['multiple'] ? ' multiple' : '');
+                $objWidget->class .= (($arrField['multiple'] ?? false) ? ' multiple' : '');
 
                 if (Input::get('ctlg_autocomplete_query') && Input::get('ctlg_fieldname') == $strFieldname) {
                     $this->sendJsonResponse($this->arrCatalogFields[$strFieldname], $this->id, Input::get('ctlg_autocomplete_query'));
@@ -477,7 +477,7 @@ class FrontendEditing extends CatalogController
                         foreach ($arrFiles[$strFieldname] as $arrFile) {
                             $arrUUIDValues[] = $this->getFileUUID($arrFile);
                         }
-                        if (Config::get('catalogMergeMultipleUploads') && $arrField['eval']['multiple']) {
+                        if (Config::get('catalogMergeMultipleUploads') && ($arrField['eval']['multiple'] ?? false)) {
                             $arrUUIDValues = array_merge(StringUtil::deserialize($this->arrValues[$strFieldname], true), $arrUUIDValues);
                             $arrUUIDValues = array_unique($arrUUIDValues);
                             $arrUUIDValues = array_values($arrUUIDValues);
@@ -853,12 +853,11 @@ class FrontendEditing extends CatalogController
     {
 
         $strRoot = System::getContainer()->getParameter('kernel.project_dir') . '/';
-        $strUuid = $arrFile['uuid'];
+        $strUuid = $arrFile['uuid'] ?? '';
         $strFile = substr($arrFile['tmp_name'], strlen($strRoot));
         $objFiles = FilesModel::findByPath($strFile);
 
         if ($objFiles !== null) {
-
             $strUuid = $objFiles->uuid;
         }
 

@@ -76,7 +76,7 @@ class CatalogFormFilter extends CatalogController
                 }
 
                 if ($this->arrFormFields[$strName]['dependOnField']) {
-                    if (!$this->validValue($this->getInput($this->arrFormFields[$strName]['dependOnField']))) {
+                    if ($this->validValue($this->getInput($this->arrFormFields[$strName]['dependOnField']))) {
                         if ($this->validValue($this->getInput($strName))) {
                             Controller::redirect($strAction);
                         }

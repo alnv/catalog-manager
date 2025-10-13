@@ -38,8 +38,8 @@ class ModuleUniversalView extends Module
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
             $objTemplate->title = $this->headline;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD']['catalogUniversalView'][0]) . ' ###';
+            $objTemplate->href = 'contao/main?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->wildcard = '### ' . \strtoupper($GLOBALS['TL_LANG']['FMD']['catalogUniversalView'][0] ?? '') . ' ###';
 
             return $objTemplate->parse();
         }
@@ -53,8 +53,8 @@ class ModuleUniversalView extends Module
             }
         }
 
-        $this->strAct = Input::get('act' . $this->id);
-        $this->strMasterAlias = Input::get('auto_item');
+        $this->strAct = Input::get('act' . $this->id) ?: '';
+        $this->strMasterAlias = Input::get('auto_item') ?: '';
 
         if (!$this->strAct && Input::get('pdf' . $this->id)) {
             $this->strAct = 'pdf';
@@ -117,7 +117,7 @@ class ModuleUniversalView extends Module
 
         $this->FrontendEditing->strAct = $this->strAct;
         $this->FrontendEditing->arrOptions = $this->arrData;
-        $this->FrontendEditing->strItemID = Input::get('id' . $this->id);
+        $this->FrontendEditing->strItemID = Input::get('id' . $this->id) ?: '';
         $this->FrontendEditing->strTemplate = $this->catalogFormTemplate ? $this->catalogFormTemplate : 'form_catalog_default';
         $this->FrontendEditing->initialize();
 

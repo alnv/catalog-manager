@@ -36,9 +36,10 @@ use Alnv\CatalogManagerBundle\Widgets\CatalogTaxonomyWizard;
 use Alnv\CatalogManagerBundle\Widgets\CatalogValueSetterWizard;
 use Contao\ArrayUtil;
 use Contao\System;
+use Alnv\CatalogManagerBundle\ChangeLanguageExtension;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.23-legacy";
+const CATALOG_MANAGER_VERSION = "2.0.24-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [
@@ -112,6 +113,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [TimestampInsertTag::class, 'getIn
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [FilterValuesInsertTag::class, 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [RandomEntitiesIDInsertTag::class, 'getInsertTagValue'];
 $GLOBALS['TL_HOOKS']['getAllEvents'][] = [CatalogParser::class, 'getAllEvents'];
+$GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageExtension::class, 'translateUrlParameters'];
 
 $GLOBALS['TL_CATALOG_MANAGER']['CORE_TABLES'] = [];
 $GLOBALS['TL_CATALOG_MANAGER']['PROTECTED_CATALOGS'] = [];

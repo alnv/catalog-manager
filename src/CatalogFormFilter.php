@@ -385,22 +385,24 @@ class CatalogFormFilter extends CatalogController
 
     protected function getActionAttr(): string
     {
-
         if (!$this->blnIsValid) return StringUtil::ampersand(Environment::get('indexFreeRequest'));
 
         $strAlias = '';
-        $strPageID = $this->arrForm['jumpTo'];
+        $strPageID = $this->arrForm['jumpTo'] ?? '';
 
         if (!$strPageID) {
             global $objPage;
-            $strPageID = $objPage->id;
-            $strAlias = Input::get('auto_item') ? '/' . Input::get('auto_item') : '';
+
+            $strPageID = $objPage?->id;
+            $strAlias = ($_GET['auto_item'] ?? '') ? '/' . Input::get('auto_item') : '';
         }
 
         $objPageModel = new PageModel();
-        $arrPage = $objPageModel->findPublishedById($strPageID);
+        $page = $objPageModel->findPublishedById($strPageID);
 
-        if ($arrPage != null) return $arrPage->getFrontendUrl(($strAlias ? '/' . $strAlias : '')) . ($this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '');
+        if ($page != null) {
+            return $page->getFrontendUrl(($strAlias ?: '')) . (($this->arrForm['anchor'] ?? '') ? '#' . $this->arrForm['anchor'] : '');
+        };
 
         return StringUtil::ampersand(Environment::get('indexFreeRequest')) . ($this->arrForm['anchor'] ? '#' . $this->arrForm['anchor'] : '');
     }

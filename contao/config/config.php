@@ -39,7 +39,7 @@ use Contao\System;
 use Alnv\CatalogManagerBundle\ChangeLanguageExtension;
 use Symfony\Component\HttpFoundation\Request;
 
-const CATALOG_MANAGER_VERSION = "2.0.24-legacy";
+const CATALOG_MANAGER_VERSION = "2.0.25-legacy";
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 3, [
     'catalog-manager-extensions' => [

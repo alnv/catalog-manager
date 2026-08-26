@@ -296,7 +296,7 @@ class FrontendEditing extends CatalogController
             $objWidget = new $strClass($arrData);
             $objWidget->storeValues = true;
             $objWidget->id = 'id_' . $strFieldname;
-            $objWidget->value = $this->arrValues[$strFieldname];
+            $objWidget->value = $this->arrValues[$strFieldname] ?? '';
             $objWidget->placeholder = $arrField['_placeholder'] ?: '';
             $objWidget->description = $arrField['label'][1] ?? '';
 

@@ -21,16 +21,16 @@ class DoctrineSchemaListener
         }
 
         $objSchema = $event->getSchema();
-        $objCatalogs = Database::getInstance()->prepare('SELECT * FROM tl_catalog ORDER BY `tablename`')->execute();
+        $objCatalogs = Database::getInstance()->prepare('SELECT * FROM tl_catalog ORDER BY `tablename`')->execute()->fetchAllAssoc();
 
-        while ($objCatalogs->next()) {
+        foreach ($objCatalogs as $objCatalog) {
 
-            if (!$objCatalogs->tablename) {
+            if (!$objCatalog->tablename) {
                 continue;
             }
 
-            $objTable = $objSchema->hasTable($objCatalogs->tablename) ? $objSchema->getTable($objCatalogs->tablename) : $objSchema->createTable($objCatalogs->tablename);
-            $arrFields = Database::getInstance()->listFields($objCatalogs->tablename);
+            $objTable = $objSchema->hasTable($objCatalog->tablename) ? $objSchema->getTable($objCatalog->tablename) : $objSchema->createTable($objCatalog->tablename);
+            $arrFields = Database::getInstance()->listFields($objCatalog->tablename);
 
             foreach ($arrFields as $strIndex => $arrField) {
 

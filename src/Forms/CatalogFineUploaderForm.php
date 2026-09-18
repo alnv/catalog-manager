@@ -218,17 +218,15 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
 
             if ($this->blnStoreFile) {
                 $bnyUploadFolder = $this->bnyUploadFolder;
-                if ($this->blnUseHomeDir && System::getContainer()->get('contao.security.token_checker')->hasFrontendUser()) {
-                    $this->import(FrontendUser::class, 'User');
-                    if ($this->User->assignDir && $this->User->homeDir) {
-                        $bnyUploadFolder = $this->User->homeDir;
+
+                if ($this->blnUseHomeDir && FrontendUser::getInstance()->id) {
+                    if (FrontendUser::getInstance()->assignDir && FrontendUser::getInstance()->homeDir) {
+                        $bnyUploadFolder = FrontendUser::getInstance()->homeDir;
                     }
                 }
 
                 $objUploadFolder = FilesModel::findByUuid($bnyUploadFolder);
-
                 if ($objUploadFolder === null) {
-
                     unset($_FILES[$this->strName]);
                     $arrReturn['success'] = false;
                     return $arrReturn;
@@ -276,6 +274,10 @@ class CatalogFineUploaderForm extends Widget implements UploadableWidgetInterfac
                         }
 
                         Dbafs::updateFolderHashes($strUploadFolder);
+                    }
+
+                    if (!isset($_SESSION['FILES'][$this->strName]) || \is_string($_SESSION['FILES'][$this->strName])) {
+                        $_SESSION['FILES'][$this->strName] = [];
                     }
 
                     $_SESSION['FILES'][$this->strName][] = [

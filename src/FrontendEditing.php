@@ -58,7 +58,6 @@ class FrontendEditing extends CatalogController
 
     public function __construct()
     {
-
         $this->import(CatalogEvents::class, 'CatalogEvents');
         $this->import(CatalogMessage::class, 'CatalogMessage');
         $this->import(SQLQueryHelper::class, 'SQLQueryHelper');
@@ -289,7 +288,7 @@ class FrontendEditing extends CatalogController
 
             if (isset($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'])) {
                 foreach ($GLOBALS['TL_HOOKS']['catalogManagerModifyFrontendEditingField'] as $callback) {
-                    System::importStatic($callback[0])->{$callback[1]}($strFieldname, $strClass, $arrData, $this->arrCatalogFields[$strFieldname], $this->arrCatalog);
+                    System::importStatic($callback[0])->{$callback[1]}($strFieldname, $strClass, $arrData, $this->arrCatalogFields[$strFieldname] ?? [], $this->arrCatalog);
                 }
             }
 
@@ -297,10 +296,10 @@ class FrontendEditing extends CatalogController
             $objWidget->storeValues = true;
             $objWidget->id = 'id_' . $strFieldname;
             $objWidget->value = $this->arrValues[$strFieldname] ?? '';
-            $objWidget->placeholder = $arrField['_placeholder'] ?: '';
+            $objWidget->placeholder = ($arrField['_placeholder'] ?? '') ?: '';
             $objWidget->description = $arrField['label'][1] ?? '';
 
-            if (isset($this->arrCatalogFields[$strFieldname]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array($this->arrCatalogFields[$strFieldname]['type'], $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
+            if (isset($this->arrCatalogFields[$strFieldname]['template']) && $this->arrCatalogFields[$strFieldname]['template'] && in_array(($this->arrCatalogFields[$strFieldname]['type'] ?? ''), $this->arrValidFormTemplates)) $objWidget->template = $this->arrCatalogFields[$strFieldname]['template'];
 
             if (is_array($arrField['_cssID']) && (isset($arrField['_cssID'][0]) || isset($arrField['_cssID'][1]))) {
                 if (isset($arrField['_cssID'][0]) && $arrField['_cssID'][0]) $objWidget->id = 'id_' . $arrField['_cssID'][0];
@@ -329,7 +328,7 @@ class FrontendEditing extends CatalogController
                 $objWidget->uploadFolder = $this->catalogUploadFolder;
                 $objWidget->extensions = $arrField['eval']['extensions'];
                 $objWidget->doNotOverwrite = $this->catalogDoNotOverwrite;
-                $objWidget->preview = $this->arrCatalogAttributes[$strFieldname];
+                $objWidget->preview = $this->arrCatalogAttributes[$strFieldname] ?? '';
                 $objWidget->deleteLabel = ($GLOBALS['TL_LANG']['MSC']['CATALOG_MANAGER']['deleteImageButton'] ?? '');
 
                 $this->blnHasUpload = true;
@@ -347,7 +346,6 @@ class FrontendEditing extends CatalogController
             }
 
             if (isset($this->arrCatalogFields[$strFieldname]['autoCompletionType']) && $this->arrCatalogFields[$strFieldname]['autoCompletionType']) {
-
                 $objWidget->class .= ' awesomplete-field';
                 $objWidget->class .= (($arrField['multiple'] ?? false) ? ' multiple' : '');
 
@@ -394,7 +392,7 @@ class FrontendEditing extends CatalogController
                 $objWidget->validate();
                 $varValue = $objWidget->value;
 
-                if (Toolkit::isEmpty($varValue) && $arrField['inputType'] == 'catalogFineUploader') {
+                if (Toolkit::isEmpty($varValue) && $arrField['inputType'] == 'catalogFineUploader' && isset($this->arrValues[$strFieldname])) {
                     $varValue = $this->arrValues[$strFieldname];
                 }
 
@@ -898,7 +896,7 @@ class FrontendEditing extends CatalogController
         }
 
         $objDcCallbacks = new DcCallbacks();
-        $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias(($this->arrValues['alias'] ?? ''), $this->arrValues['title'], $this->catalogTablename, $this->arrValues['id'], $this->id);
+        $this->arrValues['alias'] = $objDcCallbacks->generateFEAlias(($this->arrValues['alias'] ?? ''), ($this->arrValues['title'] ?? ''), $this->catalogTablename, ($this->arrValues['id'] ?? null), $this->id);
 
         if (isset($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave']) && is_array($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'])) {
             foreach ($GLOBALS['TL_HOOKS']['catalogManagerFrontendEditingOnSave'] as $arrCallback) {
@@ -1036,7 +1034,7 @@ class FrontendEditing extends CatalogController
         if (($intPage = intval($intPage)) <= 0) return '';
 
         $objPage = PageModel::findWithDetails($intPage);
-        $strUrl = $objPage->getFrontendUrl();
+        $strUrl = $objPage ? $objPage->getFrontendUrl() : '';
 
         if ($strAttributes) $strUrl .= $strAttributes;
 
@@ -1054,7 +1052,9 @@ class FrontendEditing extends CatalogController
                 }
             }
 
-            $this->redirect($strUrl);
+            if ($strUrl) {
+                $this->redirect($strUrl);
+            }
         }
 
         return $strUrl;
